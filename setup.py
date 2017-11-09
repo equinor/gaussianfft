@@ -1,7 +1,8 @@
 import glob
-import platform
 import os
-from setuptools import setup, Extension
+import platform
+
+from setuptools import Extension, setup
 
 """ Installation Instructions """
 # Linux:
@@ -33,7 +34,6 @@ compilation_logs = 'compiles.log'
 
 """**********************"""
 
-
 if os.path.isfile(compilation_logs):
     import subprocess
     import datetime
@@ -43,6 +43,7 @@ if os.path.isfile(compilation_logs):
         revision_line = [li for li in lines if "Revision" in li]
         assert len(revision_line) == 1
         return revision_line[0].split()[-1]
+
     process = subprocess.Popen(['svn', 'info', 'src/nrlib'], stdout=subprocess.PIPE)
     out, err = process.communicate()
     nr_rev = get_revision(out)
@@ -52,14 +53,15 @@ if os.path.isfile(compilation_logs):
     line = str(datetime.datetime.now()) + ": nrlib r{}, flens r{}\n".format(nr_rev, fl_rev)
     open(compilation_logs, 'a').write(line)
 
-
 # Platform specific definitions
 linker_args = []
 if platform.system() == 'Linux':
     mkl_root = os.getenv('MKL_ROOT')
     if mkl_root is None:
-        raise RuntimeError("Environment variable MKL_ROOT is not defined. "
-                           "MKL headers and libraries are required.")
+        raise RuntimeError(
+            "Environment variable MKL_ROOT is not defined. "
+            "MKL headers and libraries are required."
+        )
     link_libraries = [
         'mkl_intel_lp64',
         'mkl_sequential',
@@ -100,7 +102,6 @@ fftw_dirs = [
     os.path.join(mkl_root, "include"),
 ]
 
-
 # Define all nrlib source files to compile. Globbing may not be recommended,
 # but it is convenient and compact.
 nrlib_source_files = glob.glob('src/nrlib/*/*.cpp')
@@ -116,43 +117,43 @@ all_source_files = [
     a
     for a in all_source_files
     if not a.startswith('src/nrlib\\eclipsegrid')
-    and not a.startswith('src/nrlib\\geometry')
-    and not a.startswith('src/nrlib\\pointset')
-    and (not a.startswith('src/nrlib\\random') or a.count('random') == 2 or 'dSFMT' in a)
-    and not a.startswith('src/nrlib\\segy')
-    and not a.startswith('src/nrlib\\statistics')
-    and not a.startswith('src/nrlib\\stormgrid')
-    and not a.startswith('src/nrlib\\surface')
-    and not a.startswith('src/nrlib\\tinyxml')
-    and not a.startswith('src/nrlib\\trend')
-    and not a.startswith('src/nrlib\\volume')
-    and not a.startswith('src/nrlib\\wavelet')
-    and not a.startswith('src/nrlib\\well')
+       and not a.startswith('src/nrlib\\geometry')
+       and not a.startswith('src/nrlib\\pointset')
+       and (not a.startswith('src/nrlib\\random') or a.count('random') == 2 or 'dSFMT' in a)
+       and not a.startswith('src/nrlib\\segy')
+       and not a.startswith('src/nrlib\\statistics')
+       and not a.startswith('src/nrlib\\stormgrid')
+       and not a.startswith('src/nrlib\\surface')
+       and not a.startswith('src/nrlib\\tinyxml')
+       and not a.startswith('src/nrlib\\trend')
+       and not a.startswith('src/nrlib\\volume')
+       and not a.startswith('src/nrlib\\wavelet')
+       and not a.startswith('src/nrlib\\well')
 ]
 
 """ Python module setup """
 
-bp_module = Extension(extension_name,
-                      sources=all_source_files,
-                      define_macros=[
-                          ('FLENS_FIRST_INDEX', '0'),
-                          ('MKL', None),
-                      ],
-                      include_dirs=[
-                          os.path.abspath('.'),      # For Boost
-                          os.path.abspath('./src'),
-                      ]
-                      + fftw_dirs,
-                      library_dirs=library_dirs,
-                      libraries=link_libraries,
-                      extra_compile_args=compile_args,
-                      extra_link_args=[
-                          # '/VERBOSE:lib'    # For Debug
-                      ]
-                      + linker_args,
-                      language='c++'
-                      )
-
+bp_module = Extension(
+    extension_name,
+    sources=all_source_files,
+    define_macros=[
+        ('FLENS_FIRST_INDEX', '0'),
+        ('MKL', None),
+    ],
+    include_dirs=[
+        os.path.abspath('.'),  # For Boost
+        os.path.abspath('./src'),
+    ]
+    + fftw_dirs,
+    library_dirs=library_dirs,
+    libraries=link_libraries,
+    extra_compile_args=compile_args,
+    extra_link_args=[
+        # '/VERBOSE:lib'    # For Debug
+    ]
+    + linker_args,
+    language='c++'
+)
 
 setup(
     name=extension_name,
