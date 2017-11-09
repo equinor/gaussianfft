@@ -224,3 +224,5 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+/mkl/
+.idea/
