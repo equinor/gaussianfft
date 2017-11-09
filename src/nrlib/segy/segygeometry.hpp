@@ -4,9 +4,9 @@
 // All rights reserved.
 // Redistribution and use in source and binary forms, with or without modification,
 // are permitted provided that the following conditions are met:
-// •  Redistributions of source code must retain the above copyright notice, this
+// *  Redistributions of source code must retain the above copyright notice, this
 //    list of conditions and the following disclaimer.
-// •  Redistributions in binary form must reproduce the above copyright notice, this list of
+// *  Redistributions in binary form must reproduce the above copyright notice, this list of
 //    conditions and the following disclaimer in the documentation and/or other materials
 //    provided with the distribution.
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
@@ -74,7 +74,7 @@ public:
 
   size_t GetNx()           const { return nx_        ;}            ///< return nx
   size_t GetNy()           const { return ny_        ;}            ///< return ny
-  // Fyll på med get-funksjonar. etter behov.
+  // Fyll p* med get-funksjonar. etter behov.
   double GetDx()           const { return dx_        ;}
   double GetDy()           const { return dy_        ;}
   double GetX0()           const { return x0_        ;}

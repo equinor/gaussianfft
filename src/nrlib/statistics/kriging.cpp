@@ -4,9 +4,9 @@
 // All rights reserved.
 // Redistribution and use in source and binary forms, with or without modification,
 // are permitted provided that the following conditions are met:
-// •  Redistributions of source code must retain the above copyright notice, this
+// *  Redistributions of source code must retain the above copyright notice, this
 //    list of conditions and the following disclaimer.
-// •  Redistributions in binary form must reproduce the above copyright notice, this list of
+// *  Redistributions in binary form must reproduce the above copyright notice, this list of
 //    conditions and the following disclaimer in the documentation and/or other materials
 //    provided with the distribution.
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
@@ -1059,7 +1059,7 @@ void Kriging::Krig2DBlock(const RegularSurface<double>   & trend_orig,
     Vector          x(md);
 
 
-    // NB dette kunne vært gjort bare en gang for alle blockene. Dette er blockuavhening
+    // NB dette kunne v*rt gjort bare en gang for alle blockene. Dette er blockuavhening
     // subtract trend from original trend grid
       for (int i = 0 ; i < md ; i++)
         residual(i) = data[i] - static_cast<float>(trend_orig.GetZ(xvector[i], yvector[i]));
