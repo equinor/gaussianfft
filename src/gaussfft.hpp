@@ -2,7 +2,6 @@
 
 #include <string>
 #include "nrlib/grid/grid.hpp"
-//#include "boost/shared_ptr.hpp"
 
 namespace NRLib {
 class Variogram;

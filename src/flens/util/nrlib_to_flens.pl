@@ -1,13 +1,13 @@
 #!/usr/bin/perl -w
 
 ###################################################
-#  
+#
 # $Id: nrlib_to_flens.pl 534 2009-12-11 10:16:23Z perroe $
 #
 #
-# Copyright (C) Norsk Regnesentral, 2009 
+# Copyright (C) Norsk Regnesentral, 2009
 #               Per Roe
-#               
+#
 # Conversion from NRLib2 format to FLENS CVS format.
 # * Changes filenames .hpp => .h
 # * Changes filenames .cpp => .cc
@@ -83,7 +83,7 @@ foreach my $file (@hpp_files) {
         else {
           print "line = $_\n";
           die "Error parsing file.";
-        }                
+        }
       }
       else {
         print "line = $_\n";

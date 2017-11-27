@@ -5,10 +5,11 @@ import nrlib
 
 def example_cube():
     nrlib.seed(123)
-    variogram = nrlib.variogram('exponential', 1000, 1000, 1000, 0.0, 0.0, 1.5)
-    nx, ny, nz = 100, 100, 100
-    dx, dy, dz = 10, 10, 10
-    field = nrlib.simulate(variogram, nx, dx, ny, dy, nz, dz)
+    variogram = nrlib.variogram('gaussian', 100, 100, 100, 0.0, 0.0, 1.5)
+    # nx, ny, nz = 100, 100, 100
+    nx, ny, nz = 127, 127, 127
+    dx, dy, dz = 2, 2, 2
+    field = nrlib.advanced.simulate(variogram, nx, dx, ny, dy, nz, dz, padx=0, pady=0, padz=0)
     field3d = np.array(field).reshape((nx, ny, nz), order='F')
     plot_3d_mid_slices(field3d)
 

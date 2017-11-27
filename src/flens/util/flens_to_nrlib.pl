@@ -1,18 +1,18 @@
 #!/usr/bin/perl -w
 
 ###################################################
-#  
+#
 # $Id: flens_to_nrlib.pl 534 2009-12-11 10:16:23Z perroe $
 #
 #
-# Copyright (C) Norsk Regnesentral, 2009 
+# Copyright (C) Norsk Regnesentral, 2009
 #               Per Roe
-#               
+#
 # Conversion from FLENS CVS format to NRLib2 format.
 # * Changes filenames .h => .hpp
 # * Adds .tcc files to .h files
 #
-# Usage: ./flens_to_nrlib.pl [flens-dir] [nrlib-dir] 
+# Usage: ./flens_to_nrlib.pl [flens-dir] [nrlib-dir]
 #
 ###################################################
 

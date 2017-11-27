@@ -1,8 +1,7 @@
 import glob
-import os
 import platform
-
-from setuptools import Extension, setup
+import os
+from setuptools import setup, Extension
 
 """ Installation Instructions """
 # Linux:
@@ -16,7 +15,7 @@ from setuptools import Extension, setup
 #
 # Windows:
 #   python setup.py install [--user]
-# or (preferrably)
+# or (preferably)
 #   pip install --user -e .
 
 # If the installation fails, some additional information may be printed if the following environment variable is defined
@@ -33,6 +32,7 @@ extension_name = 'nrlib'
 compilation_logs = 'compiles.log'
 
 """**********************"""
+
 
 if os.path.isfile(compilation_logs):
     import subprocess
@@ -52,6 +52,7 @@ if os.path.isfile(compilation_logs):
     fl_rev = get_revision(out)
     line = str(datetime.datetime.now()) + ": nrlib r{}, flens r{}\n".format(nr_rev, fl_rev)
     open(compilation_logs, 'a').write(line)
+
 
 # Platform specific definitions
 linker_args = []
@@ -101,6 +102,7 @@ fftw_dirs = [
     os.path.join(mkl_root, "include", "fftw"),
     os.path.join(mkl_root, "include"),
 ]
+
 
 # Define all nrlib source files to compile. Globbing may not be recommended,
 # but it is convenient and compact.
@@ -155,9 +157,10 @@ bp_module = Extension(
     language='c++'
 )
 
+
 setup(
     name=extension_name,
-    version="0.2",
+    version="0.3",
     packages=[],  # find_packages()
     ext_modules=[bp_module]
 )

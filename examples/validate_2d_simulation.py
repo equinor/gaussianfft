@@ -5,12 +5,14 @@ import nrlib
 
 def example_cube():
     nrlib.seed(123)
-    variogram = nrlib.variogram('exponential', main_range=1000.0, perp_range=1000.0,)
-    nx, ny = 100, 100
-    dx, dy = 10, 10
-    field = nrlib.simulate(variogram, nx, dx, ny, dy)
-    field2d = np.array(field).reshape((nx, ny), order='F')
+    n = 127 * 2
+    p = 127 * 2
+    d = 0.5
+    variogram = nrlib.variogram('gaussian', main_range=10, perp_range=10, power=1.5)
+    field = nrlib.advanced.simulate(variogram, n, d, n, d, padx=p, pady=p)
+    field2d = np.array(field).reshape((n, n), order='F')
     plot_surface(field2d)
+    pass
 
 
 def example_box():

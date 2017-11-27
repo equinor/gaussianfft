@@ -354,6 +354,7 @@ void NRLib::Simulate2DGaussianField(const Variogram              & variogram,
   for (int k = 0; k < n_fields; k++) {
     for (size_t i = 0; i < nx_tot; i++)
       for (size_t j = 0; j < ny_tot; j++)
+        //noise(i, j) = (i == j  && i == nx_tot / 2) ? 1.0 : 0.0;  // For debugging
         noise(i,j) = rg->Norm01();
 
     fftgrid.Initialize(noise);
