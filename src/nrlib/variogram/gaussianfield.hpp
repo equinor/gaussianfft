@@ -30,6 +30,7 @@ namespace NRLib {
   class Variogram;
   template <typename T> class Grid2D;
   template <typename T> class Grid;
+  size_t FindGaussianFieldPadding(size_t grid_size, double range, double step);
 
   void Simulate3DGaussianField(const Variogram              & variogram,
                                size_t                         nx,

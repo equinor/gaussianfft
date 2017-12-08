@@ -11,8 +11,16 @@ namespace GaussFFT {
 
 std::string Quote();
 
+std::vector<size_t> FindGridSizeAfterPadding(NRLib::Variogram * variogram,
+                                             size_t             nx,
+                                             double             dx,
+                                             size_t             ny,
+                                             double             dy,
+                                             size_t             nz,
+                                             double             dz);
+
 NRLib::Variogram *
-CreateVariogram(std::string type,
+CreateVariogram(const std::string & type,
                 double      range_x,
                 double      range_y,
                 double      range_z,

@@ -17,14 +17,34 @@ std::string GaussFFT::Quote()
   return "Arc, amplitude, and curvature sustain a similar relation to each other as time, motion, and velocity, or as volume, mass, and density.";
 }
 
+/**********************************************************************************/
+std::vector<size_t> GaussFFT::FindGridSizeAfterPadding(NRLib::Variogram * variogram,
+                                                       size_t             nx,
+                                                       double             dx,
+                                                       size_t             ny,
+                                                       double             dy,
+                                                       size_t             nz,
+                                                       double             dz)
+{
+  std::vector<size_t> out;
+  out.push_back(NRLib::FindGaussianFieldPadding(nx, variogram->GetRangeX(), dx));
+  if (ny > 1) {
+    out.push_back(NRLib::FindGaussianFieldPadding(ny, variogram->GetRangeY(), dy));
+    if (nz > 1) {
+      out.push_back(NRLib::FindGaussianFieldPadding(nz, variogram->GetRangeZ(), dz));
+    }
+  }
+  return out;
+}
+
 /*********************************************************************/
-NRLib::Variogram * GaussFFT::CreateVariogram(std::string type,
-                                             double      range_x,
-                                             double      range_y,
-                                             double      range_z,
-                                             double      azimuth_angle,
-                                             double      dip_angle,
-                                             double      power)
+NRLib::Variogram * GaussFFT::CreateVariogram(const std::string & type,
+                                             double              range_x,
+                                             double              range_y,
+                                             double              range_z,
+                                             double              azimuth_angle,
+                                             double              dip_angle,
+                                             double              power)
 {
   if (range_y < 0.0)
     range_y = range_x;

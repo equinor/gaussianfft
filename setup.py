@@ -34,15 +34,31 @@ compilation_logs = 'compiles.log'
 """**********************"""
 
 
+def find_boost_directory():
+    # Try current directory first
+    attempt = os.path.join('boost', 'version.hpp')
+    if os.path.isfile(attempt):
+        return os.path.abspath('.')
+    # Try to use environment variable BOOST_ROOT
+    elif 'BOOST_ROOT' in os.environ:
+        attempt = os.path.join(os.environ['BOOST_ROOT'], 'boost', 'version.hpp')
+        if os.path.isfile(attempt):
+            return os.path.abspath(os.environ['BOOST_ROOT'])
+    raise Exception('Could not find a valid Boost directory. Make sure boost/version.hpp exists either from\n'
+                    'the current directory or the directory defined by environment variable BOOST_ROOT.')
+
+
 if os.path.isfile(compilation_logs):
     import subprocess
     import datetime
+
 
     def get_revision(text):
         lines = text.decode().replace('\r', '').split('\n')
         revision_line = [li for li in lines if "Revision" in li]
         assert len(revision_line) == 1
         return revision_line[0].split()[-1]
+
 
     process = subprocess.Popen(['svn', 'info', 'src/nrlib'], stdout=subprocess.PIPE)
     out, err = process.communicate()
@@ -52,7 +68,6 @@ if os.path.isfile(compilation_logs):
     fl_rev = get_revision(out)
     line = str(datetime.datetime.now()) + ": nrlib r{}, flens r{}\n".format(nr_rev, fl_rev)
     open(compilation_logs, 'a').write(line)
-
 
 # Platform specific definitions
 linker_args = []
@@ -73,7 +88,10 @@ if platform.system() == 'Linux':
         'boost_filesystem',
         'boost_system',
     ]
-    compile_args = []
+    compile_args = [
+        # May be necessary for some C++11 compilers:
+        '-D_GLIBCXX_USE_CXX11_ABI=0'
+    ]
     linker_args += [
         # mkl_root + '/lib/intel64/libmkl_core.a',
         # mkl_root + '/lib/intel64/libmkl_intel_lp64.a',
@@ -103,35 +121,43 @@ fftw_dirs = [
     os.path.join(mkl_root, "include"),
 ]
 
-
 # Define all nrlib source files to compile. Globbing may not be recommended,
 # but it is convenient and compact.
-nrlib_source_files = glob.glob('src/nrlib/*/*.cpp')
-nrlib_source_files += glob.glob('src/flens/*.cc')
+nrlib_source_files = glob.glob(
+    os.path.join('src', 'nrlib', '*', '*.cpp')
+)
+nrlib_source_files += glob.glob(
+    os.path.join('src', 'flens', '*.cc')
+)
 source_files = [
-    'src/gaussfft.cpp',
-    'src/gaussfftinterface.cpp',
+    os.path.join('src', 'gaussfft.cpp'),
+    os.path.join('src', 'gaussfftinterface.cpp'),
 ]
 all_source_files = source_files + nrlib_source_files
 
 # We do not need entire NRLib. Exclude unused files.
+
 all_source_files = [
     a
     for a in all_source_files
-    if not a.startswith('src/nrlib\\eclipsegrid')
-       and not a.startswith('src/nrlib\\geometry')
-       and not a.startswith('src/nrlib\\pointset')
-       and (not a.startswith('src/nrlib\\random') or a.count('random') == 2 or 'dSFMT' in a)
-       and not a.startswith('src/nrlib\\segy')
-       and not a.startswith('src/nrlib\\statistics')
-       and not a.startswith('src/nrlib\\stormgrid')
-       and not a.startswith('src/nrlib\\surface')
-       and not a.startswith('src/nrlib\\tinyxml')
-       and not a.startswith('src/nrlib\\trend')
-       and not a.startswith('src/nrlib\\volume')
-       and not a.startswith('src/nrlib\\wavelet')
-       and not a.startswith('src/nrlib\\well')
+    # @formatter:off
+    if not a.startswith(  os.path.join('src', 'nrlib', 'eclipsegrid'))
+    and not a.startswith( os.path.join('src', 'nrlib', 'geometry'   ))
+    and not a.startswith( os.path.join('src', 'nrlib', 'pointset'   ))
+    and (not a.startswith(os.path.join('src', 'nrlib', 'random'     )) or a.count('random') == 2 or 'dSFMT' in a)
+    and not a.startswith( os.path.join('src', 'nrlib', 'segy'       ))
+    and not a.startswith( os.path.join('src', 'nrlib', 'statistics' ))
+    and not a.startswith( os.path.join('src', 'nrlib', 'stormgrid'  ))
+    and not a.startswith( os.path.join('src', 'nrlib', 'surface'    ))
+    and not a.startswith( os.path.join('src', 'nrlib', 'tinyxml'    ))
+    and not a.startswith( os.path.join('src', 'nrlib', 'trend'      ))
+    and not a.startswith( os.path.join('src', 'nrlib', 'volume'     ))
+    and not a.startswith( os.path.join('src', 'nrlib', 'wavelet'    ))
+    and not a.startswith( os.path.join('src', 'nrlib', 'well'       ))
+    # @formatter:on
 ]
+
+open('source_files.txt', 'w').writelines(all_source_files)
 
 """ Python module setup """
 
@@ -143,24 +169,23 @@ bp_module = Extension(
         ('MKL', None),
     ],
     include_dirs=[
-        os.path.abspath('.'),  # For Boost
-        os.path.abspath('./src'),
-    ]
-    + fftw_dirs,
+                     find_boost_directory(),  # For Boost
+                     os.path.abspath('./src'),
+                 ]
+                 + fftw_dirs,
     library_dirs=library_dirs,
     libraries=link_libraries,
     extra_compile_args=compile_args,
     extra_link_args=[
-        # '/VERBOSE:lib'    # For Debug
-    ]
-    + linker_args,
+                        # '/VERBOSE:lib'    # For Debug
+                    ]
+                    + linker_args,
     language='c++'
 )
 
-
 setup(
     name=extension_name,
-    version="0.3",
+    version="0.4",
     packages=[],  # find_packages()
     ext_modules=[bp_module]
 )

@@ -41,11 +41,13 @@ using namespace NRLib;
 /****************************************************************************************/
 
 // Local function
-size_t FindPadding(size_t grid_size, double range, double step)
+size_t NRLib::FindGaussianFieldPadding(size_t grid_size, double range, double step)
 {
   // The factor 4.0 is just a value chosen so that the correlation
   // function is close to 0.0 at the end of the padding
-  return std::max(static_cast<size_t>(4.0 * range / step), grid_size);
+  return static_cast<size_t>(
+    std::max(static_cast<int>(4.0 * range / step - grid_size), static_cast<int>(range/step))
+  );
 }
 
 
@@ -53,12 +55,12 @@ size_t FindPadding(size_t grid_size, double range, double step)
 // Local function, not accessible elsewhere.
 // Using int instead of size_t, since we want negative differences.
 Grid<double> CovGridForFFT3D(const Variogram & variogram,
-               int               nx,
-               double            dx,
-               int               ny,
-               double            dy,
-               int               nz,
-               double            dz)
+                             int               nx,
+                             double            dx,
+                             int               ny,
+                             double            dy,
+                             int               nz,
+                             double            dz)
 {
   Grid<double> cov(nx, ny, nz);
   int nxm = (nx + 1) / 2;
@@ -203,9 +205,9 @@ void NRLib::Simulate3DGaussianField(const Variogram              & variogram,
   range_y = range_x;
   range_z = variogram.GetRangeZ();   // added
 
-  size_t n_pad_x = (padding_x < 0) ? FindPadding(nx, range_x, dx) : padding_x;
-  size_t n_pad_y = (padding_y < 0) ? FindPadding(ny, range_y, dy) : padding_y;
-  size_t n_pad_z = (padding_z < 0) ? FindPadding(nz, range_z, dz) : padding_z; // added
+  size_t n_pad_x = (padding_x < 0) ? FindGaussianFieldPadding(nx, range_x, dx) : padding_x;
+  size_t n_pad_y = (padding_y < 0) ? FindGaussianFieldPadding(ny, range_y, dy) : padding_y;
+  size_t n_pad_z = (padding_z < 0) ? FindGaussianFieldPadding(nz, range_z, dz) : padding_z; // added
 
   //FFTGrid2D<double> fftgrid(nx, ny, n_pad_x, n_pad_y, true);
   FFTGrid3D<double> fftgrid(nx, ny, nz, n_pad_x, n_pad_y, n_pad_z, true); // added
@@ -312,11 +314,11 @@ void NRLib::Simulate2DGaussianField(const Variogram              & variogram,
     range_y = range_x;
   }
 
-  size_t nx_pad = (padding_x < 0) ? FindPadding(nx, range_x, dx) : padding_x;
+  size_t nx_pad = (padding_x < 0) ? FindGaussianFieldPadding(nx, range_x, dx) : padding_x;
   size_t nxp = NRLib::FindNewSizeWithPadding(nx + nx_pad);
   size_t n_pad_x = nxp - nx;
 
-  size_t ny_pad = (padding_y < 0) ? FindPadding(ny, range_y, dy) : padding_y;
+  size_t ny_pad = (padding_y < 0) ? FindGaussianFieldPadding(ny, range_y, dy) : padding_y;
   size_t nyp = NRLib::FindNewSizeWithPadding(ny + ny_pad);
   size_t n_pad_y = nyp - ny;
 
@@ -354,7 +356,6 @@ void NRLib::Simulate2DGaussianField(const Variogram              & variogram,
   for (int k = 0; k < n_fields; k++) {
     for (size_t i = 0; i < nx_tot; i++)
       for (size_t j = 0; j < ny_tot; j++)
-        //noise(i, j) = (i == j  && i == nx_tot / 2) ? 1.0 : 0.0;  // For debugging
         noise(i,j) = rg->Norm01();
 
     fftgrid.Initialize(noise);
@@ -379,7 +380,7 @@ NRLib::Simulate1DGaussianField(const Variogram       & variogram,
   double range = variogram.GetRangeX();
   // Old version (pre 25.oct.17). Keep this for a revision or two before deleting.
   // size_t nx_pad = std::min(static_cast<size_t>(2.0 * range / dx), nx);
-  size_t nx_pad = (padding < 0) ? FindPadding(nx, range, dx) : padding;
+  size_t nx_pad = (padding < 0) ? FindGaussianFieldPadding(nx, range, dx) : padding;
   size_t nxp = NRLib::FindNewSizeWithPadding(nx + nx_pad);
   nx_pad =nxp-nx;
 

@@ -252,9 +252,9 @@ struct Operation<OpMax>
     eval(const X &x, const Y &y)
     {
         typedef typename Promotion<X, Y>::Type T;
-        const T &XX = x;
-        const T &YY = y;
-        return std::max(XX,YY);
+        const T &X = x;
+        const T &Y = y;
+        return std::max(X,Y);
     }
 };
 
@@ -306,9 +306,9 @@ struct Operation<OpMin>
     eval(const X &x, const Y &y)
     {
         typedef typename Promotion<X, Y>::Type T;
-        const T &XX = x;
-        const T &YY = y;
-        return std::min(XX,YY);
+        const T &X = x;
+        const T &Y = y;
+        return std::min(X,Y);
     }
 };
 
