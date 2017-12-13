@@ -1,5 +1,5 @@
 image:
-  name: "git.statoil.no:4567/spd/nrlib/nrlib:1.0.0"
+  name: "git.statoil.no:4567/sdp/nrlib/nrlib:1.0.0"
 
 variables:
   GIT_STRATEGY: "fetch"
@@ -17,19 +17,7 @@ stages:
   - testing
   - doc-tests  # https://docs.python.org/3/library/doctest.html
   - build
-  - generate documentation
   - deploy
-
-make documentation:
-  stage: generate documentation
-  script:  # https://www.logilab.org/blogentry/6883
-    - 'eval $MAKE uml-diagrams'
-    - 'eval mkdir -p $CI_PROJECT_DIR/uml-diagrams'
-    - 'eval mv $CI_PROJECT_DIR/classes_APS-GUI.png $CI_PROJECT_DIR/uml-diagrams'
-  artifacts:
-    expire_in: 1 week
-    paths:
-      - uml-diagrams/
 
 check for vulnerabilities:
   stage: check requirements
@@ -52,14 +40,26 @@ unit testing:
   script:
     - 'eval $MAKE unit-tests'
 
-build:
-    stage: build
-    script:
-      - 'eval $MAKE artifacts'
-    artifacts:
-      expire_in: 1 week
-      paths:
-        - artifacts
+build NRlib (ROXAR):
+  stage: build
+  script:
+    - 'eval $MAKE build'
+    - 'eval $MAKE artifacts'
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - artifacts/
+
+build NRlib (Python 3.6):
+  stage: build
+  script:
+    - # TODO
+    - 'eval $MAKE build'
+    - 'eval $MAKE artifacts'
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - artifacts/
 
 deploy release candidate:
   stage: deploy

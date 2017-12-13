@@ -14,4 +14,4 @@ fi
 version=$(grep version "${CODE_DIR}/Dockerfile" | tr  -d "\\\\" | tr "=" " " | tr "\"" " ")
 trimmed_version=$(echo "${version}" | sed -e 's/^[ \t]*//')
 arr=(${trimmed_version})
-[[ ${#arr[*]} == 3 ]] && echo ${arr[2]} || echo ${arr[1]}
+echo ${arr[2]}

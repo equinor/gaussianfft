@@ -1,6 +1,7 @@
 NAME = nrlib
-VERSION = 1.1.2
-IMAGE_NAME = $(NAME):$(VERSION)
+VERSION = $(shell ./bin/find-version-of-docker-image.sh)
+DOCKER_REGISTRY = git.statoil.no:4567/sdp/nrlib
+IMAGE_NAME = $(DOCKER_REGISTRY)/$(NAME):$(VERSION)
 
 BOOST_VERSION = 1.59.0
 BOOST_PREFIX = boost_$(shell echo $(BOOST_VERSION) | tr "." "_")
@@ -23,3 +24,10 @@ get-boost:
 tests:
 	pip install pytest
 	pytest tests
+
+build:
+
+artifacts:
+	mkdir -p $ARTIFACTS
+	mv $CI_PROJECT_DIR/$GUI_FILE $ARTIFACTS
+	du -sh $ARTIFACTS

@@ -44,8 +44,10 @@ def find_boost_directory():
         attempt = os.path.join(os.environ['BOOST_ROOT'], 'boost', 'version.hpp')
         if os.path.isfile(attempt):
             return os.path.abspath(os.environ['BOOST_ROOT'])
-    raise Exception('Could not find a valid Boost directory. Make sure boost/version.hpp exists either from\n'
-                    'the current directory or the directory defined by environment variable BOOST_ROOT.')
+    raise Exception(
+        'Could not find a valid Boost directory. Make sure boost/version.hpp exists either from\n'
+        'the current directory or the directory defined by environment variable BOOST_ROOT.'
+    )
 
 
 if os.path.isfile(compilation_logs):
