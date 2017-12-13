@@ -1,0 +1,76 @@
+image:
+  name: "git.statoil.no:4567/spd/nrlib/nrlib:1.0.0"
+
+variables:
+  GIT_STRATEGY: "fetch"
+  HTTP_PROXY:   "http://www-proxy.statoil.no:80"
+  HTTPS_PROXY:  "http://www-proxy.statoil.no:80"
+  FTP_PROXY:    "http://www-proxy.statoil.no:80"
+  NO_PROXY:     "git.statoil.no"
+  CODE_DIR:     "$CI_PROJECT_DIR"
+  ARTIFACTS:    "$CODE_DIR/artifacts"
+  MAKE:         "make --makefile=$CODE_DIR/Makefile"
+  RUN:          "/bin/bash -c"
+
+stages:
+  - check requirements
+  - testing
+  - doc-tests  # https://docs.python.org/3/library/doctest.html
+  - build
+  - generate documentation
+  - deploy
+
+make documentation:
+  stage: generate documentation
+  script:  # https://www.logilab.org/blogentry/6883
+    - 'eval $MAKE uml-diagrams'
+    - 'eval mkdir -p $CI_PROJECT_DIR/uml-diagrams'
+    - 'eval mv $CI_PROJECT_DIR/classes_APS-GUI.png $CI_PROJECT_DIR/uml-diagrams'
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - uml-diagrams/
+
+check for vulnerabilities:
+  stage: check requirements
+  script:
+    - 'eval $MAKE safety-check'
+
+check for outdated requirements:
+  stage: check requirements
+  script:
+    - 'eval $MAKE check-requirements'
+
+linting:
+  stage: testing
+  script:
+    - 'eval $MAKE linting'
+  allow_failure: true
+
+unit testing:
+  stage: testing  # https://github.com/ksator/continuous-integration-with-python
+  script:
+    - 'eval $MAKE unit-tests'
+
+build:
+    stage: build
+    script:
+      - 'eval $MAKE artifacts'
+    artifacts:
+      expire_in: 1 week
+      paths:
+        - artifacts
+
+deploy release candidate:
+  stage: deploy
+  script:
+    - ""  # TODO
+  only:
+   - master
+
+deploy develop:
+  stage: deploy
+  script:
+    - "" # TODO
+  only:
+    - develop
