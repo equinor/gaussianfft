@@ -53,7 +53,6 @@ build NRlib for ROXAR:
 build NRlib for SDPsoft:
   stage: build
   script:
-    - # TODO
     - 'eval $MAKE build'
     - 'eval $MAKE artifacts'
   artifacts:
