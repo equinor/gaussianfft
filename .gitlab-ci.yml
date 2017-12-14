@@ -50,7 +50,7 @@ build NRlib (ROXAR):
     paths:
       - artifacts/
 
-build NRlib (Python 3.6):
+build NRlib (Python SDP):
   stage: build
   script:
     - # TODO
