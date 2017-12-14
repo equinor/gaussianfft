@@ -40,7 +40,7 @@ unit testing:
   script:
     - 'eval $MAKE unit-tests'
 
-build NRlib (ROXAR):
+build NRlib for ROXAR:
   stage: build
   script:
     - 'eval $MAKE build'
@@ -50,7 +50,7 @@ build NRlib (ROXAR):
     paths:
       - artifacts/
 
-build NRlib (Python SDP):
+build NRlib for SDPsoft:
   stage: build
   script:
     - # TODO
