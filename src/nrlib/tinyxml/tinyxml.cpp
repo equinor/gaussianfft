@@ -1296,7 +1296,7 @@ void TiXmlAttribute::SetDoubleValue( double _value )
 {
     char buf [256];
     #if defined(TIXML_SNPRINTF)
-        TIXML_SNPRINTF( buf, sizeof(buf), "%f", _value); // NBNB-PAL: ISO C++ does not support the '%lf' printf format
+        TIXML_SNPRINTF( buf, sizeof(buf), "%f", _value); // NBNB-PAL: ISO C++ does not support the ‘%lf’ printf format
     #else
         sprintf (buf, "%lf", _value);
     #endif

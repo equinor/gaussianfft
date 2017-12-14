@@ -4,9 +4,9 @@
 // All rights reserved.
 // Redistribution and use in source and binary forms, with or without modification,
 // are permitted provided that the following conditions are met:
-// *  Redistributions of source code must retain the above copyright notice, this
+// •  Redistributions of source code must retain the above copyright notice, this
 //    list of conditions and the following disclaimer.
-// *  Redistributions in binary form must reproduce the above copyright notice, this list of
+// •  Redistributions in binary form must reproduce the above copyright notice, this list of
 //    conditions and the following disclaimer in the documentation and/or other materials
 //    provided with the distribution.
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
@@ -432,8 +432,8 @@ void TraceHeader::Read(NRLib::BigFile& in_file)
     throw EndOfFile();
   }
 
-  if (buffer_[0] == '*' && buffer_[1] == '@' && buffer_[2] == '*'
-      && buffer_[80] == '*' && buffer_[160] == '*')
+  if (buffer_[0] == 'Ã' && buffer_[1] == '@' && buffer_[2] == 'ñ'
+      && buffer_[80] == 'Ã' && buffer_[160] == 'Ã')
   {
     // This is not a trace header, but the start of an EDBDIC-header.
     // Set file pointer at end of EDBDIC header.

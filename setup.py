@@ -123,6 +123,7 @@ fftw_dirs = [
     os.path.join(mkl_root, "include"),
 ]
 
+
 # Define all nrlib source files to compile. Globbing may not be recommended,
 # but it is convenient and compact.
 nrlib_source_files = glob.glob(
@@ -184,6 +185,7 @@ bp_module = Extension(
                     + linker_args,
     language='c++'
 )
+
 
 setup(
     name=extension_name,
