@@ -1,4 +1,4 @@
-// $Id: gaussianfield.cpp 1710 2017-10-25 07:43:28Z vegard $
+// $Id: gaussianfield.cpp 1733 2018-01-04 13:25:24Z vegard $
 
 // Copyright (c)  2011, Norwegian Computing Center
 // All rights reserved.
@@ -32,7 +32,7 @@
 #include "../fft/fftgrid3d.hpp"
 #include "../fft/fft.hpp"
 
-
+#include "fftcovgrid.hpp"
 
 using namespace NRLib;
 
@@ -51,136 +51,6 @@ size_t NRLib::FindGaussianFieldPadding(size_t grid_size, double range, double st
 }
 
 
-// NEW
-// Local function, not accessible elsewhere.
-// Using int instead of size_t, since we want negative differences.
-Grid<double> CovGridForFFT3D(const Variogram & variogram,
-                             int               nx,
-                             double            dx,
-                             int               ny,
-                             double            dy,
-                             int               nz,
-                             double            dz)
-{
-  Grid<double> cov(nx, ny, nz);
-  int nxm = (nx + 1) / 2;
-  int nym = (ny + 1) / 2;
-  int nzm = (nz + 1) / 2;
-  double ddx, ddy, ddz;
-  int i, j, k;
-  for (k = 0; k < nzm; k++) {
-    ddz = k * dz;
-    for (j = 0; j < nym; j++) {
-      ddy = j * dy;
-      for (i = 0; i < nxm; i++) {
-        ddx = i * dx;
-        cov(i, j, k) = variogram.GetCov(ddx, ddy, ddz);
-      }
-
-      for (i = nxm; i < nx; i++) {
-        ddx = (i - nx) * dx;
-        cov(i, j, k) = variogram.GetCov(ddx, ddy, ddz);
-      }
-    }
-  }
-
-  for (k = 0; k < nzm; k++) {
-    ddz = k * dz;
-    for (j = nym; j < ny; j++) {
-      ddy = (j - ny) * dy;
-      for (i = nxm; i < nx; i++) {
-        ddx = (i - nx)* dx;
-        cov(i, j, k) = variogram.GetCov(ddx, ddy, ddz);
-      }
-
-      for (i = 0; i < nxm; i++) {
-        ddx = i*dx;
-        cov(i, j, k) = variogram.GetCov(ddx, ddy, ddz);
-      }
-    }
-  }
-
-  for (k = nzm; k < nz; k++) {
-    ddz = (k - nz) * dz;
-    for (j = 0; j < nym; j++) {
-      ddy = j * dy;
-      for (i = 0; i < nxm; i++) {
-        ddx = i * dx;
-        cov(i, j, k) = variogram.GetCov(ddx, ddy, ddz);
-      }
-
-      for (i = nxm; i < nx; i++) {
-        ddx = (i - nx) * dx;
-        cov(i, j, k) = variogram.GetCov(ddx, ddy, ddz);
-      }
-    }
-  }
-
-
-  for (k = nzm; k < nz; k++) {
-    ddz = (k - nz) * dz;
-    for (j = nym; j < ny; j++) {
-      ddy = (j - ny) * dy;
-      for (i = 0; i < nxm; i++) {
-        ddx = i * dx;
-        cov(i, j, k) = variogram.GetCov(ddx, ddy, ddz);
-      }
-
-      for (i = nxm; i < nx; i++) {
-        ddx = (i - nx) * dx;
-        cov(i, j, k) = variogram.GetCov(ddx, ddy, ddz);
-      }
-    }
-  }
-
-  return cov;
-}
-
-
-// Local function, not accessible elsewhere.
-// Using int instead of size_t, since we want negative differences.
-Grid2D<double> CovGridForFFT2D(const Variogram & variogram,
-                               int               nx,
-                               double            dx,
-                               int               ny,
-                               double            dy)
-{
-  Grid2D<double> cov(nx, ny);
-  int nxm = (nx + 1) / 2;
-  int nym = (ny + 1) / 2;
-  double ddx, ddy;
-  int i, j;
-  for (j = 0; j < nym; j++) {
-    ddy = j * dy;
-    for (i = 0; i < nxm; i++) {
-      ddx = i * dx;
-      cov(i, j) = variogram.GetCov(ddx, ddy);
-    }
-    // -1 - i quadrant
-    for (i = nxm; i < nx; i++) {
-      ddx = (i - nx) * dx;
-      cov(i, j) = variogram.GetCov(ddx, ddy);
-    }
-  }
-
-  // 1 + i quadrant
-  for (j = nym; j < ny; j++) {
-    ddy = (j - ny) * dy;
-    for (i = nxm; i < nx; i++) {
-      ddx = (i - nx)* dx;
-      cov(i, j) = variogram.GetCov(ddx, ddy);
-    }
-    // -1 + i quadrant
-    for (i = 0; i < nxm; i++) {
-      ddx = i*dx;
-      cov(i, j) = variogram.GetCov(ddx, ddy);
-    }
-  }
-
-
-  return cov;
-}
-
 /****************************************************************************************/
 /* Implementations                                                                      */
 /****************************************************************************************/
@@ -197,32 +67,51 @@ void NRLib::Simulate3DGaussianField(const Variogram              & variogram,
                                     std::vector<Grid<double> > &   grid_out,
                                     int                            padding_x,
                                     int                            padding_y,
-                                    int                            padding_z)
+                                    int                            padding_z,
+                                    double                         scaling_x,
+                                    double                         scaling_y,
+                                    double                         scaling_z)
 {
   // Find grid size.
   double range_x, range_y, range_z;
   range_x = std::max(variogram.GetRangeX(), variogram.GetRangeY());
   range_y = range_x;
-  range_z = variogram.GetRangeZ();   // added
+  range_z = variogram.GetRangeZ();
 
-  size_t n_pad_x = (padding_x < 0) ? FindGaussianFieldPadding(nx, range_x, dx) : padding_x;
-  size_t n_pad_y = (padding_y < 0) ? FindGaussianFieldPadding(ny, range_y, dy) : padding_y;
-  size_t n_pad_z = (padding_z < 0) ? FindGaussianFieldPadding(nz, range_z, dz) : padding_z; // added
+  // This is the desired padding, but may not be the actual of the
+  // FFT grid. See below.
+  size_t desired_padding_x = (padding_x < 0) ? FindGaussianFieldPadding(nx, range_x, dx) : padding_x;
+  size_t desired_padding_y = (padding_y < 0) ? FindGaussianFieldPadding(ny, range_y, dy) : padding_y;
+  size_t desired_padding_z = (padding_z < 0) ? FindGaussianFieldPadding(nz, range_z, dz) : padding_z;
 
-  //FFTGrid2D<double> fftgrid(nx, ny, n_pad_x, n_pad_y, true);
-  FFTGrid3D<double> fftgrid(nx, ny, nz, n_pad_x, n_pad_y, n_pad_z, true); // added
+  FFTGrid3D<double> fftgrid(nx, ny, nz, desired_padding_x, desired_padding_y, desired_padding_z, true);
 
+  // Get the total grid size after the grid is created. This is not necessarily the
+  // same as nx + desired_padding_x. FFTGrid3D may add even more padding so that the
+  // total grid size is more favorable for the FFT implementation.
   size_t nx_tot = fftgrid.GetNItot();
   size_t ny_tot = fftgrid.GetNJtot();
-  size_t nz_tot = fftgrid.GetNKtot(); // added
+  size_t nz_tot = fftgrid.GetNKtot();
 
   // Covariance grid.
-  Grid<double> cov = CovGridForFFT3D(variogram,
-                     static_cast<int>(nx_tot), dx,
-                     static_cast<int>(ny_tot), dy,
-                     static_cast<int>(nz_tot), dz);
+  Grid<double> cov = FFTCovGrid3D(variogram,
+                                  static_cast<int>(nx_tot),
+                                  dx,
+                                  static_cast<int>(ny_tot),
+                                  dy,
+                                  static_cast<int>(nz_tot),
+                                  dz,
+                                  scaling_x,
+                                  scaling_y,
+                                  scaling_z).GetCov();
 
-  FFTGrid3D<double> filter(nx, ny, nz, n_pad_x, n_pad_y, n_pad_z, false); // added
+  FFTGrid3D<double> filter(nx,
+                           ny,
+                           nz,
+                           desired_padding_x,
+                           desired_padding_y,
+                           desired_padding_z,
+                           false);
 
 
   filter.Initialize(cov);
@@ -299,9 +188,11 @@ void NRLib::Simulate2DGaussianField(const Variogram              & variogram,
                                     double                         dy,
                                     int                            n_fields,
                                     std::vector<Grid2D<double> > & grid_out,
-                                    NRLib::RandomGenerator        *rg,
+                                    NRLib::RandomGenerator       * rg,
                                     int                            padding_x,
-                                    int                            padding_y)
+                                    int                            padding_y,
+                                    double                         scaling_x,
+                                    double                         scaling_y)
 {
   // Find grid size.
   double range_x, range_y;
@@ -314,26 +205,29 @@ void NRLib::Simulate2DGaussianField(const Variogram              & variogram,
     range_y = range_x;
   }
 
-  size_t nx_pad = (padding_x < 0) ? FindGaussianFieldPadding(nx, range_x, dx) : padding_x;
-  size_t nxp = NRLib::FindNewSizeWithPadding(nx + nx_pad);
-  size_t n_pad_x = nxp - nx;
+  // This is the desired padding, but may not be the actual of the
+  // FFT grid. See below.
+  size_t desired_padding_x = (padding_x < 0) ? FindGaussianFieldPadding(nx, range_x, dx) : padding_x;
+  size_t desired_padding_y = (padding_y < 0) ? FindGaussianFieldPadding(ny, range_y, dy) : padding_y;
+  FFTGrid2D<double> fftgrid(nx, ny, desired_padding_x, desired_padding_y, true);
 
-  size_t ny_pad = (padding_y < 0) ? FindGaussianFieldPadding(ny, range_y, dy) : padding_y;
-  size_t nyp = NRLib::FindNewSizeWithPadding(ny + ny_pad);
-  size_t n_pad_y = nyp - ny;
-
-  FFTGrid2D<double> fftgrid(nx, ny, n_pad_x, n_pad_y, true);
-
+  // Get the total grid size after the grid is created. This is not necessarily the
+  // same as nx + desired_padding_x. FFTGrid2D may add even more padding so that the
+  // total grid size is more favorable for the FFT implementation.
   size_t nx_tot = fftgrid.GetNItot();
   size_t ny_tot = fftgrid.GetNJtot();
 
   // Covariance grid.
-  Grid2D<double> cov = CovGridForFFT2D(variogram,
-                                       static_cast<int>(nx_tot), dx,
-                                       static_cast<int>(ny_tot), dy);
+  Grid2D<double> cov = FFTCovGrid2D(variogram,
+                                    static_cast<int>(nx_tot),
+                                    dx,
+                                    static_cast<int>(ny_tot),
+                                    dy,
+                                    scaling_x,
+                                    scaling_y).GetCov();
 
 
-  FFTGrid2D<double> filter(nx, ny, n_pad_x, n_pad_y, false);
+  FFTGrid2D<double> filter(nx, ny, desired_padding_x, desired_padding_y, false);
   filter.Initialize(cov);
   filter.DoFFT();
   // Convolve with covariance grid.
@@ -375,24 +269,17 @@ NRLib::Simulate1DGaussianField(const Variogram       & variogram,
                                double                  dx,
                                std::vector<double>   & grid_out,
                                NRLib::RandomGenerator *rg,
-                               int                     padding)
+                               int                     padding,
+                               double                  scaling_x)
 {
   double range = variogram.GetRangeX();
-  // Old version (pre 25.oct.17). Keep this for a revision or two before deleting.
-  // size_t nx_pad = std::min(static_cast<size_t>(2.0 * range / dx), nx);
   size_t nx_pad = (padding < 0) ? FindGaussianFieldPadding(nx, range, dx) : padding;
-  size_t nxp = NRLib::FindNewSizeWithPadding(nx + nx_pad);
-  nx_pad =nxp-nx;
 
-  std::vector<double> cov(nxp);
-  size_t nxm = (nxp+1)/2;
-  for(size_t i = 0; i < nxm; i++) {
-    cov[i] = variogram.GetCov(i*dx);
-  }
-  for(size_t i=nxm; i < nxp; i++) {
-    double ddx = dx*(nxp - i);
-    cov[i] = variogram.GetCov(ddx);
-  }
+  // Find a favorable grid size (nx + padding) for the FFT implementation
+  size_t nxp = NRLib::FindNewSizeWithPadding(nx + nx_pad);
+
+  std::vector<double> cov = FFTCovGrid1D(variogram, static_cast<int>(nxp), dx, scaling_x).GetCov();
+
   if(rg == NULL) {
     rg = new RandomGenerator();
     rg->Initialize(NRLib::Random::DrawUint32());

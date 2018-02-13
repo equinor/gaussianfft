@@ -1,4 +1,4 @@
-// $Id: trend.cpp 1697 2017-10-10 13:22:13Z aarnes $
+// $Id: trend.cpp 1744 2018-02-01 12:51:14Z aarnes $
 #include "trend.hpp"
 #include "trendkit.hpp"
 #include "../exception/exception.hpp"
@@ -86,6 +86,14 @@ TrendConstant::TrendConstant()
 
 TrendConstant::~TrendConstant()
 {
+}
+
+void
+TrendConstant::Truncate(double min, double max) {
+  if (trend_ < min)
+    trend_ = min;
+  if (trend_ > max)
+    trend_ = max;
 }
 
 std::vector<double>
@@ -213,6 +221,17 @@ Trend1D::AddConstant(double c)
   for(size_t i = 0; i < trend_.size(); i++)
     trend_[i]+=c;
 
+}
+
+void
+Trend1D::Truncate(double min, double max)
+{
+  for (size_t i = 0; i < trend_.size(); i++){
+    if (trend_[i] < min)
+      trend_[i] = min;
+    if (trend_[i] > max)
+      trend_[i] = max;
+  }
 }
 
 double
@@ -463,6 +482,18 @@ Trend2D::AddConstant(double c)
 
 }
 
+void
+Trend2D::Truncate(double min, double max)
+{
+  for (size_t i = 0; i < trend_.GetNI(); i++){
+    for (size_t j = 0; j < trend_.GetNJ(); j++){
+      if (trend_(i,j) < min)
+        trend_(i, j) = min;
+      if (trend_(i, j) > max)
+        trend_(i, j) = max;
+    }
+  }
+}
 
 double
 Trend2D::GetTrendElement(int i, int j, int k) const
@@ -657,7 +688,7 @@ Trend2D::ScaleToAverage(double factor) {
   double sum_trend = 0.0;
   for (int i = 0; i < dim[0]; i++)
     for (int j = 0; j < dim[1]; j++)
-      for (int k = 0; k < dim[2]; k++)
+      for (int k = 0; k <= dim[2]; k++)
         sum_trend += GetTrendElement(i, j, k);
 
   double avg_trend = sum_trend / (dim[0] * dim[1]);
@@ -734,6 +765,20 @@ Trend3D::AddConstant(double c)
 
 }
 
+void
+Trend3D::Truncate(double min, double max)
+{
+  for (size_t i = 0; i < trend_.GetNI(); i++) {
+    for (size_t j = 0; j < trend_.GetNJ(); j++) {
+      for (size_t k = 0; k < trend_.GetNK(); k++) {
+        if (trend_(i, j, k) < min)
+          trend_(i, j, k) = min;
+        if (trend_(i, j, k) > max)
+          trend_(i, j, k) = max;
+      }
+    }
+  }
+}
 
 double
 Trend3D::GetValue(double s1, double s2, double s3) const
@@ -889,7 +934,7 @@ Trend3D::ScaleToAverage(double factor) {
     }
   }
   double avg_trend = sum_trend / (dim[0] * dim[1] * dim[2]);
-  double scale = factor / avg_trend;
+  double scale     = factor / avg_trend;
   double debug_sum = 0.0;
   for (size_t i = 0; i < trend_.GetNI(); i++) {
     for (size_t j = 0; j < trend_.GetNJ(); j++) {

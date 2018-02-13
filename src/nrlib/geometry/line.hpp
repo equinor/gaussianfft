@@ -1,4 +1,4 @@
-// $Id: line.hpp 1453 2017-03-21 12:02:02Z veralh $
+// $Id: line.hpp 1732 2017-12-22 14:51:16Z eyaker $
 
 // Copyright (c)  2011, Norwegian Computing Center
 // All rights reserved.
@@ -116,10 +116,16 @@ public:
   /// True if def.line and line_in are overlapping (less than min_in):
   bool IsOverLapping(const Line& line_in, double min_in = min_) const;
 
-  /// Find intersection between two lines in 2D (z = 0) using Cramer's rule and equation of 2D line on general form
+  /// Find intersection between def. line and line_in in 2D (z = 0) using Cramer's rule.
+  /// infinite = false (default) return intersect_pt between fininte def. line and finite line_in
+  /// inifite = true return intersect_pt between inifinite def. line and fininte line_in
   /// \returns true when there exists a point of intersection between two lines in 2D.
   ///          When lines are not intersecting returns false and point (0,0,0)
-    bool IntersectXY(const Line & line_in, Point & intersect_pt, double min_in = min_) const;
+  bool IntersectXY(const Line & line_in, Point & intersect_pt, const bool& infinite = false) const;
+
+  /// Project a line to XY plane by setting z = 0
+  Line LineXY() const;
+
 
 private:
   Point p1_, p2_;            // points that define the line

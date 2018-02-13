@@ -224,7 +224,7 @@ RMSWell::RMSWell(const Well& wellobj)
       found = false;
     }
   }
-  ////Frode NB: Må se nøyere på dette.
+  ////Frode NB: M� se n�yere p� dette.
   typedef std::pair<int, std::string> pp;
   for (CI p = disclog.begin(); p !=disclog.end(); ++p) {
     std::string disc_name = p->first;

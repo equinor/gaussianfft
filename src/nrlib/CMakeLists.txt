@@ -77,6 +77,7 @@ ${CMAKE_CURRENT_LIST_DIR}/trend/trend.hpp
 ${CMAKE_CURRENT_LIST_DIR}/trend/trendkit.hpp
 ${CMAKE_CURRENT_LIST_DIR}/trend/trendstorage.hpp
 ${CMAKE_CURRENT_LIST_DIR}/variogram/covgrid2d.hpp
+${CMAKE_CURRENT_LIST_DIR}/variogram/fftcovgrid.hpp
 ${CMAKE_CURRENT_LIST_DIR}/variogram/gaussianfield.hpp
 ${CMAKE_CURRENT_LIST_DIR}/variogram/variogram.hpp
 ${CMAKE_CURRENT_LIST_DIR}/variogram/variogramtypes.hpp
@@ -159,6 +160,7 @@ ${CMAKE_CURRENT_LIST_DIR}/trend/trend.cpp
 ${CMAKE_CURRENT_LIST_DIR}/trend/trendkit.cpp
 ${CMAKE_CURRENT_LIST_DIR}/trend/trendstorage.cpp
 ${CMAKE_CURRENT_LIST_DIR}/variogram/covgrid2d.cpp
+${CMAKE_CURRENT_LIST_DIR}/variogram/fftcovgrid.cpp
 ${CMAKE_CURRENT_LIST_DIR}/variogram/gaussianfield.cpp
 ${CMAKE_CURRENT_LIST_DIR}/variogram/variogram.cpp
 ${CMAKE_CURRENT_LIST_DIR}/variogram/variogramtypes.cpp

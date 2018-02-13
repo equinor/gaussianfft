@@ -223,7 +223,7 @@ venv.bak/
 /site
 
 # mypy
-.mypy_cache/
+.*_cache/
 /mkl/
 .idea/
 boost_*

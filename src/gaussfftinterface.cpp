@@ -1,10 +1,8 @@
-#define BOOST_PYTHON_STATIC_LIB
-
 #include <boost/python.hpp>
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>
 
 // May want to reintroduce this later:
-// #include <boost/python/numpy.hpp>
+#include <boost/python/numpy.hpp>
 
 #include "gaussfft.hpp"
 
@@ -16,6 +14,29 @@ namespace bp = boost::python;
 /**********************************************/
 /* Docstrings                                 */
 /**********************************************/
+
+const std::string set_seed_docstring =
+  ""
+  "Sets the current simulation seed. If this has not been set when calling\n"
+  "nrlib.simulate, it is set to the current time with second precision. Be wary of\n"
+  "the latter, in particular if nrlib is used in a parallel-processing context.\n"
+  "\n"
+  "Examples\n"
+  "--------\n"
+  ">>> nrlib.seed(123)\n"
+;
+
+const std::string get_seed_docstring =
+  ""
+  "Gets the current simulation seed. Throws RunTimeError if the seed has not been set\n"
+  "yet.\n"
+  "\n"
+  "Examples\n"
+  "--------\n"
+  ">>> nrlib.seed(123)\n"
+  ">>> nrlib.seed()\n"
+  "123\n"
+;
 
 const std::string padding_docstring =
   "\n"
@@ -29,7 +50,7 @@ const std::string padding_docstring =
   ">>> v = nrlib.variogram('spherical', 250.0, 125.0)\n"
   ">>> nx, ny, dx, dy = 100, 100, 10.0, 10.0\n"
   ">>> list(nrlib.simulation_size(v, nx, dx, ny, dy))\n"
-  "[25, 12]\n"
+  "[125, 112]\n"
 ;
 
 const std::string variogram_docstring =
@@ -119,12 +140,38 @@ const std::string simulate_docstring =
   "(100,200)\n"
 ;
 
+const std::string advanced_simulate_docstring =
+  "\n"
+  "Same as nrlib.simulate, but with a few additional advanced and\n"
+  "experimental settings.\n"
+  "\n"
+  "Parameters\n"
+  "----------\n"
+  "variogram, nx, ny, nz, dx, dy, dz:\n"
+  "    See nrlib.simulate.\n"
+  "padx, pady, padz: int\n"
+  "    Grid padding as a number of cells. In nrlib.simulate, these are set\n"
+  "    automatically to the values returned by nrlib.simulation_size.\n"
+  "sx, sy, sz: float\n"
+  "    Gaussian smoothing parameters to reduce the range. The parameters are the\n"
+  "    values of the smoothing kernel at one variogram range and MUST therefore be\n"
+  "    greater than 0 and less than 1. A value close to or greater than 1 means no\n"
+  "    smoothing.\n"
+  "\n"
+  "Returns\n"
+  "-------\n"
+  "out: DoubleVector\n"
+  "    See nrlib.simulate.\n"
+;
+
 /**********************************************/
 /**********************************************/
 /**********************************************/
 
 BOOST_PYTHON_MODULE(nrlib)
 {
+  bp::numpy::initialize();
+
   bp::class_<std::vector<double> >("DoubleVector")
     .def(bp::vector_indexing_suite< std::vector<double> >())
   ;
@@ -152,7 +199,8 @@ BOOST_PYTHON_MODULE(nrlib)
   //
   {
     void(*ptr)(unsigned long) = &NRLib::Random::Initialize;
-    bp::def("seed", ptr);
+    bp::def("seed", ptr,                          set_seed_docstring.c_str());
+    bp::def("seed", &NRLib::Random::GetStartSeed, get_seed_docstring.c_str());
   }
 
   //
@@ -214,7 +262,7 @@ BOOST_PYTHON_MODULE(nrlib)
   //
   // Simulate core function
   //
-  bp::def("simulate", &GaussFFT::SimulateWithCustomPadding,
+  bp::def("simulate", &GaussFFT::SimulateWithAdvancedSettings,
     (
       bp::arg("variogram"),
       bp::arg("nx"),
@@ -225,7 +273,11 @@ BOOST_PYTHON_MODULE(nrlib)
       bp::arg("dz") = -1.0,
       bp::arg("padx") = -1,
       bp::arg("pady") = -1,
-      bp::arg("padz") = -1
-    )
+      bp::arg("padz") = -1,
+      bp::arg("sx") = 1.0,
+      bp::arg("sy") = 1.0,
+      bp::arg("sz") = 1.0
+    ),
+    advanced_simulate_docstring.c_str()
   );
 }

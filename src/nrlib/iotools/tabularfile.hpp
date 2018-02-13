@@ -1,4 +1,4 @@
-// $Id: tabularfile.hpp 1078 2012-09-25 11:13:53Z veralh $
+// $Id: tabularfile.hpp 1718 2017-11-30 13:53:46Z eyaker $
 
 // Copyright (c)  2011, Norwegian Computing Center
 // All rights reserved.
@@ -33,6 +33,7 @@ namespace NRLib {
 class TabularFile
 {
 public:
+  TabularFile();
   explicit TabularFile(const std::string& filename);
   TabularFile(const std::string& filename, size_t first_data_line, size_t n_columns, bool read_last_line = true);
 

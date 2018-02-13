@@ -1915,3 +1915,4 @@ bool TiXmlPrinter::Visit( const TiXmlUnknown& unknown )
     DoLineBreak();
     return true;
 }
+

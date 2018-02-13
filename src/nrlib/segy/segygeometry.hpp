@@ -74,7 +74,7 @@ public:
 
   size_t GetNx()           const { return nx_        ;}            ///< return nx
   size_t GetNy()           const { return ny_        ;}            ///< return ny
-  // Fyll på med get-funksjonar. etter behov.
+  // Fyll p� med get-funksjonar. etter behov.
   double GetDx()           const { return dx_        ;}
   double GetDy()           const { return dy_        ;}
   double GetX0()           const { return x0_        ;}

@@ -10,12 +10,18 @@ from setuptools import setup, Extension
 # Make sure the correct version of pip is being used:
 #   which pip
 #   pip install --user -e .
+# Alternatively
+#   python -m pip install --user -e .
 # Note: The option -e is optional, but it is convenient to use during development.
 #
+# Mac:
+#   as for Linux, however, some other variables must likely be set:
+#   >>>source /opt/intel/bin/compilervars.sh intel64
+#   If MKL has not been installed prior, see https://software.intel.com/en-us/mkl
+#   After the compilation you may need to run
+#   >>>install_name_tool -add_rpath /opt/intel/mkl/lib nrlib.cpython-36m-darwin.so
 #
 # Windows:
-#   python setup.py install [--user]
-# or (preferably)
 #   pip install --user -e .
 
 # If the installation fails, some additional information may be printed if the following environment variable is defined
@@ -33,23 +39,6 @@ compilation_logs = 'compiles.log'
 
 """**********************"""
 
-
-def find_boost_directory():
-    # Try current directory first
-    attempt = os.path.join('boost', 'version.hpp')
-    if os.path.isfile(attempt):
-        return os.path.abspath('.')
-    # Try to use environment variable BOOST_ROOT
-    elif 'BOOST_ROOT' in os.environ:
-        attempt = os.path.join(os.environ['BOOST_ROOT'], 'boost', 'version.hpp')
-        if os.path.isfile(attempt):
-            return os.path.abspath(os.environ['BOOST_ROOT'])
-    raise Exception(
-        'Could not find a valid Boost directory. Make sure boost/version.hpp exists either from\n'
-        'the current directory or the directory defined by environment variable BOOST_ROOT.'
-    )
-
-
 if os.path.isfile(compilation_logs):
     import subprocess
     import datetime
@@ -61,19 +50,30 @@ if os.path.isfile(compilation_logs):
         assert len(revision_line) == 1
         return revision_line[0].split()[-1]
 
+    try:
+        process = subprocess.Popen(['svn', 'info', 'src/nrlib'], stdout=subprocess.PIPE)
+        out, err = process.communicate()
+        nr_rev = get_revision(out)
+        process = subprocess.Popen(['svn', 'info', 'src/flens'], stdout=subprocess.PIPE)
+        out, err = process.communicate()
+        fl_rev = get_revision(out)
+        line = str(datetime.datetime.now()) + ": nrlib r{}, flens r{}\n".format(nr_rev, fl_rev)
+        open(compilation_logs, 'a').write(line)
+    except AssertionError as e:
+        print('Could not determine svn version. Error was: ' + str(e))
+        print('Continuing to compilation')
 
-    process = subprocess.Popen(['svn', 'info', 'src/nrlib'], stdout=subprocess.PIPE)
-    out, err = process.communicate()
-    nr_rev = get_revision(out)
-    process = subprocess.Popen(['svn', 'info', 'src/flens'], stdout=subprocess.PIPE)
-    out, err = process.communicate()
-    fl_rev = get_revision(out)
-    line = str(datetime.datetime.now()) + ": nrlib r{}, flens r{}\n".format(nr_rev, fl_rev)
-    open(compilation_logs, 'a').write(line)
+if os.getenv('BOOST_ROOT'):
+    boost_root = os.getenv('BOOST_ROOT')
+    print('Using Boost directory determined by BOOST_ROOT env variable: ' + boost_root)
+else:
+    boost_root = os.getcwd()
+    print('Using current directory as Boost root: ' + boost_root)
+
 
 # Platform specific definitions
 linker_args = []
-if platform.system() == 'Linux':
+if platform.system() in ['Linux', 'Darwin']:
     mkl_root = os.getenv('MKL_ROOT')
     if mkl_root is None:
         raise RuntimeError(
@@ -81,27 +81,42 @@ if platform.system() == 'Linux':
             "MKL headers and libraries are required."
         )
     link_libraries = [
-        'mkl_intel_lp64',
-        'mkl_sequential',
-        'mkl_core',
-        'mkl_mc3',
-        'mkl_def',
+        # BOOST
         'boost_python3',
+        'boost_numpy3',
         'boost_filesystem',
         'boost_system',
     ]
+    # Force static linking with Boost (requires Boost compiled with fPIC flag)
+    # linker_args.append('-l:libboost_numpy3.a')
+    # linker_args.append('-l:libboost_python3.a')
+    # linker_args.append('-l:libboost_system.a')
+    # linker_args.append('-l:libboost_filesystem.a')
     compile_args = [
-        # May be necessary for some C++11 compilers:
-        '-D_GLIBCXX_USE_CXX11_ABI=0'
+        # Necessary for some C++11 compilers:
+        '-D_GLIBCXX_USE_CXX11_ABI=0',
+        '-DBOOST_PYTHON_STATIC_LIB',
+        '-DBOOST_NUMPY_STATIC_LIB',
     ]
-    linker_args += [
-        # mkl_root + '/lib/intel64/libmkl_core.a',
-        # mkl_root + '/lib/intel64/libmkl_intel_lp64.a',
-        # mkl_root + '/lib/intel64/libmkl_sequential.a',
-    ]
+    # Standard Intel MKL installation (static linking):
+    library_dir = mkl_root + '/lib'
+    if os.path.isdir(library_dir + '/intel64'):
+        library_dir += '/intel64'
+    if platform.system() == 'Darwin':
+        linker_args += '-I{1}/include -L{0} -lpthread -lm -ldl'.format(library_dir, mkl_root).split()
+        link_libraries += [
+            'mkl_core',
+            'mkl_intel_lp64',
+            'mkl_sequential',
+        ]
+    else:
+        linker_args += '-Wl,--start-group {0}/libmkl_intel_lp64.a {0}/libmkl_sequential.a {0}/libmkl_core.a -Wl,--end-group -lpthread -lm -ldl'.format(library_dir).split()
+    # RMS develop Intel MKL (static linking):
+    # linker_args += '-Wl,--start-group {0}/em64t/lib/libmkl_intel_lp64.a {0}/em64t/lib/libmkl_sequential.a {0}/em64t/lib/libmkl_core.a -Wl,--end-group -lpthread -lm -ldl'.format(mkl_root).split()
     library_dirs = [
-        # boost_root + '/lib/',
-        mkl_root + '/lib/intel64/',
+        # To support different folder structures, a variety of MKL directories are added:
+        library_dir,
+        os.path.join(boost_root, 'lib'),
     ]
     include_dirs = []
 else:
@@ -114,9 +129,13 @@ else:
     compile_args = [
         '/EHsc',
         '/MT',
+        '/DBOOST_PYTHON_STATIC_LIB',
+        '/DBOOST_NUMPY_STATIC_LIB',
         # '/showIncludes'  # Debug
     ]
-    library_dirs = [r'libs\win64vc11']
+    library_dirs = [
+        os.path.join(boost_root, 'lib')
+    ]
 
 fftw_dirs = [
     os.path.join(mkl_root, "include", "fftw"),
@@ -168,28 +187,29 @@ bp_module = Extension(
     extension_name,
     sources=all_source_files,
     define_macros=[
-        ('FLENS_FIRST_INDEX', '0'),
-        ('MKL', None),
+      ('FLENS_FIRST_INDEX', '0'),
+      ('MKL', None),
     ],
     include_dirs=[
-                     find_boost_directory(),  # For Boost
-                     os.path.abspath('./src'),
-                 ]
-                 + fftw_dirs,
+      boost_root,
+      os.path.join(boost_root, 'include'),
+      os.path.abspath('./src'),
+    ]
+    + fftw_dirs,
     library_dirs=library_dirs,
     libraries=link_libraries,
     extra_compile_args=compile_args,
     extra_link_args=[
-                        # '/VERBOSE:lib'    # For Debug
-                    ]
-                    + linker_args,
+      # '/VERBOSE:lib'    # For Debug on Windows
+    ]
+    + linker_args,
     language='c++'
 )
 
 
 setup(
     name=extension_name,
-    version="0.4",
+    version="0.6",
     packages=[],  # find_packages()
     ext_modules=[bp_module]
 )

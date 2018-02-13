@@ -1,4 +1,4 @@
-// $Id: tabularfile.cpp 1354 2016-05-24 11:52:26Z eyaker $
+// $Id: tabularfile.cpp 1718 2017-11-30 13:53:46Z eyaker $
 
 // Copyright (c)  2011, Norwegian Computing Center
 // All rights reserved.
@@ -28,6 +28,10 @@
 #include "../exception/exception.hpp"
 
 namespace NRLib {
+
+TabularFile::TabularFile()
+{
+}
 
 TabularFile::TabularFile(const std::string& filename)
 {

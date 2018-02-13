@@ -1,4 +1,4 @@
-// $Id: logstream.cpp 1392 2016-11-29 08:40:07Z perroe $
+// $Id: logstream.cpp 1743 2018-01-24 20:21:11Z perroe $
 
 // Copyright (c)  2011, Norwegian Computing Center
 // All rights reserved.
@@ -142,6 +142,7 @@ void
 ScreenLogStream::LogMessage(int level, int phase, const std::string & message) {
   if (ShouldLog(level, phase)) {
     if (is_writing_progress_) {
+      WriteProgress(current_progress_, current_progress_message_);
       std::cout << "\n\n";
       is_writing_progress_ = false;
     }
@@ -153,10 +154,7 @@ ScreenLogStream::LogMessage(int level, int phase, const std::string & message) {
 
 
 void
-ScreenLogStream::UpdateProgress(double progress, const std::string & message) {
-  if (!is_writing_progress_)
-    WriteProgressHeader();
-
+ScreenLogStream::WriteProgress(double progress, const std::string & message) {
   int n_hats = 1 + static_cast<int>(progress * n_progress_hats_);
 
   std::cout << "\r  ";
@@ -166,8 +164,25 @@ ScreenLogStream::UpdateProgress(double progress, const std::string & message) {
 
 
 void
+ScreenLogStream::UpdateProgress(double progress, const std::string & message) {
+  if (!is_writing_progress_) {
+    WriteProgressHeader();
+    last_progress_time_ = std::time(NULL);
+  }
+  current_progress_ = progress;
+  current_progress_message_ = message;
+
+  std::time_t now = std::time(NULL);
+  if (std::difftime(now, last_progress_time_) > 0.1 || progress == 1.0) {
+    last_progress_time_ = now;
+    WriteProgress(progress, message);
+  }
+}
+
+
+void
 ScreenLogStream::WriteProgressHeader() {
-  std::cout << "\n  0%       20%       40%       60%       80%      100%\n";
+  std::cout <<  "  0%       20%       40%       60%       80%      100%\n";
   std::cout << ("  |    |    |    |    |    |    |    |    |    |    |\n");
   is_writing_progress_ = true;
 }

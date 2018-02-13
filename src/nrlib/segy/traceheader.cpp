@@ -432,8 +432,8 @@ void TraceHeader::Read(NRLib::BigFile& in_file)
     throw EndOfFile();
   }
 
-  if (buffer_[0] == 'Ã' && buffer_[1] == '@' && buffer_[2] == 'ñ'
-      && buffer_[80] == 'Ã' && buffer_[160] == 'Ã')
+  if (buffer_[0] == '�' && buffer_[1] == '@' && buffer_[2] == '�'
+      && buffer_[80] == '�' && buffer_[160] == '�')
   {
     // This is not a trace header, but the start of an EDBDIC-header.
     // Set file pointer at end of EDBDIC header.

@@ -1,5 +1,5 @@
 FROM centos:6
-LABEL version="1.0.0" \
+LABEL version="1.0.1" \
       maintainer="snis@statoil.com" \
       description="This is the Docker image for building, and testing nrlib." \
       "com.statoil.vendor"="Statoil ASA"
@@ -50,8 +50,8 @@ ENV SOURCE_DIR=$ROOT_DIR/source
 ENV PROG_DIR=/prog
 ENV INSTALL_DIR=$PROG_DIR/sdpsoft
 
-ENV BOOST_VERSION="1.59.0"
-ENV BOOST_NAME="boost_1_59_0"
+ENV BOOST_VERSION="1.65.1"
+ENV BOOST_NAME="boost_1_65_1"
 
 ENV GCC_VERSION="4.9.4"
 ENV GCC_PREFIX=$INSTALL_DIR/gcc-$GCC_VERSION
@@ -110,7 +110,7 @@ RUN cd $SOURCE_DIR \
  && tar -xvf $BOOST_NAME.tar.bz2 -C $BUILD_DIR/$BOOST_NAME  --strip-components=1 \
  && rm -f $BOOST_NAME.tar.bz2 \
  && cd $BUILD_DIR/$BOOST_NAME \
- && ./bootstrap.sh --prefix=$BOOST_PREFIX --with-python=$ROXAR_PYTHON --with-python=$SDPSOFT_PYTHON --with-icu\
+ && ./bootstrap.sh --prefix=$BOOST_PREFIX --with-python=$ROXAR_PYTHON --with-python=$SDPSOFT_PYTHON --with-icu \
  && ./b2 install thread=multi -j$(nproc) -q
 
 ENV BOOST_ROOT="$BOOST_PREFIX"

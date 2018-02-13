@@ -1,4 +1,4 @@
-// $Id: logstream.hpp 1392 2016-11-29 08:40:07Z perroe $
+// $Id: logstream.hpp 1741 2018-01-24 20:15:13Z perroe $
 
 // Copyright (c)  2011, Norwegian Computing Center
 // All rights reserved.
@@ -22,6 +22,7 @@
 #ifndef NRLIB_LOGSTREAM_HPP
 #define NRLIB_LOGSTREAM_HPP
 
+#include <ctime>
 #include <fstream>
 #include <string>
 #include <vector>
@@ -86,9 +87,13 @@ namespace NRLib {
 
   private:
     bool is_writing_progress_;
+    std::string current_progress_message_;
+    double current_progress_;
     static const int n_progress_hats_ = 50;
+    std::time_t last_progress_time_;
 
     void WriteProgressHeader();
+    void WriteProgress(double progress, const std::string & message);
   };
 }
 

@@ -1,4 +1,4 @@
-// $Id: gaussianfield.hpp 1710 2017-10-25 07:43:28Z vegard $
+// $Id: gaussianfield.hpp 1720 2017-12-15 13:42:24Z vegard $
 
 // Copyright (c)  2011, Norwegian Computing Center
 // All rights reserved.
@@ -43,7 +43,10 @@ namespace NRLib {
                                std::vector<Grid<double> > &   grid_out,
                                int                            padding_x = -1,
                                int                            padding_y = -1,
-                               int                            padding_z = -1);
+                               int                            padding_z = -1,
+                               double                         scaling_x = 1.0,
+                               double                         scaling_y = 1.0,
+                               double                         scaling_z = 1.0);
 
   /// Simulate 2D Gaussian fields. variogram specifies the variogram and
   /// nx/y, dx/y specify the size. n_fields is the number of realizations
@@ -60,7 +63,9 @@ namespace NRLib {
                                std::vector<Grid2D<double> > & grid_out,
                                NRLib::RandomGenerator        *rg = NULL,
                                int                            padding_x = -1,
-                               int                            padding_y = -1);
+                               int                            padding_y = -1,
+                               double                         scaling_x = 1.0,
+                               double                         scaling_y = 1.0);
 
   void Simulate2DGaussianField(const Variogram& variogram,
                                size_t nx, double dx,
@@ -74,7 +79,8 @@ namespace NRLib {
                                double                   dx,
                                std::vector<double>    & grid_out,
                                NRLib::RandomGenerator * rg = NULL,
-                               int                      padding = -1);
+                               int                      padding = -1,
+                               double                   scaling_x = 1.0);
 
  // void Simulate1DGaussianField(NRLib::Matrix cov_in,
  //                              size_t nx,

@@ -1,4 +1,4 @@
-// $Id: eclipsetools.hpp 1416 2017-01-19 13:51:59Z veralh $
+// $Id: eclipsetools.hpp 1734 2018-01-05 09:39:04Z eyaker $
 
 // Copyright (c)  2011, Norwegian Computing Center
 // All rights reserved.
@@ -51,6 +51,7 @@ void SkipComments( std::ifstream& in_file );
 /// Reads in all data for one parameter, and returns a string containing all data
 std::string ReadParameterBuffer(std::ifstream& in_file);
 
+/// Get the direction
 inline Direction GetDirection(Face face) {
   switch (face) {
     case PosX:
@@ -66,6 +67,32 @@ inline Direction GetDirection(Face face) {
       assert(0);
       return DirectionX; // Prevent warning. We should never get here...
   }
+}
+
+/// Get the opposite face
+inline Face GetOppositeFace(Face face) {
+  Face oppositeFace = face;
+  switch (face) {
+  case PosX:
+    oppositeFace = NegX;
+    break;
+  case PosY:
+    oppositeFace = NegY;
+    break;
+  case PosZ:
+    oppositeFace = NegZ;
+    break;
+  case NegX:
+    oppositeFace = PosX;
+    break;
+  case NegY:
+    oppositeFace = PosY;
+    break;
+  case NegZ:
+    oppositeFace = PosZ;
+    break;
+  }
+  return oppositeFace;
 }
 
 } // namespace NRLib

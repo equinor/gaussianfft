@@ -1,4 +1,4 @@
-// $Id: line.cpp 1453 2017-03-21 12:02:02Z veralh $
+// $Id: line.cpp 1734 2018-01-05 09:39:04Z eyaker $
 
 // Copyright (c)  2011, Norwegian Computing Center
 // All rights reserved.
@@ -57,7 +57,6 @@ void Line::SetPt(const Point& p1_in, const Point& p2_in, bool end1_in, bool end2
   return;
 }
 
-
 bool Line::GetPt1(Point& pt1) const
 {
     pt1 = p1_;
@@ -93,7 +92,7 @@ double Line::FindDistance(const Point& p_in) const
   return p_in.GetDistance(proj_pt);
 }
 
-// Calc shortest distance from p_in to def.line (or extention of finite line) at proj_pt
+// Calc shortest distance from p_in to def.line (or extension of line) at proj_pt
 double Line::FindDistanceAndSide(const Point& p_in, bool& right_side) const
 {
   Point  proj_pt   = FindProjection(p_in);
@@ -108,7 +107,7 @@ double Line::FindDistanceAndSide(const Point& p_in, bool& right_side) const
 }
 
 
-// Calc projection_point on def.line from p_in (or extention of finite line when proj.pt from p_in is outside)
+// Calc projection_point on def.line from p_in (or extension of line when proj.pt from p_in is outside and line is not finite)
 Point Line::FindProjection(const Point& p_in) const
 {
   double diff_12 = p1_.GetDistance( p2_ );  // length of def.line
@@ -125,8 +124,7 @@ Point Line::FindProjection(const Point& p_in) const
   }
 }
 
-double
-Line::FindParameter(const Point& p_in) const
+double Line::FindParameter(const Point& p_in) const
 {
   double diff_12 = p1_.GetDistance( p2_ );  // length of def.line
   Point delta_p = p2_ - p1_;
@@ -134,7 +132,7 @@ Line::FindParameter(const Point& p_in) const
   return t;
 }
 
-// Returns true if p_in is on the def.line, i.e. shortest distance to line (or extention) is less than min_in/0.0
+// Returns true if p_in is on the def.line, i.e. shortest distance to line (or extension) is less than min_in/0.0
 bool Line::IsPointOnLine(const Point& p_in, double min_in) const
 {
   if (FindDistance(p_in) < min_in )
@@ -251,9 +249,10 @@ bool Line::IsOverLapping(const Line& line_in, double min_in) const
   }
 }
 
-bool Line::IntersectXY(const Line & line_in, Point & intersect_pt, double min_in) const
+bool Line::IntersectXY(const Line & line_in, Point & intersect_pt, const bool& infinite) const
 {
   bool is_intersect = false;
+  intersect_pt = Point(0.0, 0.0, 0.0);
 
   //def. line on general form a1*x + b1*y = c1
   const double a1 = p1_.y - p2_.y;
@@ -261,26 +260,50 @@ bool Line::IntersectXY(const Line & line_in, Point & intersect_pt, double min_in
   const double c1 = p1_.y*p2_.x - p2_.y*p1_.x;
 
   //line_in on general form a2*x + b2*y = c2
-  NRLib::Point p1_in = line_in.GetPt1();
-  NRLib::Point p2_in = line_in.GetPt2();
+  Point p1_in = line_in.GetPt1();
+  Point p2_in = line_in.GetPt2();
   const double a2 = p1_in.y - p2_in.y;
   const double b2 = p2_in.x - p1_in.x;
   const double c2 = p1_in.y*p2_in.x - p2_in.y*p1_in.x;
 
   double den = a1*b2 - b1*a2;
-  if (!IsParallel(line_in) && den != 0)
+  if(den != 0)
   {
     double x = (c1*b2 - b1*c2) / den;
     double y = (a1*c2 - c1*a2) / den;
-    intersect_pt = Point(x, y, 0.0);
-    if (IsPointOnLine(intersect_pt, min_in) && line_in.IsPointOnLine(intersect_pt, min_in))
-      is_intersect = true;
+    Point tmp(x, y, 0.0);
+    if (!infinite)
+    {
+      Line line_xy = LineXY();                  //Must project to xy-plane before finding parameter
+      Line line_in_xy = line_in.LineXY();
+      double t1 = line_xy.FindParameter(tmp);
+      double t2 = line_in_xy.FindParameter(tmp);
+      if (t1 <= 1.0 && t1 >= 0.0 && t2 <= 1.0 && t2 >= 0.0)
+      {
+        intersect_pt = tmp;
+        is_intersect = true;
+      }
+    }
     else
-      intersect_pt = Point(0.0, 0.0, 0.0);
-  }
-  else
-  {
-    intersect_pt = Point(0.0, 0.0, 0.0);
+    {
+      Line line_in_xy = line_in.LineXY();
+      double t_in = line_in_xy.FindParameter(tmp);
+      if (t_in <= 1.0 && t_in >= 0.0)
+      {
+        intersect_pt = tmp;
+        is_intersect = true;
+      }
+    }
   }
   return is_intersect;
+}
+
+Line Line::LineXY() const
+{
+  Point p1 = p1_;
+  Point p2 = p2_;
+  p1.z = 0;
+  p2.z = 0;
+  Line line_xy(p1, p2, end1_, end2_);
+  return line_xy;
 }

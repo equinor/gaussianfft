@@ -11,6 +11,16 @@ using namespace NRLib;
 
 
 
+double Interpolation::InterpolateBetweenPoints(const std::vector<double> &x_in,
+                                               const std::vector<double> &y_in,
+                                               double x)
+{
+  std::vector<double> x_out;
+  x_out.push_back(x);
+  std::vector<double> y_out = Interpolation::Interpolate1D(x_in, y_in, x_out, "linear");
+  return y_out[0];
+}
+
 std::vector<double> Interpolation::Interpolate1D(const std::vector<double> &x_in,
                                                  const std::vector<double> &y_in,
                                                  const std::vector<double> &x_out,

@@ -1,4 +1,4 @@
-// $Id: segy.cpp 1695 2017-09-29 12:02:24Z heidi $
+// $Id: segy.cpp 1742 2018-01-24 20:18:12Z perroe $
 
 // Copyright (c)  2011, Norwegian Computing Center
 // All rights reserved.
@@ -1357,7 +1357,7 @@ SegY::WriteTrace(const TraceHeader & origTraceHeader,
   TraceHeader traceHeader(origTraceHeader);
 
   traceHeader.SetNSamples(nz_);
-  traceHeader.Dump(file_, true);
+  traceHeader.Write(file_);
 
   double z = z0_;
   size_t nz = nz_;
@@ -1556,6 +1556,8 @@ SegY::FindGridGeometry(bool only_ilxl, bool keep_header, bool remove_bogus_trace
     if (file_.tell() != static_cast<std::streampos>(3600))
       throw(Exception("Can not find SegY geometry for a file where traces have already been read.\n"));
 
+    NRLib::LogKit::LogMessage(NRLib::LogKit::High, "\nFinding SEGY geometry:\n");
+
     TraceHeader traceHeader(trace_header_format_);
 
     std::streampos pos = 3840;
@@ -1565,6 +1567,9 @@ SegY::FindGridGeometry(bool only_ilxl, bool keep_header, bool remove_bogus_trace
     traces_.resize(n_traces_);
     for (i = 0; i < n_traces_; i++)
     {
+      double progress = static_cast<double>(i) / n_traces_;
+      NRLib::LogKit::UpdateProgress(progress, "Reading header " +
+                                    NRLib::ToString(i) + " of " + NRLib::ToString(n_traces_));
       try {
         if (file_.eof() == false)
         {

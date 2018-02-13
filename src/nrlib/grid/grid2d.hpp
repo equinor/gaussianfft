@@ -1,4 +1,4 @@
-// $Id: grid2d.hpp 1648 2017-07-20 21:46:04Z perroe $
+// $Id: grid2d.hpp 1737 2018-01-18 10:03:27Z vegard $
 
 // Copyright (c)  2011, Norwegian Computing Center
 // All rights reserved.
@@ -25,6 +25,7 @@
 #include <cassert>
 #include <sstream>
 #include <vector>
+#include <limits>
 
 namespace NRLib {
 
@@ -196,7 +197,7 @@ void Grid2D<A>::Swap(NRLib::Grid2D<A> &other)
 template<class A>
 A Grid2D<A>::FindMin(A missingValue) const
 {
-  A minVal = (*this)(0);
+  A minVal = std::numeric_limits<A>::max();
   typename std::vector<A>::const_iterator i;
   for (i = this->begin(); i < this->end(); i++) {
     if ((minVal == missingValue || (*i) < minVal) && (*i) != missingValue)
@@ -208,7 +209,11 @@ A Grid2D<A>::FindMin(A missingValue) const
 template<class A>
 A Grid2D<A>::FindMax(A missingValue) const
 {
-  A maxVal = (*this)(0);
+  A maxVal;
+  if (std::numeric_limits<A>::is_signed)
+    maxVal = -std::numeric_limits<A>::max();
+  else
+    maxVal = static_cast<A>(0);
   typename std::vector<A>::const_iterator i;
   for (i = this->begin(); i < this->end(); i++) {
     if ((maxVal == missingValue || (*i) > maxVal) && (*i) != missingValue)

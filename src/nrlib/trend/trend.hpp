@@ -1,4 +1,4 @@
-// $Id: trend.hpp 1422 2017-02-03 15:21:38Z aarnes $
+// $Id: trend.hpp 1744 2018-02-01 12:51:14Z aarnes $
 #ifndef NRLIB_TREND_HPP
 #define NRLIB_TREND_HPP
 
@@ -18,6 +18,7 @@ public:
 
   virtual Trend           * Clone()                                                                                const = 0;
   virtual void              AddConstant(double /*c*/)                                                                    = 0;
+  virtual void              Truncate(double /*min*/, double /*max*/)                                                     = 0;
   virtual double            GetValue(double /*s1*/, double /*s2*/, double /*s3*/)                                  const = 0;
   virtual double            GetValue(double /*s1*/, double /*s2*/, double /*s3*/, const NRLib::Volume &/*volume*/) const = 0;
   virtual double            GetValue2D(double s1, double s2, const std::vector<double> &trend, size_t ns1, size_t ns2, size_t start_ind) const;
@@ -44,6 +45,7 @@ public:
 
   virtual Trend           * Clone()                                                                                const { return new TrendConstant(*this) ;}
   virtual void              AddConstant(double c)                                                                  {trend_+=c; }
+  virtual void              Truncate(double min, double max);
   virtual double            GetValue(double /*s1*/, double /*s2*/, double /*s3*/)                                  const { return trend_                   ;}
   virtual double            GetValue(double /*s1*/, double /*s2*/, double /*s3*/, const NRLib::Volume &/*volume*/) const { return trend_                   ;}
   virtual double            GetValue()                                                                             const { return trend_                   ;}
@@ -76,6 +78,7 @@ public:
 
   virtual Trend           * Clone()                                                                               const { return new Trend1D(*this) ;}
   virtual void              AddConstant(double c);
+  virtual void              Truncate(double min, double max);
   virtual double            GetTrendElement(int i, int j, int k)                                                  const;
   virtual int               GetReference(void)                                                                    const { return reference_         ;}
   virtual NRLib::Point      DrawPoint(const NRLib::Volume & /*volume*/)                                           const { return Point(0,0,0)       ;}
@@ -117,6 +120,7 @@ public:
 
   virtual Trend          * Clone()                                              const { return new Trend2D(*this) ;}
   virtual void             AddConstant(double c);
+  virtual void             Truncate(double min, double max);
   virtual double           GetTrendElement(int i, int j, int k)                 const;
   virtual int              GetReference(void)                                   const { return reference1_        ;}
   virtual NRLib::Point     DrawPoint(const NRLib::Volume & /*volume*/)          const { return Point(0,0,0)       ;}
@@ -161,6 +165,7 @@ public:
 
   virtual Trend          * Clone()                                              const { return new Trend3D(*this) ;}
   virtual void             AddConstant(double c);
+  virtual void             Truncate(double min, double max);
   virtual double           GetTrendElement(int i, int j, int k)                 const { return trend_(i,j,k)      ;}
   virtual int              GetReference(void)                                   const { return(0)                 ;}
 

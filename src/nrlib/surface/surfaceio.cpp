@@ -1,4 +1,4 @@
-// $Id: surfaceio.cpp 1699 2017-10-10 14:11:12Z aarnes $
+// $Id: surfaceio.cpp 1719 2017-12-05 15:42:50Z hgolsen $
 
 // Copyright (c)  2011, Norwegian Computing Center
 // All rights reserved.
@@ -59,8 +59,6 @@ SurfaceFileFormat FindSurfaceFileType(const std::string& filename)
     // Empty file.
     return SURF_UNKNOWN;
   }
-  int dummy;
-
   if (first_token == "-996")
     return SURF_IRAP_CLASSIC_ASCII;
   else if (first_token == "STORMGRID_BINARY")
@@ -76,12 +74,6 @@ SurfaceFileFormat FindSurfaceFileType(const std::string& filename)
   }
   else if (FindHufsaTrends(filename) == true) {
     return SURF_UNKNOWN; //Unknown files are handled as 2D plain ascii
-  }
-  else if (FindXYZAsciiLine(filename, dummy) == true) {
-    return SURF_XYZ_ASCII;
-  }
-  else if (FindMulticolumnAsciiLine(filename, dummy) == true) {
-    return SURF_MULT_ASCII;
   }
 
   return SURF_UNKNOWN;
@@ -101,8 +93,6 @@ std::string GetSurfFormatString(NRLib::SurfaceFileFormat format)
       return "NORSAR SGRI";
     case SURF_RMS_POINTS_ASCII:
       return "RMS XYZ point set surface";
-    case SURF_MULT_ASCII:
-      return "Multicolumn ASCII";
     default:
       throw Exception("Missing format description for format: " + ToString(format));
   }
@@ -246,81 +236,6 @@ ReadMultipleSgriSurf(const std::string& filename, const std::vector<std::string>
     throw FileFormatError("Error parsing \"" + filename + "\" as a "
       "Sgri surface file " + e.what() + "\n");
   }
-}
-
-bool FindMulticolumnAsciiLine(const std::string& filename, int & header_start_line)
-{
-  //Contains five columns: X, Y, IL, XL, Attribute
-  //File starts with several information lines
-  std::ifstream file;
-  NRLib::OpenRead(file, filename);
-  int line = 0;
-
-  //Find first line with five numbers
-  bool found_mult_ascii_line = false;
-  while (found_mult_ascii_line == false && NRLib::CheckEndOfFile(file)==false && line < 200) { //Only search the first lines
-
-    //Read line
-    std::string line_string;
-    std::getline(file, line_string);
-    std::vector<std::string> tokens = NRLib::GetTokens(line_string);
-
-    //Check if the line has five number elements
-    if (tokens.size() == 5) {
-      for (int i = 0; i < 5; i++) {
-        if (!NRLib::IsNumber(tokens[i])) {
-          found_mult_ascii_line = false;
-          break;
-        }
-        else
-          found_mult_ascii_line = true;
-      }
-    }
-
-    line++;
-  }
-  file.close();
-
-  header_start_line = line -2;
-
-  return found_mult_ascii_line;
-}
-
-bool FindXYZAsciiLine(const std::string& filename, int & header_start_line)
-{
-  //Contains three columns: X, Y, Z
-  std::ifstream file;
-  NRLib::OpenRead(file, filename);
-  int line = 0;
-
-  //Find first line with three numbers
-  bool found_xyz_ascii_line = false;
-  while (found_xyz_ascii_line == false && NRLib::CheckEndOfFile(file)==false && line < 200) { //Only search the first lines
-
-    //Read line
-    std::string line_string;
-    std::getline(file, line_string);
-    std::vector<std::string> tokens = NRLib::GetTokens(line_string);
-
-    //Check if the line has five number elements
-    if (tokens.size() == 3) {
-      for (int i = 0; i < 3; i++) {
-        if (!NRLib::IsNumber(tokens[i])) {
-          found_xyz_ascii_line = false;
-          break;
-        }
-        else
-          found_xyz_ascii_line = true;
-      }
-    }
-
-    line++;
-  }
-  file.close();
-
-  header_start_line = line -2;
-
-  return found_xyz_ascii_line;
 }
 
 bool FindHufsaTrends(const std::string& filename)

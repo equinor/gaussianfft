@@ -1,4 +1,4 @@
-// $Id: regularsurfacerotated.hpp 1571 2017-06-29 07:55:41Z larsf $
+// $Id: regularsurfacerotated.hpp 1730 2017-12-20 16:06:05Z hgolsen $
 
 // Copyright (c)  2011, Norwegian Computing Center
 // All rights reserved.
@@ -58,22 +58,7 @@ public:
   ///                         of the file does not match the file format.
 
   RegularSurfaceRotated(std::string       filename,
-                        SurfaceFileFormat format        = SURF_UNKNOWN,
-                        double            angle         = 0.0,
-                        double            x_ref         = 0.0,
-                        double            y_ref         = 0.0,
-                        double            lx            = 0.0,
-                        double            ly            = 0.0,
-                        int             * ilxl_area     = NULL,
-                        int               il0           = 0,
-                        int               xl0           = 0,
-                        bool              first_axis_il = true,
-                        double            in_line0      = 0.0,
-                        double            cross_line0   = 0.0,
-                        double            il_step_x     = 0.0,
-                        double            il_step_y     = 0.0,
-                        double            xl_step_x     = 0.0,
-                        double            xl_step_y     = 0.0);
+                        SurfaceFileFormat format = SURF_UNKNOWN);
 
   Surface<A>* Clone() const
   { return new RegularSurfaceRotated<A>(*this); }
@@ -184,22 +169,7 @@ public:
   /// \throws FileFormatError If we can not determine the file format, or the contents
   ///                         of the file does not match the file format.
   void ReadFromFile(std::string       filename,
-                    SurfaceFileFormat format        = SURF_UNKNOWN,
-                    double            angle         = 0.0,
-                    double            x_ref         = 0.0,
-                    double            y_ref         = 0.0,
-                    double            lx            = 0.0,
-                    double            ly            = 0.0,
-                    int             * ilxl_area     = NULL,
-                    int               il0           = 0,
-                    int               xl0           = 0,
-                    bool              first_axis_il = true,
-                    double            il0_ref       = 0.0,
-                    double            xl0_ref       = 0.0,
-                    double            il_step_x     = 0.0,
-                    double            il_step_y     = 0.0,
-                    double            xl_step_x     = 0.0,
-                    double            xl_step_y     = 0.0);
+                    SurfaceFileFormat format = SURF_UNKNOWN);
 
   /// \brief Write surface to file on given format.
   /// If the file format does not support rotation, the resampled surface is written to file.
@@ -281,41 +251,11 @@ RegularSurfaceRotated<A>::RegularSurfaceRotated(double x_ref, double y_ref,
 
 template <class A>
 RegularSurfaceRotated<A>::RegularSurfaceRotated(std::string       filename,
-                                                SurfaceFileFormat format,
-                                                double            angle,
-                                                double            x_ref,
-                                                double            y_ref,
-                                                double            lx,
-                                                double            ly,
-                                                int             * ilxl_area,
-                                                int               il0,
-                                                int               xl0,
-                                                bool              first_axis_il,
-                                                double            in_line0,
-                                                double            cross_line0,
-                                                double            il_step_x,
-                                                double            il_step_y,
-                                                double            xl_step_x,
-                                                double            xl_step_y)
+                                                SurfaceFileFormat format)
 
 {
   ReadFromFile(filename,
-               format,
-               angle,
-               x_ref,
-               y_ref,
-               lx,
-               ly,
-               ilxl_area,
-               il0,
-               xl0,
-               first_axis_il,
-               in_line0,
-               cross_line0,
-               il_step_x,
-               il_step_y,
-               xl_step_x,
-               xl_step_y);
+               format);
 }
 
 
@@ -542,28 +482,13 @@ RegularSurface<A> RegularSurfaceRotated<A>::ResampleSurface() const
 
 template <class A>
 void RegularSurfaceRotated<A>::ReadFromFile(std::string       filename,
-                                            SurfaceFileFormat format,
-                                            double            segy_angle,
-                                            double            x_ref,
-                                            double            y_ref,
-                                            double            lx,
-                                            double            ly,
-                                            int             * ilxl_area,
-                                            int               il0,
-                                            int               xl0,
-                                            bool              first_axis_il,
-                                            double            in_line0,
-                                            double            cross_line0,
-                                            double            il_step_x,
-                                            double            il_step_y,
-                                            double            xl_step_x,
-                                            double            xl_step_y)
+                                            SurfaceFileFormat format)
 {
   if (format == SURF_UNKNOWN) {
     format = FindSurfaceFileType(filename);
     if (format == SURF_UNKNOWN) {
       throw FileFormatError("Failed to determine file format for surface file: " + filename
-                            + "Allowed formats are Irap Classic, Storm binary, Sgri, Multicolumn Ascii (X,Y,Z,IL,XL) and XYZ ascii.");
+                            + ". Allowed formats are Irap Classic, Storm binary and Sgri.");
     }
   }
 
@@ -577,38 +502,6 @@ void RegularSurfaceRotated<A>::ReadFromFile(std::string       filename,
       break;
     case SURF_SGRI:
       ReadSgriSurf(filename, surface_, angle_);
-      break;
-    case SURF_XYZ_ASCII:
-      ReadXYZAsciiSurf(filename,
-                       surface_,
-                       x_ref,
-                       y_ref,
-                       lx,
-                       ly,
-                       ilxl_area,
-                       il0,
-                       xl0,
-                       first_axis_il,
-                       in_line0, //The last 6 variables are used to create an IL/XL map
-                       cross_line0,
-                       il_step_x,
-                       il_step_y,
-                       xl_step_x,
-                       xl_step_y);
-      angle_ = segy_angle;
-      break;
-    case SURF_MULT_ASCII:
-      ReadMulticolumnAsciiSurf(filename,
-                               surface_,
-                               x_ref,
-                               y_ref,
-                               lx,
-                               ly,
-                               ilxl_area,
-                               il0,
-                               xl0,
-                               first_axis_il);
-      angle_ = segy_angle;
       break;
     default:
       throw FileFormatError("Reading of file " + filename + " on format " + GetSurfFormatString(format)
