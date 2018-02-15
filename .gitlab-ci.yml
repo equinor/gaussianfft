@@ -9,44 +9,44 @@ variables:
   NO_PROXY:     "git.statoil.no"
   CODE_DIR:     "$CI_PROJECT_DIR"
   ARTIFACTS:    "$CODE_DIR/artifacts"
-  MAKE:         "make --makefile=$CODE_DIR/Makefile"
+  MAKE:         "make"
   RUN:          "/bin/bash -c"
+  PYTHON:       "/prog/sdpsoft/python3.6.1/bin/python3"
 
 stages:
   - check requirements
-  - testing
-  - doc-tests  # https://docs.python.org/3/library/doctest.html
   - build
+  - testing
   - deploy
+
+before_script:
+  - 'eval cd $CI_PROJECT_DIR'
 
 #check for vulnerabilities:
 #  stage: check requirements
 #  script:
 #    - 'eval $MAKE safety-check'
 
-check for outdated requirements:
-  stage: check requirements
-  script:
-    - 'eval $MAKE check-requirements'
-
-linting:
-  stage: testing
-  script:
-    - 'eval $MAKE linting'
-  allow_failure: true
+# check for outdated requirements:
+#  stage: check requirements
+#  script:
+#    - 'eval $MAKE check-requirements'
 
 unit testing:
   stage: testing  # https://github.com/ksator/continuous-integration-with-python
   script:
-    - 'eval $MAKE unit-tests'
+    - 'eval $MAKE tests'
 
 build NRlib for RMS 10.1.1:
   stage: build
   variables:
     DISTRIBUTION_DIR: nrlib-RMS-10.1.1
+    ROXENV: "/prog/roxar/rms/versions/10.1.1/linux-amd64-gcc_4_4-release/bin/roxenv"
     PYTHON: "/prog/roxar/rms/versions/10.1.1/linux-amd64-gcc_4_4-release/bin/python"
+    PIP:    "/prog/roxar/rms/versions/10.1.1/linux-amd64-gcc_4_4-release/bin/pip"
   script:
-    - 'eval $MAKE build'
+    - 'eval ls $CI_PROJECT_DIR/tools'
+    - 'eval $ROXENV $MAKE build'
   artifacts:
     expire_in: 1 week
     paths:
@@ -55,11 +55,11 @@ build NRlib for RMS 10.1.1:
 build NRlib for SDPsoft:
   stage: build
   script:
-    - 'eval $MAKE build'
+    - 'eval echo $MAKE build'
   artifacts:
     expire_in: 1 week
     paths:
-      - artifacts/
+      - bootstrap.log
 
 deploy release candidate:
   stage: deploy

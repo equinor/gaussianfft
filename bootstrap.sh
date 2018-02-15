@@ -189,7 +189,7 @@ fi
 test -n "$want_help" && exit 0
 
 # TBD: Determine where the script is located
-my_dir="."
+my_dir="${CODE_DIR}"
 
 # Determine the toolset, if not already decided
 if test "x$TOOLSET" = x; then

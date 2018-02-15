@@ -29,11 +29,11 @@ docker-push-image: docker-login docker-image
 docker-login:
 	docker login $(DOCKER_REGISTRY_SERVER)
 
-install: install-requirements build
+install: build
 	$(PIP) install -e $(CODE_DIR)
 
 install-requirements:
-	$(PIP) install -r $(CODE_DIR)/requirements.txt
+	$(PIP) install --user -r $(CODE_DIR)/requirements.txt
 
 #get-boost:
 #	curl -L https://sourceforge.net/projects/boost/files/boost/$(BOOST_VERSION)/$(BOOST_PREFIX).tar.bz2 -o $(BOOST_PREFIX).tar.bz2
@@ -47,18 +47,10 @@ tests: pytest-instalation
 pytest-instalation:
 	[[ ! type pytest 2>/dev/null ]] && $(PIP) install pytest
 
-build: build-boost-python
+build: install-requirements build-boost-python
 	$(PYTHON) $(CODE_DIR)/setup.py bdist_wheel --relative --dist-dir $(DISTRIBUTION_DIR)
 
 build-boost-python:
 	$(CODE_DIR)/bootstrap.sh --prefix=$(shell pwd)/build --with-python=$(PYTHON) --with-icu
 	CPLUS_INCLUDE_PATH=$(shell dirname $(PYTHON))/../include/python3.6m \
 	$(CODE_DIR)/bjam --with-python --with-filesystem --with-system python-debugging=off threading=multi variant=release link=shared stage
-
-check-requirements:
-	piprot --outdated $(CODE_DIR)/requirements.txt
-
-#artifacts:
-#	mkdir -p $ARTIFACTS
-#	mv $CI_PROJECT_DIR/$GUI_FILE $ARTIFACTS
-#	du -sh $ARTIFACTS
