@@ -221,10 +221,15 @@ venv.bak/
 
 # mkdocs documentation
 /site
-
+.DS_Store
 # mypy
 .*_cache/
 /mkl/
 .idea/
 boost_*
 prog/
+
+b2
+bjam
+project-config.jam*
+bin.v2/

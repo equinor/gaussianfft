@@ -1,5 +1,5 @@
 FROM centos:6
-LABEL version="1.0.1" \
+LABEL version="1.1.0" \
       maintainer="snis@statoil.com" \
       description="This is the Docker image for building, and testing nrlib." \
       "com.statoil.vendor"="Statoil ASA"
@@ -50,15 +50,11 @@ ENV SOURCE_DIR=$ROOT_DIR/source
 ENV PROG_DIR=/prog
 ENV INSTALL_DIR=$PROG_DIR/sdpsoft
 
-ENV BOOST_VERSION="1.65.1"
-ENV BOOST_NAME="boost_1_65_1"
-
 ENV GCC_VERSION="4.9.4"
 ENV GCC_PREFIX=$INSTALL_DIR/gcc-$GCC_VERSION
 
 
 ENV MKL_ROOT="/prog/Intel/studioxe2016/mkl"
-ENV LD_LIBRARY_PATH=$MKL_ROOT/lib/intel64:$LD_LIBRARY_PATH
 
 ENV ROXAR_VERSION=10.1.1
 ENV ROXAR_RMS_ROOT="/prog/roxar/rms/versions/$ROXAR_VERSION/linux-amd64-gcc_4_4-release"
@@ -96,23 +92,7 @@ ENV LD_LIBRARY_PATH=/lib64:$LD_LIBRARY_PATH
 ENV SOURCE_DIR="/source"
 ENV BUILD_DIR="/build"
 ENV INSTALL_DIR="/prog/sdpsoft"
-ENV BOOST_PREFIX="$INSTALL_DIR/boost-$BOOST_VERSION"
 RUN mkdir -p \
         $SOURCE_DIR \
         $BUILD_DIR \
-        $INSTALL_DIR \
-        $BOOST_PREFIX \
-        $BUILD_DIR/$BOOST_NAME
-
-# Boost
-RUN cd $SOURCE_DIR \
- && wget https://sourceforge.net/projects/boost/files/boost/$BOOST_VERSION/$BOOST_NAME.tar.bz2 \
- && tar -xvf $BOOST_NAME.tar.bz2 -C $BUILD_DIR/$BOOST_NAME  --strip-components=1 \
- && rm -f $BOOST_NAME.tar.bz2 \
- && cd $BUILD_DIR/$BOOST_NAME \
- && ./bootstrap.sh --prefix=$BOOST_PREFIX --with-python=$ROXAR_PYTHON --with-python=$SDPSOFT_PYTHON --with-icu \
- && ./b2 install thread=multi -j$(nproc) -q
-
-ENV BOOST_ROOT="$BOOST_PREFIX"
-
-ENV LD_LIBRARY_PATH="$BOOST_PREFIX/lib:$LD_LIBRARY_PATH"
+        $INSTALL_DIR

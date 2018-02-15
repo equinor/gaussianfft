@@ -1,7 +1,8 @@
 import glob
 import platform
 import os
-from setuptools import setup, Extension
+
+from setuptools import setup, Extension, find_packages, Distribution
 
 """ Installation Instructions """
 # Linux:
@@ -38,6 +39,12 @@ extension_name = 'nrlib'
 compilation_logs = 'compiles.log'
 
 """**********************"""
+
+
+class BinaryDistribution(Distribution):
+    def is_pure(self):
+        return False
+
 
 if os.path.isfile(compilation_logs):
     import subprocess
@@ -82,10 +89,10 @@ if platform.system() in ['Linux', 'Darwin']:
         )
     link_libraries = [
         # BOOST
-        'boost_python3',
-        'boost_numpy3',
-        'boost_filesystem',
-        'boost_system',
+        'stage/lib/boost_python3',
+        'stage/lib/boost_numpy3',
+        'stage/lib/boost_filesystem',
+        'stage/lib/boost_system',
     ]
     # Force static linking with Boost (requires Boost compiled with fPIC flag)
     # linker_args.append('-l:libboost_numpy3.a')
@@ -103,7 +110,7 @@ if platform.system() in ['Linux', 'Darwin']:
     if os.path.isdir(library_dir + '/intel64'):
         library_dir += '/intel64'
     if platform.system() == 'Darwin':
-        linker_args += '-I{1}/include -L{0} -lpthread -lm -ldl'.format(library_dir, mkl_root).split()
+        linker_args += '-I{0}/include -L{1} -lpthread -lm -ldl'.format(mkl_root, library_dir).split()
         link_libraries += [
             'mkl_core',
             'mkl_intel_lp64',
@@ -210,6 +217,8 @@ bp_module = Extension(
 setup(
     name=extension_name,
     version="0.6",
-    packages=[],  # find_packages()
-    ext_modules=[bp_module]
+    packages=find_packages(),
+    ext_modules=[bp_module],
+    include_package_data=True,
+    distclass=BinaryDistribution,
 )

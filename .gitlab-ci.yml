@@ -1,5 +1,5 @@
 image:
-  name: "git.statoil.no:4567/sdp/nrlib/nrlib:1.0.0"
+  name: "git.statoil.no:4567/sdp/nrlib/nrlib:1.1.0"
 
 variables:
   GIT_STRATEGY: "fetch"
@@ -40,21 +40,22 @@ unit testing:
   script:
     - 'eval $MAKE unit-tests'
 
-build NRlib for ROXAR:
+build NRlib for RMS 10.1.1:
   stage: build
+  variables:
+    DISTRIBUTION_DIR: nrlib-RMS-10.1.1
+    PYTHON: "/prog/roxar/rms/versions/10.1.1/linux-amd64-gcc_4_4-release/bin/python"
   script:
     - 'eval $MAKE build'
-    - 'eval $MAKE artifacts'
   artifacts:
     expire_in: 1 week
     paths:
-      - artifacts/
+      - '$DISTRIBUTION_DIR'
 
 build NRlib for SDPsoft:
   stage: build
   script:
     - 'eval $MAKE build'
-    - 'eval $MAKE artifacts'
   artifacts:
     expire_in: 1 week
     paths:
