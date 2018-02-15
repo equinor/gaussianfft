@@ -81,7 +81,7 @@ else:
 # Platform specific definitions
 linker_args = []
 if platform.system() in ['Linux', 'Darwin']:
-    mkl_root = os.getenv('MKL_ROOT')
+    mkl_root = os.getenv('MKL_ROOT') or os.getenv('MKLROOT')
     if mkl_root is None:
         raise RuntimeError(
             "Environment variable MKL_ROOT is not defined. "
@@ -221,4 +221,7 @@ setup(
     ext_modules=[bp_module],
     include_package_data=True,
     distclass=BinaryDistribution,
+    package_data={
+        'stage/lib': ['*.so', '*.dll', '*.dylib', '*.a'],
+    },
 )
