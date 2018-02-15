@@ -19,10 +19,10 @@ stages:
   - build
   - deploy
 
-check for vulnerabilities:
-  stage: check requirements
-  script:
-    - 'eval $MAKE safety-check'
+#check for vulnerabilities:
+#  stage: check requirements
+#  script:
+#    - 'eval $MAKE safety-check'
 
 check for outdated requirements:
   stage: check requirements

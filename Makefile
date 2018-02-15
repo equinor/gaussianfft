@@ -55,6 +55,9 @@ build-boost-python:
 	CPLUS_INCLUDE_PATH=$(shell dirname $(PYTHON))/../include/python3.6m \
 	$(CODE_DIR)/bjam --with-python --with-filesystem --with-system python-debugging=off threading=multi variant=release link=shared stage
 
+check-requirements:
+	piprot --outdated $(CODE_DIR)/requirements.txt
+
 #artifacts:
 #	mkdir -p $ARTIFACTS
 #	mv $CI_PROJECT_DIR/$GUI_FILE $ARTIFACTS
