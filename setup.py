@@ -221,4 +221,7 @@ setup(
     ext_modules=[bp_module],
     include_package_data=True,
     distclass=BinaryDistribution,
+    package_data={
+        'stage/lib': ['*.so', '*.dll', '*.dylib', '*.a'],
+    },
 )

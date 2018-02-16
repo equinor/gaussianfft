@@ -1,5 +1,5 @@
 image:
-  name: "git.statoil.no:4567/sdp/nrlib/nrlib:1.1.0"
+  name: "git.statoil.no:4567/sdp/nrlib/nrlib:1.1.1"
 
 variables:
   GIT_STRATEGY: "fetch"
@@ -11,7 +11,6 @@ variables:
   ARTIFACTS:    "$CODE_DIR/artifacts"
   MAKE:         "make"
   RUN:          "/bin/bash -c"
-  PYTHON:       "/prog/sdpsoft/python3.6.1/bin/python3"
 
 stages:
   - check requirements
@@ -32,8 +31,12 @@ before_script:
 #  script:
 #    - 'eval $MAKE check-requirements'
 
-unit testing:
+unit testing SDPsoft (3.6.1):
   stage: testing  # https://github.com/ksator/continuous-integration-with-python
+  variables:
+    DISTRIBUTION_DIR: nrlib-python3.6.1
+    PYTHON: "/prog/sdpsoft/python3.6.1/bin/python3"
+    PIP: "/prog/sdpsoft/python3.6.1/bin/pip3"
   script:
     - 'eval $MAKE tests'
 
@@ -45,21 +48,24 @@ build NRlib for RMS 10.1.1:
     PYTHON: "/prog/roxar/rms/versions/10.1.1/linux-amd64-gcc_4_4-release/bin/python"
     PIP:    "/prog/roxar/rms/versions/10.1.1/linux-amd64-gcc_4_4-release/bin/pip"
   script:
-    - 'eval ls $CI_PROJECT_DIR/tools'
     - 'eval $ROXENV $MAKE build'
   artifacts:
     expire_in: 1 week
     paths:
       - '$DISTRIBUTION_DIR'
 
-build NRlib for SDPsoft:
+build NRlib for SDPsoft (3.6.1):
   stage: build
+  variables:
+    DISTRIBUTION_DIR: nrlib-python3.6.1
+    PYTHON: "/prog/sdpsoft/python3.6.1/bin/python3"
+    PIP: "/prog/sdpsoft/python3.6.1/bin/pip3"
   script:
-    - 'eval echo $MAKE build'
+    - 'eval $MAKE build'
   artifacts:
     expire_in: 1 week
     paths:
-      - bootstrap.log
+      - '$DISTRIBUTION_DIR'
 
 deploy release candidate:
   stage: deploy

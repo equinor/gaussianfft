@@ -130,7 +130,7 @@ __pycache__/
 
 # Distribution / packaging
 .Python
-/build/
+build/
 develop-eggs/
 dist/
 downloads/
@@ -233,3 +233,11 @@ b2
 bjam
 project-config.jam*
 bin.v2/
+!/tools/build
+!/tools/build/src/build
+!/libs/filesystem/build
+!/libs/system/build
+!/libs/python/build
+
+libs/config/checks/architecture/bin
+tools/build/src/engine/bootstrap/jam0

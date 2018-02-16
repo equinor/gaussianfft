@@ -23,7 +23,7 @@ PIP := $(shell dirname $(PYTHON))/pip
 docker-image:
 	docker build --rm --tag $(IMAGE_NAME) --file $(DOCKERFILE) $(CODE_DIR)
 
-docker-push-image: docker-login docker-image
+docker-push-image: docker-image
 	docker push $(IMAGE_NAME)
 
 docker-login:
@@ -33,24 +33,26 @@ install: build
 	$(PIP) install -e $(CODE_DIR)
 
 install-requirements:
-	$(PIP) install --user -r $(CODE_DIR)/requirements.txt
-
-#get-boost:
-#	curl -L https://sourceforge.net/projects/boost/files/boost/$(BOOST_VERSION)/$(BOOST_PREFIX).tar.bz2 -o $(BOOST_PREFIX).tar.bz2
-#	tar -xvf $(BOOST_PREFIX).tar.bz2
-#	# TODO: export CPLUS_INCLUDE_PATH=/Users/snis/Projects/APS/GUI/venv/include/python3.6m
-#	# TODO: ./bjam --with-python --with-filesystem --with-system python-debugging=off threading=multi variant=release link=shared <somwhere?>
+	$(PIP) install --user -r $(CODE_DIR)/requirements.txt || $(PIP) install -r $(CODE_DIR)/requirements.txt
 
 tests: pytest-instalation
 	pytest $(CODE_DIR)/tests
 
 pytest-instalation:
-	[[ ! type pytest 2>/dev/null ]] && $(PIP) install pytest
+	type pytest 2>/dev/null || { $(PIP) install pytest; }
 
 build: install-requirements build-boost-python
-	$(PYTHON) $(CODE_DIR)/setup.py bdist_wheel --relative --dist-dir $(DISTRIBUTION_DIR)
+	$(PYTHON) $(CODE_DIR)/setup.py bdist_wheel --dist-dir $(DISTRIBUTION_DIR)
 
 build-boost-python:
-	$(CODE_DIR)/bootstrap.sh --prefix=$(shell pwd)/build --with-python=$(PYTHON) --with-icu
-	CPLUS_INCLUDE_PATH=$(shell dirname $(PYTHON))/../include/python3.6m \
-	$(CODE_DIR)/bjam --with-python --with-filesystem --with-system python-debugging=off threading=multi variant=release link=shared stage
+	CODE_DIR=$(CODE_DIR) \
+	  $(CODE_DIR)/bootstrap.sh --prefix=$(shell pwd)/build --with-python=$(PYTHON) --with-icu && \
+	CPLUS_INCLUDE_PATH=$(shell python -c "from sysconfig import get_paths; print(get_paths()['include'])") \
+	  $(CODE_DIR)/bjam --with-python \
+	                   --with-filesystem \
+	                   --with-system \
+	                   python-debugging=off \
+	                   threading=multi \
+	                   variant=release \
+	                   link=shared \
+	                   stage
