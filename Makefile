@@ -22,6 +22,8 @@ ifeq ($(DISTRIBUTION_DIR),)
 DISTRIBUTION_DIR := $(CODE_DIR)/dist
 endif
 
+BOOST_LINKING ?= static
+
 docker-image:
 	docker build --rm --tag $(IMAGE_NAME) --file $(DOCKERFILE) $(CODE_DIR)
 
@@ -44,6 +46,7 @@ pytest-instalation:
 	type pytest 2>/dev/null || { $(PIP) install pytest; }
 
 build: install-requirements build-boost-python
+	BOOST_LINKING=$(BOOST_LINKING) \
 	$(PYTHON) $(CODE_DIR)/setup.py bdist_wheel --dist-dir $(DISTRIBUTION_DIR)
 
 build-boost-python:

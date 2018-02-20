@@ -84,21 +84,13 @@ if platform.system() in ['Linux', 'Darwin']:
     mkl_root = os.getenv('MKL_ROOT') or os.getenv('MKLROOT')
     if mkl_root is None:
         raise RuntimeError(
-            "Environment variable MKL_ROOT is not defined. "
+            "The environment variables MKL_ROOT, or MKLROOT is not defined. "
             "MKL headers and libraries are required."
         )
-    link_libraries = [
-        # BOOST
-        'stage/lib/boost_python3',
-        'stage/lib/boost_numpy3',
-        'stage/lib/boost_filesystem',
-        'stage/lib/boost_system',
-    ]
-    # Force static linking with Boost (requires Boost compiled with fPIC flag)
-    # linker_args.append('-l:libboost_numpy3.a')
-    # linker_args.append('-l:libboost_python3.a')
-    # linker_args.append('-l:libboost_system.a')
-    # linker_args.append('-l:libboost_filesystem.a')
+    boost_linking = os.getenv('BOOST_LINKING')
+    if boost_linking not in ['static', 'shared']:
+        raise RuntimeError("The environment variable BOOST_LINKING must be set to either 'static' or 'shared'.")
+    link_libraries = []
     compile_args = [
         # Necessary for some C++11 compilers:
         '-D_GLIBCXX_USE_CXX11_ABI=0',
@@ -110,6 +102,7 @@ if platform.system() in ['Linux', 'Darwin']:
     if os.path.isdir(library_dir + '/intel64'):
         library_dir += '/intel64'
     if platform.system() == 'Darwin':
+        library_extension = 'dylib'
         linker_args += '-I{0}/include -L{1} -lpthread -lm -ldl'.format(mkl_root, library_dir).split()
         link_libraries += [
             'mkl_core',
@@ -117,7 +110,14 @@ if platform.system() in ['Linux', 'Darwin']:
             'mkl_sequential',
         ]
     else:
+        library_extension = 'a'
         linker_args += '-Wl,--start-group {0}/libmkl_intel_lp64.a {0}/libmkl_sequential.a {0}/libmkl_core.a -Wl,--end-group -lpthread -lm -ldl'.format(library_dir).split()
+    boost_libraries = ['boost_python3', 'boost_numpy3', 'boost_filesystem', 'boost_system']
+    if boost_linking == 'shared':
+        link_libraries += ['stage/lib/' + lib_name for lib_name in boost_libraries]
+    elif boost_linking == 'static':
+        # Force static linking with Boost (requires Boost compiled with fPIC flag)
+        linker_args += ['-l:lib' + lib_name + '.' + library_extension for lib_name in boost_libraries]
     # RMS develop Intel MKL (static linking):
     # linker_args += '-Wl,--start-group {0}/em64t/lib/libmkl_intel_lp64.a {0}/em64t/lib/libmkl_sequential.a {0}/em64t/lib/libmkl_core.a -Wl,--end-group -lpthread -lm -ldl'.format(mkl_root).split()
     library_dirs = [
