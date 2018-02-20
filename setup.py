@@ -87,9 +87,9 @@ if platform.system() in ['Linux', 'Darwin']:
             "The environment variables MKL_ROOT, or MKLROOT is not defined. "
             "MKL headers and libraries are required."
         )
-    boost_linking = os.getenv('BOOST_LINKING')
-    if boost_linking not in ['static', 'shared']:
-        raise RuntimeError("The environment variable BOOST_LINKING must be set to either 'static' or 'shared'.")
+    linking = os.getenv('NRLIB_LINKING')
+    if linking not in ['static', 'shared']:
+        raise RuntimeError("The environment variable NRLIB_LINKING must be set to either 'static' or 'shared'.")
     link_libraries = []
     compile_args = [
         # Necessary for some C++11 compilers:
@@ -110,14 +110,16 @@ if platform.system() in ['Linux', 'Darwin']:
             'mkl_sequential',
         ]
     else:
-        library_extension = 'a'
+        library_extension = 'so'
         linker_args += '-Wl,--start-group {0}/libmkl_intel_lp64.a {0}/libmkl_sequential.a {0}/libmkl_core.a -Wl,--end-group -lpthread -lm -ldl'.format(library_dir).split()
     boost_libraries = ['boost_python3', 'boost_numpy3', 'boost_filesystem', 'boost_system']
-    if boost_linking == 'shared':
-        link_libraries += ['stage/lib/' + lib_name for lib_name in boost_libraries]
-    elif boost_linking == 'static':
+    boost_library_path = os.path.dirname(os.path.realpath(__file__)) + '/stage/lib'
+    if linking == 'shared':
+        link_libraries += [boost_library_path + '/' + lib_name for lib_name in boost_libraries]
+    elif linking == 'static':
         # Force static linking with Boost (requires Boost compiled with fPIC flag)
-        linker_args += ['-l:lib' + lib_name + '.' + library_extension for lib_name in boost_libraries]
+        linker_args += ['-L' + boost_library_path, '-Bstatic']
+        linker_args += ['lib' + lib_name + '.' + library_extension for lib_name in boost_libraries]
     # RMS develop Intel MKL (static linking):
     # linker_args += '-Wl,--start-group {0}/em64t/lib/libmkl_intel_lp64.a {0}/em64t/lib/libmkl_sequential.a {0}/em64t/lib/libmkl_core.a -Wl,--end-group -lpthread -lm -ldl'.format(mkl_root).split()
     library_dirs = [
@@ -216,7 +218,7 @@ bp_module = Extension(
 
 setup(
     name=extension_name,
-    version="0.6",
+    version="0.6.1",
     packages=find_packages(),
     ext_modules=[bp_module],
     include_package_data=True,

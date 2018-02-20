@@ -5,24 +5,17 @@ DOCKER_REGISTRY = $(DOCKER_REGISTRY_SERVER)/sdp/nrlib
 IMAGE_NAME = $(DOCKER_REGISTRY)/$(NAME):$(VERSION)
 
 
-ifeq ($(CODE_DIR),)
-CODE_DIR := $(shell pwd)
-endif
+CODE_DIR ?= $(shell pwd)
 
 DOCKERFILE := $(CODE_DIR)/Dockerfile
 
-ifeq ($(PYTHON),)
-PYTHON := $(shell which python)
-endif
-ifeq ($(PIP),)
-PIP := $(shell dirname $(PYTHON))/pip
-endif
+PYTHON ?= $(shell which python)
+PIP ?= $(shell dirname $(PYTHON))/pip
+PY.TEST ?= $(PYTHON) -m pytest
 
-ifeq ($(DISTRIBUTION_DIR),)
-DISTRIBUTION_DIR := $(CODE_DIR)/dist
-endif
+DISTRIBUTION_DIR ?= $(CODE_DIR)/dist
 
-BOOST_LINKING ?= static
+NRLIB_LINKING ?= static
 
 docker-image:
 	docker build --rm --tag $(IMAGE_NAME) --file $(DOCKERFILE) $(CODE_DIR)
@@ -34,19 +27,19 @@ docker-login:
 	docker login $(DOCKER_REGISTRY_SERVER)
 
 install: build
-	$(PIP) install -e $(CODE_DIR)
+	$(PIP) install -U $(DISTRIBUTION_DIR)/$(shell ls $(DISTRIBUTION_DIR))
 
 install-requirements:
 	$(PIP) install --user -r $(CODE_DIR)/requirements.txt || $(PIP) install -r $(CODE_DIR)/requirements.txt
 
 tests: pytest-instalation
-	pytest $(CODE_DIR)/tests
+	$(PY.TEST) $(CODE_DIR)/tests
 
 pytest-instalation:
 	type pytest 2>/dev/null || { $(PIP) install pytest; }
 
 build: install-requirements build-boost-python
-	BOOST_LINKING=$(BOOST_LINKING) \
+	NRLIB_LINKING=$(NRLIB_LINKING) \
 	$(PYTHON) $(CODE_DIR)/setup.py bdist_wheel --dist-dir $(DISTRIBUTION_DIR)
 
 build-boost-python:
