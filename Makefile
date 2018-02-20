@@ -8,17 +8,19 @@ IMAGE_NAME = $(DOCKER_REGISTRY)/$(NAME):$(VERSION)
 ifeq ($(CODE_DIR),)
 CODE_DIR := $(shell pwd)
 endif
+
 DOCKERFILE := $(CODE_DIR)/Dockerfile
 
 ifeq ($(PYTHON),)
 PYTHON := $(shell which python)
 endif
+ifeq ($(PIP),)
+PIP := $(shell dirname $(PYTHON))/pip
+endif
 
 ifeq ($(DISTRIBUTION_DIR),)
 DISTRIBUTION_DIR := $(CODE_DIR)/dist
 endif
-
-PIP := $(shell dirname $(PYTHON))/pip
 
 docker-image:
 	docker build --rm --tag $(IMAGE_NAME) --file $(DOCKERFILE) $(CODE_DIR)
