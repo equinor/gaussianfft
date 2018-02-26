@@ -11,6 +11,7 @@ variables:
   ARTIFACTS:    "$CODE_DIR/artifacts"
   MAKE:         "make"
   RUN:          "/bin/bash -c"
+  BASE_DIST:    "dist"
 
 stages:
   - check requirements
@@ -18,35 +19,35 @@ stages:
   - testing
   - deploy
 
-before_script:
-  - 'eval cd $CI_PROJECT_DIR'
-
-#check for vulnerabilities:
-#  stage: check requirements
-#  script:
-#    - 'eval $MAKE safety-check'
-
-# check for outdated requirements:
-#  stage: check requirements
-#  script:
-#    - 'eval $MAKE check-requirements'
-
-unit testing SDPsoft (3.6.1):
+test:SDPsoft (3.6.1):
   stage: testing  # https://github.com/ksator/continuous-integration-with-python
   variables:
-    DISTRIBUTION_DIR: nrlib-python3.6.1
+    DISTRIBUTION_DIR: $BASE_DIST/nrlib-python3.6.1
     PYTHON: "/prog/sdpsoft/python3.6.1/bin/python3"
-    PIP: "/prog/sdpsoft/python3.6.1/bin/pip3"
   script:
+    - 'eval $MAKE install'
     - 'eval $MAKE tests'
+  dependencies:
+    - build:SDPsoft (3.6.1)
 
-build NRlib for RMS 10.1.1:
-  stage: build
+test:RMS 10.1.1 (3.4.2):
+  stage: testing  # https://github.com/ksator/continuous-integration-with-python
   variables:
-    DISTRIBUTION_DIR: nrlib-RMS-10.1.1
+    DISTRIBUTION_DIR: $BASE_DIST/nrlib-RMS-10.1.1
     ROXENV: "/prog/roxar/rms/versions/10.1.1/linux-amd64-gcc_4_4-release/bin/roxenv"
     PYTHON: "/prog/roxar/rms/versions/10.1.1/linux-amd64-gcc_4_4-release/bin/python"
-    PIP:    "/prog/roxar/rms/versions/10.1.1/linux-amd64-gcc_4_4-release/bin/pip"
+  script:
+    - 'eval $ROXENV $MAKE install'
+    - 'eval $ROXENV $MAKE tests'
+  dependencies:
+    - build:RMS 10.1.1 (3.4.2)
+
+build:RMS 10.1.1 (3.4.2):
+  stage: build
+  variables:
+    DISTRIBUTION_DIR: $BASE_DIST/nrlib-RMS-10.1.1
+    ROXENV: "/prog/roxar/rms/versions/10.1.1/linux-amd64-gcc_4_4-release/bin/roxenv"
+    PYTHON: "/prog/roxar/rms/versions/10.1.1/linux-amd64-gcc_4_4-release/bin/python"
   script:
     - 'eval $ROXENV $MAKE build'
   artifacts:
@@ -54,12 +55,11 @@ build NRlib for RMS 10.1.1:
     paths:
       - '$DISTRIBUTION_DIR'
 
-build NRlib for SDPsoft (3.6.1):
+build:SDPsoft (3.6.1):
   stage: build
   variables:
-    DISTRIBUTION_DIR: nrlib-python3.6.1
+    DISTRIBUTION_DIR: $BASE_DIST/nrlib-python3.6.1
     PYTHON: "/prog/sdpsoft/python3.6.1/bin/python3"
-    PIP: "/prog/sdpsoft/python3.6.1/bin/pip3"
   script:
     - 'eval $MAKE build'
   artifacts:
@@ -73,10 +73,9 @@ deploy release candidate:
     - ""  # TODO
   only:
    - master
-
-deploy develop:
-  stage: deploy
-  script:
-    - "" # TODO
-  only:
-    - develop
+  dependencies:
+    - build:RMS 10.1.1 (3.4.2)
+    - build:SDPsoft (3.6.1)
+  artifacts:
+    paths:
+      - '$BASE_DIST'

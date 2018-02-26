@@ -80,6 +80,24 @@ else:
 
 # Platform specific definitions
 linker_args = []
+
+
+def get_library_extension(linking: str) -> str:
+    if linking == 'static':
+        return 'a'
+    elif linking == 'shared':
+        if platform.system() == 'Darwin':
+            return 'dylib'
+        elif platform.system() == 'Linux':
+            return 'so'
+        elif platform.system() == 'Windows':
+            return 'dll'
+        else:
+            raise ValueError("Invalid platform")
+    else:
+        raise ValueError("Invalid linking argument")
+
+
 if platform.system() in ['Linux', 'Darwin']:
     mkl_root = os.getenv('MKL_ROOT') or os.getenv('MKLROOT')
     if mkl_root is None:
@@ -96,22 +114,29 @@ if platform.system() in ['Linux', 'Darwin']:
         '-D_GLIBCXX_USE_CXX11_ABI=0',
         '-DBOOST_PYTHON_STATIC_LIB',
         '-DBOOST_NUMPY_STATIC_LIB',
+        '-DMKL_ILP64',
+        '-m64',
+        '-I${0}/include'.format(mkl_root),
     ]
+    library_extension = get_library_extension(linking)
     # Standard Intel MKL installation (static linking):
     library_dir = mkl_root + '/lib'
     if os.path.isdir(library_dir + '/intel64'):
         library_dir += '/intel64'
-    if platform.system() == 'Darwin':
-        library_extension = 'dylib'
-        linker_args += '-I{0}/include -L{1} -lpthread -lm -ldl'.format(mkl_root, library_dir).split()
-        link_libraries += [
-            'mkl_core',
-            'mkl_intel_lp64',
-            'mkl_sequential',
-        ]
+    mkl_libraries = ['mkl_core', 'mkl_intel_ilp64', 'mkl_sequential']
+    if linking == 'static':
+        mkl_libraries = [library_dir + '/lib' + mkl_library + '.' + library_extension for mkl_library in mkl_libraries]
     else:
-        library_extension = 'so'
-        linker_args += '-Wl,--start-group {0}/libmkl_intel_lp64.a {0}/libmkl_sequential.a {0}/libmkl_core.a -Wl,--end-group -lpthread -lm -ldl'.format(library_dir).split()
+        link_libraries += mkl_libraries
+    if platform.system() == 'Darwin':
+        linker_args += ['-I' + mkl_root + '/include', '-L' + library_dir]
+        linker_args += mkl_libraries
+        linker_args += ' -lpthread -lm -ldl'.format(mkl_root, library_dir).split()
+    else:
+        linker_args += ['-Wl,--start-group']
+        linker_args += mkl_libraries
+        linker_args += ['-Wl,--end-group']
+    linker_args += ['-lpthread', '-lm', '-ldl']
     boost_libraries = ['boost_python3', 'boost_numpy3', 'boost_filesystem', 'boost_system']
     boost_library_path = os.path.dirname(os.path.realpath(__file__)) + '/stage/lib'
     if linking == 'shared':
@@ -119,7 +144,7 @@ if platform.system() in ['Linux', 'Darwin']:
     elif linking == 'static':
         # Force static linking with Boost (requires Boost compiled with fPIC flag)
         linker_args += ['-L' + boost_library_path, '-Bstatic']
-        linker_args += ['lib' + lib_name + '.' + library_extension for lib_name in boost_libraries]
+        linker_args += [boost_library_path + '/lib' + lib_name + '.' + library_extension for lib_name in boost_libraries]
     # RMS develop Intel MKL (static linking):
     # linker_args += '-Wl,--start-group {0}/em64t/lib/libmkl_intel_lp64.a {0}/em64t/lib/libmkl_sequential.a {0}/em64t/lib/libmkl_core.a -Wl,--end-group -lpthread -lm -ldl'.format(mkl_root).split()
     library_dirs = [
@@ -215,15 +240,70 @@ bp_module = Extension(
     language='c++'
 )
 
+boost_module = Extension(
+    extension_name,
+    sources=[
+        'src/gaussfft.cpp',
+        'src/gaussfftinterface.cpp',
+        'src/gaussfftinterface.cpp',
+        'src/gaussfftinterface.cpp',
+        'src/nrlib/geometry/unittests/box_test.cpp',
+        'src/nrlib/geometry/unittests/interpolation_test.cpp',
+        'src/nrlib/geometry/unittests/line_test.cpp',
+        'src/nrlib/iotools/bigfile.hpp',
+        'src/nrlib/iotools/fileio.cpp',
+        'src/nrlib/iotools/fileio.hpp',
+        'src/nrlib/iotools/stringtools.cpp',
+        'src/nrlib/iotools/unittests/bigfile_test.cpp',
+        'src/nrlib/iotools/unittests/bigfile_test.cpp',
+        'src/nrlib/iotools/unittests/fileio_binaryreadwrite_test.cpp',
+        'src/nrlib/iotools/unittests/fileio_binaryreadwrite_test.cpp',
+        'src/nrlib/iotools/unittests/fileio_binaryreadwrite_test.cpp',
+        'src/nrlib/iotools/unittests/fileio_parsefrombuffer_test.cpp',
+        'src/nrlib/iotools/unittests/fileio_parsefrombuffer_test.cpp',
+        'src/nrlib/iotools/unittests/fileio_parsefrombuffer_test.cpp',
+        'src/nrlib/iotools/unittests/fileio_writetobuffer_test.cpp',
+        'src/nrlib/iotools/unittests/fileio_writetobuffer_test.cpp',
+        'src/nrlib/iotools/unittests/stringtools_test.cpp',
+        'src/nrlib/pchheader.hpp',
+        'src/nrlib/segy/unittests/segy_findformat_test.cpp',
+        'src/nrlib/segy/unittests/segy_findformat_test.cpp',
+        'src/nrlib/segy/unittests/segygeometry_line_test.cpp',
+        'src/nrlib/segy/unittests/segygeometry_test.cpp',
+        'src/nrlib/segy/unittests/segyio_test.cpp',
+        'src/nrlib/segy/unittests/segyio_test.cpp',
+        'src/nrlib/statistics/unittests/kriging_test.cpp',
+        'src/nrlib/variogram/unittests/fftcovgrid_test.cpp',
+        'src/nrlib/variogram/unittests/gaussianfield_test.cpp',
+        'src/nrlib/well/unittests/laswell_test.cpp',
+        'src/nrlib/well/unittests/laswell_test.cpp',
+        'src/nrlib/well/unittests/norsarwell_test.cpp',
+        'src/nrlib/well/unittests/norsarwell_test.cpp',
+        'src/nrlib/well/unittests/rmswell_test.cpp',
+        'src/nrlib/well/unittests/rmswell_test.cpp',
+    ],
+    include_dirs=[
+        'boost',
+        'boost/python',
+        'boost/python/suite/indexing',
+        'boost/test',
+        'boost/endian',
+        'boost/test',
+        'boost/math/special_functions',
+    ],
+    libraries=['boost_filesystem', 'boost_numpy3', 'boost_python3', 'boost_system', ]
+)
+
 
 setup(
     name=extension_name,
-    version="0.6.1",
+    version="0.6.2",
     packages=find_packages(),
-    ext_modules=[bp_module],
+    ext_modules=[bp_module, boost_module],
     include_package_data=True,
     distclass=BinaryDistribution,
     package_data={
         'stage/lib': ['*.so', '*.dll', '*.dylib', '*.a'],
     },
+    zip_safe=False,
 )
