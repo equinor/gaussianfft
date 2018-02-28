@@ -5,57 +5,68 @@ DOCKER_REGISTRY = $(DOCKER_REGISTRY_SERVER)/sdp/nrlib
 IMAGE_NAME = $(DOCKER_REGISTRY)/$(NAME):$(VERSION)
 
 
-ifeq ($(CODE_DIR),)
-CODE_DIR := $(shell pwd)
-endif
+CODE_DIR ?= $(shell pwd)
+
 DOCKERFILE := $(CODE_DIR)/Dockerfile
 
-ifeq ($(PYTHON),)
-PYTHON := $(shell which python)
-endif
+PYTHON ?= $(shell which python)
+PIP ?= $(PYTHON) -m pip
+PY.TEST ?= $(PYTHON) -m pytest
 
-ifeq ($(DISTRIBUTION_DIR),)
-DISTRIBUTION_DIR := $(CODE_DIR)/dist
-endif
+DISTRIBUTION_DIR ?= $(CODE_DIR)/dist
 
-PIP := $(shell dirname $(PYTHON))/pip
+NRLIB_LINKING ?= static
 
 docker-image:
 	docker build --rm --tag $(IMAGE_NAME) --file $(DOCKERFILE) $(CODE_DIR)
 
-docker-push-image: docker-login docker-image
+docker-push-image: docker-image
 	docker push $(IMAGE_NAME)
 
 docker-login:
 	docker login $(DOCKER_REGISTRY_SERVER)
 
-install: install-requirements build
-	$(PIP) install -e $(CODE_DIR)
+install:
+	$(PIP) install -U $(DISTRIBUTION_DIR)/$(shell ls $(DISTRIBUTION_DIR))
 
 install-requirements:
-	$(PIP) install -r $(CODE_DIR)/requirements.txt
-
-#get-boost:
-#	curl -L https://sourceforge.net/projects/boost/files/boost/$(BOOST_VERSION)/$(BOOST_PREFIX).tar.bz2 -o $(BOOST_PREFIX).tar.bz2
-#	tar -xvf $(BOOST_PREFIX).tar.bz2
-#	# TODO: export CPLUS_INCLUDE_PATH=/Users/snis/Projects/APS/GUI/venv/include/python3.6m
-#	# TODO: ./bjam --with-python --with-filesystem --with-system python-debugging=off threading=multi variant=release link=shared <somwhere?>
+	$(PIP) install --user -r $(CODE_DIR)/requirements.txt || $(PIP) install -r $(CODE_DIR)/requirements.txt
 
 tests: pytest-instalation
-	pytest $(CODE_DIR)/tests
+	$(PY.TEST) $(CODE_DIR)/tests
 
 pytest-instalation:
-	[[ ! type pytest 2>/dev/null ]] && $(PIP) install pytest
+	type pytest 2>/dev/null || { $(PIP) install pytest; }
 
-build: build-boost-python
-	$(PYTHON) $(CODE_DIR)/setup.py bdist_wheel --relative --dist-dir $(DISTRIBUTION_DIR)
+build: install-requirements build-boost-python
+	NRLIB_LINKING=$(NRLIB_LINKING) \
+	CXXFLAGS="-fPIC" \
+	$(PYTHON) $(CODE_DIR)/setup.py build_ext --inplace build bdist_wheel --dist-dir $(DISTRIBUTION_DIR)
 
 build-boost-python:
-	$(CODE_DIR)/bootstrap.sh --prefix=$(shell pwd)/build --with-python=$(PYTHON) --with-icu
-	CPLUS_INCLUDE_PATH=$(shell dirname $(PYTHON))/../include/python3.6m \
-	$(CODE_DIR)/bjam --with-python --with-filesystem --with-system python-debugging=off threading=multi variant=release link=shared stage
+	CODE_DIR=$(CODE_DIR) \
+	  $(CODE_DIR)/bootstrap.sh --prefix=$(shell pwd)/build --with-python=$(PYTHON) --with-icu && \
+	CPLUS_INCLUDE_PATH=$(shell $(PYTHON) -c "from sysconfig import get_paths; print(get_paths()['include'])") \
+	  $(CODE_DIR)/bjam --with-python \
+	                   --with-filesystem \
+	                   --with-system \
+	                   cxxflags=-fPIC \
+	                   cflags=-fPIC \
+	                   python-debugging=off \
+	                   threading=multi \
+	                   variant=release \
+	                   link=$(NRLIB_LINKING) \
+	                   runtime-link=$(NRLIB_LINKING) \
+	                   stage
 
-#artifacts:
-#	mkdir -p $ARTIFACTS
-#	mv $CI_PROJECT_DIR/$GUI_FILE $ARTIFACTS
-#	du -sh $ARTIFACTS
+clean:
+	rm -rf build \
+	       nrlib.egg-info \
+	       dist \
+	       bin.v2 \
+	       .pytest_cache \
+	       project-config.jam* \
+	       b2 \
+	       bjam \
+	       bootstrap.log \
+	       *.so

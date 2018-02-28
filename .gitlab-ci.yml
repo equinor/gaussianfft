@@ -1,5 +1,5 @@
 image:
-  name: "git.statoil.no:4567/sdp/nrlib/nrlib:1.1.0"
+  name: "git.statoil.no:4567/sdp/nrlib/nrlib:1.1.1"
 
 variables:
   GIT_STRATEGY: "fetch"
@@ -9,42 +9,57 @@ variables:
   NO_PROXY:     "git.statoil.no"
   CODE_DIR:     "$CI_PROJECT_DIR"
   ARTIFACTS:    "$CODE_DIR/artifacts"
-  MAKE:         "make --makefile=$CODE_DIR/Makefile"
+  MAKE:         "make"
   RUN:          "/bin/bash -c"
+  BASE_DIST:    "dist"
 
 stages:
   - check requirements
-  - testing
-  - doc-tests  # https://docs.python.org/3/library/doctest.html
   - build
+  - testing
   - deploy
 
-check for vulnerabilities:
-  stage: check requirements
-  script:
-    - 'eval $MAKE safety-check'
-
-check for outdated requirements:
-  stage: check requirements
-  script:
-    - 'eval $MAKE check-requirements'
-
-linting:
-  stage: testing
-  script:
-    - 'eval $MAKE linting'
-  allow_failure: true
-
-unit testing:
+test:SDPsoft (3.6.1):
   stage: testing  # https://github.com/ksator/continuous-integration-with-python
+  variables:
+    DISTRIBUTION_DIR: $BASE_DIST/nrlib-python3.6.1
+    PYTHON: "/prog/sdpsoft/python3.6.1/bin/python3"
   script:
-    - 'eval $MAKE unit-tests'
+    - 'eval $MAKE install'
+    - 'eval $MAKE tests'
+  dependencies:
+    - build:SDPsoft (3.6.1)
 
-build NRlib for RMS 10.1.1:
+test:RMS 10.1.1 (3.4.2):
+  stage: testing  # https://github.com/ksator/continuous-integration-with-python
+  variables:
+    DISTRIBUTION_DIR: $BASE_DIST/nrlib-RMS-10.1.1
+    ROXENV: "/prog/roxar/rms/versions/10.1.1/linux-amd64-gcc_4_4-release/bin/roxenv"
+    PYTHON: "/prog/roxar/rms/versions/10.1.1/linux-amd64-gcc_4_4-release/bin/python"
+  script:
+    - 'eval $ROXENV $MAKE install'
+    - 'eval $ROXENV $MAKE tests'
+  dependencies:
+    - build:RMS 10.1.1 (3.4.2)
+
+build:RMS 10.1.1 (3.4.2):
   stage: build
   variables:
-    DISTRIBUTION_DIR: nrlib-RMS-10.1.1
+    DISTRIBUTION_DIR: $BASE_DIST/nrlib-RMS-10.1.1
+    ROXENV: "/prog/roxar/rms/versions/10.1.1/linux-amd64-gcc_4_4-release/bin/roxenv"
     PYTHON: "/prog/roxar/rms/versions/10.1.1/linux-amd64-gcc_4_4-release/bin/python"
+  script:
+    - 'eval $ROXENV $MAKE build'
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - '$DISTRIBUTION_DIR'
+
+build:SDPsoft (3.6.1):
+  stage: build
+  variables:
+    DISTRIBUTION_DIR: $BASE_DIST/nrlib-python3.6.1
+    PYTHON: "/prog/sdpsoft/python3.6.1/bin/python3"
   script:
     - 'eval $MAKE build'
   artifacts:
@@ -52,25 +67,15 @@ build NRlib for RMS 10.1.1:
     paths:
       - '$DISTRIBUTION_DIR'
 
-build NRlib for SDPsoft:
-  stage: build
-  script:
-    - 'eval $MAKE build'
-  artifacts:
-    expire_in: 1 week
-    paths:
-      - artifacts/
-
 deploy release candidate:
   stage: deploy
   script:
     - ""  # TODO
   only:
    - master
-
-deploy develop:
-  stage: deploy
-  script:
-    - "" # TODO
-  only:
-    - develop
+  dependencies:
+    - build:RMS 10.1.1 (3.4.2)
+    - build:SDPsoft (3.6.1)
+  artifacts:
+    paths:
+      - '$BASE_DIST'

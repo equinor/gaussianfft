@@ -1,5 +1,5 @@
 FROM centos:6
-LABEL version="1.1.0" \
+LABEL version="1.1.1" \
       maintainer="snis@statoil.com" \
       description="This is the Docker image for building, and testing nrlib." \
       "com.statoil.vendor"="Statoil ASA"
