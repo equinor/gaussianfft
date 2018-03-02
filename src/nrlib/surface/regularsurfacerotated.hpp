@@ -1,4 +1,4 @@
-// $Id: regularsurfacerotated.hpp 1730 2017-12-20 16:06:05Z hgolsen $
+// $Id: regularsurfacerotated.hpp 1751 2018-02-09 08:06:20Z hgolsen $
 
 // Copyright (c)  2011, Norwegian Computing Center
 // All rights reserved.
@@ -458,10 +458,10 @@ void RegularSurfaceRotated<A>::GetXY(size_t index, double & x, double & y) const
 template <class A>
 RegularSurface<A> RegularSurfaceRotated<A>::ResampleSurface() const
 {
-  double dx = surface_.GetDX()*cos(angle_);
-  double dy = surface_.GetDY()*cos(angle_);
+  double dx = surface_.GetDX();
+  double dy = surface_.GetDY();
   int nx = int((x_max_-x_min_)/dx) + 1;
-  int ny = int((y_max_-y_min_)/dy) +1;
+  int ny = int((y_max_-y_min_)/dy) + 1;
   RegularSurface<A> surf(x_min_, y_min_, x_max_-x_min_, y_max_-y_min_, nx, ny, 0.0);
   surf.SetMissingValue(GetMissingValue());
   A value;

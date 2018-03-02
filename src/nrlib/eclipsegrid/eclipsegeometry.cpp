@@ -1,4 +1,4 @@
-// $Id: eclipsegeometry.cpp 1461 2017-04-03 15:18:25Z eyaker $
+// $Id: eclipsegeometry.cpp 1757 2018-02-26 08:14:44Z eyaker $
 
 // Copyright (c)  2011, Norwegian Computing Center
 // All rights reserved.
@@ -958,13 +958,30 @@ void EclipseGeometry::ReadCoord(std::ifstream& in_file)
   Point pt1, pt2;
   for (j = 0; j <= nj_; j++){
     for (i = 0; i <= ni_; i++){
-      pt1.x = data[6*i + 6*j*(ni_+1)];
+      pt1.x = data[6*i +     6*j*(ni_+1)];
       pt1.y = data[6*i + 1 + 6*j*(ni_+1)];
       pt1.z = data[6*i + 2 + 6*j*(ni_+1)];
       pt2.x = data[6*i + 3 + 6*j*(ni_+1)];
       pt2.y = data[6*i + 4 + 6*j*(ni_+1)];
       pt2.z = data[6*i + 5 + 6*j*(ni_+1)];
       pillars_(i,j).SetPt(pt1, pt2, true, true);
+    }
+  }
+}
+
+void EclipseGeometry::SetCoord(const std::vector<double> & data)
+{
+  size_t i, j;
+  Point pt1, pt2;
+  for (j = 0; j <= nj_; j++) {
+    for (i = 0; i <= ni_; i++) {
+      pt1.x = data[6*i     + 6*j*(ni_+1)];
+      pt1.y = data[6*i + 1 + 6*j*(ni_+1)];
+      pt1.z = data[6*i + 2 + 6*j*(ni_+1)];
+      pt2.x = data[6*i + 3 + 6*j*(ni_+1)];
+      pt2.y = data[6*i + 4 + 6*j*(ni_+1)];
+      pt2.z = data[6*i + 5 + 6*j*(ni_+1)];
+      pillars_(i, j).SetPt(pt1, pt2, true, true);
     }
   }
 }

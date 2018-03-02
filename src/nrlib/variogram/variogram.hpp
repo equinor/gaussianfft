@@ -1,4 +1,4 @@
-// $Id: variogram.hpp 1360 2016-09-07 09:44:25Z vegard $
+// $Id: variogram.hpp 1756 2018-02-23 10:50:34Z vegard $
 
 // Copyright (c)  2011, Norwegian Computing Center
 // All rights reserved.
@@ -104,7 +104,10 @@ public:
   double GetCovpoint(double x1, double y1, double x2, double y2) const { return var_*GetCorr(x2-x1, y2-y1);}
   /// Covariance function with points as input in 1D.
   double GetCovpoint(double x1, double x2) const { return var_*GetCorr(x2-x1);}
-
+  /// Defines the minimum range-to-grid size ratio for valid simulation
+  /// given the specific variogram. Should be a constant per variogram
+  /// type.
+  virtual double GetMinimumRangeToGridRatio() const = 0;
 protected:
   /// Defines 1D correlation function. Different for every variogram.
   virtual double Corr1D(double dist) const = 0 ;

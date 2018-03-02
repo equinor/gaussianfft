@@ -1,4 +1,4 @@
-// $Id: segy.cpp 1742 2018-01-24 20:18:12Z perroe $
+// $Id: segy.cpp 1748 2018-02-07 14:20:45Z perroe $
 
 // Copyright (c)  2011, Norwegian Computing Center
 // All rights reserved.
@@ -1567,9 +1567,11 @@ SegY::FindGridGeometry(bool only_ilxl, bool keep_header, bool remove_bogus_trace
     traces_.resize(n_traces_);
     for (i = 0; i < n_traces_; i++)
     {
-      double progress = static_cast<double>(i) / n_traces_;
-      NRLib::LogKit::UpdateProgress(progress, "Reading header " +
-                                    NRLib::ToString(i) + " of " + NRLib::ToString(n_traces_));
+      if ((i + 1) % 20000 == 0) {
+        double progress = static_cast<double>(i + 1) / n_traces_;
+        NRLib::LogKit::UpdateProgress(progress, "Reading header " +
+                                      NRLib::ToString(i + 1) + " of " + NRLib::ToString(n_traces_));
+      }
       try {
         if (file_.eof() == false)
         {
@@ -1588,6 +1590,9 @@ SegY::FindGridGeometry(bool only_ilxl, bool keep_header, bool remove_bogus_trace
         throw(Exception("In trace number " + ToString(i) + ":\n" + e.what()));
       }
     }
+
+    NRLib::LogKit::UpdateProgress(1.0, "Reading header " +
+                                  NRLib::ToString(n_traces_) + " of " + NRLib::ToString(n_traces_));
 
     if (remove_bogus_traces)
       SetBogusILXLUndefined(traces_);

@@ -1,4 +1,4 @@
-// $Id: eclipsegrid.cpp 1521 2017-06-20 11:59:14Z eyaker $
+// $Id: eclipsegrid.cpp 1758 2018-02-27 11:42:24Z eyaker $
 
 // Copyright (c)  2011, Norwegian Computing Center
 // All rights reserved.
@@ -109,6 +109,11 @@ void EclipseGrid::AddParameter(const std::string& parameter_name, double val)
   continuous_parameters_[parameter_name].Resize(GetNI(), GetNJ(), GetNK(), val);
 }
 
+void EclipseGrid::AddParameter(const std::string& parameter_name, NRLib::Grid<double> grid)
+{
+  assert(!HasParameter(parameter_name));
+  continuous_parameters_[parameter_name] = grid;
+}
 
 void EclipseGrid::AddGridRefinement(const EclipseCarFin& refinement)
 {
@@ -468,6 +473,12 @@ void EclipseGrid::WriteKeyword(std::ofstream& out_file, const std::string& keywo
   else if (keyword == "AMALGAM") {
     WriteRefinementGroups(out_file);
   }
+  else if (keyword == "EDITNNC") {
+    EclipseEditNNC::WriteEditNNC(out_file, editNNC_);
+  }
+  else if (keyword == "MULTIPLY") {
+    EclipseTransMult::WriteMultiply(out_file, trans_mult_);
+  }
   else {
     ParameterConstIterator param_it = continuous_parameters_.find(keyword);
     if (param_it != continuous_parameters_.end()) {
@@ -509,6 +520,12 @@ void EclipseGrid::WriteRemainingParameters(const std::string           & file_na
 
   if (parameters_written.find("FAULTS") == parameters_written.end())
     WriteFaults(out_file);
+
+  if (parameters_written.find("EDITNNC") == parameters_written.end())
+    EclipseEditNNC::WriteEditNNC(out_file, editNNC_);
+
+  if (parameters_written.find("MULTIPLY") == parameters_written.end())
+    EclipseTransMult::WriteMultiply(out_file, trans_mult_);
 
   ParameterConstIterator it;
   for (it = ParametersBegin() ; it != ParametersEnd(); ++it) {

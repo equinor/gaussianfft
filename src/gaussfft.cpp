@@ -30,12 +30,20 @@ std::vector<size_t> GaussFFT::FindGridSizeAfterPadding(NRLib::Variogram * variog
                                                        size_t             nz,
                                                        double             dz)
 {
-  std::vector<size_t> out;
-  out.push_back(NRLib::FindGaussianFieldPadding(nx, variogram->GetRangeX(), dx) + nx);
-  if (ny > 1) {
-    out.push_back(NRLib::FindGaussianFieldPadding(ny, variogram->GetRangeY(), dy) + ny);
-    if (nz > 1) {
-      out.push_back(NRLib::FindGaussianFieldPadding(nz, variogram->GetRangeZ(), dz) + nz);
+  std::vector<size_t> out = NRLib::FindNDimPadding(*variogram,
+                                                   nx,
+                                                   dx,
+                                                   ny,
+                                                   dy,
+                                                   nz,
+                                                   dz);
+  // Add simulation grid size to that output reflects final grid size
+  // and not padding only
+  out[0] += nx;
+  if (out.size() > 1) {
+    out[1] += ny;
+    if (out.size() > 2) {
+      out[2] += nz;
     }
   }
   return out;

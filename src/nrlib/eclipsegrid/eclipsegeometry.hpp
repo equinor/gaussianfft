@@ -1,4 +1,4 @@
-// $Id: eclipsegeometry.hpp 1460 2017-04-03 14:28:35Z eyaker $
+// $Id: eclipsegeometry.hpp 1757 2018-02-26 08:14:44Z eyaker $
 
 // Copyright (c)  2011, Norwegian Computing Center
 // All rights reserved.
@@ -153,6 +153,7 @@ public:
   void ReadSpecGrid(std::ifstream& in_file);
   void ReadZCorn   (std::ifstream& in_file);
   void ReadCoord   (std::ifstream& in_file);
+  void SetCoord    (const std::vector<double> & data);
   void ReadActNum  (std::ifstream& in_file);
 
   double GetDZ(size_t i, size_t j, size_t k) const;
@@ -163,6 +164,12 @@ public:
   /// Finds the top z-value in cell (i,j,k) if at least one active cell in column (i,j)
   double FindZTopInCellActiveColumn(size_t i, size_t j, size_t k, bool & found) const;
 
+  /// Initialize the active_pillars_ grid.
+  void InitializeActivePillars();
+
+  /// Calculates the index in zcoord_-vector for cell (i, j, k), corner (a, b, c).
+  inline size_t FindZCornerIndex(size_t i, size_t j, size_t k, size_t a, size_t b, size_t c) const;
+
 private:
   // ----------------- PRIVATE FUNCTIONS ---------------------------
   /// Finds the z-value at the pillar on top of the grid
@@ -170,9 +177,6 @@ private:
 
   /// Finds the z-value at the pillar on bottom of the grid
   double FindZBotAtPillar(size_t i, size_t j, bool & found) const;
-
-  /// Calculates the index in zcoord_-vector for cell (i, j, k), corner (a, b, c).
-  inline size_t FindZCornerIndex(size_t i, size_t j, size_t k, size_t a, size_t b, size_t c) const;
 
   /// Find column (i and j coordinate for cell), containing the point (x, y, z).
   bool GetCellIndex_ij(double x, double y, double z, size_t& i, size_t& j) const;
@@ -225,9 +229,6 @@ private:
                     size_t start_i,
                     size_t start_j);
 
-  /// Initialize the active_pillars_ grid.
-  void InitializeActivePillars();
-
   ///Function used by FindLayerSurface to fill in values to z_surface in the area inside the (NB) four corners (listed clockwise)
   void TriangularFillInZValuesInArea(NRLib::Grid2D<double> &z_surface,
                                      NRLib::Grid2D<int> &is_set,
@@ -249,7 +250,6 @@ private:
   ///Function used by FindLayerSurface to fill in (average values of neighbour elements) to z_surface where is_set==false
   void FillInZValuesByAveraging(NRLib::Grid2D<double> &z_surface,
                                 NRLib::Grid2D<int> &is_set) const;
-
 
   // --------------------- MEMBER VARIABLES -------------------------
 
@@ -357,7 +357,6 @@ Point EclipseGeometry::FindCornerPoint(size_t i, size_t j, size_t k, size_t a, s
   return FindPointAtPillar(pillar_i, pillar_j, z);
 }
 
-
 size_t EclipseGeometry::FindZCornerIndex(size_t i, size_t j, size_t k, size_t a, size_t b, size_t c) const
 {
   assert(i < ni_);
@@ -367,7 +366,7 @@ size_t EclipseGeometry::FindZCornerIndex(size_t i, size_t j, size_t k, size_t a,
   assert(b == 0 || b == 1);
   assert(c == 0 || c == 1);
 
-  return (2*i + a + 2*ni_*(2*j + b) + 4*ni_*nj_*(2*k + c));
+  return (2 * i + a + 2 * ni_*(2 * j + b) + 4 * ni_*nj_*(2 * k + c));
 }
 
 }  //  end of namespace NRLib

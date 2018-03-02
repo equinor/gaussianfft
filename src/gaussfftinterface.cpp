@@ -50,7 +50,7 @@ const std::string padding_docstring =
   ">>> v = nrlib.variogram('spherical', 250.0, 125.0)\n"
   ">>> nx, ny, dx, dy = 100, 100, 10.0, 10.0\n"
   ">>> list(nrlib.simulation_size(v, nx, dx, ny, dy))\n"
-  "[125, 112]\n"
+  "[126, 113]\n"
 ;
 
 const std::string variogram_docstring =
@@ -116,17 +116,16 @@ const std::string simulate_docstring =
   "\n"
   "Returns\n"
   "-------\n"
-  "out: DoubleVector\n"
-  "    Bindings to a C++ vector of double precision floats. The vector is iterable\n"
-  "    and can thus be transformed into a numpy array directly. The result is always\n"
-  "    a 1D vector, using Fortran ordering if the simulation is multi-dimensional.\n"
+  "out: numpy.ndarray\n"
+  "    One-dimensional array with the simulation result. Uses Fortran ordering if the\n"
+  "    simulation is multi-dimensional.\n"
   "\n"
   "Examples\n"
   "--------\n"
   ">>> v = nrlib.variogram('gaussian', 250.0, 125.0)\n"
   ">>> nx, dx = 10, 100.0\n"
   ">>> z = nrlib.simulate(v, nx, dx)\n"
-  ">>> np.array(z)\n"
+  ">>> z\n"
   "array([-1.29924289, -1.51172913, -1.2935657 , -0.80779427,  0.22217236,\n"
   "        1.26740091,  0.66094991, -0.77396656,  0.01523847,  0.44392584])\n"
   "\n"
@@ -135,7 +134,7 @@ const std::string simulate_docstring =
   ">>> nx, ny = 100, 200\n"
   ">>> dx, dy = 10.0, 5.0\n"
   ">>> z = nrlib.simulate(v, nx, dx, ny, dy)\n"
-  ">>> z_np = np.array(z).reshape((nx, ny), order='F')\n"
+  ">>> z_np = z.reshape((nx, ny), order='F')\n"
   ">>> z_np.shape\n"
   "(100,200)\n"
 ;
@@ -160,7 +159,7 @@ const std::string advanced_simulate_docstring =
   "\n"
   "Returns\n"
   "-------\n"
-  "out: DoubleVector\n"
+  "out: numpy.ndarray\n"
   "    See nrlib.simulate.\n"
 ;
 

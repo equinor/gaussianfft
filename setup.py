@@ -1,8 +1,8 @@
 import glob
-import platform
 import os
+import platform
 
-from setuptools import setup, Extension, find_packages, Distribution
+from setuptools import Distribution, Extension, find_packages, setup
 
 """ Installation Instructions """
 # Linux:
@@ -221,22 +221,22 @@ bp_module = Extension(
     extension_name,
     sources=all_source_files,
     define_macros=[
-      ('FLENS_FIRST_INDEX', '0'),
-      ('MKL', None),
+        ('FLENS_FIRST_INDEX', '0'),
+        ('MKL', None),
     ],
     include_dirs=[
-      boost_root,
-      os.path.join(boost_root, 'include'),
-      os.path.abspath('./src'),
-    ]
-    + fftw_dirs,
+                     boost_root,
+                     os.path.join(boost_root, 'include'),
+                     os.path.abspath('./src'),
+                 ]
+                 + fftw_dirs,
     library_dirs=library_dirs,
     libraries=link_libraries,
     extra_compile_args=compile_args,
     extra_link_args=[
-      # '/VERBOSE:lib'    # For Debug on Windows
-    ]
-    + linker_args,
+                        # '/VERBOSE:lib'    # For Debug on Windows
+                    ]
+                    + linker_args,
     language='c++'
 )
 
@@ -297,7 +297,7 @@ boost_module = Extension(
 
 setup(
     name=extension_name,
-    version="0.6.2",
+    version="1.0",
     packages=find_packages(),
     ext_modules=[bp_module, boost_module],
     include_package_data=True,
