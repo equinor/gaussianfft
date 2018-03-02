@@ -1,4 +1,4 @@
-// $Id: pointset.hpp 1068 2012-09-18 11:21:53Z perroe $
+// $Id: pointset.hpp 1747 2018-02-07 14:19:04Z perroe $
 
 // Copyright (c)  2011, Norwegian Computing Center
 // All rights reserved.
@@ -40,7 +40,7 @@ class PointSet {
 public:
   enum FileFormat{
     UnknownFormat,
-    RmsInternalPoints,  ///< RMS internal points format for tagged points.
+    RmsInternalPoints,   ///< Roxar attributes text format for tagged points.
     RoxarText,           ///< 3 columns: X, Y and Z. Delimiter: 999.0 999.0, 999.0
     JasonXYZ,            ///< 5 columns: IL, XL, X, Y and Z
     GeneralXYZ,          ///< 3 columns: X, Y and Z. No header. No delimiter.

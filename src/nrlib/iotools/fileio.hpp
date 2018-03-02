@@ -1,4 +1,4 @@
-// $Id: fileio.hpp 1594 2017-07-06 14:06:55Z perroe $
+// $Id: fileio.hpp 1755 2018-02-22 08:43:04Z aarnes $
 
 // Copyright (c)  2011, Norwegian Computing Center
 // All rights reserved.
@@ -886,24 +886,29 @@ I NRLib::ReadBinaryFloatArray(F& stream,
     throw Exception("Error reading from stream (h).");
   }
 
+  float * f;
   switch (number_representation) {
   case END_BIG_ENDIAN:
-    for (size_t i = 0; i < n; ++i)
+    for (size_t i = 0; i < n; ++i){
       boost::endian::big_to_native_inplace(buffer[i]);
+      f = (float *)(&(buffer[i]));                                            //Cast byte pattern from int to float
+      *begin = static_cast<typename std::iterator_traits<I>::value_type>(*f); //Get actual value in correct type
+      ++begin;
+    }
     break;
   case END_LITTLE_ENDIAN:
-    for (size_t i = 0; i < n; ++i)
+    for (size_t i = 0; i < n; ++i) {
       boost::endian::little_to_native_inplace(buffer[i]);
+      f = (float *)(&(buffer[i]));                                            //Cast byte pattern from int to float
+      *begin = static_cast<typename std::iterator_traits<I>::value_type>(*f); //Get actual value in correct type
+      ++begin;
+    }
     break;
   default:
     assert(false); // Invalid endianess descriptor
   }
-
-  std::memcpy(&begin[0], &buffer[0], 4 * n);
-
   return begin;
 }
-
 
 template <typename F>
 void NRLib::WriteBinaryDouble(F& stream,

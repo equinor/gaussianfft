@@ -1,4 +1,4 @@
-// $Id: variogramtypes.hpp 1360 2016-09-07 09:44:25Z vegard $
+// $Id: variogramtypes.hpp 1756 2018-02-23 10:50:34Z vegard $
 
 // Copyright (c)  2011, Norwegian Computing Center
 // All rights reserved.
@@ -53,6 +53,7 @@ public:
   virtual Variogram *Clone() const {return new ConstVario(*this);}
   virtual std::string    GetName()         const {return "constant";}
 
+  virtual double GetMinimumRangeToGridRatio() const { return 1.0; }
 protected:
   double Corr1D(double) const {return 1.0;}
 };
@@ -81,7 +82,7 @@ public:
   virtual Variogram *Clone() const {return new ExpVario(*this);}
   virtual std::string    GetName()         const {return "exponential";}
 
-
+  virtual double GetMinimumRangeToGridRatio() const { return 2.33; }
 protected:
   virtual double Corr1D(double dist) const {
                          return exp(-3.0*dist);}
@@ -110,6 +111,7 @@ public:
   virtual Variogram *Clone() const {return new SphVario(*this);}
   virtual std::string    GetName()      const {return "spherical";}
 
+  virtual double GetMinimumRangeToGridRatio() const { return 1.92; }
 protected:
   virtual double Corr1D(double dist) const
   {
@@ -142,7 +144,8 @@ public:
   virtual Variogram *Clone() const {return new GauVario(*this);}
   virtual std::string    GetName()      const {return "Gaussian";}
 
-  protected:
+  virtual double GetMinimumRangeToGridRatio() const { return 6.67; }
+protected:
   virtual double Corr1D(double dist) const
   { return std::exp(-3.0*dist*dist); }
 };
@@ -170,7 +173,11 @@ public:
   virtual std::string  GetName()      const {return "general exponential";}
   virtual Variogram *Clone() const {return new GenExpVario(*this);}
 
-
+  /// If power == 1.5, the ratio is 3.23, and power == 2 is the same
+  /// as Gaussian (6.67). For simplicity, perform linear interpolation
+  /// if power is between these two. Also, 3.23 is raised to 4.0 in
+  /// case linear interpolation is too optimistic.
+  virtual double GetMinimumRangeToGridRatio() const { return 4.0 + (power_ - 1.5) * 5.34; }
 protected:
   virtual double Corr1D(double dist) const {
     return std::exp(-3.0 * std::pow(dist,power_));}
@@ -200,6 +207,7 @@ public:
   virtual std::string  GetName()      const { return "matern 3/2"; }
   virtual Variogram *Clone() const { return new Matern32Vario(*this); }
 
+  virtual double GetMinimumRangeToGridRatio() const { return 4.0; }
 protected:
   virtual double Corr1D(double dist) const {
     const double sd = 4.744 * dist; // distance to ensure 0.05 correlation at range
@@ -230,6 +238,7 @@ public:
   virtual std::string  GetName()      const { return "matern 5/2"; }
   virtual Variogram *Clone() const { return new Matern52Vario(*this); }
 
+  virtual double GetMinimumRangeToGridRatio() const { return 4.76; }
 protected:
   virtual double Corr1D(double dist) const {
     const double sd = 5.918 * dist; // distance to ensure 0.05 correlation at range
@@ -260,6 +269,7 @@ public:
   virtual std::string  GetName()      const { return "matern 7/2"; }
   virtual Variogram *Clone() const { return new Matern72Vario(*this); }
 
+  virtual double GetMinimumRangeToGridRatio() const { return 5.26; }
 protected:
   virtual double Corr1D(double dist) const {
     const double sd = 6.877 * dist; // distance to ensure 0.05 correlation at range

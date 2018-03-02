@@ -1,4 +1,4 @@
-// $Id: nrlib_flens.hpp 1665 2017-08-09 08:00:48Z eyaker $
+// $Id: nrlib_flens.hpp 1750 2018-02-08 12:52:55Z fjellvoll $
 
 // Copyright (c)  2011, Norwegian Computing Center
 // All rights reserved.
@@ -41,34 +41,34 @@ namespace NRLib {
   typedef flens::DenseVector<flens::Array<std::complex<double> > > ComplexVector;
 
   typedef flens::SyMatrix<flens::FullStorage<double, flens::ColMajor> > SymmetricMatrix;
-  typedef flens::SyMatrix<flens::FullStorage<float,  flens::ColMajor> > SymmetricFloatMatrix;
+  typedef flens::SyMatrix<flens::FullStorage<float, flens::ColMajor> > SymmetricFloatMatrix;
 
   typedef flens::TrMatrix<flens::FullStorage<double, flens::ColMajor> > TriangularMatrix;
 
+  template <typename FS> void Invert(flens::GeMatrix<FS> &A);
   // Use Invert instead!!!
   template <typename FS> void invert(flens::GeMatrix<FS> &A) { return Invert(A); }
-  template <typename FS> void Invert(flens::GeMatrix<FS> &A);
 
   template <typename FS> void TriangleFactorize(flens::GeMatrix<FS> & A,
-                                                flens::DenseVector<flens::Array<int> > & p);
+    flens::DenseVector<flens::Array<int> > & p);
 
   template <typename FS> void TriangleInvert(flens::GeMatrix<FS> & A,
-                                             flens::DenseVector<flens::Array<int> > & p);
+    flens::DenseVector<flens::Array<int> > & p);
 
   template <typename T>  void SetMatrixFrom2DArray(Matrix &  A,
-                                                   T      ** F);
+    T      ** F);
 
   template <typename T>  void Set2DArrayFromMatrix(const Matrix &  A,
-                                                   T            ** F);
+    T            ** F);
 
   void            InitializeMatrix(Matrix           & A,
-                                   double             value);
+    double             value);
 
   void            InitializeComplexMatrix(ComplexMatrix         & A,
-                                          std::complex<double>    value);
+    std::complex<double>    value);
 
   void            InitializeSymmetricMatrix(SymmetricMatrix     & A,
-                                            double                value);
+    double                value);
 
   double          FindLargestElement(const NRLib::Vector & v);
 
@@ -78,31 +78,31 @@ namespace NRLib {
   Matrix          IdentityMatrix(int n);
 
   void            Sort3x3(Vector & Eval,
-                          Matrix & Evec);
+    Matrix & Evec);
 
   /// \brief Solve the equation system Ax = b, where A is triangular
   ///        matrix using LU factorization
   /// \throw Exception if A is singular
   void TriangularSolve(const TriangularMatrix & A,
-                       const Vector           & b,
-                       Vector                 & x);
+    const Vector           & b,
+    Vector                 & x);
 
   void TriangularSolve(const SymmetricMatrix  & A,
-                       const Vector           & b,
-                       Vector                 & x);
+    const Vector           & b,
+    Vector                 & x);
 
   /// \brief Solves the equation system Ax = b, where A is symmetric
   ///        and positive definite using Cholesky factorization.
   /// \throw Exception if A is not positive definite.
   void CholeskySolve(const SymmetricMatrix & A,
-                     const Vector          & b,
-                     Vector                & x);
+    const Vector          & b,
+    Vector                & x);
 
   void CholeskySolve(const SymmetricMatrix & A,
-                     Matrix                & B); // This is also where the solution is stored
+    Matrix                & B); // This is also where the solution is stored
 
   void CholeskySolveComplex(ComplexMatrix & A,
-                            ComplexMatrix & B); // This is also where the solution is stored
+    ComplexMatrix & B); // This is also where the solution is stored
 
   void CholeskyInvert(SymmetricMatrix & A);
 
@@ -112,16 +112,16 @@ namespace NRLib {
   void CholeskyDeFactorize(SymmetricMatrix & A);
 
   void ComputeEigenVectors(Matrix & A,
-                           Vector & eigen_values,
-                           Matrix & eigen_vectors);
+    Vector & eigen_values,
+    Matrix & eigen_vectors);
 
   void ComputeEigenVectorsComplex(ComplexMatrix        & A,
-                                  ComplexVector        & eigen_values,
-                                  ComplexMatrix        & eigen_vectors);
+    ComplexVector        & eigen_values,
+    ComplexMatrix        & eigen_vectors);
 
   void ComputeEigenVectorsSymmetric(const SymmetricMatrix & A,
-                                    Vector                & eigen_values,
-                                    Matrix                & eigen_vectors);
+    Vector                & eigen_values,
+    Matrix                & eigen_vectors);
 
   /// \brief File format for input and output of marixes and vectors.
   enum LinalgFileFormat {
@@ -131,151 +131,151 @@ namespace NRLib {
 
   /// \brief Read matrix from file.
   Matrix ReadMatrixFromFile(const std::string & filename,
-                            int                 nRows,
-                            int                 nCols,
-                            LinalgFileFormat    format = MatrixAscii);
+    int                 nRows,
+    int                 nCols,
+    LinalgFileFormat    format = MatrixAscii);
 
   Vector ReadVectorFromFile(const std::string & filename,
-                            int                 n,
-                            LinalgFileFormat    format = MatrixAscii);
+    int                 n,
+    LinalgFileFormat    format = MatrixAscii);
 
   void   Adjoint(const ComplexMatrix & in,
-                 ComplexMatrix       & out);
+    ComplexMatrix       & out);
 
   void   WriteComplexVector(const std::string   & header,
-                            const ComplexVector & c);
+    const ComplexVector & c);
 
   void   WriteComplexMatrix(const std::string   & header,
-                            const ComplexMatrix & C);
+    const ComplexMatrix & C);
 
   void   WriteMatrix(const std::string & header,
-                     const Matrix      & C);
+    const Matrix      & C);
 
   /// \brief Write matrix to file.
   void WriteMatrixToFile(const std::string & filename,
-                         const Matrix      & matrix,
-                         LinalgFileFormat    format = MatrixAscii);
+    const Matrix      & matrix,
+    LinalgFileFormat    format = MatrixAscii);
 
   /// \brief Write symmetric matrix to file.
   void WriteMatrixToFile(const std::string     & filename,
-                         const SymmetricMatrix & matrix,
-                         LinalgFileFormat        format = MatrixAscii);
+    const SymmetricMatrix & matrix,
+    LinalgFileFormat        format = MatrixAscii);
 
 
   void WriteVectorToFile(const std::string & filename,
-                         const Vector      & vector,
-                         LinalgFileFormat    format = MatrixAscii);
+    const Vector      & vector,
+    LinalgFileFormat    format = MatrixAscii);
 
-// ================== TEMPLATE FUNCTION IMPLEMENTATION ======================
+  // ================== TEMPLATE FUNCTION IMPLEMENTATION ======================
 
-template <typename FS>
-void Invert(flens::GeMatrix<FS> &A)
-{
-  assert(A.numRows()==A.numCols());
+  template <typename FS>
+  void Invert(flens::GeMatrix<FS> &A)
+  {
+    assert(A.numRows() == A.numCols());
 
-  flens::DenseVector<flens::Array<int> > p(A.numRows());
+    flens::DenseVector<flens::Array<int> > p(A.numRows());
 
-  int info = flens::trf(A, p);
+    int info = flens::trf(A, p);
 
-  if (info != 0) {
-    std::ostringstream oss;
-    if (info < 0) {
-      oss << "Internal FLENS/Lapack error: Error in argument " << -info
-        << " of xxtrf call.";
+    if (info != 0) {
+      std::ostringstream oss;
+      if (info < 0) {
+        oss << "Internal FLENS/Lapack error: Error in argument " << -info
+          << " of xxtrf call.";
+      }
+      else {  // info > 0
+        oss << "Error in triangle factorization: The matrix is singular with its " << info
+          << " diagonal element exactly equal to zero.";
+      }
+      throw Exception(oss.str());
     }
-    else {  // info > 0
-      oss << "Error in triangle factorization: The matrix is singular with its " << info
-        << " diagonal element exactly equal to zero.";
+
+    info = flens::tri(A, p);
+
+    if (info != 0) {
+      std::ostringstream oss;
+      if (info < 0) {
+        oss << "Internal FLENS/Lapack error: Error in argument " << -info
+          << " of xxtri call.";
+      }
+      else {  // info > 0
+        oss << "Error in triangle inversion: The matrix is singular with its " << info
+          << " diagonal element exactly equal to zero.";
+      }
+      throw Exception(oss.str());
     }
-    throw Exception(oss.str());
+
   }
 
-  info = flens::tri(A, p);
+  template <typename FS>
+  void TriangleFactorize(flens::GeMatrix<FS> &A, flens::DenseVector<flens::Array<int> > &p)
+  {
+    assert(A.numRows() == A.numCols());
 
-  if (info != 0) {
-    std::ostringstream oss;
-    if (info < 0) {
-      oss << "Internal FLENS/Lapack error: Error in argument " << -info
-        << " of xxtri call.";
+    int info = flens::trf(A, p);
+
+    if (info != 0) {
+      std::ostringstream oss;
+      if (info < 0) {
+        oss << "Internal FLENS/Lapack error: Error in argument " << -info
+          << " of xxtrf call.";
+      }
+      else {  // info > 0
+        oss << "Error in triangle factorization: The matrix is singular with its " << info
+          << " diagonal element exactly equal to zero.";
+      }
+      throw Exception(oss.str());
     }
-    else {  // info > 0
-      oss << "Error in triangle inversion: The matrix is singular with its " << info
-        << " diagonal element exactly equal to zero.";
-    }
-    throw Exception(oss.str());
+
   }
 
-}
+  template <typename FS>
+  void TriangleInvert(flens::GeMatrix<FS> &A, flens::DenseVector<flens::Array<int> > &p)
+  {
+    assert(A.numRows() == A.numCols());
 
-template <typename FS>
-void TriangleFactorize(flens::GeMatrix<FS> &A, flens::DenseVector<flens::Array<int> > &p)
-{
-  assert(A.numRows()==A.numCols());
+    int info = flens::tri(A, p);
 
-  int info = flens::trf(A, p);
-
-  if (info != 0) {
-    std::ostringstream oss;
-    if (info < 0) {
-      oss << "Internal FLENS/Lapack error: Error in argument " << -info
-        << " of xxtrf call.";
+    if (info != 0) {
+      std::ostringstream oss;
+      if (info < 0) {
+        oss << "Internal FLENS/Lapack error: Error in argument " << -info
+          << " of xxtri call.";
+      }
+      else {  // info > 0
+        oss << "Error in triangle inversion: The matrix is singular with its " << info
+          << " diagonal element exactly equal to zero.";
+      }
+      throw Exception(oss.str());
     }
-    else {  // info > 0
-      oss << "Error in triangle factorization: The matrix is singular with its " << info
-        << " diagonal element exactly equal to zero.";
-    }
-    throw Exception(oss.str());
+
   }
 
-}
-
-template <typename FS>
-void TriangleInvert(flens::GeMatrix<FS> &A, flens::DenseVector<flens::Array<int> > &p)
-{
-  assert(A.numRows()==A.numCols());
-
-  int info = flens::tri(A, p);
-
-  if (info != 0) {
-    std::ostringstream oss;
-    if (info < 0) {
-      oss << "Internal FLENS/Lapack error: Error in argument " << -info
-        << " of xxtri call.";
-    }
-    else {  // info > 0
-      oss << "Error in triangle inversion: The matrix is singular with its " << info
-        << " diagonal element exactly equal to zero.";
-    }
-    throw Exception(oss.str());
-  }
-
-}
-
-//------------------------------------
-template <typename T>
-void SetMatrixFrom2DArray(Matrix &  A,
-                          T      ** F)
-//------------------------------------
-{
-  for (int i=0 ; i < A.numRows() ; i++) {
-    for (int j=0 ; j < A.numCols() ; j++) {
-      A(i,j) = static_cast<double>( F[i][j] );
+  //------------------------------------
+  template <typename T>
+  void SetMatrixFrom2DArray(Matrix &  A,
+    T      ** F)
+    //------------------------------------
+  {
+    for (int i = 0; i < A.numRows(); i++) {
+      for (int j = 0; j < A.numCols(); j++) {
+        A(i, j) = static_cast<double>(F[i][j]);
+      }
     }
   }
-}
 
-//------------------------------------------
-template <typename T>
-void Set2DArrayFromMatrix(const Matrix &  A,
-                          T            ** F)
-//------------------------------------------
-{
-  for (int i=0 ; i < A.numRows() ; i++) {
-    for (int j=0 ; j < A.numCols() ; j++) {
-      F[i][j] = static_cast<T>( A(i,j) );
+  //------------------------------------------
+  template <typename T>
+  void Set2DArrayFromMatrix(const Matrix &  A,
+    T            ** F)
+    //------------------------------------------
+  {
+    for (int i = 0; i < A.numRows(); i++) {
+      for (int j = 0; j < A.numCols(); j++) {
+        F[i][j] = static_cast<T>(A(i, j));
+      }
     }
   }
-}
 
 
 } // namespace NRLib

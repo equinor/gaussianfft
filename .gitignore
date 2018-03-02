@@ -224,7 +224,6 @@ venv.bak/
 .DS_Store
 # mypy
 .*_cache/
-/mkl/
 .idea/
 boost_*
 prog/
@@ -232,7 +231,7 @@ prog/
 b2
 bjam
 project-config.jam*
-bin.v2/
+bin.*
 !/tools/build
 !/tools/build/src/build
 !/libs/filesystem/build
@@ -242,4 +241,3 @@ bin.v2/
 libs/config/checks/architecture/bin
 tools/build/src/engine/bootstrap/jam0
 source_files.txt
-.DS_Store

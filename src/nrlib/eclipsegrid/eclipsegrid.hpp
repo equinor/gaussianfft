@@ -1,4 +1,4 @@
-// $Id: eclipsegrid.hpp 1630 2017-07-13 07:37:46Z larsf $
+// $Id: eclipsegrid.hpp 1757 2018-02-26 08:14:44Z eyaker $
 
 // Copyright (c)  2011, Norwegian Computing Center
 // All rights reserved.
@@ -96,6 +96,10 @@ public:
   bool IsPillarActive(size_t i, size_t j) const
   { return geometry_.IsPillarActive(i, j); }
 
+  /// Initialize the active_pillars_ grid.
+  void InitializeActivePillars()
+  { geometry_.InitializeActivePillars(); }
+
   /// Is cell active
   bool IsActive(size_t i, size_t j, size_t k) const
   { return geometry_.IsActive(i, j, k); }
@@ -183,6 +187,8 @@ public:
   ParameterConstIterator  ParametersEnd()   const { return continuous_parameters_.end(); }
 
   void AddParameter(const std::string& parameter_name, double val = 0.0);
+
+  void AddParameter(const std::string& parameter_name, NRLib::Grid<double> grid);
 
 
   // ====================== Fault accessors ==============================

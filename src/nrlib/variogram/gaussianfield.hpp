@@ -1,4 +1,4 @@
-// $Id: gaussianfield.hpp 1720 2017-12-15 13:42:24Z vegard $
+// $Id: gaussianfield.hpp 1756 2018-02-23 10:50:34Z vegard $
 
 // Copyright (c)  2011, Norwegian Computing Center
 // All rights reserved.
@@ -30,7 +30,14 @@ namespace NRLib {
   class Variogram;
   template <typename T> class Grid2D;
   template <typename T> class Grid;
-  size_t FindGaussianFieldPadding(size_t grid_size, double range, double step);
+  size_t              FindGaussianFieldPadding(const Variogram & variogram, size_t grid_size, double range, double step);
+  std::vector<size_t> FindNDimPadding         (const Variogram & variogram,
+                                               size_t            nx,
+                                               double            dx,
+                                               size_t            ny = 1,
+                                               double            dy = -1,
+                                               size_t            nz = 1,
+                                               double            dz = -1);
 
   void Simulate3DGaussianField(const Variogram              & variogram,
                                size_t                         nx,

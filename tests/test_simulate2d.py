@@ -38,7 +38,7 @@ class TestSimulate3D(unittest.TestCase):
         diffs1 = np.diff(np.roll(self.field_as_array, int(self.ny/2), axis=1), axis=1)
         self.assertLess(
             np.count_nonzero(np.argmax(np.abs(diffs0), axis=0) != int(self.nx/2 - 1)),
-            self.ny/3
+            self.ny/2
         )
         self.assertLess(
             np.count_nonzero(np.argmax(np.abs(diffs1), axis=1) != int(self.ny/2 - 1)),

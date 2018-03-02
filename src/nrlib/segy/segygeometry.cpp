@@ -1,4 +1,4 @@
-// $Id: segygeometry.cpp 1678 2017-08-30 12:06:06Z perroe $
+// $Id: segygeometry.cpp 1752 2018-02-09 14:15:19Z perroe $
 
 // Copyright (c)  2011, Norwegian Computing Center
 // All rights reserved.
@@ -1075,7 +1075,7 @@ SegyGeometry::FindXYFromContILXL(double IL, double XL, double &x, double &y) con
       xd = x0_-(yd-y0_)*sin_rot_/cos_rot_;
     }
   }
-  else if (il_stepX_ == 0.0 || xl_stepY_ == 0.0) {
+  else if (std::abs(il_stepX_/xl_stepX_) < 1e-14 || std::abs(xl_stepY_/il_stepY_) < 1e-14) {
     xd = x0_+(XL-cross_line0_)/xl_stepX_;
     yd = y0_+(IL-in_line0_)/il_stepY_;
   }

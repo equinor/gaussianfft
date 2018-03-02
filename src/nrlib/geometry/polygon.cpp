@@ -1,4 +1,4 @@
-// $Id: polygon.cpp 1375 2016-10-13 10:43:25Z hannaz $
+// $Id: polygon.cpp 1749 2018-02-07 15:44:05Z fjellvoll $
 
 // Copyright (c)  2011, Norwegian Computing Center
 // All rights reserved.

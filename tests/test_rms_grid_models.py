@@ -21,9 +21,9 @@ class TestRmsGridModels(unittest.TestCase):
         f_vec = nrlib.simulate(v, d[0], 20.0, d[1], 20.0, d[2], 20.0)
         f = np.array(f_vec).reshape(d, order='F')
         # Regression:
-        self.assertAlmostEqual(f[11 + 10, 22 + 10, 13 + 10], 0.33081897936760885, 2)
-        self.assertAlmostEqual(f[11 + 20, 22 + 20, 13 + 20], -0.83111305729980101, 2)
-        self.assertAlmostEqual(f[11 + 30, 22 + 30, 13 + 30], -1.8440243275015049, 2)
+        self.assertAlmostEqual(f[11 + 10, 22 + 10, 13 + 10], -1.9465313106735047, 2)
+        self.assertAlmostEqual(f[11 + 20, 22 + 20, 13 + 20], 0.35996944560911442, 2)
+        self.assertAlmostEqual(f[11 + 30, 22 + 30, 13 + 30], -2.5241606022960497, 2)
 
 
 if __name__ == '__main__':

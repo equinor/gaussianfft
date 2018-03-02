@@ -1,4 +1,4 @@
-// $Id: gaussianfield.cpp 1733 2018-01-04 13:25:24Z vegard $
+// $Id: gaussianfield.cpp 1759 2018-02-28 12:41:12Z vegard $
 
 // Copyright (c)  2011, Norwegian Computing Center
 // All rights reserved.
@@ -40,14 +40,51 @@ using namespace NRLib;
 /* Local utility functions                                                              */
 /****************************************************************************************/
 
-// Local function
-size_t NRLib::FindGaussianFieldPadding(size_t grid_size, double range, double step)
+size_t NRLib::FindGaussianFieldPadding(const Variogram & variogram, size_t grid_size, double range, double step)
 {
-  // The factor 4.0 is just a value chosen so that the correlation
-  // function is close to 0.0 at the end of the padding
   return static_cast<size_t>(
-    std::max(static_cast<int>(4.0 * range / step - grid_size), static_cast<int>(range/step))
+    std::max(
+      static_cast<int>(variogram.GetMinimumRangeToGridRatio() * range / step - grid_size),
+      static_cast<int>(range/step)
+    ) + 1 // Add 1 to avoid rounding down errors
   );
+}
+
+std::vector<size_t> NRLib::FindNDimPadding(const Variogram & variogram,
+                                           size_t            nx,
+                                           double            dx,
+                                           size_t            ny,
+                                           double            dy,
+                                           size_t            nz,
+                                           double            dz)
+{
+  std::vector<size_t> pad;
+  if (ny <= 1) {
+    double range = variogram.GetRangeX();
+    pad.push_back(FindGaussianFieldPadding(variogram, nx, range, dx));
+  }
+  else if (nz <= 1) {
+    double range_x = std::max(variogram.GetRangeX(), variogram.GetRangeY());
+    double range_y = range_x;
+    if (variogram.GetAzimuthAngle() == 0.0) {
+      range_y = variogram.GetRangeY();
+    }
+    pad.push_back(FindGaussianFieldPadding(variogram, nx, range_x, dx));
+    pad.push_back(FindGaussianFieldPadding(variogram, ny, range_y, dy));
+  }
+  else {
+    double range_x, range_y, range_z;
+    range_x = std::max(variogram.GetRangeX(), variogram.GetRangeY());
+    range_y = range_x;
+    if (variogram.GetAzimuthAngle() == 0.0) {
+      range_y = variogram.GetRangeY();
+    }
+    range_z = variogram.GetRangeZ();
+    pad.push_back(FindGaussianFieldPadding(variogram, nx, range_x, dx));
+    pad.push_back(FindGaussianFieldPadding(variogram, ny, range_y, dy));
+    pad.push_back(FindGaussianFieldPadding(variogram, nz, range_z, dz));
+  }
+  return pad;
 }
 
 
@@ -72,17 +109,18 @@ void NRLib::Simulate3DGaussianField(const Variogram              & variogram,
                                     double                         scaling_y,
                                     double                         scaling_z)
 {
-  // Find grid size.
-  double range_x, range_y, range_z;
-  range_x = std::max(variogram.GetRangeX(), variogram.GetRangeY());
-  range_y = range_x;
-  range_z = variogram.GetRangeZ();
-
+  std::vector<size_t> default_padding = FindNDimPadding(variogram,
+                                                        nx,
+                                                        dx,
+                                                        ny,
+                                                        dy,
+                                                        nz,
+                                                        dz);
   // This is the desired padding, but may not be the actual of the
   // FFT grid. See below.
-  size_t desired_padding_x = (padding_x < 0) ? FindGaussianFieldPadding(nx, range_x, dx) : padding_x;
-  size_t desired_padding_y = (padding_y < 0) ? FindGaussianFieldPadding(ny, range_y, dy) : padding_y;
-  size_t desired_padding_z = (padding_z < 0) ? FindGaussianFieldPadding(nz, range_z, dz) : padding_z;
+  size_t desired_padding_x = (padding_x < 0) ? default_padding[0] : padding_x;
+  size_t desired_padding_y = (padding_y < 0) ? default_padding[1] : padding_y;
+  size_t desired_padding_z = (padding_z < 0) ? default_padding[2] : padding_z;
 
   FFTGrid3D<double> fftgrid(nx, ny, nz, desired_padding_x, desired_padding_y, desired_padding_z, true);
 
@@ -117,9 +155,11 @@ void NRLib::Simulate3DGaussianField(const Variogram              & variogram,
   filter.Initialize(cov);
   filter.DoFFT();
   // Convolve with covariance grid.
-  for (size_t i = 0; i < filter.GetComplexNI()*filter.GetComplexNJ()*filter.GetComplexNK(); i++)
+  for (size_t i = 0; i < filter.GetComplexNI()*filter.GetComplexNJ()*filter.GetComplexNK(); i++) {
+    filter.ComplexData()[i].real(std::max(filter.ComplexData()[i].real(), 0.0));
+    filter.ComplexData()[i].imag(0.0);
     filter.ComplexData()[i] = std::sqrt(filter.ComplexData()[i]);
-
+  }
 
   // Grid with white noice.
   Grid<double> noise(nx_tot, ny_tot, nz_tot);
@@ -194,21 +234,15 @@ void NRLib::Simulate2DGaussianField(const Variogram              & variogram,
                                     double                         scaling_x,
                                     double                         scaling_y)
 {
-  // Find grid size.
-  double range_x, range_y;
-  if (variogram.GetAzimuthAngle() == 0.0) {
-    range_x = variogram.GetRangeX();
-    range_y = variogram.GetRangeY();
-  }
-  else {
-    range_x = std::max(variogram.GetRangeX(), variogram.GetRangeY());
-    range_y = range_x;
-  }
-
+  std::vector<size_t> default_padding = FindNDimPadding(variogram,
+                                                        nx,
+                                                        dx,
+                                                        ny,
+                                                        dy);
   // This is the desired padding, but may not be the actual of the
   // FFT grid. See below.
-  size_t desired_padding_x = (padding_x < 0) ? FindGaussianFieldPadding(nx, range_x, dx) : padding_x;
-  size_t desired_padding_y = (padding_y < 0) ? FindGaussianFieldPadding(ny, range_y, dy) : padding_y;
+  size_t desired_padding_x = (padding_x < 0) ? default_padding[0] : padding_x;
+  size_t desired_padding_y = (padding_y < 0) ? default_padding[1] : padding_y;
   FFTGrid2D<double> fftgrid(nx, ny, desired_padding_x, desired_padding_y, true);
 
   // Get the total grid size after the grid is created. This is not necessarily the
@@ -231,9 +265,11 @@ void NRLib::Simulate2DGaussianField(const Variogram              & variogram,
   filter.Initialize(cov);
   filter.DoFFT();
   // Convolve with covariance grid.
-  for (size_t i = 0; i < filter.GetComplexNI()*filter.GetComplexNJ(); i++)
+  for (size_t i = 0; i < filter.GetComplexNI()*filter.GetComplexNJ(); i++) {
+    filter.ComplexData()[i].real(std::max(filter.ComplexData()[i].real(), 0.0));
+    filter.ComplexData()[i].imag(0.0);
     filter.ComplexData()[i] = std::sqrt(filter.ComplexData()[i]);
-
+  }
 
   // Grid with white noice.
   Grid2D<double> noise(nx_tot,ny_tot);
@@ -256,7 +292,7 @@ void NRLib::Simulate2DGaussianField(const Variogram              & variogram,
 
     fftgrid.DoFFT();
     for(size_t i = 0; i < filter.GetComplexNI()*filter.GetComplexNJ(); i++)
-      fftgrid.ComplexData()[i] *=filter.ComplexData()[i];
+      fftgrid.ComplexData()[i] *= filter.ComplexData()[i];
 
     fftgrid.DoInverseFFT();
     grid_out.push_back(fftgrid.GetRealGrid());
@@ -272,8 +308,10 @@ NRLib::Simulate1DGaussianField(const Variogram       & variogram,
                                int                     padding,
                                double                  scaling_x)
 {
-  double range = variogram.GetRangeX();
-  size_t nx_pad = (padding < 0) ? FindGaussianFieldPadding(nx, range, dx) : padding;
+  std::vector<size_t> default_padding = FindNDimPadding(variogram,
+                                                        nx,
+                                                        dx);
+  size_t nx_pad = (padding < 0) ? default_padding[0] : padding;
 
   // Find a favorable grid size (nx + padding) for the FFT implementation
   size_t nxp = NRLib::FindNewSizeWithPadding(nx + nx_pad);
@@ -292,6 +330,12 @@ NRLib::Simulate1DGaussianField(const Variogram       & variogram,
   NRLib::ComputeFFT1D(cov, cov_fft, false,0);
   NRLib::ComputeFFT1D(noise, noise_fft, true,0);
   std::vector<std::complex<double> > convolve(cov_fft.size());
+
+  for(size_t i = 0; i < cov_fft.size(); i++){
+    cov_fft[i].real(std::max(cov_fft[i].real(), 0.0));
+    cov_fft[i].imag(0.0);
+    cov_fft[i] = std::sqrt(cov_fft[i]);
+  }
 
   for(size_t i = 0; i < cov_fft.size(); i++)
     convolve[i] = std::sqrt(cov_fft[i])*noise_fft[i];
