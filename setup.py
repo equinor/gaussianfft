@@ -2,6 +2,7 @@ import glob
 import os
 import platform
 
+import sys
 from setuptools import Distribution, Extension, find_packages, setup
 
 """ Installation Instructions """
@@ -297,7 +298,7 @@ boost_module = Extension(
 
 setup(
     name=extension_name,
-    version="1.0",
+    version="1.0a",
     packages=find_packages(),
     ext_modules=[bp_module, boost_module],
     include_package_data=True,
@@ -306,4 +307,14 @@ setup(
         'stage/lib': ['*.so', '*.dll', '*.dylib', '*.a'],
     },
     zip_safe=False,
+    data_files=[
+        (
+            'shared/typehints/python{}.{}/nrlib'.format(*sys.version_info[:2]),
+            ['src/stub/nrlib/__init__.pyi'],
+        ),
+        (
+            'shared/typehints/python{}.{}/nrlib/advanced'.format(*sys.version_info[:2]),
+            ['src/stub/nrlib/advanced/__init__.pyi']
+        )
+    ],
 )
