@@ -1,0 +1,17 @@
+License:
+Date: 13.03.2018
+
+NRLIB is a software developed by Norsk Regnesentral. (2018)
+NR has further developed the nrlib software for the APSGUI project.
+It is for Statoil internal use only without any time limitations or any license fee.
+Statoil has the source code and can compile it for which platform is needed.
+
+It should not be re-distributed outside Statoil without an agreement with Norsk Regnesentral
+since I don't know at the moment which status it has whether it is open source or not.
+
+Information about the code:
+The code was developed as a part of the APSGUI project and NR based their development of this code
+on an internal software library called nrlib. They included 1D and 3D gaussian field simulations
+for Statoil in addition to the 2D simulation and made a python wrapped so that it can be used from python scripts.
+
+Contact in Statoil: O.Lia (olia@statoil.com)
