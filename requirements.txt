@@ -1,3 +1,0 @@
-setuptools==38.5.1
-wheel==0.30.0
-numpy>=1.10.4

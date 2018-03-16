@@ -11,7 +11,7 @@ SETUP.PY := $(CODE_DIR)/setup.py
 DOCKERFILE := $(CODE_DIR)/Dockerfile
 
 PYTHON ?= $(shell which python)
-PIP ?= $(PYTHON) -m pip
+PIPENV ?= $(PYTHON) -m pipenv
 PY.TEST ?= $(PYTHON) -m pytest
 
 DISTRIBUTION_DIR ?= $(CODE_DIR)/dist
@@ -28,7 +28,7 @@ docker-login:
 	docker login $(DOCKER_REGISTRY_SERVER)
 
 install-wheel:
-	$(PIP) install -U $(DISTRIBUTION_DIR)/$(shell ls $(DISTRIBUTION_DIR))
+	$(PIPENV) install -U $(DISTRIBUTION_DIR)/$(shell ls $(DISTRIBUTION_DIR))
 
 install: install-requirements build-boost-python
 	NRLIB_LINKING=$(NRLIB_LINKING) \
@@ -36,13 +36,11 @@ install: install-requirements build-boost-python
 	$(PYTHON) $(SETUP.PY) build_ext --inplace build install
 
 install-requirements:
-	$(PIP) install --user -r $(CODE_DIR)/requirements.txt || $(PIP) install -r $(CODE_DIR)/requirements.txt
+	$(PIPENV) --python=$(PYTHON) --site-packages
+	$(PIPENV) install --dev
 
-tests: pytest-instalation
+tests:
 	$(PY.TEST) $(CODE_DIR)/tests
-
-pytest-instalation:
-	type pytest 2>/dev/null || { $(PIP) install pytest; }
 
 build: install-requirements build-boost-python
 	NRLIB_LINKING=$(NRLIB_LINKING) \

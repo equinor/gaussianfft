@@ -12,6 +12,7 @@ variables:
   MAKE:         "make"
   RUN:          "/bin/bash -c"
   BASE_DIST:    "dist"
+  WORKON_HOME:  "$CODE_DIR/.venv"
 
 stages:
   - check requirements

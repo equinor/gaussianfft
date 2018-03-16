@@ -309,11 +309,11 @@ setup(
     zip_safe=False,
     data_files=[
         (
-            'shared/typehints/python{}.{}/nrlib'.format(*sys.version_info[:2]),
+            'share/typehints/python{}.{}/nrlib'.format(*sys.version_info[:2]),
             ['src/stub/nrlib/__init__.pyi'],
         ),
         (
-            'shared/typehints/python{}.{}/nrlib/advanced'.format(*sys.version_info[:2]),
+            'share/typehints/python{}.{}/nrlib/advanced'.format(*sys.version_info[:2]),
             ['src/stub/nrlib/advanced/__init__.pyi']
         )
     ],
