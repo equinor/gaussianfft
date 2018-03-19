@@ -6,6 +6,7 @@ IMAGE_NAME = $(DOCKER_REGISTRY)/$(NAME):$(VERSION)
 
 
 CODE_DIR ?= $(shell pwd)
+SETUP.PY := $(CODE_DIR)/setup.py
 
 DOCKERFILE := $(CODE_DIR)/Dockerfile
 
@@ -46,7 +47,7 @@ pytest-instalation:
 build: install-requirements build-boost-python
 	NRLIB_LINKING=$(NRLIB_LINKING) \
 	CXXFLAGS="-fPIC" \
-	$(PYTHON) $(CODE_DIR)/setup.py build_ext --inplace build bdist_wheel --dist-dir $(DISTRIBUTION_DIR)
+	$(PYTHON) $(SETUP.PY) build_ext --inplace build bdist_wheel --dist-dir $(DISTRIBUTION_DIR)
 
 build-boost-python:
 	CODE_DIR=$(CODE_DIR) \
