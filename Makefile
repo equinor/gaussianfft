@@ -26,8 +26,13 @@ docker-push-image: docker-image
 docker-login:
 	docker login $(DOCKER_REGISTRY_SERVER)
 
-install:
+install-wheel:
 	$(PIP) install -U $(DISTRIBUTION_DIR)/$(shell ls $(DISTRIBUTION_DIR))
+
+install: install-requirements build-boost-python
+	NRLIB_LINKING=$(NRLIB_LINKING) \
+	CXXFLAGS="-fPIC" \
+	$(PYTHON) $(SETUP.PY) build_ext --inplace build install
 
 install-requirements:
 	$(PIP) install --user -r $(CODE_DIR)/requirements.txt || $(PIP) install -r $(CODE_DIR)/requirements.txt

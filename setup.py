@@ -298,7 +298,7 @@ boost_module = Extension(
 
 setup(
     name=extension_name,
-    version="1.0a",
+    version="1.0b",
     packages=find_packages(),
     ext_modules=[bp_module, boost_module],
     include_package_data=True,
