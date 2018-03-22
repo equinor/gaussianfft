@@ -5,6 +5,9 @@ import platform
 import sys
 from setuptools import Distribution, Extension, find_packages, setup
 
+from distutils.command.register import register as register_orig
+from distutils.command.upload import upload as upload_orig
+
 """ Installation Instructions """
 # Linux:
 #   [Conditional] export MKL_ROOT=/nr/prog/intel/Compiler/mkl
@@ -40,6 +43,26 @@ extension_name = 'nrlib'
 compilation_logs = 'compiles.log'
 
 """**********************"""
+
+
+def _get_code_dir():
+    return os.environ.get('CODE_DIR', '.')
+
+
+def _get_pypirc_file():
+    return os.path.join(_get_code_dir(), '.pypirc')
+
+
+class register(register_orig):
+
+    def _get_rc_file(self):
+        return _get_pypirc_file()
+
+
+class upload(upload_orig):
+
+    def _get_rc_file(self):
+        return _get_pypirc_file()
 
 
 class BinaryDistribution(Distribution):
@@ -305,6 +328,10 @@ setup(
     distclass=BinaryDistribution,
     package_data={
         'stage/lib': ['*.so', '*.dll', '*.dylib', '*.a'],
+    },
+    cmdclass={
+        'register': register,
+        'upload': upload,
     },
     zip_safe=False,
     data_files=[

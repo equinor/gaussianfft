@@ -18,8 +18,23 @@ DISTRIBUTION_DIR ?= $(CODE_DIR)/dist
 
 NRLIB_LINKING ?= static
 
+PYPI_SERVER ?= http://pypi.aps.statoil.no:8080
+PYPI_NAME := statoil
+
+define PYPIRC
+[distutils]
+index-servers =
+    $(PYPI_NAME)
+
+[$(PYPI_NAME)]
+repository: $(PYPI_SERVER)
+username: $(PYPI_USER)
+password: $(PYPI_PASSWORD)
+endef
+export PYPIRC
+
 docker-image:
-	docker build --rm --tag $(IMAGE_NAME) --file $(DOCKERFILE) $(CODE_DIR)
+	docker build --pull --rm --tag $(IMAGE_NAME) --file $(DOCKERFILE) $(CODE_DIR)
 
 docker-push-image: docker-image
 	docker push $(IMAGE_NAME)
@@ -41,6 +56,12 @@ install-requirements:
 
 tests:
 	$(PY.TEST) $(CODE_DIR)/tests
+
+upload: pypirc
+	$(PYTHON) $(SETUP.PY) register -r $(PYPI_NAME) upload -r $(PYPI_NAME)
+
+pypirc:
+	echo "$$PYPIRC" > $(CODE_DIR)/.pypirc
 
 build: install-requirements build-boost-python
 	NRLIB_LINKING=$(NRLIB_LINKING) \
@@ -64,6 +85,7 @@ build-boost-python:
 	                   stage
 
 clean:
+	cd $(CODE_DIR) && \
 	rm -rf build \
 	       nrlib.egg-info \
 	       dist \
@@ -73,4 +95,5 @@ clean:
 	       b2 \
 	       bjam \
 	       bootstrap.log \
+	       .pypirc \
 	       *.so
