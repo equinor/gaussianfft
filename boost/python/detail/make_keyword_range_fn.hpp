@@ -13,7 +13,7 @@
 # include <boost/mpl/size.hpp>
 
 
-namespace boost { namespace python { namespace detail { 
+namespace boost { namespace python { namespace detail {
 
 // Think of this as a version of make_function without a compile-time
 // check that the size of kw is no greater than the expected arity of
@@ -49,12 +49,12 @@ object make_keyword_range_function(
 // describing the C++ argument types to be passed to Holder's
 // constructor.
 //
-// Holder and ArgList are intended to be explicitly specified. 
+// Holder and ArgList are intended to be explicitly specified.
 template <class ArgList, class Arity, class Holder, class CallPolicies>
 object make_keyword_range_constructor(
     CallPolicies const& policies        // The CallPolicies with which to invoke the Holder's constructor
     , detail::keyword_range const& kw   // The (possibly empty) set of associated argument keywords
-    , Holder* = 0                       
+    , Holder* = 0
     , ArgList* = 0, Arity* = 0)
 {
 #if !defined( BOOST_PYTHON_NO_PY_SIGNATURES) && defined( BOOST_PYTHON_PY_SIGNATURES_PROPER_INIT_SELF_TYPE)

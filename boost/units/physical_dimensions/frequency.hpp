@@ -1,4 +1,4 @@
-// Boost.Units - A C++ library for zero-overhead dimensional analysis and 
+// Boost.Units - A C++ library for zero-overhead dimensional analysis and
 // unit/quantity manipulation and conversion
 //
 // Copyright (C) 2003-2008 Matthias Christian Schabel
@@ -19,7 +19,7 @@ namespace boost {
 namespace units {
 
 /// derived dimension for frequency : T^-1
-typedef derived_dimension<time_base_dimension,-1>::type frequency_dimension;                
+typedef derived_dimension<time_base_dimension,-1>::type frequency_dimension;
 
 } // namespace units
 

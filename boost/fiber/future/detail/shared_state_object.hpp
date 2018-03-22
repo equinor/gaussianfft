@@ -25,7 +25,7 @@ namespace detail {
 template< typename R, typename Allocator >
 class shared_state_object : public shared_state< R > {
 public:
-    typedef typename std::allocator_traits< Allocator >::template rebind_alloc< 
+    typedef typename std::allocator_traits< Allocator >::template rebind_alloc<
         shared_state_object
     >                                           allocator_type;
 

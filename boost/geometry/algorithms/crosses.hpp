@@ -109,8 +109,8 @@ namespace resolve_variant
             return resolve_strategy::crosses::apply(geometry1, geometry2, strategy);
         }
     };
-    
-    
+
+
     template <BOOST_VARIANT_ENUM_PARAMS(typename T), typename Geometry2>
     struct crosses<variant<BOOST_VARIANT_ENUM_PARAMS(T)>, Geometry2>
     {
@@ -119,12 +119,12 @@ namespace resolve_variant
         {
             Geometry2 const& m_geometry2;
             Strategy const& m_strategy;
-            
+
             visitor(Geometry2 const& geometry2, Strategy const& strategy)
                 : m_geometry2(geometry2)
                 , m_strategy(strategy)
             {}
-            
+
             template <typename Geometry1>
             result_type operator()(Geometry1 const& geometry1) const
             {
@@ -135,7 +135,7 @@ namespace resolve_variant
                     >::apply(geometry1, m_geometry2, m_strategy);
             }
         };
-        
+
         template <typename Strategy>
         static inline bool apply(variant<BOOST_VARIANT_ENUM_PARAMS(T)> const& geometry1,
                                  Geometry2 const& geometry2,
@@ -144,8 +144,8 @@ namespace resolve_variant
             return boost::apply_visitor(visitor<Strategy>(geometry2, strategy), geometry1);
         }
     };
-    
-    
+
+
     template <typename Geometry1, BOOST_VARIANT_ENUM_PARAMS(typename T)>
     struct crosses<Geometry1, variant<BOOST_VARIANT_ENUM_PARAMS(T)> >
     {
@@ -154,12 +154,12 @@ namespace resolve_variant
         {
             Geometry1 const& m_geometry1;
             Strategy const& m_strategy;
-            
+
             visitor(Geometry1 const& geometry1, Strategy const& strategy)
                 : m_geometry1(geometry1)
                 , m_strategy(strategy)
             {}
-            
+
             template <typename Geometry2>
             result_type operator()(Geometry2 const& geometry2) const
             {
@@ -170,7 +170,7 @@ namespace resolve_variant
                     >::apply(m_geometry1, geometry2, m_strategy);
             }
         };
-        
+
         template <typename Strategy>
         static inline bool apply(Geometry1 const& geometry1,
                                  variant<BOOST_VARIANT_ENUM_PARAMS(T)> const& geometry2,
@@ -179,8 +179,8 @@ namespace resolve_variant
             return boost::apply_visitor(visitor<Strategy>(geometry1, strategy), geometry2);
         }
     };
-    
-    
+
+
     template <BOOST_VARIANT_ENUM_PARAMS(typename T1), BOOST_VARIANT_ENUM_PARAMS(typename T2)>
     struct crosses<variant<BOOST_VARIANT_ENUM_PARAMS(T1)>, variant<BOOST_VARIANT_ENUM_PARAMS(T2)> >
     {
@@ -204,7 +204,7 @@ namespace resolve_variant
                     >::apply(geometry1, geometry2, m_strategy);
             }
         };
-        
+
         template <typename Strategy>
         static inline bool apply(variant<BOOST_VARIANT_ENUM_PARAMS(T1)> const& geometry1,
                                  variant<BOOST_VARIANT_ENUM_PARAMS(T2)> const& geometry2,
@@ -213,10 +213,10 @@ namespace resolve_variant
             return boost::apply_visitor(visitor<Strategy>(strategy), geometry1, geometry2);
         }
     };
-    
+
 } // namespace resolve_variant
-    
-    
+
+
 /*!
 \brief \brief_check2{crosses}
 \ingroup crosses

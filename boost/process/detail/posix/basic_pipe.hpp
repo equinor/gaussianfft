@@ -154,18 +154,18 @@ template<class CharT, class Traits>
 basic_pipe<CharT, Traits>::basic_pipe(const std::string & name)
 {
     auto fifo = mkfifo(name.c_str(), 0666 );
-            
-    if (fifo != 0) 
+
+    if (fifo != 0)
         boost::process::detail::throw_last_error("mkfifo() failed");
 
-    
+
     int  read_fd = open(name.c_str(), O_RDWR);
-        
+
     if (read_fd == -1)
         boost::process::detail::throw_last_error();
-    
+
     int write_fd = dup(read_fd);
-    
+
     if (write_fd == -1)
         boost::process::detail::throw_last_error();
 

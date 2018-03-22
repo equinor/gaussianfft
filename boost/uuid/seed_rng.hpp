@@ -52,7 +52,7 @@
 #   include <boost/detail/winapi/timers.hpp>
 #   include <boost/detail/winapi/get_current_process_id.hpp>
 #   include <boost/detail/winapi/get_current_thread_id.hpp>
-#else 
+#else
 #   include <sys/time.h>  // for gettimeofday
 #   include <sys/types.h> // for pid_t
 #   include <unistd.h>    // for getpid()

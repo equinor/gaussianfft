@@ -41,7 +41,7 @@ namespace boost {
 
         // Determine if this slot is still "active", i.e., all of the bound
         // objects still exist
-        bool is_active() const 
+        bool is_active() const
         { return data->watch_bound_objects.connected(); }
 
       protected:
@@ -116,9 +116,9 @@ namespace boost {
       // An exception thrown here will allow the basic_connection to be
       // destroyed when this goes out of scope, and no other connections
       // have been made.
-      BOOST_SIGNALS_NAMESPACE::detail::bound_objects_visitor 
+      BOOST_SIGNALS_NAMESPACE::detail::bound_objects_visitor
         do_bind(this->data->bound_objects);
-      visit_each(do_bind, 
+      visit_each(do_bind,
                  BOOST_SIGNALS_NAMESPACE::get_inspectable_slot
                    (f, BOOST_SIGNALS_NAMESPACE::tag_type(f)));
       create_connection();

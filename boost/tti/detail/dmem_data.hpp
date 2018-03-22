@@ -169,27 +169,27 @@ namespace boost
     {
     namespace detail
       {
-      
+
       template<class BOOST_TTI_DETAIL_TP_T,class BOOST_TTI_DETAIL_TP_R>
       struct ptmd
         {
         typedef BOOST_TTI_DETAIL_TP_R BOOST_TTI_DETAIL_TP_T::* type;
         };
-        
+
       template<class BOOST_TTI_DETAIL_TP_T>
       struct dmem_check_ptmd :
         boost::mpl::identity<BOOST_TTI_DETAIL_TP_T>
         {
         BOOST_MPL_ASSERT((boost::function_types::is_member_object_pointer<BOOST_TTI_DETAIL_TP_T>));
         };
-        
+
       template<class BOOST_TTI_DETAIL_TP_T>
       struct dmem_check_ptec :
         BOOST_TTI_NAMESPACE::detail::class_type<BOOST_TTI_DETAIL_TP_T>
         {
         BOOST_MPL_ASSERT((boost::function_types::is_member_object_pointer<BOOST_TTI_DETAIL_TP_T>));
         };
-        
+
       template<class BOOST_TTI_DETAIL_TP_T,class BOOST_TTI_DETAIL_TP_T2>
       struct dmem_get_type :
         boost::mpl::eval_if
@@ -200,7 +200,7 @@ namespace boost
           >
         {
         };
-        
+
       template<class BOOST_TTI_DETAIL_TP_T,class BOOST_TTI_DETAIL_TP_T2>
       struct dmem_get_enclosing :
         boost::mpl::eval_if
@@ -211,9 +211,9 @@ namespace boost
           >
         {
         };
-        
+
       }
     }
   }
-  
+
 #endif // BOOST_TTI_DETAIL_MEM_DATA_HPP

@@ -59,7 +59,7 @@ namespace boost { namespace python
 ]
 [endsect]
 [section Example]
-The following example shows how `with_custodian_and_ward_postcall` is used by the library to implement `return_internal_reference` 
+The following example shows how `with_custodian_and_ward_postcall` is used by the library to implement `return_internal_reference`
 ``
 template <std::size_t owner_arg = 1, class Base = default_call_policies>
 struct return_internal_reference

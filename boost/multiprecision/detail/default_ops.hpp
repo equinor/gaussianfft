@@ -26,8 +26,8 @@
 #endif
 
 
-namespace boost{ namespace multiprecision{ 
-   
+namespace boost{ namespace multiprecision{
+
    namespace detail {
 
       template <class T>
@@ -45,7 +45,7 @@ namespace boost{ namespace multiprecision{
       void generic_interconvert(To& to, const From& from, const mpl::int_<number_kind_rational>& /*to_type*/, const mpl::int_<number_kind_integer>& /*from_type*/);
 
 }
-   
+
 namespace default_ops{
 
 #ifdef BOOST_MSVC
@@ -65,7 +65,7 @@ namespace default_ops{
 // code even more....
 //
 template <class T, class V>
-inline typename disable_if_c<is_convertible<V, T>::value >::type 
+inline typename disable_if_c<is_convertible<V, T>::value >::type
    eval_add(T& result, V const& v)
 {
    T t;
@@ -73,7 +73,7 @@ inline typename disable_if_c<is_convertible<V, T>::value >::type
    eval_add(result, t);
 }
 template <class T, class V>
-inline typename enable_if_c<is_convertible<V, T>::value >::type 
+inline typename enable_if_c<is_convertible<V, T>::value >::type
    eval_add(T& result, V const& v)
 {
    T t(v);
@@ -1011,7 +1011,7 @@ inline void eval_fmod(T& result, const T& a, const T& b)
    eval_multiply(n, b);
    eval_subtract(result, a, n);
 }
-template<class T, class A> 
+template<class T, class A>
 inline typename enable_if<is_arithmetic<A>, void>::type eval_fmod(T& result, const T& x, const A& a)
 {
    typedef typename boost::multiprecision::detail::canonical<A, T>::type canonical_type;
@@ -1021,7 +1021,7 @@ inline typename enable_if<is_arithmetic<A>, void>::type eval_fmod(T& result, con
    eval_fmod(result, x, c);
 }
 
-template<class T, class A> 
+template<class T, class A>
 inline typename enable_if<is_arithmetic<A>, void>::type eval_fmod(T& result, const A& x, const T& a)
 {
    typedef typename boost::multiprecision::detail::canonical<A, T>::type canonical_type;
@@ -1314,7 +1314,7 @@ inline unsigned eval_lsb(const T& val)
       eval_left_shift(mask, 1);
    }
    while(eval_is_zero(t));
-   
+
    return --result;
 }
 
@@ -1416,7 +1416,7 @@ void eval_integer_sqrt(B& s, B& r, const B& x)
       eval_subtract(r, x, s);
       return;
    }
-   
+
    B t;
    r = x;
    g /= 2;
@@ -2039,7 +2039,7 @@ inline number<B1, ET1>& multiply(number<B1, ET1>& result, const number<B2, ET2>&
 }
 
 template <class B, expression_template_option ET, class I>
-inline typename enable_if_c<is_integral<I>::value, number<B, ET>&>::type 
+inline typename enable_if_c<is_integral<I>::value, number<B, ET>&>::type
    add(number<B, ET>& result, const I& a, const I& b)
 {
    using default_ops::eval_add;
@@ -2049,7 +2049,7 @@ inline typename enable_if_c<is_integral<I>::value, number<B, ET>&>::type
 }
 
 template <class B, expression_template_option ET, class I>
-inline typename enable_if_c<is_integral<I>::value, number<B, ET>&>::type 
+inline typename enable_if_c<is_integral<I>::value, number<B, ET>&>::type
    subtract(number<B, ET>& result, const I& a, const I& b)
 {
    using default_ops::eval_subtract;
@@ -2059,7 +2059,7 @@ inline typename enable_if_c<is_integral<I>::value, number<B, ET>&>::type
 }
 
 template <class B, expression_template_option ET, class I>
-inline typename enable_if_c<is_integral<I>::value, number<B, ET>&>::type 
+inline typename enable_if_c<is_integral<I>::value, number<B, ET>&>::type
    multiply(number<B, ET>& result, const I& a, const I& b)
 {
    using default_ops::eval_multiply;
@@ -2279,7 +2279,7 @@ inline typename enable_if_c<number_category<T>::value == number_kind_floating_po
    return BOOST_MP_MOVE(result);
 }
 template <class tag, class A1, class A2, class A3, class A4>
-inline typename enable_if_c<number_category<typename detail::expression<tag, A1, A2, A3, A4>::result_type>::value == number_kind_floating_point, typename detail::expression<tag, A1, A2, A3, A4>::result_type>::type 
+inline typename enable_if_c<number_category<typename detail::expression<tag, A1, A2, A3, A4>::result_type>::value == number_kind_floating_point, typename detail::expression<tag, A1, A2, A3, A4>::result_type>::type
    frexp(const detail::expression<tag, A1, A2, A3, A4>& v, short* pint)
 {
    typedef typename detail::expression<tag, A1, A2, A3, A4>::result_type number_type;
@@ -3151,7 +3151,7 @@ HETERO_BINARY_OP_FUNCTOR_B(pow, unsigned, number_kind_integer)
 // ilogb:
 //
 template <class Backend, multiprecision::expression_template_option ExpressionTemplates>
-inline typename enable_if_c<number_category<Backend>::value == number_kind_floating_point, typename Backend::exponent_type>::type 
+inline typename enable_if_c<number_category<Backend>::value == number_kind_floating_point, typename Backend::exponent_type>::type
    ilogb(const multiprecision::number<Backend, ExpressionTemplates>& val)
 {
    using default_ops::eval_ilogb;

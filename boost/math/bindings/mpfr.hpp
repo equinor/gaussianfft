@@ -16,7 +16,7 @@
 
 #ifdef BOOST_MSVC
 //
-// We get a lot of warnings from the gmp, mpfr and gmpfrxx headers, 
+// We get a lot of warnings from the gmp, mpfr and gmpfrxx headers,
 // disable them here, so we only see warnings from *our* code:
 //
 #pragma warning(push)
@@ -181,7 +181,7 @@ inline long long lltrunc(__gmp_expr<T,U> const& x, const Policy& pol)
    return lltrunc(static_cast<mpfr_class>(x), pol);
 }
 
-namespace boost{ 
+namespace boost{
 
 #ifdef BOOST_MATH_USE_FLOAT128
    template<> struct is_convertible<BOOST_MATH_FLOAT128_TYPE, mpfr_class> : public boost::integral_constant<bool, false>{};
@@ -253,7 +253,7 @@ struct mpfr_lanczos
          return lanczos61UDT::lanczos_sum_near_2(z);
    }
    static mpfr_class g()
-   { 
+   {
       unsigned long p = mpfr_class::get_dprec();
       if(p <= 72)
          return lanczos13UDT::g();
@@ -538,7 +538,7 @@ inline mpfr_class erf_inv_imp(const mpfr_class& p, const mpfr_class& q, const Po
    BOOST_MATH_STD_USING // for ADL of std names.
 
    mpfr_class result = 0;
-   
+
    if(p <= 0.5)
    {
       //
@@ -554,7 +554,7 @@ inline mpfr_class erf_inv_imp(const mpfr_class& p, const mpfr_class& q, const Po
       // Maximum Deviation Found (actual empfr_classor term at infinite precision) 8.030e-21
       //
       static const float Y = 0.0891314744949340820313f;
-      static const mpfr_class P[] = {    
+      static const mpfr_class P[] = {
          -0.000508781949658280665617,
          -0.00836874819741736770379,
          0.0334806625409744615033,
@@ -564,7 +564,7 @@ inline mpfr_class erf_inv_imp(const mpfr_class& p, const mpfr_class& q, const Po
          0.00822687874676915743155,
          -0.00538772965071242932965
       };
-      static const mpfr_class Q[] = {    
+      static const mpfr_class Q[] = {
          1,
          -0.970005043303290640362,
          -1.56574558234175846809,
@@ -595,7 +595,7 @@ inline mpfr_class erf_inv_imp(const mpfr_class& p, const mpfr_class& q, const Po
       // Maximum Deviation Found (empfr_classor term) 4.811e-20
       //
       static const float Y = 2.249481201171875f;
-      static const mpfr_class P[] = {    
+      static const mpfr_class P[] = {
          -0.202433508355938759655,
          0.105264680699391713268,
          8.37050328343119927838,
@@ -606,7 +606,7 @@ inline mpfr_class erf_inv_imp(const mpfr_class& p, const mpfr_class& q, const Po
          21.1294655448340526258,
          -3.67192254707729348546
       };
-      static const mpfr_class Q[] = {    
+      static const mpfr_class Q[] = {
          1,
          6.24264124854247537712,
          3.9713437953343869095,
@@ -634,7 +634,7 @@ inline mpfr_class erf_inv_imp(const mpfr_class& p, const mpfr_class& q, const Po
       //
       // x(Y+R(x-B))
       //
-      // where Y is a constant, B is the lowest value of x for which 
+      // where Y is a constant, B is the lowest value of x for which
       // the approximation is valid, and R(x-B) is optimised for a low
       // absolute empfr_classor compared to Y.
       //
@@ -648,7 +648,7 @@ inline mpfr_class erf_inv_imp(const mpfr_class& p, const mpfr_class& q, const Po
       {
          // Max empfr_classor found: 1.089051e-20
          static const float Y = 0.807220458984375f;
-         static const mpfr_class P[] = {    
+         static const mpfr_class P[] = {
             -0.131102781679951906451,
             -0.163794047193317060787,
             0.117030156341995252019,
@@ -661,7 +661,7 @@ inline mpfr_class erf_inv_imp(const mpfr_class& p, const mpfr_class& q, const Po
             0.285225331782217055858e-7,
             -0.681149956853776992068e-9
          };
-         static const mpfr_class Q[] = {    
+         static const mpfr_class Q[] = {
             1,
             3.46625407242567245975,
             5.38168345707006855425,
@@ -679,7 +679,7 @@ inline mpfr_class erf_inv_imp(const mpfr_class& p, const mpfr_class& q, const Po
       {
          // Max empfr_classor found: 8.389174e-21
          static const float Y = 0.93995571136474609375f;
-         static const mpfr_class P[] = {    
+         static const mpfr_class P[] = {
             -0.0350353787183177984712,
             -0.00222426529213447927281,
             0.0185573306514231072324,
@@ -690,7 +690,7 @@ inline mpfr_class erf_inv_imp(const mpfr_class& p, const mpfr_class& q, const Po
             -0.230404776911882601748e-9,
             0.266339227425782031962e-11
          };
-         static const mpfr_class Q[] = {    
+         static const mpfr_class Q[] = {
             1,
             1.3653349817554063097,
             0.762059164553623404043,
@@ -707,7 +707,7 @@ inline mpfr_class erf_inv_imp(const mpfr_class& p, const mpfr_class& q, const Po
       {
          // Max empfr_classor found: 1.481312e-19
          static const float Y = 0.98362827301025390625f;
-         static const mpfr_class P[] = {    
+         static const mpfr_class P[] = {
             -0.0167431005076633737133,
             -0.00112951438745580278863,
             0.00105628862152492910091,
@@ -718,7 +718,7 @@ inline mpfr_class erf_inv_imp(const mpfr_class& p, const mpfr_class& q, const Po
             -0.281128735628831791805e-13,
             0.99055709973310326855e-16
          };
-         static const mpfr_class Q[] = {    
+         static const mpfr_class Q[] = {
             1,
             0.591429344886417493481,
             0.138151865749083321638,
@@ -735,7 +735,7 @@ inline mpfr_class erf_inv_imp(const mpfr_class& p, const mpfr_class& q, const Po
       {
          // Max empfr_classor found: 5.697761e-20
          static const float Y = 0.99714565277099609375f;
-         static const mpfr_class P[] = {    
+         static const mpfr_class P[] = {
             -0.0024978212791898131227,
             -0.779190719229053954292e-5,
             0.254723037413027451751e-4,
@@ -745,7 +745,7 @@ inline mpfr_class erf_inv_imp(const mpfr_class& p, const mpfr_class& q, const Po
             0.145596286718675035587e-11,
             -0.116765012397184275695e-17
          };
-         static const mpfr_class Q[] = {    
+         static const mpfr_class Q[] = {
             1,
             0.207123112214422517181,
             0.0169410838120975906478,
@@ -762,7 +762,7 @@ inline mpfr_class erf_inv_imp(const mpfr_class& p, const mpfr_class& q, const Po
       {
          // Max empfr_classor found: 1.279746e-20
          static const float Y = 0.99941349029541015625f;
-         static const mpfr_class P[] = {    
+         static const mpfr_class P[] = {
             -0.000539042911019078575891,
             -0.28398759004727721098e-6,
             0.899465114892291446442e-6,
@@ -772,7 +772,7 @@ inline mpfr_class erf_inv_imp(const mpfr_class& p, const mpfr_class& q, const Po
             0.135880130108924861008e-14,
             -0.348890393399948882918e-21
          };
-         static const mpfr_class Q[] = {    
+         static const mpfr_class Q[] = {
             1,
             0.0845746234001899436914,
             0.00282092984726264681981,

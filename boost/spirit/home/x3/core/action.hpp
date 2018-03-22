@@ -63,7 +63,7 @@ namespace boost { namespace spirit { namespace x3
             }
             return false;
         }
-        
+
         // attr==raw_attribute_type, action wants iterator_range (see raw.hpp)
         template <typename Iterator, typename Context, typename RuleContext>
         bool parse_main(Iterator& first, Iterator const& last
@@ -92,7 +92,7 @@ namespace boost { namespace spirit { namespace x3
             typename transform::type attr = transform::pre(made_attr);
             return parse_main(first, last, context, rcontext, attr);
         }
-        
+
         // main parse function
         template <typename Iterator, typename Context
             , typename RuleContext, typename Attribute>

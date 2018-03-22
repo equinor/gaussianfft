@@ -71,16 +71,16 @@ template <class T>
 struct BackInserter_ : euml_action<BackInserter_<T> >
 {
     template <class Event,class FSM,class STATE >
-    struct state_action_result 
+    struct state_action_result
     {
-        typedef std::back_insert_iterator< 
+        typedef std::back_insert_iterator<
             typename ::boost::remove_reference<
                 typename get_result_type2<T,Event,FSM,STATE>::type>::type> type;
     };
     template <class EVT,class FSM,class SourceState,class TargetState>
-    struct transition_action_result 
+    struct transition_action_result
     {
-        typedef std::back_insert_iterator< 
+        typedef std::back_insert_iterator<
             typename ::boost::remove_reference<
                 typename get_result_type<T,EVT,FSM,SourceState,TargetState>::type>::type> type;
     };
@@ -90,7 +90,7 @@ struct BackInserter_ : euml_action<BackInserter_<T> >
     typename ::boost::enable_if<
         typename ::boost::mpl::has_key<
             typename T::tag_type,action_tag>::type,
-            typename transition_action_result<EVT,FSM,SourceState,TargetState>::type >::type 
+            typename transition_action_result<EVT,FSM,SourceState,TargetState>::type >::type
         operator()(EVT const& evt, FSM& fsm,SourceState& src,TargetState& tgt)const
     {
         return std::back_inserter(T()(evt,fsm,src,tgt));
@@ -99,7 +99,7 @@ struct BackInserter_ : euml_action<BackInserter_<T> >
     typename ::boost::enable_if<
         typename ::boost::mpl::has_key<
             typename T::tag_type,state_action_tag>::type,
-            typename state_action_result<Event,FSM,STATE>::type >::type 
+            typename state_action_result<Event,FSM,STATE>::type >::type
         operator()(Event const& evt,FSM& fsm,STATE& state )const
     {
         return std::back_inserter(T()(evt,fsm,state));
@@ -110,9 +110,9 @@ struct back_inserter_tag {};
 struct BackInserter_Helper: proto::extends< proto::terminal<back_inserter_tag>::type, BackInserter_Helper, boost::msm::sm_domain>
 {
     BackInserter_Helper(){}
-    template <class Arg1,class Arg2,class Arg3,class Arg4,class Arg5 
-#ifdef BOOST_MSVC 
- ,class Arg6 
+    template <class Arg1,class Arg2,class Arg3,class Arg4,class Arg5
+#ifdef BOOST_MSVC
+ ,class Arg6
 #endif
 >
     struct In
@@ -126,16 +126,16 @@ template <class T>
 struct FrontInserter_ : euml_action<FrontInserter_<T> >
 {
     template <class Event,class FSM,class STATE >
-    struct state_action_result 
+    struct state_action_result
     {
-        typedef std::front_insert_iterator< 
+        typedef std::front_insert_iterator<
             typename ::boost::remove_reference<
                 typename get_result_type2<T,Event,FSM,STATE>::type>::type> type;
     };
     template <class EVT,class FSM,class SourceState,class TargetState>
-    struct transition_action_result 
+    struct transition_action_result
     {
-        typedef std::front_insert_iterator< 
+        typedef std::front_insert_iterator<
             typename ::boost::remove_reference<
                 typename get_result_type<T,EVT,FSM,SourceState,TargetState>::type>::type> type;
     };
@@ -145,7 +145,7 @@ struct FrontInserter_ : euml_action<FrontInserter_<T> >
     typename ::boost::enable_if<
         typename ::boost::mpl::has_key<
             typename T::tag_type,action_tag>::type,
-            typename transition_action_result<EVT,FSM,SourceState,TargetState>::type >::type 
+            typename transition_action_result<EVT,FSM,SourceState,TargetState>::type >::type
         operator()(EVT const& evt, FSM& fsm,SourceState& src,TargetState& tgt)const
     {
         return std::front_inserter(T()(evt,fsm,src,tgt));
@@ -154,7 +154,7 @@ struct FrontInserter_ : euml_action<FrontInserter_<T> >
     typename ::boost::enable_if<
         typename ::boost::mpl::has_key<
             typename T::tag_type,state_action_tag>::type,
-            typename state_action_result<Event,FSM,STATE>::type >::type 
+            typename state_action_result<Event,FSM,STATE>::type >::type
         operator()(Event const& evt,FSM& fsm,STATE& state )const
     {
         return std::front_inserter(T()(evt,fsm,state));
@@ -165,9 +165,9 @@ struct front_inserter_tag {};
 struct FrontInserter_Helper: proto::extends< proto::terminal<front_inserter_tag>::type, FrontInserter_Helper, boost::msm::sm_domain>
 {
     FrontInserter_Helper(){}
-    template <class Arg1,class Arg2,class Arg3,class Arg4,class Arg5 
-#ifdef BOOST_MSVC 
- ,class Arg6 
+    template <class Arg1,class Arg2,class Arg3,class Arg4,class Arg5
+#ifdef BOOST_MSVC
+ ,class Arg6
 #endif
 >
     struct In
@@ -181,16 +181,16 @@ template <class T,class Pos>
 struct Inserter_ : euml_action<Inserter_<T,Pos> >
 {
     template <class Event,class FSM,class STATE >
-    struct state_action_result 
+    struct state_action_result
     {
-        typedef std::insert_iterator< 
+        typedef std::insert_iterator<
             typename ::boost::remove_reference<
                 typename get_result_type2<T,Event,FSM,STATE>::type>::type> type;
     };
     template <class EVT,class FSM,class SourceState,class TargetState>
-    struct transition_action_result 
+    struct transition_action_result
     {
-        typedef std::insert_iterator< 
+        typedef std::insert_iterator<
             typename ::boost::remove_reference<
                 typename get_result_type<T,EVT,FSM,SourceState,TargetState>::type>::type> type;
     };
@@ -200,7 +200,7 @@ struct Inserter_ : euml_action<Inserter_<T,Pos> >
     typename ::boost::enable_if<
         typename ::boost::mpl::has_key<
             typename T::tag_type,action_tag>::type,
-            typename transition_action_result<EVT,FSM,SourceState,TargetState>::type >::type 
+            typename transition_action_result<EVT,FSM,SourceState,TargetState>::type >::type
         operator()(EVT const& evt, FSM& fsm,SourceState& src,TargetState& tgt)const
     {
         return std::inserter(T()(evt,fsm,src,tgt),Pos()(evt,fsm,src,tgt));
@@ -209,7 +209,7 @@ struct Inserter_ : euml_action<Inserter_<T,Pos> >
     typename ::boost::enable_if<
         typename ::boost::mpl::has_key<
             typename T::tag_type,state_action_tag>::type,
-            typename state_action_result<Event,FSM,STATE>::type >::type 
+            typename state_action_result<Event,FSM,STATE>::type >::type
         operator()(Event const& evt,FSM& fsm,STATE& state )const
     {
         return std::inserter(T()(evt,fsm,state),Pos()(evt,fsm,state));
@@ -220,9 +220,9 @@ struct inserter_tag {};
 struct Inserter_Helper: proto::extends< proto::terminal<inserter_tag>::type, Inserter_Helper, boost::msm::sm_domain>
 {
     Inserter_Helper(){}
-    template <class Arg1,class Arg2,class Arg3,class Arg4,class Arg5 
-#ifdef BOOST_MSVC 
- ,class Arg6 
+    template <class Arg1,class Arg2,class Arg3,class Arg4,class Arg5
+#ifdef BOOST_MSVC
+ ,class Arg6
 #endif
 >
     struct In
@@ -239,16 +239,16 @@ struct Transform_ : euml_action<Transform_<Param1,Param2,Param3,Param4,Param5,En
 
 template <class Param1, class Param2, class Param3, class Param4, class Param5>
 struct Transform_<Param1,Param2,Param3,Param4,Param5,
-                  typename ::boost::enable_if<typename ::boost::is_same<Param5,void>::type >::type> 
+                  typename ::boost::enable_if<typename ::boost::is_same<Param5,void>::type >::type>
                     : euml_action<Transform_<Param1,Param2,Param3,Param4,Param5> >
 {
     template <class Event,class FSM,class STATE >
-    struct state_action_result 
+    struct state_action_result
     {
         typedef typename get_result_type2<Param3,Event,FSM,STATE>::type type;
     };
     template <class EVT,class FSM,class SourceState,class TargetState>
-    struct transition_action_result 
+    struct transition_action_result
     {
         typedef typename get_result_type<Param3,EVT,FSM,SourceState,TargetState>::type type;
     };
@@ -258,7 +258,7 @@ struct Transform_<Param1,Param2,Param3,Param4,Param5,
     typename ::boost::enable_if<
         typename ::boost::mpl::has_key<
             typename Param1::tag_type,action_tag>::type,
-            typename transition_action_result<EVT,FSM,SourceState,TargetState>::type >::type 
+            typename transition_action_result<EVT,FSM,SourceState,TargetState>::type >::type
      operator()(EVT const& evt, FSM& fsm,SourceState& src,TargetState& tgt)const
     {
         return std::transform(Param1()(evt,fsm,src,tgt),Param2()(evt,fsm,src,tgt),Param3()(evt,fsm,src,tgt),
@@ -268,26 +268,26 @@ struct Transform_<Param1,Param2,Param3,Param4,Param5,
     typename ::boost::enable_if<
         typename ::boost::mpl::has_key<
             typename Param1::tag_type,state_action_tag>::type,
-            typename state_action_result<Event,FSM,STATE>::type >::type 
+            typename state_action_result<Event,FSM,STATE>::type >::type
      operator()(Event const& evt,FSM& fsm,STATE& state )const
     {
         return std::transform(Param1()(evt,fsm,state),Param2()(evt,fsm,state),Param3()(evt,fsm,state),
-                              Param4()(evt,fsm,state));        
+                              Param4()(evt,fsm,state));
     }
 };
 
 template <class Param1, class Param2, class Param3, class Param4, class Param5>
 struct Transform_<Param1,Param2,Param3,Param4,Param5,
-               typename ::boost::disable_if<typename ::boost::is_same<Param5,void>::type >::type> 
+               typename ::boost::disable_if<typename ::boost::is_same<Param5,void>::type >::type>
                     : euml_action<Transform_<Param1,Param2,Param3,Param4,Param5> >
 {
     template <class Event,class FSM,class STATE >
-    struct state_action_result 
+    struct state_action_result
     {
         typedef typename get_result_type2<Param4,Event,FSM,STATE>::type type;
     };
     template <class EVT,class FSM,class SourceState,class TargetState>
-    struct transition_action_result 
+    struct transition_action_result
     {
         typedef typename get_result_type<Param4,EVT,FSM,SourceState,TargetState>::type type;
     };
@@ -297,7 +297,7 @@ struct Transform_<Param1,Param2,Param3,Param4,Param5,
     typename ::boost::enable_if<
         typename ::boost::mpl::has_key<
             typename Param1::tag_type,action_tag>::type,
-            typename transition_action_result<EVT,FSM,SourceState,TargetState>::type >::type 
+            typename transition_action_result<EVT,FSM,SourceState,TargetState>::type >::type
      operator()(EVT const& evt, FSM& fsm,SourceState& src,TargetState& tgt)const
     {
         return std::transform (Param1()(evt,fsm,src,tgt),Param2()(evt,fsm,src,tgt),Param3()(evt,fsm,src,tgt),
@@ -307,7 +307,7 @@ struct Transform_<Param1,Param2,Param3,Param4,Param5,
     typename ::boost::enable_if<
         typename ::boost::mpl::has_key<
             typename Param1::tag_type,state_action_tag>::type,
-            typename state_action_result<Event,FSM,STATE>::type >::type 
+            typename state_action_result<Event,FSM,STATE>::type >::type
      operator()(Event const& evt,FSM& fsm,STATE& state )const
     {
         return std::transform (Param1()(evt,fsm,state),Param2()(evt,fsm,state),Param3()(evt,fsm,state),
@@ -318,9 +318,9 @@ struct transform_tag {};
 struct Transform_Helper: proto::extends< proto::terminal<transform_tag>::type, Transform_Helper, boost::msm::sm_domain>
 {
     Transform_Helper(){}
-    template <class Arg1,class Arg2,class Arg3,class Arg4,class Arg5 
-#ifdef BOOST_MSVC 
- ,class Arg6 
+    template <class Arg1,class Arg2,class Arg3,class Arg4,class Arg5
+#ifdef BOOST_MSVC
+ ,class Arg6
 #endif
 >
     struct In

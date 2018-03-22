@@ -11,7 +11,7 @@
 
 #include <boost/property_map/property_map.hpp>
 
-namespace boost { 
+namespace boost {
 
 // This probably doesn't belong here
 template<typename Key, typename Value>

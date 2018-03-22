@@ -25,20 +25,20 @@
 
 #include <tuple>
 
-namespace boost { 
+namespace boost {
 
 namespace detail { namespace variant {
 
     // Implementing some of the C++14 features in C++11
     template <std::size_t... I> class index_sequence {};
 
-    template <std::size_t N, std::size_t... I> 
-    struct make_index_sequence 
-        : make_index_sequence<N-1, N-1, I...> 
+    template <std::size_t N, std::size_t... I>
+    struct make_index_sequence
+        : make_index_sequence<N-1, N-1, I...>
     {};
-    template <std::size_t... I> 
-    struct make_index_sequence<0, I...> 
-        : index_sequence<I...> 
+    template <std::size_t... I>
+    struct make_index_sequence<0, I...>
+        : index_sequence<I...>
     {};
 
     template <class... Types>
@@ -49,7 +49,7 @@ namespace detail { namespace variant {
 
     // Implementing some of the helper tuple methods
     template <std::size_t... I, typename Tuple>
-    std::tuple<typename std::tuple_element<I + 1, Tuple>::type...> 
+    std::tuple<typename std::tuple_element<I + 1, Tuple>::type...>
         tuple_tail_impl(const Tuple& tpl, index_sequence<I...>)
     {
         return std::tuple<
@@ -162,7 +162,7 @@ namespace detail { namespace variant {
             v1
         );
     }
-    
+
     template <class Visitor, class T1, class T2, class T3, class... TN>
     inline BOOST_VARIANT_AUX_GENERIC_RESULT_TYPE(typename Visitor::result_type)
         apply_visitor(Visitor& visitor, T1& v1, T2& v2, T3& v3, TN&... vn)

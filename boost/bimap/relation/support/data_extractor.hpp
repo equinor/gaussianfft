@@ -59,13 +59,13 @@ template< class Relation >
 struct data_extractor_implementation< member_at::right, Relation > :
     public std::unary_function<Relation,BOOST_DEDUCED_TYPENAME Relation::right_value_type>
 {
-    BOOST_DEDUCED_TYPENAME Relation::right_value_type const & 
+    BOOST_DEDUCED_TYPENAME Relation::right_value_type const &
         operator()(Relation const & rel) const
     {
         return rel.right;
     }
 
-    BOOST_DEDUCED_TYPENAME Relation::right_value_type & 
+    BOOST_DEDUCED_TYPENAME Relation::right_value_type &
         operator()(Relation       & rel) const
     {
         return rel.right;

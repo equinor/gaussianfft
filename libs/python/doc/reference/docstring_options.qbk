@@ -138,7 +138,7 @@ foo1( (int)i) -> int : foo1 doc
 C++ signature:
     foo1(int i) -> int
 >>> print demo.foo2.__doc__
-foo2( (int)l) -> int : 
+foo2( (int)l) -> int :
 C++ signature:
     foo2(long l) -> int
 >>> print demo.foo3.__doc__

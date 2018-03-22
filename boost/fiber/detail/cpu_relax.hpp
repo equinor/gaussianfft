@@ -11,7 +11,7 @@
 #include <thread>
 
 #include <boost/config.hpp>
-#include <boost/predef.h> 
+#include <boost/predef.h>
 
 #include <boost/fiber/detail/config.hpp>
 

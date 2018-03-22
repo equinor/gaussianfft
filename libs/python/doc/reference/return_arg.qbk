@@ -1,6 +1,6 @@
 [section boost/python/return_arg.hpp]
 [section Introduction]
-`return_arg` and `return_self` instantiations are models of [link concepts.callpolicies `CallPolicies`] which return the specified argument parameter (usually `*this`) of a wrapped (member) function. 
+`return_arg` and `return_self` instantiations are models of [link concepts.callpolicies `CallPolicies`] which return the specified argument parameter (usually `*this`) of a wrapped (member) function.
 [endsect]
 [section Class `return_arg`]
 [table
@@ -34,7 +34,7 @@ namespace boost { namespace python
 namespace boost { namespace python
 {
    template <class Base = default_call_policies>
-   struct return_self 
+   struct return_self
      : return_arg<1,Base>
    {};
 }}
@@ -85,7 +85,7 @@ Python code:
 ``
 >>> from return_self_ext import *
 >>> l1 = Label().label("foo").sensitive(false)
->>> l2 = Label().sensitive(false).label("foo") 
+>>> l2 = Label().sensitive(false).label("foo")
 ``
 [endsect]
 [endsect]

@@ -269,7 +269,7 @@ struct self_get_turn_points
 namespace detail { namespace self_get_turn_points
 {
 
-// Version where Reverse can be specified manually. TODO: 
+// Version where Reverse can be specified manually. TODO:
 // can most probably be merged with self_get_turn_points::get_turn
 template
 <

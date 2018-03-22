@@ -85,7 +85,7 @@ namespace detail
 // Note that the first a0 returned by generator Gen is disarded.
 //
 template <class Gen, class U>
-inline typename detail::fraction_traits<Gen>::result_type continued_fraction_b(Gen& g, const U& factor, boost::uintmax_t& max_terms) 
+inline typename detail::fraction_traits<Gen>::result_type continued_fraction_b(Gen& g, const U& factor, boost::uintmax_t& max_terms)
       BOOST_NOEXCEPT_IF(BOOST_MATH_IS_FLOAT(typename detail::fraction_traits<Gen>::result_type) && noexcept(std::declval<Gen>()()))
 {
    BOOST_MATH_STD_USING // ADL of std names

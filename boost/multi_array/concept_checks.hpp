@@ -1,6 +1,6 @@
 // Copyright 2002 The Trustees of Indiana University.
 
-// Use, modification and distribution is subject to the Boost Software 
+// Use, modification and distribution is subject to the Boost Software
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
@@ -132,7 +132,7 @@ namespace detail {
       function_requires< boost_concepts::ForwardTraversalConcept<const_iterator> >();
       function_requires< boost_concepts::ReadableIteratorConcept<const_iterator> >();
       function_requires< boost::OutputIterator<iterator,value_type> >();
-      
+
       // RG - a( CollectionArchetype) when available...
       value_type vt = a[ id ];
 

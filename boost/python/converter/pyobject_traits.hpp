@@ -8,7 +8,7 @@
 # include <boost/python/detail/prefix.hpp>
 # include <boost/python/converter/pyobject_type.hpp>
 
-namespace boost { namespace python { namespace converter { 
+namespace boost { namespace python { namespace converter {
 
 template <class> struct pyobject_traits;
 

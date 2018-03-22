@@ -6,7 +6,7 @@
 // http://www.boost.org/LICENSE_1_0.txt)
 
 # ifndef VALUE_HOLDER_DWA20011215_HPP
-#  define VALUE_HOLDER_DWA20011215_HPP 
+#  define VALUE_HOLDER_DWA20011215_HPP
 
 #  include <boost/python/object/value_holder_fwd.hpp>
 
@@ -31,7 +31,7 @@
 
 #  include <boost/utility/addressof.hpp>
 
-namespace boost { namespace python { namespace objects { 
+namespace boost { namespace python { namespace objects {
 
 #define BOOST_PYTHON_UNFORWARD_LOCAL(z, n, _) BOOST_PP_COMMA_IF(n) objects::do_unforward(a##n,0)
 
@@ -47,13 +47,13 @@ struct value_holder : instance_holder
 
  private: // required holder implementation
     void* holds(type_info, bool null_ptr_only);
-    
+
     template <class T>
     inline void* holds_wrapped(type_info dst_t, wrapper<T>*,T* p)
     {
         return python::type_id<T>() == dst_t ? p : 0;
     }
-    
+
     inline void* holds_wrapped(type_info, ...)
     {
         return 0;
@@ -67,7 +67,7 @@ struct value_holder_back_reference : instance_holder
 {
     typedef Held held_type;
     typedef Value value_type;
-    
+
     // Forward construction to the held object
 #  define BOOST_PP_ITERATION_PARAMS_1 (4, (0, BOOST_PYTHON_MAX_ARITY, <boost/python/object/value_holder.hpp>, 2))
 #  include BOOST_PP_ITERATE()
@@ -86,7 +86,7 @@ void* value_holder<Value>::holds(type_info dst_t, bool /*null_ptr_only*/)
 {
     if (void* wrapped = holds_wrapped(dst_t, boost::addressof(m_held), boost::addressof(m_held)))
         return wrapped;
-    
+
     type_info src_t = python::type_id<Value>();
     return src_t == dst_t ? boost::addressof(m_held)
         : find_static_type(boost::addressof(m_held), src_t, dst_t);
@@ -98,7 +98,7 @@ void* value_holder_back_reference<Value,Held>::holds(
 {
     type_info src_t = python::type_id<Value>();
     Value* x = &m_held;
-    
+
     if (dst_t == src_t)
         return x;
     else if (dst_t == python::type_id<Held>())

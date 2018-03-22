@@ -62,7 +62,7 @@ class unordered_set_view
     unordered_set_view(BOOST_DEDUCED_TYPENAME base_::base_type & c)
         : base_(c) {}
 
-    unordered_set_view & operator=(const unordered_set_view & v) 
+    unordered_set_view & operator=(const unordered_set_view & v)
     {
         this->base() = v.base();
         return *this;

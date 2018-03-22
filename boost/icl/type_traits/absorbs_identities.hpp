@@ -13,7 +13,7 @@ namespace boost{ namespace icl
     template <class Type> struct absorbs_identities
     {
         typedef absorbs_identities<Type> type;
-        BOOST_STATIC_CONSTANT(bool, value = false); 
+        BOOST_STATIC_CONSTANT(bool, value = false);
     };
 
 }} // namespace boost icl

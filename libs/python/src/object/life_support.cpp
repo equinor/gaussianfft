@@ -6,7 +6,7 @@
 #include <boost/python/detail/none.hpp>
 #include <boost/python/refcount.hpp>
 
-namespace boost { namespace python { namespace objects { 
+namespace boost { namespace python { namespace objects {
 
 struct life_support
 {
@@ -90,19 +90,19 @@ PyObject* make_nurse_and_patient(PyObject* nurse, PyObject* patient)
 {
     if (nurse == Py_None || nurse == patient)
         return nurse;
-    
+
     if (Py_TYPE(&life_support_type) == 0)
     {
         Py_TYPE(&life_support_type) = &PyType_Type;
         PyType_Ready(&life_support_type);
     }
-    
+
     life_support* system = PyObject_New(life_support, &life_support_type);
     if (!system)
         return 0;
 
     system->patient = 0;
-    
+
     // We're going to leak this reference, but don't worry; the
     // life_support system decrements it when the nurse dies.
     PyObject* weakref = PyWeakref_NewRef(nurse, (PyObject*)system);
@@ -112,7 +112,7 @@ PyObject* make_nurse_and_patient(PyObject* nurse, PyObject* patient)
     Py_DECREF(system);
     if (!weakref)
         return 0;
-    
+
     system->patient = patient;
     Py_XINCREF(patient); // hang on to the patient until death
     return weakref;

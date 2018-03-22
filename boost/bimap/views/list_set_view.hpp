@@ -61,7 +61,7 @@ class list_set_view
     list_set_view(BOOST_DEDUCED_TYPENAME base_::base_type & c) :
         base_(c) {}
 
-    list_set_view & operator=(const list_set_view & v) 
+    list_set_view & operator=(const list_set_view & v)
     {
         this->base() = v.base();
         return *this;
@@ -73,7 +73,7 @@ class list_set_view
 
     // Rearrange Operations
 
-    void relocate(BOOST_DEDUCED_TYPENAME base_::iterator position, 
+    void relocate(BOOST_DEDUCED_TYPENAME base_::iterator position,
                   BOOST_DEDUCED_TYPENAME base_::iterator i)
     {
         this->base().relocate(

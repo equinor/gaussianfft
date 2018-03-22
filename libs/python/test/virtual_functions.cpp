@@ -92,7 +92,7 @@ struct concrete_callback : concrete
     {
         return this->concrete::f(y);
     }
-    
+
     PyObject* self;
 };
 
@@ -106,16 +106,16 @@ BOOST_PYTHON_MODULE(virtual_functions_ext)
         .def("call_f", &concrete::call_f)
         .def("f", &concrete_callback::f_impl)
         ;
-        
+
     class_<abstract, boost::noncopyable, abstract_callback
         >("abstract", init<int>())
-            
+
         .def("value", &abstract::value)
         .def("call_f", &abstract::call_f)
         .def("call_g", &abstract::call_g, return_internal_reference<>())
         .def("set", &abstract::set)
         ;
-        
+
     class_<Y>("Y", init<int>())
         .def("value", &Y::value)
         .def("set", &Y::set)

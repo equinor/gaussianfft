@@ -20,7 +20,7 @@
 #include <boost/flyweight/key_value_fwd.hpp>
 #include <boost/mpl/assert.hpp>
 #include <boost/type_traits/aligned_storage.hpp>
-#include <boost/type_traits/alignment_of.hpp> 
+#include <boost/type_traits/alignment_of.hpp>
 #include <boost/type_traits/is_same.hpp>
 #include <new>
 

@@ -55,7 +55,7 @@ struct no_duplicate_tags
     mpl::set0<>,
     duplicate_tag_marker
   >::type aux;
- 
+
   BOOST_STATIC_CONSTANT(
     bool,value=!(mpl::has_key<aux,duplicate_tag_mark>::value));
 };
@@ -83,7 +83,7 @@ struct no_duplicate_tags_in_index_list
     mpl::set0<>,
     duplicate_tag_list_marker
   >::type aux;
- 
+
   BOOST_STATIC_CONSTANT(
     bool,value=!(mpl::has_key<aux,duplicate_tag_mark>::value));
 };

@@ -61,7 +61,7 @@ namespace asio {
  * timer.wait();
  * @endcode
  *
- * @par 
+ * @par
  * Performing an asynchronous wait (C++11):
  * @code
  * void handler(const boost::system::error_code& error)

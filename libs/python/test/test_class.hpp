@@ -21,7 +21,7 @@ struct test_class
     int x;
     long magic;
     static int counter;
-    
+
  private:
     void operator=(test_class const&);
 };

@@ -171,14 +171,14 @@ namespace boost { namespace spirit
 
         template <>
         struct bool_<true> : mpl::bool_<true>
-        { 
-            typedef bool_<true>* is_true; 
+        {
+            typedef bool_<true>* is_true;
         };
 
         template <>
         struct bool_<false> : mpl::bool_<false>
-        { 
-            typedef bool_<false>* is_false; 
+        {
+            typedef bool_<false>* is_false;
         };
 
         // Metafunction to detect if at least one arg is a Phoenix actor
@@ -205,7 +205,7 @@ namespace boost { namespace spirit
         struct to_lazy_arg<const A>
           : to_lazy_arg<A>
         {};
-        
+
         template <typename A>
         struct to_lazy_arg<A &>
           : to_lazy_arg<A>
@@ -259,7 +259,7 @@ namespace boost { namespace spirit
         terminal() {}
 
         terminal(Terminal const& t)
-          : base_type(proto::terminal<Terminal>::type::make(t)) 
+          : base_type(proto::terminal<Terminal>::type::make(t))
         {}
 
 #if defined(BOOST_MSVC)
@@ -559,7 +559,7 @@ namespace boost { namespace spirit
 
         stateful_tag_type() {}
         stateful_tag_type(Data const& data)
-          : spirit::terminal<tag_type>(data) 
+          : spirit::terminal<tag_type>(data)
         {}
 
     private:

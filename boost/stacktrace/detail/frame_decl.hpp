@@ -140,7 +140,7 @@ public:
     ///
     /// @b Async-Handler-Safety: Safe.
     BOOST_CONSTEXPR bool empty() const BOOST_NOEXCEPT { return !address(); }
-    
+
     /// @cond
     BOOST_CONSTEXPR bool operator!() const BOOST_NOEXCEPT { return !address(); }
     /// @endcond

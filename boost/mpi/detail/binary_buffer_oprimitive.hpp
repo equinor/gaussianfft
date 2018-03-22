@@ -57,7 +57,7 @@ public:
     template<class T>
     void save_array(serialization::array_wrapper<T> const& x, unsigned int /* file_version */)
     {
-    
+
       BOOST_MPL_ASSERT((serialization::is_bitwise_serializable<BOOST_DEDUCED_TYPENAME remove_const<T>::type>));
       if (x.count())
         save_impl(x.address(), x.count()*sizeof(T));

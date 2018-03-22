@@ -413,7 +413,7 @@ operator&&(boost::tuples::cons<Head, Tail> const& t, Pred const& p)
         bt::cons<Head, Tail>, Pred
     >::apply(t, p);
 }
-    
+
 }} // namespace detail::predicates
 
 }}} // namespace boost::geometry::index

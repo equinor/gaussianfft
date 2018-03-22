@@ -60,7 +60,7 @@ namespace boost
         struct repeated_apply_impl
         {
           typedef repeated_apply_impl type;
-        
+
           template <class G>
           struct apply :
             repeated<typename FState::template apply<G>::type>
@@ -71,7 +71,7 @@ namespace boost
         struct repeated_apply_impl<'+', FState>
         {
           typedef repeated_apply_impl type;
-        
+
           template <class G>
           struct apply :
             repeated1<typename FState::template apply<G>::type>
@@ -81,20 +81,20 @@ namespace boost
         struct build_repeated
         {
           typedef build_repeated type;
-        
+
           template <class FState, class T>
           struct apply : repeated_apply_impl<T::type::value, FState> {};
         };
-        
+
         struct build_sequence
         {
           typedef build_sequence type;
-        
+
           template <class FState, class FP>
           struct apply_impl
           {
             typedef apply_impl type;
-        
+
             template <class G>
             struct apply :
               sequence<
@@ -103,20 +103,20 @@ namespace boost
               >
             {};
           };
-        
+
           template <class FState, class FP>
           struct apply : apply_impl<FState, FP> {};
         };
-        
+
         struct build_selection
         {
           typedef build_selection type;
-        
+
           template <class FState, class FP>
           struct apply_impl
           {
             typedef apply_impl type;
-        
+
             template <class G>
             struct apply :
               one_of<
@@ -125,11 +125,11 @@ namespace boost
               >
             {};
           };
-        
+
           template <class FState, class FP>
           struct apply : apply_impl<FState, FP> {};
         };
-        
+
         template <class G, class Name>
         struct get_parser
         {
@@ -137,10 +137,10 @@ namespace boost
             typename boost::mpl::at<typename G::rules, Name>::type
               ::template apply<G>
             p;
-        
+
           template <class Actions>
           struct impl : transform<typename p::type, typename Actions::type> {};
-        
+
           typedef
             typename boost::mpl::eval_if<
               typename boost::mpl::has_key<typename G::actions, Name>::type,
@@ -149,41 +149,41 @@ namespace boost
             >::type
             type;
         };
-        
+
         struct build_name
         {
           typedef build_name type;
-        
+
           template <class Name>
           struct apply_impl
           {
             typedef apply_impl type;
-        
+
             template <class G>
             struct apply : get_parser<G, Name> {};
           };
-        
+
           template <class Name>
           struct apply : apply_impl<Name> {};
         };
-        
+
         struct build_char
         {
           typedef build_char type;
-        
+
           template <class C>
           struct apply_impl
           {
             typedef apply_impl type;
-        
+
             template <class G>
             struct apply : lit<C> {};
           };
-        
+
           template <class C>
           struct apply : apply_impl<C> {};
         };
-        
+
         typedef token<lit_c<'*'> > repeated_token;
         typedef token<lit_c<'+'> > repeated1_token;
         typedef token<lit_c<'|'> > or_token;
@@ -210,7 +210,7 @@ namespace boost
             token<lit_c<'\''> >
           >
           char_token;
-        
+
         typedef
           token<
             foldr1<
@@ -220,9 +220,9 @@ namespace boost
             >
           >
           name_token;
-        
+
         struct expression;
-        
+
         typedef
           middle_of<open_bracket_token, expression, close_bracket_token>
           bracket_expression;
@@ -242,7 +242,7 @@ namespace boost
             build_repeated
           >
           repeated_expression;
-        
+
         typedef
           foldl_start_with_parser<
             repeated_expression,
@@ -250,7 +250,7 @@ namespace boost
             build_sequence
           >
           seq_expression;
-        
+
         struct expression :
           foldl_start_with_parser<
             last_of<or_token, seq_expression>,
@@ -258,61 +258,61 @@ namespace boost
             build_selection
           >
         {};
-        
+
         typedef sequence<name_token, define_token, expression> rule_definition;
 
         typedef build_parser<entire_input<rule_definition> > parser_parser;
-        
+
         template <class P>
         struct build_native_parser
         {
           typedef build_native_parser type;
-        
+
           template <class G>
           struct apply
           {
             typedef P type;
           };
         };
-        
+
         template <class S>
         struct build_parsed_parser
         {
           typedef typename parser_parser::apply<S>::type p;
           typedef typename boost::mpl::front<p>::type name;
           typedef typename boost::mpl::back<p>::type exp;
-        
+
           struct the_parser
           {
             typedef the_parser type;
-        
+
             template <class G>
             struct apply : exp::template apply<G> {};
           };
-        
+
           typedef boost::mpl::pair<name, the_parser> type;
         };
-        
+
         typedef build_parser<name_token> name_parser;
-        
+
         template <class S>
         struct rebuild : name_parser::template apply<S> {};
-        
+
         struct no_action;
-        
+
         template <class G, class P, class F>
         struct add_rule;
-        
+
         template <class G, class Name, class P>
         struct add_import;
-        
+
         template <class Start, class Rules, class Actions>
         struct grammar_builder
         {
           typedef grammar_builder type;
           typedef Rules rules;
           typedef Actions actions;
-        
+
           // Make it a parser
           template <class S, class Pos>
           struct apply :
@@ -321,18 +321,18 @@ namespace boost
               typename rebuild<Start>::type
             >::type::template apply<S, Pos>
           {};
-        
+
           template <class Name, class P>
           struct import :
             add_import<grammar_builder, typename rebuild<Name>::type, P>
           {};
-        
+
           template <class Def, class Action = no_action>
           struct rule :
             add_rule<grammar_builder, build_parsed_parser<Def>, Action>
           {};
         };
-        
+
         template <class Start, class Rules, class Actions, class P>
         struct add_rule<grammar_builder<Start, Rules, Actions>, P, no_action> :
           grammar_builder<
@@ -341,7 +341,7 @@ namespace boost
             Actions
           >
         {};
-        
+
         template <class Start, class Rules, class Actions, class P, class F>
         struct add_rule<grammar_builder<Start, Rules, Actions>, P, F> :
           grammar_builder<
@@ -357,7 +357,7 @@ namespace boost
             ::type
           >
         {};
-        
+
         template <class Start, class Rules, class Actions, class Name, class P>
         struct add_import<grammar_builder<Start, Rules, Actions>, Name, P> :
           grammar_builder<

@@ -1,4 +1,4 @@
-// Boost.Units - A C++ library for zero-overhead dimensional analysis and 
+// Boost.Units - A C++ library for zero-overhead dimensional analysis and
 // unit/quantity manipulation and conversion
 //
 // Copyright (C) 2003-2008 Matthias Christian Schabel
@@ -32,7 +32,7 @@ BOOST_UNITS_STATIC_CONSTANT(degree,temperature);
 BOOST_UNITS_STATIC_CONSTANT(degrees,temperature);
 
 } // namespace celsius
-        
+
 } // namespace units
 
 } // namespace boost

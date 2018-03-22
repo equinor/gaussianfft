@@ -84,7 +84,7 @@ void * GC_realloc(void * p, size_t lb)
     if (sz > MAXOBJBYTES) {
 	/* Round it up to the next whole heap block */
 	  register word descr;
-	  
+
 	  sz = (sz+HBLKSIZE-1) & (~HBLKMASK);
 	  hhdr -> hb_sz = sz;
 	  descr = GC_obj_kinds[obj_kind].ok_descriptor;
@@ -174,7 +174,7 @@ void * GC_generic_malloc_ignore_off_page(size_t lb, int k)
     word n_blocks;
     GC_bool init;
     DCL_LOCK_STATE;
-    
+
     if (SMALL_OBJ(lb))
         return(GC_generic_malloc((word)lb, k));
     lw = ROUNDED_UP_WORDS(lb);
@@ -409,12 +409,12 @@ DCL_LOCK_STATE;
 #	  endif
 	}
     }
-    
+
     /* As a last attempt, try allocating a single object.  Note that	*/
     /* this may trigger a collection or expand the heap.		*/
       op = GC_generic_malloc_inner(lb, k);
       if (0 != op) obj_link(op) = 0;
-    
+
   out:
     *result = op;
     UNLOCK();
@@ -491,8 +491,8 @@ void * GC_malloc_uncollectable(size_t lb)
 /* Debug version is tricky and currently missing.	*/
 #include <limits.h>
 
-void * GC_memalign(size_t align, size_t lb) 
-{ 
+void * GC_memalign(size_t align, size_t lb)
+{
     size_t new_lb;
     size_t offset;
     ptr_t result;

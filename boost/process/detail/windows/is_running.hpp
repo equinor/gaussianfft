@@ -31,7 +31,7 @@ inline bool is_running(const child_handle &p, int & exit_code)
     {
         exit_code = code;
         return false;
-    }    
+    }
 }
 
 inline bool is_running(const child_handle &p, int & exit_code, std::error_code &ec) noexcept
@@ -49,7 +49,7 @@ inline bool is_running(const child_handle &p, int & exit_code, std::error_code &
     {
         exit_code = code;
         return false;
-    }    
+    }
 }
 
 inline bool is_running(int code)

@@ -90,7 +90,7 @@ namespace detail {
       std::copy(in_values, in_values + n, out_values);
     } else {
       int middle = (lower + upper) / 2;
-      
+
       if (rank < middle) {
         // Lower half
         upper_lower_scan(comm, in_values, n, out_values, op, lower, middle);
@@ -129,7 +129,7 @@ namespace detail {
   // upper/lower algorithm.
   template<typename T, typename Op>
   inline void
-  scan_impl(const communicator& comm, const T* in_values, int n, T* out_values, 
+  scan_impl(const communicator& comm, const T* in_values, int n, T* out_values,
             Op op, mpl::false_ /*is_mpi_op*/, mpl::false_/*is_mpi_datatype*/)
   {
     upper_lower_scan(comm, in_values, n, out_values, op, 0, comm.size());
@@ -141,7 +141,7 @@ template<typename T, typename Op>
 inline void
 scan(const communicator& comm, const T& in_value, T& out_value, Op op)
 {
-  detail::scan_impl(comm, &in_value, 1, &out_value, op, 
+  detail::scan_impl(comm, &in_value, 1, &out_value, op,
                     is_mpi_op<Op, T>(), is_mpi_datatype<T>());
 }
 
@@ -149,7 +149,7 @@ template<typename T, typename Op>
 inline void
 scan(const communicator& comm, const T* in_values, int n, T* out_values, Op op)
 {
-  detail::scan_impl(comm, in_values, n, out_values, op, 
+  detail::scan_impl(comm, in_values, n, out_values, op,
                     is_mpi_op<Op, T>(), is_mpi_datatype<T>());
 }
 
@@ -158,7 +158,7 @@ inline T
 scan(const communicator& comm, const T& in_value, Op op)
 {
   T out_value;
-  detail::scan_impl(comm, &in_value, 1, &out_value, op, 
+  detail::scan_impl(comm, &in_value, 1, &out_value, op,
                     is_mpi_op<Op, T>(), is_mpi_datatype<T>());
   return out_value;
 }

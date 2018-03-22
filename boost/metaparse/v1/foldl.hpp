@@ -47,7 +47,7 @@ namespace boost
         struct next_iteration : accept<typename State::type, S, Pos> {};
       public:
         typedef foldl type;
-      
+
         template <class S, class Pos>
         struct apply :
           boost::mpl::eval_if<

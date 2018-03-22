@@ -275,7 +275,7 @@ T ellint_rj_imp(T x, T y, T z, T p, const Policy& pol)
 } // namespace detail
 
 template <class T1, class T2, class T3, class T4, class Policy>
-inline typename tools::promote_args<T1, T2, T3, T4>::type 
+inline typename tools::promote_args<T1, T2, T3, T4>::type
    ellint_rj(T1 x, T2 y, T3 z, T4 p, const Policy& pol)
 {
    typedef typename tools::promote_args<T1, T2, T3, T4>::type result_type;
@@ -290,7 +290,7 @@ inline typename tools::promote_args<T1, T2, T3, T4>::type
 }
 
 template <class T1, class T2, class T3, class T4>
-inline typename tools::promote_args<T1, T2, T3, T4>::type 
+inline typename tools::promote_args<T1, T2, T3, T4>::type
    ellint_rj(T1 x, T2 y, T3 z, T4 p)
 {
    return ellint_rj(x, y, z, p, policies::policy<>());

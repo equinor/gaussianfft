@@ -1,11 +1,11 @@
 // Copyright 2008-2010 Gordon Woodhull
-// Distributed under the Boost Software License, Version 1.0. 
+// Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 // mpl_graph - defines a metadata implementation of the BGL immutable graph concepts
 
-// (c) 2008 Gordon Woodhull 
-// Distributed under the Boost Software License, Version 1.0. 
+// (c) 2008 Gordon Woodhull
+// Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSEmpl::_1_0.txt or copy at
 // http://www.boost.org/LICENSEmpl::_1_0.txt)
 
@@ -30,8 +30,8 @@ namespace mpl_graph {
 
 // Boost Graph concepts, MPL style
 
-// The metafunctions of the public interface rely 
-// metafunctions in the graph implementation to transform the input 
+// The metafunctions of the public interface rely
+// metafunctions in the graph implementation to transform the input
 // into the maps which are required to deliver results.  Since the
 // maps are produced lazily and are memoized, all of the graph
 // concepts can be supported with no cost until they are actually
@@ -44,12 +44,12 @@ namespace mpl_graph {
 
 // IncidenceGraph
 template<typename Edge, typename Graph>
-struct source : 
-    mpl::first<typename mpl::at<typename detail::produce_edge_st_map<typename Graph::representation, typename Graph::data>::type,Edge>::type> 
+struct source :
+    mpl::first<typename mpl::at<typename detail::produce_edge_st_map<typename Graph::representation, typename Graph::data>::type,Edge>::type>
 {};
 template<typename Edge, typename Graph>
-struct target : 
-    mpl::second<typename mpl::at<typename detail::produce_edge_st_map<typename Graph::representation, typename Graph::data>::type,Edge>::type> 
+struct target :
+    mpl::second<typename mpl::at<typename detail::produce_edge_st_map<typename Graph::representation, typename Graph::data>::type,Edge>::type>
 {};
 template<typename Vertex, typename Graph>
 struct out_edges :
@@ -58,7 +58,7 @@ struct out_edges :
          mpl::push_back<mpl::_1, mpl::first<mpl::_2> > >
 {};
 template<typename Vertex, typename Graph>
-struct out_degree : 
+struct out_degree :
     mpl::size<typename out_edges<Vertex, Graph>::type>
 {};
 
@@ -78,7 +78,7 @@ struct degree :
     mpl::plus<typename out_degree<Vertex, Graph>::type,typename in_degree<Vertex, Graph>::type>
 {};
 
-// AdjacencyGraph 
+// AdjacencyGraph
 template<typename Vertex, typename Graph>
 struct adjacent_vertices :
     mpl::transform<typename detail::produce_out_map<typename Graph::representation, Vertex, typename Graph::data>::type,

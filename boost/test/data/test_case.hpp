@@ -140,7 +140,7 @@ public:
 #else
     test_case_gen( const_string tc_name, const_string tc_file, std::size_t tc_line, DataSet const& ds )
     : m_tc_name( ut_detail::normalize_test_case_name( tc_name ) )
-    , m_tc_file( tc_file )    
+    , m_tc_file( tc_file )
     , m_tc_line( tc_line )
     , m_tc_index( 0 )
     {

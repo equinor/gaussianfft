@@ -174,7 +174,7 @@ template <typename Polygon>
 struct correct_polygon
 {
     typedef typename ring_type<Polygon>::type ring_type;
-    
+
     template <typename Strategy>
     static inline void apply(Polygon& poly, Strategy const& strategy)
     {

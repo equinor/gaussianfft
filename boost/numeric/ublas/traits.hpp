@@ -165,7 +165,7 @@ namespace boost { namespace numeric { namespace ublas {
     // Type traits - generic numeric properties and functions
     template<class T>
     struct type_traits;
-        
+
     // Define properties for a generic scalar type
     template<class T>
     struct scalar_traits {
@@ -349,7 +349,7 @@ namespace boost { namespace numeric { namespace ublas {
                              BOOST_UBLAS_TYPE_CHECK_MIN);
         }
     };
-    
+
     // Define complex type traits
     template<>
     struct type_traits<std::complex<float> > : complex_traits<std::complex<float> >{
@@ -610,7 +610,7 @@ namespace boost { namespace numeric { namespace ublas {
 
         template<typename FLT>
         struct has_trivial_constructor<std::complex<FLT> > : public has_trivial_constructor<FLT> {};
-        
+
         template<typename FLT>
         struct has_trivial_destructor<std::complex<FLT> > : public has_trivial_destructor<FLT> {};
 
@@ -634,7 +634,7 @@ namespace boost { namespace numeric { namespace ublas {
         typedef typename E::value_type            value_type;
         /// const reference to an element
         typedef typename E::const_reference       const_reference;
-  
+
         /// type used in expressions to mark a reference to this class (usually a const container_reference<const E> or the class itself)
         typedef typename E::const_closure_type    const_closure_type;
     };
@@ -646,7 +646,7 @@ namespace boost { namespace numeric { namespace ublas {
     struct mutable_container_traits {
         /// reference to an element
         typedef typename E::reference             reference;
-  
+
         /// type used in expressions to mark a reference to this class (usually a container_reference<E> or the class itself)
         typedef typename E::closure_type          closure_type;
     };
@@ -655,7 +655,7 @@ namespace boost { namespace numeric { namespace ublas {
      *
      */
     template < class E >
-    struct container_traits 
+    struct container_traits
         : container_view_traits<E>, mutable_container_traits<E> {
 
     };
@@ -669,7 +669,7 @@ namespace boost { namespace numeric { namespace ublas {
 
         /// orientation of the matrix, either \c row_major_tag, \c column_major_tag or \c unknown_orientation_tag
         typedef typename MATRIX::orientation_category  orientation_category;
-  
+
         /// row iterator for the matrix
         typedef typename MATRIX::const_iterator1  const_iterator1;
 
@@ -681,7 +681,7 @@ namespace boost { namespace numeric { namespace ublas {
      *
      */
     template < class MATRIX >
-    struct mutable_matrix_traits 
+    struct mutable_matrix_traits
         : mutable_container_traits <MATRIX> {
 
         /// row iterator for the matrix
@@ -696,7 +696,7 @@ namespace boost { namespace numeric { namespace ublas {
      *
      */
     template < class MATRIX >
-    struct matrix_traits 
+    struct matrix_traits
         : matrix_view_traits <MATRIX>, mutable_matrix_traits <MATRIX> {
     };
 
@@ -747,7 +747,7 @@ namespace boost { namespace numeric { namespace ublas {
      *
      */
     template < class VECTOR >
-    struct vector_traits 
+    struct vector_traits
         : vector_view_traits <VECTOR>, mutable_vector_traits <VECTOR> {
     };
 

@@ -21,13 +21,13 @@ BOOST_MPL_ASSERT((is_reference_to_function<int (&)()>));
 BOOST_MPL_ASSERT_NOT((is_reference_to_function<int (*)()>));
 BOOST_MPL_ASSERT_NOT((is_reference_to_function<int&>));
 BOOST_MPL_ASSERT_NOT((is_reference_to_function<pmf>));
-    
+
 BOOST_MPL_ASSERT_NOT((is_pointer_to_function<int (&)()>));
 BOOST_MPL_ASSERT((is_pointer_to_function<int (*)()>));
 BOOST_MPL_ASSERT_NOT((is_pointer_to_function<int (*&)()>));
 BOOST_MPL_ASSERT_NOT((is_pointer_to_function<int (*const&)()>));
 BOOST_MPL_ASSERT_NOT((is_pointer_to_function<pmf>));
-    
+
 BOOST_MPL_ASSERT_NOT((is_reference_to_function_pointer<int (&)()>));
 BOOST_MPL_ASSERT_NOT((is_reference_to_function_pointer<int (*)()>));
 BOOST_MPL_ASSERT_NOT((is_reference_to_function_pointer<int&>));
@@ -53,7 +53,7 @@ BOOST_MPL_ASSERT_NOT((is_reference_to_const<int*&>));
 BOOST_MPL_ASSERT((is_reference_to_const<int* const&>));
 BOOST_MPL_ASSERT_NOT((is_reference_to_const<int*volatile&>));
 BOOST_MPL_ASSERT((is_reference_to_const<int*const volatile&>));
-    
+
 BOOST_MPL_ASSERT_NOT((is_reference_to_const<int const volatile>));
 BOOST_MPL_ASSERT_NOT((is_reference_to_const<int>));
 BOOST_MPL_ASSERT_NOT((is_reference_to_const<int*>));
@@ -62,16 +62,16 @@ BOOST_MPL_ASSERT((is_reference_to_non_const<int*&>));
 BOOST_MPL_ASSERT_NOT((is_reference_to_non_const<int* const&>));
 BOOST_MPL_ASSERT((is_reference_to_non_const<int*volatile&>));
 BOOST_MPL_ASSERT_NOT((is_reference_to_non_const<int*const volatile&>));
-    
+
 BOOST_MPL_ASSERT_NOT((is_reference_to_non_const<int const volatile>));
 BOOST_MPL_ASSERT_NOT((is_reference_to_non_const<int>));
 BOOST_MPL_ASSERT_NOT((is_reference_to_non_const<int*>));
-    
+
 BOOST_MPL_ASSERT_NOT((is_reference_to_volatile<int*&>));
 BOOST_MPL_ASSERT_NOT((is_reference_to_volatile<int* const&>));
 BOOST_MPL_ASSERT((is_reference_to_volatile<int*volatile&>));
 BOOST_MPL_ASSERT((is_reference_to_volatile<int*const volatile&>));
-    
+
 BOOST_MPL_ASSERT_NOT((is_reference_to_volatile<int const volatile>));
 BOOST_MPL_ASSERT_NOT((is_reference_to_volatile<int>));
 BOOST_MPL_ASSERT_NOT((is_reference_to_volatile<int*>));
@@ -81,22 +81,22 @@ namespace tt = boost::python::indirect_traits;
 BOOST_MPL_ASSERT_NOT((tt::is_reference_to_class<int>));
 BOOST_MPL_ASSERT_NOT((tt::is_reference_to_class<int&>));
 BOOST_MPL_ASSERT_NOT((tt::is_reference_to_class<int*>));
-    
+
 
 BOOST_MPL_ASSERT_NOT((tt::is_reference_to_class<pmf>));
 BOOST_MPL_ASSERT_NOT((tt::is_reference_to_class<pmf const&>));
-    
+
 BOOST_MPL_ASSERT_NOT((tt::is_reference_to_class<X>));
 
 BOOST_MPL_ASSERT((tt::is_reference_to_class<X&>));
 BOOST_MPL_ASSERT((tt::is_reference_to_class<X const&>));
 BOOST_MPL_ASSERT((tt::is_reference_to_class<X volatile&>));
 BOOST_MPL_ASSERT((tt::is_reference_to_class<X const volatile&>));
-    
+
 BOOST_MPL_ASSERT_NOT((is_pointer_to_class<int>));
 BOOST_MPL_ASSERT_NOT((is_pointer_to_class<int*>));
 BOOST_MPL_ASSERT_NOT((is_pointer_to_class<int&>));
-    
+
 BOOST_MPL_ASSERT_NOT((is_pointer_to_class<X>));
 BOOST_MPL_ASSERT_NOT((is_pointer_to_class<X&>));
 BOOST_MPL_ASSERT_NOT((is_pointer_to_class<pmf>));
@@ -113,4 +113,4 @@ BOOST_MPL_ASSERT((tt::is_reference_to_member_function_pointer<pmf const volatile
 BOOST_MPL_ASSERT_NOT((tt::is_reference_to_member_function_pointer<pmf[2]>));
 BOOST_MPL_ASSERT_NOT((tt::is_reference_to_member_function_pointer<pmf(&)[2]>));
 BOOST_MPL_ASSERT_NOT((tt::is_reference_to_member_function_pointer<pmf>));
-    
+

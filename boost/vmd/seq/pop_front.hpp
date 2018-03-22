@@ -28,7 +28,7 @@
 
 /** \def BOOST_VMD_SEQ_POP_FRONT(seq)
 
-    \brief pops an element from the front of a seq. 
+    \brief pops an element from the front of a seq.
 
     seq = seq to pop an element from.
 

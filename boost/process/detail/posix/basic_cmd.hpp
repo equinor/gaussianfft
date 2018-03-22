@@ -53,7 +53,7 @@ inline std::string build_cmd_shell(const std::string & exe, std::vector<std::str
 inline std::vector<std::string>  build_args(const std::string & data)
 {
     std::vector<std::string>  st;
-    
+
     typedef std::string::const_iterator itr_t;
 
     //normal quotes outside can be stripped, inside ones marked as \" will be replaced.
@@ -108,7 +108,7 @@ struct exe_cmd_init<char> : boost::process::detail::api::handler_base_ext
     exe_cmd_init(std::string && exe, std::vector<std::string> && args)
             : exe(std::move(exe)), args(std::move(args)) {};
     template <class Executor>
-    void on_setup(Executor& exec) 
+    void on_setup(Executor& exec)
     {
         if (exe.empty()) //cmd style
         {

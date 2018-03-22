@@ -31,7 +31,7 @@ namespace boost
         struct is_letter<boost::mpl::na>
         {
           typedef is_letter type;
-          
+
           template <class C = boost::mpl::na>
           struct apply : is_letter<C> {};
         };

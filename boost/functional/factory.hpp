@@ -1,7 +1,7 @@
 /*=============================================================================
     Copyright (c) 2007 Tobias Schwinger
-  
-    Use modification and distribution are subject to the Boost Software 
+
+    Use modification and distribution are subject to the Boost Software
     License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
     http://www.boost.org/LICENSE_1_0.txt).
 ==============================================================================*/
@@ -93,7 +93,7 @@ namespace boost
         struct deleter
             : allocator_type
         {
-            inline deleter(allocator_type const& that) 
+            inline deleter(allocator_type const& that)
               : allocator_type(that)
             { }
 
@@ -140,7 +140,7 @@ namespace boost
 #     undef BOOST_TMP_MACRO
     };
 
-    template< typename Pointer, class Allocator, factory_alloc_propagation AP > 
+    template< typename Pointer, class Allocator, factory_alloc_propagation AP >
     class factory<Pointer&, Allocator, AP>;
     // forbidden, would create a dangling reference
 }
@@ -164,7 +164,7 @@ namespace boost
     {
         value_type* memory = this->get_allocator().allocate(1);
         try
-        { 
+        {
             return make_pointer(
                 new(memory) value_type(BOOST_PP_ENUM_PARAMS(N,a)),
                 boost::non_type<factory_alloc_propagation,AP>() );

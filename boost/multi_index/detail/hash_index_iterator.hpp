@@ -63,7 +63,7 @@ public:
   /* Serialization. As for why the following is public,
    * see explanation in safe_mode_iterator notes in safe_mode.hpp.
    */
-  
+
   BOOST_SERIALIZATION_SPLIT_MEMBER()
 
   typedef typename Node::base_type node_base_type;

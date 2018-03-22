@@ -62,7 +62,7 @@ public:
 
   /**
    * @brief Determine the rank of the calling process in the group.
-   * 
+   *
    * This routine is equivalent to @c MPI_Group_rank.
    *
    * @returns The rank of the calling process in the group, which will
@@ -167,11 +167,11 @@ public:
    *
    *  @returns A new group containing all of the processes in the
    *  current group except those processes with ranks @c [first, last)
-   *  in the current group. 
+   *  in the current group.
    */
   template<typename InputIterator>
   group exclude(InputIterator first, InputIterator last);
-  
+
 
 protected:
   /**
@@ -223,7 +223,7 @@ BOOST_MPI_DECL bool operator==(const group& g1, const group& g2);
  * processes in the same order.
  */
 inline bool operator!=(const group& g1, const group& g2)
-{ 
+{
   return !(g1 == g2);
 }
 
@@ -260,7 +260,7 @@ BOOST_MPI_DECL group operator-(const group& g1, const group& g2);
  * Implementation details                                               *
  ************************************************************************/
 template<typename InputIterator, typename OutputIterator>
-OutputIterator 
+OutputIterator
 group::translate_ranks(InputIterator first, InputIterator last,
                        const group& to_group, OutputIterator out)
 {
@@ -283,11 +283,11 @@ group::translate_ranks(InputIterator first, InputIterator last,
 
 /**
  * INTERNAL ONLY
- * 
+ *
  * Specialization of translate_ranks that handles the one case where
  * we can avoid any memory allocation or copying.
  */
-template<> 
+template<>
 BOOST_MPI_DECL int*
 group::translate_ranks(int* first, int* last, const group& to_group, int* out);
 
@@ -306,7 +306,7 @@ group group::include(InputIterator first, InputIterator last)
 
 /**
  * INTERNAL ONLY
- * 
+ *
  * Specialization of group::include that handles the one case where we
  * can avoid any memory allocation or copying before creating the
  * group.
@@ -328,7 +328,7 @@ group group::exclude(InputIterator first, InputIterator last)
 
 /**
  * INTERNAL ONLY
- * 
+ *
  * Specialization of group::exclude that handles the one case where we
  * can avoid any memory allocation or copying before creating the
  * group.

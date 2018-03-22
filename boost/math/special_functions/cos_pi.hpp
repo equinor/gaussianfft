@@ -43,7 +43,7 @@ T cos_pi_imp(T x, const Policy& pol)
    }
    if(rem == 0.5f)
       return 0;
-   
+
    if(rem > 0.25f)
    {
       rem = 0.5f - rem;

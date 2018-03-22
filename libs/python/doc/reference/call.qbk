@@ -1,6 +1,6 @@
 [section boost/python/call.hpp]
 [section Introduction]
- <boost/python/call.hpp> defines the call family of overloaded function templates, used to invoke Python callable objects from C++. 
+ <boost/python/call.hpp> defines the call family of overloaded function templates, used to invoke Python callable objects from C++.
 [endsect]
 [section Function `call`]
 ``
@@ -15,7 +15,7 @@ R call(PyObject* callable, A1 const&, A2 const&, ... An const&)
 ]
 [endsect]
 [section Example]
-The following C++ function applies a Python callable object to its two arguments and returns the result. If a Python exception is raised or the result can't be converted to a double, an exception is thrown. 
+The following C++ function applies a Python callable object to its two arguments and returns the result. If a Python exception is raised or the result can't be converted to a double, an exception is thrown.
 ``
 double apply2(PyObject* func, double x, double y)
 {

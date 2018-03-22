@@ -501,7 +501,7 @@ rule translate ( properties * : project-id : project-location : context-module )
         {
             condition = $(split[1]) ;
             property = $(split[2]) ;
-            
+
             local e ;
             for local c in [ regex.split $(condition) "," ]
             {
@@ -729,7 +729,7 @@ class property-map
         for local i in $(self.all-flags)
         {
             local list = $($(i)) ;
-            if [ $(property-set).contains-raw $(list[2-]) ] 
+            if [ $(property-set).contains-raw $(list[2-]) ]
             {
                 matches += $(list[1]) ;
                 match-ranks += [ sequence.length $(list) ] ;

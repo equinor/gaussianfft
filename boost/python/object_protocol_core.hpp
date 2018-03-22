@@ -9,7 +9,7 @@
 
 # include <boost/python/handle_fwd.hpp>
 
-namespace boost { namespace python { 
+namespace boost { namespace python {
 
 namespace api
 {
@@ -26,7 +26,7 @@ namespace api
   BOOST_PYTHON_DECL object getattr(object const& target, char const* key, object const& default_);
   BOOST_PYTHON_DECL void setattr(object const& target, char const* key, object const& value);
   BOOST_PYTHON_DECL void delattr(object const& target, char const* key);
-  
+
   BOOST_PYTHON_DECL object getitem(object const& target, object const& key);
   BOOST_PYTHON_DECL void setitem(object const& target, object const& key, object const& value);
   BOOST_PYTHON_DECL void delitem(object const& target, object const& key);

@@ -20,7 +20,7 @@
 #include <boost/multi_index/detail/auto_space.hpp>
 #include <boost/multi_index/detail/raw_ptr.hpp>
 #include <boost/serialization/nvp.hpp>
-#include <boost/throw_exception.hpp> 
+#include <boost/throw_exception.hpp>
 #include <cstddef>
 
 namespace boost{

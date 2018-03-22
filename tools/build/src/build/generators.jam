@@ -220,7 +220,7 @@ class generator
             self.name-prefix += $(m[3]:E="") ;
             self.name-postfix += $(m[4]:E="") ;
         }
-        
+
         for local r in [ requirements ]
         {
             if $(r:G=)

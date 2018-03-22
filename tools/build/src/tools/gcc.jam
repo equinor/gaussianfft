@@ -155,7 +155,7 @@ rule init ( version ? : command * : options * )
     # Information about the gcc command...
     #   The command.
     local command = $(tool-command) ;
-    #   The 'command' variable can have multiple elements but when calling the    
+    #   The 'command' variable can have multiple elements but when calling the
     # SHELL builtin we need a single string, and we need to quote elements
     # with spaces.
     local command-string = \"$(command)\" ;

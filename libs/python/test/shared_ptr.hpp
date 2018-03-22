@@ -28,7 +28,7 @@ struct functions
     {
         store(shared_ptr<T>());
     }
-    
+
     static void modify(shared_ptr<T>& x)
     {
         x.reset();
@@ -36,7 +36,7 @@ struct functions
 
     static shared_ptr<T> get() { return storage; }
     static shared_ptr<T> &get1() { return storage; }
-        
+
     static int look_store()
     {
         return look(get());
@@ -50,7 +50,7 @@ struct functions
         def("modify", &modify);
         def("identity", &identity);
         def("null", &null);
-            
+
         const_cast<C&>(c)
             .def("look", &look)
             .staticmethod("look")
@@ -77,7 +77,7 @@ struct functions
 
     static shared_ptr<T> identity(shared_ptr<T> x) { return x; }
     static shared_ptr<T> null(T const&) { return shared_ptr<T>(); }
-    
+
 
     static shared_ptr<T> storage;
 };
@@ -95,10 +95,10 @@ struct ZWrap : Z
     ZWrap(PyObject* self, int x)
         : Z(x), m_self(self) {}
 
-    
+
     virtual int v() { return call_method<int>(m_self, "v"); }
     int default_v() { return Z::v(); }
-    
+
 
     PyObject* m_self;
 };
@@ -171,11 +171,11 @@ BOOST_PYTHON_MODULE(MODULE)
         shared_ptr<A>
       , objects::make_ptr_instance<A, objects::pointer_holder<shared_ptr<A>,A> >
     >();
-        
+
     def("New", &New);
 
     def("factory", factory);
-    
+
     functions<X>::expose(
         class_<X, boost::noncopyable>("X", init<int>())
              .def("value", &X::value)
@@ -185,7 +185,7 @@ BOOST_PYTHON_MODULE(MODULE)
         class_<Y, shared_ptr<Y> >("Y", init<int>())
             .def("value", &Y::value)
         );
-    
+
     class_<YY, bases<Y>, boost::noncopyable>("YY", init<int>())
         ;
 
@@ -200,7 +200,7 @@ BOOST_PYTHON_MODULE(MODULE)
 
 // from Neal Becker
     class_<Test> ("Test")
-       .def_readonly ("x", &Test::x, "x") 
+       .def_readonly ("x", &Test::x, "x")
        ;
 // ------
 }

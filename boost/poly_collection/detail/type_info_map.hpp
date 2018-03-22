@@ -114,7 +114,7 @@ public:
     if(cit!=cache.end())return cit->second;
     auto mit=map.find(&key);
     if(mit!=map.end())cache.insert({&key,mit});
-    return mit; 
+    return mit;
   }
 
   const_iterator find(const key_type& key)const

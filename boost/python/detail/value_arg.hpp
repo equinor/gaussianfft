@@ -8,7 +8,7 @@
 # include <boost/mpl/if.hpp>
 # include <boost/python/detail/indirect_traits.hpp>
 
-namespace boost { namespace python { namespace detail { 
+namespace boost { namespace python { namespace detail {
 
 template <class T>
 struct value_arg
@@ -20,7 +20,7 @@ struct value_arg
         >::type
   >
 {};
-  
+
 }}} // namespace boost::python::detail
 
 #endif // VALUE_ARG_DWA2004312_HPP

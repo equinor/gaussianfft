@@ -1,4 +1,4 @@
-/* 
+/*
    Copyright (c) Marshall Clow 2008-2012.
 
    Distributed under the Boost Software License, Version 1.0. (See accompanying
@@ -22,13 +22,13 @@ namespace boost { namespace algorithm {
 /// \brief Copies all the elements from the input range that satisfy the
 /// predicate to the output range.
 /// \return The updated output iterator
-/// 
+///
 /// \param first    The start of the input sequence
 /// \param last     One past the end of the input sequence
 /// \param result   An output iterator to write the results into
 /// \param p        A predicate for testing the elements of the range
 /// \note           This function is part of the C++2011 standard library.
-template<typename InputIterator, typename OutputIterator, typename Predicate> 
+template<typename InputIterator, typename OutputIterator, typename Predicate>
 OutputIterator copy_if ( InputIterator first, InputIterator last, OutputIterator result, Predicate p )
 {
     for ( ; first != last; ++first )
@@ -41,7 +41,7 @@ OutputIterator copy_if ( InputIterator first, InputIterator last, OutputIterator
 /// \brief Copies all the elements from the input range that satisfy the
 /// predicate to the output range.
 /// \return The updated output iterator
-/// 
+///
 /// \param r        The input range
 /// \param result   An output iterator to write the results into
 /// \param p        A predicate for testing the elements of the range
@@ -57,13 +57,13 @@ OutputIterator copy_if ( const Range &r, OutputIterator result, Predicate p )
 /// \brief Copies all the elements at the start of the input range that
 ///     satisfy the predicate to the output range.
 /// \return The updated input and output iterators
-/// 
+///
 /// \param first    The start of the input sequence
 /// \param last     One past the end of the input sequence
 /// \param result   An output iterator to write the results into
 /// \param p        A predicate for testing the elements of the range
 ///
-template<typename InputIterator, typename OutputIterator, typename Predicate> 
+template<typename InputIterator, typename OutputIterator, typename Predicate>
 std::pair<InputIterator, OutputIterator>
 copy_while ( InputIterator first, InputIterator last, OutputIterator result, Predicate p )
 {
@@ -76,13 +76,13 @@ copy_while ( InputIterator first, InputIterator last, OutputIterator result, Pre
 /// \brief Copies all the elements at the start of the input range that
 ///     satisfy the predicate to the output range.
 /// \return The updated input and output iterators
-/// 
+///
 /// \param r        The input range
 /// \param result   An output iterator to write the results into
 /// \param p        A predicate for testing the elements of the range
 ///
 template<typename Range, typename OutputIterator, typename Predicate>
-std::pair<typename boost::range_iterator<const Range>::type, OutputIterator> 
+std::pair<typename boost::range_iterator<const Range>::type, OutputIterator>
 copy_while ( const Range &r, OutputIterator result, Predicate p )
 {
     return boost::algorithm::copy_while (boost::begin (r), boost::end(r), result, p);
@@ -93,13 +93,13 @@ copy_while ( const Range &r, OutputIterator result, Predicate p )
 /// \brief Copies all the elements at the start of the input range that do not
 ///     satisfy the predicate to the output range.
 /// \return The updated output iterator
-/// 
+///
 /// \param first    The start of the input sequence
 /// \param last     One past the end of the input sequence
 /// \param result   An output iterator to write the results into
 /// \param p        A predicate for testing the elements of the range
 ///
-template<typename InputIterator, typename OutputIterator, typename Predicate> 
+template<typename InputIterator, typename OutputIterator, typename Predicate>
 std::pair<InputIterator, OutputIterator>
 copy_until ( InputIterator first, InputIterator last, OutputIterator result, Predicate p )
 {
@@ -112,13 +112,13 @@ copy_until ( InputIterator first, InputIterator last, OutputIterator result, Pre
 /// \brief Copies all the elements at the start of the input range that do not
 ///     satisfy the predicate to the output range.
 /// \return The updated output iterator
-/// 
+///
 /// \param r        The input range
 /// \param result   An output iterator to write the results into
 /// \param p        A predicate for testing the elements of the range
 ///
 template<typename Range, typename OutputIterator, typename Predicate>
-std::pair<typename boost::range_iterator<const Range>::type, OutputIterator> 
+std::pair<typename boost::range_iterator<const Range>::type, OutputIterator>
 copy_until ( const Range &r, OutputIterator result, Predicate p )
 {
     return boost::algorithm::copy_until (boost::begin (r), boost::end(r), result, p);

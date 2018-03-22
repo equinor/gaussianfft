@@ -38,14 +38,14 @@ BOOST_SPIRIT_CLASSIC_NAMESPACE_BEGIN
     template<typename ActorT> struct lazy_parser;
 
     // rule_alias.hpp
-    template <typename ParserT> class rule_alias; 
+    template <typename ParserT> class rule_alias;
 
     // switch.hpp
     template <typename CaseT, typename CondT>       struct switch_parser;
     template <int N, class ParserT, bool IsDefault> struct case_parser;
 
     // select.hpp
-    template <typename TupleT, typename BehaviourT, typename T> 
+    template <typename TupleT, typename BehaviourT, typename T>
     struct select_parser;
 
 BOOST_SPIRIT_CLASSIC_NAMESPACE_END

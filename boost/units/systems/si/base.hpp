@@ -1,4 +1,4 @@
-// Boost.Units - A C++ library for zero-overhead dimensional analysis and 
+// Boost.Units - A C++ library for zero-overhead dimensional analysis and
 // unit/quantity manipulation and conversion
 //
 // Copyright (C) 2003-2008 Matthias Christian Schabel
@@ -29,14 +29,14 @@
 
 namespace boost {
 
-namespace units { 
+namespace units {
 
 namespace si {
 
 /// placeholder class defining si unit system
-typedef make_system<meter_base_unit, 
-                    kilogram_base_unit, 
-                    second_base_unit, 
+typedef make_system<meter_base_unit,
+                    kilogram_base_unit,
+                    second_base_unit,
                     ampere_base_unit,
                     kelvin_base_unit,
                     mole_base_unit,

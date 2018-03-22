@@ -18,15 +18,15 @@ namespace boost
 namespace statechart
 {
 
-  
-  
+
+
 //////////////////////////////////////////////////////////////////////////////
 template< class DefaultState >
 class deep_history
 {
   public:
     //////////////////////////////////////////////////////////////////////////
-    // If you receive a 
+    // If you receive a
     // "use of undefined type 'boost::STATIC_ASSERTION_FAILURE<x>'" or similar
     // compiler error here then you forgot to pass either
     // statechart::has_deep_history or statechart::has_full_history as the

@@ -40,9 +40,9 @@ enum trigger_receive_context {
   /// must be handled immediately.
   trc_out_of_band,
   /// The trigger is being invoked for an out-of-band message, which
-  /// must be handled immediately and has alredy been received by 
+  /// must be handled immediately and has alredy been received by
   /// an MPI_IRecv call.
-  trc_irecv_out_of_band  
+  trc_irecv_out_of_band
 };
 
 // Process group tags

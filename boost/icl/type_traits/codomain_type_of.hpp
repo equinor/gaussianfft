@@ -1,4 +1,4 @@
-/*-----------------------------------------------------------------------------+    
+/*-----------------------------------------------------------------------------+
 Copyright (c) 2008-2009: Joachim Faulhaber
 +------------------------------------------------------------------------------+
    Distributed under the Boost Software License, Version 1.0.
@@ -22,11 +22,11 @@ namespace boost{ namespace icl
     }
 
     template <class Type>
-    struct has_codomain_type 
+    struct has_codomain_type
       : mpl::bool_<detail::has_codomain_type<Type>::value>
     {};
 
-    template <class Type, bool has_codomain_type, bool is_std_set> 
+    template <class Type, bool has_codomain_type, bool is_std_set>
     struct get_codomain_type;
 
     template <class Type>
@@ -50,7 +50,7 @@ namespace boost{ namespace icl
     template <class Type>
     struct codomain_type_of
     {
-        typedef typename 
+        typedef typename
             get_codomain_type< Type
                              , has_codomain_type<Type>::value
                              , is_std_set<Type>::value

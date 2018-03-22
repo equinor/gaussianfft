@@ -103,7 +103,7 @@ class list_adaptor :
         );
     }
 
-    void splice(Iterator position, list_adaptor & x, 
+    void splice(Iterator position, list_adaptor & x,
                 Iterator first, Iterator last)
     {
         this->base().splice(

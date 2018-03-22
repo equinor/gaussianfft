@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////////////////////////
 //
-// (C) Copyright Stephen Cleary 2000 
+// (C) Copyright Stephen Cleary 2000
 // (C) Copyright Ion Gaztanaga  2015-2017.
 //
 // Distributed under the Boost

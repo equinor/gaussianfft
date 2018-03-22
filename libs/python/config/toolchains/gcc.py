@@ -21,7 +21,7 @@ class features:
                     'x86_64' : '-m64',}.get(arch)
             if flag:
                 append_feature_flag(env, CCFLAGS = flag)
-    
+
     @staticmethod
     def optimize(env, optimize):
         if not optimize or optimize == "no":

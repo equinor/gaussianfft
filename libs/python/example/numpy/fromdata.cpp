@@ -22,7 +22,7 @@ int main(int argc, char **argv)
   // Initialize NumPy
   np::initialize();
   // Create an array in C++
-  int arr[] = {1,2,3,4} ; 
+  int arr[] = {1,2,3,4} ;
   // Create the ndarray in Python
   np::ndarray py_array = np::from_data(arr, np::dtype::get_builtin<int>() , p::make_tuple(4), p::make_tuple(4), p::object());
   // Print the ndarray that we just created, and the source C++ array
@@ -33,9 +33,9 @@ int main(int argc, char **argv)
   }
   std::cout << std::endl << "Python ndarray :" << p::extract<char const *>(p::str(py_array)) << std::endl;
   // Change an element in the python ndarray
-  py_array[1] = 5 ; 
+  py_array[1] = 5 ;
   // And see if the C++ container is changed or not
-  std::cout << "Is the change reflected in the C++ array used to create the ndarray ? " << std::endl ; 
+  std::cout << "Is the change reflected in the C++ array used to create the ndarray ? " << std::endl ;
   for (int j = 0;j<4 ; j++)
   {
     std::cout << arr[j] << ' ' ;

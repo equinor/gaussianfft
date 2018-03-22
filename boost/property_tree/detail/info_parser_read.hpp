@@ -1,8 +1,8 @@
 // ----------------------------------------------------------------------------
 // Copyright (C) 2002-2006 Marcin Kalicinski
 //
-// Distributed under the Boost Software License, Version 1.0. 
-// (See accompanying file LICENSE_1_0.txt or copy at 
+// Distributed under the Boost Software License, Version 1.0.
+// (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 //
 // For more information, see www.boost.org
@@ -60,7 +60,7 @@ namespace boost { namespace property_tree { namespace info_parser
         }
         return result;
     }
-    
+
     // Detect whitespace in a not very smart way.
     template <class Ch>
     bool is_ascii_space(Ch c)
@@ -309,10 +309,10 @@ namespace boost { namespace property_tree { namespace info_parser
                         // Parser expects data
                         case s_data:
                         {
-                            
+
                             // Last ptree must be defined because we are going to add data to it
                             BOOST_ASSERT(last);
-                            
+
                             if (*text == Ch('{'))   // Brace opening found
                             {
                                 stack.push(last);
@@ -343,10 +343,10 @@ namespace boost { namespace property_tree { namespace info_parser
                         // Parser expects continuation of data after \ on previous line
                         case s_data_cont:
                         {
-                            
+
                             // Last ptree must be defined because we are going to update its data
                             BOOST_ASSERT(last);
-                            
+
                             if (*text == Ch('\"'))  // Continuation must start with "
                             {
                                 bool need_more_lines;

@@ -248,7 +248,7 @@ struct concept_interface<iterator< ::boost::no_traversal_tag, T, Reference, Diff
 {
     typedef typename rebind_any<Base, ValueType>::type value_type;
     typedef typename rebind_any<
-        Base, 
+        Base,
         typename iterator_reference<Reference, ValueType>::type
     >::type reference;
     typedef DifferenceType difference_type;

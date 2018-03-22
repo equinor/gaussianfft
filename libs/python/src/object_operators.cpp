@@ -24,7 +24,7 @@ BOOST_PYTHON_COMPARE_OP(<=, Py_LE)
 BOOST_PYTHON_COMPARE_OP(==, Py_EQ)
 BOOST_PYTHON_COMPARE_OP(!=, Py_NE)
 # undef BOOST_PYTHON_COMPARE_OP
-    
+
 
 #define BOOST_PYTHON_BINARY_OPERATOR(op, name)                          \
 BOOST_PYTHON_DECL object operator op(object const& l, object const& r)  \
@@ -60,7 +60,7 @@ BOOST_PYTHON_DECL object& operator op##=(object& l, object const& r)    \
         (detail::new_reference)                                         \
             PyNumber_InPlace##name(l.ptr(), r.ptr()));                  \
 }
-    
+
 BOOST_PYTHON_INPLACE_OPERATOR(+, Add)
 BOOST_PYTHON_INPLACE_OPERATOR(-, Subtract)
 BOOST_PYTHON_INPLACE_OPERATOR(*, Multiply)

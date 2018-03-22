@@ -13,7 +13,7 @@
 # include <boost/preprocessor/enum_params_with_a_default.hpp>
 # include <boost/preprocessor/enum_params.hpp>
 
-namespace boost { namespace python { 
+namespace boost { namespace python {
 
 # define BOOST_PYTHON_BASE_PARAMS BOOST_PP_ENUM_PARAMS_Z(1, BOOST_PYTHON_MAX_BASES, Base)
 
@@ -28,7 +28,7 @@ namespace boost { namespace python {
         : mpl::false_
     {
     };
-    
+
     template < BOOST_PP_ENUM_PARAMS_Z(1, BOOST_PYTHON_MAX_BASES, class Base) >
     struct specifies_bases< bases< BOOST_PYTHON_BASE_PARAMS > >
         : mpl::true_

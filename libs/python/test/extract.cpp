@@ -55,13 +55,13 @@ std::string const& extract_string_cref(object x)
 #elif defined(_MSC_VER) && defined(__ICL) && __ICL <= 900
 # pragma warning(push)
 # pragma warning(disable:473) // intel/win32 does too
-#endif 
-    
+#endif
+
     return extract<std::string const&>(x);
-    
+
 #if defined(BOOST_MSVC) && BOOST_MSVC <= 1300 || defined(_MSC_VER) && defined(__ICL) && __ICL <= 800
 # pragma warning(pop)
-#endif 
+#endif
 }
 
 X extract_X(object x)
@@ -127,7 +127,7 @@ BOOST_PYTHON_MODULE(extract_ext)
     object x_class(
         class_<X>("X", init<int>())
             .def( "__repr__", x_rep));
-        
+
     // Instantiate an X object through the Python interface
     object x_obj = x_class(3);
 

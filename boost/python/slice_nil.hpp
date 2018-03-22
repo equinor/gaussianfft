@@ -18,7 +18,7 @@ class slice_nil : public object
 
 # ifndef _ // Watch out for GNU gettext users, who #define _(x)
 static const slice_nil _ = slice_nil();
-# endif 
+# endif
 
 template <class T>
 struct slice_bound
@@ -37,7 +37,7 @@ struct slice_bound<slice_nil>
 using api::slice_nil;
 # ifndef _ // Watch out for GNU gettext users, who #define _(x)
 using api::_;
-# endif 
+# endif
 
 }} // namespace boost::python
 

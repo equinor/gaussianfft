@@ -59,8 +59,8 @@ template <class T>
 struct has_hidden_guard_digits_10<T, true> : public mpl::bool_<(std::numeric_limits<T>::digits10 != std::numeric_limits<T>::max_digits10)> {};
 
 template <class T>
-struct has_hidden_guard_digits 
-   : public has_hidden_guard_digits_10<T, 
+struct has_hidden_guard_digits
+   : public has_hidden_guard_digits_10<T,
    std::numeric_limits<T>::is_specialized
    && (std::numeric_limits<T>::radix == 10) >
 {};
@@ -68,7 +68,7 @@ struct has_hidden_guard_digits
 template <class T>
 inline const T& normalize_value(const T& val, const mpl::false_&) { return val; }
 template <class T>
-inline T normalize_value(const T& val, const mpl::true_&) 
+inline T normalize_value(const T& val, const mpl::true_&)
 {
    BOOST_STATIC_ASSERT(std::numeric_limits<T>::is_specialized);
    BOOST_STATIC_ASSERT(std::numeric_limits<T>::radix != 2);
@@ -76,7 +76,7 @@ inline T normalize_value(const T& val, const mpl::true_&)
    boost::intmax_t shift = std::numeric_limits<T>::digits - ilogb(val) - 1;
    T result = scalbn(val, shift);
    result = round(result);
-   return scalbn(result, -shift); 
+   return scalbn(result, -shift);
 }
 
 template <class T>

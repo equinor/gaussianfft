@@ -25,7 +25,7 @@ public:
         { };
     explicit non_blocking_adapter(Device& dev) : device_(dev) { }
     std::streamsize read(char_type* s, std::streamsize n)
-    { 
+    {
         std::streamsize result = 0;
         while (result < n) {
             std::streamsize amt = iostreams::read(device_, s, n);
@@ -36,20 +36,20 @@ public:
         return result != 0 ? result : -1;
     }
     std::streamsize write(const char_type* s, std::streamsize n)
-    { 
+    {
         std::streamsize result = 0;
         while (result < n) {
-            std::streamsize amt = 
+            std::streamsize amt =
                 iostreams::write(device_, s + result, n - result);
             // write errors, like EOF on read, need to be handled.
             if (amt == -1)
                 break;
             result += amt;
         }
-        return result;    
+        return result;
     }
     std::streampos seek( stream_offset off, BOOST_IOS::seekdir way,
-                         BOOST_IOS::openmode which = 
+                         BOOST_IOS::openmode which =
                              BOOST_IOS::in | BOOST_IOS::out )
     { return iostreams::seek(device_, off, way, which); }
 public:

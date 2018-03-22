@@ -1,4 +1,4 @@
-// Boost.Units - A C++ library for zero-overhead dimensional analysis and 
+// Boost.Units - A C++ library for zero-overhead dimensional analysis and
 // unit/quantity manipulation and conversion
 //
 // Copyright (C) 2003-2008 Matthias Christian Schabel
@@ -36,11 +36,11 @@ struct dim_tag { };
 
 /// \brief Dimension tag/exponent pair for a single fundamental dimension.
 ///
-/// \details 
+/// \details
 /// The dim class represents a single dimension tag/dimension exponent pair.
 /// That is, @c dim<tag_type,value_type> is a pair where @c tag_type represents the
-/// fundamental dimension being represented and @c value_type represents the 
-/// exponent of that fundamental dimension as a @c static_rational. @c tag_type must 
+/// fundamental dimension being represented and @c value_type represents the
+/// exponent of that fundamental dimension as a @c static_rational. @c tag_type must
 /// be a derived from a specialization of @c base_dimension.
 /// Specialization of the following Boost.MPL metafunctions are provided
 ///
@@ -57,7 +57,7 @@ struct dim_tag { };
 ///     - @c mpl::divides for a @c static_rational and a @c dim in either order
 ///
 /// These metafunctions likewise operate on the exponent only.
-template<typename T,typename V> 
+template<typename T,typename V>
 struct dim
 {
     typedef dim             type;

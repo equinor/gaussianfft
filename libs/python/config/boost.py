@@ -10,7 +10,7 @@ from . import ui
 import os
 
 def add_options(vars):
-    
+
     ui.add_option("--boost-prefix", dest="boost_prefix", type="string", nargs=1, action="store",
                   metavar="DIR", default=os.environ.get("BOOST_DIR"),
                   help="prefix for Boost libraries; should have 'include' and 'lib' subdirectories, 'boost' and 'stage\\lib' subdirectories on Windows")
@@ -20,7 +20,7 @@ def add_options(vars):
                   nargs=1, action="store",
                   metavar="DIR", default="/usr/share/boostbook",
                   help="prefix for BoostBook stylesheets")
-    
+
 def check(context):
 
     boost_source_file = r"#include <boost/config.hpp>"

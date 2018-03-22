@@ -45,7 +45,7 @@ struct x86_rounding
   static void get_rounding_mode(rounding_mode& mode)
   { mode = _control87(0, 0); }
   static void set_rounding_mode(const rounding_mode mode)
-  { _control87(mode, 0xffff); } 
+  { _control87(mode, 0xffff); }
   static double to_int(const double& x) { return rint(x); }
 };
 

@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2000-2005 by Hewlett-Packard Company.  All rights reserved.
  *
  * THIS MATERIAL IS PROVIDED AS IS, WITH ABSOLUTELY NO WARRANTY EXPRESSED

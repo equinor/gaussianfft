@@ -1,7 +1,7 @@
 /*=============================================================================
     Copyright (c) 2006-2007 Tobias Schwinger
-  
-    Use modification and distribution are subject to the Boost Software 
+
+    Use modification and distribution are subject to the Boost Software
     License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
     http://www.boost.org/LICENSE_1_0.txt).
 ==============================================================================*/
@@ -42,7 +42,7 @@ namespace boost { namespace fusion
             : fnc_transformed(f)
         { }
 
-        template <class Seq> 
+        template <class Seq>
         BOOST_CXX14_CONSTEXPR BOOST_FUSION_GPU_ENABLED
         inline void operator()(Seq const & s) const
         {
@@ -50,15 +50,15 @@ namespace boost { namespace fusion
                 func_const_fwd_t >(this->fnc_transformed,s);
         }
 
-        template <class Seq> 
+        template <class Seq>
         BOOST_CXX14_CONSTEXPR BOOST_FUSION_GPU_ENABLED
-        inline void operator()(Seq const & s) 
+        inline void operator()(Seq const & s)
         {
             fusion::invoke_procedure<
                 func_fwd_t >(this->fnc_transformed,s);
         }
 
-        template <class Seq> 
+        template <class Seq>
         BOOST_CXX14_CONSTEXPR BOOST_FUSION_GPU_ENABLED
         inline void operator()(Seq & s) const
         {
@@ -66,9 +66,9 @@ namespace boost { namespace fusion
                 func_const_fwd_t >(this->fnc_transformed,s);
         }
 
-        template <class Seq> 
+        template <class Seq>
         BOOST_CXX14_CONSTEXPR BOOST_FUSION_GPU_ENABLED
-        inline void operator()(Seq & s) 
+        inline void operator()(Seq & s)
         {
             return fusion::invoke_procedure<
                 func_fwd_t >(this->fnc_transformed,s);

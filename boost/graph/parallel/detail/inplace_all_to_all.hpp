@@ -20,12 +20,12 @@
 #include <vector>
 #include <iterator>
 
-namespace boost { namespace parallel { 
+namespace boost { namespace parallel {
 
 template<typename ProcessGroup, typename T>
 // where {LinearProcessGroup<ProcessGroup>, MessagingProcessGroup<ProcessGroup>}
-void 
-inplace_all_to_all(ProcessGroup pg, 
+void
+inplace_all_to_all(ProcessGroup pg,
                    const std::vector<std::vector<T> >& outgoing,
                    std::vector<std::vector<T> >& incoming)
 {
@@ -67,7 +67,7 @@ inplace_all_to_all(ProcessGroup pg,
 
 template<typename ProcessGroup, typename T>
 // where {LinearProcessGroup<ProcessGroup>, MessagingProcessGroup<ProcessGroup>}
-void 
+void
 inplace_all_to_all(ProcessGroup pg, std::vector<std::vector<T> >& data)
 {
   inplace_all_to_all(pg, data, data);

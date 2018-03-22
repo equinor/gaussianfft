@@ -23,13 +23,13 @@ namespace boost
         // CMap and CMapStringToString range iterators return CPair,
         // which has a key and value member. Other MFC range iterators
         // already return adapted std::pair objects. This allows usage
-        // of the map_keys and map_values range adaptors with CMap 
+        // of the map_keys and map_values range adaptors with CMap
         // and CMapStringToString
-        
+
         // CPair has a VALUE value member, and a KEY key member; we will
         // use VALUE& as the result_type consistent with CMap::operator[]
-        
-        // specialization for CMap 
+
+        // specialization for CMap
         template<class KEY, class ARG_KEY, class VALUE, class ARG_VALUE>
         struct select_first< CMap<KEY, ARG_KEY, VALUE, ARG_VALUE> >
         {

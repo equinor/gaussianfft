@@ -30,7 +30,7 @@
     \brief converts a list to a seq.
 
     list = list to be converted.
-    
+
     If the list is an empty list (BOOST_PP_NIL) it is converted to an empty seq.
     Otherwise the list is converted to a seq with the same number of elements as the list.
 */

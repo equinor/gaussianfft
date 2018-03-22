@@ -55,7 +55,7 @@ BOOST_PYTHON_MODULE(long_ext)
     def("longify_string", longify_string);
     def("is_long", is_long1);
     def("is_long", is_long2);
-    
+
     class_< Y >("Y", init< boost::python::long_ >())
         ;
 }

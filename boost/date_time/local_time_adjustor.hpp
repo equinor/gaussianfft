@@ -2,10 +2,10 @@
 #define DATE_TIME_LOCAL_TIME_ADJUSTOR_HPP__
 
 /* Copyright (c) 2002,2003 CrystalClear Software, Inc.
- * Use, modification and distribution is subject to the 
+ * Use, modification and distribution is subject to the
  * Boost Software License, Version 1.0. (See accompanying
  * file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt)
- * Author: Jeff Garland 
+ * Author: Jeff Garland
  * $Date$
  */
 
@@ -26,9 +26,9 @@ namespace boost {
 
 
     //! Provides a base offset adjustment from utc
-    template<class time_duration_type, 
+    template<class time_duration_type,
              short hours, unsigned short minutes = 0>
-    class utc_adjustment 
+    class utc_adjustment
     {
     public:
       static time_duration_type local_to_utc_base_offset()
@@ -55,10 +55,10 @@ namespace boost {
       dynamic_local_time_adjustor(time_duration_type utc_offset) :
         utc_offset_(utc_offset)
       {}
-      
+
       //! Presumes local time
-      time_duration_type utc_offset(bool is_dst) 
-      { 
+      time_duration_type utc_offset(bool is_dst)
+      {
         if (is_dst) {
           return utc_offset_ + this->dst_offset();
         }
@@ -88,7 +88,7 @@ namespace boost {
        *  workings of the DST boundary offset.  Since UTC time labels are
        *  monotonically increasing we can determine if a given local time
        *  is in DST or not and therefore adjust the offset appropriately.
-       * 
+       *
        *  The logic is as follows.  Starting with UTC time use the offset to
        *  create a label for an non-dst adjusted local time.  Then call
        *  dst_rules::local_is_dst with the non adjust local time.  The
@@ -103,14 +103,14 @@ namespace boost {
        *  we are ahead of the boundary and dst is still in effect.
        *
        *  TODO -- check if all dst offsets are positive.  If not then
-       *  the algorithm needs to check for this and reverse the 
+       *  the algorithm needs to check for this and reverse the
        *  illegal/ambiguous logic.
        */
       static time_duration_type utc_to_local_offset(const time_type& t)
       {
         //get initial local time guess by applying utc offset
         time_type initial = t + utc_offset_rules::utc_to_local_base_offset();
-        time_is_dst_result dst_flag = 
+        time_is_dst_result dst_flag =
           dst_rules::local_is_dst(initial.date(), initial.time_of_day());
         switch(dst_flag) {
         case is_in_dst:        return utc_offset_rules::utc_to_local_base_offset() + dst_rules::dst_offset();
@@ -135,8 +135,8 @@ namespace boost {
       }
 
       //! Get the offset to UTC given a local time
-      static time_duration_type local_to_utc_offset(const time_type& t, 
-                                                    date_time::dst_flags dst=date_time::calculate) 
+      static time_duration_type local_to_utc_offset(const time_type& t,
+                                                    date_time::dst_flags dst=date_time::calculate)
       {
         switch (dst) {
         case is_dst:
@@ -144,7 +144,7 @@ namespace boost {
         case not_dst:
           return utc_offset_rules::local_to_utc_base_offset();
         case calculate:
-          time_is_dst_result res = 
+          time_is_dst_result res =
             dst_rules::local_is_dst(t.date(), t.time_of_day());
           switch(res) {
           case is_in_dst:      return utc_offset_rules::local_to_utc_base_offset() - dst_rules::dst_offset();
@@ -164,9 +164,9 @@ namespace boost {
 
     void dummy_to_prevent_msvc6_ice(); //why ask why?
 
-    //! Template that simplifies the creation of local time calculator 
+    //! Template that simplifies the creation of local time calculator
     /*! Use this template to create the timezone to utc convertors as required.
-     * 
+     *
      *  This class will also work for other regions that don't use dst and
      *  have a utc offset which is an integral number of hours.
      *
@@ -183,7 +183,7 @@ namespace boost {
      typedef date_time::local_adjustor<ptime, -8, us_dst> us_pacific;
      typedef date_time::local_adjustor<ptime, -7, no_dst> us_arizona;
      @endcode
-      
+
     */
     template<class time_type, short utc_offset, class dst_rule>
     class local_adjustor
@@ -191,9 +191,9 @@ namespace boost {
     public:
       typedef typename time_type::time_duration_type time_duration_type;
       typedef typename time_type::date_type date_type;
-      typedef static_local_time_adjustor<time_type, 
+      typedef static_local_time_adjustor<time_type,
                                          dst_rule,
-                                         utc_adjustment<time_duration_type, 
+                                         utc_adjustment<time_duration_type,
                                                         utc_offset> > dst_adjustor;
       //! Convert a utc time to local time
       static time_type utc_to_local(const time_type& t)
@@ -202,7 +202,7 @@ namespace boost {
         return t + td;
       }
       //! Convert a local time to utc
-      static time_type local_to_utc(const time_type& t, 
+      static time_type local_to_utc(const time_type& t,
                                     date_time::dst_flags dst=date_time::calculate)
       {
         time_duration_type td = dst_adjustor::local_to_utc_offset(t, dst);

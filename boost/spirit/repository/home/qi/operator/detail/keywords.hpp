@@ -18,7 +18,7 @@ namespace boost { namespace spirit { namespace repository { namespace qi { names
     // This also handles passing the correct attributes and flags/counters to the subject parsers
     template<typename T>
     struct is_distinct : T::distinct { };
-    
+
     template<typename T, typename Action>
     struct is_distinct< spirit::qi::action<T,Action> > : T::distinct { };
 
@@ -80,7 +80,7 @@ namespace boost { namespace spirit { namespace repository { namespace qi { names
                 {
 
                     Iterator save = first;
-                    skipper_keyword_marker<Skipper,NoCasePass> 
+                    skipper_keyword_marker<Skipper,NoCasePass>
                         marked_skipper(skipper,flags[Index::value],counters[Index::value]);
                     if(subject.parse(first,last,context,marked_skipper,fusion::at_c<Index::value>(attr)))
                     {
@@ -92,7 +92,7 @@ namespace boost { namespace spirit { namespace repository { namespace qi { names
 
             // Handle unused attributes
             template <typename T> bool call(T &idx, mpl::false_) const{
- 
+
                 typedef typename mpl::at<Elements,T>::type ElementType;
                 if(
                        (!is_distinct<ElementType>::value)
@@ -419,7 +419,7 @@ namespace boost { namespace spirit { namespace repository { namespace qi { names
                 {
                         return parser.str_lo;
                 }
-   
+
 
 
                 shared_ptr<keywords_type> lookup;
@@ -444,7 +444,7 @@ namespace boost { namespace spirit { namespace repository { namespace qi { names
                 {
                     if(parser_index_type* val_ptr =
                             lookup->find(first,last,first_pass_filter_type()))
-                    {                        
+                    {
                         if(!apply_visitor(parse_visitor,*val_ptr)){
                             return false;
                         }

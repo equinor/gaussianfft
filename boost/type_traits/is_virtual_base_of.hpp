@@ -4,7 +4,7 @@
 //  http://www.boost.org/LICENSE_1_0.txt).
 //
 //  See http://www.boost.org/libs/type_traits for most recent version including documentation.
- 
+
 #ifndef BOOST_TT_IS_VIRTUAL_BASE_OF_HPP_INCLUDED
 #define BOOST_TT_IS_VIRTUAL_BASE_OF_HPP_INCLUDED
 
@@ -43,7 +43,7 @@ struct is_virtual_base_of_impl<Base, Derived, true_type>
 #endif
    };
 #ifdef __BORLANDC__
-    struct boost_type_traits_internal_struct_X : public virtual Derived, public virtual Base 
+    struct boost_type_traits_internal_struct_X : public virtual Derived, public virtual Base
     {
        boost_type_traits_internal_struct_X();
        boost_type_traits_internal_struct_X(const boost_type_traits_internal_struct_X&);
@@ -51,7 +51,7 @@ struct is_virtual_base_of_impl<Base, Derived, true_type>
        ~boost_type_traits_internal_struct_X()throw();
        max_align data[4];
     };
-    struct boost_type_traits_internal_struct_Y : public virtual Derived 
+    struct boost_type_traits_internal_struct_Y : public virtual Derived
     {
        boost_type_traits_internal_struct_Y();
        boost_type_traits_internal_struct_Y(const boost_type_traits_internal_struct_Y&);
@@ -60,7 +60,7 @@ struct is_virtual_base_of_impl<Base, Derived, true_type>
        max_align data[4];
     };
 #else
-    struct boost_type_traits_internal_struct_X : public Derived, virtual Base 
+    struct boost_type_traits_internal_struct_X : public Derived, virtual Base
     {
        boost_type_traits_internal_struct_X();
        boost_type_traits_internal_struct_X(const boost_type_traits_internal_struct_X&);
@@ -68,7 +68,7 @@ struct is_virtual_base_of_impl<Base, Derived, true_type>
        ~boost_type_traits_internal_struct_X()throw();
        max_align data[16];
     };
-    struct boost_type_traits_internal_struct_Y : public Derived 
+    struct boost_type_traits_internal_struct_Y : public Derived
     {
        boost_type_traits_internal_struct_Y();
        boost_type_traits_internal_struct_Y(const boost_type_traits_internal_struct_Y&);

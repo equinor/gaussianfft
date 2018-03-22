@@ -462,7 +462,7 @@ static intrusive_ptr< context > make_worker_context( launch policy,
             reinterpret_cast< uintptr_t >( sctx.sp) - static_cast< uintptr_t >( sctx.size) );
     const std::size_t size = reinterpret_cast< uintptr_t >( storage) - reinterpret_cast< uintptr_t >( stack_bottom);
     // placement new of context on top of fiber's stack
-    return intrusive_ptr< context >{ 
+    return intrusive_ptr< context >{
             new ( storage) context_t{
                 policy,
                 boost::context::preallocated{ storage, size, sctx },

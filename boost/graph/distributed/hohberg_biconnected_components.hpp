@@ -1056,7 +1056,7 @@ hohberg_biconnected_components
       num_bicomponents = 0;
       edges_size_type my_global_offset = 0;
       for (std::size_t i = 0; i < all_bicomponents.size(); ++i) {
-        if (i == (std::size_t)process_id(pg)) 
+        if (i == (std::size_t)process_id(pg))
           my_global_offset = num_bicomponents;
         num_bicomponents += all_bicomponents[i];
       }

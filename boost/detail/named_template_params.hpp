@@ -19,7 +19,7 @@
 
 namespace boost {
   namespace detail {
-    
+
     struct default_argument { };
 
     struct dummy_default_gen {
@@ -34,12 +34,12 @@ namespace boost {
      typedef detail::dummy_default_gen type;
    };
 
-    template <class T> struct is_default { 
-      enum { value = false };  
+    template <class T> struct is_default {
+      enum { value = false };
       typedef type_traits::no_type type;
     };
-    template <> struct is_default<default_argument> { 
-      enum { value = true }; 
+    template <> struct is_default<default_argument> {
+      enum { value = true };
       typedef type_traits::yes_type type;
     };
 
@@ -72,7 +72,7 @@ namespace boost {
       typedef choose_default type;
     };
 #endif
-    
+
     template <class Arg, class DefaultGen, class Base, class Traits>
     class resolve_default {
 #if defined(__BORLANDC__)
@@ -96,12 +96,12 @@ namespace boost {
     struct is_named_param_list {
       enum { value  = is_convertible<X, named_template_param_base>::value };
     };
-    
+
     struct choose_named_params {
       template <class Prev> struct select { typedef Prev type; };
     };
     struct choose_default_arg {
-      template <class Prev> struct select { 
+      template <class Prev> struct select {
         typedef detail::default_argument type;
       };
     };
@@ -170,7 +170,7 @@ namespace boost {
       typedef default_##TYPE type; \
     }
 
-    
+
   } // namespace detail
 } // namespace boost
 

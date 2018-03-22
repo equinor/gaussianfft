@@ -27,7 +27,7 @@ struct B
 };
 
 // Converter from A to python int
-struct AToPython 
+struct AToPython
 {
   static PyObject* convert(const A& s)
   {
@@ -36,7 +36,7 @@ struct AToPython
 };
 
 // Conversion from python int to A
-struct AFromPython 
+struct AFromPython
 {
   AFromPython()
   {

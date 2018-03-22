@@ -19,7 +19,7 @@
 #include <boost/iostreams/detail/adapter/filter_adapter.hpp>
 #include <boost/iostreams/detail/call_traits.hpp>
 #include <boost/iostreams/detail/execute.hpp>
-#include <boost/iostreams/detail/functional.hpp>  // call_close_all 
+#include <boost/iostreams/detail/functional.hpp>  // call_close_all
 #include <boost/iostreams/operations.hpp>
 #include <boost/iostreams/pipeline.hpp>
 #include <boost/iostreams/traits.hpp>
@@ -55,8 +55,8 @@ public:
         >::value
     ));
 
-    explicit tee_filter(param_type dev) 
-        : detail::filter_adapter<Device>(dev) 
+    explicit tee_filter(param_type dev)
+        : detail::filter_adapter<Device>(dev)
         { }
 
     template<typename Source>
@@ -83,7 +83,7 @@ public:
 
     template<typename Next>
     void close(Next&, BOOST_IOS::openmode)
-    { 
+    {
         detail::close_all(this->component());
     }
 
@@ -114,8 +114,8 @@ public:
     typedef typename
             mpl::if_<
                  is_convertible<
-                     BOOST_DEDUCED_TYPENAME 
-                         iostreams::category_of<Device>::type, 
+                     BOOST_DEDUCED_TYPENAME
+                         iostreams::category_of<Device>::type,
                      output
                  >,
                  output,
@@ -125,13 +125,13 @@ public:
     BOOST_STATIC_ASSERT(is_device<Sink>::value);
     BOOST_STATIC_ASSERT((
         is_same<
-            char_type, 
+            char_type,
             BOOST_DEDUCED_TYPENAME char_type_of<Sink>::type
         >::value
     ));
     BOOST_STATIC_ASSERT((
         is_convertible<
-            BOOST_DEDUCED_TYPENAME iostreams::category_of<Sink>::type, 
+            BOOST_DEDUCED_TYPENAME iostreams::category_of<Sink>::type,
             output
         >::value
     ));
@@ -143,7 +143,7 @@ public:
           localizable_tag,
           optimally_buffered_tag
         { };
-    tee_device(device_param device, sink_param sink) 
+    tee_device(device_param device, sink_param sink)
         : dev_(device), sink_(sink)
         { }
     std::streamsize read(char_type* s, std::streamsize n)
@@ -193,9 +193,9 @@ public:
         iostreams::imbue(dev_, loc);
         iostreams::imbue(sink_, loc);
     }
-    std::streamsize optimal_buffer_size() const 
+    std::streamsize optimal_buffer_size() const
     {
-        return (std::max) ( iostreams::optimal_buffer_size(dev_), 
+        return (std::max) ( iostreams::optimal_buffer_size(dev_),
                             iostreams::optimal_buffer_size(sink_) );
     }
 private:
@@ -204,27 +204,27 @@ private:
 };
 
 template<typename Sink>
-tee_filter<Sink> tee(Sink& snk) 
+tee_filter<Sink> tee(Sink& snk)
 { return tee_filter<Sink>(snk); }
 
 template<typename Sink>
-tee_filter<Sink> tee(const Sink& snk) 
+tee_filter<Sink> tee(const Sink& snk)
 { return tee_filter<Sink>(snk); }
 
 template<typename Device, typename Sink>
-tee_device<Device, Sink> tee(Device& dev, Sink& sink) 
+tee_device<Device, Sink> tee(Device& dev, Sink& sink)
 { return tee_device<Device, Sink>(dev, sink); }
 
 template<typename Device, typename Sink>
-tee_device<Device, Sink> tee(const Device& dev, Sink& sink) 
+tee_device<Device, Sink> tee(const Device& dev, Sink& sink)
 { return tee_device<Device, Sink>(dev, sink); }
 
 template<typename Device, typename Sink>
-tee_device<Device, Sink> tee(Device& dev, const Sink& sink) 
+tee_device<Device, Sink> tee(Device& dev, const Sink& sink)
 { return tee_device<Device, Sink>(dev, sink); }
 
 template<typename Device, typename Sink>
-tee_device<Device, Sink> tee(const Device& dev, const Sink& sink) 
+tee_device<Device, Sink> tee(const Device& dev, const Sink& sink)
 { return tee_device<Device, Sink>(dev, sink); }
 
 } } // End namespaces iostreams, boost.

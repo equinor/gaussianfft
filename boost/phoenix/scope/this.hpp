@@ -2,7 +2,7 @@
     Copyright (c) 2005-2011 Joel de Guzman
     Copyright (c) 2011 Thomas Heller
 
-    Distributed under the Boost Software License, Version 1.0. (See accompanying 
+    Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================*/
 #ifndef BOOST_PHOENIX_SCOPE_THIS_HPP
@@ -26,7 +26,7 @@ BOOST_PHOENIX_DEFINE_EXPRESSION_VARARG(
 namespace boost { namespace phoenix {
     namespace detail
     {
-      /*  
+      /*
         struct infinite_recursion_detected {};
 
         struct last_non_this_actor
@@ -173,19 +173,19 @@ namespace boost { namespace phoenix {
     struct default_actions::when<rule::this_, Dummy>
         : call<this_eval>
     {};
-    
+
     template <typename Dummy>
     struct is_nullary::when<rule::this_, Dummy>
         : proto::make<mpl::false_()>
     {};
-    
+
     template <typename A0>
     typename expression::this_<A0>::type const
     this_(A0 const & a0)
     {
         return expression::this_<A0>::make(a0);
     }
-    
+
 }}
 
 #endif

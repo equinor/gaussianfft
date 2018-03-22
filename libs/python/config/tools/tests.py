@@ -51,7 +51,7 @@ def BoostRun(env, prog, target, command = '$SOURCE'):
             env['RESULT']=success and '\033[92mPASS\033[0m' or '\033[91mFAIL\033[0m'
         else:
             env['RESULT']=success and 'PASS' or 'FAIL'
-     
+
     testcomstr = env.get('TESTCOMSTR')
     if testcomstr:
         run = env.Command(target, prog, Action(call, cmdstr=testcomstr))
@@ -103,7 +103,7 @@ def BoostTestSummary(env, tests, **kw):
     else:
         run = env.Command('summary', tests, print_summary, cmdstr='')
 
-    
+
 
 
 

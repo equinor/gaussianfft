@@ -36,7 +36,7 @@ generate_one_digit(Engine& eng, std::size_t bits)
 {
     typedef typename Engine::result_type base_result;
     typedef typename boost::make_unsigned<base_result>::type base_unsigned;
-    
+
     base_unsigned range =
         detail::subtract<base_result>()((eng.max)(), (eng.min)());
     base_unsigned y0_mask = (base_unsigned(2) << (bits - 1)) - 1;
@@ -53,15 +53,15 @@ std::pair<RealType, int> generate_int_float_pair(Engine& eng, boost::mpl::true_)
 {
     typedef typename Engine::result_type base_result;
     typedef typename boost::make_unsigned<base_result>::type base_unsigned;
-    
+
     base_unsigned range =
         detail::subtract<base_result>()((eng.max)(), (eng.min)());
-    
+
     std::size_t m =
         (range == (std::numeric_limits<base_unsigned>::max)()) ?
             std::numeric_limits<base_unsigned>::digits :
             detail::integer_log2(range + 1);
-            
+
     int bucket = 0;
     // process as many full digits as possible into the int part
     for(std::size_t i = 0; i < w/m; ++i) {

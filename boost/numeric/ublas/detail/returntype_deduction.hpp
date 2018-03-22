@@ -37,7 +37,7 @@ struct error_cant_deduce_type {};
     typedef char(&uint_value_type)[11];
     typedef char(&long_value_type)[12];
     typedef char(&ulong_value_type)[13];
-    
+
     typedef char(&x_value_type)[14];
     typedef char(&y_value_type)[15];
 
@@ -80,7 +80,7 @@ struct error_cant_deduce_type {};
     template <typename X, typename Y>
     float_value_type
     test(float const&);
-    
+
     template <typename X, typename Y>
     double_value_type
     test(double const&);

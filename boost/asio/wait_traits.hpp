@@ -25,7 +25,7 @@ template <typename Clock>
 struct wait_traits
 {
   /// Convert a clock duration into a duration used for waiting.
-  /** 
+  /**
    * @returns @c d.
    */
   static typename Clock::duration to_wait_duration(

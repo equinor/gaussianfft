@@ -137,9 +137,9 @@ inline std::complex<typename detail::bessel_traits<T1, T2, Policy>::result_type>
    typedef typename detail::bessel_traits<T1, T2, Policy>::result_type result_type;
    typedef typename policies::evaluation<result_type, Policy>::type value_type;
    typedef typename policies::normalise<
-      Policy, 
-      policies::promote_float<false>, 
-      policies::promote_double<false>, 
+      Policy,
+      policies::promote_float<false>,
+      policies::promote_double<false>,
       policies::discrete_quantile<>,
       policies::assert_undefined<> >::type forwarding_policy;
 
@@ -159,9 +159,9 @@ inline std::complex<typename detail::bessel_traits<T1, T2, Policy>::result_type>
    typedef typename detail::bessel_traits<T1, T2, Policy>::result_type result_type;
    typedef typename policies::evaluation<result_type, Policy>::type value_type;
    typedef typename policies::normalise<
-      Policy, 
-      policies::promote_float<false>, 
-      policies::promote_double<false>, 
+      Policy,
+      policies::promote_float<false>,
+      policies::promote_double<false>,
       policies::discrete_quantile<>,
       policies::assert_undefined<> >::type forwarding_policy;
 

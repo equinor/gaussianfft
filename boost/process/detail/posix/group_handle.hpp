@@ -45,7 +45,7 @@ struct group_handle
     }
 
     void add(handle_t proc)
-    {   
+    {
         if (::setpgid(proc, grp))
             throw_last_error();
     }

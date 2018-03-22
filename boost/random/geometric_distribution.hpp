@@ -139,7 +139,7 @@ public:
         _p = parm.p();
         init();
     }
-  
+
     /**
      * Effects: Subsequent uses of the distribution do not depend
      * on values produced by any engine prior to invoking reset.

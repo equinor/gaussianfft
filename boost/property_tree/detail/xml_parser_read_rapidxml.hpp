@@ -1,8 +1,8 @@
 // ----------------------------------------------------------------------------
 // Copyright (C) 2007 Marcin Kalicinski
 //
-// Distributed under the Boost Software License, Version 1.0. 
-// (See accompanying file LICENSE_1_0.txt or copy at 
+// Distributed under the Boost Software License, Version 1.0.
+// (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 //
 // For more information, see www.boost.org
@@ -28,7 +28,7 @@ namespace boost { namespace property_tree { namespace xml_parser
         switch (node->type())
         {
             // Element nodes
-            case node_element: 
+            case node_element:
             {
                 // Create node
                 Ptree &pt_node = pt.push_back(std::make_pair(node->name(),
@@ -135,7 +135,7 @@ namespace boost { namespace property_tree { namespace xml_parser
             long line = static_cast<long>(
                 std::count(&v.front(), e.where<Ch>(), Ch('\n')) + 1);
             BOOST_PROPERTY_TREE_THROW(
-                xml_parser_error(e.what(), filename, line));  
+                xml_parser_error(e.what(), filename, line));
         }
     }
 

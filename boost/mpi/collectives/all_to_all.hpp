@@ -20,14 +20,14 @@
 #include <boost/mpi/allocator.hpp>
 
 namespace boost { namespace mpi {
-          
+
 namespace detail {
   // We're performaing an all-to-all with a type that has an
   // associated MPI datatype, so we'll use MPI_Alltoall to do all of
   // the work.
   template<typename T>
   void
-  all_to_all_impl(const communicator& comm, const T* in_values, int n, 
+  all_to_all_impl(const communicator& comm, const T* in_values, int n,
                   T* out_values, mpl::true_)
   {
     MPI_Datatype type = get_mpi_datatype<T>(*in_values);
@@ -101,8 +101,8 @@ namespace detail {
 
     // Deserialize data from the iarchive
     for (int src = 0; src < size; ++src) {
-      if (src == rank) 
-        std::copy(in_values + src * n, in_values + (src + 1) * n, 
+      if (src == rank)
+        std::copy(in_values + src * n, in_values + (src + 1) * n,
                   out_values + src * n);
       else {
         packed_iarchive ia(comm, incoming, boost::archive::no_header,

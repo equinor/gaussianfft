@@ -777,7 +777,7 @@ namespace boost
 
       template <class RealType, class Policy>
       inline RealType variance(const non_central_beta_distribution<RealType, Policy>& dist)
-      { 
+      {
          //
          // Relative error of this function may be arbitarily large... absolute
          // error will be small however... that's the best we can do for now.

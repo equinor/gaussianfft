@@ -1,6 +1,6 @@
 /*
     Copyright 2005-2007 Adobe Systems Incorporated
-   
+
     Use, modification and distribution are subject to the Boost Software License,
     Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
     http://www.boost.org/LICENSE_1_0.txt).
@@ -19,11 +19,11 @@
 #include <boost/mpl/next.hpp>
 #include <boost/mpl/deref.hpp>
 #include <boost/mpl/size.hpp>
-#include <boost/preprocessor/repeat.hpp> 
+#include <boost/preprocessor/repeat.hpp>
 
 ////////////////////////////////////////////////////////////////////////////////////////
-/// \file               
-/// \brief Given an object with run-time specified type (denoted as an array of Bits, dynamic index, and a static set of Types) and a generic operation, 
+/// \file
+/// \brief Given an object with run-time specified type (denoted as an array of Bits, dynamic index, and a static set of Types) and a generic operation,
 ///        casts the object to its appropriate type and applies the operation
 /// \author Lubomir Bourdev and Hailin Jin \n
 ///         Adobe Systems Incorporated
@@ -65,7 +65,7 @@ GENERATE_APPLY_FWD_OPS generates for every N functions that look like this (for 
     };
 */
 
-#define GIL_FWD_TYPEDEFS(z, N, text)   T##N; typedef typename mpl::next<T##N>::type 
+#define GIL_FWD_TYPEDEFS(z, N, text)   T##N; typedef typename mpl::next<T##N>::type
 #define GIL_FWD_CASE(z, N, SUM)       case N: return op(*gil_reinterpret_cast<typename mpl::deref<T##N>::type*>(&bits));
 #define GIL_FWD_CONST_CASE(z, N, SUM) case N: return op(*gil_reinterpret_cast_c<const typename mpl::deref<T##N>::type*>(&bits));
 
@@ -126,13 +126,13 @@ GIL_GENERATE_APPLY_FWD_OPS(99)
 } // namespace detail
 
 // unary application
-template <typename Types, typename Bits, typename Op> 
+template <typename Types, typename Bits, typename Op>
 typename Op::result_type GIL_FORCEINLINE apply_operation_basec(const Bits& bits, std::size_t index, Op op) {
     return detail::apply_operation_fwd_fn<mpl::size<Types>::value>().template applyc<Types>(bits,index,op);
 }
 
 // unary application
-template <typename Types, typename Bits, typename Op> 
+template <typename Types, typename Bits, typename Op>
 typename Op::result_type GIL_FORCEINLINE apply_operation_base(      Bits& bits, std::size_t index, Op op) {
     return detail::apply_operation_fwd_fn<mpl::size<Types>::value>().template apply<Types>(bits,index,op);
 }
@@ -160,7 +160,7 @@ namespace detail {
 
         reduce_bind2(const Bits1& bits1, std::size_t index1, Op& op) : _bits1(bits1), _index1(index1), _op(op) {}
 
-        template <typename T2> GIL_FORCEINLINE result_type operator()(const T2& t2) { 
+        template <typename T2> GIL_FORCEINLINE result_type operator()(const T2& t2) {
             return apply_operation_basec<Types1>(_bits1, _index1, reduce_bind1<T2,Op>(t2, _op));
         }
     };

@@ -132,7 +132,7 @@ private:
 
     }
     virtual void    visit( test_case const& tc )
-    { 
+    {
         report_test_unit( tc );
     }
     virtual bool    test_suite_start( test_suite const& ts )
@@ -164,7 +164,7 @@ struct labels_collector : test_tree_visitor {
     std::set<std::string> const& labels() const { return m_labels; }
 
 private:
-    virtual bool            visit( test_unit const& tu ) 
+    virtual bool            visit( test_unit const& tu )
     {
         m_labels.insert( tu.p_labels->begin(), tu.p_labels->end() );
         return true;
@@ -221,7 +221,7 @@ unit_test_main( init_unit_test_func init_func, int argc, char* argv[] )
             traverse_test_tree( framework::master_test_suite().p_id, collector, true );
 
             results_reporter::get_stream() << "Available labels:\n  ";
-            std::copy( collector.labels().begin(), collector.labels().end(), 
+            std::copy( collector.labels().begin(), collector.labels().end(),
                        std::ostream_iterator<std::string>( results_reporter::get_stream(), "\n  " ) );
             results_reporter::get_stream() << "\n";
 

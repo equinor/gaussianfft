@@ -183,7 +183,7 @@ public:
 #ifndef BOOST_NO_CXX11_RVALUE_REFERENCES
     template<typename T>
     struct RhsT : remove_const<typename remove_reference<T>::type> {};
-    
+
 #define ADD_OP_SUPPORT( oper, name, _ )                         \
     template<typename T>                                        \
     binary_expr<ExprType,T,                                     \

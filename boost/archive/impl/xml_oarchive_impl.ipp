@@ -15,8 +15,8 @@
 #include <cstring> // strlen
 #include <boost/config.hpp> // msvc 6.0 needs this to suppress warnings
 #if defined(BOOST_NO_STDC_NAMESPACE)
-namespace std{ 
-    using ::strlen; 
+namespace std{
+    using ::strlen;
 } // namespace std
 #endif
 
@@ -76,7 +76,7 @@ xml_oarchive_impl<Archive>::save(const std::string & s){
 //  at least one library doesn't typedef value_type for strings
 //  so rather than using string directly make a pointer iterator out of it
     typedef boost::archive::iterators::xml_escape<
-        const char * 
+        const char *
     > xml_escape_translator;
     std::copy(
         xml_escape_translator(s.data()),
@@ -89,7 +89,7 @@ template<class Archive>
 BOOST_ARCHIVE_DECL void
 xml_oarchive_impl<Archive>::save(const char * s){
     typedef boost::archive::iterators::xml_escape<
-        const char * 
+        const char *
     > xml_escape_translator;
     std::copy(
         xml_escape_translator(s),
@@ -101,9 +101,9 @@ xml_oarchive_impl<Archive>::save(const char * s){
 template<class Archive>
 BOOST_ARCHIVE_DECL
 xml_oarchive_impl<Archive>::xml_oarchive_impl(
-    std::ostream & os_, 
+    std::ostream & os_,
     unsigned int flags
-) : 
+) :
     basic_text_oprimitive<std::ostream>(
         os_,
         0 != (flags & no_codecvt)
@@ -123,7 +123,7 @@ xml_oarchive_impl<Archive>::save_binary(const void *address, std::size_t count){
     #else
     this->basic_text_oprimitive::save_binary(
     #endif
-        address, 
+        address,
         count
     );
     this->indent_next = true;

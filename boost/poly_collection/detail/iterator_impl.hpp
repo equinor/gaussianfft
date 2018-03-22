@@ -84,7 +84,7 @@ public:
   template<bool Const2,typename std::enable_if<!Const2>::type* =nullptr>
   iterator_impl(const iterator_impl<PolyCollection,Const2>& x):
     mapit{x.mapit},mapend{x.mapend},segpos{x.segpos}{}
-      
+
 private:
   template<typename,bool>
   friend class iterator_impl;
@@ -214,7 +214,7 @@ private:
   {
     segment_base_iterator bit=s.begin();
     return BaseIterator{bit+(it-static_cast<BaseIterator2>(bit))};
-  } 
+  }
 
   base_iterator              base()const noexcept
     {return local_iterator_impl::iterator_adaptor_::base();}

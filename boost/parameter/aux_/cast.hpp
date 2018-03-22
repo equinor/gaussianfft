@@ -103,7 +103,7 @@ struct cast<void(T), Args>
         as_placeholder_expr<T>, Args, Args>::type type0;
 
     typedef typename boost::add_reference<
-        typename boost::remove_const<type0>::type 
+        typename boost::remove_const<type0>::type
     >::type reference;
 
     static use_default_tag execute(use_default_tag)

@@ -66,7 +66,7 @@ public:
         /** Returns true if the two sets of parameters are the same. */
         BOOST_RANDOM_DETAIL_EQUALITY_OPERATOR(param_type, lhs, rhs)
         { return lhs._a == rhs._a && lhs._b == rhs._b; }
-        
+
         /** Returns true if the two sets of parameters are the different. */
         BOOST_RANDOM_DETAIL_INEQUALITY_OPERATOR(param_type)
 
@@ -159,7 +159,7 @@ public:
      */
     BOOST_RANDOM_DETAIL_EQUALITY_OPERATOR(weibull_distribution, lhs, rhs)
     { return lhs._a == rhs._a && lhs._b == rhs._b; }
-    
+
     /**
      * Returns true if the two instances of @c weibull_distribution will
      * return different sequences of values given equal generators.

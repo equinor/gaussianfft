@@ -23,7 +23,7 @@
 #include <boost/iostreams/detail/adapter/concept_adapter.hpp>
 #include <boost/iostreams/detail/buffer.hpp>
 #include <boost/iostreams/detail/config/wide_streams.hpp>
-#include <boost/iostreams/detail/double_object.hpp> 
+#include <boost/iostreams/detail/double_object.hpp>
 #include <boost/iostreams/detail/execute.hpp>
 #include <boost/iostreams/detail/functional.hpp>
 #include <boost/iostreams/detail/ios.hpp>
@@ -239,7 +239,7 @@ indirect_streambuf<T, Tr, Alloc, Mode>::underflow()
     if (gptr() < egptr()) return traits_type::to_int_type(*gptr());
 
     // Fill putback buffer.
-    std::streamsize keep = 
+    std::streamsize keep =
         (std::min)( static_cast<std::streamsize>(gptr() - eback()),
                     pback_size_ );
     if (keep)
@@ -334,8 +334,8 @@ template<typename T, typename Tr, typename Alloc, typename Mode>
 inline typename indirect_streambuf<T, Tr, Alloc, Mode>::pos_type
 indirect_streambuf<T, Tr, Alloc, Mode>::seekpos
     (pos_type sp, BOOST_IOS::openmode which)
-{ 
-    return seek_impl(position_to_offset(sp), BOOST_IOS::beg, which); 
+{
+    return seek_impl(position_to_offset(sp), BOOST_IOS::beg, which);
 }
 
 template<typename T, typename Tr, typename Alloc, typename Mode>
@@ -343,14 +343,14 @@ typename indirect_streambuf<T, Tr, Alloc, Mode>::pos_type
 indirect_streambuf<T, Tr, Alloc, Mode>::seek_impl
     (stream_offset off, BOOST_IOS::seekdir way, BOOST_IOS::openmode which)
 {
-    if ( gptr() != 0 && way == BOOST_IOS::cur && which == BOOST_IOS::in && 
-         eback() - gptr() <= off && off <= egptr() - gptr() ) 
+    if ( gptr() != 0 && way == BOOST_IOS::cur && which == BOOST_IOS::in &&
+         eback() - gptr() <= off && off <= egptr() - gptr() )
     {   // Small seek optimization
         gbump(static_cast<int>(off));
         return obj().seek(stream_offset(0), BOOST_IOS::cur, BOOST_IOS::in, next_) -
                static_cast<off_type>(egptr() - gptr());
     }
-    if (pptr() != 0) 
+    if (pptr() != 0)
         this->BOOST_IOSTREAMS_PUBSYNC(); // sync() confuses VisualAge 6.
     if (way == BOOST_IOS::cur && gptr())
         off -= static_cast<off_type>(egptr() - gptr());

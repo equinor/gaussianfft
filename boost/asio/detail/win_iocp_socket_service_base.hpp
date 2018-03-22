@@ -504,7 +504,7 @@ protected:
   // Pointer to ConnectEx implementation.
   void* connect_ex_;
 
-  // Mutex to protect access to the linked list of implementations. 
+  // Mutex to protect access to the linked list of implementations.
   boost::asio::detail::mutex mutex_;
 
   // The head of a linked list of all implementations.

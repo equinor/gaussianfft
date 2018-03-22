@@ -36,11 +36,11 @@ int main()
     ASSERT_SAME(
         select_arg_from_python<int>::type, arg_rvalue_from_python<int>
         );
-    
+
     ASSERT_SAME(
         select_arg_from_python<int const>::type, arg_rvalue_from_python<int const>
         );
-    
+
     ASSERT_SAME(
         select_arg_from_python<int volatile>::type, arg_rvalue_from_python<int volatile>
         );
@@ -54,11 +54,11 @@ int main()
     ASSERT_SAME(
         select_arg_from_python<int*>::type, pointer_arg_from_python<int*>
         );
-    
+
     ASSERT_SAME(
         select_arg_from_python<int const*>::type, pointer_arg_from_python<int const*>
         );
-    
+
     ASSERT_SAME(
         select_arg_from_python<int volatile*>::type, pointer_arg_from_python<int volatile*>
         );
@@ -73,11 +73,11 @@ int main()
     ASSERT_SAME(
         select_arg_from_python<int&>::type, reference_arg_from_python<int&>
         );
-    
+
     ASSERT_SAME(
         select_arg_from_python<int const&>::type, arg_rvalue_from_python<int const&>
         );
-    
+
     ASSERT_SAME(
         select_arg_from_python<int volatile&>::type, reference_arg_from_python<int volatile&>
         );
@@ -91,11 +91,11 @@ int main()
     ASSERT_SAME(
         select_arg_from_python<int*&>::type, reference_arg_from_python<int*&>
         );
-    
+
     ASSERT_SAME(
         select_arg_from_python<int const*&>::type, reference_arg_from_python<int const*&>
         );
-    
+
     ASSERT_SAME(
         select_arg_from_python<int volatile*&>::type, reference_arg_from_python<int volatile*&>
         );
@@ -109,11 +109,11 @@ int main()
     ASSERT_SAME(
         select_arg_from_python<int* const&>::type, pointer_cref_arg_from_python<int*const&>
         );
-    
+
     ASSERT_SAME(
         select_arg_from_python<int const* const&>::type, pointer_cref_arg_from_python<int const*const&>
         );
-    
+
     ASSERT_SAME(
         select_arg_from_python<int volatile* const&>::type, pointer_cref_arg_from_python<int volatile*const&>
         );
@@ -127,11 +127,11 @@ int main()
     ASSERT_SAME(
         select_arg_from_python<int*volatile&>::type, reference_arg_from_python<int*volatile&>
         );
-    
+
     ASSERT_SAME(
         select_arg_from_python<int const*volatile&>::type, reference_arg_from_python<int const*volatile&>
         );
-    
+
     ASSERT_SAME(
         select_arg_from_python<int volatile*volatile&>::type, reference_arg_from_python<int volatile*volatile&>
         );
@@ -145,11 +145,11 @@ int main()
     ASSERT_SAME(
         select_arg_from_python<int*const volatile&>::type, reference_arg_from_python<int*const volatile&>
         );
-    
+
     ASSERT_SAME(
         select_arg_from_python<int const*const volatile&>::type, reference_arg_from_python<int const*const volatile&>
         );
-    
+
     ASSERT_SAME(
         select_arg_from_python<int volatile*const volatile&>::type, reference_arg_from_python<int volatile*const volatile&>
         );

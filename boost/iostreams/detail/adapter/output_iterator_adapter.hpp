@@ -10,7 +10,7 @@
 
 #if defined(_MSC_VER)
 # pragma once
-#endif              
+#endif
 
 #include <algorithm>                      // copy.
 #include <iosfwd>                         // streamsize.
@@ -27,10 +27,10 @@ public:
     typedef Ch        char_type;
     typedef sink_tag  category;
     explicit output_iterator_adapter(OutIt out) : out_(out) { }
-    std::streamsize write(const char_type* s, std::streamsize n) 
-    { 
-        std::copy(s, s + n, out_); 
-        return n; 
+    std::streamsize write(const char_type* s, std::streamsize n)
+    {
+        std::copy(s, s + n, out_);
+        return n;
     }
 private:
     OutIt out_;

@@ -1,6 +1,6 @@
 // Copyright 2002 The Trustees of Indiana University.
 
-// Use, modification and distribution is subject to the Boost Software 
+// Use, modification and distribution is subject to the Boost Software
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
@@ -78,14 +78,14 @@ class array_iterator
     friend class array_iterator;
 #else
  public:
-#endif 
+#endif
 
   index idx_;
   TPtr base_;
   const size_type* extents_;
   const index* strides_;
   const index* index_base_;
- 
+
 public:
   // Typedefs to circumvent ambiguities between parent classes
   typedef typename facade_type::reference reference;
@@ -115,7 +115,7 @@ public:
   {
     return operator_arrow_proxy<reference>(this->dereference());
   }
-  
+
 
   reference dereference() const
   {
@@ -127,7 +127,7 @@ public:
                             strides_,
                             index_base_);
   }
-  
+
   void increment() { ++idx_; }
   void decrement() { --idx_; }
 

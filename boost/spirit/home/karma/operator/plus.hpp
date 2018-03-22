@@ -45,14 +45,14 @@ namespace boost { namespace spirit { namespace karma
     struct base_plus : unary_generator<Derived>
     {
     private:
-        // Ignore return value in relaxed mode (failing subject generators 
-        // are just skipped). This allows to selectively generate items in 
+        // Ignore return value in relaxed mode (failing subject generators
+        // are just skipped). This allows to selectively generate items in
         // the provided attribute.
         template <typename F, typename Attribute>
         bool generate_subject(F f, Attribute const&, bool& result, mpl::false_) const
         {
             bool r = !f(subject);
-            if (r) 
+            if (r)
                 result = true;
             else if (!f.is_at_end())
                 f.next();
@@ -68,7 +68,7 @@ namespace boost { namespace spirit { namespace karma
             return r;
         }
 
-        // There is no way to distinguish a failed generator from a 
+        // There is no way to distinguish a failed generator from a
         // generator to be skipped. We assume the user takes responsibility
         // for ending the loop if no attribute is specified.
         template <typename F>
@@ -119,8 +119,8 @@ namespace boost { namespace spirit { namespace karma
                 typename add_const<Attribute>::type
             >::type iterator_type;
 
-            typedef 
-                typename traits::make_indirect_iterator<iterator_type>::type 
+            typedef
+                typename traits::make_indirect_iterator<iterator_type>::type
             indirect_iterator_type;
             typedef detail::pass_container<
                 fail_function, Attribute, indirect_iterator_type, mpl::false_>
@@ -133,7 +133,7 @@ namespace boost { namespace spirit { namespace karma
             if (traits::compare(it, end))
                 return false;
 
-            pass_container pass(fail_function(sink, ctx, d), 
+            pass_container pass(fail_function(sink, ctx, d),
                 indirect_iterator_type(it), indirect_iterator_type(end));
 
             // from now on plus fails if the underlying output fails or overall
@@ -157,7 +157,7 @@ namespace boost { namespace spirit { namespace karma
     };
 
     template <typename Subject>
-    struct plus 
+    struct plus
       : base_plus<Subject, mpl::false_, plus<Subject> >
     {
         typedef base_plus<Subject, mpl::false_, plus> base_plus_;
@@ -167,7 +167,7 @@ namespace boost { namespace spirit { namespace karma
     };
 
     template <typename Subject>
-    struct strict_plus 
+    struct strict_plus
       : base_plus<Subject, mpl::true_, strict_plus<Subject> >
     {
         typedef base_plus<Subject, mpl::true_, strict_plus> base_plus_;
@@ -182,12 +182,12 @@ namespace boost { namespace spirit { namespace karma
     namespace detail
     {
         template <typename Elements, bool strict_mode = false>
-        struct make_plus 
+        struct make_plus
           : make_unary_composite<Elements, plus>
         {};
 
         template <typename Elements>
-        struct make_plus<Elements, true> 
+        struct make_plus<Elements, true>
           : make_unary_composite<Elements, strict_plus>
         {};
     }

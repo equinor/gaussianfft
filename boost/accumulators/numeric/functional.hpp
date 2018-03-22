@@ -368,7 +368,7 @@ namespace boost { namespace numeric
           : fdiv_base<Left, Right, void>
         {};
 
-        /// INTERNAL ONLY 
+        /// INTERNAL ONLY
         /// For back-compat only. Use fdiv.
         template<typename Left, typename Right, typename LeftTag, typename RightTag>
         struct average

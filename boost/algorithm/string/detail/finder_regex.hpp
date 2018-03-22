@@ -26,7 +26,7 @@ namespace boost {
 
             // regex search result
             template<typename IteratorT>
-            struct regex_search_result : 
+            struct regex_search_result :
                 public iterator_range<IteratorT>
             {
                 typedef regex_search_result<IteratorT> type;
@@ -43,7 +43,7 @@ namespace boost {
                 regex_search_result( const match_results_type& MatchResults ) :
                     base_type( MatchResults[0].first, MatchResults[0].second ),
                     m_MatchResults( MatchResults ) {}
-                
+
                 // Construction of empty match. End iterator has to be specified
                 regex_search_result( IteratorT End ) :
                     base_type( End, End ) {}
@@ -80,16 +80,16 @@ namespace boost {
             {
                 typedef RegExT regex_type;
                 typedef const RegExT& regex_reference_type;
-                    
+
                 // Construction
-                find_regexF( regex_reference_type Rx, match_flag_type MatchFlags = match_default ) : 
-                    m_Rx(Rx), m_MatchFlags(MatchFlags) {}   
+                find_regexF( regex_reference_type Rx, match_flag_type MatchFlags = match_default ) :
+                    m_Rx(Rx), m_MatchFlags(MatchFlags) {}
 
                 // Operation
                 template< typename ForwardIteratorT >
                 regex_search_result<ForwardIteratorT>
-                operator()( 
-                    ForwardIteratorT Begin, 
+                operator()(
+                    ForwardIteratorT Begin,
                     ForwardIteratorT End ) const
                 {
                     typedef ForwardIteratorT input_iterator_type;

@@ -43,16 +43,16 @@ struct rational_adaptor
    rational_adaptor(const IntBackend& o) BOOST_MP_NOEXCEPT_IF(noexcept(rational_type(std::declval<const IntBackend&>()))) : m_value(o) {}
 
    template <class U>
-   rational_adaptor(const U& u, typename enable_if_c<is_convertible<U, IntBackend>::value>::type* = 0) 
+   rational_adaptor(const U& u, typename enable_if_c<is_convertible<U, IntBackend>::value>::type* = 0)
       : m_value(static_cast<integer_type>(u)){}
    template <class U>
-   explicit rational_adaptor(const U& u, 
+   explicit rational_adaptor(const U& u,
       typename enable_if_c<
          boost::multiprecision::detail::is_explicitly_convertible<U, IntBackend>::value && !is_convertible<U, IntBackend>::value
-      >::type* = 0) 
+      >::type* = 0)
       : m_value(IntBackend(u)){}
    template <class U>
-   typename enable_if_c<(boost::multiprecision::detail::is_explicitly_convertible<U, IntBackend>::value && !is_arithmetic<U>::value), rational_adaptor&>::type operator = (const U& u) 
+   typename enable_if_c<(boost::multiprecision::detail::is_explicitly_convertible<U, IntBackend>::value && !is_arithmetic<U>::value), rational_adaptor&>::type operator = (const U& u)
    {
       m_value = IntBackend(u);
       return *this;
@@ -292,7 +292,7 @@ inline std::size_t hash_value(const rational_adaptor<IntBackend>& val)
 
 template<class IntBackend>
 struct expression_template_default<backends::rational_adaptor<IntBackend> > : public expression_template_default<IntBackend> {};
-   
+
 template<class IntBackend>
 struct number_category<backends::rational_adaptor<IntBackend> > : public mpl::int_<number_kind_rational>{};
 

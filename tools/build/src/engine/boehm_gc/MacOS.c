@@ -91,13 +91,13 @@ Ptr GC_MacTemporaryNewPtr(size_t size, Boolean clearMemory)
 	return tempPtr;
 }
 
-extern word GC_fo_entries; 
+extern word GC_fo_entries;
 
 static void perform_final_collection()
 {
   unsigned i;
   word last_fo_entries = 0;
-  
+
   /* adjust the stack bottom, because CFM calls us from another stack
      location. */
      GC_stackbottom = (ptr_t)&i;

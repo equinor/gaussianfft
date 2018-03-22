@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 1988, 1989 Hans-J. Boehm, Alan J. Demers
  * Copyright (c) 1991-1994 by Xerox Corporation.  All rights reserved.
  * Copyright (c) 1996 by Silicon Graphics.  All rights reserved.
@@ -12,7 +12,7 @@
  * provided the above notices are retained, and a notice that the code was
  * modified is included with the above copyright notice.
  */
- 
+
 /*
  * This implements:
  * 1. allocation of heap block headers
@@ -21,7 +21,7 @@
  * Access speed is crucial.  We implement an index structure based on a 2
  * level tree.
  */
- 
+
 # include "private/gc_priv.h"
 
 bottom_index * GC_all_bottom_indices = 0;
@@ -31,7 +31,7 @@ bottom_index * GC_all_bottom_indices = 0;
 bottom_index * GC_all_bottom_indices_end = 0;
 				/* Pointer to last (highest addr) */
 				/* bottom_index.		  */
- 
+
 /* Non-macro version of header location routine */
 hdr * GC_find_header(ptr_t h)
 {
@@ -63,7 +63,7 @@ hdr * GC_find_header(ptr_t h)
     if (GC_all_interior_pointers) {
       if (hhdr != 0) {
 	ptr_t current = p;
-	    
+
 	current = (ptr_t)HBLKPTR(current);
 	do {
 	    current = current - HBLKSIZE*(word)hhdr;
@@ -97,20 +97,20 @@ hdr * GC_find_header(ptr_t h)
       return 0;
     } else {
       hce -> block_addr = (word)(p) >> LOG_HBLKSIZE;
-      hce -> hce_hdr = hhdr; 
+      hce -> hce_hdr = hhdr;
       return hhdr;
     }
-  } 
+  }
 }
- 
+
 /* Routines to dynamically allocate collector data structures that will */
 /* never be freed.							 */
- 
+
 static ptr_t scratch_free_ptr = 0;
- 
+
 /* GC_scratch_last_end_ptr is end point of last obtained scratch area.  */
 /* GC_scratch_end_ptr is end point of current scratch area.		*/
- 
+
 ptr_t GC_scratch_alloc(size_t bytes)
 {
     register ptr_t result = scratch_free_ptr;
@@ -123,7 +123,7 @@ ptr_t GC_scratch_alloc(size_t bytes)
     }
     {
         word bytes_to_get = MINHINCR * HBLKSIZE;
-         
+
         if (bytes_to_get <= bytes) {
           /* Undo the damage, and get memory directly */
 	    bytes_to_get = bytes;
@@ -161,7 +161,7 @@ static hdr * hdr_free_list = 0;
 static hdr * alloc_hdr(void)
 {
     register hdr * result;
-    
+
     if (hdr_free_list == 0) {
         result = (hdr *) GC_scratch_alloc((word)(sizeof(hdr)));
     } else {
@@ -181,11 +181,11 @@ static void free_hdr(hdr * hhdr)
   word GC_hdr_cache_hits = 0;
   word GC_hdr_cache_misses = 0;
 #endif
- 
+
 void GC_init_headers(void)
 {
     register unsigned i;
-    
+
     GC_all_nils = (bottom_index *)GC_scratch_alloc((word)sizeof(bottom_index));
     BZERO(GC_all_nils, sizeof(bottom_index));
     for (i = 0; i < TOP_SZ; i++) {
@@ -202,11 +202,11 @@ static GC_bool get_index(word addr)
     bottom_index * p;
     bottom_index ** prev;
     bottom_index *pi;
-    
+
 #   ifdef HASH_TL
       word i = TL_HASH(hi);
       bottom_index * old;
-      
+
       old = p = GC_top_index[i];
       while(p != GC_all_nils) {
           if (p -> key == hi) return(TRUE);
@@ -249,7 +249,7 @@ static GC_bool get_index(word addr)
 struct hblkhdr * GC_install_header(struct hblk *h)
 {
     hdr * result;
-    
+
     if (!get_index((word) h)) return(0);
     result = alloc_hdr();
     SET_HDR(h, result);
@@ -264,7 +264,7 @@ GC_bool GC_install_counts(struct hblk *h, size_t sz/* bytes */)
 {
     struct hblk * hbp;
     word i;
-    
+
     for (hbp = h; (char *)hbp < (char *)h + sz; hbp += BOTTOM_SZ) {
         if (!get_index((word) hbp)) return(FALSE);
     }
@@ -280,7 +280,7 @@ GC_bool GC_install_counts(struct hblk *h, size_t sz/* bytes */)
 void GC_remove_header(struct hblk *h)
 {
     hdr ** ha;
-    
+
     GET_HDR_ADDR(h, ha);
     free_hdr(*ha);
     *ha = 0;
@@ -290,7 +290,7 @@ void GC_remove_header(struct hblk *h)
 void GC_remove_counts(struct hblk *h, size_t sz/* bytes */)
 {
     register struct hblk * hbp;
-    
+
     for (hbp = h+1; (char *)hbp < (char *)h + sz; hbp += 1) {
         SET_HDR(hbp, 0);
     }
@@ -303,7 +303,7 @@ void GC_apply_to_all_blocks(void (*fn)(struct hblk *h, word client_data),
 {
     signed_word j;
     bottom_index * index_p;
-    
+
     for (index_p = GC_all_bottom_indices; index_p != 0;
          index_p = index_p -> asc_link) {
         for (j = BOTTOM_SZ-1; j >= 0;) {
@@ -330,7 +330,7 @@ struct hblk * GC_next_used_block(struct hblk *h)
 {
     register bottom_index * bi;
     register word j = ((word)h >> LOG_HBLKSIZE) & (BOTTOM_SZ-1);
-    
+
     GET_BI(h, bi);
     if (bi == GC_all_nils) {
         register word hi = (word)h >> (LOG_BOTTOM_SZ + LOG_HBLKSIZE);
@@ -366,7 +366,7 @@ struct hblk * GC_prev_block(struct hblk *h)
 {
     register bottom_index * bi;
     register signed_word j = ((word)h >> LOG_HBLKSIZE) & (BOTTOM_SZ-1);
-    
+
     GET_BI(h, bi);
     if (bi == GC_all_nils) {
         register word hi = (word)h >> (LOG_BOTTOM_SZ + LOG_HBLKSIZE);

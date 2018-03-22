@@ -22,17 +22,17 @@
 
 /*! \file
     Defines trim_all algorithms.
-    
-    Just like \c trim, \c trim_all removes all trailing and leading spaces from a 
+
+    Just like \c trim, \c trim_all removes all trailing and leading spaces from a
     sequence (string). In addition, spaces in the middle of the sequence are truncated
     to just one character. Space is recognized using given locales.
 
-    \c trim_fill acts as trim_all, but the spaces in the middle are replaces with 
+    \c trim_fill acts as trim_all, but the spaces in the middle are replaces with
     a user-define sequence of character.
 
     Parametric (\c _if) variants use a predicate (functor) to select which characters
-    are to be trimmed.. 
-    Functions take a selection predicate as a parameter, which is used to determine 
+    are to be trimmed..
+    Functions take a selection predicate as a parameter, which is used to determine
     whether a character is a space. Common predicates are provided in classification.hpp header.
 
 */
@@ -55,8 +55,8 @@ namespace boost {
         template<typename SequenceT, typename PredicateT>
         inline SequenceT trim_all_copy_if(const SequenceT& Input, PredicateT IsSpace)
         {
-            return 
-                ::boost::find_format_all_copy(      
+            return
+                ::boost::find_format_all_copy(
                     ::boost::trim_copy_if(Input, IsSpace),
                     ::boost::token_finder(IsSpace, ::boost::token_compress_on),
                     ::boost::dissect_formatter(::boost::head_finder(1)));
@@ -76,8 +76,8 @@ namespace boost {
         inline void trim_all_if(SequenceT& Input, PredicateT IsSpace)
         {
             ::boost::trim_if(Input, IsSpace);
-            ::boost::find_format_all(       
-                Input,          
+            ::boost::find_format_all(
+                Input,
                 ::boost::token_finder(IsSpace, ::boost::token_compress_on),
                 ::boost::dissect_formatter(::boost::head_finder(1)));
         }
@@ -132,8 +132,8 @@ namespace boost {
         template<typename SequenceT, typename RangeT, typename PredicateT>
         inline SequenceT trim_fill_copy_if(const SequenceT& Input, const RangeT& Fill, PredicateT IsSpace)
         {
-            return 
-                ::boost::find_format_all_copy(      
+            return
+                ::boost::find_format_all_copy(
                     ::boost::trim_copy_if(Input, IsSpace),
                     ::boost::token_finder(IsSpace, ::boost::token_compress_on),
                     ::boost::const_formatter(::boost::as_literal(Fill)));
@@ -155,8 +155,8 @@ namespace boost {
         inline void trim_fill_if(SequenceT& Input, const RangeT& Fill, PredicateT IsSpace)
         {
             ::boost::trim_if(Input, IsSpace);
-            ::boost::find_format_all(       
-                Input,          
+            ::boost::find_format_all(
+                Input,
                 ::boost::token_finder(IsSpace, ::boost::token_compress_on),
                 ::boost::const_formatter(::boost::as_literal(Fill)));
         }
@@ -200,7 +200,7 @@ namespace boost {
         }
 
 
-    } // namespace algorithm    
+    } // namespace algorithm
 
     // pull names to the boost namespace
     using algorithm::trim_all;

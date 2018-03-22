@@ -26,10 +26,10 @@
 
 namespace boost {
 namespace type_erasure {
-    
+
 template<class Concept, class T>
 class any;
-    
+
 template<class Concept>
 class binding;
 

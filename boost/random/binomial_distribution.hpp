@@ -96,7 +96,7 @@ public:
             os << parm._p << " " << parm._t;
             return os;
         }
-    
+
         /** Reads the parameters of the distribution from a @c std::istream. */
         template<class CharT, class Traits>
         friend std::basic_istream<CharT,Traits>&
@@ -120,7 +120,7 @@ public:
         IntType _t;
         RealType _p;
     };
-    
+
     /**
      * Construct a @c binomial_distribution object. @c t and @c p
      * are the parameters of the distribution.
@@ -133,7 +133,7 @@ public:
     {
         init();
     }
-    
+
     /**
      * Construct an @c binomial_distribution object from the
      * parameters.
@@ -143,7 +143,7 @@ public:
     {
         init();
     }
-    
+
     /**
      * Returns a random variate distributed according to the
      * binomial distribution.
@@ -163,7 +163,7 @@ public:
             return generate(urng);
         }
     }
-    
+
     /**
      * Returns a random variate distributed according to the
      * binomial distribution with parameters specified by @c param.
@@ -210,7 +210,7 @@ public:
         os << bd.param();
         return os;
     }
-    
+
     /** Reads the parameters of the distribution from a @c std::istream. */
     template<class CharT, class Traits>
     friend std::basic_istream<CharT,Traits>&
@@ -274,7 +274,7 @@ private:
 
         RealType p = (0.5 < _p)? (1 - _p) : _p;
         IntType t = _t;
-        
+
         m = static_cast<IntType>((t+1)*p);
 
         if(use_inversion()) {

@@ -56,8 +56,8 @@ namespace boost{ namespace icl
     struct type_to_string<Unary<Type> >
     {
         static std::string to_string()
-        { 
-            return unary_template_to_string<Unary>::apply()+"<"+type_to_string<Type>::apply()+">"; 
+        {
+            return unary_template_to_string<Unary>::apply()+"<"+type_to_string<Type>::apply()+">";
         }
     };
 
@@ -72,9 +72,9 @@ namespace boost{ namespace icl
     struct type_to_string<Binary<Type1, Type2> >
     {
         static std::string apply()
-        { 
+        {
             return binary_template_to_string<Binary>::apply()+
-                "<"+type_to_string<Type1>::apply()+","+type_to_string<Type2>::apply()+">"; 
+                "<"+type_to_string<Type1>::apply()+","+type_to_string<Type2>::apply()+">";
         }
     };
 

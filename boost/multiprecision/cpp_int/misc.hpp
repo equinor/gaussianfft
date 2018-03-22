@@ -341,8 +341,8 @@ inline double_limb_type integer_gcd_reduce(double_limb_type u, double_limb_type 
 template <unsigned MinBits1, unsigned MaxBits1, cpp_integer_type SignType1, cpp_int_check_type Checked1, class Allocator1>
 inline typename enable_if_c<!is_trivial_cpp_int<cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1> >::value>::type
    eval_gcd(
-      cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& result, 
-      const cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& a, 
+      cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& result,
+      const cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& a,
       limb_type v)
 {
    using default_ops::eval_lsb;
@@ -381,7 +381,7 @@ inline typename enable_if_c<!is_trivial_cpp_int<cpp_int_backend<MinBits1, MaxBit
    if(vs)
       v >>= vs;
 
-   do 
+   do
    {
       /* Now u and v are both odd, so diff(u, v) is even.
       Let u = min(u, v), v = diff(u, v)/2. */
@@ -400,7 +400,7 @@ inline typename enable_if_c<!is_trivial_cpp_int<cpp_int_backend<MinBits1, MaxBit
       eval_subtract(u, v);
       us = eval_lsb(u);
       eval_right_shift(u, us);
-   } 
+   }
    while(true);
 
    result = v;
@@ -409,8 +409,8 @@ inline typename enable_if_c<!is_trivial_cpp_int<cpp_int_backend<MinBits1, MaxBit
 template <unsigned MinBits1, unsigned MaxBits1, cpp_integer_type SignType1, cpp_int_check_type Checked1, class Allocator1, class Integer>
 inline typename enable_if_c<is_unsigned<Integer>::value && (sizeof(Integer) <= sizeof(limb_type)) && !is_trivial_cpp_int<cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1> >::value>::type
    eval_gcd(
-      cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& result, 
-      const cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& a, 
+      cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& result,
+      const cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& a,
       const Integer& v)
 {
    eval_gcd(result, a, static_cast<limb_type>(v));
@@ -418,8 +418,8 @@ inline typename enable_if_c<is_unsigned<Integer>::value && (sizeof(Integer) <= s
 template <unsigned MinBits1, unsigned MaxBits1, cpp_integer_type SignType1, cpp_int_check_type Checked1, class Allocator1, class Integer>
 inline typename enable_if_c<is_signed<Integer>::value && (sizeof(Integer) <= sizeof(limb_type)) && !is_trivial_cpp_int<cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1> >::value>::type
    eval_gcd(
-      cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& result, 
-      const cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& a, 
+      cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& result,
+      const cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& a,
       const Integer& v)
 {
    eval_gcd(result, a, static_cast<limb_type>(v < 0 ? -v : v));
@@ -428,8 +428,8 @@ inline typename enable_if_c<is_signed<Integer>::value && (sizeof(Integer) <= siz
 template <unsigned MinBits1, unsigned MaxBits1, cpp_integer_type SignType1, cpp_int_check_type Checked1, class Allocator1>
 inline typename enable_if_c<!is_trivial_cpp_int<cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1> >::value>::type
    eval_gcd(
-      cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& result, 
-      const cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& a, 
+      cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& result,
+      const cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& a,
       const cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& b)
 {
    using default_ops::eval_lsb;
@@ -483,7 +483,7 @@ inline typename enable_if_c<!is_trivial_cpp_int<cpp_int_backend<MinBits1, MaxBit
    eval_right_shift(u, us);
    eval_right_shift(v, vs);
 
-   do 
+   do
    {
       /* Now u and v are both odd, so diff(u, v) is even.
       Let u = min(u, v), v = diff(u, v)/2. */
@@ -508,7 +508,7 @@ inline typename enable_if_c<!is_trivial_cpp_int<cpp_int_backend<MinBits1, MaxBit
       eval_subtract(v, u);
       vs = eval_lsb(v);
       eval_right_shift(v, vs);
-   } 
+   }
    while(true);
 
    result = u;

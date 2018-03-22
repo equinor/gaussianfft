@@ -1,7 +1,7 @@
 /*=============================================================================
     Copyright (c) 2001-2011 Joel de Guzman
 
-    Distributed under the Boost Software License, Version 1.0. (See accompanying 
+    Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================*/
 #if !defined(FUSION_COUNT_09162005_0158)
@@ -19,7 +19,7 @@
 #endif
 
 namespace boost { namespace fusion { namespace detail
-{ 
+{
     template <bool is_convertible>
     struct compare_convertible;
 
@@ -66,7 +66,7 @@ namespace boost { namespace fusion { namespace detail
                 compare_convertible<
                     mpl::or_<
                         is_convertible<T1, T2>
-                      , is_convertible<T2, T1> 
+                      , is_convertible<T2, T1>
                     >::value
                 >::call(x, y);
         }

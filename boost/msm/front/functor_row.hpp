@@ -27,32 +27,32 @@
 
 BOOST_MPL_HAS_XXX_TRAIT_DEF(deferring_action)
 BOOST_MPL_HAS_XXX_TRAIT_DEF(some_deferring_actions)
-    
+
 namespace boost { namespace msm { namespace front
 {
     template <class Func,class Enable=void>
-    struct get_functor_return_value 
+    struct get_functor_return_value
     {
         static const ::boost::msm::back::HandledEnum value = ::boost::msm::back::HANDLED_TRUE;
     };
     template <class Func>
-    struct get_functor_return_value<Func, 
+    struct get_functor_return_value<Func,
         typename ::boost::enable_if<
-            typename has_deferring_action<Func>::type 
+            typename has_deferring_action<Func>::type
         >::type
-    > 
+    >
     {
         static const ::boost::msm::back::HandledEnum value = ::boost::msm::back::HANDLED_DEFERRED;
     };
     // for sequences
     template <class Func>
-    struct get_functor_return_value<Func, 
+    struct get_functor_return_value<Func,
         typename ::boost::enable_if<
                 typename has_some_deferring_actions<Func>::type
         >::type
-    > 
+    >
     {
-        static const ::boost::msm::back::HandledEnum value = 
+        static const ::boost::msm::back::HandledEnum value =
             (Func::some_deferring_actions::value ? ::boost::msm::back::HANDLED_DEFERRED : ::boost::msm::back::HANDLED_TRUE );
     };
     template <class SOURCE,class EVENT,class TARGET,class ACTION=none,class GUARD=none>
@@ -278,13 +278,13 @@ namespace boost { namespace msm { namespace front
     {
         typedef Sequence sequence;
         // if one functor of the sequence defers events, the complete sequence does
-        typedef ::boost::mpl::bool_< 
-            ::boost::mpl::count_if<sequence, 
-                                   has_deferring_action< ::boost::mpl::placeholders::_1 > 
+        typedef ::boost::mpl::bool_<
+            ::boost::mpl::count_if<sequence,
+                                   has_deferring_action< ::boost::mpl::placeholders::_1 >
             >::value != 0> some_deferring_actions;
 
         template <class Event,class FSM,class STATE >
-        struct state_action_result 
+        struct state_action_result
         {
             typedef void type;
         };
@@ -304,7 +304,7 @@ namespace boost { namespace msm { namespace front
             STATE&      state_;
         };
         template <class EVT,class FSM,class SourceState,class TargetState>
-        struct transition_action_result 
+        struct transition_action_result
         {
             typedef void type;
         };
@@ -342,7 +342,7 @@ namespace boost { namespace msm { namespace front
     };
 
     // functor pre-defined for basic functionality
-    struct Defer 
+    struct Defer
     {
         // mark as deferring to avoid stack overflows in certain conditions
         typedef int deferring_action;

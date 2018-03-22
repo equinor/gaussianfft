@@ -213,9 +213,9 @@ operator<<(std::basic_ostream<CharT, Traits>& out, tribool x)
  */
 template<typename CharT, typename Traits>
 inline std::basic_ostream<CharT, Traits>&
-operator<<(std::basic_ostream<CharT, Traits>& out, 
+operator<<(std::basic_ostream<CharT, Traits>& out,
            bool (*)(tribool, detail::indeterminate_t))
-{ return out << tribool(indeterminate); } 
+{ return out << tribool(indeterminate); }
 
 /**
  * \brief Reads a tribool value from a stream.

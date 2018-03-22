@@ -29,7 +29,7 @@ class communicator;
  *  receive and will be returned from @c isend or @c irecv,
  *  respectively.
  */
-class BOOST_MPI_DECL request 
+class BOOST_MPI_DECL request
 {
  public:
   /**
@@ -62,7 +62,7 @@ class BOOST_MPI_DECL request
 
  private:
   enum request_action { ra_wait, ra_test, ra_cancel };
-  typedef optional<status> (*handler_type)(request* self, 
+  typedef optional<status> (*handler_type)(request* self,
                                            request_action action);
 
   /**
@@ -71,7 +71,7 @@ class BOOST_MPI_DECL request
    * Handles the non-blocking receive of a serialized value.
    */
   template<typename T>
-  static optional<status> 
+  static optional<status>
   handle_serialized_irecv(request* self, request_action action);
 
   /**
@@ -80,7 +80,7 @@ class BOOST_MPI_DECL request
    * Handles the non-blocking receive of an array of  serialized values.
    */
   template<typename T>
-  static optional<status> 
+  static optional<status>
   handle_serialized_array_irecv(request* self, request_action action);
 
  public: // template friends are not portable

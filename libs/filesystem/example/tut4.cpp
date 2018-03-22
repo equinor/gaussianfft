@@ -38,9 +38,9 @@ int main(int argc, char* argv[])
         std::vector<std::string> v;
 
         for (auto&& x : directory_iterator(p))
-          v.push_back(x.path().filename().string()); 
+          v.push_back(x.path().filename().string());
 
-        std::sort(v.begin(), v.end());  
+        std::sort(v.begin(), v.end());
 
         for (auto&& x : v)
           cout << "    " << x << '\n';

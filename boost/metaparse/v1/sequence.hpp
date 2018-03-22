@@ -47,14 +47,14 @@ namespace boost
           ) \
         > : impl::BOOST_PP_CAT(sequence, n)<BOOST_PP_ENUM_PARAMS(n, P)> \
         {};
-      
+
       BOOST_PP_REPEAT_FROM_TO(
         1,
         BOOST_METAPARSE_LIMIT_SEQUENCE_SIZE,
         BOOST_METAPARSE_SEQUENCE_N,
         ~
       )
-      
+
       #undef BOOST_METAPARSE_SEQUENCE_N
     }
   }

@@ -28,21 +28,21 @@ struct inherit_attributes
     // on the fly attribute creation capability
     typedef Attributes      attributes_type;
     template <class Index>
-    typename ::boost::fusion::result_of::at_key<attributes_type, 
+    typename ::boost::fusion::result_of::at_key<attributes_type,
                                                 Index>::type
-    get_attribute(Index const&) 
+    get_attribute(Index const&)
     {
         return ::boost::fusion::at_key<Index>(m_attributes);
     }
-    
+
     template <class Index>
     typename ::boost::add_const<
         typename ::boost::fusion::result_of::at_key<attributes_type,
                                                     Index>::type>::type
-    get_attribute(Index const&)const 
+    get_attribute(Index const&)const
     {
-        return const_cast< 
-            typename ::boost::add_const< 
+        return const_cast<
+            typename ::boost::add_const<
                 typename ::boost::fusion::result_of::at_key< attributes_type,
                                                              Index >::type>::type>
                                 (::boost::fusion::at_key<Index>(m_attributes));

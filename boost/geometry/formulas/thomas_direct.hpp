@@ -92,7 +92,7 @@ public:
         CT azi12_alt = azimuth12;
         CT lat1_alt = lat1;
         bool alter_result = vflip_if_south(lat1, azimuth12, lat1_alt, azi12_alt);
-        
+
         CT const theta1 = math::equals(lat1_alt, pi_half) ? lat1_alt :
                           math::equals(lat1_alt, -pi_half) ? lat1_alt :
                           atan(one_minus_f * tan(lat1_alt));
@@ -156,7 +156,7 @@ public:
             CT const d_eta = atan2(sin_d_sigma * sin_a12, cos_theta1 * cos_d_sigma - sin_theta1 * sin_d_sigma * cos_a12);
             CT const H = C1 * (c1 - C2) * d_sigma - C1 * C2 * sin_d_sigma * cos_S_sigma;
             CT const d_lambda = d_eta - H;
-            
+
             result.lon2 = lon1 + d_lambda;
 
             if (! math::equals(M, c0))
@@ -177,7 +177,7 @@ public:
             {
                 result.lat2 = -result.lat2;
             }
-        }        
+        }
 
         if (BOOST_GEOMETRY_CONDITION(CalcQuantities))
         {

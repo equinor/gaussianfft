@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 1988, 1989 Hans-J. Boehm, Alan J. Demers
  * Copyright (c) 1991-1994 by Xerox Corporation.  All rights reserved.
  * Copyright (c) 1996-1999 by Silicon Graphics.  All rights reserved.
@@ -14,7 +14,7 @@
  * provided the above notices are retained, and a notice that the code was
  * modified is included with the above copyright notice.
  */
- 
+
 
 # ifndef GC_PRIVATE_H
 # define GC_PRIVATE_H
@@ -149,7 +149,7 @@ typedef char * ptr_t;	/* A generic pointer to which we can add	*/
 		    /* If not, try to keep individual objects small.	*/
 		    /* This is now really controlled at startup,	*/
 		    /* through GC_all_interior_pointers.		*/
-		    
+
 
 #define GC_INVOKE_FINALIZERS() GC_notify_or_invoke_finalizers()
 
@@ -210,7 +210,7 @@ typedef char * ptr_t;	/* A generic pointer to which we can add	*/
 /* Fill in the pc and argument information for up to NFRAMES of my	*/
 /* callers.  Ignore my frame and my callers frame.			*/
 void GC_save_callers(struct callinfo info[NFRAMES]);
-  
+
 void GC_print_callers(struct callinfo info[NFRAMES]);
 
 #endif
@@ -548,9 +548,9 @@ extern GC_warn_proc GC_current_warn_proc;
 	/* instead of a shift.  The bundled SunOS 4.1	*/
 	/* o.w. sometimes pessimizes the subtraction to	*/
 	/* involve a call to .div.			*/
- 
+
 # define modHBLKSZ(n) ((n) & (HBLKSIZE-1))
- 
+
 # define HBLKPTR(objptr) ((struct hblk *)(((word) (objptr)) & ~(HBLKSIZE-1)))
 
 # define HBLKDISPL(objptr) (((size_t) (objptr)) & (HBLKSIZE-1))
@@ -583,7 +583,7 @@ extern GC_warn_proc GC_current_warn_proc;
  * addresses are represented by a single location.
  * Used by black-listing code, and perhaps by dirty bit maintenance code.
  */
- 
+
 # ifdef LARGE_CONFIG
 #   define LOG_PHT_ENTRIES  20  /* Collisions likely at 1M blocks,	*/
 				/* which is >= 4GB.  Each table takes	*/
@@ -779,7 +779,7 @@ struct hblk {
 #   define MAX_ROOT_SETS 4096
 # else
     /* GCJ LOCAL: MAX_ROOT_SETS increased to permit more shared */
-    /* libraries to be loaded.                                  */ 
+    /* libraries to be loaded.                                  */
 #   define MAX_ROOT_SETS 1024
 # endif
 
@@ -1002,7 +1002,7 @@ struct _GC_arrays {
 #endif
 };
 
-GC_API GC_FAR struct _GC_arrays GC_arrays; 
+GC_API GC_FAR struct _GC_arrays GC_arrays;
 
 # ifndef SEPARATE_GLOBALS
 #   define GC_objfreelist GC_arrays._objfreelist
@@ -1185,7 +1185,7 @@ extern GC_bool GC_dirty_maintained;
 
 extern word GC_root_size;	/* Total size of registered root sections */
 
-extern GC_bool GC_debugging_started;	/* GC_debug_malloc has been called. */ 
+extern GC_bool GC_debugging_started;	/* GC_debug_malloc has been called. */
 
 extern long GC_large_alloc_warn_interval;
 	/* Interval between unsuppressed warnings.	*/
@@ -1261,9 +1261,9 @@ extern long GC_large_alloc_warn_suppressed;
 /* Important internal collector routines */
 
 ptr_t GC_approx_sp(void);
-  
+
 GC_bool GC_should_collect(void);
-  
+
 void GC_apply_to_all_blocks(void (*fn) (struct hblk *h, word client_data),
     			    word client_data);
   			/* Invoke fn(hbp, client_data) for each 	*/
@@ -1451,7 +1451,7 @@ GC_bool GC_register_main_static_data(void);
 		/* We need to register the main data segment.  Returns	*/
 		/* TRUE unless this is done implicitly as part of	*/
 		/* dynamic library registration.			*/
-  
+
 /* Machine dependent startup routines */
 ptr_t GC_get_main_stack_base(void);	/* Cold end of stack */
 #ifdef IA64
@@ -1459,7 +1459,7 @@ ptr_t GC_get_main_stack_base(void);	/* Cold end of stack */
   					/* Cold end of register stack.	*/
 #endif
 void GC_register_data_segments(void);
-  
+
 /* Black listing: */
 void GC_bl_init(void);
 # ifdef PRINT_BLACK_LIST
@@ -1527,7 +1527,7 @@ void GC_initialize_offsets(void);
 				/* Initialize GC_valid_offsets,		*/
 				/* depending on current 		*/
 				/* GC_all_interior_pointers settings.	*/
-  
+
 /*  hblk allocation: */		
 void GC_new_hblk(size_t size_in_granules, int kind);
   				/* Allocate a new heap block, and build */
@@ -1669,13 +1669,13 @@ ptr_t GC_allocobj(size_t sz, int kind);
   void * GC_core_malloc(size_t);
   void * GC_core_malloc_atomic(size_t);
 # ifdef GC_GCJ_SUPPORT
-    void *GC_core_gcj_malloc(size_t, void *); 
+    void *GC_core_gcj_malloc(size_t, void *);
 # endif
 #endif /* THREAD_LOCAL_ALLOC */
 
 void GC_free_inner(void * p);
 void GC_debug_free_inner(void * p);
-  
+
 void GC_init_headers(void);
 struct hblkhdr * GC_install_header(struct hblk *h);
   				/* Install a header for block h.	*/
@@ -1690,7 +1690,7 @@ void GC_remove_header(struct hblk * h);
 void GC_remove_counts(struct hblk * h, size_t sz);
   				/* Remove forwarding counts for h.	*/
 hdr * GC_find_header(ptr_t h); /* Debugging only.		*/
-  
+
 void GC_finalize(void);
  			/* Perform all indicated finalization actions	*/
   			/* on unmarked objects.				*/
@@ -1713,7 +1713,7 @@ GC_API void GC_debug_invoke_finalizer(void * obj, void * data);
   			
 void GC_add_to_heap(struct hblk *p, size_t bytes);
   			/* Add a HBLKSIZE aligned chunk to the heap.	*/
-  
+
 void GC_print_obj(ptr_t p);
   			/* P points to somewhere inside an object with	*/
   			/* debugging info.  Print a human readable	*/
@@ -1818,12 +1818,12 @@ void GC_remove_protection(struct hblk *h, word nblocks,
 			/* dirty bit implementation.			    */
 			
 void GC_dirty_init(void);
-  
+
 /* Slow/general mark bit manipulation: */
 GC_API GC_bool GC_is_marked(ptr_t p);
 void GC_clear_mark_bit(ptr_t p);
 void GC_set_mark_bit(ptr_t p);
-  
+
 /* Stubborn objects: */
 void GC_read_changed(void);	/* Analogous to GC_read_dirty */
 GC_bool GC_page_was_changed(struct hblk * h);
@@ -1831,7 +1831,7 @@ GC_bool GC_page_was_changed(struct hblk * h);
 void GC_clean_changing_list(void);
  				/* Collect obsolete changing list entries */
 void GC_stubborn_init(void);
-  
+
 /* Debugging print routines: */
 void GC_print_block_list(void);
 void GC_print_hblkfreelist(void);
@@ -1846,7 +1846,7 @@ void GC_print_finalization_stats(void);
 #  define GC_STORE_BACK_PTR(source, dest) GC_store_back_pointer(source, dest)
 #  define GC_MARKED_FOR_FINALIZATION(dest) GC_marked_for_finalization(dest)
 #else
-#  define GC_STORE_BACK_PTR(source, dest) 
+#  define GC_STORE_BACK_PTR(source, dest)
 #  define GC_MARKED_FOR_FINALIZATION(dest)
 #endif
 
@@ -1887,14 +1887,14 @@ void GC_err_puts(const char *s);
 		GC_err_printf("Assertion failure: %s:%ld\n", \
 				__FILE__, (unsigned long)__LINE__); \
 		ABORT("assertion failure"); }
-# else 
+# else
 #	define GC_ASSERT(expr)
 # endif
 
 /* Check a compile time assertion at compile time.  The error	*/
 /* message for failure is a bit baroque, but ...		*/
 #if defined(mips) && !defined(__GNUC__)
-/* DOB: MIPSPro C gets an internal error taking the sizeof an array type. 
+/* DOB: MIPSPro C gets an internal error taking the sizeof an array type.
    This code works correctly (ugliness is to avoid "unused var" warnings) */
 # define GC_STATIC_ASSERT(expr) do { if (0) { char j[(expr)? 1 : -1]; j[0]='\0'; j[0]=j[0]; } } while(0)
 #else
@@ -1911,7 +1911,7 @@ void GC_err_puts(const char *s);
     /* acquired, the GC lock must be acquired first.  The mark lock is	*/
     /* used to both protect some variables used by the parallel		*/
     /* marker, and to protect GC_fl_builder_count, below.		*/
-    /* GC_notify_all_marker() is called when				*/ 
+    /* GC_notify_all_marker() is called when				*/
     /* the state of the parallel marker changes				*/
     /* in some significant way (see gc_mark.h for details).  The	*/
     /* latter set of events includes incrementing GC_mark_no.		*/
@@ -1960,12 +1960,12 @@ void GC_err_puts(const char *s);
 #       define SIG_SUSPEND _SIGRTMIN + 6
 #     else
 #       define SIG_SUSPEND SIGRTMIN + 6
-#     endif       
+#     endif
 #   endif
 #  endif /* !SIG_SUSPEND */
-  
+
 # endif
-     
+
 /* Some macros for setjmp that works across signal handlers	*/
 /* were possible, and a couple of routines to facilitate	*/
 /* catching accesses to bad addresses when that's		*/

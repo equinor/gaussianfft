@@ -50,4 +50,4 @@ of arguments in non-standard-conforming ways.  This code is known to
 break on some platforms, notably PowerPC.  It should be possible to
 build the remainder of the library (everything but cordprnt.c) on
 any platform that supports the collector.
- 
+

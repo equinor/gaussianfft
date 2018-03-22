@@ -1,4 +1,4 @@
-// Boost.Units - A C++ library for zero-overhead dimensional analysis and 
+// Boost.Units - A C++ library for zero-overhead dimensional analysis and
 // unit/quantity manipulation and conversion
 //
 // Copyright (C) 2003-2008 Matthias Christian Schabel
@@ -69,65 +69,65 @@ typedef unit<solid_angle_dimension,system>           solid_angle;            ///
 
 } // namespace abstract
 
-template<> 
-struct base_unit_info<abstract::length_unit_tag> 
-{ 
+template<>
+struct base_unit_info<abstract::length_unit_tag>
+{
     static std::string name()       { return "[Length]"; }
     static std::string symbol()     { return "[L]"; }
 };
 
-template<> 
-struct base_unit_info<abstract::mass_unit_tag> 
-{ 
+template<>
+struct base_unit_info<abstract::mass_unit_tag>
+{
     static std::string name()       { return "[Mass]"; }
     static std::string symbol()     { return "[M]"; }
 };
 
-template<> 
-struct base_unit_info<abstract::time_unit_tag> 
-{ 
+template<>
+struct base_unit_info<abstract::time_unit_tag>
+{
     static std::string name()       { return "[Time]"; }
     static std::string symbol()     { return "[T]"; }
 };
 
-template<> 
-struct base_unit_info<abstract::current_unit_tag> 
-{ 
+template<>
+struct base_unit_info<abstract::current_unit_tag>
+{
     static std::string name()       { return "[Electric Current]"; }
     static std::string symbol()     { return "[I]"; }
 };
 
-template<> 
-struct base_unit_info<abstract::temperature_unit_tag> 
-{ 
+template<>
+struct base_unit_info<abstract::temperature_unit_tag>
+{
     static std::string name()       { return "[Temperature]"; }
     static std::string symbol()     { return "[Theta]"; }
 };
 
-template<> 
-struct base_unit_info<abstract::amount_unit_tag> 
-{ 
+template<>
+struct base_unit_info<abstract::amount_unit_tag>
+{
     static std::string name()       { return "[Amount]"; }
     static std::string symbol()     { return "[N]"; }
 };
 
-template<> 
-struct base_unit_info<abstract::luminous_intensity_unit_tag> 
-{ 
+template<>
+struct base_unit_info<abstract::luminous_intensity_unit_tag>
+{
     static std::string name()       { return "[Luminous Intensity]"; }
     static std::string symbol()     { return "[J]"; }
 };
 
-template<> 
-struct base_unit_info<abstract::plane_angle_unit_tag> 
-{ 
+template<>
+struct base_unit_info<abstract::plane_angle_unit_tag>
+{
     static std::string name()       { return "[Plane Angle]"; }
     static std::string symbol()     { return "[QP]"; }
 };
 
-template<> 
-struct base_unit_info<abstract::solid_angle_unit_tag> 
-{ 
+template<>
+struct base_unit_info<abstract::solid_angle_unit_tag>
+{
     static std::string name()       { return "[Solid Angle]"; }
     static std::string symbol()     { return "[QS]"; }
 };

@@ -16,14 +16,14 @@ Like before, first get the necessary headers, setup the namespaces and initializ
     Py_Initialize();
     np::initialize();
 
-Next, we create the shape and dtype. We use the get_builtin method to get the numpy dtype corresponding to the builtin C++ dtype 
+Next, we create the shape and dtype. We use the get_builtin method to get the numpy dtype corresponding to the builtin C++ dtype
 Here, we will create a 3x3 array passing a tuple with (3,3) for the size, and double as the data type ::
 
     p::tuple shape = p::make_tuple(3, 3);
     np::dtype dtype = np::dtype::get_builtin<double>();
     np::ndarray a = np::zeros(shape, dtype);
 
-Finally, we can print the array using the extract method in the python namespace. 
+Finally, we can print the array using the extract method in the python namespace.
 Here, we first convert the variable into a string, and then extract it as a C++ character array from the python string using the <char const \* > template ::
 
     std::cout << "Original array:\n" << p::extract<char const *>(p::str(a)) << std::endl;

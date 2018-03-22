@@ -17,13 +17,13 @@
 // arg_from_python converters for Python type wrappers, to be used as
 // base classes for specializations.
 //
-namespace boost { namespace python { namespace converter { 
+namespace boost { namespace python { namespace converter {
 
 template <class T>
 struct object_manager_value_arg_from_python
 {
     typedef T result_type;
-    
+
     object_manager_value_arg_from_python(PyObject*);
     bool convertible() const;
     T operator()() const;
@@ -44,7 +44,7 @@ template <class Ref>
 struct object_manager_ref_arg_from_python
 {
     typedef Ref result_type;
-    
+
     object_manager_ref_arg_from_python(PyObject*);
     bool convertible() const;
     Ref operator()() const;
@@ -62,7 +62,7 @@ inline object_manager_value_arg_from_python<T>::object_manager_value_arg_from_py
     : m_source(x)
 {
 }
-    
+
 template <class T>
 inline bool object_manager_value_arg_from_python<T>::convertible() const
 {
@@ -82,9 +82,9 @@ inline object_manager_ref_arg_from_python<Ref>::object_manager_ref_arg_from_pyth
     // needed for warning suppression
     python::detail::borrowed_reference x_ = python::detail::borrowed_reference(x);
     python::detail::construct_referent<Ref>(&m_result.bytes, x_);
-# else 
+# else
     python::detail::construct_referent<Ref>(&m_result.bytes, (python::detail::borrowed_reference)x);
-# endif 
+# endif
 }
 
 template <class Ref>

@@ -44,7 +44,7 @@ struct rounded_transc_exact: Rounding
   BOOST_NUMERIC_INTERVAL_new_func(atanh)
 # undef BOOST_NUMERIC_INTERVAL_new_func
 };
-  
+
 template<class T, class Rounding>
 struct rounded_transc_std: Rounding
 {
@@ -132,7 +132,7 @@ struct rounded_transc_opp: Rounding
   BOOST_NUMERIC_INTERVAL_new_func(acosh)
 # undef BOOST_NUMERIC_INTERVAL_new_func
 };
-  
+
 } // namespace interval_lib
 } // namespace numeric
 } // namespace boost

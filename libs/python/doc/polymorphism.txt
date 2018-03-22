@@ -13,7 +13,7 @@ How Runtime Polymorphism is expressed in Boost.Python:
    struct B { virtual std::string f() { return "B"; } };
 
    struct Bcb : B
-   { 
+   {
       Bcb(PyObject* self) : m_self(self) {}
 
       virtual std::string f() { return call_method<std::string>(m_sef, "f"); }
@@ -61,7 +61,7 @@ Case studies
 1. Simple case
 
 2. Python A holds a B*. Probably won't happen once we have forced
-   downcasting. 
+   downcasting.
 
    Requires:
          x.f() -> 'B'
@@ -69,12 +69,12 @@ Case studies
 
    Implies: A.f invokes A::f() (virtually or otherwise)
 
-3. Python B holds a B*. 
+3. Python B holds a B*.
 
    Requires:
         x.f() -> 'B'
         call_f(x) -> 'B'
-   
+
    Implies: B.f invokes B::f (virtually or otherwise)
 
 
@@ -117,11 +117,11 @@ Case studies
 7. Python B object holds a C*
 
    Requires:
-        
+
         x.f() -> 'C'
         call_f(x) -> 'C'
 
-   Implies: B.f invokes B::f virtually. 
+   Implies: B.f invokes B::f virtually.
 
 8. C object constructed from Python
 
@@ -139,8 +139,8 @@ Total implications:
 2: A.f invokes A::f() (virtually or otherwise)
 3: B.f invokes B::f (virtually or otherwise)
 4: B.f invokes B::f non-virtually. Bcb::f invokes B::f non-virtually
-6: B.f invokes B::f non-virtually. 
-7: B.f invokes B::f virtually. 
+6: B.f invokes B::f non-virtually.
+7: B.f invokes B::f virtually.
 
 5: Bcb::f invokes call_method to look up the Python method
 
@@ -178,7 +178,7 @@ Open questions:
 
    1. What about Python multiple inheritance? Do we have the right
       check in the if clause above?
-      
+
       A: Not quite. The correct test looks like:
 
       Deduce target type of pvmf, i.e. T in R(T::*)(A1...AN).
@@ -186,7 +186,7 @@ Open questions:
       if it holds dispatch_type...
 
    2. Can we make this more efficient?
-     
+
      The current "returning" mechanism will look up a holder for T
      again. I don't know if we know how to avoid that.
 
@@ -219,4 +219,4 @@ Open questions:
   this can be done in a backwards-compatible fashion by generating the
   delete function when it's not supplied?
 
-  
+

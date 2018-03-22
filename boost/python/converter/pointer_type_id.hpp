@@ -8,7 +8,7 @@
 # include <boost/python/type_id.hpp>
 # include <boost/python/detail/type_traits.hpp>
 
-namespace boost { namespace python { namespace converter { 
+namespace boost { namespace python { namespace converter {
 
 namespace detail
 {
@@ -30,13 +30,13 @@ namespace detail
       {
           return type_id<T>();
       }
-    
+
       template <class T>
       static inline type_info execute(T*volatile&(*)() = 0)
       {
           return type_id<T>();
       }
-    
+
       template <class T>
       static inline type_info execute(T*const&(*)() = 0)
       {

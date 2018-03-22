@@ -224,11 +224,11 @@ namespace boost { namespace numeric { namespace ublas {
 
           Up to now there are some specialisation for compressed
           matrices that give a large speed up compared to prod.
-          
+
           \ingroup blas2
 
           \internal
-          
+
           template parameters:
           \param V type of the result vector \c v
           \param E1 type of a matrix expression \c A
@@ -442,11 +442,11 @@ namespace boost { namespace numeric { namespace ublas {
 
           Up to now there are some specialisation for compressed
           matrices that give a large speed up compared to prod.
-          
+
           \ingroup blas2
 
           \internal
-          
+
           template parameters:
           \param V type of the result vector \c v
           \param E1 type of a vector expression \c x
@@ -680,11 +680,11 @@ namespace boost { namespace numeric { namespace ublas {
           defaults to \c true, but this may change in the future.
 
           Up to now there are no specialisations.
-          
+
           \ingroup blas3
 
           \internal
-          
+
           template parameters:
           \param M type of the result matrix \c M
           \param E1 type of a matrix expression \c A
@@ -790,11 +790,11 @@ namespace boost { namespace numeric { namespace ublas {
           This function may give a speedup if \c A has less columns than
           rows, because the product is computed as a sum of outer
           products.
-          
+
           \ingroup blas3
 
           \internal
-          
+
           template parameters:
           \param M type of the result matrix \c M
           \param E1 type of a matrix expression \c A

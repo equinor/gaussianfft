@@ -42,7 +42,7 @@ public:
   function_collection& operator=(const function_collection& x)=default;
   function_collection& operator=(function_collection&& x)=default;
 
-  template<typename S,typename A> 
+  template<typename S,typename A>
   friend bool operator==(
     const function_collection<S,A>&,const function_collection<S,A>&);
 };

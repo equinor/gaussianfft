@@ -251,7 +251,7 @@ R safe_convert_to_float(const LargeInteger& i)
          {
             //
             // Calculate and add on the remainder, only if there are more
-            // digits in the mantissa that the size of the exponent, in 
+            // digits in the mantissa that the size of the exponent, in
             // other words if we are dropping digits in the conversion
             // otherwise:
             //
@@ -266,7 +266,7 @@ R safe_convert_to_float(const LargeInteger& i)
 }
 
 template <class To, class Integer>
-inline typename disable_if_c<is_number<To>::value || is_floating_point<To>::value>::type 
+inline typename disable_if_c<is_number<To>::value || is_floating_point<To>::value>::type
    generic_convert_rational_to_float_imp(To& result, const Integer& n, const Integer& d, const mpl::true_&)
 {
    //
@@ -279,7 +279,7 @@ inline typename disable_if_c<is_number<To>::value || is_floating_point<To>::valu
    eval_divide(result, fn.backend(), fd.backend());
 }
 template <class To, class Integer>
-inline typename enable_if_c<is_number<To>::value || is_floating_point<To>::value>::type 
+inline typename enable_if_c<is_number<To>::value || is_floating_point<To>::value>::type
    generic_convert_rational_to_float_imp(To& result, const Integer& n, const Integer& d, const mpl::true_&)
 {
    //
@@ -293,7 +293,7 @@ inline typename enable_if_c<is_number<To>::value || is_floating_point<To>::value
 }
 
 template <class To, class Integer>
-typename enable_if_c<is_number<To>::value || is_floating_point<To>::value>::type 
+typename enable_if_c<is_number<To>::value || is_floating_point<To>::value>::type
    generic_convert_rational_to_float_imp(To& result, Integer& num, Integer& denom, const mpl::false_&)
 {
    //
@@ -375,9 +375,9 @@ inline void generic_convert_rational_to_float(To& result, const From& f)
    typedef typename mpl::if_c<is_number<From>::value, From, number<From> >::type actual_from_type;
    typedef typename mpl::if_c<is_number<To>::value || is_floating_point<To>::value, To, number<To> >::type actual_to_type;
    typedef typename component_type<actual_from_type>::type integer_type;
-   typedef mpl::bool_<!std::numeric_limits<integer_type>::is_specialized 
+   typedef mpl::bool_<!std::numeric_limits<integer_type>::is_specialized
                       || std::numeric_limits<integer_type>::is_bounded
-                      || !std::numeric_limits<actual_to_type>::is_specialized 
+                      || !std::numeric_limits<actual_to_type>::is_specialized
                       || !std::numeric_limits<actual_to_type>::is_bounded
                       || (std::numeric_limits<actual_to_type>::radix != 2)> dispatch_tag;
 

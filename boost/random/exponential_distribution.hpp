@@ -269,7 +269,7 @@ public:
             os << parm._lambda;
             return os;
         }
-        
+
         /** Reads the parameters from a @c std::istream. */
         BOOST_RANDOM_DETAIL_ISTREAM_OPERATOR(is, param_type, parm)
         {
@@ -331,7 +331,7 @@ public:
      */
     template<class Engine>
     result_type operator()(Engine& eng) const
-    { 
+    {
         detail::unit_exponential_distribution<RealType> impl;
         return impl(eng) / _lambda;
     }
@@ -342,7 +342,7 @@ public:
      */
     template<class Engine>
     result_type operator()(Engine& eng, const param_type& parm) const
-    { 
+    {
         return exponential_distribution(parm)(eng);
     }
 
@@ -366,7 +366,7 @@ public:
      */
     BOOST_RANDOM_DETAIL_EQUALITY_OPERATOR(exponential_distribution, lhs, rhs)
     { return lhs._lambda == rhs._lambda; }
-    
+
     /**
      * Returns true iff the two distributions will produce different
      * sequences of values given equal generators.

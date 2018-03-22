@@ -99,7 +99,7 @@ The column of Python Expressions illustrates the expressions that will be suppor
 ]
 [endsect]
 [section `self_t` non-member operations]
-The operations whose names begin with "__r" below will only be called if the left-hand operand does not already support the given operation, as described [@http://www.python.org/doc/current/ref/numeric-types.html#l2h-152 here]. 
+The operations whose names begin with "__r" below will only be called if the left-hand operand does not already support the given operation, as described [@http://www.python.org/doc/current/ref/numeric-types.html#l2h-152 here].
 [table
 [[C++ Expression][Python Method Name][C++ Implementation]]
 [[`self + r`][`__add__`][`x + y`]]
@@ -199,15 +199,15 @@ struct number
     template <class T>
     number& operator-=(T const& rhs)
     { x -= rhs; return *this; }
-    
+
     template <class T>
     number& operator*=(T const& rhs)
     { x *= rhs; return *this; }
-    
+
     template <class T>
     number& operator/=(T const& rhs)
     { x /= rhs; return *this; }
-    
+
     template <class T>
     number& operator%=(T const& rhs)
     { x %= rhs; return *this; }

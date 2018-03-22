@@ -18,7 +18,7 @@ namespace boost
       struct fail
       {
         typedef fail type;
-        
+
         template <class S, class Pos>
         struct apply : reject<Msg, Pos> {};
       };

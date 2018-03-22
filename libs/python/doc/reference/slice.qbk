@@ -35,7 +35,7 @@ namespace boost { namespace python
       template <typename RandomAccessIterator>
       range<RandomAccessIterator>
       get_indices(
-          RandomAccessIterator const& begin, 
+          RandomAccessIterator const& begin,
           RandomAccessIterator const& end);
   };
 }}
@@ -80,8 +80,8 @@ object slice::step() const;
 ``
 template <typename RandomAccessIterator>
 slice::range<RandomAccessIterator>
-slice::get_indices( 
-    RandomAccessIterator const& begin, 
+slice::get_indices(
+    RandomAccessIterator const& begin,
     RandomAccessIterator const& end) const;
 ``
 [variablelist
@@ -98,7 +98,7 @@ exceptions on empty slice: It is impossible to define a closed interval over an 
 using namespace boost::python;
 
 // Perform an extended slice of a Python list.
-// Warning: extended slicing was not supported for built-in types prior 
+// Warning: extended slicing was not supported for built-in types prior
 // to Python 2.3
 list odd_elements(list l)
 {

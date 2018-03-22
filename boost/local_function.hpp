@@ -132,7 +132,7 @@ cannot be used:
 <c>{expression}</c> means the token resulting from the expression.)
 }
 @EndParams
- 
+
 Note that on compilers that support variadic macros, commas can be used to
 separate the declarations resembling more closely the usual C++ function
 declaration syntax (this is the preferred syntax).

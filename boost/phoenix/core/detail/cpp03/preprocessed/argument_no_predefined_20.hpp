@@ -5,7 +5,7 @@
     Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================*/
-    
+
     namespace placeholders
     {
         typedef expression::argument<1>::type arg1_type BOOST_ATTRIBUTE_UNUSED; typedef expression::argument<2>::type arg2_type BOOST_ATTRIBUTE_UNUSED; typedef expression::argument<3>::type arg3_type BOOST_ATTRIBUTE_UNUSED; typedef expression::argument<4>::type arg4_type BOOST_ATTRIBUTE_UNUSED; typedef expression::argument<5>::type arg5_type BOOST_ATTRIBUTE_UNUSED; typedef expression::argument<6>::type arg6_type BOOST_ATTRIBUTE_UNUSED; typedef expression::argument<7>::type arg7_type BOOST_ATTRIBUTE_UNUSED; typedef expression::argument<8>::type arg8_type BOOST_ATTRIBUTE_UNUSED; typedef expression::argument<9>::type arg9_type BOOST_ATTRIBUTE_UNUSED; typedef expression::argument<10>::type arg10_type BOOST_ATTRIBUTE_UNUSED; typedef expression::argument<11>::type arg11_type BOOST_ATTRIBUTE_UNUSED; typedef expression::argument<12>::type arg12_type BOOST_ATTRIBUTE_UNUSED; typedef expression::argument<13>::type arg13_type BOOST_ATTRIBUTE_UNUSED; typedef expression::argument<14>::type arg14_type BOOST_ATTRIBUTE_UNUSED; typedef expression::argument<15>::type arg15_type BOOST_ATTRIBUTE_UNUSED; typedef expression::argument<16>::type arg16_type BOOST_ATTRIBUTE_UNUSED; typedef expression::argument<17>::type arg17_type BOOST_ATTRIBUTE_UNUSED; typedef expression::argument<18>::type arg18_type BOOST_ATTRIBUTE_UNUSED; typedef expression::argument<19>::type arg19_type BOOST_ATTRIBUTE_UNUSED; typedef expression::argument<20>::type arg20_type BOOST_ATTRIBUTE_UNUSED;

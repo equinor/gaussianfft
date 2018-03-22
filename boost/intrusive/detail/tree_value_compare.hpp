@@ -29,7 +29,7 @@ namespace intrusive{
 //Needed to support smart references to value types
 template <class From, class ValuePtr>
 struct disable_if_smartref_to
-   : detail::disable_if_c 
+   : detail::disable_if_c
       <  detail::is_same
             <From, typename pointer_traits
                <ValuePtr>

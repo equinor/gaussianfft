@@ -56,7 +56,7 @@ void trampoline_void( context::detail::transfer_t t)
     Coro * coro(
         static_cast< Coro * >( param->coro) );
     BOOST_ASSERT( 0 != coro);
-    
+
     coro->run();
 }
 

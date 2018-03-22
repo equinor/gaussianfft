@@ -1,6 +1,6 @@
 // Copyright 2002 The Trustees of Indiana University.
 
-// Use, modification and distribution is subject to the Boost Software 
+// Use, modification and distribution is subject to the Boost Software
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
@@ -25,7 +25,7 @@
 namespace boost {
 
   // RG - This is to make things work with VC++. So sad, so sad.
-  class c_storage_order; 
+  class c_storage_order;
   class fortran_storage_order;
 
   template <std::size_t NumDims>
@@ -76,7 +76,7 @@ namespace boost {
     boost::array<bool,NumDims> ascending_;
   };
 
-  class c_storage_order 
+  class c_storage_order
   {
     typedef detail::multi_array::size_type size_type;
   public:
@@ -103,7 +103,7 @@ namespace boost {
     typedef detail::multi_array::size_type size_type;
   public:
     // This is the idiom for creating your own custom storage orders.
-    // Not supported by all compilers though! 
+    // Not supported by all compilers though!
 #ifndef __MWERKS__ // Metrowerks screams "ambiguity!"
     template <std::size_t NumDims>
     operator general_storage_order<NumDims>() const {

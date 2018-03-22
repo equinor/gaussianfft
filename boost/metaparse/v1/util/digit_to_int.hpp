@@ -25,7 +25,7 @@ namespace boost
         struct digit_to_int<boost::mpl::na>
         {
           typedef digit_to_int type;
-          
+
           template <class D = boost::mpl::na>
           struct apply : digit_to_int<D> {};
         };

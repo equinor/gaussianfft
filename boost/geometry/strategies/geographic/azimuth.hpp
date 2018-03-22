@@ -60,7 +60,7 @@ public :
         typedef typename boost::mpl::if_
             <
                 boost::is_void<CalculationType>, T, CalculationType
-            >::type calc_t;            
+            >::type calc_t;
 
         typedef typename FormulaPolicy::template inverse<calc_t, false, true, true, false, false> inverse_type;
         typedef typename inverse_type::result_type inverse_result;

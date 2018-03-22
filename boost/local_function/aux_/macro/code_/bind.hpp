@@ -136,7 +136,7 @@
                 all_bind_this_types)) \
         BOOST_LOCAL_FUNCTION_AUX_CODE_BIND_THIS_CAPTURE_TYPE_(id) \
     ;
-    
+
 #define BOOST_LOCAL_FUNCTION_AUX_CODE_BIND_THIS_TYPEDEF_( \
         id, typename01, all_bind_this_types) \
     /* typedef type_ */ \

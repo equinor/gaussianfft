@@ -29,7 +29,7 @@ namespace Interval_Set
 {
 
 //------------------------------------------------------------------------------
-// Lexicographical comparison on ranges of two interval container 
+// Lexicographical comparison on ranges of two interval container
 //------------------------------------------------------------------------------
 
 template<class LeftT, class RightT>
@@ -37,8 +37,8 @@ bool is_element_equal(const LeftT& left, const RightT& right)
 {
     return subset_compare
             (
-                left, right, 
-                left.begin(), left.end(), 
+                left, right,
+                left.begin(), left.end(),
                 right.begin(), right.end()
             ) == inclusion::equal;
 }
@@ -48,8 +48,8 @@ bool is_element_less(const LeftT& left, const RightT& right)
 {
     return element_compare
             (
-                left, right, 
-                left.begin(), left.end(), 
+                left, right,
+                left.begin(), left.end(),
                 right.begin(), right.end()
             )  == comparison::less;
 }
@@ -59,20 +59,20 @@ bool is_element_greater(const LeftT& left, const RightT& right)
 {
     return element_compare
             (
-                left, right, 
-                left.begin(), left.end(), 
+                left, right,
+                left.begin(), left.end(),
                 right.begin(), right.end()
             )  == comparison::greater;
 }
 
 //------------------------------------------------------------------------------
-// Subset/superset compare on ranges of two interval container 
+// Subset/superset compare on ranges of two interval container
 //------------------------------------------------------------------------------
 
 template<class IntervalContainerT>
-bool is_joinable(const IntervalContainerT& container, 
-                 typename IntervalContainerT::const_iterator first, 
-                 typename IntervalContainerT::const_iterator past) 
+bool is_joinable(const IntervalContainerT& container,
+                 typename IntervalContainerT::const_iterator first,
+                 typename IntervalContainerT::const_iterator past)
 {
     if(first == container.end())
         return true;
@@ -94,14 +94,14 @@ bool is_inclusion_equal(const LeftT& left, const RightT& right)
 {
     return subset_compare
             (
-                left, right, 
-                left.begin(), left.end(), 
+                left, right,
+                left.begin(), left.end(),
                 right.begin(), right.end()
             ) == inclusion::equal;
 }
 
 template<class LeftT, class RightT>
-typename enable_if<mpl::and_<is_concept_combinable<is_interval_set, is_interval_map, LeftT, RightT>, 
+typename enable_if<mpl::and_<is_concept_combinable<is_interval_set, is_interval_map, LeftT, RightT>,
                              is_total<RightT> >,
                    bool>::type
 within(const LeftT&, const RightT&)
@@ -110,7 +110,7 @@ within(const LeftT&, const RightT&)
 }
 
 template<class LeftT, class RightT>
-typename enable_if<mpl::and_<is_concept_combinable<is_interval_set, is_interval_map, LeftT, RightT>, 
+typename enable_if<mpl::and_<is_concept_combinable<is_interval_set, is_interval_map, LeftT, RightT>,
                              mpl::not_<is_total<RightT> > >,
                    bool>::type
 within(const LeftT& sub, const RightT& super)
@@ -118,8 +118,8 @@ within(const LeftT& sub, const RightT& super)
     int result =
         subset_compare
         (
-            sub, super, 
-            sub.begin(), sub.end(), 
+            sub, super,
+            sub.begin(), sub.end(),
             super.begin(), super.end()
         );
     return result == inclusion::subset || result == inclusion::equal;
@@ -127,30 +127,30 @@ within(const LeftT& sub, const RightT& super)
 
 
 template<class LeftT, class RightT>
-typename enable_if<is_concept_combinable<is_interval_map, is_interval_map, LeftT, RightT>, 
+typename enable_if<is_concept_combinable<is_interval_map, is_interval_map, LeftT, RightT>,
                    bool>::type
 within(const LeftT& sub, const RightT& super)
 {
     int result =
         subset_compare
         (
-            sub, super, 
-            sub.begin(), sub.end(), 
+            sub, super,
+            sub.begin(), sub.end(),
             super.begin(), super.end()
         );
     return result == inclusion::subset || result == inclusion::equal;
 }
 
 template<class LeftT, class RightT>
-typename enable_if<is_concept_combinable<is_interval_set, is_interval_set, LeftT, RightT>, 
+typename enable_if<is_concept_combinable<is_interval_set, is_interval_set, LeftT, RightT>,
                    bool>::type
 within(const LeftT& sub, const RightT& super)
 {
     int result =
         subset_compare
         (
-            sub, super, 
-            sub.begin(), sub.end(), 
+            sub, super,
+            sub.begin(), sub.end(),
             super.begin(), super.end()
         );
     return result == inclusion::subset || result == inclusion::equal;
@@ -159,7 +159,7 @@ within(const LeftT& sub, const RightT& super)
 
 
 template<class LeftT, class RightT>
-typename enable_if<mpl::and_<is_concept_combinable<is_interval_map, is_interval_set, LeftT, RightT>, 
+typename enable_if<mpl::and_<is_concept_combinable<is_interval_map, is_interval_set, LeftT, RightT>,
                              is_total<LeftT> >,
                    bool>::type
 contains(const LeftT&, const RightT&)
@@ -168,7 +168,7 @@ contains(const LeftT&, const RightT&)
 }
 
 template<class LeftT, class RightT>
-typename enable_if<mpl::and_<is_concept_combinable<is_interval_map, is_interval_set, LeftT, RightT>, 
+typename enable_if<mpl::and_<is_concept_combinable<is_interval_map, is_interval_set, LeftT, RightT>,
                              mpl::not_<is_total<LeftT> > >,
                    bool>::type
 contains(const LeftT& super, const RightT& sub)
@@ -176,32 +176,32 @@ contains(const LeftT& super, const RightT& sub)
     int result =
         subset_compare
         (
-            super, sub, 
-            super.begin(), super.end(), 
+            super, sub,
+            super.begin(), super.end(),
             sub.begin(), sub.end()
         );
     return result == inclusion::superset || result == inclusion::equal;
 }
 
 template<class LeftT, class RightT>
-typename enable_if<is_concept_combinable<is_interval_set, is_interval_set, LeftT, RightT>, 
+typename enable_if<is_concept_combinable<is_interval_set, is_interval_set, LeftT, RightT>,
                    bool>::type
 contains(const LeftT& super, const RightT& sub)
 {
     int result =
         subset_compare
         (
-            super, sub, 
-            super.begin(), super.end(), 
+            super, sub,
+            super.begin(), super.end(),
             sub.begin(), sub.end()
         );
     return result == inclusion::superset || result == inclusion::equal;
 }
 
 template<class IntervalContainerT>
-bool is_dense(const IntervalContainerT& container, 
-              typename IntervalContainerT::const_iterator first, 
-              typename IntervalContainerT::const_iterator past) 
+bool is_dense(const IntervalContainerT& container,
+              typename IntervalContainerT::const_iterator first,
+              typename IntervalContainerT::const_iterator past)
 {
     if(first == container.end())
         return true;
@@ -210,7 +210,7 @@ bool is_dense(const IntervalContainerT& container,
     ++next_;
 
     while(next_ != container.end() && it_ != past)
-        if(!icl::touches(key_value<IntervalContainerT>(it_++), 
+        if(!icl::touches(key_value<IntervalContainerT>(it_++),
                          key_value<IntervalContainerT>(next_++)))
             return false;
 
@@ -226,24 +226,24 @@ template<class Type>
 inline bool joinable(const Type& _Type, typename Type::iterator& some, typename Type::iterator& next)
 {
     // assert: next != end && some++ == next
-    return touches(key_value<Type>(some), key_value<Type>(next)) 
-        && co_equal(some, next, &_Type, &_Type); 
+    return touches(key_value<Type>(some), key_value<Type>(next))
+        && co_equal(some, next, &_Type, &_Type);
 }
 
 template<class Type>
-inline void join_nodes(Type& object, typename Type::iterator& left_, 
+inline void join_nodes(Type& object, typename Type::iterator& left_,
                                      typename Type::iterator& right_)
 {
     typedef typename Type::interval_type interval_type;
     interval_type right_interval = key_value<Type>(right_);
     object.erase(right_);
-    const_cast<interval_type&>(key_value<Type>(left_)) 
+    const_cast<interval_type&>(key_value<Type>(left_))
         = hull(key_value<Type>(left_), right_interval);
 }
 
 template<class Type>
-inline typename Type::iterator 
-    join_on_left(Type& object, typename Type::iterator& left_, 
+inline typename Type::iterator
+    join_on_left(Type& object, typename Type::iterator& left_,
                                typename Type::iterator& right_)
 {
     //CL typedef typename Type::interval_type interval_type;
@@ -256,8 +256,8 @@ inline typename Type::iterator
 }
 
 template<class Type>
-inline typename Type::iterator 
-    join_on_right(Type& object, typename Type::iterator& left_, 
+inline typename Type::iterator
+    join_on_right(Type& object, typename Type::iterator& left_,
                                 typename Type::iterator& right_)
 {
     //CL typedef typename Type::interval_type interval_type;
@@ -280,8 +280,8 @@ typename Type::iterator join_left(Type& object, typename Type::iterator& it_)
 
     // there is a predecessor
     iterator pred_ = it_;
-    if(joinable(object, --pred_, it_)) 
-        return join_on_right(object, pred_, it_); 
+    if(joinable(object, --pred_, it_))
+        return join_on_right(object, pred_, it_);
 
     return it_;
 }
@@ -297,7 +297,7 @@ typename Type::iterator join_right(Type& object, typename Type::iterator& it_)
     // there is a successor
     iterator succ_ = it_;
 
-    if(++succ_ != object.end() && joinable(object, it_, succ_)) 
+    if(++succ_ != object.end() && joinable(object, it_, succ_))
         return join_on_left(object, it_, succ_);
 
     return it_;
@@ -306,12 +306,12 @@ typename Type::iterator join_right(Type& object, typename Type::iterator& it_)
 template<class Type>
 typename Type::iterator join_neighbours(Type& object, typename Type::iterator& it_)
 {
-           join_left (object, it_); 
+           join_left (object, it_);
     return join_right(object, it_);
 }
 
 template<class Type>
-inline typename Type::iterator 
+inline typename Type::iterator
     join_under(Type& object, const typename Type::value_type& addend)
 {
     //ASSERT: There is at least one interval in object that overlaps with addend
@@ -331,13 +331,13 @@ inline typename Type::iterator
 
     object.erase(second_, end_);
 
-    const_cast<value_type&>(key_value<Type>(first_)) 
+    const_cast<value_type&>(key_value<Type>(first_))
         = hull(hull(left_resid, addend), right_resid);
     return first_;
 }
 
 template<class Type>
-inline typename Type::iterator 
+inline typename Type::iterator
     join_under(Type& object, const typename Type::value_type& addend,
                                    typename Type::iterator last_)
 {
@@ -355,7 +355,7 @@ inline typename Type::iterator
 
     object.erase(second_, end_);
 
-    const_cast<value_type&>(key_value<Type>(first_)) 
+    const_cast<value_type&>(key_value<Type>(first_))
         = hull(hull(left_resid, addend), right_resid);
     return first_;
 }
@@ -463,7 +463,7 @@ struct on_style<Type, interval_combine::splitting>
 
 
 template<class Type>
-void add_front(Type& object, const typename Type::interval_type& inter_val, 
+void add_front(Type& object, const typename Type::interval_type& inter_val,
                                    typename Type::iterator&      first_)
 {
     typedef typename Type::interval_type interval_type;
@@ -479,7 +479,7 @@ void add_front(Type& object, const typename Type::interval_type& inter_val,
     {   //            [------------ . . .
         // [left_resid---first_ --- . . .
         iterator prior_ = cyclic_prior(object, first_);
-        const_cast<interval_type&>(key_value<Type>(first_)) 
+        const_cast<interval_type&>(key_value<Type>(first_))
             = left_subtract(key_value<Type>(first_), left_resid);
         //NOTE: Only splitting
         object._insert(prior_, icl::make_value<Type>(left_resid, co_value<Type>(first_)));
@@ -492,7 +492,7 @@ void add_front(Type& object, const typename Type::interval_type& inter_val,
 
 
 template<class Type>
-void add_segment(Type& object, const typename Type::interval_type& inter_val, 
+void add_segment(Type& object, const typename Type::interval_type& inter_val,
                                      typename Type::iterator&      it_      )
 {
     typedef typename Type::interval_type interval_type;
@@ -509,7 +509,7 @@ void add_segment(Type& object, const typename Type::interval_type& inter_val,
 
 
 template<class Type>
-void add_main(Type& object, typename Type::interval_type& rest_interval, 
+void add_main(Type& object, typename Type::interval_type& rest_interval,
                             typename Type::iterator&      it_,
                       const typename Type::iterator&      last_)
 {
@@ -526,7 +526,7 @@ void add_main(Type& object, typename Type::interval_type& rest_interval,
 
 
 template<class Type>
-void add_rear(Type& object, const typename Type::interval_type& inter_val, 
+void add_rear(Type& object, const typename Type::interval_type& inter_val,
                                   typename Type::iterator&      it_      )
 {
     typedef typename Type::interval_type interval_type;
@@ -540,7 +540,7 @@ void add_rear(Type& object, const typename Type::interval_type& inter_val,
         //          [lead_gap--- . . .
         // [prior_)          [-- it_ ...
         object._insert(prior_, lead_gap);
-    
+
     interval_type end_gap = left_subtract(inter_val, cur_itv);
     if(!icl::is_empty(end_gap))
         // [---------------end_gap)
@@ -566,14 +566,14 @@ void add_rear(Type& object, const typename Type::interval_type& inter_val,
 //= Addition
 //==============================================================================
 template<class Type>
-typename Type::iterator 
+typename Type::iterator
     add(Type& object, const typename Type::value_type& addend)
 {
     //CL typedef typename Type::interval_type interval_type;
     typedef typename Type::iterator      iterator;
     typedef typename on_style<Type, Type::fineness>::type on_style_;
 
-    if(icl::is_empty(addend)) 
+    if(icl::is_empty(addend))
         return object.end();
 
     std::pair<iterator,bool> insertion = object._insert(addend);
@@ -586,15 +586,15 @@ typename Type::iterator
 
 
 template<class Type>
-typename Type::iterator 
-    add(Type& object, typename Type::iterator    prior_, 
+typename Type::iterator
+    add(Type& object, typename Type::iterator    prior_,
                 const typename Type::value_type& addend)
 {
     //CL typedef typename Type::interval_type interval_type;
     typedef typename Type::iterator      iterator;
     typedef typename on_style<Type, Type::fineness>::type on_style_;
 
-    if(icl::is_empty(addend)) 
+    if(icl::is_empty(addend))
         return prior_;
 
     iterator insertion = object._insert(prior_, addend);
@@ -626,7 +626,7 @@ void subtract(Type& object, const typename Type::value_type& minuend)
     iterator last_  = end_; --last_;
 
     interval_type leftResid = right_subtract(*first_, minuend);
-    interval_type rightResid; 
+    interval_type rightResid;
     if(first_ != end_  )
         rightResid = left_subtract(*last_ , minuend);
 
@@ -644,5 +644,5 @@ void subtract(Type& object, const typename Type::value_type& minuend)
 
 }} // namespace icl boost
 
-#endif 
+#endif
 

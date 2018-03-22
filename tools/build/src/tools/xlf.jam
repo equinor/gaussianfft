@@ -6,7 +6,7 @@
 
 #
 # toolset configuration for the IBM Fortran compiler (xlf)
-# 
+#
 
 import toolset : flags ;
 import feature ;
@@ -33,7 +33,7 @@ rule compile-fortran
 
 actions compile-fortran
 {
-  xlf $(OPTIONS) -I$(INCLUDES) -c -o "$(<)" "$(>)" 
+  xlf $(OPTIONS) -I$(INCLUDES) -c -o "$(<)" "$(>)"
 }
 
-generators.register-fortran-compiler xlf.compile-fortran : FORTRAN : OBJ ; 
+generators.register-fortran-compiler xlf.compile-fortran : FORTRAN : OBJ ;

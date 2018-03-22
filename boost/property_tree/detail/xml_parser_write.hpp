@@ -2,8 +2,8 @@
 // Copyright (C) 2002-2006 Marcin Kalicinski
 // Copyright (C) 2013 Sebastian Redl
 //
-// Distributed under the Boost Software License, Version 1.0. 
-// (See accompanying file LICENSE_1_0.txt or copy at 
+// Distributed under the Boost Software License, Version 1.0.
+// (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 //
 // For more information, see www.boost.org
@@ -49,7 +49,7 @@ namespace boost { namespace property_tree { namespace xml_parser
     template<class Str>
     void write_xml_text(std::basic_ostream<typename Str::value_type> &stream,
                         const Str &s,
-                        int indent, 
+                        int indent,
                         bool separate_line,
                         const xml_writer_settings<Str> & settings
                         )
@@ -96,7 +96,7 @@ namespace boost { namespace property_tree { namespace xml_parser
             if (indent >= 0)
             {
                 write_xml_indent(stream,indent,settings);
-                stream << Ch('<') << key << 
+                stream << Ch('<') << key <<
                           Ch('/') << Ch('>');
                 if (want_pretty)
                     stream << Ch('\n');
@@ -176,7 +176,7 @@ namespace boost { namespace property_tree { namespace xml_parser
     }
 
     template<class Ptree>
-    void write_xml_internal(std::basic_ostream<typename Ptree::key_type::value_type> &stream, 
+    void write_xml_internal(std::basic_ostream<typename Ptree::key_type::value_type> &stream,
                             const Ptree &pt,
                             const std::string &filename,
                             const xml_writer_settings<typename Ptree::key_type> & settings)

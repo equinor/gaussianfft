@@ -85,7 +85,7 @@ struct multi_is_empty
                 Policy, true // allow empty range
             >::apply(boost::begin(multigeometry), boost::end(multigeometry));
     }
-    
+
 };
 
 }} // namespace detail::is_empty

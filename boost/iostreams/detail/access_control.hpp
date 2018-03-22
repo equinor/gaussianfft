@@ -6,7 +6,7 @@
 // See http://www.boost.org/libs/iostreams for documentation.
 
 // Contains the definition of the class template access_control, which
-// allows the type of inheritance from a provided base class to be specified 
+// allows the type of inheritance from a provided base class to be specified
 // using a template parameter.
 
 
@@ -15,7 +15,7 @@
 
 #if defined(_MSC_VER)
 # pragma once
-#endif              
+#endif
 
 #include <boost/iostreams/detail/select.hpp>
 #include <boost/mpl/identity.hpp>
@@ -31,14 +31,14 @@ namespace detail {
 
     // Implements protected inheritance.
     template<typename U>
-    struct prot_ : protected U 
-    { 
+    struct prot_ : protected U
+    {
         prot_() { }
         template<typename V> prot_(V v) : U(v) { }
     };
 
     // Implements public inheritance.
-    template<typename U> struct pub_ : public U { 
+    template<typename U> struct pub_ : public U {
         pub_() { }
         template<typename V> pub_(V v) : U(v) { }
     };
@@ -49,7 +49,7 @@ namespace detail {
 template<typename T, typename Access>
 struct access_control_base {
     typedef int                                 bad_access_specifier;
-    typedef typename 
+    typedef typename
             iostreams::select<  // Disambiguation for Tru64
                 ::boost::is_same<
                     Access, protected_
@@ -69,13 +69,13 @@ struct access_control_base {
 //      to be specified using an int template parameter.
 // Template parameters:
 //      Base - The class from which to inherit (indirectly.)
-//      Access - The type of access desired. Must be one of the 
+//      Access - The type of access desired. Must be one of the
 //          values access_base::prot or access_base::pub.
 //
 template< typename T, typename Access,
           typename Base = // VC6 workaraound (Compiler Error C2516)
               typename detail::access_control_base<T, Access>::type >
-struct access_control : public Base { 
+struct access_control : public Base {
     access_control() { }
     template<typename U> explicit access_control(U u) : Base(u) { }
 };

@@ -13,7 +13,7 @@
 #endif
 
 #include <boost/config.hpp> // BOOST_MSVC.
-#include <boost/detail/workaround.hpp>           
+#include <boost/detail/workaround.hpp>
 #include <boost/iostreams/detail/template_params.hpp>
 #include <boost/iostreams/traits.hpp>
 #include <boost/mpl/bool.hpp>
@@ -44,7 +44,7 @@ namespace boost { namespace iostreams {
 
 template<typename Pipeline, typename Component>
 struct pipeline;
-    
+
 namespace detail {
 
 #if BOOST_WORKAROUND(__BORLANDC__, < 0x600)
@@ -56,11 +56,11 @@ namespace detail {
 #endif
 
 template<typename Component>
-class pipeline_segment 
+class pipeline_segment
 {
 public:
-    pipeline_segment(const Component& component) 
-        : component_(component) 
+    pipeline_segment(const Component& component)
+        : component_(component)
         { }
     template<typename Fn>
     void for_each(Fn fn) const { fn(component_); }
@@ -72,7 +72,7 @@ private:
 };
 
 } // End namespace detail.
-                    
+
 //------------------Definition of Pipeline------------------------------------//
 
 template<typename Pipeline, typename Component>
@@ -90,7 +90,7 @@ struct pipeline : Pipeline {
     }
     template<typename Chain>
     void push(Chain& chn) const
-    { 
+    {
         Pipeline::push(chn);
         chn.push(component_);
     }

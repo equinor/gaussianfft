@@ -14,7 +14,7 @@ template <class Policies>
 class proxy : public object_operators<proxy<Policies> >
 {
     typedef typename Policies::key_type key_type;
-    
+
     typedef proxy const& assignment_self;
  public:
     proxy(object const& target, key_type const& key);
@@ -22,7 +22,7 @@ class proxy : public object_operators<proxy<Policies> >
 
     // to support a[b] = c[d]
     proxy const& operator=(assignment_self) const;
-    
+
     template <class T>
     inline proxy const& operator=(T const& rhs) const
     {
@@ -32,7 +32,7 @@ class proxy : public object_operators<proxy<Policies> >
 
  public: // implementation detail
     void del() const;
-        
+
  private:
     object m_target;
     key_type m_key;
@@ -73,7 +73,7 @@ proxy<Policies> const& operator op(proxy<Policies> const& lhs, R const& rhs)    
 {                                                                               \
     object old(lhs);                                                            \
     return lhs = (old op rhs);                                                  \
-} 
+}
 BOOST_PYTHON_PROXY_INPLACE(+=)
 BOOST_PYTHON_PROXY_INPLACE(-=)
 BOOST_PYTHON_PROXY_INPLACE(*=)

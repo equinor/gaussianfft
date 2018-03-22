@@ -1,4 +1,4 @@
-/*-----------------------------------------------------------------------------+    
+/*-----------------------------------------------------------------------------+
 Copyright (c) 2010-2010: Joachim Faulhaber
 +------------------------------------------------------------------------------+
    Distributed under the Boost Software License, Version 1.0.
@@ -21,9 +21,9 @@ namespace boost{ namespace icl
 template<class Type, class Iterator>
 inline typename enable_if<is_interval_set<Type>, typename Type::codomain_type>::type
 co_value(Iterator value_)
-{ 
+{
     typedef typename Type::codomain_type codomain_type;
-    return icl::is_empty(*value_)? codomain_type() : (*value_).lower(); 
+    return icl::is_empty(*value_)? codomain_type() : (*value_).lower();
 }
 
 }} // namespace boost icl

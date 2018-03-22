@@ -1,4 +1,4 @@
-/* 
+/*
     Copyright 2008 Adobe Systems Incorporated
 
    Distributed under the Boost Software License, Version 1.0. (See accompanying
@@ -82,7 +82,7 @@ namespace boost { namespace algorithm {
 template <
     typename BidirectionalIterator,  // Iter models BidirectionalIterator
     typename Pred>                   // Pred models UnaryPredicate
-std::pair<BidirectionalIterator, BidirectionalIterator> gather 
+std::pair<BidirectionalIterator, BidirectionalIterator> gather
         ( BidirectionalIterator first, BidirectionalIterator last, BidirectionalIterator pivot, Pred pred )
 {
 //  The first call partitions everything up to (but not including) the pivot element,

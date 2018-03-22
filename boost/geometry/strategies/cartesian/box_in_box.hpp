@@ -120,7 +120,7 @@ struct box_longitude_range
         // min <= max <=> diff >= 0
         calc_t const diff_ed = bed_max - bed_min;
         calc_t const diff_ing = bing_max - bing_min;
-        
+
         // if containing covers the whole globe it contains all
         if (diff_ing >= constants::period())
         {

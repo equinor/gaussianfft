@@ -29,7 +29,7 @@ namespace boost { namespace python { namespace numpy {
  *            bad things happen when Python shuts down.  I think this solution is safe, but I'd
  *            love to get that confirmed.
  */
-class BOOST_NUMPY_DECL matrix : public ndarray 
+class BOOST_NUMPY_DECL matrix : public ndarray
 {
   static object construct(object_cref obj, dtype const & dt, bool copy);
   static object construct(object_cref obj, bool copy);
@@ -74,7 +74,7 @@ struct as_matrix : Base
 
 } // namespace boost::python::numpy
 
-namespace converter 
+namespace converter
 {
 
 NUMPY_OBJECT_MANAGER_TRAITS(numpy::matrix);

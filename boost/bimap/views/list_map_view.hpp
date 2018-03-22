@@ -46,7 +46,7 @@ struct list_map_view_base
         <
             ::boost::bimaps::detail::      map_view_iterator<Tag,BimapType>,
             ::boost::bimaps::detail::const_map_view_iterator<Tag,BimapType>
-            
+
         >,
         ::boost::mpl::na,
         ::boost::mpl::na,
@@ -59,7 +59,7 @@ struct list_map_view_base
         <
             Tag,
             BOOST_DEDUCED_TYPENAME BimapType::relation
-            
+
         >::type
 
     > type;
@@ -96,7 +96,7 @@ class list_map_view
 
     list_map_view & operator=(const list_map_view & v)
     {
-        this->base() = v.base(); 
+        this->base() = v.base();
         return *this;
     }
 

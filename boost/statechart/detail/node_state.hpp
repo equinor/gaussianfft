@@ -62,7 +62,7 @@ class node_state : public node_state_base< Allocator, RttiPolicy >
     node_state( typename RttiPolicy::id_provider_type idProvider ) :
       base_type( idProvider )
     {
-      for ( orthogonal_position_type pos = 0; 
+      for ( orthogonal_position_type pos = 0;
             pos < OrthogonalRegionCount::value; ++pos )
       {
         pInnerStates[ pos ] = 0;

@@ -5,6 +5,9 @@ import platform
 import sys
 from setuptools import Distribution, Extension, find_packages, setup
 
+from distutils.command.register import register as register_orig
+from distutils.command.upload import upload as upload_orig
+
 """ Installation Instructions """
 # Linux:
 #   [Conditional] export MKL_ROOT=/nr/prog/intel/Compiler/mkl
@@ -40,6 +43,26 @@ extension_name = 'nrlib'
 compilation_logs = 'compiles.log'
 
 """**********************"""
+
+
+def _get_code_dir():
+    return os.environ.get('CODE_DIR', '.')
+
+
+def _get_pypirc_file():
+    return os.path.join(_get_code_dir(), '.pypirc')
+
+
+class register(register_orig):
+
+    def _get_rc_file(self):
+        return _get_pypirc_file()
+
+
+class upload(upload_orig):
+
+    def _get_rc_file(self):
+        return _get_pypirc_file()
 
 
 class BinaryDistribution(Distribution):
@@ -298,7 +321,7 @@ boost_module = Extension(
 
 setup(
     name=extension_name,
-    version="1.0b",
+    version="1.1",
     packages=find_packages(),
     ext_modules=[bp_module, boost_module],
     include_package_data=True,
@@ -306,14 +329,18 @@ setup(
     package_data={
         'stage/lib': ['*.so', '*.dll', '*.dylib', '*.a'],
     },
+    cmdclass={
+        'register': register,
+        'upload': upload,
+    },
     zip_safe=False,
     data_files=[
         (
-            'shared/typehints/python{}.{}/nrlib'.format(*sys.version_info[:2]),
+            'share/typehints/python{}.{}/nrlib'.format(*sys.version_info[:2]),
             ['src/stub/nrlib/__init__.pyi'],
         ),
         (
-            'shared/typehints/python{}.{}/nrlib/advanced'.format(*sys.version_info[:2]),
+            'share/typehints/python{}.{}/nrlib/advanced'.format(*sys.version_info[:2]),
             ['src/stub/nrlib/advanced/__init__.pyi']
         )
     ],

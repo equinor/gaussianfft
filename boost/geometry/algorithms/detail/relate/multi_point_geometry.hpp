@@ -165,7 +165,7 @@ struct multi_point_single_geometry
     {
         typedef typename point_type<SingleGeometry>::type point2_type;
         typedef model::box<point2_type> box2_type;
-        
+
         box2_type box2;
         geometry::envelope(single_geometry, box2, strategy.get_envelope_strategy());
         geometry::detail::expand_by_epsilon(box2);
@@ -463,7 +463,7 @@ struct multi_point_multi_geometry
 
         typename Strategy::envelope_strategy_type const
             envelope_strategy = strategy.get_envelope_strategy();
-        
+
         std::size_t count2 = boost::size(multi_geometry);
         std::vector<box_pair_type> boxes(count2);
         for (std::size_t i = 0 ; i < count2 ; ++i)

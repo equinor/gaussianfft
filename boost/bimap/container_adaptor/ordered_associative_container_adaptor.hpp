@@ -39,7 +39,7 @@ template
     class ReverseIterator, class ConstReverseIterator, class KeyType,
     class IteratorToBaseConverter, class IteratorFromBaseConverter,
     class ReverseIteratorFromBaseConverter,
-    class ValueToBaseConverter, class ValueFromBaseConverter, 
+    class ValueToBaseConverter, class ValueFromBaseConverter,
     class KeyToBaseConverter,
     class FunctorsFromDerivedClasses
 >

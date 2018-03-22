@@ -38,7 +38,7 @@ namespace boost
           typedef
             keyword<typename boost::mpl::pop_front<Kw>::type, ResultType>
             rest_parser;
-          
+
           template <class S, class Pos>
           struct apply_unchecked :
             rest_parser::template apply<
@@ -64,7 +64,7 @@ namespace boost
         };
       public:
         typedef keyword type;
-        
+
         template <class S, class Pos>
         struct apply :
           boost::mpl::if_<

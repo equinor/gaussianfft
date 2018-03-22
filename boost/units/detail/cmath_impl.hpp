@@ -1,4 +1,4 @@
-// Boost.Units - A C++ library for zero-overhead dimensional analysis and 
+// Boost.Units - A C++ library for zero-overhead dimensional analysis and
 // unit/quantity manipulation and conversion
 //
 // Copyright (C) 2003-2008 Matthias Christian Schabel
@@ -8,7 +8,7 @@
 // accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef BOOST_UNITS_CMATH_IMPL_HPP 
+#ifndef BOOST_UNITS_CMATH_IMPL_HPP
 #define BOOST_UNITS_CMATH_IMPL_HPP
 
 #include <boost/config.hpp>
@@ -18,42 +18,42 @@ namespace boost {
 namespace units {
 namespace detail {
 
-template<class Y> 
+template<class Y>
 inline bool isgreater BOOST_PREVENT_MACRO_SUBSTITUTION(const Y& v1,const Y& v2)
 {
     if((boost::math::isnan)(v1) || (boost::math::isnan)(v2)) return false;
     else return v1 > v2;
 }
 
-template<class Y> 
+template<class Y>
 inline bool isgreaterequal BOOST_PREVENT_MACRO_SUBSTITUTION(const Y& v1,const Y& v2)
 {
     if((boost::math::isnan)(v1) || (boost::math::isnan)(v2)) return false;
     else return v1 >= v2;
 }
 
-template<class Y> 
+template<class Y>
 inline bool isless BOOST_PREVENT_MACRO_SUBSTITUTION(const Y& v1,const Y& v2)
 {
     if((boost::math::isnan)(v1) || (boost::math::isnan)(v2)) return false;
     else return v1 < v2;
 }
 
-template<class Y> 
+template<class Y>
 inline bool islessequal BOOST_PREVENT_MACRO_SUBSTITUTION(const Y& v1,const Y& v2)
 {
     if((boost::math::isnan)(v1) || (boost::math::isnan)(v2)) return false;
     else return v1 <= v2;
 }
 
-template<class Y> 
+template<class Y>
 inline bool islessgreater BOOST_PREVENT_MACRO_SUBSTITUTION(const Y& v1,const Y& v2)
 {
     if((boost::math::isnan)(v1) || (boost::math::isnan)(v2)) return false;
     else return v1 < v2 || v1 > v2;
 }
 
-template<class Y> 
+template<class Y>
 inline bool isunordered BOOST_PREVENT_MACRO_SUBSTITUTION(const Y& v1,const Y& v2)
 {
     return (boost::math::isnan)(v1) || (boost::math::isnan)(v2);

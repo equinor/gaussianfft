@@ -1,4 +1,4 @@
-/* 
+/*
    Copyright (c) Marshall Clow 2008-2012.
 
    Distributed under the Boost Software License, Version 1.0. (See accompanying
@@ -16,11 +16,11 @@
 
 namespace boost { namespace algorithm {
 
-/// \fn mismatch ( InputIterator1 first1, InputIterator1 last1, 
+/// \fn mismatch ( InputIterator1 first1, InputIterator1 last1,
 ///                InputIterator2 first2, InputIterator2 last2,
 ///                BinaryPredicate pred )
 /// \return a pair of iterators pointing to the first elements in the sequence that do not match
-/// 
+///
 /// \param first1    The start of the first range.
 /// \param last1     One past the end of the first range.
 /// \param first2    The start of the second range.
@@ -38,10 +38,10 @@ std::pair<InputIterator1, InputIterator2> mismatch (
     return std::pair<InputIterator1, InputIterator2>(first1, first2);
 }
 
-/// \fn mismatch ( InputIterator1 first1, InputIterator1 last1, 
+/// \fn mismatch ( InputIterator1 first1, InputIterator1 last1,
 ///                InputIterator2 first2, InputIterator2 last2 )
 /// \return a pair of iterators pointing to the first elements in the sequence that do not match
-/// 
+///
 /// \param first1    The start of the first range.
 /// \param last1     One past the end of the first range.
 /// \param first2    The start of the second range.

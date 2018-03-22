@@ -48,7 +48,7 @@ inline BOOST_MATH_CONSTEXPR int digits(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(T)
    BOOST_ASSERT(::std::numeric_limits<T>::is_specialized);
    BOOST_ASSERT(::std::numeric_limits<T>::radix == 2 || ::std::numeric_limits<T>::radix == 10);
 #endif
-   return std::numeric_limits<T>::radix == 2 
+   return std::numeric_limits<T>::radix == 2
       ? std::numeric_limits<T>::digits
       : ((std::numeric_limits<T>::digits + 1) * 1000L) / 301L;
 }

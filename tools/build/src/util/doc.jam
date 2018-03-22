@@ -45,8 +45,8 @@ help-output-file = help ;
 #
 .option.debug ?= ;
 
-# These are all the options available for enabling or disabling to control the 
-# help system in various ways. Options can be enabled or disabled with 
+# These are all the options available for enabling or disabling to control the
+# help system in various ways. Options can be enabled or disabled with
 # '--help-enable-<option>', and '--help-disable-<option>' respectively.
 #
 .option-description = Help Options ;
@@ -367,7 +367,7 @@ local rule print-help-usage ( )
 }
 
 # Generates description of options controlling the help system. This
-# automatically reads the options as all variables in the module given 
+# automatically reads the options as all variables in the module given
 # with the name `module-name` of the form  ".option.*".
 #
 local rule print-help-options (

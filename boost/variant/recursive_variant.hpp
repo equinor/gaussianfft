@@ -117,18 +117,18 @@ struct substitute<
     >
 {
 #if !defined(BOOST_VARIANT_DO_NOT_USE_VARIADIC_TEMPLATES)
-    
+
     typedef ::boost::variant<
-        typename enable_recursive<   
-              T0              
-            , RecursiveVariant               
-            , mpl::true_                     
+        typename enable_recursive<
+              T0
+            , RecursiveVariant
+            , mpl::true_
         >::type,
-        typename enable_recursive<   
-              TN              
-            , RecursiveVariant               
-            , mpl::true_                     
-        >::type...  
+        typename enable_recursive<
+              TN
+            , RecursiveVariant
+            , mpl::true_
+        >::type...
     > type;
 
 #else // defined(BOOST_VARIANT_DO_NOT_USE_VARIADIC_TEMPLATES)

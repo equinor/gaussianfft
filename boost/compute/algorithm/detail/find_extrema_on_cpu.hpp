@@ -109,7 +109,7 @@ inline InputIterator find_extrema_on_cpu(InputIterator first,
     kernel.set_arg(output_arg, output);
     kernel.set_arg(output_idx_arg, output_idx);
     queue.enqueue_1d_range_kernel(kernel, 0, global_work_size, 0);
-    
+
     buffer_iterator<input_type> result = serial_find_extrema(
         make_buffer_iterator<input_type>(output),
         make_buffer_iterator<input_type>(output, global_work_size),

@@ -97,7 +97,7 @@ struct shuffled_distribution : BaseDistribution
         ar & serialization::make_nvp("base", base());
     }
 
-    void clear() 
+    void clear()
     {
         base().clear();
     }

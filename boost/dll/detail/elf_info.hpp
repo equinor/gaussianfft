@@ -112,7 +112,7 @@ class elf_info: public x_info_interface {
 
 public:
     static bool parsing_supported(boost::filesystem::ifstream& f) {
-        const unsigned char magic_bytes[5] = { 
+        const unsigned char magic_bytes[5] = {
             0x7f, 'E', 'L', 'F', sizeof(boost::uint32_t) == sizeof(AddressOffsetT) ? 1 : 2
         };
 
@@ -136,7 +136,7 @@ public:
         std::vector<std::string> ret;
         std::vector<char> names;
         sections_names_raw(names);
-        
+
         const char* name_begin = &names[0];
         const char* const name_end = name_begin + names.size();
         ret.reserve(header().e_shnum);
@@ -230,7 +230,7 @@ public:
 
     std::vector<std::string> symbols(const char* section_name) {
         std::vector<std::string> ret;
-        
+
         std::size_t index = 0;
         std::size_t ptrs_in_section_count = 0;
         {
@@ -243,7 +243,7 @@ public:
                 section_t section;
                 f_.seekg(elf.e_shoff + index * sizeof(section_t));
                 read_raw(section);
-            
+
                 if (!std::strcmp(&names[0] + section.sh_name, section_name)) {
                     if (!section.sh_entsize) {
                         section.sh_entsize = 1;
@@ -251,13 +251,13 @@ public:
                     ptrs_in_section_count = static_cast<std::size_t>(section.sh_size / section.sh_entsize);
                     break;
                 }
-            }                        
+            }
         }
 
         std::vector<symbol_t> symbols;
         std::vector<char>   text;
         symbols_text(symbols, text);
-    
+
         if (ptrs_in_section_count < symbols.size()) {
             ret.reserve(ptrs_in_section_count);
         } else {

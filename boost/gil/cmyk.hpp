@@ -1,6 +1,6 @@
 /*
     Copyright 2005-2007 Adobe Systems Incorporated
-   
+
     Use, modification and distribution are subject to the Boost Software License,
     Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
     http://www.boost.org/LICENSE_1_0.txt).
@@ -34,13 +34,13 @@ namespace boost { namespace gil {
 /// \{
 
 /// \brief Cyan
-struct cyan_t {};    
+struct cyan_t {};
 
 /// \brief Magenta
 struct magenta_t {};
 
 /// \brief Yellow
-struct yellow_t {}; 
+struct yellow_t {};
 
 /// \brief Black
 struct black_t {};

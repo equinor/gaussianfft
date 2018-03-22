@@ -269,6 +269,6 @@ private:
 };
 
 }}
-   //  namespace 
+   //  namespace
 
 #endif

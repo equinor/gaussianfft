@@ -20,8 +20,8 @@
 
 // Elliptic integral the Jacobi Zeta function.
 
-namespace boost { namespace math { 
-   
+namespace boost { namespace math {
+
 namespace detail{
 
 // Elliptic integral - Jacobi Zeta

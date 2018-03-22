@@ -5,7 +5,7 @@
 #ifndef MAP_ENTRY_DWA2002118_HPP
 # define MAP_ENTRY_DWA2002118_HPP
 
-namespace boost { namespace python { namespace detail { 
+namespace boost { namespace python { namespace detail {
 
 // A trivial type that works well as the value_type of associative
 // vector maps
@@ -15,12 +15,12 @@ struct map_entry
     map_entry() {}
     map_entry(Key k) : key(k), value() {}
     map_entry(Key k, Value v) : key(k), value(v) {}
-    
+
     bool operator<(map_entry const& rhs) const
     {
         return this->key < rhs.key;
     }
-        
+
     Key key;
     Value value;
 };

@@ -800,7 +800,7 @@ local rule configure ( version ? : cmd-or-prefix ? : includes * : libraries ? :
         debug-message Python headers and libraries not found. ;
         return ;
     }
-    
+
     .configured = true ;
 
     if ! $(interpreter-cmd)
@@ -850,7 +850,7 @@ local rule configure ( version ? : cmd-or-prefix ? : includes * : libraries ? :
     #
     # End autoconfiguration sequence.
     #
-    
+
     # Normalize and dissect any version number.
     local major-minor ;
     if $(version)
@@ -858,8 +858,8 @@ local rule configure ( version ? : cmd-or-prefix ? : includes * : libraries ? :
         major-minor = [ split-version $(version) ] ;
         version = $(major-minor:J=.) ;
     }
-    
-    
+
+
     local target-requirements = $(condition) ;
 
     # Add the version, if any, to the target requirements.
@@ -1040,7 +1040,7 @@ local rule configure ( version ? : cmd-or-prefix ? : includes * : libraries ? :
             : $(usage-requirements)
             ;
     }
-    
+
 }
 
 # Conditional rule specification that will prevent building of a target

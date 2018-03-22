@@ -1,4 +1,4 @@
-// $Id: trend.cpp 1744 2018-02-01 12:51:14Z aarnes $
+// $Id: trend.cpp 1760 2018-03-01 09:34:42Z aarnes $
 #include "trend.hpp"
 #include "trendkit.hpp"
 #include "../exception/exception.hpp"
@@ -356,7 +356,7 @@ double
 Trend1D::GetMeanValue(void) const
 {
   assert (trend_.size() > 0);
-  double mean = trend_[0];
+  double mean = 0.0;
   for (size_t i = 1; i < trend_.size(); i++)
     mean +=trend_[i];
 
@@ -364,14 +364,10 @@ Trend1D::GetMeanValue(void) const
 }
 
 void
-Trend1D::ScaleToAverage(double factor) {
+Trend1D::ScaleToAverage(double target) {
   //normalize trend to have expectation = factor.
-  double sum_trend = 0.0;
-  for (size_t i = 0; i < trend_.size(); i++)
-    sum_trend += trend_[i];
-
-  double avg_trend = sum_trend / trend_.size();
-  double scale = factor/avg_trend;
+  double avg_trend = GetMeanValue();
+  double scale = target/avg_trend;
   for (size_t i = 0; i < trend_.size(); i++)
     trend_[i] *= scale;
 }
@@ -673,7 +669,7 @@ double
 Trend2D::GetMeanValue(void) const
 {
   assert (trend_.GetN() > 0);
-  double mean = trend_(0);
+  double mean = 0.0;
   for (size_t i = 0; i < trend_.GetNI(); i++)
     for (size_t j = 0; j < trend_.GetNJ(); j++)
       mean += trend_(i,j);
@@ -682,17 +678,9 @@ Trend2D::GetMeanValue(void) const
 }
 
 void
-Trend2D::ScaleToAverage(double factor) {
-  //normalize trend to have expectation = factor.
-  std::vector<int> dim = GetTrendSize();
-  double sum_trend = 0.0;
-  for (int i = 0; i < dim[0]; i++)
-    for (int j = 0; j < dim[1]; j++)
-      for (int k = 0; k <= dim[2]; k++)
-        sum_trend += GetTrendElement(i, j, k);
-
-  double avg_trend = sum_trend / (dim[0] * dim[1]);
-  double scale     = factor/avg_trend;
+Trend2D::ScaleToAverage(double target) {
+  double avg_trend = GetMeanValue();
+  double scale     = target/avg_trend;
   for (size_t i = 0; i < trend_.GetNI(); i++)
     for (size_t j = 0; j < trend_.GetNJ(); j++)
         trend_(i, j) *= scale;
@@ -912,7 +900,7 @@ double
 Trend3D::GetMeanValue(void) const
 {
   assert (trend_.GetN() > 0);
-  double mean = trend_(0);
+  double mean = 0.0;
   for (size_t i = 0; i < trend_.GetNI(); i++)
     for (size_t j = 0; j < trend_.GetNJ(); j++)
       for (size_t k = 0; k < trend_.GetNK(); k++)
@@ -922,19 +910,10 @@ Trend3D::GetMeanValue(void) const
 }
 
 void
-Trend3D::ScaleToAverage(double factor) {
+Trend3D::ScaleToAverage(double target) {
   //normalize trend to have expectation = factor.
-  std::vector<int> dim = GetTrendSize();
-  double sum_trend = 0.0;
-  for (int i = 0; i < dim[0]; i++) {
-    for (int j = 0; j < dim[1]; j++) {
-      for (int k = 0; k < dim[2]; k++) {
-        sum_trend += GetTrendElement(i, j, k);
-      }
-    }
-  }
-  double avg_trend = sum_trend / (dim[0] * dim[1] * dim[2]);
-  double scale     = factor / avg_trend;
+  double avg_trend = GetMeanValue();
+  double scale     = target / avg_trend;
   double debug_sum = 0.0;
   for (size_t i = 0; i < trend_.GetNI(); i++) {
     for (size_t j = 0; j < trend_.GetNJ(); j++) {

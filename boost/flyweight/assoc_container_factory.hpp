@@ -55,7 +55,7 @@ public:
   typedef typename detail::nested_value_type_if_not_placeholder_expression<
     Container
   >::type                                entry_type;
-  
+
   handle_type insert(const entry_type& x)
   {
     return cont.insert(x).first;

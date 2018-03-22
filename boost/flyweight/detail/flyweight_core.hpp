@@ -55,7 +55,7 @@ private:
   >                                   core;
   typedef typename core::handle_type  handle_type;
   typedef typename core::entry_type   entry_type;
-  
+
 public:
   static const entry_type& entry(const handle_type& h)
   {

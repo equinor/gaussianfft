@@ -121,7 +121,7 @@ public:
     {
         return f_(a1, a2, a3);
     }
-    
+
 #if !defined(BOOST_NO_FUNCTION_TEMPLATE_ORDERING) \
  && !BOOST_WORKAROUND(__EDG_VERSION__, <= 238)
 
@@ -134,7 +134,7 @@ public:
     {
         return f_(a1, a2, a3);
     }
-    
+
 #endif
 
     template<class A1, class A2, class A3, class A4> result_type operator()(A1 & a1, A2 & a2, A3 & a3, A4 & a4)
@@ -146,7 +146,7 @@ public:
     {
         return f_(a1, a2, a3, a4);
     }
-    
+
 #if !defined(BOOST_NO_FUNCTION_TEMPLATE_ORDERING) \
  && !BOOST_WORKAROUND(__EDG_VERSION__, <= 238)
 
@@ -171,7 +171,7 @@ public:
     {
         return f_(a1, a2, a3, a4, a5);
     }
-    
+
 #if !defined(BOOST_NO_FUNCTION_TEMPLATE_ORDERING) \
  && !BOOST_WORKAROUND(__EDG_VERSION__, <= 238)
 
@@ -196,7 +196,7 @@ public:
     {
         return f_(a1, a2, a3, a4, a5, a6);
     }
-    
+
 #if !defined(BOOST_NO_FUNCTION_TEMPLATE_ORDERING) \
  && !BOOST_WORKAROUND(__EDG_VERSION__, <= 238)
 
@@ -221,7 +221,7 @@ public:
     {
         return f_(a1, a2, a3, a4, a5, a6, a7);
     }
-    
+
 #if !defined(BOOST_NO_FUNCTION_TEMPLATE_ORDERING) \
  && !BOOST_WORKAROUND(__EDG_VERSION__, <= 238)
 
@@ -246,7 +246,7 @@ public:
     {
         return f_(a1, a2, a3, a4, a5, a6, a7, a8);
     }
-    
+
 #if !defined(BOOST_NO_FUNCTION_TEMPLATE_ORDERING) \
  && !BOOST_WORKAROUND(__EDG_VERSION__, <= 238)
 
@@ -271,7 +271,7 @@ public:
     {
         return f_(a1, a2, a3, a4, a5, a6, a7, a8, a9);
     }
-    
+
 #if !defined(BOOST_NO_FUNCTION_TEMPLATE_ORDERING) \
  && !BOOST_WORKAROUND(__EDG_VERSION__, <= 238)
 

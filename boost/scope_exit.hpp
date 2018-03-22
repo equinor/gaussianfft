@@ -314,7 +314,7 @@ extern boost::scope_exit::detail::undeclared BOOST_SCOPE_EXIT_AUX_ARGS;
             BOOST_SCOPE_EXIT_DETAIL_PARAM_T(BOOST_PP_TUPLE_ELEM(2, 0, id_ty), \
                     i, var) \
     var
- 
+
 #define BOOST_SCOPE_EXIT_AUX_ARG(r, id, i, var) \
     BOOST_PP_COMMA_IF(i) \
     boost_se_params_->BOOST_SCOPE_EXIT_DETAIL_PARAM(id, i, var).value
@@ -390,7 +390,7 @@ struct encode_counter {
 };
 
 #else // compile-time constant code
-    
+
 template<int N> struct encode_counter : encode_counter<N - 1> {};
 
 template<> struct encode_counter<0> {};
@@ -720,7 +720,7 @@ private:
 };
 
 } } } // namespace
-    
+
 #define BOOST_SCOPE_EXIT_AUX_LAMBDA_PARAMS(id) \
     BOOST_PP_CAT(boost_se_lambda_params_, id)
 

@@ -21,7 +21,7 @@ namespace boost
       struct if_
       {
         typedef if_ type;
-        
+
         template <class S, class Pos>
         struct apply :
           accept<

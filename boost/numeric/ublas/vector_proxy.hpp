@@ -23,9 +23,9 @@ namespace boost { namespace numeric { namespace ublas {
 
     /** \brief A vector referencing a continuous subvector of elements of vector \c v containing all elements specified by \c range.
      *
-     * A vector range can be used as a normal vector in any expression. 
+     * A vector range can be used as a normal vector in any expression.
      * If the specified range falls outside that of the index range of the vector, then
-     * the \c vector_range is not a well formed \i Vector \i Expression and access to an 
+     * the \c vector_range is not a well formed \i Vector \i Expression and access to an
      * element outside of index range of the vector is \b undefined.
      *
      * \tparam V the type of vector referenced (for example \c vector<double>)
@@ -532,7 +532,7 @@ namespace boost { namespace numeric { namespace ublas {
     // -------------------
     // Generic Projections
     // -------------------
-    
+
     /** \brief Return a \c const \c vector_range on a specified vector and \c range
      * Return a \c const \c vector_range on a specified vector and \c range. The resulting \c vector_range can be manipulated like a normal vector.
      * If the specified range falls outside that of of the index range of the vector, then the resulting \c vector_range is not a well formed
@@ -591,10 +591,10 @@ namespace boost { namespace numeric { namespace ublas {
      *
      * A vector slice can be used as a normal vector in any expression.
      * If the specified slice falls outside that of the index slice of the vector, then
-     * the \c vector_slice is not a well formed \i Vector \i Expression and access to an 
+     * the \c vector_slice is not a well formed \i Vector \i Expression and access to an
      * element outside of index slice of the vector is \b undefined.
      *
-     * A slice is a generalization of a range. In a range going from \f$a\f$ to \f$b\f$, 
+     * A slice is a generalization of a range. In a range going from \f$a\f$ to \f$b\f$,
      * all elements belong to the range. In a slice, a \i \f$step\f$ can be specified meaning to
      * take one element over \f$step\f$ in the range specified from \f$a\f$ to \f$b\f$.
      * Obviously, a slice with a \f$step\f$ of 1 is equivalent to a range.
@@ -1144,7 +1144,7 @@ namespace boost { namespace numeric { namespace ublas {
     /** \brief A vector referencing a non continuous subvector of elements given another vector of indices.
      *
      * It is the most general version of any subvectors because it uses another vector of indices to reference
-     * the subvector. 
+     * the subvector.
      *
      * The vector of indices can be of any type with the restriction that its elements must be
      * type-compatible with the size_type \c of the container. In practice, the following are good candidates:
@@ -1153,8 +1153,8 @@ namespace boost { namespace numeric { namespace ublas {
      * - \c boost::numeric::ublas::vector<int> can work too (\c int can be replaced by another integer type)
      * - etc...
      *
-     * An indirect vector can be used as a normal vector in any expression. If the specified indirect vector 
-     * falls outside that of the indices of the vector, then the \c vector_indirect is not a well formed 
+     * An indirect vector can be used as a normal vector in any expression. If the specified indirect vector
+     * falls outside that of the indices of the vector, then the \c vector_indirect is not a well formed
      * \i Vector \i Expression and access to an element outside of indices of the vector is \b undefined.
      *
      * \tparam V the type of vector referenced (for example \c vector<double>)

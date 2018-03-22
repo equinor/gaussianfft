@@ -18,7 +18,7 @@
 #include <boost/vmd/detail/empty_result.hpp>
 #include <boost/vmd/detail/mods.hpp>
 #include <boost/vmd/detail/parens.hpp>
-  
+
 #define BOOST_VMD_DETAIL_TUPLE_BST_CS(vseq) \
     BOOST_PP_EQUAL(BOOST_PP_TUPLE_SIZE(BOOST_VMD_DETAIL_BEGIN_PARENS(vseq)),1) \
 /**/

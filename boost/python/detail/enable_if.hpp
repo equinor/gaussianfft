@@ -10,28 +10,28 @@
 #if !defined(BOOST_NO_SFINAE)
 #  include <boost/utility/enable_if.hpp>
 
-namespace boost { namespace python { namespace detail { 
+namespace boost { namespace python { namespace detail {
 
 template <class C, class T = int>
 struct enable_if_arg
   : enable_if<C,T>
 {};
-             
+
 template <class C, class T = int>
 struct disable_if_arg
   : disable_if<C,T>
 {};
-             
+
 template <class C, class T = void>
 struct enable_if_ret
   : enable_if<C,T>
 {};
-             
+
 template <class C, class T = void>
 struct disable_if_ret
   : disable_if<C,T>
 {};
-             
+
 }}} // namespace boost::python::detail
 
 # endif

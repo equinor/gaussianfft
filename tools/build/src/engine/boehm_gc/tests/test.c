@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 1988, 1989 Hans-J. Boehm, Alan J. Demers
  * Copyright (c) 1991-1994 by Xerox Corporation.  All rights reserved.
  * Copyright (c) 1996 by Silicon Graphics.  All rights reserved.
@@ -106,8 +106,8 @@ int realloc_count = 0;
     }
     return ret;
   }
-# define GC_malloc_explicitly_typed(a,b) GC_amiga_gctest_malloc_explicitly_typed(a,b) 
-# define GC_calloc_explicitly_typed(a,b,c) GC_amiga_gctest_calloc_explicitly_typed(a,b,c) 
+# define GC_malloc_explicitly_typed(a,b) GC_amiga_gctest_malloc_explicitly_typed(a,b)
+# define GC_calloc_explicitly_typed(a,b,c) GC_amiga_gctest_calloc_explicitly_typed(a,b,c)
 
 #else /* !AMIGA_FASTALLOC */
 
@@ -159,7 +159,7 @@ sexpr cons (sexpr x, sexpr y)
     sexpr r;
     int *p;
     int my_extra = extra_count;
-    
+
     stubborn_count++;
     r = (sexpr) GC_MALLOC_STUBBORN(sizeof(struct SEXPR) + my_extra);
     if (r == 0) {
@@ -235,7 +235,7 @@ struct GC_ms_entry * fake_gcj_mark_proc(word * addr,
 sexpr small_cons (sexpr x, sexpr y)
 {
     sexpr r;
-    
+
     collectable_count++;
     r = (sexpr) GC_MALLOC(sizeof(struct SEXPR));
     if (r == 0) {
@@ -250,7 +250,7 @@ sexpr small_cons (sexpr x, sexpr y)
 sexpr small_cons_uncollectable (sexpr x, sexpr y)
 {
     sexpr r;
-    
+
     uncollectable_count++;
     r = (sexpr) GC_MALLOC_UNCOLLECTABLE(sizeof(struct SEXPR));
     if (r == 0) {
@@ -270,7 +270,7 @@ sexpr gcj_cons(sexpr x, sexpr y)
     GC_word * r;
     sexpr result;
     static int count = 0;
-    
+
     r = (GC_word *) GC_GCJ_MALLOC(sizeof(struct SEXPR)
 		   		  + sizeof(struct fake_vtable*),
 				   &gcj_class_struct2);
@@ -484,7 +484,7 @@ void check_marks_int_list(sexpr x)
 
 # define fork_a_thread()
 
-#endif 
+#endif
 
 /* Try to force a to be strangely aligned */
 struct {
@@ -550,7 +550,7 @@ void reverse_test()
     h = (sexpr *)GC_REALLOC((void *)h, 2000 * sizeof(sexpr));
 #   ifdef GC_GCJ_SUPPORT
       h[1999] = gcj_ints(1,200);
-      for (i = 0; i < 51; ++i) 
+      for (i = 0; i < 51; ++i)
         h[1999] = gcj_reverse(h[1999]);
       /* Leave it as the reveresed list for now. */
 #   else
@@ -606,7 +606,7 @@ void reverse_test()
     check_ints(h[1999], 1,200);
 #   ifndef THREADS
 	a = 0;
-#   endif  
+#   endif
     b = c = 0;
 }
 
@@ -677,7 +677,7 @@ int live_indicators_count = 0;
 tn * mktree(int n)
 {
     tn * result = (tn *)GC_MALLOC(sizeof(tn));
-    
+
     collectable_count++;
 #   if defined(MACOS)
 	/* get around static data limitations. */
@@ -699,13 +699,13 @@ tn * mktree(int n)
     result -> rchild = mktree(n-1);
     if (counter++ % 17 == 0 && n >= 2) {
         tn * tmp = result -> lchild -> rchild;
-        
+
         result -> lchild -> rchild = result -> rchild -> lchild;
         result -> rchild -> lchild = tmp;
     }
     if (counter++ % 119 == 0) {
         int my_index;
-        
+
         {
 #	  ifdef PCR
  	    PCR_ThCrSec_EnterSys();
@@ -794,7 +794,7 @@ void * alloc8bytes()
 # else
     void ** my_free_list_ptr;
     void * my_free_list;
-    
+
     my_free_list_ptr = (void **)pthread_getspecific(fl_key);
     if (my_free_list_ptr == 0) {
         uncollectable_count++;
@@ -826,7 +826,7 @@ void * alloc8bytes()
 void alloc_small(int n)
 {
     int i;
-    
+
     for (i = 0; i < n; i += 8) {
         atomic_count++;
         if (alloc8bytes() == 0) {
@@ -853,7 +853,7 @@ void tree_test()
 {
     tn * root;
     int i;
-    
+
     root = mktree(TREE_HEIGHT);
 #   ifndef VERY_SMALL_CONFIG
       alloc_small(5000000);
@@ -905,7 +905,7 @@ void typed_test()
     GC_descr d4 = GC_make_descriptor(bm_huge, 320);
     GC_word * x = (GC_word *)GC_malloc_explicitly_typed(2000, d4);
     int i;
-    
+
 #   ifndef LINT
       (void)GC_make_descriptor(&bm_large, 32);
 #   endif
@@ -984,7 +984,7 @@ void * x;
 void fail_proc1(void * x)
 {
     fail_count++;
-}   
+}
 
 static void uniq(void *p, ...) {
   va_list a;
@@ -1009,7 +1009,7 @@ static void uniq(void *p, ...) {
 
 #ifdef THREADS
 #   define TEST_FAIL_COUNT(n) 1
-#else 
+#else
 #   define TEST_FAIL_COUNT(n) (fail_count >= (n))
 #endif
 
@@ -1022,7 +1022,7 @@ void run_one_test()
     	char *y = (char *)(size_t)fail_proc1;
 #   endif
     DCL_LOCK_STATE;
-    
+
 #   ifdef FIND_LEAK
 	(void)GC_printf(
 		"This test program is not designed for leak detection mode\n");
@@ -1097,7 +1097,7 @@ void run_one_test()
 	  for (i = sizeof(GC_word); i < 512; i *= 2) {
 	    GC_word result = (GC_word) GC_memalign(i, 17);
 	    if (result % i != 0 || result == 0 || *(int *)result != 0) FAIL;
-	  } 
+	  }
 	}
 #     endif
 #     ifndef ALL_INTERIOR_POINTERS
@@ -1173,7 +1173,7 @@ void check_heap_stats()
     int i;
     int still_live;
     int late_finalize_count = 0;
-    
+
 #   ifdef VERY_SMALL_CONFIG
     /* these are something of a guess */
     if (sizeof(char *) > 4) {
@@ -1306,7 +1306,7 @@ void SetMinimumStack(long minSize)
 	int dummy;
 #   endif
     n_tests = 0;
-    
+
 #   if defined(DJGPP)
 	/* No good way to determine stack base from library; do it */
 	/* manually on this platform.				   */

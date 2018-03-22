@@ -240,7 +240,7 @@ BOOST_LOCAL_FUNCTION_AUX_CODE_FUNCTOR_COMMA_MAYBECONST_BIND_PARAM_DECL_( \
 #define BOOST_LOCAL_FUNCTION_AUX_CODE_FUNCTOR_COMMA_BIND_THIS_TYPE_( \
         id, typename01) \
     , BOOST_LOCAL_FUNCTION_AUX_CODE_BIND_THIS_TYPE(id, typename01)
-      
+
 #define BOOST_LOCAL_FUNCTION_AUX_CODE_FUNCTOR_BIND_THIS_PARAM_ \
     bind_this
 
@@ -495,7 +495,7 @@ BOOST_LOCAL_FUNCTION_AUX_CODE_FUNCTOR_STATIC_CALL_COMMA_BIND_PARAM_DECLS_( \
                     const_binds, has_const_bind_this, binds, has_bind_this) \
         ; \
     }
-        
+
 #define BOOST_LOCAL_FUNCTION_AUX_CODE_FUNCTOR_CALL_FOR_DEFAULTS_(z, defaults_n, \
         op_id_typename_decl_params_constbinds_hasconstthis_binds_hasthis) \
     BOOST_PP_EXPAND( \
@@ -527,7 +527,7 @@ BOOST_LOCAL_FUNCTION_AUX_CODE_FUNCTOR_STATIC_CALL_COMMA_BIND_PARAM_DECLS_( \
     ) /* end expand */
 
 // Functor binds.
-            
+
 // Precondition: NO_LOCAL_TYPES_AS_TEMPLATE_PARAMS.
 #define BOOST_LOCAL_FUNCTION_AUX_CODE_FUNCTOR_COMMA_BIND_TYPES_( \
         id, typename01, const_binds, has_const_bind_this, binds, has_bind_this)\
@@ -554,7 +554,7 @@ BOOST_LOCAL_FUNCTION_AUX_CODE_FUNCTOR_STATIC_CALL_COMMA_BIND_PARAM_DECLS_( \
                 BOOST_PP_TUPLE_REM(1) \
             )(BOOST_PP_LIST_SIZE(BOOST_PP_LIST_APPEND(const_binds, binds)))), \
             BOOST_LOCAL_FUNCTION_AUX_CODE_FUNCTOR_COMMA_NOBIND_TYPE_, ~)
-        
+
 #define BOOST_LOCAL_FUNCTION_AUX_CODE_FUNCTOR_BIND_TYPEOF_TYPEDEFS_( \
         id, typename01, const_binds, has_const_bind_this, binds, has_bind_this)\
     /* typeof types -- these types are qualified with extra eventual */ \
@@ -641,7 +641,7 @@ BOOST_LOCAL_FUNCTION_AUX_CODE_FUNCTOR_STATIC_CALL_COMMA_BIND_PARAM_DECLS_( \
             BOOST_LOCAL_FUNCTION_AUX_CODE_FUNCTOR_COMMA_NOBIND_, ~)
 
 // Functor inits.
-        
+
 #define BOOST_LOCAL_FUNCTION_AUX_CODE_FUNCTOR_MEMBER_INITS_(id, typename01, \
         const_binds, has_const_bind_this, binds, has_bind_this) \
     BOOST_PP_EXPR_IIF(BOOST_PP_BITOR(BOOST_PP_BITOR(BOOST_PP_BITOR( \
@@ -861,7 +861,7 @@ BOOST_LOCAL_FUNCTION_AUX_CODE_FUNCTOR_STATIC_CALL_COMMA_BIND_PARAM_DECLS_( \
             ) /* end body function params */ \
             /* cannot be const because recursive functor is non const member */\
     /* user local function definition `{ ... }` will follow here */ \
-    /* `END` macro will close function class decl `};` here */ 
+    /* `END` macro will close function class decl `};` here */
 
 // PUBLIC //
 

@@ -26,12 +26,12 @@ namespace boost { namespace numeric { namespace ublas {
 
     namespace detail {
 
-    
-    
+
+
     }
 
 
-    template < class T, int M, int N > 
+    template < class T, int M, int N >
     struct matrix_view_traits < T[M][N] > {
         typedef T              matrix_type[M][N];
 
@@ -40,11 +40,11 @@ namespace boost { namespace numeric { namespace ublas {
 
         typedef row_major_tag  orientation_category;
         typedef dense_tag      storage_category;
-  
+
         typedef T            value_type;
         typedef const T      &const_reference;
         typedef const T      *const_pointer;
-  
+
         typedef const matrix_reference<const matrix_type>    const_closure_type;
 
         typedef T row_type[N];
@@ -54,17 +54,17 @@ namespace boost { namespace numeric { namespace ublas {
 
     };
 
-    template < class T, int M, int N > 
+    template < class T, int M, int N >
     struct mutable_matrix_traits < T[M][N] > {
         typedef T            matrix_type[M][N];
 
         typedef T            *reference;
-  
+
         typedef matrix_reference<matrix_type>                closure_type;
 
     };
 
-    template < class T, int N  > 
+    template < class T, int N  >
     struct vector_view_traits < T[N] > {
         typedef T              vector_type[N];
 
@@ -72,11 +72,11 @@ namespace boost { namespace numeric { namespace ublas {
         typedef std::ptrdiff_t       difference_type;
 
         typedef dense_tag      storage_category;
-  
+
         typedef T            value_type;
         typedef const T      &const_reference;
         typedef const T      *const_pointer;
-  
+
         typedef const vector_reference<const vector_type>    const_closure_type;
 
         typedef const_pointer const_iterator;
@@ -93,9 +93,9 @@ namespace boost { namespace numeric { namespace ublas {
         }
     };
 
-    template < class T, int N  > 
+    template < class T, int N  >
     struct mutable_vector_traits < T[N] >  {
-  
+
         typedef T &reference;
         typedef T *pointer;
         typedef vector_reference< T[N] > closure_type;

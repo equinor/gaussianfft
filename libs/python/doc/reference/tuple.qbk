@@ -31,7 +31,7 @@ namespace boost { namespace python
   template <class A0, class A1>
   tuple make_tuple(A0 const& a0, A1 const& a1);
   ...
-  template <class A0, class A1,...class An> 
+  template <class A0, class A1,...class An>
   tuple make_tuple(A0 const& a0, A1 const& a1,...An const& an);
 }}
 ``

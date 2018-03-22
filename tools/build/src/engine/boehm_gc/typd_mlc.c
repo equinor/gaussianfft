@@ -122,7 +122,7 @@ signed_word GC_add_ext_descriptor(GC_bitmap bm, word nbits)
     	} else {
     	    new_size = 2 * ed_size;
     	    if (new_size > MAX_ENV) return(-1);
-    	} 
+    	}
     	new = (ext_descr *) GC_malloc_atomic(new_size * sizeof(ext_descr));
     	if (new == 0) return(-1);
         LOCK();
@@ -221,7 +221,7 @@ int GC_make_array_descriptor(size_t nelements, size_t size, GC_descr descriptor,
     } else if (size <= BITMAP_BITS/2
     	       && (descriptor & GC_DS_TAGS) != GC_DS_PROC
     	       && (size & (sizeof(word)-1)) == 0) {
-      int result =      
+      int result =
           GC_make_array_descriptor(nelements/2, 2*size,
       				   GC_double_descr(descriptor,
       				   		   BYTES_TO_WORDS(size)),
@@ -232,7 +232,7 @@ int GC_make_array_descriptor(size_t nelements, size_t size, GC_descr descriptor,
           struct LeafDescriptor * one_element =
               (struct LeafDescriptor *)
         	GC_malloc_atomic(sizeof(struct LeafDescriptor));
-          
+
           if (result == NO_MEM || one_element == 0) return(NO_MEM);
           one_element -> ld_tag = LEAF_TAG;
           one_element -> ld_size = size;
@@ -294,7 +294,7 @@ complex_descriptor * GC_make_sequence_descriptor(complex_descriptor *first,
         	GC_malloc(sizeof(struct SequenceDescriptor));
     /* Can't result in overly conservative marking, since tags are	*/
     /* very small integers. Probably faster than maintaining type	*/
-    /* info.								*/    
+    /* info.								*/
     if (result != 0) {
     	result -> sd_tag = SEQUENCE_TAG;
         result -> sd_first = first;
@@ -310,7 +310,7 @@ complex_descriptor * GC_make_complex_array_descriptor(word nelements,
     struct ComplexArrayDescriptor * result =
         (struct ComplexArrayDescriptor *)
         	GC_malloc(sizeof(struct ComplexArrayDescriptor));
-    
+
     if (result != 0) {
     	result -> ad_tag = ARRAY_TAG;
         result -> ad_nelements = nelements;
@@ -336,7 +336,7 @@ void GC_init_explicit_typing(void)
     register int i;
     DCL_LOCK_STATE;
 
-    
+
     /* Ignore gcc "no effect" warning.	*/
     GC_STATIC_ASSERT(sizeof(struct LeafDescriptor) % sizeof(word) == 0);
     LOCK();
@@ -434,12 +434,12 @@ mse * GC_push_complex_descriptor(word *addr, complex_descriptor *d,
     register word nelements;
     register word sz;
     register word i;
-    
+
     switch(d -> TAG) {
       case LEAF_TAG:
         {
           register GC_descr descr = d -> ld.ld_descriptor;
-          
+
           nelements = d -> ld.ld_nelements;
           if (msl - msp <= (ptrdiff_t)nelements) return(0);
           sz = d -> ld.ld_size;
@@ -454,7 +454,7 @@ mse * GC_push_complex_descriptor(word *addr, complex_descriptor *d,
       case ARRAY_TAG:
         {
           register complex_descriptor *descr = d -> ad.ad_element_descr;
-          
+
           nelements = d -> ad.ad_nelements;
           sz = GC_descr_obj_size(descr);
           for (i = 0; i < nelements; i++) {
@@ -492,7 +492,7 @@ mse * GC_array_mark_proc(word * addr, mse * mark_stack_ptr,
     complex_descriptor * descr = (complex_descriptor *)(addr[nwords-1]);
     mse * orig_mark_stack_ptr = mark_stack_ptr;
     mse * new_mark_stack_ptr;
-    
+
     if (descr == 0) {
     	/* Found a reference to a free list entry.  Ignore it. */
     	return(orig_mark_stack_ptr);
@@ -527,7 +527,7 @@ GC_descr GC_make_descriptor(GC_bitmap bm, size_t len)
     GC_descr result;
     signed_word i;
 #   define HIGH_BIT (((word)1) << (WORDSZ - 1))
-    
+
     if (!GC_explicit_typing_initialized) GC_init_explicit_typing();
     while (last_set_bit >= 0 && !GC_get_bit(bm, last_set_bit)) last_set_bit --;
     if (last_set_bit < 0) return(0 /* no pointers */);
@@ -572,7 +572,7 @@ GC_descr GC_make_descriptor(GC_bitmap bm, size_t len)
 
 #define GENERAL_MALLOC(lb,k) \
     (void *)GC_clear_stack(GC_generic_malloc((word)lb, k))
-    
+
 #define GENERAL_MALLOC_IOP(lb,k) \
     (void *)GC_clear_stack(GC_generic_malloc_ignore_off_page(lb, k))
 
@@ -674,7 +674,7 @@ DCL_LOCK_STATE;
             UNLOCK();
             op = (ptr_t)GENERAL_MALLOC((word)lb, GC_array_kind);
 	    if (0 == op) return(0);
-	    lg = GC_size_map[lb];	/* May have been uninitialized.	*/            
+	    lg = GC_size_map[lb];	/* May have been uninitialized.	*/
         } else {
             *opp = obj_link(op);
 	    obj_link(op) = 0;
@@ -693,7 +693,7 @@ DCL_LOCK_STATE;
                ((word *)op
                 + GRANULES_TO_WORDS(lg)
 		- (BYTES_TO_WORDS(sizeof(struct LeafDescriptor)) + 1));
-                
+
        lp -> ld_tag = LEAF_TAG;
        lp -> ld_size = leaf.ld_size;
        lp -> ld_nelements = leaf.ld_nelements;
@@ -703,7 +703,7 @@ DCL_LOCK_STATE;
        extern unsigned GC_finalization_failures;
        unsigned ff = GC_finalization_failures;
        size_t lw = GRANULES_TO_WORDS(lg);
-       
+
        ((word *)op)[lw - 1] = (word)complex_descr;
        /* Make sure the descriptor is cleared once there is any danger	*/
        /* it may have been collected.					*/
@@ -716,7 +716,7 @@ DCL_LOCK_STATE;
 	   /* This will probably fail too, but gives the recovery code  */
 	   /* a chance.							*/
 	   return(GC_malloc(n*lb));
-       }			          
+       }
    }
    return((void *) op);
 }

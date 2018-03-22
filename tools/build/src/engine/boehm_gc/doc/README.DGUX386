@@ -6,10 +6,10 @@
      You need the GCC-3.0.3 rev (DG/UX) compiler to build this tree.
      This compiler has the new "dgux386" threads package implemented.
      It also supports the switch "-pthread" needed to link correctly
-     the DG/UX's -lrte -lthread with -lgcc and the system's -lc. 
+     the DG/UX's -lrte -lthread with -lgcc and the system's -lc.
      Finally we support parralleli-mark for the SMP DG/UX machines.
      To build the garbage collector do:
-      
+
       ./configure --enable-parallel-mark
       make
       make gctest
@@ -19,19 +19,19 @@
      Alternatively you can do a configuration
 
       ./configure --enable-parallel-mark --disable-shared
-  
+
      to build only the static version of libgc.
-  
+
      To enable debugging messages please do:
-     1) Add the "--enable-full-debug" flag during configuration. 
+     1) Add the "--enable-full-debug" flag during configuration.
      2) Edit the file linux-threads.c and uncommnect the line:
 
-     /* #define DEBUG_THREADS 1 */ to ---> 
+     /* #define DEBUG_THREADS 1 */ to --->
 
      #define DEBUG_THREADS 1
 
      Then give "make" as usual.
-    
+
      In a machine with 4 CPUs (my own machine) the option parallel
      mark (aka --enable-parallel-mark) makes a BIG difference.
 
@@ -68,7 +68,7 @@ Note (HB):
 @@ -718,6 +723,12 @@
      # We can build DLLs from non-PIC.
      ;;
- 
+
 +  dgux*)
 +    pic_flag='-KPIC'
 +    link_static='-Bstatic'
@@ -81,7 +81,7 @@ Note (HB):
 @@ -1154,6 +1165,22 @@
      fi
      ;;
- 
+
 +  dgux*)
 +    ld_shlibs=yes
 +    # For both C/C++ ommit the deplibs. This is because we relying on the fact
@@ -103,7 +103,7 @@ Note (HB):
      # no search path for DLLs.
 @@ -1497,7 +1524,7 @@
      ;;
- 
+
    dgux*)
 -    archive_cmds='$LD -G -h $soname -o $lib $libobjs $deplibs $linkopts'
 +    archive_cmds='$CC -shared -h $soname -o $lib $libobjs $linkopts'
@@ -112,7 +112,7 @@ Note (HB):
      ;;
 @@ -2092,12 +2119,17 @@
    ;;
- 
+
  dgux*)
 -  version_type=linux
 +  version_type=dgux
@@ -129,7 +129,7 @@ Note (HB):
 +  hardcode_shlibpath_var=no
 +  ac_cv_archive_cmds_needs_lc=no
    ;;
- 
+
  sysv4*MP*)
 
 
@@ -138,7 +138,7 @@ Note (HB):
 @@ -1072,11 +1072,38 @@
  	esac
  	;;
- 
+
 +      -thread*)
 +	# DG/UX GCC 2.95.x, 3.x.x rev (DG/UX) links -lthread
 +	# with the switch -threads
@@ -191,7 +191,7 @@ Note (HB):
 @@ -1709,6 +1742,13 @@
  	  done
  	  ;;
- 
+
 +	dgux)
 +	  # Leave mostly blank for DG/UX
 +	  major=
@@ -203,7 +203,7 @@ Note (HB):
  	  major=.`expr $current - $age`
  	  versuffix="$major.$age.$revision"
 @@ -1792,8 +1832,9 @@
- 
+
  	dependency_libs="$deplibs"
  	case "$host" in
 -	*-*-cygwin* | *-*-mingw* | *-*-os2* | *-*-beos*)

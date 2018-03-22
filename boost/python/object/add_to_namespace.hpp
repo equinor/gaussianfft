@@ -7,7 +7,7 @@
 
 # include <boost/python/object_fwd.hpp>
 
-namespace boost { namespace python { namespace objects { 
+namespace boost { namespace python { namespace objects {
 
 //
 // A setattr that's "smart" about function overloading (and docstrings).

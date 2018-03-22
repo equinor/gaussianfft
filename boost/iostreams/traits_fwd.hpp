@@ -12,11 +12,11 @@
 
 #if defined(_MSC_VER)
 # pragma once
-#endif              
+#endif
 
 #include <iosfwd> // stream types, char_traits.
 
-namespace boost { namespace iostreams {      
+namespace boost { namespace iostreams {
 
 template<typename T>
 struct is_istream;

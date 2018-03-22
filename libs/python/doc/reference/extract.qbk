@@ -6,7 +6,7 @@ Exposes a mechanism for extracting C++ object values from generalized Python obj
 `extract<T>` can be used to extract a value of an arbitrary C++ type from an instance of [link object_wrappers.boost_python_object_hpp.class_object object]. Two usages are supported:
 
 # `extract<T>(o)` is a temporary object which is implicitly convertible to `T` (explicit conversion is also available through the object's function-call operator). However, if no conversion is available which can convert o to an object of type `T`, a Python TypeError exception will be raised.
-# `extract<T> x(o);` constructs an extractor whose `check()` member function can be used to ask whether a conversion is available without causing an exception to be thrown. 
+# `extract<T> x(o);` constructs an extractor whose `check()` member function can be used to ask whether a conversion is available without causing an exception to be thrown.
 
 ``
 namespace boost { namespace python
@@ -58,7 +58,7 @@ operator result_type() const;
 #include <cstdio>
 using namespace boost::python;
 int Print(str s)
-{ 
+{
    // extract a C string from the Python string object
    char const* c_str = extract<char const*>(s);
 
@@ -85,8 +85,8 @@ BOOST_PYTHON_MODULE(extract_ext)
        class_<X>("X", init<int>())
           .def("value", &X::value))
           ;
-        
-    // Instantiate an X object through the Python interface. 
+
+    // Instantiate an X object through the Python interface.
     // Its lifetime is now managed by x_obj.
     object x_obj = x_class(3);
 

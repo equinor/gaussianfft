@@ -28,7 +28,7 @@
 
 /** \def BOOST_VMD_TUPLE_POP_FRONT(tuple)
 
-    \brief pops an element from the front of a tuple. 
+    \brief pops an element from the front of a tuple.
 
     tuple = tuple to pop an element from.
 

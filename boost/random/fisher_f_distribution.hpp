@@ -70,7 +70,7 @@ public:
         /** Returns true if the two sets of parameters are the same. */
         BOOST_RANDOM_DETAIL_EQUALITY_OPERATOR(param_type, lhs, rhs)
         { return lhs._m == rhs._m && lhs._n == rhs._n; }
-        
+
         /** Returns true if the two sets of parameters are the different. */
         BOOST_RANDOM_DETAIL_INEQUALITY_OPERATOR(param_type)
 
@@ -165,7 +165,7 @@ public:
      */
     BOOST_RANDOM_DETAIL_EQUALITY_OPERATOR(fisher_f_distribution, lhs, rhs)
     { return lhs._impl_m == rhs._impl_m && lhs._impl_n == rhs._impl_n; }
-    
+
     /**
      * Returns true if the two instances of @c fisher_f_distribution will
      * return different sequences of values given equal generators.

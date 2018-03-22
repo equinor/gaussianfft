@@ -1,6 +1,6 @@
 /*
     Copyright 2005-2007 Adobe Systems Incorporated
-   
+
     Use, modification and distribution are subject to the Boost Software License,
     Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
     http://www.boost.org/LICENSE_1_0.txt).
@@ -31,7 +31,7 @@
 #include <boost/iterator/iterator_facade.hpp>
 
 ////////////////////////////////////////////////////////////////////////////////////////
-/// \file               
+/// \file
 /// \brief  Various utilities not specific to the image library. Some are non-standard STL extensions or generic iterator adaptors
 /// \author Lubomir Bourdev and Hailin Jin \n
 ///         Adobe Systems Incorporated
@@ -169,12 +169,12 @@ inline point2<std::ptrdiff_t> iceil (const point2<double>& p)  { return point2<s
 ///
 ////////////////////////////////////////////////////////////////////////////////////////
 
-template <typename T> 
-inline T align(T val, std::size_t alignment) { 
-    return val+(alignment - val%alignment)%alignment; 
+template <typename T>
+inline T align(T val, std::size_t alignment) {
+    return val+(alignment - val%alignment)%alignment;
 }
 
-/// \brief Helper base class for pixel dereference adaptors. 
+/// \brief Helper base class for pixel dereference adaptors.
 /// \ingroup PixelDereferenceAdaptorModel
 ///
 template <typename ConstT, typename Value, typename Reference, typename ConstReference,
@@ -193,7 +193,7 @@ struct deref_base : public std::unary_function<ArgType, ResultType> {
 template <typename D1, typename D2>
 class deref_compose : public deref_base<
       deref_compose<typename D1::const_t, typename D2::const_t>,
-      typename D1::value_type, typename D1::reference, typename D1::const_reference, 
+      typename D1::value_type, typename D1::reference, typename D1::const_reference,
       typename D2::argument_type, typename D1::result_type, D1::is_mutable && D2::is_mutable>
 {
 public:
@@ -259,7 +259,7 @@ copy_n(InputIter first, Size count, OutputIter result) {
 }
 
 /// \brief identity taken from SGI STL.
-template <typename T> 
+template <typename T>
 struct identity : public std::unary_function<T,T> {
     const T& operator()(const T& val) const { return val; }
 };
@@ -290,11 +290,11 @@ struct dec : public std::unary_function<T,T> {
     T operator()(T x) const { return --x; }
 };
 
-/// \brief Returns the index corresponding to the first occurrance of a given given type in 
+/// \brief Returns the index corresponding to the first occurrance of a given given type in
 //         a given MPL RandomAccessSequence (or size if the type is not present)
 template <typename Types, typename T>
-struct type_to_index 
-    : public mpl::distance<typename mpl::begin<Types>::type, 
+struct type_to_index
+    : public mpl::distance<typename mpl::begin<Types>::type,
                                   typename mpl::find<Types,T>::type>::type {};
 } // namespace detail
 

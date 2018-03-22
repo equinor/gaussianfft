@@ -768,7 +768,7 @@ struct safe_handle_helper
         }
     }
 
-    ~safe_handle_helper() 
+    ~safe_handle_helper()
     {
         close_handle();
     }
@@ -804,7 +804,7 @@ attach_debugger( bool break_or_continue )
 
     if( !dbg_init_done_ev )
         return false;
-        
+
     safe_handle_helper safe_handle_obj( dbg_init_done_ev );
 
     // *************************************************** //
@@ -822,7 +822,7 @@ attach_debugger( bool break_or_continue )
     DWORD format_size = MAX_CMD_LINE;
     DWORD type = REG_SZ;
 
-    bool b_read_key = s_info.m_reg_query_value && 
+    bool b_read_key = s_info.m_reg_query_value &&
           ((*s_info.m_reg_query_value)(
             reg_key,                            // handle of open key
             "Debugger",                         // name of subkey to query
@@ -833,7 +833,7 @@ attach_debugger( bool break_or_continue )
 
     if( !s_info.m_reg_close_key || (*s_info.m_reg_close_key)( reg_key ) != ERROR_SUCCESS )
         return false;
-        
+
     if( !b_read_key )
         return false;
 

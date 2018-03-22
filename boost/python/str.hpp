@@ -34,7 +34,7 @@ namespace detail
       long count(object_cref sub) const;
 
       long count(object_cref sub, object_cref start) const;
-    
+
       long count(object_cref sub, object_cref start, object_cref end) const;
 
 #if PY_VERSION_HEX < 0x03000000
@@ -49,10 +49,10 @@ namespace detail
       object encode(object_cref encoding, object_cref errors) const;
 
       bool endswith(object_cref suffix) const;
-    
+
       bool endswith(object_cref suffix, object_cref start) const;
       bool endswith(object_cref suffix, object_cref start, object_cref end) const;
-    
+
       str expandtabs() const;
       str expandtabs(object_cref tabsize) const;
 
@@ -73,7 +73,7 @@ namespace detail
       bool isspace() const;
       bool istitle() const;
       bool isupper() const;
-    
+
       str join(object_cref sequence) const;
 
       str ljust(object_cref width) const;
@@ -94,14 +94,14 @@ namespace detail
       long rindex(object_cref sub, object_cref start, object_cref end) const;
 
       str rjust(object_cref width) const;
-    
+
       str rstrip() const;
-    
-      list split() const; 
+
+      list split() const;
       list split(object_cref sep) const;
-   
-      list split(object_cref sep, object_cref maxsplit) const; 
-    
+
+      list split(object_cref sep, object_cref maxsplit) const;
+
 
       list splitlines() const;
       list splitlines(object_cref keepends) const;
@@ -115,23 +115,23 @@ namespace detail
       str strip() const;
       str swapcase() const;
       str title() const;
-    
+
       str translate(object_cref table) const;
 
       str translate(object_cref table, object_cref deletechars) const;
 
-    
+
       str upper() const;
 
    protected:
       str_base(); // new str
-    
+
       str_base(const char* s); // new str
 
       str_base(char const* start, char const* finish);
-      
+
       str_base(char const* start, std::size_t length);
-      
+
       explicit str_base(object_cref other);
 
       BOOST_PYTHON_FORWARD_OBJECT_CONSTRUCTORS(str_base, object)
@@ -146,17 +146,17 @@ class str : public detail::str_base
     typedef detail::str_base base;
  public:
     str() {} // new str
-    
+
     str(const char* s) : base(s) {} // new str
-    
+
     str(char const* start, char const* finish) // new str
       : base(start, finish)
     {}
-    
+
     str(char const* start, std::size_t length) // new str
       : base(start, length)
     {}
-    
+
     template <class T>
     explicit str(T const& other)
         : base(object(other))
@@ -189,7 +189,7 @@ class str : public detail::str_base
 
 #if PY_VERSION_HEX < 0x03000000
     object decode() const { return base::decode(); }
-    
+
     template<class T>
     object decode(T const& encoding) const
     {
@@ -234,7 +234,7 @@ class str : public detail::str_base
     {
         return base::endswith(object(suffix), object(start), object(end));
     }
-    
+
     str expandtabs() const { return base::expandtabs(); }
 
     template <class T>
@@ -242,7 +242,7 @@ class str : public detail::str_base
     {
         return base::expandtabs(object(tabsize));
     }
-    
+
     template <class T>
     long find(T const& sub) const
     {
@@ -260,13 +260,13 @@ class str : public detail::str_base
     {
         return base::find(object(sub), object(start), object(end));
     }
-    
+
     template <class T>
     long index(T const& sub) const
     {
         return base::index(object(sub));
     }
-    
+
     template <class T1, class T2>
     long index(T1 const& sub, T2 const& start) const
     {
@@ -284,7 +284,7 @@ class str : public detail::str_base
     {
         return base::join(object(sequence));
     }
-    
+
     template <class T>
     str ljust(T const& width) const
     {
@@ -292,17 +292,17 @@ class str : public detail::str_base
     }
 
     template <class T1, class T2>
-    str replace(T1 const& old, T2 const& new_) const 
+    str replace(T1 const& old, T2 const& new_) const
     {
         return base::replace(object(old),object(new_));
     }
 
     template <class T1, class T2, class T3>
-    str replace(T1 const& old, T2 const& new_, T3 const& maxsplit) const 
+    str replace(T1 const& old, T2 const& new_, T3 const& maxsplit) const
     {
         return base::replace(object(old),object(new_), object(maxsplit));
     }
-    
+
     template <class T>
     long rfind(T const& sub) const
     {
@@ -314,13 +314,13 @@ class str : public detail::str_base
     {
         return base::rfind(object(sub), object(start));
     }
-    
+
     template <class T1, class T2, class T3>
     long rfind(T1 const& sub, T2 const& start, T3 const& end) const
     {
         return base::rfind(object(sub), object(start), object(end));
     }
-    
+
     template <class T>
     long rindex(T const& sub) const
     {
@@ -344,9 +344,9 @@ class str : public detail::str_base
     {
         return base::rjust(object(width));
     }
-    
+
     list split() const { return base::split(); }
-   
+
     template <class T>
     list split(T const& sep) const
     {
@@ -378,7 +378,7 @@ class str : public detail::str_base
     {
         return base::startswith(object(prefix), object(start));
     }
-     
+
     template <class T1, class T2, class T3>
     bool startswith(T1 const& prefix, T2 const& start, T3 const& end) const
     {
@@ -396,7 +396,7 @@ class str : public detail::str_base
     {
         return base::translate(object(table), object(deletechars));
     }
-    
+
  public: // implementation detail -- for internal use only
     BOOST_PYTHON_FORWARD_OBJECT_CONSTRUCTORS(str, base)
 };

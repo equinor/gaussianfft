@@ -5,9 +5,9 @@
 
 // See http://www.boost.org/libs/iostreams for documentation.
 
-// Contains the definition of the class template 
+// Contains the definition of the class template
 // boost::iostreams::detail::double_object, which is similar to compressed pair
-// except that both members of the pair have the same type, and 
+// except that both members of the pair have the same type, and
 // compression occurs only if requested using a boolean template
 // parameter.
 
@@ -16,7 +16,7 @@
 
 #if defined(_MSC_VER)
 # pragma once
-#endif              
+#endif
 
 #include <algorithm>              // swap.
 #include <boost/detail/workaround.hpp>
@@ -71,27 +71,27 @@ public:
     reference second() { return second_; }
     const_reference second() const { return second_; }
     void swap(double_object_holder& d)
-    { 
-        std::swap(first_, d.first_); 
-        std::swap(second_, d.second_); 
+    {
+        std::swap(first_, d.first_);
+        std::swap(second_, d.second_);
     }
 private:
     T first_, second_;
 };
 
 template<typename T, typename IsDouble>
-class double_object 
+class double_object
     : public mpl::if_<
-                 IsDouble, 
-                 double_object_holder<T>, 
+                 IsDouble,
+                 double_object_holder<T>,
                  single_object_holder<T>
              >::type
 {
 private:
-    typedef typename 
+    typedef typename
             mpl::if_<
-                IsDouble, 
-                double_object_holder<T>, 
+                IsDouble,
+                double_object_holder<T>,
                 single_object_holder<T>
             >::type                                base_type;
 public:

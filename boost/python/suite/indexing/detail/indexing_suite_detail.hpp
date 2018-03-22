@@ -23,14 +23,14 @@ namespace boost { namespace python { namespace detail {
 #else
 #define BOOST_PYTHON_INDEXING_CHECK_INVARIANT check_invariant()
 #endif
-    
+
     template <class Proxy>
     struct compare_proxy_index
     {
         //  This functor compares a proxy and an index.
         //  This is used by proxy_group::first_proxy to
         //  get first proxy with index i.
-                
+
         template <class Index>
         bool operator()(PyObject* prox, Index i) const
         {
@@ -39,12 +39,12 @@ namespace boost { namespace python { namespace detail {
             return policies_type::
                 compare_index(proxy.get_container(), proxy.get_index(), i);
         }
-    };        
- 
+    };
+
     //  The proxy_group class holds a vector of container element
-    //  proxies. First, what is a container element proxy? A container 
-    //  element proxy acts like a smart pointer holding a reference to 
-    //  a container and an index (see container_element, for details). 
+    //  proxies. First, what is a container element proxy? A container
+    //  element proxy acts like a smart pointer holding a reference to
+    //  a container and an index (see container_element, for details).
     //
     //  The proxies are held in a vector always sorted by its index.
     //  Various functions manage the addition, removal and searching
@@ -54,18 +54,18 @@ namespace boost { namespace python { namespace detail {
     class proxy_group
     {
     public:
-    
+
         typedef typename std::vector<PyObject*>::const_iterator const_iterator;
         typedef typename std::vector<PyObject*>::iterator iterator;
         typedef typename Proxy::index_type index_type;
         typedef typename Proxy::policies_type policies_type;
-        
+
         iterator
         first_proxy(index_type i)
         {
             // Return the first proxy with index <= i
             return boost::detail::lower_bound(
-                proxies.begin(), proxies.end(), 
+                proxies.begin(), proxies.end(),
                 i, compare_proxy_index<Proxy>());
         }
 
@@ -99,7 +99,7 @@ namespace boost { namespace python { namespace detail {
         erase(index_type i, mpl::false_)
         {
             BOOST_PYTHON_INDEXING_CHECK_INVARIANT;
-            // Erase the proxy with index i 
+            // Erase the proxy with index i
             replace(i, i+1, 0);
             BOOST_PYTHON_INDEXING_CHECK_INVARIANT;
         }
@@ -108,11 +108,11 @@ namespace boost { namespace python { namespace detail {
         erase(index_type i, mpl::true_)
         {
             BOOST_PYTHON_INDEXING_CHECK_INVARIANT;
-            // Erase the proxy with index i 
-            
+            // Erase the proxy with index i
+
             iterator iter = first_proxy(i);
             extract<Proxy&> p(*iter);
-            
+
             if (iter != proxies.end() && p().get_index() == i)
             {
                 extract<Proxy&> p(*iter);
@@ -126,17 +126,17 @@ namespace boost { namespace python { namespace detail {
         erase(index_type from, index_type to)
         {
             // note: this cannot be called when container is not sliceable
-            
+
             BOOST_PYTHON_INDEXING_CHECK_INVARIANT;
-            // Erase all proxies with indexes from..to 
+            // Erase all proxies with indexes from..to
             replace(from, to, 0);
             BOOST_PYTHON_INDEXING_CHECK_INVARIANT;
         }
 
         void
         replace(
-            index_type from, 
-            index_type to, 
+            index_type from,
+            index_type to,
             typename std::vector<PyObject*>::size_type len)
         {
             // note: this cannot be called when container is not sliceable
@@ -146,12 +146,12 @@ namespace boost { namespace python { namespace detail {
             // Adjust the displaced indexes such that the
             // final effect is that we have inserted *len*
             // number of proxies in the vacated region. This
-            // procedure involves adjusting the indexes of 
+            // procedure involves adjusting the indexes of
             // the proxies.
-            
+
             iterator left = first_proxy(from);
             iterator right = proxies.end(); // we'll adjust this later
-            
+
             for (iterator iter = left; iter != right; ++iter)
             {
                 if (extract<Proxy&>(*iter)().get_index() > to)
@@ -162,8 +162,8 @@ namespace boost { namespace python { namespace detail {
                 extract<Proxy&> p(*iter);
                 p().detach();
             }
-            
-            typename std::vector<PyObject*>::size_type 
+
+            typename std::vector<PyObject*>::size_type
                 offset = left-proxies.begin();
             proxies.erase(left, right);
             right = proxies.begin()+offset;
@@ -173,21 +173,21 @@ namespace boost { namespace python { namespace detail {
                 typedef typename Proxy::container_type::difference_type difference_type;
                 extract<Proxy&> p(*right);
                 p().set_index(
-                    extract<Proxy&>(*right)().get_index() 
+                    extract<Proxy&>(*right)().get_index()
                     - (difference_type(to) - from - len)
                 );
-                    
+
                 ++right;
             }
             BOOST_PYTHON_INDEXING_CHECK_INVARIANT;
         }
-        
+
         PyObject*
         find(index_type i)
         {
             BOOST_PYTHON_INDEXING_CHECK_INVARIANT;
             // Find the proxy with *exact* index i.
-            // Return 0 (null) if no proxy with the 
+            // Return 0 (null) if no proxy with the
             // given index is found.
             iterator iter = first_proxy(i);
             if (iter != proxies.end()
@@ -200,13 +200,13 @@ namespace boost { namespace python { namespace detail {
             return 0;
         }
 
-        typename std::vector<PyObject*>::size_type 
+        typename std::vector<PyObject*>::size_type
         size() const
         {
             BOOST_PYTHON_INDEXING_CHECK_INVARIANT;
             // How many proxies are there so far?
             return proxies.size();
-        } 
+        }
 
     private:
 
@@ -218,17 +218,17 @@ namespace boost { namespace python { namespace detail {
             {
                 if ((*i)->ob_refcnt <= 0)
                 {
-                    PyErr_SetString(PyExc_RuntimeError, 
+                    PyErr_SetString(PyExc_RuntimeError,
                         "Invariant: Proxy vector in an inconsistent state");
                     throw_error_already_set();
                 }
-                
+
                 if (i+1 != proxies.end())
                 {
                     if (extract<Proxy&>(*(i+1))().get_index() ==
                         extract<Proxy&>(*(i))().get_index())
                     {
-                        PyErr_SetString(PyExc_RuntimeError, 
+                        PyErr_SetString(PyExc_RuntimeError,
                             "Invariant: Proxy vector in an inconsistent state (duplicate proxy)");
                         throw_error_already_set();
                     }
@@ -236,20 +236,20 @@ namespace boost { namespace python { namespace detail {
             }
         }
 #endif
-        
+
         std::vector<PyObject*> proxies;
     };
-            
+
     // proxy_links holds a map of Container pointers (keys)
-    // with proxy_group(s) (data). Various functions manage 
-    // the addition, removal and searching of proxies from 
+    // with proxy_group(s) (data). Various functions manage
+    // the addition, removal and searching of proxies from
     // the map.
     //
     template <class Proxy, class Container>
     class proxy_links
     {
     public:
-    
+
         typedef std::map<Container*, proxy_group<Proxy> > links_t;
         typedef typename Proxy::index_type index_type;
 
@@ -265,18 +265,18 @@ namespace boost { namespace python { namespace detail {
                     links.erase(r);
             }
         }
-        
+
         void
         add(PyObject* prox, Container& container)
         {
             // Add a proxy
             links[&container].add(prox);
         }
-        
+
         template <class NoSlice>
         void erase(Container& container, index_type i, NoSlice no_slice)
         {
-            // Erase the proxy with index i 
+            // Erase the proxy with index i
             typename links_t::iterator r = links.find(&container);
             if (r != links.end())
             {
@@ -285,11 +285,11 @@ namespace boost { namespace python { namespace detail {
                     links.erase(r);
             }
         }
-        
+
         void
         erase(Container& container, index_type from, index_type to)
         {
-            // Erase all proxies with indexes from..to 
+            // Erase all proxies with indexes from..to
             typename links_t::iterator r = links.find(&container);
             if (r != links.end())
             {
@@ -301,14 +301,14 @@ namespace boost { namespace python { namespace detail {
 
         void
         replace(
-            Container& container, 
+            Container& container,
             index_type from, index_type to, index_type len)
         {
             // Erase all proxies with indexes from..to.
             // Adjust the displaced indexes such that the
             // final effect is that we have inserted *len*
             // number of proxies in the vacated region. This
-            // procedure involves adjusting the indexes of 
+            // procedure involves adjusting the indexes of
             // the proxies.
 
             typename links_t::iterator r = links.find(&container);
@@ -319,12 +319,12 @@ namespace boost { namespace python { namespace detail {
                     links.erase(r);
             }
         }
-        
+
         PyObject*
         find(Container& container, index_type i)
         {
             // Find the proxy with *exact* index i.
-            // Return 0 (null) if no proxy with the given 
+            // Return 0 (null) if no proxy with the given
             // index is found.
             typename links_t::iterator r = links.find(&container);
             if (r != links.end())
@@ -333,10 +333,10 @@ namespace boost { namespace python { namespace detail {
         }
 
     private:
-    
+
         links_t links;
     };
-    
+
     // container_element is our container proxy class.
     // This class acts like a smart pointer to a container
     // element. The class holds an index and a reference to
@@ -345,28 +345,28 @@ namespace boost { namespace python { namespace detail {
     //
     // A container_element can also be detached from the
     // container. In such a detached state, the container_element
-    // holds a copy of the nth (index) element, which it 
+    // holds a copy of the nth (index) element, which it
     // returns when dereferenced.
     //
     template <class Container, class Index, class Policies>
     class container_element
     {
     public:
-    
+
         typedef Index index_type;
         typedef Container container_type;
         typedef typename Policies::data_type element_type;
         typedef Policies policies_type;
         typedef container_element<Container, Index, Policies> self_t;
         typedef proxy_group<self_t> links_type;
-        
+
         container_element(object container, Index index)
             : ptr()
             , container(container)
             , index(index)
         {
         }
-            
+
         container_element(container_element const& ce)
           : ptr(ce.ptr.get() == 0 ? 0 : new element_type(*ce.ptr.get()))
           , container(ce.container)
@@ -379,21 +379,21 @@ namespace boost { namespace python { namespace detail {
             if (!is_detached())
                 get_links().remove(*this);
         }
-                      
+
         element_type& operator*() const
         {
             if (is_detached())
                 return *get_pointer(ptr);
             return Policies::get_item(get_container(), index);
         }
-        
+
         element_type* get() const
         {
             if (is_detached())
                 return get_pointer(ptr);
             return &Policies::get_item(get_container(), index);
         }
-        
+
         void
         detach()
         {
@@ -405,44 +405,44 @@ namespace boost { namespace python { namespace detail {
                 container = object(); // free container. reset it to None
             }
         }
-        
+
         bool
         is_detached() const
         {
             return get_pointer(ptr) != 0;
         }
 
-        Container& 
+        Container&
         get_container() const
         {
             return extract<Container&>(container)();
         }
-        
-        Index 
+
+        Index
         get_index() const
         {
             return index;
         }
 
-        void 
+        void
         set_index(Index i)
         {
             index = i;
         }
- 
+
         static proxy_links<self_t, Container>&
         get_links()
         {
             // All container_element(s) maintain links to
             // its container in a global map (see proxy_links).
             // This global "links" map is a singleton.
-            
+
             static proxy_links<self_t, Container> links;
             return links; // singleton
         }
 
     private:
-            
+
         container_element& operator=(container_element const& ce);
 
         scoped_ptr<element_type> ptr;
@@ -457,29 +457,29 @@ namespace boost { namespace python { namespace detail {
         , class Index
     >
     struct no_proxy_helper
-    {                
+    {
         static void
         register_container_element()
-        { 
+        {
         }
 
-        template <class DataType> 
+        template <class DataType>
         static object
         base_get_item_helper(DataType const& p, detail::true_)
-        { 
+        {
             return object(ptr(p));
         }
 
-        template <class DataType> 
+        template <class DataType>
         static object
         base_get_item_helper(DataType const& x, detail::false_)
-        { 
+        {
             return object(x);
         }
 
         static object
         base_get_item_(back_reference<Container&> const& container, PyObject* i)
-        { 
+        {
             return base_get_item_helper(
                 DerivedPolicies::get_item(
                     container.get(), DerivedPolicies::
@@ -490,7 +490,7 @@ namespace boost { namespace python { namespace detail {
 
         static void
         base_replace_indexes(
-            Container& /*container*/, Index /*from*/, 
+            Container& /*container*/, Index /*from*/,
             Index /*to*/, Index /*n*/)
         {
         }
@@ -501,13 +501,13 @@ namespace boost { namespace python { namespace detail {
             Container& /*container*/, Index /*i*/, NoSlice /*no_slice*/)
         {
         }
-        
+
         static void
         base_erase_indexes(Container& /*container*/, Index /*from*/, Index /*to*/)
         {
         }
-    };            
-          
+    };
+
     template <
           class Container
         , class DerivedPolicies
@@ -515,20 +515,20 @@ namespace boost { namespace python { namespace detail {
         , class Index
     >
     struct proxy_helper
-    {        
+    {
         static void
         register_container_element()
-        { 
+        {
             register_ptr_to_python<ContainerElement>();
         }
 
         static object
         base_get_item_(back_reference<Container&> const& container, PyObject* i)
-        { 
+        {
             // Proxy
             Index idx = DerivedPolicies::convert_index(container.get(), i);
 
-            if (PyObject* shared = 
+            if (PyObject* shared =
                 ContainerElement::get_links().find(container.get(), idx))
             {
                 handle<> h(python::borrowed(shared));
@@ -545,12 +545,12 @@ namespace boost { namespace python { namespace detail {
 
         static void
         base_replace_indexes(
-            Container& container, Index from, 
+            Container& container, Index from,
             Index to, Index n)
         {
             ContainerElement::get_links().replace(container, from, to, n);
         }
-        
+
         template <class NoSlice>
         static void
         base_erase_index(
@@ -558,15 +558,15 @@ namespace boost { namespace python { namespace detail {
         {
             ContainerElement::get_links().erase(container, i, no_slice);
         }
-        
+
         static void
         base_erase_indexes(
             Container& container, Index from, Index to)
         {
             ContainerElement::get_links().erase(container, from, to);
         }
-    };        
-    
+    };
+
     template <
           class Container
         , class DerivedPolicies
@@ -575,10 +575,10 @@ namespace boost { namespace python { namespace detail {
         , class Index
     >
     struct slice_helper
-    {        
-        static object 
+    {
+        static object
         base_get_slice(Container& container, PySliceObject* slice)
-        { 
+        {
             Index from, to;
             base_get_slice_data(container, slice, from, to);
             return DerivedPolicies::get_slice(container, from, to);
@@ -595,7 +595,7 @@ namespace boost { namespace python { namespace detail {
 
             Index min_index = DerivedPolicies::get_min_index(container);
             Index max_index = DerivedPolicies::get_max_index(container);
-            
+
             if (Py_None == slice->start) {
                 from_ = min_index;
             }
@@ -623,14 +623,14 @@ namespace boost { namespace python { namespace detail {
                 if (to_ > max_index)
                     to_ = max_index;
             }
-        }        
-   
-        static void 
+        }
+
+        static void
         base_set_slice(Container& container, PySliceObject* slice, PyObject* v)
         {
             Index from, to;
             base_get_slice_data(container, slice, from, to);
-            
+
             extract<Data&> elem(v);
             // try if elem is an exact Data
             if (elem.check())
@@ -652,7 +652,7 @@ namespace boost { namespace python { namespace detail {
                     //  Otherwise, it must be a list or some container
                     handle<> l_(python::borrowed(v));
                     object l(l_);
-    
+
                     std::vector<Data> temp;
                     for (int i = 0; i < l.attr("__len__")(); i++)
                     {
@@ -673,31 +673,31 @@ namespace boost { namespace python { namespace detail {
                             }
                             else
                             {
-                                PyErr_SetString(PyExc_TypeError, 
+                                PyErr_SetString(PyExc_TypeError,
                                     "Invalid sequence element");
                                 throw_error_already_set();
                             }
                         }
-                    }          
-                  
-                    ProxyHandler::base_replace_indexes(container, from, to, 
+                    }
+
+                    ProxyHandler::base_replace_indexes(container, from, to,
                         temp.end()-temp.begin());
-                    DerivedPolicies::set_slice(container, from, to, 
+                    DerivedPolicies::set_slice(container, from, to,
                         temp.begin(), temp.end());
                 }
-            }            
+            }
         }
-        
-        static void 
+
+        static void
         base_delete_slice(Container& container, PySliceObject* slice)
-        { 
+        {
             Index from, to;
             base_get_slice_data(container, slice, from, to);
             ProxyHandler::base_erase_indexes(container, from, to);
             DerivedPolicies::delete_slice(container, from, to);
-        }  
+        }
     };
-    
+
     template <
           class Container
         , class DerivedPolicies
@@ -706,32 +706,32 @@ namespace boost { namespace python { namespace detail {
         , class Index
     >
     struct no_slice_helper
-    {        
+    {
         static void
         slicing_not_suported()
         {
             PyErr_SetString(PyExc_RuntimeError, "Slicing not supported");
             throw_error_already_set();
         }
-        
-        static object 
+
+        static object
         base_get_slice(Container& /*container*/, PySliceObject* /*slice*/)
-        { 
+        {
             slicing_not_suported();
             return object();
         }
-   
-        static void 
+
+        static void
         base_set_slice(Container& /*container*/, PySliceObject* /*slice*/, PyObject* /*v*/)
         {
             slicing_not_suported();
         }
-        
-        static void 
+
+        static void
         base_delete_slice(Container& /*container*/, PySliceObject* /*slice*/)
-        { 
+        {
             slicing_not_suported();
-        }  
+        }
     };
 
 #ifdef BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP
@@ -739,7 +739,7 @@ namespace boost { namespace python { namespace detail {
 #endif
 
     template <class Container, class Index, class Policies>
-    inline typename Policies::data_type* 
+    inline typename Policies::data_type*
     get_pointer(
         python::detail::container_element<Container, Index, Policies> const& p)
     {

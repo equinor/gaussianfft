@@ -30,7 +30,7 @@ namespace assign
     {
        return push( c )( v );
     }
-    
+
 }
 }
 

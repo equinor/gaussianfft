@@ -81,7 +81,7 @@ namespace detail { namespace parallel
       return std::isdigit(c) != 0;
   }
 
-  inline std::vector<int> 
+  inline std::vector<int>
       available_process_files(std::string const& filename)
       {
           if (!filesystem::exists(filename))
@@ -147,8 +147,8 @@ namespace detail { namespace parallel
       typedef typename mpl::if_<
           is_same<VertexListS, defaultS>, vecS, VertexListS
       >::type vertex_list_selector;
-      typedef pending_edge<vertex_descriptor, edge_property_type> 
-          pending_edge_type; 
+      typedef pending_edge<vertex_descriptor, edge_property_type>
+          pending_edge_type;
       typedef serializable_local_descriptor<local_vertex_descriptor>
           serializable_vertex_descriptor;
 
@@ -250,7 +250,7 @@ namespace detail { namespace parallel
       std::vector<process_id_type> m_id_mapping;
 
       // Maps local vertices as loaded from the archive to
-      // the ones actually added to the graph. Only used 
+      // the ones actually added to the graph. Only used
       // when !vecS.
       std::map<local_vertex_descriptor, local_vertex_descriptor> m_local_vertices;
 
@@ -300,7 +300,7 @@ namespace detail { namespace parallel
       {
 # ifdef PBGL_SERIALIZE_DEBUG
           if (is_root())
-              std::cout << i << " used to be " << old_ids[i] << "\n"; 
+              std::cout << i << " used to be " << old_ids[i] << "\n";
 # endif
           BOOST_ASSERT(m_id_mapping[old_ids[i]] == -1);
           m_id_mapping[old_ids[i]] = i;
@@ -322,7 +322,7 @@ namespace detail { namespace parallel
   void graph_loader<Graph, Archive, VertexListS>::load_vertices()
   {
       int V;
-      m_ar >> BOOST_SERIALIZATION_NVP(V); 
+      m_ar >> BOOST_SERIALIZATION_NVP(V);
 
 # ifdef PBGL_SERIALIZE_DEBUG
       if (is_root())
@@ -341,7 +341,7 @@ namespace detail { namespace parallel
   {
       // Load the original vertex descriptor
       local_vertex_descriptor local;
-      m_ar >> make_nvp("local", unsafe_serialize(local)); 
+      m_ar >> make_nvp("local", unsafe_serialize(local));
 
       // Load the properties
       vertex_property_type property;
@@ -368,8 +368,8 @@ namespace detail { namespace parallel
                           property);
 
       // Add the vertex
-      vertex_descriptor v(process_id(m_pg), 
-                          add_vertex(m_g.build_vertex_property(property), 
+      vertex_descriptor v(process_id(m_pg),
+                          add_vertex(m_g.build_vertex_property(property),
                                      m_g.base()));
 
       if (m_g.on_add_vertex)
@@ -393,9 +393,9 @@ namespace detail { namespace parallel
           process_id_type target_owner;
           local_vertex_descriptor local_tgt;
 
-          m_ar >> make_nvp("source", unsafe_serialize(local_src)); 
-          m_ar >> make_nvp("target_owner", target_owner); 
-          m_ar >> make_nvp("target", unsafe_serialize(local_tgt)); 
+          m_ar >> make_nvp("source", unsafe_serialize(local_src));
+          m_ar >> make_nvp("target_owner", target_owner);
+          m_ar >> make_nvp("target", unsafe_serialize(local_tgt));
 
           process_id_type new_src_owner = process_id(m_pg);
           process_id_type new_tgt_owner = m_id_mapping[target_owner];
@@ -468,7 +468,7 @@ namespace detail { namespace parallel
       add_remote_vertex_request(v, u, bidirectionalS());
   }
 
-  template <class Graph, class Archive, class VertexListS> 
+  template <class Graph, class Archive, class VertexListS>
   template <class Anything>
   void graph_loader<Graph, Archive, VertexListS>::add_edge(
       vertex_descriptor u, vertex_descriptor v
@@ -478,7 +478,7 @@ namespace detail { namespace parallel
       add_remote_vertex_request(u, v, directed_selector());
   }
 
-  template <class Graph, class Archive, class VertexListS> 
+  template <class Graph, class Archive, class VertexListS>
   void graph_loader<Graph, Archive, VertexListS>::add_remote_vertex_request(
       vertex_descriptor u, vertex_descriptor v, directedS)
   {
@@ -506,7 +506,7 @@ namespace detail { namespace parallel
       vertex_descriptor u, vertex_descriptor v
     , edge_property_type const& property, void* property_ptr, vecS)
   {
-      std::pair<local_edge_descriptor, bool> inserted = 
+      std::pair<local_edge_descriptor, bool> inserted =
           detail::parallel::add_local_edge(
               local(u), local(v)
             , m_g.build_edge_property(property), m_g.base());
@@ -675,17 +675,17 @@ namespace detail { namespace parallel
   }
 
   template <class Graph, class Archive, class VertexListS>
-  typename graph_loader<Graph, Archive, VertexListS>::vertex_descriptor 
+  typename graph_loader<Graph, Archive, VertexListS>::vertex_descriptor
   graph_loader<Graph, Archive, VertexListS>::resolve_remote_vertex(
       vertex_descriptor u) const
   {
       if (owner(u) == process_id(m_pg))
-      { 
+      {
           return vertex_descriptor(
               process_id(m_pg), m_local_vertices.find(local(u))->second);
       }
 
-      typename std::vector<serializable_vertex_descriptor>::const_iterator 
+      typename std::vector<serializable_vertex_descriptor>::const_iterator
           i = std::lower_bound(
               m_requested_vertices[owner(u)].begin()
             , m_requested_vertices[owner(u)].end()
@@ -704,7 +704,7 @@ namespace detail { namespace parallel
   }
 
   template <class Graph, class Archive, class VertexListS>
-  typename graph_loader<Graph, Archive, VertexListS>::vertex_descriptor 
+  typename graph_loader<Graph, Archive, VertexListS>::vertex_descriptor
   graph_loader<Graph, Archive, VertexListS>::resolve_remote_vertex(
       vertex_descriptor u, vecS) const
   {
@@ -713,7 +713,7 @@ namespace detail { namespace parallel
 
   template <class Graph, class Archive, class VertexListS>
   template <class Anything>
-  typename graph_loader<Graph, Archive, VertexListS>::vertex_descriptor 
+  typename graph_loader<Graph, Archive, VertexListS>::vertex_descriptor
   graph_loader<Graph, Archive, VertexListS>::resolve_remote_vertex(
       vertex_descriptor u, Anything) const
   {
@@ -721,7 +721,7 @@ namespace detail { namespace parallel
   }
 
   template <class Graph, class Archive, class VertexListS>
-  void* 
+  void*
   graph_loader<Graph, Archive, VertexListS>::maybe_load_property_ptr(bidirectionalS)
   {
       void* ptr;
@@ -769,7 +769,7 @@ void save_in_edges(Archive& ar, Graph const& g, bidirectionalS)
         process_id_type;
     typedef typename graph_traits<
         Graph>::vertex_descriptor vertex_descriptor;
-    typedef typename vertex_descriptor::local_descriptor_type 
+    typedef typename vertex_descriptor::local_descriptor_type
         local_vertex_descriptor;
     typedef typename graph_traits<
         Graph>::edge_descriptor edge_descriptor;
@@ -778,7 +778,7 @@ void save_in_edges(Archive& ar, Graph const& g, bidirectionalS)
 
     std::vector<edge_descriptor> saved_in_edges;
 
-    BGL_FORALL_VERTICES_T(v, g, Graph) 
+    BGL_FORALL_VERTICES_T(v, g, Graph)
     {
         BOOST_FOREACH(edge_descriptor const& e, in_edges(v, g))
         {
@@ -842,7 +842,7 @@ void save_edges(Archive& ar, Graph const& g, DirectedS)
     // save the "vertex_in_edges" property map,
     // because it might contain in-edges that
     // are not locally owned.
-    BGL_FORALL_EDGES_T(e, g, Graph) 
+    BGL_FORALL_EDGES_T(e, g, Graph)
     {
         vertex_descriptor src(source(e, g));
         vertex_descriptor tgt(target(e, g));
@@ -856,9 +856,9 @@ void save_edges(Archive& ar, Graph const& g, DirectedS)
 
         using serialization::make_nvp;
 
-        ar << make_nvp("source", unsafe_serialize(local_u)); 
-        ar << make_nvp("target_owner", target_owner); 
-        ar << make_nvp("target", unsafe_serialize(local_v)); 
+        ar << make_nvp("source", unsafe_serialize(local_u));
+        ar << make_nvp("target_owner", target_owner);
+        ar << make_nvp("target", unsafe_serialize(local_v));
 
         maybe_save_properties(
             ar, "edge_property"
@@ -916,7 +916,7 @@ void PBGL_DISTRIB_ADJLIST_TYPE::load(std::string const& filename)
     if (id < num_processes(pg) - 1)
         send_oob(pg, id+1, 0, consumed_files);
 
-    std::string local_filename = filename + "/" + 
+    std::string local_filename = filename + "/" +
         lexical_cast<std::string>(picked_file);
 
     std::ifstream in(local_filename.c_str(), std::ios_base::binary);
@@ -950,7 +950,7 @@ void PBGL_DISTRIB_ADJLIST_TYPE::save(std::string const& filename) const
 
     synchronize(pg);
 
-    std::string local_filename = filename + "/" + 
+    std::string local_filename = filename + "/" +
         lexical_cast<std::string>(id);
 
     std::ofstream out(local_filename.c_str(), std::ios_base::binary);

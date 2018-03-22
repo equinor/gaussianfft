@@ -102,7 +102,7 @@ namespace boost {
   typename property_map_iterator_generator<PropertyMap, Iterator>::type
   make_property_map_iterator(PropertyMap pmap, Iterator iter)
   {
-    typedef typename property_map_iterator_generator<PropertyMap, 
+    typedef typename property_map_iterator_generator<PropertyMap,
       Iterator>::type Iter;
     return Iter(iter, pmap);
   }

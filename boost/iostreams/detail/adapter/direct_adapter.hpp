@@ -10,7 +10,7 @@
 
 #if defined(_MSC_VER)
 # pragma once
-#endif              
+#endif
 
 #include <boost/config.hpp>       // SFINAE, MSVC, put ptrdiff_t in std.
 #include <algorithm>              // copy, min.
@@ -24,8 +24,8 @@
 #include <boost/iostreams/detail/ios.hpp>  // openmode, seekdir, int types.
 #include <boost/iostreams/traits.hpp>      // mode_of, is_direct.
 #include <boost/iostreams/operations.hpp>
-#include <boost/mpl/bool.hpp> 
-#include <boost/mpl/or.hpp> 
+#include <boost/mpl/bool.hpp>
+#include <boost/mpl/or.hpp>
 #include <boost/preprocessor/iteration/local.hpp>
 #include <boost/preprocessor/repetition/enum_binary_params.hpp>
 #include <boost/preprocessor/repetition/enum_params.hpp>
@@ -37,7 +37,7 @@
 #include <boost/iostreams/detail/config/disable_warnings.hpp> // VC7.1
 
 namespace boost { namespace iostreams { namespace detail {
-                    
+
 //------------------Definition of direct_adapter_base-------------------------//
 
 // Put all initialization in base class to faciliate forwarding.
@@ -46,7 +46,7 @@ class direct_adapter_base {
 public:
     typedef typename char_type_of<Direct>::type  char_type;
     typedef typename mode_of<Direct>::type       mode_type;
-    struct category 
+    struct category
         : mode_type,
           device_tag,
           closable_tag
@@ -83,19 +83,19 @@ public:
         // Constructors
 
 #if !BOOST_WORKAROUND(BOOST_MSVC, <= 1310)
-    direct_adapter(const Direct& d) : base_type(d) { }   
+    direct_adapter(const Direct& d) : base_type(d) { }
     direct_adapter(const direct_adapter& d) : base_type(d) { }
 # define BOOST_PP_LOCAL_LIMITS (1, BOOST_IOSTREAMS_MAX_FORWARDING_ARITY)
 #else
     template<typename U>
     struct is_direct
-        : mpl::or_< 
-              is_same<U, direct_adapter<Direct> >, 
-              is_same<U, Direct> 
+        : mpl::or_<
+              is_same<U, direct_adapter<Direct> >,
+              is_same<U, Direct>
           >
         { };
     template<typename U>
-    direct_adapter(const U& u) 
+    direct_adapter(const U& u)
         : base_type(forward(u, is_direct<U>()))
         { }
 # define BOOST_PP_LOCAL_LIMITS (2, BOOST_IOSTREAMS_MAX_FORWARDING_ARITY)
@@ -138,7 +138,7 @@ private:
 //--------------Definition of wrap_direct and unwrap_direct-------------------//
 
 template<typename Device>
-struct wrap_direct_traits 
+struct wrap_direct_traits
     : mpl::if_<
           is_direct<Device>,
           direct_adapter<Device>,
@@ -148,17 +148,17 @@ struct wrap_direct_traits
 
 template<typename Device>
 typename wrap_direct_traits<Device>::type
-inline wrap_direct(Device dev) 
-{ 
+inline wrap_direct(Device dev)
+{
     typedef typename wrap_direct_traits<Device>::type type;
-    return type(dev); 
+    return type(dev);
 }
 
 template<typename Device>
-inline Device& unwrap_direct(Device& d) { return d; }  
+inline Device& unwrap_direct(Device& d) { return d; }
 
 template<typename Device>
-inline Device& unwrap_direct(direct_adapter<Device>& d) { return *d; }  
+inline Device& unwrap_direct(direct_adapter<Device>& d) { return *d; }
 
 //--------------Implementation of direct_adapter_base-------------------------//
 
@@ -170,7 +170,7 @@ direct_adapter_base<Direct>::direct_adapter_base(const Direct& d) : d_(d)
 }
 
 template<typename Direct>
-void direct_adapter_base<Direct>::init_input(mpl::true_) 
+void direct_adapter_base<Direct>::init_input(mpl::true_)
 {
     std::pair<char_type*, char_type*> seq = iostreams::input_sequence(d_);
     ptrs_.first().beg = seq.first;
@@ -179,7 +179,7 @@ void direct_adapter_base<Direct>::init_input(mpl::true_)
 }
 
 template<typename Direct>
-void direct_adapter_base<Direct>::init_output(mpl::true_) 
+void direct_adapter_base<Direct>::init_output(mpl::true_)
 {
     std::pair<char_type*, char_type*> seq = iostreams::output_sequence(d_);
     ptrs_.second().beg = seq.first;
@@ -195,7 +195,7 @@ inline std::streamsize direct_adapter<Direct>::read
 {
     using namespace std;
     pointers& get = ptrs_.first();
-    std::streamsize avail = 
+    std::streamsize avail =
         static_cast<std::streamsize>(get.end - get.ptr);
     std::streamsize result = (std::min)(n, avail);
     std::copy(get.ptr, get.ptr + result, s);
@@ -218,7 +218,7 @@ inline std::streamsize direct_adapter<Direct>::write
 
 template<typename Direct>
 inline std::streampos direct_adapter<Direct>::seek
-    ( stream_offset off, BOOST_IOS::seekdir way, 
+    ( stream_offset off, BOOST_IOS::seekdir way,
       BOOST_IOS::openmode which )
 {
     using namespace std;
@@ -229,11 +229,11 @@ inline std::streampos direct_adapter<Direct>::seek
     ptrdiff_t next = 0;
     if ((which & BOOST_IOS::in) || !is_double::value) {
         if (way == BOOST_IOS::beg)
-            next = off; 
+            next = off;
         else if (way == BOOST_IOS::cur)
-            next = get.ptr - get.beg + off; 
+            next = get.ptr - get.beg + off;
         else
-            next = get.end - get.beg + off; 
+            next = get.end - get.beg + off;
         if (next >= 0 && next <= get.end - get.beg)
             get.ptr = get.beg + next;
         else
@@ -241,11 +241,11 @@ inline std::streampos direct_adapter<Direct>::seek
     }
     if ((which & BOOST_IOS::out) && is_double::value) {
         if (way == BOOST_IOS::beg)
-            next = off; 
+            next = off;
         else if (way == BOOST_IOS::cur)
-            next = put.ptr - put.beg + off; 
+            next = put.ptr - put.beg + off;
         else
-            next = put.end - put.beg + off; 
+            next = put.end - put.beg + off;
         if (next >= 0 && next <= put.end - put.beg)
             put.ptr = put.beg + next;
         else
@@ -255,22 +255,22 @@ inline std::streampos direct_adapter<Direct>::seek
 }
 
 template<typename Direct>
-void direct_adapter<Direct>::close() 
-{ 
+void direct_adapter<Direct>::close()
+{
     BOOST_STATIC_ASSERT((!is_convertible<category, two_sequence>::value));
     detail::close_all(d_);
 }
 
 template<typename Direct>
-void direct_adapter<Direct>::close(BOOST_IOS::openmode which) 
-{ 
+void direct_adapter<Direct>::close(BOOST_IOS::openmode which)
+{
     BOOST_STATIC_ASSERT((is_convertible<category, two_sequence>::value));
     boost::iostreams::close(d_, which);
 }
 
 #ifndef BOOST_IOSTREAMS_NO_LOCALE
     template<typename Direct>
-    void direct_adapter<Direct>::imbue(const std::locale& loc) 
+    void direct_adapter<Direct>::imbue(const std::locale& loc)
     { boost::iostreams::imbue(d_, loc); }
 #endif
 

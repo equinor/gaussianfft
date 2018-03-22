@@ -39,7 +39,7 @@ namespace random {
  *  J. Schiller, Network Working Group, RFC 1750, December 1994
  *  @endblockquote
  *
- * for further discussions. 
+ * for further discussions.
  *
  * @xmlnote
  * Some operating systems abstract the computer hardware enough
@@ -99,10 +99,10 @@ public:
 
     /** Constructs a @c random_device, optionally using the default device. */
     BOOST_RANDOM_DECL random_device();
-    /** 
+    /**
      * Constructs a @c random_device, optionally using the given token as an
      * access specification (for example, a URL) to some implementation-defined
-     * service for monitoring a stochastic process. 
+     * service for monitoring a stochastic process.
      */
     BOOST_RANDOM_DECL explicit random_device(const std::string& token);
 

@@ -36,7 +36,7 @@
 //   - The arg_from_python converters for each of the arguments to be
 //   passed to the function being invoked.
 
-namespace boost { namespace python { namespace detail { 
+namespace boost { namespace python { namespace detail {
 
 // This "result converter" is really just used as a dispatch tag to
 // invoke(...), selecting the appropriate implementation
@@ -63,7 +63,7 @@ struct invoke_tag
 }}} // namespace boost::python::detail
 
 # endif // INVOKE_DWA20021122_HPP
-#else 
+#else
 
 # define N BOOST_PP_ITERATION()
 
@@ -72,7 +72,7 @@ inline PyObject* invoke(invoke_tag_<false,false>, RC const& rc, F& f BOOST_PP_EN
 {
     return rc(f( BOOST_PP_ENUM_BINARY_PARAMS_Z(1, N, ac, () BOOST_PP_INTERCEPT) ));
 }
-                 
+
 template <class RC, class F BOOST_PP_ENUM_TRAILING_PARAMS_Z(1, N, class AC)>
 inline PyObject* invoke(invoke_tag_<true,false>, RC const&, F& f BOOST_PP_ENUM_TRAILING_BINARY_PARAMS_Z(1, N, AC, & ac) )
 {
@@ -85,7 +85,7 @@ inline PyObject* invoke(invoke_tag_<false,true>, RC const& rc, F& f, TC& tc BOOS
 {
     return rc( (tc().*f)(BOOST_PP_ENUM_BINARY_PARAMS_Z(1, N, ac, () BOOST_PP_INTERCEPT)) );
 }
-                 
+
 template <class RC, class F, class TC BOOST_PP_ENUM_TRAILING_PARAMS_Z(1, N, class AC)>
 inline PyObject* invoke(invoke_tag_<true,true>, RC const&, F& f, TC& tc BOOST_PP_ENUM_TRAILING_BINARY_PARAMS_Z(1, N, AC, & ac) )
 {
@@ -95,4 +95,4 @@ inline PyObject* invoke(invoke_tag_<true,true>, RC const&, F& f, TC& tc BOOST_PP
 
 # undef N
 
-#endif // BOOST_PP_IS_ITERATING 
+#endif // BOOST_PP_IS_ITERATING

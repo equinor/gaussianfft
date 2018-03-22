@@ -121,7 +121,7 @@ inline std::size_t ranked_index_find_rank(
     }
     else top=Node::from_impl(top->right());
   }while(top);
-    
+
   return (y==y0||comp(x,key(y->value())))?s0:s;
 }
 

@@ -59,12 +59,12 @@ public:
    BOOST_MP_FORCEINLINE BOOST_CONSTEXPR number(const V& v, typename boost::enable_if_c<
             is_convertible<typename detail::canonical<V, Backend>::type, Backend>::value
             && !detail::is_restricted_conversion<typename detail::canonical<V, Backend>::type, Backend>::value
-   >::type* = 0) 
+   >::type* = 0)
 #ifndef BOOST_INTEL
           BOOST_MP_NOEXCEPT_IF(noexcept(Backend(std::declval<typename detail::canonical<V, Backend>::type const&>())))
 #endif
       : m_backend(canonical_value(v)) {}
-   BOOST_MP_FORCEINLINE BOOST_CONSTEXPR number(const number& e, unsigned digits10) 
+   BOOST_MP_FORCEINLINE BOOST_CONSTEXPR number(const number& e, unsigned digits10)
       BOOST_MP_NOEXCEPT_IF(noexcept(Backend(std::declval<Backend const&>(), std::declval<unsigned>())))
       : m_backend(e.m_backend, digits10){}
    template <class V>
@@ -72,7 +72,7 @@ public:
             (boost::is_arithmetic<V>::value || is_same<std::string, V>::value || is_convertible<V, const char*>::value)
             && !detail::is_explicitly_convertible<typename detail::canonical<V, Backend>::type, Backend>::value
             && detail::is_restricted_conversion<typename detail::canonical<V, Backend>::type, Backend>::value
-         >::type* = 0) 
+         >::type* = 0)
          BOOST_MP_NOEXCEPT_IF(noexcept(std::declval<Backend&>() = std::declval<typename detail::canonical<V, Backend>::type const&>()))
    {
       m_backend = canonical_value(v);
@@ -1401,7 +1401,7 @@ private:
    // the disable_if dependent on the template argument (the size of 1 can never occur in practice).
    //
    template <class Exp>
-   typename boost::disable_if_c<boost::multiprecision::number_category<self_type>::value == boost::multiprecision::number_kind_integer || sizeof(Exp) == 1>::type 
+   typename boost::disable_if_c<boost::multiprecision::number_category<self_type>::value == boost::multiprecision::number_kind_integer || sizeof(Exp) == 1>::type
       do_multiplies(const Exp& e, const detail::divides&)
    {
       typedef typename Exp::left_type left_type;
@@ -1795,7 +1795,7 @@ inline std::istream& operator >> (std::istream& is, number<Backend, ExpressionTe
 }
 
 template <class Backend, expression_template_option ExpressionTemplates>
-BOOST_MP_FORCEINLINE void swap(number<Backend, ExpressionTemplates>& a, number<Backend, ExpressionTemplates>& b) 
+BOOST_MP_FORCEINLINE void swap(number<Backend, ExpressionTemplates>& a, number<Backend, ExpressionTemplates>& b)
    BOOST_MP_NOEXCEPT_IF(noexcept(std::declval<number<Backend, ExpressionTemplates>&>() = std::declval<number<Backend, ExpressionTemplates>&>()))
 {
    a.swap(b);

@@ -1,6 +1,6 @@
 [section boost/python/def_visitor.hpp]
 [section Introduction]
-<boost/python/def_visitor.hpp> provides a generic visitation interface through which the [link high_level_components.boost_python_class_hpp.class_template_class_t_bases_hel class_] def member functionality can be extended non-intrusively to avoid cluttering the [link high_level_components.boost_python_class_hpp.class_template_class_t_bases_hel class_] interface. It declares the `def_visitor<T>` class template, which is parameterized on the derived type `DerivedVisitor`, which provides the actual `def` functionality through its `visit` member functions. 
+<boost/python/def_visitor.hpp> provides a generic visitation interface through which the [link high_level_components.boost_python_class_hpp.class_template_class_t_bases_hel class_] def member functionality can be extended non-intrusively to avoid cluttering the [link high_level_components.boost_python_class_hpp.class_template_class_t_bases_hel class_] interface. It declares the `def_visitor<T>` class template, which is parameterized on the derived type `DerivedVisitor`, which provides the actual `def` functionality through its `visit` member functions.
 [endsect]
 [section Class `def_visitor`]
 The class `def_visitor` is a base class paramaterized by its derived class. The `def_visitor` class is a protocol class. Its derived class, DerivedVisitor, is expected to have a member function `visit`. The `def_visitor` class is never instantiated directly. Instead, an instance of its subclass, DerivedVisitor,  is passed on as an argument to the [link high_level_components.boost_python_class_hpp.class_template_class_t_bases_hel class_] `def` member function.
@@ -14,7 +14,7 @@ namespace boost { namespace python {
 ``
 
 [variablelist
- [[Requires][The client supplied class DerivedVisitor template parameter is expected to: 
+ [[Requires][The client supplied class DerivedVisitor template parameter is expected to:
  * be privately derived from def_visitor
  * grant friend access to class def_visitor_access
  * define either or both visit member functions listed in the table below:
@@ -49,7 +49,7 @@ class my_def_visitor : boost::python::def_visitor<my_def_visitor>
 };
 
 BOOST_PYTHON_MODULE(my_ext)
-{ 
+{
   class_<X>("X")
     .def(my_def_visitor());
 }

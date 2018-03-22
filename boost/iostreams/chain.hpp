@@ -21,7 +21,7 @@
 #include <stdexcept>                            // logic_error, out_of_range.
 #include <boost/checked_delete.hpp>
 #include <boost/config.hpp>                     // BOOST_MSVC, template friends,
-#include <boost/detail/workaround.hpp>          // BOOST_NESTED_TEMPLATE 
+#include <boost/detail/workaround.hpp>          // BOOST_NESTED_TEMPLATE
 #include <boost/iostreams/constants.hpp>
 #include <boost/iostreams/detail/access_control.hpp>
 #include <boost/iostreams/detail/char_traits.hpp>
@@ -132,7 +132,7 @@ protected:
     chain_base(const chain_base& rhs): pimpl_(rhs.pimpl_) { }
 public:
 
-    // dual_use is a pseudo-mode to facilitate filter writing, 
+    // dual_use is a pseudo-mode to facilitate filter writing,
     // not a genuine mode.
     BOOST_STATIC_ASSERT((!is_convertible<mode, dual_use>::value));
 
@@ -141,19 +141,19 @@ public:
     // Sets the size of the buffer created for the devices to be added to this
     // chain. Does not affect the size of the buffer for devices already
     // added.
-    void set_device_buffer_size(std::streamsize n) 
+    void set_device_buffer_size(std::streamsize n)
         { pimpl_->device_buffer_size_ = n; }
 
     // Sets the size of the buffer created for the filters to be added
     // to this chain. Does not affect the size of the buffer for filters already
     // added.
-    void set_filter_buffer_size(std::streamsize n) 
+    void set_filter_buffer_size(std::streamsize n)
         { pimpl_->filter_buffer_size_ = n; }
 
     // Sets the size of the putback buffer for filters and devices to be added
     // to this chain. Does not affect the size of the buffer for filters or
     // devices already added.
-    void set_pback_size(std::streamsize n) 
+    void set_pback_size(std::streamsize n)
         { pimpl_->pback_size_ = n; }
 
     //----------Device interface----------------------------------------------//
@@ -179,7 +179,7 @@ public:
     T* component(int n) const { return component(n, boost::type<T>()); }
 
     // Deprecated.
-    template<int N, typename T> 
+    template<int N, typename T>
     T* component() const { return component<T>(N); }
 
 #if !BOOST_WORKAROUND(BOOST_MSVC, == 1310)
@@ -219,7 +219,7 @@ public:
     bool strict_sync();
 private:
     template<typename T>
-    void push_impl(const T& t, std::streamsize buffer_size = -1, 
+    void push_impl(const T& t, std::streamsize buffer_size = -1,
                    std::streamsize pback_size = -1)
     {
         typedef typename iostreams::category_of<T>::type  category;
@@ -242,19 +242,19 @@ private:
             pback_size != -1 ?
                 pback_size :
                 pimpl_->pback_size_;
-                
+
 #if defined(BOOST_NO_CXX11_SMART_PTR)
 
         std::auto_ptr<streambuf_t>
             buf(new streambuf_t(t, buffer_size, pback_size));
-            
+
 #else
 
         std::unique_ptr<streambuf_t>
             buf(new streambuf_t(t, buffer_size, pback_size));
-            
+
 #endif
-            
+
         list().push_back(buf.get());
         buf.release();
         if (is_device<component_type>::value) {
@@ -333,20 +333,20 @@ private:
                     links_.front()->BOOST_IOSTREAMS_PUBSYNC();
                     try {
                         boost::iostreams::detail::execute_foreach(
-                            links_.rbegin(), links_.rend(), 
+                            links_.rbegin(), links_.rend(),
                             closer(BOOST_IOS::in)
                         );
                     } catch (...) {
                         try {
                             boost::iostreams::detail::execute_foreach(
-                                links_.begin(), links_.end(), 
+                                links_.begin(), links_.end(),
                                 closer(BOOST_IOS::out)
                             );
                         } catch (...) { }
                         throw;
                     }
                     boost::iostreams::detail::execute_foreach(
-                        links_.begin(), links_.end(), 
+                        links_.begin(), links_.end(),
                         closer(BOOST_IOS::out)
                     );
                 }

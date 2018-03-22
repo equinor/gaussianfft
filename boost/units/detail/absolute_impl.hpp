@@ -1,4 +1,4 @@
-// Boost.Units - A C++ library for zero-overhead dimensional analysis and 
+// Boost.Units - A C++ library for zero-overhead dimensional analysis and
 // unit/quantity manipulation and conversion
 //
 // Copyright (C) 2003-2008 Matthias Christian Schabel
@@ -54,7 +54,7 @@ struct affine_conversion_impl<true, ReverseIsDefined>
         static T1 value(const T0& t0)
         {
             return(
-                t0 * 
+                t0 *
                 conversion_factor(Unit1(), Unit2()) +
                 affine_conversion_helper<typename reduce_unit<Unit1>::type, typename reduce_unit<Unit2>::type>::value());
         }
@@ -70,7 +70,7 @@ struct affine_conversion_impl<false, true>
         static T1 value(const T0& t0)
         {
             return(
-                (t0 - affine_conversion_helper<typename reduce_unit<Unit2>::type, typename reduce_unit<Unit1>::type>::value()) * 
+                (t0 - affine_conversion_helper<typename reduce_unit<Unit2>::type, typename reduce_unit<Unit1>::type>::value()) *
                 conversion_factor(Unit1(), Unit2()));
         }
     };

@@ -30,7 +30,7 @@
     \brief converts a tuple to an array.
 
     tuple = tuple to be converted.
-    
+
     If the tuple is an empty tuple it is converted to an array with 0 elements.
     Otherwise the tuple is converted to an array with the same number of elements as the tuple.
 */

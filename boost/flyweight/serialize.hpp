@@ -19,14 +19,14 @@
 #include <boost/flyweight/detail/serialization_helper.hpp>
 #include <boost/serialization/nvp.hpp>
 #include <boost/serialization/split_free.hpp>
-#include <boost/throw_exception.hpp> 
+#include <boost/throw_exception.hpp>
 #include <memory>
 
-/* Serialization routines for flyweight<T>. 
+/* Serialization routines for flyweight<T>.
  */
 
 namespace boost{
-  
+
 namespace serialization{
 
 template<
@@ -37,8 +37,8 @@ inline void serialize(
   Archive& ar,::boost::flyweights::flyweight<T,Arg1,Arg2,Arg3>& f,
   const unsigned int version)
 {
-  split_free(ar,f,version);              
-}                                               
+  split_free(ar,f,version);
+}
 
 template<
   class Archive,

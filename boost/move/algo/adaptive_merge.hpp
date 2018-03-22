@@ -29,7 +29,7 @@ namespace movelib {
 //!   - The type of dereferenced RandIt must meet the requirements of MoveAssignable and MoveConstructible.
 //!
 //! <b>Parameters</b>:
-//!   - first: the beginning of the first sorted range. 
+//!   - first: the beginning of the first sorted range.
 //!   - middle: the end of the first sorted range and the beginning of the second
 //!   - last: the end of the second sorted range
 //!   - comp: comparison function object which returns true if the first argument is is ordered before the second.

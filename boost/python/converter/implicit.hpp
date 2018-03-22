@@ -11,7 +11,7 @@
 
 # include <boost/python/extract.hpp>
 
-namespace boost { namespace python { namespace converter { 
+namespace boost { namespace python { namespace converter {
 
 template <class Source, class Target>
 struct implicit
@@ -25,7 +25,7 @@ struct implicit
         return implicit_rvalue_convertible_from_python(obj, registered<Source>::converters)
             ? obj : 0;
     }
-      
+
     static void construct(PyObject* obj, rvalue_from_python_stage1_data* data)
     {
         void* storage = ((rvalue_from_python_storage<Target>*)data)->storage.bytes;
@@ -33,9 +33,9 @@ struct implicit
         arg_from_python<Source> get_source(obj);
         bool convertible = get_source.convertible();
         BOOST_VERIFY(convertible);
-        
+
         new (storage) Target(get_source());
-        
+
         // record successful construction
         data->convertible = storage;
     }

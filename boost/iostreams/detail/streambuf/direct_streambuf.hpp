@@ -10,13 +10,13 @@
 
 #if defined(_MSC_VER)
 # pragma once
-#endif              
+#endif
 
 #include <boost/assert.hpp>
 #include <cstddef>
 #include <typeinfo>
 #include <utility>                                 // pair.
-#include <boost/config.hpp>                        // BOOST_DEDUCED_TYPENAME, 
+#include <boost/config.hpp>                        // BOOST_DEDUCED_TYPENAME,
 #include <boost/iostreams/detail/char_traits.hpp>  // member template friends.
 #include <boost/iostreams/detail/config/wide_streams.hpp>
 #include <boost/iostreams/detail/error.hpp>
@@ -34,16 +34,16 @@
 // Must come last.
 #include <boost/iostreams/detail/config/disable_warnings.hpp> // MSVC.
 
-namespace boost { namespace iostreams { 
-    
+namespace boost { namespace iostreams {
+
 namespace detail {
 
 template< typename T,
-          typename Tr = 
+          typename Tr =
               BOOST_IOSTREAMS_CHAR_TRAITS(
-                 BOOST_DEDUCED_TYPENAME char_type_of<T>::type 
+                 BOOST_DEDUCED_TYPENAME char_type_of<T>::type
               ) >
-class direct_streambuf 
+class direct_streambuf
     : public linked_streambuf<BOOST_DEDUCED_TYPENAME char_type_of<T>::type, Tr>
 {
 public:
@@ -56,7 +56,7 @@ private:
                 char_type, traits_type
             )                                             streambuf_type;
 public: // stream needs access.
-    void open(const T& t, std::streamsize buffer_size, 
+    void open(const T& t, std::streamsize buffer_size,
               std::streamsize pback_size);
     bool is_open() const;
     void close();
@@ -75,7 +75,7 @@ protected:
     // Declared in linked_streambuf.
     void close_impl(BOOST_IOS::openmode m);
     const std::type_info& component_type() const { return typeid(T); }
-    void* component_impl() { return component(); } 
+    void* component_impl() { return component(); }
 #ifdef BOOST_IOSTREAMS_NO_STREAM_TEMPLATES
     public:
 #endif
@@ -102,12 +102,12 @@ private:
     char_type   *ibeg_, *iend_, *obeg_, *oend_;
     bool         auto_close_;
 };
-                    
+
 //------------------Implementation of direct_streambuf------------------------//
 
 template<typename T, typename Tr>
-direct_streambuf<T, Tr>::direct_streambuf() 
-    : ibeg_(0), iend_(0), obeg_(0), oend_(0), auto_close_(true) 
+direct_streambuf<T, Tr>::direct_streambuf()
+    : ibeg_(0), iend_(0), obeg_(0), oend_(0), auto_close_(true)
 { this->set_true_eof(true); }
 
 template<typename T, typename Tr>
@@ -123,12 +123,12 @@ void direct_streambuf<T, Tr>::open
 }
 
 template<typename T, typename Tr>
-bool direct_streambuf<T, Tr>::is_open() const 
+bool direct_streambuf<T, Tr>::is_open() const
 { return ibeg_ != 0 || obeg_ != 0; }
 
 template<typename T, typename Tr>
-void direct_streambuf<T, Tr>::close() 
-{ 
+void direct_streambuf<T, Tr>::close()
+{
     base_type* self = this;
     detail::execute_all( detail::call_member_close(*self, BOOST_IOS::in),
                          detail::call_member_close(*self, BOOST_IOS::out),
@@ -136,24 +136,24 @@ void direct_streambuf<T, Tr>::close()
 }
 
 template<typename T, typename Tr>
-typename direct_streambuf<T, Tr>::int_type 
+typename direct_streambuf<T, Tr>::int_type
 direct_streambuf<T, Tr>::underflow()
 {
-    if (!ibeg_) 
+    if (!ibeg_)
         boost::throw_exception(cant_read());
-    if (!gptr()) 
+    if (!gptr())
         init_get_area();
-    return gptr() != iend_ ? 
-        traits_type::to_int_type(*gptr()) : 
+    return gptr() != iend_ ?
+        traits_type::to_int_type(*gptr()) :
         traits_type::eof();
 }
 
 template<typename T, typename Tr>
-typename direct_streambuf<T, Tr>::int_type 
+typename direct_streambuf<T, Tr>::int_type
 direct_streambuf<T, Tr>::pbackfail(int_type c)
 {
     using namespace std;
-    if (!ibeg_) 
+    if (!ibeg_)
         boost::throw_exception(cant_read());
     if (gptr() != 0 && gptr() != ibeg_) {
         gbump(-1);
@@ -165,7 +165,7 @@ direct_streambuf<T, Tr>::pbackfail(int_type c)
 }
 
 template<typename T, typename Tr>
-typename direct_streambuf<T, Tr>::int_type 
+typename direct_streambuf<T, Tr>::int_type
 direct_streambuf<T, Tr>::overflow(int_type c)
 {
     using namespace std;
@@ -194,7 +194,7 @@ template<typename T, typename Tr>
 inline typename direct_streambuf<T, Tr>::pos_type
 direct_streambuf<T, Tr>::seekpos
     (pos_type sp, BOOST_IOS::openmode which)
-{ 
+{
     return seek_impl(position_to_offset(sp), BOOST_IOS::beg, which);
 }
 

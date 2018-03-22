@@ -19,7 +19,7 @@ import numbers ;
 
 feature.extend-subfeature toolset clang : platform : linux ;
 
-toolset.inherit-generators clang-linux 
+toolset.inherit-generators clang-linux
     <toolset>clang <toolset-clang:platform>linux : gcc
   : gcc.mingw.link gcc.mingw.link.dll gcc.cygwin.link gcc.cygwin.link.dll ;
 generators.override clang-linux.prebuilt : builtin.lib-generator ;
@@ -29,35 +29,35 @@ generators.override clang-linux.searched-lib-generator : searched-lib-generator 
 # Override default do-nothing generators.
 generators.override clang-linux.compile.c.pch   : pch.default-c-pch-generator   ;
 generators.override clang-linux.compile.c++.pch : pch.default-cpp-pch-generator ;
- 
+
 type.set-generated-target-suffix PCH
   : <toolset>clang <toolset-clang:platform>linux : pth ;
 
 toolset.inherit-rules clang-linux : gcc ;
-toolset.inherit-flags clang-linux : gcc 
+toolset.inherit-flags clang-linux : gcc
   : <inlining>off <inlining>on <inlining>full
     <optimization>space <optimization>speed
     <warnings>off <warnings>all <warnings>on ;
-        
+
 if [ MATCH (--debug-configuration) : [ modules.peek : ARGV ] ] {
   .debug-configuration = true ;
 }
-                       
+
 rule init ( version ? :  command * : options * ) {
-  command = [ common.get-invocation-command clang-linux : clang++ 
+  command = [ common.get-invocation-command clang-linux : clang++
     : $(command) ] ;
-                
+
   # Determine the version
   local command-string = $(command:J=" ") ;
 
-  if $(command) {    
+  if $(command) {
     version ?= [ MATCH "version ([0-9.]+)"
       : [ SHELL "$(command-string) --version" ] ] ;
   }
 
   local condition = [ common.check-init-parameters clang-linux
     : version $(version) ] ;
-    
+
   common.handle-options clang-linux : $(condition) : $(command) : $(options) ;
 
   gcc.init-link-flags clang-linux gnu $(condition) ;
@@ -120,7 +120,7 @@ rule compile.c ( targets * : sources * : properties * )
 {
   setup-threading $(targets) : $(sources) : $(properties) ;
   gcc.setup-fpic $(targets) : $(sources) : $(properties) ;
-  gcc.setup-address-model $(targets) : $(sources) : $(properties) ;    
+  gcc.setup-address-model $(targets) : $(sources) : $(properties) ;
 
   local pth-file = [ on $(<) return $(PCH_FILE) ] ;
 
@@ -149,7 +149,7 @@ actions compile.c.with-pch bind PCH_FILE
 rule compile.c++.pch ( targets * : sources * : properties * ) {
   setup-threading $(targets) : $(sources) : $(properties) ;
   gcc.setup-fpic $(targets) : $(sources) : $(properties) ;
-  gcc.setup-address-model $(targets) : $(sources) : $(properties) ;    
+  gcc.setup-address-model $(targets) : $(sources) : $(properties) ;
 }
 
 actions compile.c++.pch {
@@ -159,7 +159,7 @@ actions compile.c++.pch {
 rule compile.c.pch ( targets * : sources * : properties * ) {
   setup-threading $(targets) : $(sources) : $(properties) ;
   gcc.setup-fpic $(targets) : $(sources) : $(properties) ;
-  gcc.setup-address-model $(targets) : $(sources) : $(properties) ;    
+  gcc.setup-address-model $(targets) : $(sources) : $(properties) ;
 }
 
 actions compile.c.pch
@@ -174,7 +174,7 @@ SPACE = " " ;
 
 rule link ( targets * : sources * : properties * ) {
   setup-threading $(targets) : $(sources) : $(properties) ;
-  gcc.setup-address-model $(targets) : $(sources) : $(properties) ;    
+  gcc.setup-address-model $(targets) : $(sources) : $(properties) ;
   SPACE on $(targets) = " " ;
   JAM_SEMAPHORE on $(targets) = <s>clang-linux-link-semaphore ;
 }
@@ -185,7 +185,7 @@ actions link bind LIBRARIES {
 
 rule link.dll ( targets * : sources * : properties * ) {
   setup-threading $(targets) : $(sources) : $(properties) ;
-  gcc.setup-address-model $(targets) : $(sources) : $(properties) ;    
+  gcc.setup-address-model $(targets) : $(sources) : $(properties) ;
   SPACE on $(targets) = " " ;
   JAM_SEMAPHORE on $(targets) = <s>clang-linux-link-semaphore ;
 }
@@ -194,10 +194,10 @@ rule setup-threading ( targets * : sources * : properties * )
 {
 
     local target = [ feature.get-values target-os : $(properties) ] ;
-        
+
     switch $(target)
     {
-        case windows : 
+        case windows :
             local threading = [ feature.get-values threading : $(properties) ] ;
             if $(threading) = multi
                 {

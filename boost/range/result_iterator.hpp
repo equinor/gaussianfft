@@ -22,11 +22,11 @@ namespace boost
     //
     // This interface is deprecated, use range_iterator<T>
     //
-    
+
     template< typename C >
     struct range_result_iterator : range_iterator<C>
     { };
-    
+
 } // namespace boost
 
 

@@ -28,7 +28,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 // macro BOOST_VARIANT_NO_TYPE_SEQUENCE_SUPPORT
 //
-// Defined if variant does not support make_variant_over (see below). 
+// Defined if variant does not support make_variant_over (see below).
 //
 #if defined(BOOST_NO_USING_DECLARATION_OVERLOADS_FROM_TYPENAME_BASE)
 #   define BOOST_VARIANT_NO_TYPE_SEQUENCE_SUPPORT
@@ -55,8 +55,8 @@
 // macro BOOST_VARIANT_DO_NOT_USE_VARIADIC_TEMPLATES
 //
 
-/* 
-    GCC before 4.0 had no variadic tempaltes; 
+/*
+    GCC before 4.0 had no variadic tempaltes;
     GCC 4.6 has incomplete implementation of variadic templates.
 
     MSVC2015 Update 1 has variadic templates, but they have issues.
@@ -105,7 +105,7 @@
 //      BOOST_VARIANT_ENUM_SHIFTED_PARAMS(Something)            => SomethingN...
 //      BOOST_VARIANT_ENUM_SHIFTED_PARAMS(Something)            => SomethingN...
 //
-// Rationale: Cleaner, simpler code for clients of variant library. Minimal 
+// Rationale: Cleaner, simpler code for clients of variant library. Minimal
 // code modifications to move from C++03 to C++11.
 //
 // With BOOST_VARIANT_DO_NOT_USE_VARIADIC_TEMPLATES defined
@@ -171,7 +171,7 @@ namespace detail { namespace variant {
 
 ///////////////////////////////////////////////////////////////////////////////
 // (detail) class void_ and class template convert_void
-// 
+//
 // Provides the mechanism by which void(NN) types are converted to
 // mpl::void_ (and thus can be passed to mpl::list).
 //

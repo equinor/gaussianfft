@@ -7,7 +7,7 @@
 # include <boost/python/detail/prefix.hpp>
 # include <boost/static_assert.hpp>
 
-namespace boost { namespace python { namespace converter { 
+namespace boost { namespace python { namespace converter {
 
 // The type of stored function pointers which actually do conversion
 // by-value. The void* points to the object to be converted, and

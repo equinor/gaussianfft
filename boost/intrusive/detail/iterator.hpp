@@ -92,7 +92,7 @@ template<class I, class Tag, class R = void>
 struct iterator_enable_if_tag
    : ::boost::move_detail::enable_if_c
       < ::boost::move_detail::is_same
-         < typename boost::intrusive::iterator_traits<I>::iterator_category 
+         < typename boost::intrusive::iterator_traits<I>::iterator_category
          , Tag
          >::value
          , R>
@@ -102,7 +102,7 @@ template<class I, class Tag, class R = void>
 struct iterator_disable_if_tag
    : ::boost::move_detail::enable_if_c
       < !::boost::move_detail::is_same
-         < typename boost::intrusive::iterator_traits<I>::iterator_category 
+         < typename boost::intrusive::iterator_traits<I>::iterator_category
          , Tag
          >::value
          , R>
@@ -115,11 +115,11 @@ template<class I, class Tag, class Tag2, class R = void>
 struct iterator_enable_if_convertible_tag
    : ::boost::move_detail::enable_if_c
       < ::boost::move_detail::is_same_or_convertible
-         < typename boost::intrusive::iterator_traits<I>::iterator_category 
+         < typename boost::intrusive::iterator_traits<I>::iterator_category
          , Tag
          >::value &&
         !::boost::move_detail::is_same_or_convertible
-         < typename boost::intrusive::iterator_traits<I>::iterator_category 
+         < typename boost::intrusive::iterator_traits<I>::iterator_category
          , Tag2
          >::value
          , R>

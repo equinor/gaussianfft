@@ -224,7 +224,7 @@ BOOST_MP_FORCEINLINE typename enable_if_c<!is_trivial_cpp_int<cpp_int_backend<Mi
       cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& result,
       const cpp_int_backend<MinBits2, MaxBits2, SignType2, Checked2, Allocator2>& o) BOOST_MP_NOEXCEPT_IF((is_non_throwing_cpp_int<cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1> >::value))
 {
-   bitwise_op(result, o, bit_and(), 
+   bitwise_op(result, o, bit_and(),
       mpl::bool_<std::numeric_limits<number<cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1> > >::is_signed || std::numeric_limits<number<cpp_int_backend<MinBits2, MaxBits2, SignType2, Checked2, Allocator2> > >::is_signed>());
 }
 

@@ -27,7 +27,7 @@ namespace boost{ namespace icl
 
     //--------------------------------------------------------------------------
     template <class Type>
-    struct has_difference_type 
+    struct has_difference_type
       : mpl::bool_<detail::has_difference_type<Type>::value>
     {};
 
@@ -36,10 +36,10 @@ namespace boost{ namespace icl
     struct is_subtraction_closed
     {
         typedef is_subtraction_closed type;
-        BOOST_STATIC_CONSTANT(bool, 
+        BOOST_STATIC_CONSTANT(bool,
             value = (mpl::or_< is_numeric<Type>
                              , mpl::and_< has_rep_type<Type>
-                                        , mpl::not_<has_difference_type<Type> > 
+                                        , mpl::not_<has_difference_type<Type> >
                                         >
                              >::value)
             );
@@ -50,15 +50,15 @@ namespace boost{ namespace icl
     struct has_difference
     {
         typedef has_difference type;
-        BOOST_STATIC_CONSTANT(bool, 
+        BOOST_STATIC_CONSTANT(bool,
             value = (mpl::or_< is_subtraction_closed<Type>
-                             , is_pointer<Type> 
-                             , has_difference_type<Type> >::value) 
+                             , is_pointer<Type>
+                             , has_difference_type<Type> >::value)
             );
     };
 
     //--------------------------------------------------------------------------
-    template <class Type, bool has_difference, bool has_diff_type> 
+    template <class Type, bool has_difference, bool has_diff_type>
     struct get_difference_type;
 
     template <class Type>
@@ -86,11 +86,11 @@ namespace boost{ namespace icl
     };
 
     //--------------------------------------------------------------------------
-    template<class Type> 
+    template<class Type>
     struct difference_type_of
-    { 
-        typedef typename 
-            get_difference_type< Type 
+    {
+        typedef typename
+            get_difference_type< Type
                                , has_difference<Type>::value
                                , has_difference_type<Type>::value
                                >::type type;

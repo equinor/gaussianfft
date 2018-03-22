@@ -9,14 +9,14 @@ namespace boost { namespace python { namespace detail {
 new_non_null_reference long_base::call(object const& arg_)
 {
     return (detail::new_non_null_reference)PyObject_CallFunction(
-        (PyObject*)&PyLong_Type, const_cast<char*>("(O)"), 
+        (PyObject*)&PyLong_Type, const_cast<char*>("(O)"),
         arg_.ptr());
 }
 
 new_non_null_reference long_base::call(object const& arg_, object const& base)
 {
     return (detail::new_non_null_reference)PyObject_CallFunction(
-        (PyObject*)&PyLong_Type, const_cast<char*>("(OO)"), 
+        (PyObject*)&PyLong_Type, const_cast<char*>("(OO)"),
         arg_.ptr(), base.ptr());
 }
 

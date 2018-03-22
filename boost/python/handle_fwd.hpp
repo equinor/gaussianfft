@@ -7,7 +7,7 @@
 
 # include <boost/python/detail/prefix.hpp>
 
-namespace boost { namespace python { 
+namespace boost { namespace python {
 
 template <class T = PyObject> class handle;
 

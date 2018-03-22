@@ -57,7 +57,7 @@ RealType poisson_table<RealType>::value[10] = {
  * \f$p(i) = \frac{e^{-\lambda}\lambda^i}{i!}\f$
  *
  * This implementation is based on the PTRD algorithm described
- * 
+ *
  *  @blockquote
  *  "The transformed rejection method for generating Poisson random variables",
  *  Wolfgang Hormann, Insurance: Mathematics and Economics
@@ -118,7 +118,7 @@ public:
     private:
         RealType _mean;
     };
-    
+
     /**
      * Constructs a @c poisson_distribution with the parameter @c mean.
      *
@@ -130,7 +130,7 @@ public:
         BOOST_ASSERT(_mean > 0);
         init();
     }
-    
+
     /**
      * Construct an @c poisson_distribution object from the
      * parameters.
@@ -140,7 +140,7 @@ public:
     {
         init();
     }
-    
+
     /**
      * Returns a random variate distributed according to the
      * poisson distribution.
@@ -167,7 +167,7 @@ public:
 
     /** Returns the "mean" parameter of the distribution. */
     RealType mean() const { return _mean; }
-    
+
     /** Returns the smallest value that the distribution can produce. */
     IntType min BOOST_PREVENT_MACRO_SUBSTITUTION() const { return 0; }
     /** Returns the largest value that the distribution can produce. */
@@ -199,7 +199,7 @@ public:
         os << pd.param();
         return os;
     }
-    
+
     /** Reads the parameters of the distribution from a @c std::istream. */
     template<class CharT, class Traits>
     friend std::basic_istream<CharT,Traits>&
@@ -209,7 +209,7 @@ public:
         return is;
     }
 #endif
-    
+
     /** Returns true if the two distributions will produce the same
         sequence of values, given equal generators. */
     friend bool operator==(const poisson_distribution& lhs,
@@ -264,7 +264,7 @@ private:
             _ptrd.v_r = 0.9277 - 3.6224 / (_ptrd.b - 2);
         }
     }
-    
+
     template<class URNG>
     IntType generate(URNG& urng) const
     {

@@ -394,7 +394,7 @@ namespace
             buf.size(),
             NULL
         );
-        
+
         if (retval > 0)
         {
             buf.resize(retval);
@@ -410,7 +410,7 @@ namespace
             buf.resize(buf.size() + buf.size() / 2);
         }
     }
-    
+
     int num_chars = (buf.size() + 1) * 2;
     boost::detail::winapi::LPSTR_ narrow_buffer =
       (boost::detail::winapi::LPSTR_)_alloca(num_chars);

@@ -1,6 +1,6 @@
 // Copyright 2002 The Trustees of Indiana University.
 
-// Use, modification and distribution is subject to the Boost Software 
+// Use, modification and distribution is subject to the Boost Software
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
@@ -33,14 +33,14 @@ namespace multi_array {
 //
 // const_sub_array
 //    multi_array's proxy class to allow multiple overloads of
-//    operator[] in order to provide a clean multi-dimensional array 
+//    operator[] in order to provide a clean multi-dimensional array
 //    interface.
 template <typename T, std::size_t NumDims, typename TPtr>
 class const_sub_array :
   public boost::detail::multi_array::multi_array_impl_base<T,NumDims>
 {
   typedef boost::detail::multi_array::multi_array_impl_base<T,NumDims> super_type;
-public: 
+public:
   typedef typename super_type::value_type value_type;
   typedef typename super_type::const_reference const_reference;
   typedef typename super_type::const_iterator const_iterator;
@@ -76,7 +76,7 @@ public:
     return super_type::access(boost::type<const_reference>(),
                               idx,base_,shape(),strides(),index_bases());
   }
-  
+
   template <typename IndexList>
   const element& operator()(const IndexList& indices) const {
     boost::function_requires<
@@ -88,7 +88,7 @@ public:
 
   // see generate_array_view in base.hpp
   template <int NDims>
-  typename const_array_view<NDims>::type 
+  typename const_array_view<NDims>::type
   operator[](const boost::detail::multi_array::
              index_gen<NumDims,NDims>& indices)
     const {
@@ -161,7 +161,7 @@ public:
   const index* strides() const { return strides_; }
   const index* index_bases() const { return index_base_; }
 
-  size_type num_elements() const { 
+  size_type num_elements() const {
     return std::accumulate(shape(),shape() + num_dimensions(),
                            size_type(1), std::multiplies<size_type>());
   }
@@ -169,9 +169,9 @@ public:
 
 #ifndef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
 protected:
-  template <typename,std::size_t> friend class value_accessor_n;  
+  template <typename,std::size_t> friend class value_accessor_n;
   template <typename,std::size_t,typename> friend class const_sub_array;
-#else    
+#else
 public:  // Should be protected
 #endif
 
@@ -196,13 +196,13 @@ private:
 //
 // sub_array
 //    multi_array's proxy class to allow multiple overloads of
-//    operator[] in order to provide a clean multi-dimensional array 
+//    operator[] in order to provide a clean multi-dimensional array
 //    interface.
 template <typename T, std::size_t NumDims>
 class sub_array : public const_sub_array<T,NumDims,T*>
 {
   typedef const_sub_array<T,NumDims,T*> super_type;
-public: 
+public:
   typedef typename super_type::element element;
   typedef typename super_type::reference reference;
   typedef typename super_type::index index;
@@ -227,7 +227,7 @@ public:
   // Assignment from other ConstMultiArray types.
   template <typename ConstMultiArray>
   sub_array& operator=(const ConstMultiArray& other) {
-    function_requires< boost::multi_array_concepts::ConstMultiArrayConcept< 
+    function_requires< boost::multi_array_concepts::ConstMultiArrayConcept<
         ConstMultiArray, NumDims> >();
 
     // make sure the dimensions agree
@@ -264,7 +264,7 @@ public:
 
   // see generate_array_view in base.hpp
   template <int NDims>
-  typename array_view<NDims>::type 
+  typename array_view<NDims>::type
   operator[](const boost::detail::multi_array::
              index_gen<NumDims,NDims>& indices) {
     typedef typename array_view<NDims>::type return_type;
@@ -325,7 +325,7 @@ public:
 
   // see generate_array_view in base.hpp
   template <int NDims>
-  typename const_array_view<NDims>::type 
+  typename const_array_view<NDims>::type
   operator[](const boost::detail::multi_array::
              index_gen<NumDims,NDims>& indices)
     const {
@@ -335,7 +335,7 @@ public:
   const_iterator begin() const {
     return super_type::begin();
   }
-  
+
   const_iterator end() const {
     return super_type::end();
   }
@@ -380,8 +380,8 @@ template <typename Array, int N>
 class const_subarray_gen {
   typedef typename Array::element element;
 public:
-  typedef boost::detail::multi_array::const_sub_array<element,N> type;  
+  typedef boost::detail::multi_array::const_sub_array<element,N> type;
 };
 } // namespace boost
-  
+
 #endif // SUBARRAY_RG071801_HPP

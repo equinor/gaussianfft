@@ -52,11 +52,11 @@ namespace detail
       )
   {
       enum { arity = mpl::size<Sig>::value - 1 };
-      
+
       typedef typename detail::error::more_keywords_than_function_arguments<
           NumKeywords::value, arity
           >::too_many_keywords assertion BOOST_ATTRIBUTE_UNUSED;
-    
+
       return objects::function_object(
           detail::caller<F,CallPolicies,Sig>(f, p)
         , kw);
@@ -89,7 +89,7 @@ namespace detail
       );
   }
   // }
-  
+
  }
 
 //   These overloaded functions wrap a function or member function
@@ -120,7 +120,7 @@ object make_function(
     typedef typename
         detail::is_reference_to_keywords<KeywordsOrSignature&>::type
         is_kw;
-    
+
     return detail::make_function_dispatch(
         f
       , policies
@@ -147,7 +147,7 @@ object make_function(
 }
 // }
 
-}} 
+}}
 
 
 #endif // MAKE_FUNCTION_DWA20011221_HPP

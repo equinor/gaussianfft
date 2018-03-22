@@ -49,7 +49,7 @@ private:
 };
 
 /**
- * A token used to represent an allocated tag. 
+ * A token used to represent an allocated tag.
  */
 class tag_allocator::token {
 public:
@@ -64,7 +64,7 @@ public:
 
 private:
   /// Create a token with a specific tag from the given tag_allocator
-  token(tag_allocator* allocator, int tag) 
+  token(tag_allocator* allocator, int tag)
     : allocator(allocator), tag_(tag) { }
 
   /// Undefined: tokens are not copy-assignable

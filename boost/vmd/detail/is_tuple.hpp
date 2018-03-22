@@ -9,7 +9,7 @@
 
 #include <boost/vmd/detail/is_entire.hpp>
 #include <boost/vmd/detail/parens_split.hpp>
-  
+
 #define BOOST_VMD_DETAIL_IS_TUPLE(vseq) \
     BOOST_VMD_DETAIL_IS_ENTIRE \
         ( \

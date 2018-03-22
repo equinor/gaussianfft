@@ -17,7 +17,7 @@ int main()
                 boost::python::pointee<std::auto_ptr<char**> >::type
                 , char**
          >::value));
-    
+
     BOOST_STATIC_ASSERT(
         (boost::python::detail::is_same<
              boost::python::pointee<boost::shared_ptr<A> >::type
@@ -29,6 +29,6 @@ int main()
                 boost::python::pointee<char*>::type
                 , char
          >::value));
-#endif 
+#endif
     return 0;
 }

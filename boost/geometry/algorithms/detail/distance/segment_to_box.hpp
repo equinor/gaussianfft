@@ -88,7 +88,7 @@ private:
         <
             comparable_strategy, segment_point, box_point
         >::type comparable_return_type;
-    
+
 public:
     typedef typename strategy::distance::services::return_type
         <
@@ -119,7 +119,7 @@ public:
         // get box points
         std::vector<box_point> box_points(4);
         detail::assign_box_corners_oriented<true>(box, box_points);
- 
+
         comparable_return_type cd[6];
         for (unsigned int i = 0; i < 4; ++i)
         {
@@ -235,7 +235,7 @@ public:
         // get box points
         std::vector<box_point> box_points(4);
         detail::assign_box_corners_oriented<true>(box, box_points);
- 
+
         comparable_return_type cd[6];
         for (unsigned int i = 0; i < 4; ++i)
         {

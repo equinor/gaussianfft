@@ -286,7 +286,7 @@ local rule load-jamfile ( dir : jamfile-module : synthesize ? )
         errors.error "Multiple Jamfiles found at '$(dir)'" :
             "Filenames are: " $(jamfile-to-load:D=) ;
     }
-    
+
     if ! $(jamfile-to-load) && $(synthesize)
     {
         jamfile-to-load = $(dir)/@ ;
@@ -936,7 +936,7 @@ rule extension ( id space ? : options * : * )
         {
             root-project = [ project.attribute $(root-project) parent-module ] ;
         }
-        
+
         # Default to creating extensions in /ext/.. project space.
         local id = $(1[1]) ;
         local space = $(1[2]) ;

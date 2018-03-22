@@ -54,7 +54,7 @@ template <int nargs> struct make_holder;
 # if !(BOOST_WORKAROUND(__MWERKS__, > 0x3100)                      \
         && BOOST_WORKAROUND(__MWERKS__, BOOST_TESTED_AT(0x3201)))
 #  line BOOST_PP_LINE(__LINE__, make_holder.hpp)
-# endif 
+# endif
 
 # define N BOOST_PP_ITERATION()
 
@@ -69,17 +69,17 @@ struct make_holder<N>
         // choosing the type that will be forwarded on to the holder's
         // templated constructor.
         typedef typename mpl::begin<ArgList>::type iter0;
-        
+
 #  define BOOST_PP_LOCAL_MACRO(n)               \
     typedef typename mpl::deref<iter##n>::type t##n;        \
     typedef typename forward<t##n>::type f##n;  \
     typedef typename mpl::next<iter##n>::type   \
         BOOST_PP_CAT(iter,BOOST_PP_INC(n)); // Next iterator type
-        
+
 #  define BOOST_PP_LOCAL_LIMITS (0, N-1)
 #  include BOOST_PP_LOCAL_ITERATE()
-# endif 
-        
+# endif
+
         static void execute(
 #if !defined( BOOST_PYTHON_NO_PY_SIGNATURES) && defined( BOOST_PYTHON_PY_SIGNATURES_PROPER_INIT_SELF_TYPE)
             boost::python::detail::python_class<BOOST_DEDUCED_TYPENAME Holder::value_type> *p
@@ -89,7 +89,7 @@ struct make_holder<N>
             BOOST_PP_ENUM_TRAILING_BINARY_PARAMS_Z(1, N, t, a))
         {
             typedef instance<Holder> instance_t;
-            
+
             void* memory = Holder::allocate(p, offsetof(instance_t, storage), sizeof(Holder));
             try {
                 (new (memory) Holder(

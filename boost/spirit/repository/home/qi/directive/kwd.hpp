@@ -660,7 +660,7 @@ namespace boost { namespace spirit { namespace qi
         {
            return result_type(subject
                         ,compile<qi::domain>(fusion::at_c<0>(term.args),modifiers)
-                        ,MakeDirectiveHelper::make_iterator(term.args)                        
+                        ,MakeDirectiveHelper::make_iterator(term.args)
                         );
         }
         // Select which object type to return
@@ -758,7 +758,7 @@ namespace boost { namespace spirit { namespace qi
         }
 
     };
- 
+
    template <typename T1,  typename Subject, typename Modifiers>
     struct make_directive<
         terminal_ex<repository::tag::dkwd, fusion::vector1<T1> >, Subject, Modifiers>
@@ -774,7 +774,7 @@ namespace boost { namespace spirit { namespace qi
         }
 
     };
- 
+
 
 
     // Directive ikwd(key)[p]
@@ -829,7 +829,7 @@ namespace boost { namespace spirit { namespace qi
     // Directive kwd(key,exact)[p]
         template <typename T>
     struct make_exact_helper
-    { 
+    {
         typedef repository::qi::kwd_exact_iterator<T> iterator_type;
         template<typename Args>
         static iterator_type make_iterator(Args const& args)
@@ -859,7 +859,7 @@ namespace boost { namespace spirit { namespace qi
         }
 
     };
-  
+
     template <typename T1, typename T2,  typename Subject, typename Modifiers>
     struct make_directive<
         terminal_ex<repository::tag::dkwd, fusion::vector2<T1,T2> >, Subject, Modifiers>
@@ -871,7 +871,7 @@ namespace boost { namespace spirit { namespace qi
                                               , mpl::true_
                                               , make_exact_helper<T2>
                                               > make_directive_type;
-        
+
         typedef typename make_directive_type::result_type result_type;
         template <typename Terminal>
         result_type operator()(
@@ -882,7 +882,7 @@ namespace boost { namespace spirit { namespace qi
         }
 
     };
-  
+
 
     // Directive ikwd(key,exact)[p]
     template <typename T1, typename T2,  typename Subject, typename Modifiers>
@@ -936,7 +936,7 @@ namespace boost { namespace spirit { namespace qi
 
     template <typename T>
     struct make_finite_helper
-    { 
+    {
         typedef repository::qi::kwd_finite_iterator<T> iterator_type;
         template<typename Args>
         static iterator_type make_iterator(Args const& args)
@@ -957,8 +957,8 @@ namespace boost { namespace spirit { namespace qi
                                               , mpl::false_
                                               , make_finite_helper<T2>
                                               > make_directive_type;
-        
-        
+
+
         typedef typename make_directive_type::result_type result_type;
         template <typename Terminal>
         result_type operator()(
@@ -969,12 +969,12 @@ namespace boost { namespace spirit { namespace qi
         }
 
     };
-  
+
     template <typename T1, typename T2,  typename Subject, typename Modifiers>
     struct make_directive<
         terminal_ex<repository::tag::dkwd, fusion::vector3<T1,T2,T2> >, Subject, Modifiers>
     {
-       
+
         typedef make_directive_internal_2_args< T1
                                               , T2
                                               , Subject
@@ -982,7 +982,7 @@ namespace boost { namespace spirit { namespace qi
                                               , mpl::true_
                                               , make_finite_helper<T2>
                                               > make_directive_type;
- 
+
         typedef typename make_directive_type::result_type result_type;
         template <typename Terminal>
         result_type operator()(
@@ -1052,7 +1052,7 @@ namespace boost { namespace spirit { namespace qi
 
     template <typename T>
     struct make_infinite_helper
-    { 
+    {
         typedef repository::qi::kwd_infinite_iterator<T> iterator_type;
         template<typename Args>
         static iterator_type make_iterator(Args const& args)
@@ -1074,7 +1074,7 @@ namespace boost { namespace spirit { namespace qi
                                               , mpl::false_
                                               , make_infinite_helper<T2>
                                               > make_directive_type;
-        
+
         typedef typename make_directive_type::result_type result_type;
         template <typename Terminal>
         result_type operator()(
@@ -1085,7 +1085,7 @@ namespace boost { namespace spirit { namespace qi
         }
 
     };
-  
+
     template <typename T1, typename T2,  typename Subject, typename Modifiers>
     struct make_directive<
         terminal_ex<repository::tag::dkwd, fusion::vector3<T1,T2,inf_type> >, Subject, Modifiers>
@@ -1097,7 +1097,7 @@ namespace boost { namespace spirit { namespace qi
                                               , mpl::false_
                                               , make_infinite_helper<T2>
                                               > make_directive_type;
-    
+
         typedef typename make_directive_type::result_type result_type;
         template <typename Terminal>
         result_type operator()(

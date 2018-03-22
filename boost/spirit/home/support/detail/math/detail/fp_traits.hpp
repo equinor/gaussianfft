@@ -55,7 +55,7 @@ template<class T, class U> struct fp_traits_impl;
   This is traits class that describes the binary structure of floating
   point numbers of C++ type T and precision U
 
-Requirements: 
+Requirements:
 
   T = float, double or long double
   U = single_precision_tag, double_precision_tag
@@ -170,15 +170,15 @@ template<class T, class U> void fp_traits_impl<T,U>::do_init_()
 
         case 0x3f400000:      // IEEE single precision format
 
-            offset_  = k;      
+            offset_  = k;
             exponent = 0x7f800000;
             flag     = 0x00000000;
             mantissa = 0x007fffff;
             return;
 
-        case 0x3fe80000:      // IEEE double precision format 
+        case 0x3fe80000:      // IEEE double precision format
                               // and PowerPC extended double precision format
-            offset_  = k;      
+            offset_  = k;
             exponent = 0x7ff00000;
             flag     = 0x00000000;
             mantissa = 0x000fffff;
@@ -193,13 +193,13 @@ template<class T, class U> void fp_traits_impl<T,U>::do_init_()
             // If we do get here, then we have failed to detect the Motorola
             // processor at compile time.
 
-            BOOST_ASSERT(false && 
-                "Failed to detect the Motorola processor at compile time");        
+            BOOST_ASSERT(false &&
+                "Failed to detect the Motorola processor at compile time");
             return;
 
         case 0x3ffe8000:      // IEEE extended double precision format
                               // with 15 exponent bits
-            offset_  = k;      
+            offset_  = k;
             exponent = 0x7fff0000;
             flag     = 0x00000000;
             mantissa = 0x0000ffff;
@@ -218,7 +218,7 @@ template<class T, class U> void fp_traits_impl<T,U>::do_init_()
         }
     }
 
-    BOOST_ASSERT(false); 
+    BOOST_ASSERT(false);
 
     // Unknown format.
 }

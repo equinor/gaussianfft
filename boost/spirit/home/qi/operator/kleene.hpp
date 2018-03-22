@@ -128,7 +128,7 @@ namespace boost { namespace spirit { namespace traits
       , typename Iterator>
     struct handles_container<qi::kleene<Subject>, Attribute
           , Context, Iterator>
-      : mpl::true_ {}; 
+      : mpl::true_ {};
 }}}
 
 #endif

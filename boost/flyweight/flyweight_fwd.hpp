@@ -26,7 +26,7 @@
 #endif
 
 namespace boost{
-  
+
 namespace flyweights{
 
 template<
@@ -135,7 +135,7 @@ BOOST_FLYWEIGHT_COMPLETE_COMP_OPS_DECL(
     T2 BOOST_PP_COMMA() BOOST_FLYWEIGHT_TEMPL_ARGS(2)
   >)
 #endif /* !defined(BOOST_NO_FUNCTION_TEMPLATE_ORDERING) */
-  
+
 template<typename T,BOOST_FLYWEIGHT_TYPENAME_TEMPL_ARGS(_)>
 inline void swap(
   flyweight<T,BOOST_FLYWEIGHT_TEMPL_ARGS(_)>& x,
@@ -179,7 +179,7 @@ using flyweights::flyweight;
 namespace std{
 template <class T> BOOST_FLYWEIGHT_STD_HASH_STRUCT_KEYWORD hash;
 }
-#else 
+#else
 /* As discussed in http://lists.boost.org/Archives/boost/2011/02/177218.php */
 #include <functional>
 #endif

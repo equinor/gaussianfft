@@ -1,8 +1,8 @@
 // ----------------------------------------------------------------------------
 // Copyright (C) 2002-2006 Marcin Kalicinski
 //
-// Distributed under the Boost Software License, Version 1.0. 
-// (See accompanying file LICENSE_1_0.txt or copy at 
+// Distributed under the Boost Software License, Version 1.0.
+// (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 //
 // For more information, see www.boost.org
@@ -59,7 +59,7 @@ namespace boost { namespace property_tree
 
             typedef basic_ptree<K, D, C> tree;
             typedef typename tree::value_type value_type;
-    
+
             bsl::collection_size_type count;
             ar >> BOOST_SERIALIZATION_NVP(count);
             bsl::item_version_type item_version(0);

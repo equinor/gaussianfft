@@ -20,17 +20,17 @@
 namespace boost { namespace graph {
 
   template <class Property, class Graph>
-  void property_on_inedges(Property p, const Graph& g) 
+  void property_on_inedges(Property p, const Graph& g)
   {
     BGL_FORALL_VERTICES_T(u, g, Graph)
       BGL_FORALL_INEDGES_T(u, e, g, Graph)
       request(p, e);
     synchronize(p);
   }
-  
+
   // For reverse graphs
   template <class Property, class Graph>
-  void property_on_outedges(Property p, const Graph& g) 
+  void property_on_outedges(Property p, const Graph& g)
   {
     BGL_FORALL_VERTICES_T(u, g, Graph)
       BGL_FORALL_OUTEDGES_T(u, e, g, Graph)
@@ -39,26 +39,26 @@ namespace boost { namespace graph {
   }
 
   template <class Property, class Graph>
-  void property_on_successors(Property p, const Graph& g) 
+  void property_on_successors(Property p, const Graph& g)
   {
     BGL_FORALL_VERTICES_T(u, g, Graph)
       BGL_FORALL_OUTEDGES_T(u, e, g, Graph)
         request(p, target(e, g));
     synchronize(p);
   }
-  
+
   template <class Property, class Graph>
-  void property_on_predecessors(Property p, const Graph& g) 
+  void property_on_predecessors(Property p, const Graph& g)
   {
     BGL_FORALL_VERTICES_T(u, g, Graph)
       BGL_FORALL_INEDGES_T(u, e, g, Graph)
         request(p, source(e, g));
     synchronize(p);
   }
-  
+
   // Like successors and predecessors but saves one synchronize (and a call)
   template <class Property, class Graph>
-  void property_on_adjacents(Property p, const Graph& g) 
+  void property_on_adjacents(Property p, const Graph& g)
   {
     BGL_FORALL_VERTICES_T(u, g, Graph) {
       BGL_FORALL_OUTEDGES_T(u, e, g, Graph)
@@ -102,19 +102,19 @@ namespace boost { namespace graph {
 
       int operator() (typename graph_traits<Graph>::vertex_descriptor v)
       { return get(global_index_map, v); }
-    
+
     protected:
-      boost::parallel::global_index_map<VertexIndexMap, VertexGlobalMap> 
+      boost::parallel::global_index_map<VertexIndexMap, VertexGlobalMap>
       global_index_map;
     };
 
     template<typename T>
     struct additive_reducer {
       BOOST_STATIC_CONSTANT(bool, non_default_resolver = true);
-      
+
       template<typename K>
       T operator()(const K&) const { return T(0); }
-      
+
       template<typename K>
       T operator()(const K&, const T& local, const T& remote) const { return local + remote; }
     };
@@ -122,12 +122,12 @@ namespace boost { namespace graph {
     template <typename T>
     struct choose_min_reducer {
       BOOST_STATIC_CONSTANT(bool, non_default_resolver = true);
-      
+
       template<typename K>
       T operator()(const K&) const { return (std::numeric_limits<T>::max)(); }
-      
+
       template<typename K>
-      T operator()(const K&, const T& x, const T& y) const 
+      T operator()(const K&, const T& x, const T& y) const
       { return x < y ? x : y; }
     };
 

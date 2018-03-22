@@ -39,7 +39,7 @@ int main(int argc, char* argv[])
       }
     }
   }
-  
+
   catch (const std::exception& ex)
   {
     std::cout << "************* exception *****************\n";
@@ -47,4 +47,4 @@ int main(int argc, char* argv[])
   }
 
   return 0;
-}  
+}

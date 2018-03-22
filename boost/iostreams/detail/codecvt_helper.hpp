@@ -7,11 +7,11 @@
 
 // Contains the definition of the template codecvt_helper, useful for
 // defining specializations of std::codecvt where state_type != mbstate_t.
-// Compensates for the fact that some standard library implementations 
-// do not derive the primiary codecvt template from locale::facet or 
+// Compensates for the fact that some standard library implementations
+// do not derive the primiary codecvt template from locale::facet or
 // provide the correct member types and functions.
 
-// Usage: 
+// Usage:
 //
 // // In global namespace:
 // BOOST_IOSTREAMS_CODECVT_SPEC(mystate)
@@ -22,7 +22,7 @@
 //
 // // Or:
 // struct mycodecvt : codecvt_helper<wchar_t, char, State> { ... };
-// 
+//
 // Etc.
 
 #ifndef BOOST_IOSTREAMS_DETAIL_CODECVT_HELPER_HPP_INCLUDED
@@ -82,7 +82,7 @@ public:
     typedef Extern  extern_type;
     typedef State   state_type;
 
-    codecvt_impl(std::size_t refs = 0) : std::locale::facet(refs) { } 
+    codecvt_impl(std::size_t refs = 0) : std::locale::facet(refs) { }
 
     std::codecvt_base::result
     in( State& state, const Extern* first1, const Extern* last1,
@@ -112,7 +112,7 @@ public:
 
     int encoding() const throw() { return do_encoding(); }
 
-    int length( BOOST_IOSTREAMS_CODECVT_CV_QUALIFIER State& state, 
+    int length( BOOST_IOSTREAMS_CODECVT_CV_QUALIFIER State& state,
                 const Extern* first1, const Extern* last1,
                 std::size_t len2 ) const throw()
     {
@@ -120,14 +120,14 @@ public:
     }
 protected:
     std::codecvt_base::result
-    virtual do_in( State&, const Extern*, const Extern*, const Extern*&, 
+    virtual do_in( State&, const Extern*, const Extern*, const Extern*&,
                    Intern*, Intern*, Intern*& ) const
     {
         return std::codecvt_base::noconv;
     }
 
     std::codecvt_base::result
-    virtual do_out( State&, const Intern*, const Intern*, const Intern*&, 
+    virtual do_out( State&, const Intern*, const Intern*, const Intern*&,
                     Extern*, Extern*, Extern*& ) const
     {
         return std::codecvt_base::noconv;
@@ -145,7 +145,7 @@ protected:
 
     virtual int do_encoding() const throw() { return 1; }
 
-    virtual int do_length( BOOST_IOSTREAMS_CODECVT_CV_QUALIFIER State&, 
+    virtual int do_length( BOOST_IOSTREAMS_CODECVT_CV_QUALIFIER State&,
                            const Extern* first1, const Extern* last1,
                            std::size_t len2 ) const throw()
     {
@@ -187,15 +187,15 @@ protected:
 #endif // no primary codecvt definition, or empty definition.
 
 namespace boost { namespace iostreams { namespace detail {
-                    
+
 //------------------Definition of codecvt_helper------------------------------//
 
 template<typename Intern, typename Extern, typename State>
-struct codecvt_helper : std::codecvt<Intern, Extern, State> { 
+struct codecvt_helper : std::codecvt<Intern, Extern, State> {
     typedef Intern  intern_type;
     typedef Extern  extern_type;
     typedef State   state_type;
-    codecvt_helper(std::size_t refs = 0) 
+    codecvt_helper(std::size_t refs = 0)
     #if !defined(BOOST_IOSTREAMS_NO_CODECVT_CTOR_FROM_SIZE_T)
         : std::codecvt<Intern, Extern, State>(refs)
     #else

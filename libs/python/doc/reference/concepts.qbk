@@ -69,7 +69,7 @@ In the table below, `X` denotes a model of `Extractor` and `a` denotes an instan
 ]
 [endsect]
 [section Notes]
-Informally, an Extractor's execute member must be a non-overloaded static function whose single argument is a Python object type. Acceptable Python object types include those publicly (and unambiguously) derived from PyObject, and POD types which are layout-compatible with PyObject. 
+Informally, an Extractor's execute member must be a non-overloaded static function whose single argument is a Python object type. Acceptable Python object types include those publicly (and unambiguously) derived from PyObject, and POD types which are layout-compatible with PyObject.
 [endsect]
 [endsect]
 [section HolderGenerator]
@@ -120,7 +120,7 @@ Models of the ObjectWrapper concept have [link object_wrappers.boost_python_obje
 [endsect]
 [section TypeWrapper Concept Requirements]
 TypeWrapper is a refinement of [link concepts.objectwrapper.objectwrapper_concept_requiremen ObjectWrapper] which is associated with a particular Python type `X`. For a given TypeWrapper `T`, a valid constructor expression ``T(a1, a2,...an)`` builds a new T object managing the result of invoking X with arguments corresponding to ``object(a1), object(a2),...object(an)``.
-When used as arguments to wrapped C++ functions, or as the template parameter to [link to_from_python_type_conversion.boost_python_extract_hpp.class_template_extract extract<>], only instances of the associated Python type will be considered a match. 
+When used as arguments to wrapped C++ functions, or as the template parameter to [link to_from_python_type_conversion.boost_python_extract_hpp.class_template_extract extract<>], only instances of the associated Python type will be considered a match.
 [endsect]
 [section Caveat]
 The upshot of the special member function invocation rules when the return type is a TypeWrapper is that it is possible for the returned object to manage a Python object of an inappropriate type. This is not usually a serious problem; the worst-case result is that errors will be detected at runtime a little later than they might otherwise be. For an example of how this can occur, note that the [link object_wrappers.boost_python_dict_hpp.class_dict dict] member function `items` returns an object of type [link object_wrappers.boost_python_list_hpp.class_list list]. Now suppose the user defines this `dict` subclass in Python:
@@ -129,6 +129,6 @@ The upshot of the special member function invocation rules when the return type 
   ...     def items(self):
   ...         return tuple(dict.items(self)) # return a tuple
 ``
-Since an instance of `mydict` is also an instance of `dict`, when used as an argument to a wrapped C++ function, [link object_wrappers.boost_python_dict_hpp.class_dict boost::python::dict] can accept objects of Python type `mydict`. Invoking `items()` on this object can result in an instance of [link object_wrappers.boost_python_list_hpp.class_list boost::python::list] which actually holds a Python `tuple`. Subsequent attempts to use `list` methods (e.g. `append`, or any other mutating operation) on this object will raise the same exception that would occur if you tried to do it from Python. 
+Since an instance of `mydict` is also an instance of `dict`, when used as an argument to a wrapped C++ function, [link object_wrappers.boost_python_dict_hpp.class_dict boost::python::dict] can accept objects of Python type `mydict`. Invoking `items()` on this object can result in an instance of [link object_wrappers.boost_python_list_hpp.class_list boost::python::list] which actually holds a Python `tuple`. Subsequent attempts to use `list` methods (e.g. `append`, or any other mutating operation) on this object will raise the same exception that would occur if you tried to do it from Python.
 [endsect]
 [endsect]

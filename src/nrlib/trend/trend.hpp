@@ -1,4 +1,4 @@
-// $Id: trend.hpp 1744 2018-02-01 12:51:14Z aarnes $
+// $Id: trend.hpp 1760 2018-03-01 09:34:42Z aarnes $
 #ifndef NRLIB_TREND_HPP
 #define NRLIB_TREND_HPP
 
@@ -31,7 +31,7 @@ public:
   virtual double            GetMaxValue(void)                                                                      const = 0;
   virtual double            GetMinValue(void)                                                                      const = 0;
   virtual double            GetMeanValue(void)                                                                     const = 0;
-  virtual void              ScaleToAverage(double factor)                                                                = 0;
+  virtual void              ScaleToAverage(double target)                                                                = 0;
   virtual bool              CheckForNegative()                                                                     const = 0;
 };
 
@@ -59,7 +59,7 @@ public:
   virtual double            GetMaxValue(void)                                                                      const { return trend_                   ;}
   virtual double            GetMinValue(void)                                                                      const { return trend_                   ;}
   virtual double            GetMeanValue(void)                                                                     const { return trend_                   ;}
-  virtual void              ScaleToAverage(double factor)                                                          { trend_ = factor ;}
+  virtual void              ScaleToAverage(double target)                                                          { trend_ = target;}
   virtual bool              CheckForNegative()                                                                     const;
 private:
   double trend_;
@@ -98,7 +98,7 @@ public:
   virtual double            GetMaxValue(void)                                                                     const;
   virtual double            GetMinValue(void)                                                                     const;
   virtual double            GetMeanValue(void)                                                                    const;
-  virtual void              ScaleToAverage(double factor);
+  virtual void              ScaleToAverage(double target);
   virtual bool              CheckForNegative()                                                                    const;
 
 private:
@@ -139,7 +139,7 @@ public:
   virtual double           GetMaxValue(void)                                    const;
   virtual double           GetMinValue(void)                                    const;
   virtual double           GetMeanValue(void)                                   const;
-  virtual void             ScaleToAverage(double factor);
+  virtual void             ScaleToAverage(double target);
   virtual bool             CheckForNegative()                                   const;
 
 private:
@@ -187,7 +187,7 @@ public:
   virtual double           GetMaxValue(void)                                    const;
   virtual double           GetMinValue(void)                                    const;
   virtual double           GetMeanValue(void)                                   const;
-  virtual void             ScaleToAverage(double factor);
+  virtual void             ScaleToAverage(double target);
   virtual bool             CheckForNegative()                                   const;
 private:
   NRLib::Grid<double> trend_;

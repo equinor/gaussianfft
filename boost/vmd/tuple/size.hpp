@@ -27,10 +27,10 @@
 
 /** \def BOOST_VMD_TUPLE_SIZE(tuple)
 
-    \brief  expands to the size of the tuple passed to it. 
+    \brief  expands to the size of the tuple passed to it.
 
-    tuple = tuple whose size is to be extracted. 
-    
+    tuple = tuple whose size is to be extracted.
+
     If the tuple is an empty tuple its size is 0.
     Otherwise the result is the number of elements in the tuple.
 */

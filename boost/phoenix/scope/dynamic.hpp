@@ -128,7 +128,7 @@ namespace boost { namespace phoenix
                     >::type
                 >::type
                 scope_type;
-            typedef 
+            typedef
                 typename scope_type::dynamic_frame_type::tuple_type
                 tuple_type;
 

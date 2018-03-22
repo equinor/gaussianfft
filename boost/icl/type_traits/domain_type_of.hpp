@@ -1,4 +1,4 @@
-/*-----------------------------------------------------------------------------+    
+/*-----------------------------------------------------------------------------+
 Copyright (c) 2008-2009: Joachim Faulhaber
 +------------------------------------------------------------------------------+
    Distributed under the Boost Software License, Version 1.0.
@@ -20,12 +20,12 @@ namespace boost{ namespace icl
     }
 
     template <class Type>
-    struct has_domain_type 
+    struct has_domain_type
       : mpl::bool_<detail::has_domain_type<Type>::value>
     {};
 
 
-    template <class Type, bool has_domain_type> 
+    template <class Type, bool has_domain_type>
     struct get_domain_type;
 
     template <class Type>
@@ -43,7 +43,7 @@ namespace boost{ namespace icl
     template <class Type>
     struct domain_type_of
     {
-        typedef typename 
+        typedef typename
             get_domain_type<Type, has_domain_type<Type>::value>::type type;
     };
 

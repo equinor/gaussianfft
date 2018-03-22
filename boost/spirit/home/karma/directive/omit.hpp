@@ -69,9 +69,9 @@ namespace boost { namespace spirit { namespace karma
         bool generate(OutputIterator& sink, Context& ctx, Delimiter const& d
           , Attribute const& attr) const
         {
-            // We need to actually compile the output operation as we don't 
-            // have any other means to verify, whether the passed attribute is 
-            // compatible with the subject. 
+            // We need to actually compile the output operation as we don't
+            // have any other means to verify, whether the passed attribute is
+            // compatible with the subject.
 
             // omit[] will execute the code, while skip[] doesn't execute it
             if (Execute) {

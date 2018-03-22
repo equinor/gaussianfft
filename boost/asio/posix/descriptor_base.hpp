@@ -42,7 +42,7 @@ public:
    *
    * @par Example
    * @code
-   * boost::asio::posix::stream_descriptor descriptor(io_service); 
+   * boost::asio::posix::stream_descriptor descriptor(io_service);
    * ...
    * boost::asio::descriptor_base::non_blocking_io command(true);
    * descriptor.io_control(command);
@@ -64,7 +64,7 @@ public:
    *
    * @par Example
    * @code
-   * boost::asio::posix::stream_descriptor descriptor(io_service); 
+   * boost::asio::posix::stream_descriptor descriptor(io_service);
    * ...
    * boost::asio::descriptor_base::bytes_readable command(true);
    * descriptor.io_control(command);

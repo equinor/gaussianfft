@@ -328,9 +328,9 @@ class svg_mapper : boost::noncopyable
     }
 
 public :
-    
+
     /*!
-    \brief Constructor, initializing the SVG map. Opens and initializes the SVG. 
+    \brief Constructor, initializing the SVG map. Opens and initializes the SVG.
          Should be called explicitly.
     \param stream Output stream, should be a stream already open
     \param width Width of the SVG map (in SVG pixels)

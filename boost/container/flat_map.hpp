@@ -684,7 +684,7 @@ class flat_map
    //! Effects: If a key equivalent to k already exists in the container, assigns forward<M>(obj)
    //! to the mapped_type corresponding to the key k. If the key does not exist, inserts the new value
    //! as if by insert, constructing it from value_type(k, forward<M>(obj)).
-   //! 
+   //!
    //! No iterators or references are invalidated. If the insertion is successful, pointers and references
    //! to the element obtained while it is held in the node handle are invalidated, and pointers and
    //! references obtained to that element before it was extracted become valid.
@@ -705,7 +705,7 @@ class flat_map
    //! Effects: If a key equivalent to k already exists in the container, assigns forward<M>(obj)
    //! to the mapped_type corresponding to the key k. If the key does not exist, inserts the new value
    //! as if by insert, constructing it from value_type(k, move(obj)).
-   //! 
+   //!
    //! No iterators or references are invalidated. If the insertion is successful, pointers and references
    //! to the element obtained while it is held in the node handle are invalidated, and pointers and
    //! references obtained to that element before it was extracted become valid.
@@ -727,7 +727,7 @@ class flat_map
    //! to the mapped_type corresponding to the key k. If the key does not exist, inserts the new value
    //! as if by insert, constructing it from value_type(k, forward<M>(obj)) and the new element
    //! to the container as close as possible to the position just before hint.
-   //! 
+   //!
    //! No iterators or references are invalidated. If the insertion is successful, pointers and references
    //! to the element obtained while it is held in the node handle are invalidated, and pointers and
    //! references obtained to that element before it was extracted become valid.
@@ -751,7 +751,7 @@ class flat_map
    //! to the mapped_type corresponding to the key k. If the key does not exist, inserts the new value
    //! as if by insert, constructing it from value_type(k, move(obj)) and the new element
    //! to the container as close as possible to the position just before hint.
-   //! 
+   //!
    //! No iterators or references are invalidated. If the insertion is successful, pointers and references
    //! to the element obtained while it is held in the node handle are invalidated, and pointers and
    //! references obtained to that element before it was extracted become valid.
@@ -859,16 +859,16 @@ class flat_map
                                          , boost::forward<Args>(args)...));
    }
 
-   //! <b>Requires</b>: value_type shall be EmplaceConstructible into map from piecewise_construct, 
+   //! <b>Requires</b>: value_type shall be EmplaceConstructible into map from piecewise_construct,
    //! forward_as_tuple(k), forward_as_tuple(forward<Args>(args)...).
-   //! 
+   //!
    //! <b>Effects</b>: If the map already contains an element whose key is equivalent to k, there is no effect. Otherwise
    //! inserts an object of type value_type constructed with piecewise_construct, forward_as_tuple(k),
    //! forward_as_tuple(forward<Args>(args)...).
-   //! 
+   //!
    //! <b>Returns</b>: The bool component of the returned pair is true if and only if the
    //! insertion took place. The returned iterator points to the map element whose key is equivalent to k.
-   //! 
+   //!
    //! <b>Complexity</b>: Logarithmic.
    template <class... Args>
    BOOST_CONTAINER_FORCEINLINE std::pair<iterator, bool> try_emplace(const key_type& k, BOOST_FWD_REF(Args)... args)
@@ -877,15 +877,15 @@ class flat_map
          m_flat_tree.try_emplace(impl_const_iterator(), k, boost::forward<Args>(args)...));
    }
 
-   //! <b>Requires</b>: value_type shall be EmplaceConstructible into map from piecewise_construct, 
+   //! <b>Requires</b>: value_type shall be EmplaceConstructible into map from piecewise_construct,
    //! forward_as_tuple(k), forward_as_tuple(forward<Args>(args)...).
-   //! 
+   //!
    //! <b>Effects</b>: If the map already contains an element whose key is equivalent to k, there is no effect. Otherwise
    //! inserts an object of type value_type constructed with piecewise_construct, forward_as_tuple(k),
    //! forward_as_tuple(forward<Args>(args)...).
-   //! 
+   //!
    //! <b>Returns</b>: The returned iterator points to the map element whose key is equivalent to k.
-   //! 
+   //!
    //! <b>Complexity</b>: Logarithmic in general, but amortized constant if value
    //!   is inserted right before p.
    template <class... Args>
@@ -895,16 +895,16 @@ class flat_map
          (container_detail::force_copy<impl_const_iterator>(hint), k, boost::forward<Args>(args)...).first);
    }
 
-   //! <b>Requires</b>: value_type shall be EmplaceConstructible into map from piecewise_construct, 
+   //! <b>Requires</b>: value_type shall be EmplaceConstructible into map from piecewise_construct,
    //! forward_as_tuple(move(k)), forward_as_tuple(forward<Args>(args)...).
-   //! 
+   //!
    //! <b>Effects</b>: If the map already contains an element whose key is equivalent to k, there is no effect. Otherwise
    //! inserts an object of type value_type constructed with piecewise_construct, forward_as_tuple(move(k)),
    //! forward_as_tuple(forward<Args>(args)...).
-   //! 
+   //!
    //! <b>Returns</b>: The bool component of the returned pair is true if and only if the
    //! insertion took place. The returned iterator points to the map element whose key is equivalent to k.
-   //! 
+   //!
    //! <b>Complexity</b>: Logarithmic.
    template <class... Args>
    BOOST_CONTAINER_FORCEINLINE std::pair<iterator, bool> try_emplace(BOOST_RV_REF(key_type) k, BOOST_FWD_REF(Args)... args)
@@ -913,15 +913,15 @@ class flat_map
          (m_flat_tree.try_emplace(impl_const_iterator(), boost::move(k), boost::forward<Args>(args)...));
    }
 
-   //! <b>Requires</b>: value_type shall be EmplaceConstructible into map from piecewise_construct, 
+   //! <b>Requires</b>: value_type shall be EmplaceConstructible into map from piecewise_construct,
    //! forward_as_tuple(move(k)), forward_as_tuple(forward<Args>(args)...).
-   //! 
+   //!
    //! <b>Effects</b>: If the map already contains an element whose key is equivalent to k, there is no effect. Otherwise
    //! inserts an object of type value_type constructed with piecewise_construct, forward_as_tuple(move(k)),
    //! forward_as_tuple(forward<Args>(args)...).
-   //! 
+   //!
    //! <b>Returns</b>: The returned iterator points to the map element whose key is equivalent to k.
-   //! 
+   //!
    //! <b>Complexity</b>: Logarithmic in general, but amortized constant if value
    //!   is inserted right before p.
    template <class... Args>
@@ -1138,7 +1138,7 @@ class flat_map
    //! <b>Effects</b>: Attempts to extract each element in source and insert it into a using
    //!   the comparison object of *this. If there is an element in a with key equivalent to the
    //!   key of an element from source, then that element is not extracted from source.
-   //! 
+   //!
    //! <b>Postcondition</b>: Pointers and references to the transferred elements of source refer
    //!   to those same elements but as members of *this. Iterators referring to the transferred
    //!   elements will continue to refer to their elements, but they now behave as iterators into *this,
@@ -1316,7 +1316,7 @@ class flat_map
    //!
    //! <b>Postcondition</b>: this->empty()
    //!
-   //! <b>Throws</b>: If secuence_type's move constructor throws 
+   //! <b>Throws</b>: If secuence_type's move constructor throws
    BOOST_CONTAINER_FORCEINLINE sequence_type extract_sequence()
    {
       return boost::move(container_detail::force<sequence_type>(m_flat_tree.get_sequence_ref()));
@@ -2257,7 +2257,7 @@ class flat_multimap
    //!
    //! <b>Effects</b>: Extracts each element in source and insert it into a using
    //!   the comparison object of *this.
-   //! 
+   //!
    //! <b>Postcondition</b>: Pointers and references to the transferred elements of source refer
    //!   to those same elements but as members of *this. Iterators referring to the transferred
    //!   elements will continue to refer to their elements, but they now behave as iterators into *this,
@@ -2435,7 +2435,7 @@ class flat_multimap
    //!
    //! <b>Postcondition</b>: this->empty()
    //!
-   //! <b>Throws</b>: If secuence_type's move constructor throws 
+   //! <b>Throws</b>: If secuence_type's move constructor throws
    BOOST_CONTAINER_FORCEINLINE sequence_type extract_sequence()
    {
       return boost::move(container_detail::force<sequence_type>(m_flat_tree.get_sequence_ref()));

@@ -25,13 +25,13 @@ BOOST_PYTHON_MODULE(bienstman4_ext)
   class_<Expression>("Expression")
       .def("add", &Expression::add)
       ;
-  
+
   class_<Type1>("T1")
       ;
-  
+
   class_<Term>("Term", init<Type1&>())
       ;
-  
+
   Type1 t1;
   Expression e;
   e.add(t1);

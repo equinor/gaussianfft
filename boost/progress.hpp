@@ -11,7 +11,7 @@
 //  20 May 01  Introduce several static_casts<> to eliminate warning messages
 //             (Fixed by Beman, reported by Herve Bronnimann)
 //  12 Jan 01  Change to inline implementation to allow use without library
-//             builds. See docs for more rationale. (Beman Dawes) 
+//             builds. See docs for more rationale. (Beman Dawes)
 //  22 Jul 99  Name changed to .hpp
 //  16 Jul 99  Second beta
 //   6 Jul 99  Initial boost version
@@ -34,7 +34,7 @@ namespace boost {
 
 class progress_timer : public timer, private noncopyable
 {
-  
+
  public:
   explicit progress_timer( std::ostream & os = std::cout )
      // os is hint; implementation may ignore, particularly in embedded systems
@@ -67,12 +67,12 @@ class progress_timer : public timer, private noncopyable
 
 //  progress_display  --------------------------------------------------------//
 
-//  progress_display displays an appropriate indication of 
+//  progress_display displays an appropriate indication of
 //  progress at an appropriate place in an appropriate form.
 
 // NOTE: (Jan 12, 2001) Tried to change unsigned long to boost::uintmax_t, but
 // found some compilers couldn't handle the required conversion to double.
-// Reverted to unsigned long until the compilers catch up. 
+// Reverted to unsigned long until the compilers catch up.
 
 class progress_display : private noncopyable
 {
@@ -114,7 +114,7 @@ class progress_display : private noncopyable
 
   private:
   std::ostream &     m_os;  // may not be present in all imps
-  const std::string  m_s1;  // string is more general, safer than 
+  const std::string  m_s1;  // string is more general, safer than
   const std::string  m_s2;  //  const char *, and efficiency or size are
   const std::string  m_s3;  //  not issues
 
@@ -124,11 +124,11 @@ class progress_display : private noncopyable
   {
     // use of floating point ensures that both large and small counts
     // work correctly.  static_cast<>() is also used several places
-    // to suppress spurious compiler warnings. 
+    // to suppress spurious compiler warnings.
     unsigned int tics_needed = static_cast<unsigned int>((static_cast<double>(_count)
         / static_cast<double>(_expected_count)) * 50.0);
     do { m_os << '*' << std::flush; } while ( ++_tic < tics_needed );
-    _next_tic_count = 
+    _next_tic_count =
       static_cast<unsigned long>((_tic/50.0) * static_cast<double>(_expected_count));
     if ( _count == _expected_count ) {
       if ( _tic < 51 ) m_os << '*';

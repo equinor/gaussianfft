@@ -55,7 +55,7 @@ happens in response to some code like this:
 ``
   period const &get_floating_frequency() const
   {
-    return boost::python::call_method<period const &>( 
+    return boost::python::call_method<period const &>(
       m_self,"get_floating_frequency");
   }
 ``

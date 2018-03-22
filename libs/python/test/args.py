@@ -9,7 +9,7 @@ from __future__ import print_function
 ((3, 4), {'foo': 'bar', 'baz': 42})
 
    Prove that we can handle empty keywords and non-keywords
-   
+
 >>> raw(3, 4)
 ((3, 4), {})
 
@@ -76,7 +76,7 @@ from __future__ import print_function
 ... else: print('expected an exception: unknown keyword')
 
    Exercise member functions using default stubs
-   
+
 >>> q.f1(z = 'nix', y = .125, x = 2)
 (2, 0.125, 'nix')
 >>> q.f1(y = .125, x = 2)

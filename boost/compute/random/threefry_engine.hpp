@@ -125,7 +125,7 @@ private:
             "{\n"
             "    return (x << (N & 31)) | (x >> ((32-N) & 31));\n"
             "}\n"
-                
+
             "struct r123array2x32 {\n"
             "    uint v[2];\n"
             "};\n"
@@ -240,7 +240,7 @@ public:
             return;
         }
         kernel rng_kernel = m_program.create_kernel("generate_rng");
-       
+
         rng_kernel.set_arg(0, first_ctr.get_buffer());
         rng_kernel.set_arg(1, first_key.get_buffer());
         size_t offset = 0;

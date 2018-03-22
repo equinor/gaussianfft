@@ -12,7 +12,7 @@
 # include <boost/python/detail/copy_ctor_mutates_rhs.hpp>
 # include <boost/mpl/or.hpp>
 
-namespace boost { namespace python { namespace objects { 
+namespace boost { namespace python { namespace objects {
 
 // Very much like boost::reference_wrapper<T>, except that in this
 // case T can be a reference already without causing a
@@ -22,7 +22,7 @@ struct reference_to_value
 {
     typedef typename boost::python::detail::add_lvalue_reference<typename
         boost::python::detail::add_const<T>::type>::type reference;
-    
+
     reference_to_value(reference x) : m_value(x) {}
     reference get() const { return m_value; }
  private:

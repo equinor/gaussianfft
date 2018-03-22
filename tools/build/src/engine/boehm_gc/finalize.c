@@ -32,7 +32,7 @@
 /* Type of mark procedure used for marking from finalizable object.	*/
 /* This procedure normally does not mark the object, only its		*/
 /* descendents.								*/
-typedef void finalization_mark_proc(/* ptr_t finalizable_obj_ptr */); 
+typedef void finalization_mark_proc(/* ptr_t finalizable_obj_ptr */);
 
 # define HASH3(addr,size,log_size) \
     ((((word)(addr) >> 3) ^ ((word)(addr) >> (3+(log_size)))) \
@@ -112,7 +112,7 @@ void GC_grow_table(struct hash_chain_entry ***table,
     struct hash_chain_entry **new_table = (struct hash_chain_entry **)
     	GC_INTERNAL_MALLOC_IGNORE_OFF_PAGE(
     		(size_t)new_size * sizeof(struct hash_chain_entry *), NORMAL);
-    
+
     if (new_table == 0) {
     	if (table == 0) {
     	    ABORT("Insufficient space for initial table allocation");
@@ -126,7 +126,7 @@ void GC_grow_table(struct hash_chain_entry ***table,
         ptr_t real_key = (ptr_t)REVEAL_POINTER(p -> hidden_key);
         struct hash_chain_entry *next = p -> next;
         size_t new_hash = HASH3(real_key, new_size, log_new_size);
-        
+
         p -> next = new_table[new_hash];
         new_table[new_hash] = p;
         p = next;
@@ -139,7 +139,7 @@ void GC_grow_table(struct hash_chain_entry ***table,
 int GC_register_disappearing_link(void * * link)
 {
     ptr_t base;
-    
+
     base = (ptr_t)GC_base((void *)link);
     if (base == 0)
     	ABORT("Bad arg to GC_register_disappearing_link");
@@ -152,7 +152,7 @@ int GC_general_register_disappearing_link(void * * link, void * obj)
     size_t index;
     struct disappearing_link * new_dl;
     DCL_LOCK_STATE;
-    
+
     if ((word)link & (ALIGNMENT-1))
     	ABORT("Bad arg to GC_general_register_disappearing_link");
 #   ifdef THREADS
@@ -211,7 +211,7 @@ int GC_unregister_disappearing_link(void * * link)
     struct disappearing_link *curr_dl, *prev_dl;
     size_t index;
     DCL_LOCK_STATE;
-    
+
     LOCK();
     index = HASH2(link, log_dl_table_size);
     if (((word)link & (ALIGNMENT-1))) goto out;
@@ -245,7 +245,7 @@ out:
 GC_API void GC_normal_finalize_mark_proc(ptr_t p)
 {
     hdr * hhdr = HDR(p);
-    
+
     PUSH_OBJ(p, hhdr, GC_mark_stack_top,
 	     &(GC_mark_stack[GC_mark_stack_size]));
 }
@@ -260,7 +260,7 @@ GC_API void GC_ignore_self_finalize_mark_proc(ptr_t p)
     ptr_t q, r;
     ptr_t scan_limit;
     ptr_t target_limit = p + hhdr -> hb_sz - 1;
-    
+
     if ((descr & GC_DS_TAGS) == GC_DS_LENGTH) {
        scan_limit = p + descr - sizeof(word);
     } else {
@@ -496,7 +496,7 @@ void GC_finalize(void)
     size_t i;
     size_t dl_size = (log_dl_table_size == -1 ) ? 0 : (1 << log_dl_table_size);
     size_t fo_size = (log_fo_table_size == -1 ) ? 0 : (1 << log_fo_table_size);
-    
+
   /* Make disappearing links disappear */
     for (i = 0; i < dl_size; i++) {
       curr_dl = dl_head[i];
@@ -562,7 +562,7 @@ void GC_finalize(void)
               GC_finalize_now = curr_fo;
               /* unhide object pointer so any future collections will	*/
               /* see it.						*/
-              curr_fo -> fo_hidden_base = 
+              curr_fo -> fo_hidden_base =
               		(word) REVEAL_POINTER(curr_fo -> fo_hidden_base);
               GC_bytes_finalized +=
                  	curr_fo -> fo_object_size
@@ -579,7 +579,7 @@ void GC_finalize(void)
   if (GC_java_finalization) {
     /* make sure we mark everything reachable from objects finalized
        using the no_order mark_proc */
-      for (curr_fo = GC_finalize_now; 
+      for (curr_fo = GC_finalize_now;
   	 curr_fo != NULL; curr_fo = fo_next(curr_fo)) {
   	real_ptr = (ptr_t)curr_fo -> fo_hidden_base;
   	if (!GC_is_marked(real_ptr)) {
@@ -661,7 +661,7 @@ void GC_enqueue_all_finalizers(void)
     ptr_t real_ptr;
     register int i;
     int fo_size;
-    
+
     fo_size = (log_fo_table_size == -1 ) ? 0 : (1 << log_fo_table_size);
     GC_bytes_finalized = 0;
     for (i = 0; i < fo_size; i++) {
@@ -671,7 +671,7 @@ void GC_enqueue_all_finalizers(void)
           real_ptr = (ptr_t)REVEAL_POINTER(curr_fo -> fo_hidden_base);
           GC_MARK_FO(real_ptr, GC_normal_finalize_mark_proc);
           GC_set_mark_bit(real_ptr);
- 
+
           /* Delete from hash table */
           next_fo = fo_next(curr_fo);
           if (prev_fo == 0) {
@@ -687,7 +687,7 @@ void GC_enqueue_all_finalizers(void)
 
           /* unhide object pointer so any future collections will	*/
           /* see it.						*/
-          curr_fo -> fo_hidden_base = 
+          curr_fo -> fo_hidden_base =
         		(word) REVEAL_POINTER(curr_fo -> fo_hidden_base);
 
           GC_bytes_finalized +=
@@ -699,8 +699,8 @@ void GC_enqueue_all_finalizers(void)
     return;
 }
 
-/* Invoke all remaining finalizers that haven't yet been run. 
- * This is needed for strict compliance with the Java standard, 
+/* Invoke all remaining finalizers that haven't yet been run.
+ * This is needed for strict compliance with the Java standard,
  * which can make the runtime guarantee that all finalizers are run.
  * Unfortunately, the Java standard implies we have to keep running
  * finalizers until there are no more left, a potential infinite loop.
@@ -710,8 +710,8 @@ void GC_enqueue_all_finalizers(void)
  * may have been finalized when these finalizers are run.
  * Finalizers run at this point must be prepared to deal with a
  * mostly broken world.
- * This routine is externally callable, so is called without 
- * the allocation lock. 
+ * This routine is externally callable, so is called without
+ * the allocation lock.
  */
 GC_API void GC_finalize_all(void)
 {
@@ -744,7 +744,7 @@ int GC_invoke_finalizers(void)
     int count = 0;
     word bytes_freed_before;
     DCL_LOCK_STATE;
-    
+
     while (GC_finalize_now != 0) {
 #	ifdef THREADS
 	    LOCK();
@@ -795,7 +795,7 @@ void GC_notify_or_invoke_finalizers(void)
 
       if (GC_gc_no > last_back_trace_gc_no) {
 	word i;
-  
+
 #	ifdef KEEP_BACK_PTRS
 	  LOCK();
   	  /* Stops when GC_gc_no wraps; that's OK.	*/
@@ -837,7 +837,7 @@ void * GC_call_with_alloc_lock(GC_fn_type fn, void * client_data)
 {
     void * result;
     DCL_LOCK_STATE;
-    
+
 #   ifdef THREADS
       LOCK();
       /* FIXME - This looks wrong!! */

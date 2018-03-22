@@ -1,7 +1,7 @@
 /*
- * Distributed under the Boost Software License, Version 1.0.(See accompanying 
+ * Distributed under the Boost Software License, Version 1.0.(See accompanying
  * file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt.)
- * 
+ *
  * See http://www.boost.org/libs/iostreams for documentation.
  *
  * File:        boost/iostreams/detail/path.hpp
@@ -10,7 +10,7 @@
  * Author:      Jonathan Turkanis
  * Contact:     turkanis at coderage dot com
  *
- * Defines the class boost::iostreams::detail::path, for storing a 
+ * Defines the class boost::iostreams::detail::path, for storing a
  * a std::string or std::wstring.
  *
  * This class allows interoperability with Boost.Filesystem without
@@ -67,8 +67,8 @@ public:
     }
 
     // Copy constructor
-    path(const path& p) 
-        : narrow_(p.narrow_), wide_(p.wide_), is_wide_(p.is_wide_) 
+    path(const path& p)
+        : narrow_(p.narrow_), wide_(p.wide_), is_wide_(p.is_wide_)
         { }
 
     // Assignment operator taking another path
@@ -132,7 +132,7 @@ public:
     // Requires: is_wide() returns true
     const wchar_t* c_wstr() const { return wide_.c_str(); }
 private:
-    
+
     // For wide-character paths, use a boost::filesystem::wpath instead of a
     // std::wstring
     path(const std::wstring&);
@@ -174,17 +174,17 @@ public:
     template<typename Path>
         path(const Path& p) : path_(p.external_file_string()) { }
     path(const path& p) : path_(p.path_) { }
-    path& operator=(const path& other) 
+    path& operator=(const path& other)
     {
         path_ = other.path_;
         return *this;
     }
-    path& operator=(const std::string& p) 
+    path& operator=(const std::string& p)
     {
         path_ = p;
         return *this;
     }
-    path& operator=(const char* p) 
+    path& operator=(const char* p)
     {
         path_ = p;
         return *this;

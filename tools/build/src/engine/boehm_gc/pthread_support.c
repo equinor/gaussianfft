@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 1994 by Xerox Corporation.  All rights reserved.
  * Copyright (c) 1996 by Silicon Graphics.  All rights reserved.
  * Copyright (c) 1998 by Fergus Henderson.  All rights reserved.
@@ -232,7 +232,7 @@ void GC_mark_thread_local_free_lists(void)
 {
     int i;
     GC_thread p;
-    
+
     for (i = 0; i < THREAD_TABLE_SZ; ++i) {
       for (p = GC_threads[i]; 0 != p; p = p -> next) {
 	GC_mark_thread_local_fls_for(&(p->tlfs));
@@ -255,7 +255,7 @@ void GC_mark_thread_local_free_lists(void)
 #       if defined(USE_CUSTOM_SPECIFIC)
 	  if (GC_thread_key != 0)
 	    GC_check_tsd_marks(GC_thread_key);
-#	endif 
+#	endif
     }
 #endif /* GC_ASSERTIONS */
 
@@ -375,7 +375,7 @@ GC_thread GC_new_thread(pthread_t id)
     int hv = NUMERIC_THREAD_ID(id) % THREAD_TABLE_SZ;
     GC_thread result;
     static GC_bool first_thread_used = FALSE;
-    
+
     GC_ASSERT(I_HOLD_LOCK());
     if (!first_thread_used) {
     	result = &first_thread;
@@ -400,7 +400,7 @@ void GC_delete_thread(pthread_t id)
     int hv = NUMERIC_THREAD_ID(id) % THREAD_TABLE_SZ;
     register GC_thread p = GC_threads[hv];
     register GC_thread prev = 0;
-    
+
     GC_ASSERT(I_HOLD_LOCK());
     while (!THREAD_EQUAL(p -> id, id)) {
         prev = p;
@@ -454,7 +454,7 @@ GC_thread GC_lookup_thread(pthread_t id)
 {
     int hv = NUMERIC_THREAD_ID(id) % THREAD_TABLE_SZ;
     register GC_thread p = GC_threads[hv];
-    
+
     while (p != 0 && !THREAD_EQUAL(p -> id, id)) p = p -> next;
     return(p);
 }
@@ -496,7 +496,7 @@ GC_bool GC_segment_is_thread_stack(ptr_t lo, ptr_t hi)
 {
     int i;
     GC_thread p;
-    
+
     GC_ASSERT(I_HOLD_LOCK());
 #   ifdef PARALLEL_MARK
       for (i = 0; i < GC_markers; ++i) {
@@ -530,7 +530,7 @@ ptr_t GC_greatest_stack_base_below(ptr_t bound)
     int i;
     GC_thread p;
     ptr_t result = 0;
-    
+
     GC_ASSERT(I_HOLD_LOCK());
 #   ifdef PARALLEL_MARK
       for (i = 0; i < GC_markers; ++i) {
@@ -720,7 +720,7 @@ void GC_thr_init(void)
 
     if (GC_thr_initialized) return;
     GC_thr_initialized = TRUE;
-    
+
 #   ifdef HANDLE_FORK
       /* Prepare for a possible fork.	*/
         pthread_atfork(GC_fork_prepare_proc, GC_fork_parent_proc,
@@ -730,7 +730,7 @@ void GC_thr_init(void)
       /* Explicitly register the region including the address 		*/
       /* of a thread local variable.  This should included thread	*/
       /* locals for the main thread, except for those allocated		*/
-      /* in response to dlopen calls.					*/  
+      /* in response to dlopen calls.					*/
 	{
 	  ptr_t thread_local_addr = (ptr_t)(&dummy_thread_local);
 	  ptr_t main_thread_start, main_thread_end;
@@ -852,7 +852,7 @@ void GC_init_parallel(void)
 int WRAP_FUNC(pthread_sigmask)(int how, const sigset_t *set, sigset_t *oset)
 {
     sigset_t fudged_set;
-    
+
     INIT_REAL_SYMS();
     if (set != NULL && (how == SIG_BLOCK || how == SIG_SETMASK)) {
         fudged_set = *set;
@@ -901,7 +901,7 @@ void GC_do_blocking(void (*fn)(void *), void *arg) {
     my_data.arg = arg;
     GC_with_callee_saves_pushed(GC_do_blocking_inner, (ptr_t)(&my_data));
 }
-    
+
 struct start_info {
     void *(*start_routine)(void *);
     void *arg;
@@ -948,7 +948,7 @@ int WRAP_FUNC(pthread_join)(pthread_t thread, void **retval)
 {
     int result;
     GC_thread thread_gc_id;
-    
+
     INIT_REAL_SYMS();
     LOCK();
     thread_gc_id = GC_lookup_thread(thread);
@@ -981,7 +981,7 @@ WRAP_FUNC(pthread_detach)(pthread_t thread)
 {
     int result;
     GC_thread thread_gc_id;
-    
+
     INIT_REAL_SYMS();
     LOCK();
     thread_gc_id = GC_lookup_thread(thread);
@@ -1093,7 +1093,7 @@ void * GC_start_routine(void * arg)
 #     ifdef REDIRECT_MALLOC
       	/* GC_get_stack_base may call pthread_getattr_np, which can 	*/
         /* unfortunately call realloc, which may allocate from an	*/
-        /* unregistered thread.  This is unpleasant, since it might	*/ 
+        /* unregistered thread.  This is unpleasant, since it might	*/
         /* force heap growth.						*/
         GC_disable();
 #     endif
@@ -1116,10 +1116,10 @@ WRAP_FUNC(pthread_create)(pthread_t *new_thread,
     int result;
     int detachstate;
     word my_flags = 0;
-    struct start_info * si; 
+    struct start_info * si;
 	/* This is otherwise saved only in an area mmapped by the thread */
 	/* library, which isn't visible to the collector.		 */
- 
+
     /* We resist the temptation to muck with the stack size here,	*/
     /* even if the default is unreasonably small.  That's the client's	*/
     /* responsibility.							*/
@@ -1169,7 +1169,7 @@ WRAP_FUNC(pthread_create)(pthread_t *new_thread,
 #   endif
     if (NULL == attr) {
 	detachstate = PTHREAD_CREATE_JOINABLE;
-    } else { 
+    } else {
         pthread_attr_getdetachstate(attr, &detachstate);
     }
     if (PTHREAD_CREATE_DETACHED == detachstate) my_flags |= DETACHED;
@@ -1212,7 +1212,7 @@ void GC_pause(void)
       volatile word dummy = 0;
 #   endif
 
-    for (i = 0; i < 10; ++i) { 
+    for (i = 0; i < 10; ++i) {
 #     if defined(__GNUC__) && !defined(__INTEL_COMPILER)
         __asm__ __volatile__ (" " : : : "memory");
 #     else
@@ -1221,7 +1221,7 @@ void GC_pause(void)
 #     endif
     }
 }
-    
+
 #define SPIN_MAX 128	/* Maximum number of calls to GC_pause before	*/
 			/* give up.					*/
 
@@ -1259,7 +1259,7 @@ void GC_generic_lock(pthread_mutex_t * lock)
 #ifndef NO_PTHREAD_TRYLOCK
     unsigned pause_length = 1;
     unsigned i;
-    
+
     if (0 == pthread_mutex_trylock(lock)) {
 #       ifdef LOCK_STATS
 	    ++GC_unlocked_count;

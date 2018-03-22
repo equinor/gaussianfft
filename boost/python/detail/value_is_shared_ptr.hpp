@@ -10,7 +10,7 @@
 #include <boost/python/detail/value_is_xxx.hpp>
 #include <boost/python/detail/is_shared_ptr.hpp>
 
-namespace boost { namespace python { namespace detail { 
+namespace boost { namespace python { namespace detail {
 
 template <class X_>
 struct value_is_shared_ptr

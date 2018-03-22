@@ -13,9 +13,9 @@
 
 #include <boost/function_types/function_type.hpp>
 
-namespace boost 
-{ 
-  namespace function_types 
+namespace boost
+{
+  namespace function_types
   {
     template<typename Types, typename Tag = null_tag> struct function_reference
     {
@@ -23,8 +23,8 @@ namespace boost
 
       BOOST_MPL_AUX_LAMBDA_SUPPORT(2,function_reference,(Types,Tag))
     };
-  } 
-} 
+  }
+}
 
 #endif
 

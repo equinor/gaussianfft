@@ -22,24 +22,24 @@ BOOST_TYPEOF_REGISTER_TEMPLATE(boost::function, (typename))
 BOOST_TYPEOF_REGISTER_TEMPLATE(boost::function0, (typename))
 BOOST_TYPEOF_REGISTER_TEMPLATE(boost::function1, (typename)(typename))
 BOOST_TYPEOF_REGISTER_TEMPLATE(boost::function2, (typename)(typename)(typename))
-BOOST_TYPEOF_REGISTER_TEMPLATE(boost::function3, 
+BOOST_TYPEOF_REGISTER_TEMPLATE(boost::function3,
   (typename)(typename)(typename)(typename))
-BOOST_TYPEOF_REGISTER_TEMPLATE(boost::function4, 
+BOOST_TYPEOF_REGISTER_TEMPLATE(boost::function4,
   (typename)(typename)(typename)(typename)(typename))
-BOOST_TYPEOF_REGISTER_TEMPLATE(boost::function5, 
+BOOST_TYPEOF_REGISTER_TEMPLATE(boost::function5,
   (typename)(typename)(typename)(typename)(typename)(typename))
-BOOST_TYPEOF_REGISTER_TEMPLATE(boost::function6, 
+BOOST_TYPEOF_REGISTER_TEMPLATE(boost::function6,
   (typename)(typename)(typename)(typename)(typename)(typename)(typename))
-BOOST_TYPEOF_REGISTER_TEMPLATE(boost::function7, 
+BOOST_TYPEOF_REGISTER_TEMPLATE(boost::function7,
   (typename)(typename)(typename)(typename)(typename)(typename)(typename)
   (typename))
-BOOST_TYPEOF_REGISTER_TEMPLATE(boost::function8, 
+BOOST_TYPEOF_REGISTER_TEMPLATE(boost::function8,
   (typename)(typename)(typename)(typename)(typename)(typename)(typename)
   (typename)(typename))
-BOOST_TYPEOF_REGISTER_TEMPLATE(boost::function9, 
+BOOST_TYPEOF_REGISTER_TEMPLATE(boost::function9,
   (typename)(typename)(typename)(typename)(typename)(typename)(typename)
   (typename)(typename)(typename))
-BOOST_TYPEOF_REGISTER_TEMPLATE(boost::function10, 
+BOOST_TYPEOF_REGISTER_TEMPLATE(boost::function10,
   (typename)(typename)(typename)(typename)(typename)(typename)(typename)
   (typename)(typename)(typename)(typename))
 #endif

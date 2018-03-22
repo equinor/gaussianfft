@@ -10,12 +10,12 @@
 
 #if defined(_MSC_VER)
 # pragma once
-#endif              
+#endif
 
 #include <memory>                         // allocator.
-#include <boost/function.hpp>        
-#include <boost/iostreams/filter/aggregate.hpp>              
-#include <boost/iostreams/pipeline.hpp>                
+#include <boost/function.hpp>
+#include <boost/iostreams/filter/aggregate.hpp>
+#include <boost/iostreams/pipeline.hpp>
 #include <boost/regex.hpp>
 
 namespace boost { namespace iostreams {
@@ -60,11 +60,11 @@ private:
             iterator last;
             const Ch* suffix = 0;
             for (; first != last; ++first) {
-                dest.insert( dest.end(), 
+                dest.insert( dest.end(),
                              first->prefix().first,
                              first->prefix().second );
                 string_type replacement = replace_(*first);
-                dest.insert( dest.end(), 
+                dest.insert( dest.end(),
                              replacement.begin(),
                              replacement.end() );
                 suffix = first->suffix().first;
@@ -76,7 +76,7 @@ private:
             }
         }
     struct simple_formatter {
-        simple_formatter(const string_type& fmt, flag_type fmt_flags) 
+        simple_formatter(const string_type& fmt, flag_type fmt_flags)
             : fmt_(fmt), fmt_flags_(fmt_flags) { }
         string_type operator() (const match_type& match) const
         { return match.format(fmt_, fmt_flags_); }

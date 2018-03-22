@@ -74,7 +74,7 @@ namespace boost
             2, 3, 5, 5, 5, 6, 6, 8, 8,17,17,17,12,12,12
             2, 3, 4, 4, 6, 6, 8, 8,17,17,17,17,17,12,12
             2, 3, 4, 4, 6, 6,18,18,18,18,17,17,17,12,12
-            */                  
+            */
             // subtract one because the array is written in FORTRAN in mind - in C arrays start @ zero
             static const unsigned short select[] =
             {
@@ -276,7 +276,7 @@ namespace boost
         {
           BOOST_MATH_STD_USING
           using namespace boost::math::constants;
-          
+
           const unsigned short m = 30;
 
           static const RealType c2[] =
@@ -410,7 +410,7 @@ namespace boost
                static_cast<RealType>(0.60277514152618576821),      static_cast<RealType>(0.71477884217753226516),
                static_cast<RealType>(0.81475510988760098605),      static_cast<RealType>(0.89711029755948965867),
                static_cast<RealType>(0.95723808085944261843),      static_cast<RealType>(0.99178832974629703586) };
-            static const RealType wts[] = { 
+            static const RealType wts[] = {
                static_cast<RealType>(0.18831438115323502887E-01),
                static_cast<RealType>(0.18567086243977649478E-01),  static_cast<RealType>(0.18042093461223385584E-01),
                static_cast<RealType>(0.17263829606398753364E-01),  static_cast<RealType>(0.16243219975989856730E-01),
@@ -546,10 +546,10 @@ namespace boost
          {
             //
             // This is the same series as T1, but:
-            // * The Taylor series for atan has been combined with that for T1, 
+            // * The Taylor series for atan has been combined with that for T1,
             //   reducing but not eliminating cancellation error.
             // * The resulting alternating series is then accelerated using method 1
-            //   from H. Cohen, F. Rodriguez Villegas, D. Zagier, 
+            //   from H. Cohen, F. Rodriguez Villegas, D. Zagier,
             //   "Convergence acceleration of alternating series", Bonn, (1991).
             //
             BOOST_MATH_STD_USING
@@ -558,7 +558,7 @@ namespace boost
             T a_pow = a;
             T aa = a * a;
             T exp_term = exp(-h * h / 2);
-            T one_minus_dj_sum = exp_term; 
+            T one_minus_dj_sum = exp_term;
             T sum = a_pow * exp_term;
             T dj_pow = exp_term;
             T term = sum;
@@ -569,10 +569,10 @@ namespace boost
             // Normally with this form of series acceleration we can calculate
             // up front how many terms will be required - based on the assumption
             // that each term decreases in size by a factor of 3.  However,
-            // that assumption does not apply here, as the underlying T1 series can 
+            // that assumption does not apply here, as the underlying T1 series can
             // go quite strongly divergent in the early terms, before strongly
             // converging later.  Various "guestimates" have been tried to take account
-            // of this, but they don't always work.... so instead set "n" to the 
+            // of this, but they don't always work.... so instead set "n" to the
             // largest value that won't cause overflow later, and abort iteration
             // when the last accelerated term was small enough...
             //
@@ -687,10 +687,10 @@ namespace boost
             // Normally with this form of series acceleration we can calculate
             // up front how many terms will be required - based on the assumption
             // that each term decreases in size by a factor of 3.  However,
-            // that assumption does not apply here, as the underlying T1 series can 
+            // that assumption does not apply here, as the underlying T1 series can
             // go quite strongly divergent in the early terms, before strongly
             // converging later.  Various "guestimates" have been tried to take account
-            // of this, but they don't always work.... so instead set "n" to the 
+            // of this, but they don't always work.... so instead set "n" to the
             // largest value that won't cause overflow later, and abort iteration
             // when the last accelerated term was small enough...
             //
@@ -744,7 +744,7 @@ namespace boost
          inline RealType T4_mp(const RealType h, const RealType a, const Policy& pol)
          {
             BOOST_MATH_STD_USING
-            
+
             const RealType hs = h*h;
             const RealType as = -a*a;
 
@@ -1005,7 +1005,7 @@ namespace boost
             {
                val = owens_t_dispatch(h, fabs_a, fabs_ah, pol);
             } // if(fabs_a <= 1.0)
-            else 
+            else
             {
                if( h <= 0.67 )
                {
@@ -1079,7 +1079,7 @@ namespace boost
             >::type tag_type;
 
          detail::owens_t_initializer<result_type, Policy, tag_type>::force_instantiate();
-            
+
          return policies::checked_narrowing_cast<result_type, Policy>(detail::owens_t(static_cast<value_type>(h), static_cast<value_type>(a), pol), "boost::math::owens_t<%1%>(%1%,%1%)");
       }
 

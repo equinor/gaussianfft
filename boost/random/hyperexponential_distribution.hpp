@@ -330,8 +330,8 @@ class hyperexponential_distribution
         //  We SFINAE this out of existance if the argument type is
         //  incrementable as in that case the type is probably an iterator.
         public: template <typename RateIterT>
-                param_type(RateIterT rate_first, 
-                           RateIterT rate_last,  
+                param_type(RateIterT rate_first,
+                           RateIterT rate_last,
                            typename boost::enable_if_c<boost::has_pre_increment<RateIterT>::value>::type* = 0)
         : probs_(std::distance(rate_first, rate_last), 1), // will be normalized below
           rates_(rate_first, rate_last)
@@ -540,7 +540,7 @@ class hyperexponential_distribution
             return lhs.probs_ == rhs.probs_
                    && lhs.rates_ == rhs.rates_;
         }
-        
+
         /** Returns true if the two sets of parameters are the different. */
         public: BOOST_RANDOM_DETAIL_INEQUALITY_OPERATOR(param_type)
 
@@ -865,7 +865,7 @@ class hyperexponential_distribution
         return lhs.dd_ == rhs.dd_
                && lhs.rates_ == rhs.rates_;
     }
-    
+
     /**
      * Returns true if the two instances of @c hyperexponential_distribution will
      * return different sequences of values given equal generators.

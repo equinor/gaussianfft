@@ -79,7 +79,7 @@ class unordered_multimap_view
 
     BOOST_BIMAP_NON_UNIQUE_VIEW_INSERT_FUNCTIONS
 
-    unordered_multimap_view & operator=(const unordered_multimap_view & v) 
+    unordered_multimap_view & operator=(const unordered_multimap_view & v)
     {
         this->base() = v.base();
         return *this;

@@ -1,6 +1,6 @@
 /*=============================================================================
     Copyright (c) 2001-2014 Joel de Guzman
-    Copyright (c) 2013 Agustín Bergé
+    Copyright (c) 2013 Agustï¿½n Bergï¿½
     http://spirit.sourceforge.net/
 
     Distributed under the Boost Software License, Version 1.0. (See accompanying
@@ -24,7 +24,7 @@ namespace boost { namespace spirit { namespace x3
         template <typename Context>
         subcontext(Context const& /*context*/)
         {}
-        
+
         template <typename ID_>
         unused_type
         get(ID_) const

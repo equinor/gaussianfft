@@ -14,8 +14,8 @@ class RegisterPtrTest(unittest.TestCase):
 
         a = New()  # this must work
         b = B()
-        self.assertEqual(Call(a), 0)                                    
-        self.assertEqual(Call(b), 10)                     
+        self.assertEqual(Call(a), 0)
+        self.assertEqual(Call(b), 10)
         def fails():
             Fail(A())
         self.assertRaises(TypeError, fails)

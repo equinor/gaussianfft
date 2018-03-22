@@ -10,7 +10,7 @@
 #include <boost/python/object/class_wrapper.hpp>
 
 namespace boost { namespace python {
-    
+
 template <class P>
 void register_ptr_to_python()
 {
@@ -22,7 +22,7 @@ void register_ptr_to_python()
           , objects::pointer_holder<P,X>
         >
     >();
-}           
+}
 
 }} // namespace boost::python
 

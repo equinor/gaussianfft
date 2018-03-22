@@ -21,7 +21,7 @@
     #include <boost/preprocessor/seq/elem.hpp>
     #include <boost/preprocessor/seq/size.hpp>
     #include <boost/preprocessor/iteration/iterate.hpp>
-    
+
     #if defined(__WAVE__) && defined(BOOST_NUMERIC_CONVERSION_CREATE_PREPROCESSED_FILES)
         #pragma wave option(preserve: 2, line: 0, output: "preprocessed/numeric_cast_traits_common.hpp")
     #endif
@@ -59,13 +59,13 @@
 namespace boost { namespace numeric {
 
     #define BOOST_PP_ITERATION_PARAMS_1 (3, (0, BOOST_PP_DEC(BOOST_PP_SEQ_SIZE(BOOST_NUMERIC_CONVERSION_SEQ_A())), <boost/numeric/conversion/detail/numeric_cast_traits.hpp>))
-    #include BOOST_PP_ITERATE()    
+    #include BOOST_PP_ITERATE()
 
 }}//namespace boost::numeric;
 
     #if defined(__WAVE__) && defined(BOOST_NUMERIC_CONVERSION_CREATE_PREPROCESSED_FILES)
         #pragma wave option(output: null)
-    #endif   
+    #endif
 	
 	#if ( defined(__WAVE__) && defined(BOOST_NUMERIC_CONVERSION_CREATE_PREPROCESSED_FILES) ) || !defined(BOOST_NO_LONG_LONG)
 	
@@ -92,22 +92,22 @@ namespace boost { namespace numeric {
 
     #define BOOST_NUMERIC_CONVERSION_SEQ_A() BOOST_NUMERIC_CONVERSION_BASE_BUILTIN_TYPES()(boost::long_long_type)(boost::ulong_long_type)
 	#define BOOST_NUMERIC_CONVERSION_SEQ_B() (boost::long_long_type)(boost::ulong_long_type)
-    
+
     #define BOOST_PP_ITERATION_PARAMS_1 (3, (0, BOOST_PP_DEC(BOOST_PP_SEQ_SIZE(BOOST_NUMERIC_CONVERSION_SEQ_A())), <boost/numeric/conversion/detail/numeric_cast_traits.hpp>))
-    #include BOOST_PP_ITERATE()    
+    #include BOOST_PP_ITERATE()
 
 }}//namespace boost::numeric;
 
         #if defined(__WAVE__) && defined(BOOST_NUMERIC_CONVERSION_CREATE_PREPROCESSED_FILES)
             #pragma wave option(output: null)
-        #endif   
+        #endif
 	
 	#endif
 		
     #undef BOOST_NUMERIC_CONVERSION_BASE_BUILTIN_TYPES
 	#undef BOOST_NUMERIC_CONVERSION_SEQ_A
 	#undef BOOST_NUMERIC_CONVERSION_SEQ_B
-    
+
 #elif BOOST_PP_ITERATION_DEPTH() == 1
 
     #define BOOST_PP_ITERATION_PARAMS_2 (3, (0, BOOST_PP_DEC(BOOST_PP_SEQ_SIZE(BOOST_NUMERIC_CONVERSION_SEQ_B())), <boost/numeric/conversion/detail/numeric_cast_traits.hpp>))
@@ -129,7 +129,7 @@ namespace boost { namespace numeric {
         typedef def_overflow_handler overflow_policy;
         typedef UseInternalRangeChecker range_checking_policy;
         typedef Trunc<BOOST_PP_SEQ_ELEM(BOOST_NUMERIC_CONVERSION_B, BOOST_NUMERIC_CONVERSION_SEQ_B())> rounding_policy;
-    };     
+    };
 
     #undef BOOST_NUMERIC_CONVERSION_A
     #undef BOOST_NUMERIC_CONVERSION_B

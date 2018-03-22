@@ -1,6 +1,6 @@
 [section boost/python/implicit.hpp]
 [section Introduction]
-`implicitly_convertible` allows Boost.Python to implicitly take advantage of a C++ implicit or explicit conversion when matching Python objects to C++ argument types. 
+`implicitly_convertible` allows Boost.Python to implicitly take advantage of a C++ implicit or explicit conversion when matching Python objects to C++ argument types.
 [endsect]
 [section Function template `implicit_convertible`]
 ``
@@ -46,7 +46,7 @@ BOOST_PYTHON_MODULE(implicit_ext)
     def("x_value", x_value);
     def("make_x", make_x);
 
-    class_<X>("X", 
+    class_<X>("X",
         init<int>())
         ;
 

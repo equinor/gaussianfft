@@ -27,7 +27,7 @@ std::string x_value(X const& x)
 }
 
 BOOST_PYTHON_MODULE(vector_indexing_suite_ext)
-{    
+{
     class_<X>("X")
         .def(init<>())
         .def(init<X>())
@@ -39,21 +39,21 @@ BOOST_PYTHON_MODULE(vector_indexing_suite_ext)
 
     def("x_value", x_value);
     implicitly_convertible<std::string, X>();
-    
+
     class_<std::vector<X> >("XVec")
         .def(vector_indexing_suite<std::vector<X> >())
     ;
-        
+
     // Compile check only...
     class_<std::vector<float> >("FloatVec")
         .def(vector_indexing_suite<std::vector<float> >())
     ;
-    
+
     // Compile check only...
     class_<std::vector<bool> >("BoolVec")
         .def(vector_indexing_suite<std::vector<bool> >())
     ;
-    
+
     // vector of strings
     class_<std::vector<std::string> >("StringVec")
         .def(vector_indexing_suite<std::vector<std::string> >())

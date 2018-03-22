@@ -19,16 +19,16 @@
 // also called the Wald distribution (some sources limit this to when mean = 1).
 
 // It is the continuous probability distribution
-// that is defined as the normal variance-mean mixture where the mixing density is the 
+// that is defined as the normal variance-mean mixture where the mixing density is the
 // inverse Gaussian distribution. The tails of the distribution decrease more slowly
 // than the normal distribution. It is therefore suitable to model phenomena
 // where numerically large values are more probable than is the case for the normal distribution.
 
 // The Inverse Gaussian distribution was first studied in relationship to Brownian motion.
-// In 1956 M.C.K. Tweedie used the name 'Inverse Gaussian' because there is an inverse 
+// In 1956 M.C.K. Tweedie used the name 'Inverse Gaussian' because there is an inverse
 // relationship between the time to cover a unit distance and distance covered in unit time.
 
-// Examples are returns from financial assets and turbulent wind speeds. 
+// Examples are returns from financial assets and turbulent wind speeds.
 // The normal-inverse Gaussian distributions form
 // a subclass of the generalised hyperbolic distributions.
 
@@ -196,9 +196,9 @@ inline RealType cdf(const inverse_gaussian_distribution<RealType, Policy>& dist,
    {
      return 0; // Convenient, even if not defined mathematically.
    }
-   // Problem with this formula for large scale > 1000 or small x, 
+   // Problem with this formula for large scale > 1000 or small x,
    //result = 0.5 * (erf(sqrt(scale / x) * ((x / mean) - 1) / constants::root_two<RealType>(), Policy()) + 1)
-   //  + exp(2 * scale / mean) / 2 
+   //  + exp(2 * scale / mean) / 2
    //  * (1 - erf(sqrt(scale / x) * (x / mean + 1) / constants::root_two<RealType>(), Policy()));
    // so use normal distribution version:
    // Wikipedia CDF equation http://en.wikipedia.org/wiki/Inverse_Gaussian_distribution.
@@ -218,7 +218,7 @@ inline RealType cdf(const inverse_gaussian_distribution<RealType, Policy>& dist,
 
 template <class RealType, class Policy>
 struct inverse_gaussian_quantile_functor
-{ 
+{
 
   inverse_gaussian_quantile_functor(const boost::math::inverse_gaussian_distribution<RealType, Policy> dist, RealType const& p)
     : distribution(dist), prob(p)
@@ -234,12 +234,12 @@ struct inverse_gaussian_quantile_functor
   }
   private:
   const boost::math::inverse_gaussian_distribution<RealType, Policy> distribution;
-  RealType prob; 
+  RealType prob;
 };
 
 template <class RealType, class Policy>
 struct inverse_gaussian_quantile_complement_functor
-{ 
+{
     inverse_gaussian_quantile_complement_functor(const boost::math::inverse_gaussian_distribution<RealType, Policy> dist, RealType const& p)
     : distribution(dist), prob(p)
   {
@@ -255,7 +255,7 @@ struct inverse_gaussian_quantile_complement_functor
   }
   private:
   const boost::math::inverse_gaussian_distribution<RealType, Policy> distribution;
-  RealType prob; 
+  RealType prob;
 };
 
 namespace detail
@@ -283,7 +283,7 @@ namespace detail
       // A normalising logarithmic transformation for inverse Gaussian random variables,
       // Technometrics 20-2, 207-208 (1978), but using expression from
       // V Seshadri, Inverse Gaussian distribution (1998) ISBN 0387 98618 9, page 6.
- 
+
       normal_distribution<RealType, no_overthrow_policy> n01;
       x = mu * exp(quantile(n01, p) / sqrt(phi) - 1/(2 * phi));
      }
@@ -302,7 +302,7 @@ namespace detail
       RealType qg = quantile(complement(g, p));
       //RealType qg1 = qgamma(1.- p, 0.5, 1.0, true, false);
       x = lambda / (qg * 2);
-      // 
+      //
       if (x > mu/2) // x > mu /2?
       { // x too large for the gamma approximation to work well.
         //x = qgamma(p, 0.5, 1.0); // qgamma(0.270614, 0.5, 1) = 0.05983807
@@ -340,7 +340,7 @@ inline RealType quantile(const inverse_gaussian_distribution<RealType, Policy>& 
      return 0; // Convenient, even if not defined mathematically?
    }
    if (p == 1)
-   { // overflow 
+   { // overflow
       result = policies::raise_overflow_error<RealType>(function,
         "probability parameter is 1, but must be < 1!", Policy());
       return result; // std::numeric_limits<RealType>::infinity();
@@ -350,11 +350,11 @@ inline RealType quantile(const inverse_gaussian_distribution<RealType, Policy>& 
   using boost::math::tools::max_value;
 
   RealType min = 0.; // Minimum possible value is bottom of range of distribution.
-  RealType max = max_value<RealType>();// Maximum possible value is top of range. 
+  RealType max = max_value<RealType>();// Maximum possible value is top of range.
   // int digits = std::numeric_limits<RealType>::digits; // Maximum possible binary digits accuracy for type T.
   // digits used to control how accurate to try to make the result.
   // To allow user to control accuracy versus speed,
-  int get_digits = policies::digits<RealType, Policy>();// get digits from policy, 
+  int get_digits = policies::digits<RealType, Policy>();// get digits from policy,
   boost::uintmax_t m = policies::get_max_root_iterations<Policy>(); // and max iterations.
   using boost::math::tools::newton_raphson_iterate;
   result =
@@ -407,8 +407,8 @@ inline RealType cdf(const complemented2_type<inverse_gaussian_distribution<RealT
 
    //RealType n5 = +sqrt(scale/x) * ((x /mean) + 1); // note now positive sign.
    RealType n6 = cdf(complement(n01, +sqrt(scale/x) * ((x /mean) + 1)));
-   // RealType n4 = cdf(n01, n3); // = 
-   result = cdf_1 - expfactor * n6; 
+   // RealType n4 = cdf(n01, n3); // =
+   result = cdf_1 - expfactor * n6;
    return result;
 } // cdf complement
 
@@ -436,7 +436,7 @@ inline RealType quantile(const complemented2_type<inverse_gaussian_distribution<
    using boost::math::tools::max_value;
 
   RealType min = 0.; // Minimum possible value is bottom of range of distribution.
-  RealType max = max_value<RealType>();// Maximum possible value is top of range. 
+  RealType max = max_value<RealType>();// Maximum possible value is top of range.
   // int digits = std::numeric_limits<RealType>::digits; // Maximum possible binary digits accuracy for type T.
   // digits used to control how accurate to try to make the result.
   int get_digits = policies::digits<RealType, Policy>();
@@ -481,7 +481,7 @@ inline RealType mode(const inverse_gaussian_distribution<RealType, Policy>& dist
   BOOST_MATH_STD_USING
   RealType scale = dist.scale();
   RealType  mean = dist.mean();
-  RealType result = mean * (sqrt(1 + (9 * mean * mean)/(4 * scale * scale)) 
+  RealType result = mean * (sqrt(1 + (9 * mean * mean)/(4 * scale * scale))
       - 3 * mean / (2 * scale));
   return result;
 }

@@ -1,6 +1,6 @@
 //  Copyright (c) 2001 Daniel C. Nuffer
 //  Copyright (c) 2001-2011 Hartmut Kaiser
-// 
+//
 //  Distributed under the Boost Software License, Version 1.0. (See accompanying
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
@@ -27,7 +27,7 @@ namespace boost { namespace spirit { namespace iterator_policies
     ///////////////////////////////////////////////////////////////////////////
     //  class input_iterator
     //  Implementation of the InputPolicy used by multi_pass
-    // 
+    //
     //  The input_iterator encapsulates an input iterator of type T
     ///////////////////////////////////////////////////////////////////////////
     struct input_iterator
@@ -80,14 +80,14 @@ namespace boost { namespace spirit { namespace iterator_policies
 
             // test, whether we reached the end of the underlying stream
             template <typename MultiPass>
-            static bool input_at_eof(MultiPass const& mp) 
+            static bool input_at_eof(MultiPass const& mp)
             {
                 static T const end_iter;
                 return mp.shared()->input_ == end_iter;
             }
 
             template <typename MultiPass>
-            static bool input_is_valid(MultiPass const& mp, value_type const& t) 
+            static bool input_is_valid(MultiPass const& mp, value_type const& t)
             {
                 using namespace input_iterator_is_valid_test_;
                 return token_is_valid(t);

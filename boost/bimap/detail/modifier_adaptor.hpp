@@ -31,7 +31,7 @@ template
     class Modifier,
     class NewArgument,
     class FirstExtractor,
-    class SecondExtractor 
+    class SecondExtractor
 >
 struct relation_modifier_adaptor :
     public std::unary_function<NewArgument,bool>,

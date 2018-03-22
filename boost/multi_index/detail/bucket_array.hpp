@@ -28,7 +28,7 @@
 #if !defined(BOOST_MULTI_INDEX_DISABLE_SERIALIZATION)
 #include <boost/archive/archive_exception.hpp>
 #include <boost/serialization/access.hpp>
-#include <boost/throw_exception.hpp> 
+#include <boost/throw_exception.hpp>
 #endif
 
 namespace boost{
@@ -183,7 +183,7 @@ private:
 
 #if !defined(BOOST_MULTI_INDEX_DISABLE_SERIALIZATION)
   friend class boost::serialization::access;
-  
+
   /* bucket_arrays do not emit any kind of serialization info. They are
    * fed to Boost.Serialization as hashed index iterators need to track
    * them during serialization.

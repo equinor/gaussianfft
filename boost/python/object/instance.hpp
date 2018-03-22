@@ -14,7 +14,7 @@ namespace boost { namespace python
   struct instance_holder;
 }} // namespace boost::python
 
-namespace boost { namespace python { namespace objects { 
+namespace boost { namespace python { namespace objects {
 
 // Each extension instance will be one of these
 template <class Data = char>
@@ -22,13 +22,13 @@ struct instance
 {
     PyObject_VAR_HEAD
     PyObject* dict;
-    PyObject* weakrefs; 
+    PyObject* weakrefs;
     instance_holder* objects;
 
     typedef typename boost::python::detail::type_with_alignment<
         boost::python::detail::alignment_of<Data>::value
     >::type align_t;
-          
+
     union
     {
         align_t align;

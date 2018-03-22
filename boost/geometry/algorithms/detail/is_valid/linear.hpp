@@ -103,7 +103,7 @@ namespace dispatch
 // A curve is simple if it does not pass through the same point twice,
 // with the possible exception of its two endpoints
 //
-// There is an option here as to whether spikes are allowed for linestrings; 
+// There is an option here as to whether spikes are allowed for linestrings;
 // here we pass this as an additional template parameter: allow_spikes
 // If allow_spikes is set to true, spikes are allowed, false otherwise.
 // By default, spikes are disallowed

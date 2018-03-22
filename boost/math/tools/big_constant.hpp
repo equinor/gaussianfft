@@ -13,7 +13,7 @@
 #endif
 #include <boost/type_traits/is_convertible.hpp>
 
-namespace boost{ namespace math{ 
+namespace boost{ namespace math{
 
 namespace tools{
 

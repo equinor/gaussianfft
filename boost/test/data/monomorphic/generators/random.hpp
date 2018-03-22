@@ -1,6 +1,6 @@
 //  (C) Copyright Gennadiy Rozental 2001.
 //  Distributed under the Boost Software License, Version 1.0.
-//  (See accompanying file LICENSE_1_0.txt or copy at 
+//  (See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org/libs/test for the library home page.
@@ -61,7 +61,7 @@ struct default_distribution {
  * This class implements the generator concept (see @ref boost::unit_test::data::monomorphic::generated_by) for implementing
  * a random number generator.
  */
-template<typename SampleType        = double, 
+template<typename SampleType        = double,
          typename DistributionType  = typename ds_detail::default_distribution<SampleType>::type,
          typename EngineType        = std::default_random_engine>
 class random_t {
@@ -83,12 +83,12 @@ public:
 
     // Generator interface
     data::size_t        capacity() const    { return BOOST_TEST_DS_INFINITE_SIZE; }
-    SampleType          next() 
+    SampleType          next()
     {
         return m_distribution( m_engine );
     }
     void                reset()             {}
-    
+
     //! Sets the seed of the pseudo-random number engine.
     template<typename SeedType>
     void seed( SeedType&& seed )            { m_engine.seed( std::forward<SeedType>( seed ) ); }
@@ -104,7 +104,7 @@ private:
 } // namespace monomorphic
 
 
-//! @brief Returns an infinite sequence of random numbers. 
+//! @brief Returns an infinite sequence of random numbers.
 //!
 //! The following overloads are available:
 //! @code
@@ -112,15 +112,15 @@ private:
 //! auto d = random(begin, end);
 //! auto d = random(params);
 //! @endcode
-//! 
-//!   
-//! - The first overload uses the default distribution, which is uniform and which elements 
-//!   are @c double type (the values are in [0, 1) ). 
-//! - The second overload generates numbers in the given interval. The distribution is uniform (in [begin, end) 
+//!
+//!
+//! - The first overload uses the default distribution, which is uniform and which elements
+//!   are @c double type (the values are in [0, 1) ).
+//! - The second overload generates numbers in the given interval. The distribution is uniform (in [begin, end)
 //!   for real numbers, and in [begin, end] for integers). The type of the distribution is deduced from the type
 //!   of the @c begin and @c end parameters.
 //! - The third overload generates numbers using the named parameter inside @c params , which are:
-//!   - @c distribution: the distribution used. In this overload, since the type of the samples cannot be deduced, 
+//!   - @c distribution: the distribution used. In this overload, since the type of the samples cannot be deduced,
 //!     the samples are of type @c double and the distribution is uniform real in [0, 1).
 //!   - @c seed: the seed for generating the values
 //!   - @c engine: the random number generator engine

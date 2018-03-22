@@ -328,7 +328,7 @@ class bimap_core
     typedef BOOST_DEDUCED_TYPENAME mpl::if_<
         ::boost::bimaps::detail::is_unconstrained_set_of< right_set_type >,
 
-        BOOST_DEDUCED_TYPENAME mpl::if_< 
+        BOOST_DEDUCED_TYPENAME mpl::if_<
             ::boost::bimaps::detail::is_unconstrained_set_of< left_set_type >,
 
             independent_index_tag,
@@ -340,10 +340,10 @@ class bimap_core
 
     >::type logic_right_tag;
 
-    typedef BOOST_DEDUCED_TYPENAME mpl::if_< 
+    typedef BOOST_DEDUCED_TYPENAME mpl::if_<
         is_same< relation_set_tag, independent_index_tag >,
 
-        BOOST_DEDUCED_TYPENAME mpl::if_< 
+        BOOST_DEDUCED_TYPENAME mpl::if_<
             ::boost::bimaps::detail::
                 is_unconstrained_set_of< relation_set_type_of >,
 
@@ -368,7 +368,7 @@ class bimap_core
         mpl::and_< is_same< relation_set_tag, independent_index_tag >,
                    mpl::not_<
                        ::boost::bimaps::detail::
-                            is_unconstrained_set_of< relation_set_type_of > 
+                            is_unconstrained_set_of< relation_set_type_of >
                    >
         >,
     // {
@@ -446,7 +446,7 @@ class bimap_core
 };
 
 // Two auxiliar metafunctions to compute the map view types
-// The map view type can not be computed inside the bimap core because a 
+// The map view type can not be computed inside the bimap core because a
 // they need the bimap core to be parsed first.
 
 template< class BimapBaseType >

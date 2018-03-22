@@ -13,7 +13,7 @@ detail::new_non_null_reference list_base::call(object const& arg_)
     return (detail::new_non_null_reference)
         (expect_non_null)(
             PyObject_CallFunction(
-                (PyObject*)&PyList_Type, const_cast<char*>("(O)"), 
+                (PyObject*)&PyList_Type, const_cast<char*>("(O)"),
                 arg_.ptr()));
 }
 
@@ -102,7 +102,7 @@ void list_base::remove(object_cref value)
 {
     this->attr("remove")(value);
 }
-    
+
 void list_base::reverse()
 {
     if (PyList_CheckExact(this->ptr()))
@@ -130,7 +130,7 @@ void list_base::sort()
 }
 
 #if PY_VERSION_HEX >= 0x03000000
-void list_base::sort(args_proxy const &args, 
+void list_base::sort(args_proxy const &args,
                      kwds_proxy const &kwds)
 {
     this->attr("sort")(args, kwds);

@@ -39,7 +39,7 @@ namespace detail
       struct apply
       {
           typedef typename Tuple::head_type result_type;
-          
+
           static typename Tuple::head_type extract(Tuple const& x)
           {
               return x.get_head();
@@ -58,7 +58,7 @@ namespace detail
           // recursive application of tuple_extract on the tail of the tuple
           typedef tuple_extract<typename Tuple::tail_type, Predicate> next;
           typedef typename next::result_type result_type;
-          
+
           static result_type extract(Tuple const& x)
           {
               return next::extract(x.get_tail());
@@ -77,7 +77,7 @@ namespace detail
       BOOST_STATIC_CONSTANT(bool, match = match_t::value);
       typedef typename tuple_extract_impl<match>::template apply<Tuple,Predicate> type;
   };
-  
+
   template <class Tuple, class Predicate>
   struct tuple_extract
       : tuple_extract_base_select<
@@ -106,7 +106,7 @@ namespace detail
      >
   {
   };
-  
+
   template <class Tuple>
   struct keyword_extract
       : tuple_extract<Tuple, is_reference_to_keywords<mpl::_1 > >
@@ -169,7 +169,7 @@ namespace detail
 
    private: // types
       typedef typename default_implementation_extract<all_t>::result_type default_implementation_t;
-      
+
    public: // Constants which can be used for static assertions.
 
       // Users must not supply a default implementation for non-class
@@ -177,19 +177,19 @@ namespace detail
       BOOST_STATIC_CONSTANT(
           bool, has_default_implementation = (
               !is_same<default_implementation_t, void(not_specified::*)()>::value));
-      
+
    public: // Extractor functions which pull the appropriate value out
            // of the tuple
       char const* doc() const
       {
           return doc_extract<all_t>::extract(m_all);
       }
-      
+
       typename keyword_extract<all_t>::result_type keywords() const
       {
           return keyword_extract<all_t>::extract(m_all);
       }
-      
+
       typename policy_extract<all_t>::result_type policies() const
       {
           return policy_extract<all_t>::extract(m_all);
@@ -199,9 +199,9 @@ namespace detail
       {
           return default_implementation_extract<all_t>::extract(m_all);
       }
-      
+
    private: // data members
-      all_t m_all; 
+      all_t m_all;
       not_specified m_nil; // for filling in not_specified slots
   };
 }

@@ -20,7 +20,7 @@ namespace boost
       struct foldl1
       {
         typedef foldl1 type;
-      
+
         template <class S, class Pos>
         struct apply :
           boost::mpl::if_<

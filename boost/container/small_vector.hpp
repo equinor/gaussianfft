@@ -58,14 +58,14 @@ class small_vector_base;
 //! A non-standard allocator used to implement `small_vector`.
 //! Users should never use it directly. It is described here
 //! for documentation purposes.
-//! 
+//!
 //! This allocator inherits from a standard-conforming allocator
 //! and forwards member functions to the standard allocator except
 //! when internal storage is being used as memory source.
 //!
 //! This allocator is a "partially_propagable" allocator and
 //! defines `is_partially_propagable` as true_type.
-//! 
+//!
 //! A partially propagable allocator means that not all storage
 //! allocatod by an instance of `small_vector_allocator` can be
 //! deallocated by another instance of this type, even if both
@@ -94,7 +94,7 @@ class small_vector_allocator
    BOOST_CONTAINER_FORCEINLINE const Allocator &as_base() const
    {  return static_cast<const Allocator&>(*this);  }
 
-   BOOST_CONTAINER_FORCEINLINE Allocator &as_base() 
+   BOOST_CONTAINER_FORCEINLINE Allocator &as_base()
    {  return static_cast<Allocator&>(*this);  }
 
    #endif   //#ifndef BOOST_CONTAINER_DOXYGEN_INVOKED
@@ -307,13 +307,13 @@ class small_vector_allocator
 //!
 //! void some_function()
 //! {
-//! 
+//!
 //!    small_vector<Foo, 8> myvector;
 //!
 //!    read_any_small_vector_of_foo(myvector);   // Reads myvector
 //!
 //!    modify_any_small_vector_of_foo(myvector); // Modifies myvector
-//! 
+//!
 //! }
 //! </pre>
 //!
@@ -329,7 +329,7 @@ class small_vector_base
    //must have this public member
    typedef typename allocator_traits<SecondaryAllocator>::pointer pointer;
 
-   private: 
+   private:
    BOOST_COPYABLE_AND_MOVABLE(small_vector_base)
 
    friend class small_vector_allocator<SecondaryAllocator>;

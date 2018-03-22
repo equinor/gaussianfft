@@ -17,7 +17,7 @@
 
 #include "boost/lambda/core.hpp"
 
-namespace boost { 
+namespace boost {
 namespace lambda {
 
 // -- loop control structure actions ----------------------
@@ -32,118 +32,118 @@ class dowhileloop_no_body_action {};
 
 // For loop
 template <class Arg1, class Arg2, class Arg3, class Arg4>
-inline const 
+inline const
 lambda_functor<
   lambda_functor_base<
-    forloop_action, 
-    tuple<lambda_functor<Arg1>, lambda_functor<Arg2>, 
+    forloop_action,
+    tuple<lambda_functor<Arg1>, lambda_functor<Arg2>,
           lambda_functor<Arg3>, lambda_functor<Arg4> >
-  > 
+  >
 >
-for_loop(const lambda_functor<Arg1>& a1, const lambda_functor<Arg2>& a2, 
-         const lambda_functor<Arg3>& a3, const lambda_functor<Arg4>& a4) { 
-  return 
+for_loop(const lambda_functor<Arg1>& a1, const lambda_functor<Arg2>& a2,
+         const lambda_functor<Arg3>& a3, const lambda_functor<Arg4>& a4) {
+  return
       lambda_functor_base<
-        forloop_action, 
-        tuple<lambda_functor<Arg1>, lambda_functor<Arg2>, 
+        forloop_action,
+        tuple<lambda_functor<Arg1>, lambda_functor<Arg2>,
               lambda_functor<Arg3>, lambda_functor<Arg4> >
-      > 
-    ( tuple<lambda_functor<Arg1>, lambda_functor<Arg2>, 
+      >
+    ( tuple<lambda_functor<Arg1>, lambda_functor<Arg2>,
             lambda_functor<Arg3>, lambda_functor<Arg4> >(a1, a2, a3, a4)
     );
 }
 
 // No body case.
 template <class Arg1, class Arg2, class Arg3>
-inline const 
+inline const
 lambda_functor<
   lambda_functor_base<
-    forloop_no_body_action, 
+    forloop_no_body_action,
     tuple<lambda_functor<Arg1>, lambda_functor<Arg2>, lambda_functor<Arg3> >
-  > 
+  >
 >
-for_loop(const lambda_functor<Arg1>& a1, const lambda_functor<Arg2>& a2, 
-         const lambda_functor<Arg3>& a3) { 
-  return 
+for_loop(const lambda_functor<Arg1>& a1, const lambda_functor<Arg2>& a2,
+         const lambda_functor<Arg3>& a3) {
+  return
       lambda_functor_base<
-        forloop_no_body_action, 
-        tuple<lambda_functor<Arg1>, lambda_functor<Arg2>, 
+        forloop_no_body_action,
+        tuple<lambda_functor<Arg1>, lambda_functor<Arg2>,
               lambda_functor<Arg3> >
-      > 
-      ( tuple<lambda_functor<Arg1>, lambda_functor<Arg2>, 
+      >
+      ( tuple<lambda_functor<Arg1>, lambda_functor<Arg2>,
                lambda_functor<Arg3> >(a1, a2, a3) );
 }
 
 // While loop
 template <class Arg1, class Arg2>
-inline const 
+inline const
 lambda_functor<
   lambda_functor_base<
-    whileloop_action, 
+    whileloop_action,
     tuple<lambda_functor<Arg1>, lambda_functor<Arg2> >
-  > 
+  >
 >
-while_loop(const lambda_functor<Arg1>& a1, const lambda_functor<Arg2>& a2) { 
-  return 
+while_loop(const lambda_functor<Arg1>& a1, const lambda_functor<Arg2>& a2) {
+  return
       lambda_functor_base<
-        whileloop_action, 
+        whileloop_action,
         tuple<lambda_functor<Arg1>, lambda_functor<Arg2> >
-      > 
+      >
       ( tuple<lambda_functor<Arg1>, lambda_functor<Arg2> >(a1, a2));
 }
 
 // No body case.
 template <class Arg1>
-inline const 
+inline const
 lambda_functor<
   lambda_functor_base<
-    whileloop_no_body_action, 
+    whileloop_no_body_action,
     tuple<lambda_functor<Arg1> >
-  > 
+  >
 >
-while_loop(const lambda_functor<Arg1>& a1) { 
-  return 
+while_loop(const lambda_functor<Arg1>& a1) {
+  return
       lambda_functor_base<
-        whileloop_no_body_action, 
+        whileloop_no_body_action,
         tuple<lambda_functor<Arg1> >
-      > 
+      >
       ( tuple<lambda_functor<Arg1> >(a1) );
 }
 
 
 // Do While loop
 template <class Arg1, class Arg2>
-inline const 
+inline const
 lambda_functor<
   lambda_functor_base<
-    dowhileloop_action, 
+    dowhileloop_action,
     tuple<lambda_functor<Arg1>, lambda_functor<Arg2> >
-  > 
+  >
 >
 do_while_loop(const lambda_functor<Arg1>& a1, const lambda_functor<Arg2>& a2) {
-  return 
+  return
       lambda_functor_base<
-        dowhileloop_action, 
+        dowhileloop_action,
         tuple<lambda_functor<Arg1>, lambda_functor<Arg2> >
-      > 
+      >
       ( tuple<lambda_functor<Arg1>, lambda_functor<Arg2> >(a1, a2));
 }
 
 // No body case.
 template <class Arg1>
-inline const 
+inline const
 lambda_functor<
   lambda_functor_base<
-    dowhileloop_no_body_action, 
+    dowhileloop_no_body_action,
     tuple<lambda_functor<Arg1> >
-  > 
+  >
 >
-do_while_loop(const lambda_functor<Arg1>& a1) { 
-  return 
+do_while_loop(const lambda_functor<Arg1>& a1) {
+  return
       lambda_functor_base<
-        dowhileloop_no_body_action, 
+        dowhileloop_no_body_action,
         tuple<lambda_functor<Arg1> >
-      > 
+      >
       ( tuple<lambda_functor<Arg1> >(a1));
 }
 
@@ -152,7 +152,7 @@ do_while_loop(const lambda_functor<Arg1>& a1) {
 
 // Specialization for for_loop.
 template<class Args>
-class 
+class
 lambda_functor_base<forloop_action, Args> {
 public:
   Args args;
@@ -162,17 +162,17 @@ public:
 
   template<class RET, CALL_TEMPLATE_ARGS>
   RET call(CALL_FORMAL_ARGS) const {
-    for(detail::select(boost::tuples::get<0>(args), CALL_ACTUAL_ARGS); 
-        detail::select(boost::tuples::get<1>(args), CALL_ACTUAL_ARGS); 
+    for(detail::select(boost::tuples::get<0>(args), CALL_ACTUAL_ARGS);
+        detail::select(boost::tuples::get<1>(args), CALL_ACTUAL_ARGS);
         detail::select(boost::tuples::get<2>(args), CALL_ACTUAL_ARGS))
-      
+
       detail::select(boost::tuples::get<3>(args), CALL_ACTUAL_ARGS);
   }
 };
 
 // No body case
 template<class Args>
-class 
+class
 lambda_functor_base<forloop_no_body_action, Args> {
 public:
   Args args;
@@ -182,8 +182,8 @@ public:
 
   template<class RET, CALL_TEMPLATE_ARGS>
   RET call(CALL_FORMAL_ARGS) const {
-    for(detail::select(boost::tuples::get<0>(args), CALL_ACTUAL_ARGS); 
-        detail::select(boost::tuples::get<1>(args), CALL_ACTUAL_ARGS); 
+    for(detail::select(boost::tuples::get<0>(args), CALL_ACTUAL_ARGS);
+        detail::select(boost::tuples::get<1>(args), CALL_ACTUAL_ARGS);
         detail::select(boost::tuples::get<2>(args), CALL_ACTUAL_ARGS)) {}
    }
 };
@@ -191,7 +191,7 @@ public:
 
 // Specialization for while_loop.
 template<class Args>
-class 
+class
 lambda_functor_base<whileloop_action, Args> {
 public:
   Args args;
@@ -202,14 +202,14 @@ public:
   template<class RET, CALL_TEMPLATE_ARGS>
   RET call(CALL_FORMAL_ARGS) const {
     while(detail::select(boost::tuples::get<0>(args), CALL_ACTUAL_ARGS))
-      
+
       detail::select(boost::tuples::get<1>(args), CALL_ACTUAL_ARGS);
   }
 };
 
 // No body case
-template<class Args> 
-class 
+template<class Args>
+class
 lambda_functor_base<whileloop_no_body_action, Args> {
 public:
   Args args;
@@ -226,7 +226,7 @@ public:
 // Specialization for do_while_loop.
 // Note that the first argument is the condition.
 template<class Args>
-class 
+class
 lambda_functor_base<dowhileloop_action, Args> {
 public:
   Args args;
@@ -237,14 +237,14 @@ public:
   template<class RET, CALL_TEMPLATE_ARGS>
   RET call(CALL_FORMAL_ARGS) const {
     do {
-      detail::select(boost::tuples::get<1>(args), CALL_ACTUAL_ARGS);      
+      detail::select(boost::tuples::get<1>(args), CALL_ACTUAL_ARGS);
     } while (detail::select(boost::tuples::get<0>(args), CALL_ACTUAL_ARGS) );
   }
 };
 
 // No body case
 template<class Args>
-class 
+class
 lambda_functor_base<dowhileloop_no_body_action, Args> {
 public:
   Args args;
@@ -258,7 +258,7 @@ public:
   }
 };
 
-  // The code below is from Joel de Guzman, some name changes etc. 
+  // The code below is from Joel de Guzman, some name changes etc.
   // has been made.
 
 ///////////////////////////////////////////////////////////////////////////////

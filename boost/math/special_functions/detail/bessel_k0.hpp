@@ -21,9 +21,9 @@
 // Modified Bessel function of the second kind of order zero
 // minimax rational approximations on intervals, see
 // Russon and Blair, Chalk River Report AECL-3461, 1969,
-// as revised by Pavel Holoborodko in "Rational Approximations 
-// for the Modified Bessel Function of the Second Kind - K0(x) 
-// for Computations with Double Precision", see 
+// as revised by Pavel Holoborodko in "Rational Approximations
+// for the Modified Bessel Function of the Second Kind - K0(x)
+// for Computations with Double Precision", see
 // http://www.advanpix.com/2015/11/25/rational-approximations-for-the-modified-bessel-function-of-the-second-kind-k0-for-computations-with-double-precision/
 //
 // The actual coefficients used are our own derivation (by JM)
@@ -88,13 +88,13 @@ T bessel_k0_imp(const T& x, const mpl::int_<24>&)
       // Maximum Relative Change in Control Points : 9.552e-02
       // Max Error found at float precision = Poly : 4.448220e-08
       static const T Y = 1.137250900268554688f;
-      static const T P[] = 
+      static const T P[] =
       {
          -1.372508979104259711e-01f,
          2.622545986273687617e-01f,
          5.047103728247919836e-03f
       };
-      static const T Q[] = 
+      static const T Q[] =
       {
          1.000000000000000000e+00f,
          -8.928694018000029415e-02f,

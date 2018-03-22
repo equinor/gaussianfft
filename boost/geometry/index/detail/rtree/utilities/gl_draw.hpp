@@ -162,7 +162,7 @@ struct gl_draw : public rtree::visitor<Value, typename Options::parameters_type,
                 detail::utilities::gl_draw_indexable(it->first, level_rel * z_mul);
             }
         }
-        
+
         size_t level_backup = level;
         ++level;
 

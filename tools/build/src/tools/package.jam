@@ -53,7 +53,7 @@ rule install ( name package-name ? : requirements * : binaries * : libraries * :
         option.set libdir : ;
         option.set includedir : ;
     }
-            
+
     # If <install-source-root> is not specified, all headers are installed to
     # prefix/include, no matter what their relative path is. Sometimes that is
     # what is needed.
@@ -88,14 +88,14 @@ rule install ( name package-name ? : requirements * : binaries * : libraries * :
     stage.install $(name)-bin : $(binaries) : $(requirements)
         <location>$(bin-locate) ;
     alias $(name)-lib : $(name)-lib-shared $(name)-lib-static ;
-    
+
     # Since the install location of shared libraries differs on universe
     # and cygwin, use target alternatives to make different targets.
     # We should have used indirection conditioanl requirements, but it's
     # awkward to pass bin-locate and lib-locate from there to another rule.
     alias $(name)-lib-shared : $(name)-lib-shared-universe ;
     alias $(name)-lib-shared : $(name)-lib-shared-cygwin : <target-os>cygwin ;
-    
+
     # For shared libraries, we install both explicitly specified one and the
     # shared libraries that the installed executables depend on.
     stage.install $(name)-lib-shared-universe : $(binaries) $(libraries) : $(requirements)
@@ -116,7 +116,7 @@ rule install ( name package-name ? : requirements * : binaries * : libraries * :
     local project-module = [ $(c).project-module ] ;
     module $(project-module)
     {
-        explicit $(1)-bin $(1)-lib $(1)-headers $(1) $(1)-lib-shared $(1)-lib-static 
+        explicit $(1)-bin $(1)-lib $(1)-headers $(1) $(1)-lib-shared $(1)-lib-static
           $(1)-lib-shared-universe $(1)-lib-shared-cygwin ;
     }
 }
@@ -129,16 +129,16 @@ rule install-data ( target-name : package-name : data * : requirements * )
         # If --prefix is explicitly specified on the command line,
         # then we need wipe away any settings of datarootdir
         option.set datarootdir : ;
-    }   
-    
+    }
+
     local prefix = [ get-prefix $(package-name) : $(requirements) ] ;
     local datadir = [ option.get datarootdir : $(prefix)/share ] ;
 
-    stage.install $(target-name) 
+    stage.install $(target-name)
         : $(data)
         : $(requirements) <location>$(datadir)/$(package-name)
         ;
-    
+
     local c = [ project.current ] ;
     local project-module = [ $(c).project-module ] ;
     module $(project-module)
@@ -158,8 +158,8 @@ local rule get-prefix ( package-name : requirements * )
     if ! $(prefix)
     {
         if [ modules.peek : NT ] { prefix = C:\\$(package-name) ; }
-        else if [ modules.peek : UNIX ] { prefix = /usr/local ; }        
+        else if [ modules.peek : UNIX ] { prefix = /usr/local ; }
     }
     return $(prefix) ;
-}           
+}
 

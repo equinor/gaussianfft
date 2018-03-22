@@ -1,7 +1,7 @@
 @echo off
 
 rem  Copyright Beman Dawes 2011
-rem  Distributed under to the Boost Software License, Version 1.0 
+rem  Distributed under to the Boost Software License, Version 1.0
 rem  See http://www.boost.org/LICENSE_1_0.txt
 
 if not $%1==$ goto ok

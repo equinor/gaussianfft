@@ -29,7 +29,7 @@ case because they wrap Python objects instead of being wrapped by them.
 
 Can't extract a list from a tuple. Use list(x) to convert a sequence
 to a list:
-    
+
     >>> assert not check_list((1, 2, 3))
     >>> assert check_list([1, 2, 3])
     >>> extract_list([1, 2, 3])
@@ -42,7 +42,7 @@ Can get a char const* from a Python string:
     'hello'
 
 Can't get a char const* from a Python int:
-    
+
     >>> assert not check_cstring(1)
     >>> try: x = extract_cstring(1)
     ... except TypeError: pass
@@ -98,7 +98,7 @@ def run(args = None):
     if args is not None:
         sys.argv = args
     return doctest.testmod(sys.modules.get(__name__))
-    
+
 if __name__ == '__main__':
     print("running...")
     import sys

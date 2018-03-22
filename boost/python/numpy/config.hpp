@@ -55,7 +55,7 @@
 #  define BOOST_NUMPY_DECL_EXCEPTION
 #endif
 
-//  enable automatic library variant selection  ------------------------------// 
+//  enable automatic library variant selection  ------------------------------//
 
 #if !defined(BOOST_NUMPY_SOURCE) && !defined(BOOST_ALL_NO_LIB) && !defined(BOOST_NUMPY_NO_LIB)
 //

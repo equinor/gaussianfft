@@ -4,7 +4,7 @@
 
 /*
  * Invoke all remaining finalizers that haven't yet been run.
- * This is needed for strict compliance with the Java standard, 
+ * This is needed for strict compliance with the Java standard,
  * which can make the runtime guarantee that all finalizers are run.
  * This is problematic for several reasons:
  * 1) It means that finalizers, and all methods calle by them,

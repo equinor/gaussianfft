@@ -66,7 +66,7 @@ namespace boost { namespace spirit { namespace x3 { namespace traits
             return unused;
         }
     };
-    
+
     template <>
     struct make_attribute<unused_type, unused_type>
     {

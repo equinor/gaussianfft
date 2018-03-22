@@ -727,7 +727,7 @@ rule doxygen ( target : sources + : requirements * : default-build * :
                 images-location = $(images-location)/ ;
             }
 
-            requirements += 
+            requirements +=
                 <dependency>$(target).doxygen-xml-images
                 <xsl:param>boost.doxygen.formuladir=$(images-location) ;
         }

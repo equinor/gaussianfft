@@ -27,7 +27,7 @@
 #  include <boost/concept/detail/concept_def.hpp>
 #endif
 
-namespace boost { 
+namespace boost {
 
 #if BOOST_VERSION >= 103500
   namespace concepts {
@@ -55,7 +55,7 @@ struct DistributedVertexListGraphConcept
     // redesign involving specializing a template with a static
     // member function is in order :(
     using boost::vertices;
-#endif      
+#endif
     p = vertices(g);
     v = *p.first;
     const_constraints(g);
@@ -68,8 +68,8 @@ struct DistributedVertexListGraphConcept
     // redesign involving specializing a template with a static
     // member function is in order :(
     using boost::vertices;
-#endif 
-    
+#endif
+
     p = vertices(cg);
     v = *p.first;
     V = num_vertices(cg);
@@ -136,7 +136,7 @@ struct DistributedEdgeListGraphConcept
       // redesign involving specializing a template with a static
       // member function is in order :(
       using boost::vertices;
-#endif      
+#endif
       p = vertices(g);
       v = *p.first;
       const_constraints(g);
@@ -149,8 +149,8 @@ struct DistributedEdgeListGraphConcept
       // redesign involving specializing a template with a static
       // member function is in order :(
       using boost::vertices;
-#endif 
-      
+#endif
+
       p = vertices(cg);
       v = *p.first;
       V = num_vertices(cg);

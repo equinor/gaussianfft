@@ -45,10 +45,10 @@ The following example demonstrates the use of import and exec to define a functi
 using namespace boost::python;
 
 void greet()
-{ 
+{
   // Retrieve the main module.
   object main = import("__main__");
-  
+
   // Retrieve the main module's namespace
   object global(main.attr("__dict__"));
 
@@ -64,15 +64,15 @@ void greet()
   // Call it.
   std::string message = extract<std::string>(greet());
   std::cout << message << std::endl;
-} 
+}
  ``
  Instead of embedding the python script into a string, we could also store it in an a file...
 ``
 def greet():
    return 'Hello from Python!'
 ``
- ... and execute that instead. 
- 
+ ... and execute that instead.
+
 ``
   // ...
   // Load the greet function from a file.

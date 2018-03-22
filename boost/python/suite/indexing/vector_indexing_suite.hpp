@@ -11,20 +11,20 @@
 # include <boost/python/iterator.hpp>
 
 namespace boost { namespace python {
-            
+
     // Forward declaration
     template <class Container, bool NoProxy, class DerivedPolicies>
     class vector_indexing_suite;
-    
+
     namespace detail
     {
         template <class Container, bool NoProxy>
-        class final_vector_derived_policies 
-            : public vector_indexing_suite<Container, 
+        class final_vector_derived_policies
+            : public vector_indexing_suite<Container,
                 NoProxy, final_vector_derived_policies<Container, NoProxy> > {};
     }
 
-    // The vector_indexing_suite class is a predefined indexing_suite derived 
+    // The vector_indexing_suite class is a predefined indexing_suite derived
     // class for wrapping std::vector (and std::vector like) classes. It provides
     // all the policies required by the indexing_suite (see indexing_suite).
     // Example usage:
@@ -41,23 +41,23 @@ namespace boost { namespace python {
     // disabled by supplying *true* in the NoProxy template parameter.
     //
     template <
-        class Container, 
+        class Container,
         bool NoProxy = false,
-        class DerivedPolicies 
+        class DerivedPolicies
             = detail::final_vector_derived_policies<Container, NoProxy> >
-    class vector_indexing_suite 
+    class vector_indexing_suite
         : public indexing_suite<Container, DerivedPolicies, NoProxy>
     {
     public:
-    
+
         typedef typename Container::value_type data_type;
         typedef typename Container::value_type key_type;
         typedef typename Container::size_type index_type;
         typedef typename Container::size_type size_type;
         typedef typename Container::difference_type difference_type;
-        
+
         template <class Class>
-        static void 
+        static void
         extension_def(Class& cl)
         {
             cl
@@ -65,36 +65,36 @@ namespace boost { namespace python {
                 .def("extend", &base_extend)
             ;
         }
-        
-        static 
+
+        static
         typename mpl::if_<
             is_class<data_type>
           , data_type&
           , data_type
         >::type
         get_item(Container& container, index_type i)
-        { 
+        {
             return container[i];
         }
 
-        static object 
+        static object
         get_slice(Container& container, index_type from, index_type to)
-        { 
+        {
             if (from > to)
                 return object(Container());
             return object(Container(container.begin()+from, container.begin()+to));
         }
 
-        static void 
+        static void
         set_item(Container& container, index_type i, data_type const& v)
-        { 
+        {
             container[i] = v;
         }
 
-        static void 
-        set_slice(Container& container, index_type from, 
+        static void
+        set_slice(Container& container, index_type from,
             index_type to, data_type const& v)
-        { 
+        {
             if (from > to) {
                 return;
             }
@@ -105,10 +105,10 @@ namespace boost { namespace python {
         }
 
         template <class Iter>
-        static void 
-        set_slice(Container& container, index_type from, 
+        static void
+        set_slice(Container& container, index_type from,
             index_type to, Iter first, Iter last)
-        { 
+        {
             if (from > to) {
                 container.insert(container.begin()+from, first, last);
             }
@@ -118,56 +118,56 @@ namespace boost { namespace python {
             }
         }
 
-        static void 
+        static void
         delete_item(Container& container, index_type i)
-        { 
+        {
             container.erase(container.begin()+i);
         }
-        
-        static void 
+
+        static void
         delete_slice(Container& container, index_type from, index_type to)
-        { 
+        {
             if (from > to) {
                 // A null-op.
                 return;
             }
             container.erase(container.begin()+from, container.begin()+to);
         }
-        
+
         static size_t
         size(Container& container)
         {
             return container.size();
         }
-        
+
         static bool
         contains(Container& container, key_type const& key)
         {
             return std::find(container.begin(), container.end(), key)
                 != container.end();
         }
-        
+
         static index_type
         get_min_index(Container& /*container*/)
-        { 
+        {
             return 0;
         }
 
         static index_type
         get_max_index(Container& container)
-        { 
+        {
             return container.size();
         }
-      
-        static bool 
+
+        static bool
         compare_index(Container& /*container*/, index_type a, index_type b)
         {
             return a < b;
         }
-        
+
         static index_type
         convert_index(Container& container, PyObject* i_)
-        { 
+        {
             extract<long> i(i_);
             if (i.check())
             {
@@ -181,27 +181,27 @@ namespace boost { namespace python {
                 }
                 return index;
             }
-            
+
             PyErr_SetString(PyExc_TypeError, "Invalid index type");
             throw_error_already_set();
             return index_type();
         }
-      
-        static void 
+
+        static void
         append(Container& container, data_type const& v)
-        { 
+        {
             container.push_back(v);
         }
-        
+
         template <class Iter>
-        static void 
+        static void
         extend(Container& container, Iter first, Iter last)
-        { 
+        {
             container.insert(container.end(), first, last);
         }
-        
+
     private:
-    
+
         static void
         base_append(Container& container, object v)
         {
@@ -221,13 +221,13 @@ namespace boost { namespace python {
                 }
                 else
                 {
-                    PyErr_SetString(PyExc_TypeError, 
+                    PyErr_SetString(PyExc_TypeError,
                         "Attempting to append an invalid type");
                     throw_error_already_set();
                 }
             }
         }
-        
+
         static void
         base_extend(Container& container, object v)
         {
@@ -236,7 +236,7 @@ namespace boost { namespace python {
             DerivedPolicies::extend(container, temp.begin(), temp.end());
         }
     };
-       
-}} // namespace boost::python 
+
+}} // namespace boost::python
 
 #endif // VECTOR_INDEXING_SUITE_JDG20036_HPP

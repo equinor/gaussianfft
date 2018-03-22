@@ -6,10 +6,10 @@
 
 /** \mainpage BOOST uBLAS: a Linear Algebra Library
  *
- * This is the API Reference Documentation. 
+ * This is the API Reference Documentation.
  *
  * \section main_classes Main classes
- * 
+ *
  * \subsection listvector Vectors
  * - \link #boost::numeric::ublas::vector                    vector \endlink
  * - \link #boost::numeric::ublas::bounded_vector            bounded_vector \endlink

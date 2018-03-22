@@ -1,6 +1,6 @@
 // Copyright 2002 The Trustees of Indiana University.
 
-// Use, modification and distribution is subject to the Boost Software 
+// Use, modification and distribution is subject to the Boost Software
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
@@ -53,14 +53,14 @@ public:
   extent_gen<NumRanges+1>
   operator[](const range& a_range)
   {
-    return extent_gen<NumRanges+1>(*this,a_range);    
+    return extent_gen<NumRanges+1>(*this,a_range);
   }
 
   extent_gen<NumRanges+1>
   operator[](index idx)
   {
-    return extent_gen<NumRanges+1>(*this,range(0,idx));    
-  }    
+    return extent_gen<NumRanges+1>(*this,range(0,idx));
+  }
 
   static extent_gen<0> extents() {
     return extent_gen<0>();

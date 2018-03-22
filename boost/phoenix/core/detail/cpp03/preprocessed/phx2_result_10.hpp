@@ -4,13 +4,13 @@
     Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================*/
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
         template <typename F, typename A0>
         struct has_phx2_result<F, A0>
             : mpl::eval_if<
@@ -34,13 +34,13 @@
         {
             typedef typename F::template result<A0>::type type;
         };
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
         template <typename F, typename A0 , typename A1>
         struct has_phx2_result<F, A0 , A1>
             : mpl::eval_if<
@@ -64,13 +64,13 @@
         {
             typedef typename F::template result<A0 , A1>::type type;
         };
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
         template <typename F, typename A0 , typename A1 , typename A2>
         struct has_phx2_result<F, A0 , A1 , A2>
             : mpl::eval_if<
@@ -94,13 +94,13 @@
         {
             typedef typename F::template result<A0 , A1 , A2>::type type;
         };
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
         template <typename F, typename A0 , typename A1 , typename A2 , typename A3>
         struct has_phx2_result<F, A0 , A1 , A2 , A3>
             : mpl::eval_if<
@@ -124,13 +124,13 @@
         {
             typedef typename F::template result<A0 , A1 , A2 , A3>::type type;
         };
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
         template <typename F, typename A0 , typename A1 , typename A2 , typename A3 , typename A4>
         struct has_phx2_result<F, A0 , A1 , A2 , A3 , A4>
             : mpl::eval_if<
@@ -154,13 +154,13 @@
         {
             typedef typename F::template result<A0 , A1 , A2 , A3 , A4>::type type;
         };
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
         template <typename F, typename A0 , typename A1 , typename A2 , typename A3 , typename A4 , typename A5>
         struct has_phx2_result<F, A0 , A1 , A2 , A3 , A4 , A5>
             : mpl::eval_if<
@@ -184,13 +184,13 @@
         {
             typedef typename F::template result<A0 , A1 , A2 , A3 , A4 , A5>::type type;
         };
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
         template <typename F, typename A0 , typename A1 , typename A2 , typename A3 , typename A4 , typename A5 , typename A6>
         struct has_phx2_result<F, A0 , A1 , A2 , A3 , A4 , A5 , A6>
             : mpl::eval_if<
@@ -214,13 +214,13 @@
         {
             typedef typename F::template result<A0 , A1 , A2 , A3 , A4 , A5 , A6>::type type;
         };
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
         template <typename F, typename A0 , typename A1 , typename A2 , typename A3 , typename A4 , typename A5 , typename A6 , typename A7>
         struct has_phx2_result<F, A0 , A1 , A2 , A3 , A4 , A5 , A6 , A7>
             : mpl::eval_if<
@@ -244,13 +244,13 @@
         {
             typedef typename F::template result<A0 , A1 , A2 , A3 , A4 , A5 , A6 , A7>::type type;
         };
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
         template <typename F, typename A0 , typename A1 , typename A2 , typename A3 , typename A4 , typename A5 , typename A6 , typename A7 , typename A8>
         struct has_phx2_result<F, A0 , A1 , A2 , A3 , A4 , A5 , A6 , A7 , A8>
             : mpl::eval_if<

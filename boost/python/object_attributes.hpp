@@ -19,7 +19,7 @@ struct const_attribute_policies
     static object get(object const& target, char const* key);
     static object get(object const& target, object const& key);
 };
-  
+
 struct attribute_policies : const_attribute_policies
 {
     static object const& set(object const& target, char const* key, object const& value);
@@ -31,7 +31,7 @@ struct const_objattribute_policies
     typedef object const key_type;
     static object get(object const& target, object const& key);
 };
-  
+
 struct objattribute_policies : const_objattribute_policies
 {
     static object const& set(object const& target, object const& key, object const& value);

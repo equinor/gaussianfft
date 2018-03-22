@@ -7,7 +7,7 @@
 
 # include <boost/python/detail/type_traits.hpp>
 
-namespace boost { namespace python { namespace detail { 
+namespace boost { namespace python { namespace detail {
 
 template <class U>
 inline U& void_ptr_to_reference(void const volatile* p, U&(*)())
@@ -26,7 +26,7 @@ template <class U>
 inline void write_void_ptr_reference(void const volatile* storage, void* ptr, U&(*)())
 {
     // stripping CV qualification suppresses warnings on older EDGs
-    typedef typename remove_cv<U>::type u_stripped; 
+    typedef typename remove_cv<U>::type u_stripped;
     write_void_ptr(storage, ptr, u_stripped(0));
 }
 

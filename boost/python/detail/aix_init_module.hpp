@@ -9,9 +9,9 @@
 # include <cstdio>
 # ifdef __KCC
 #  include <iostream> // this works around a problem in KCC 4.0f
-# endif 
+# endif
 
-namespace boost { namespace python { namespace detail { 
+namespace boost { namespace python { namespace detail {
 
 extern "C"
 {

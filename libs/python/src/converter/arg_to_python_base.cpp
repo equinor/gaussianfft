@@ -9,7 +9,7 @@
 #include <boost/python/handle.hpp>
 #include <boost/python/refcount.hpp>
 
-namespace boost { namespace python { namespace converter { 
+namespace boost { namespace python { namespace converter {
 
 namespace detail
 {

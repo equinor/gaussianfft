@@ -19,9 +19,9 @@ static_assert(!WIFEXITED(still_active), "Internal Error");
 
 inline bool is_running(const child_handle &p, int & exit_code)
 {
-    int status; 
+    int status;
     auto ret = ::waitpid(p.pid, &status, WNOHANG|WUNTRACED);
-    
+
     if (ret == -1)
     {
         if (errno != ECHILD) //because it no child is running, than this one isn't either, obviously.
@@ -42,8 +42,8 @@ inline bool is_running(const child_handle &p, int & exit_code)
 inline bool is_running(const child_handle &p, int & exit_code, std::error_code &ec) noexcept
 {
     int status;
-    auto ret = ::waitpid(p.pid, &status, WNOHANG|WUNTRACED); 
-    
+    auto ret = ::waitpid(p.pid, &status, WNOHANG|WUNTRACED);
+
     if (ret == -1)
     {
         if (errno != ECHILD) //because it no child is running, than this one isn't either, obviously.
@@ -55,10 +55,10 @@ inline bool is_running(const child_handle &p, int & exit_code, std::error_code &
     else
     {
         ec.clear();
-        
+
         if (WIFEXITED(status))
             exit_code = status;
-        
+
         return false;
     }
 }

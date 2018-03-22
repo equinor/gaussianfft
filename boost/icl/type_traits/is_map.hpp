@@ -1,4 +1,4 @@
-/*-----------------------------------------------------------------------------+    
+/*-----------------------------------------------------------------------------+
 Copyright (c) 2008-2009: Joachim Faulhaber
 +------------------------------------------------------------------------------+
    Distributed under the Boost Software License, Version 1.0.
@@ -15,7 +15,7 @@ namespace boost{ namespace icl
     template <class Type> struct is_map
     {
         typedef is_map<Type> type;
-        BOOST_STATIC_CONSTANT(bool, value = false); 
+        BOOST_STATIC_CONSTANT(bool, value = false);
     };
 
 }} // namespace boost icl

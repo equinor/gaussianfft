@@ -1,7 +1,7 @@
 /*=============================================================================
     Copyright (c) 2006-2007 Tobias Schwinger
-  
-    Use modification and distribution are subject to the Boost Software 
+
+    Use modification and distribution are subject to the Boost Software
     License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
     http://www.boost.org/LICENSE_1_0.txt).
 ==============================================================================*/
@@ -43,7 +43,7 @@ namespace boost { namespace fusion
 
     namespace detail
     {
-        template <class Derived, class Function, 
+        template <class Derived, class Function,
             class Sequence, long Arity>
         struct unfused_typed_impl;
     }
@@ -51,8 +51,8 @@ namespace boost { namespace fusion
     template <class Function, class Sequence>
     class unfused_typed
         : public detail::unfused_typed_impl
-          < unfused_typed<Function,Sequence>, Function, Sequence, 
-            result_of::size<Sequence>::value > 
+          < unfused_typed<Function,Sequence>, Function, Sequence,
+            result_of::size<Sequence>::value >
     {
         Function fnc_transformed;
 
@@ -67,11 +67,11 @@ namespace boost { namespace fusion
         inline explicit unfused_typed(func_const_fwd_t f = Function())
             : fnc_transformed(f)
         { }
-    }; 
+    };
 
     #define  BOOST_PP_FILENAME_1 <boost/fusion/functional/adapter/unfused_typed.hpp>
     #define  BOOST_PP_ITERATION_LIMITS (0,BOOST_FUSION_UNFUSED_TYPED_MAX_ARITY)
-    #include BOOST_PP_ITERATE() 
+    #include BOOST_PP_ITERATE()
 
 }}
 
@@ -79,28 +79,28 @@ namespace boost { namespace fusion
 #  pragma warning(pop)
 #endif
 
-namespace boost 
+namespace boost
 {
 #if !defined(BOOST_RESULT_OF_USE_DECLTYPE) || defined(BOOST_NO_CXX11_DECLTYPE)
     template<class F, class Seq>
     struct result_of< boost::fusion::unfused_typed<F,Seq> const () >
-        : boost::fusion::unfused_typed<F,Seq>::template result< 
+        : boost::fusion::unfused_typed<F,Seq>::template result<
             boost::fusion::unfused_typed<F,Seq> const () >
     { };
     template<class F, class Seq>
     struct result_of< boost::fusion::unfused_typed<F,Seq>() >
-        : boost::fusion::unfused_typed<F,Seq>::template result< 
+        : boost::fusion::unfused_typed<F,Seq>::template result<
             boost::fusion::unfused_typed<F,Seq> () >
     { };
 #endif
     template<class F, class Seq>
     struct tr1_result_of< boost::fusion::unfused_typed<F,Seq> const () >
-        : boost::fusion::unfused_typed<F,Seq>::template result< 
+        : boost::fusion::unfused_typed<F,Seq>::template result<
             boost::fusion::unfused_typed<F,Seq> const () >
     { };
     template<class F, class Seq>
     struct tr1_result_of< boost::fusion::unfused_typed<F,Seq>() >
-        : boost::fusion::unfused_typed<F,Seq>::template result< 
+        : boost::fusion::unfused_typed<F,Seq>::template result<
             boost::fusion::unfused_typed<F,Seq> () >
     { };
 }
@@ -145,8 +145,8 @@ namespace boost
 
             BOOST_CXX14_CONSTEXPR BOOST_FUSION_GPU_ENABLED
             inline typename boost::result_of<
-                function(arg_vector_t &) >::type 
-            operator()(BOOST_PP_ENUM(N,M,arg_vector_t)) 
+                function(arg_vector_t &) >::type
+            operator()(BOOST_PP_ENUM(N,M,arg_vector_t))
             {
 #if N > 0
                 arg_vector_t arg(BOOST_PP_ENUM_PARAMS(N,a));
@@ -162,7 +162,7 @@ namespace boost
 
             template <class Self BOOST_PP_ENUM_TRAILING_PARAMS(N,typename T)>
             struct result< Self const (BOOST_PP_ENUM_PARAMS(N,T)) >
-                : boost::result_of< function_c(arg_vector_t &) > 
+                : boost::result_of< function_c(arg_vector_t &) >
             { };
 
             template <class Self BOOST_PP_ENUM_TRAILING_PARAMS(N,typename T)>

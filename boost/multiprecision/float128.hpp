@@ -131,7 +131,7 @@ namespace backends{
 struct float128_backend
 {
    typedef mpl::list<signed char, short, int, long, boost::long_long_type>   signed_types;
-   typedef mpl::list<unsigned char, unsigned short, 
+   typedef mpl::list<unsigned char, unsigned short,
       unsigned int, unsigned long, boost::ulong_long_type>           unsigned_types;
    typedef mpl::list<float, double, long double>                 float_types;
    typedef int                                                   exponent_type;
@@ -404,7 +404,7 @@ inline void eval_trunc(float128_backend& result, const float128_backend& arg)
    result.value() = truncq(arg.value());
 }
 /*
-// 
+//
 // This doesn't actually work... rely on our own default version instead.
 //
 inline void eval_round(float128_backend& result, const float128_backend& arg)
@@ -412,9 +412,9 @@ inline void eval_round(float128_backend& result, const float128_backend& arg)
    if(isnanq(arg.value()) || isinf(arg.value()))
    {
       result = boost::math::policies::raise_rounding_error(
-            "boost::multiprecision::trunc<%1%>(%1%)", 0, 
-            number<float128_backend, et_off>(arg), 
-            number<float128_backend, et_off>(arg), 
+            "boost::multiprecision::trunc<%1%>(%1%)", 0,
+            number<float128_backend, et_off>(arg),
+            number<float128_backend, et_off>(arg),
             boost::math::policies::policy<>()).backend();
       return;
    }
@@ -576,14 +576,14 @@ namespace math {
 
 } // namespace boost
 
-namespace boost{ 
+namespace boost{
 namespace archive{
 
 class binary_oarchive;
 class binary_iarchive;
 
 }
-   
+
 namespace serialization{ namespace float128_detail{
 
 template <class Archive>

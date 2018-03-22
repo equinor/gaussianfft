@@ -17,7 +17,7 @@ synopsis
   {
   namespace python
   {
-  namespace numpy 
+  namespace numpy
   {
 
   template <typename TBinaryFunctor,
@@ -25,15 +25,15 @@ synopsis
             typename TArgument2=typename TBinaryFunctor::second_argument_type,
             typename TResult=typename TBinaryFunctor::result_type>
 
-  struct binary_ufunc 
+  struct binary_ufunc
   {
 
-    static object call(TBinaryFunctor & self, 
-                       object const & input1, 
+    static object call(TBinaryFunctor & self,
+                       object const & input1,
                        object const & input2,
                        object const & output);
 
-    static object make(); 
+    static object make();
   };
 
   }
@@ -66,8 +66,8 @@ accessors
             typename TArgument1=typename TBinaryFunctor::first_argument_type,
             typename TArgument2=typename TBinaryFunctor::second_argument_type,
             typename TResult=typename TBinaryFunctor::result_type>
-  static object call(TBinaryFunctor & self, 
-                     object const & input, 
+  static object call(TBinaryFunctor & self,
+                     object const & input,
                      object const & output);
 
 :Requires: Typenames ``TBinaryFunctor`` and optionally ``TArgument1`` and ``TArgument2`` for argument type and ``TResult`` for result type
@@ -80,7 +80,7 @@ accessors
             typename TArgument1=typename TBinaryFunctor::first_argument_type,
             typename TArgument2=typename TBinaryFunctor::second_argument_type,
             typename TResult=typename TBinaryFunctor::result_type>
-  static object make(); 
+  static object make();
 
 :Requires: Typenames ``TBinaryFunctor`` and optionally ``TArgument1`` and ``TArgument2`` for argument type and ``TResult`` for result type
 
@@ -106,5 +106,5 @@ Example(s)
   p::object ud = p::class_<BinarySquare, boost::shared_ptr<BinarySquare> >("BinarySquare").def("__call__", np::binary_ufunc<BinarySquare>::make());
   p::object inst = ud();
   result_array = inst.attr("__call__")(demo_array,demo_array) ;
-  std::cout << "Square of list with binary ufunc is " << p::extract <char const * > (p::str(result_array)) << std::endl ; 
+  std::cout << "Square of list with binary ufunc is " << p::extract <char const * > (p::str(result_array)) << std::endl ;
 

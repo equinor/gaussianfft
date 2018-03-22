@@ -241,3 +241,4 @@ bin.*
 libs/config/checks/architecture/bin
 tools/build/src/engine/bootstrap/jam0
 source_files.txt
+.pypirc

@@ -8,11 +8,11 @@
 # if defined(__EDG_VERSION__) && __EDG_VERSION__ <= 241
 #  include <boost/mpl/if.hpp>
 #  include <boost/python/detail/type_traits.hpp>
-# endif 
+# endif
 
 // Supplies a runtime is_convertible check which can be used with tag
 // dispatching to work around the Metrowerks Pro7 limitation with boost/std::is_convertible
-namespace boost { namespace python { namespace detail { 
+namespace boost { namespace python { namespace detail {
 
 typedef char* yes_convertible;
 typedef int* no_convertible;
@@ -30,7 +30,7 @@ struct convertible
         , yes_convertible
         , no_convertible
         >::type check(X const&) { return 0; }
-# endif 
+# endif
 };
 
 }}} // namespace boost::python::detail

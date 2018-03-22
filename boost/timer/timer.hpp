@@ -5,7 +5,7 @@
 //  Distributed under the Boost Software License, Version 1.0.
 //  See http://www.boost.org/LICENSE_1_0.txt
 
-#ifndef BOOST_TIMER_TIMER_HPP                  
+#ifndef BOOST_TIMER_TIMER_HPP
 #define BOOST_TIMER_TIMER_HPP
 
 #include <boost/config/warning_disable.hpp>
@@ -43,14 +43,14 @@ namespace timer
 
     void clear() { wall = user = system = 0LL; }
   };
-      
+
   const short         default_places = 6;
 
   BOOST_TIMER_DECL
-  std::string format(const cpu_times& times, short places, const std::string& format); 
+  std::string format(const cpu_times& times, short places, const std::string& format);
 
   BOOST_TIMER_DECL
-  std::string format(const cpu_times& times, short places = default_places); 
+  std::string format(const cpu_times& times, short places = default_places);
 
 //  cpu_timer  -------------------------------------------------------------------------//
 
@@ -71,7 +71,7 @@ namespace timer
     //  actions
     void          start() BOOST_NOEXCEPT;
     void          stop() BOOST_NOEXCEPT;
-    void          resume() BOOST_NOEXCEPT; 
+    void          resume() BOOST_NOEXCEPT;
 
   private:
     cpu_times     m_times;
@@ -112,20 +112,20 @@ namespace timer
    const std::string&  format_string() const { return m_format; }
 
     //  actions
-    void   report(); 
+    void   report();
 
   private:
     short           m_places;
-    std::ostream*   m_os;      // stored as ptr so compiler can generate operator= 
-    std::string     m_format;  
+    std::ostream*   m_os;      // stored as ptr so compiler can generate operator=
+    std::string     m_format;
   };
-   
+
 } // namespace timer
 } // namespace boost
 
 #   if defined(_MSC_VER)
 #     pragma warning(pop) // restore warning settings.
-#   endif 
+#   endif
 
 #include <boost/config/abi_suffix.hpp> // pops abi_prefix.hpp pragmas
 

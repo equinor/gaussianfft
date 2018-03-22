@@ -4,8 +4,8 @@
 
 // Copyright Aleksey Gurtovoy 2003-2004
 //
-// Distributed under the Boost Software License, Version 1.0. 
-// (See accompanying file LICENSE_1_0.txt or copy at 
+// Distributed under the Boost Software License, Version 1.0.
+// (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 //
 // See http://www.boost.org/libs/mpl for documentation.
@@ -24,7 +24,7 @@
 
 namespace boost { namespace mpl {
 
-template< 
+template<
       typename BOOST_MPL_AUX_NA_PARAM(Body)
     , typename BOOST_MPL_AUX_NA_PARAM(T)
     >
@@ -34,7 +34,7 @@ struct switch_
           Body
         , apply1< lambda< first<_1> >, T >
         >::type iter_;
-        
+
     typedef typename deref<iter_>::type pair_;
     typedef typename lambda< typename second<pair_>::type >::type f_;
     typedef typename apply1<f_,T>::type type;

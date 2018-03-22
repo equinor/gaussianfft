@@ -23,7 +23,7 @@ namespace boost{namespace icl
 
     //-----------------------------------------------------------------------------
 
-    template<>         
+    template<>
     inline std::string unary_template_to_string<icl::std_equal>::apply()
     { return "=="; }
 

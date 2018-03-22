@@ -67,7 +67,7 @@ namespace boost { namespace python { namespace api {    \
                                                         \
   template<typename R, typename T>                      \
   struct enable_binary< OArchiver , R, T> {};           \
-} } } 
+} } }
 # else
 #  define BOOST_PYTHON_SERIALIZATION_ARCHIVE(IArchiver, OArchiver)
 #endif
@@ -142,7 +142,7 @@ class BOOST_MPI_PYTHON_DECL pickle {
 public:
   static str dumps(object obj, int protocol = -1);
   static object loads(str s);
-  
+
 private:
   static void initialize_data();
 
@@ -296,7 +296,7 @@ namespace detail {
      *  value.
      */
     template<typename T>
-    void register_type(const saver_t& saver, const loader_t& loader, 
+    void register_type(const saver_t& saver, const loader_t& loader,
                        const T& value = T(), PyTypeObject* type = 0)
     {
       // If the user did not provide us with a Python type, figure it
@@ -360,7 +360,7 @@ namespace detail {
   template<typename IArchiver, typename OArchiver>
   direct_serialization_table<IArchiver, OArchiver>&
   get_direct_serialization_table();
-} // end namespace detail 
+} // end namespace detail
 
 /**
  * @brief Register the type T for direct serialization.
@@ -385,7 +385,7 @@ template<typename IArchiver, typename OArchiver, typename T>
 void
 register_serialized(const T& value = T(), PyTypeObject* type = 0)
 {
-  detail::direct_serialization_table<IArchiver, OArchiver>& table = 
+  detail::direct_serialization_table<IArchiver, OArchiver>& table =
     detail::get_direct_serialization_table<IArchiver, OArchiver>();
   table.register_type(value, type);
 }
@@ -394,8 +394,8 @@ namespace detail {
 
 /// Save a Python object by pickling it.
 template<typename Archiver>
-void 
-save_impl(Archiver& ar, const boost::python::object& obj, 
+void
+save_impl(Archiver& ar, const boost::python::object& obj,
           const unsigned int /*version*/,
           mpl::false_ /*has_direct_serialization*/)
 {
@@ -408,8 +408,8 @@ save_impl(Archiver& ar, const boost::python::object& obj,
 /// Try to save a Python object by directly serializing it; fall back
 /// on pickling if required.
 template<typename Archiver>
-void 
-save_impl(Archiver& ar, const boost::python::object& obj, 
+void
+save_impl(Archiver& ar, const boost::python::object& obj,
           const unsigned int version,
           mpl::true_ /*has_direct_serialization*/)
 {
@@ -418,7 +418,7 @@ save_impl(Archiver& ar, const boost::python::object& obj,
   typedef typename direct_serialization_table<IArchiver, OArchiver>::saver_t
     saver_t;
 
-  direct_serialization_table<IArchiver, OArchiver>& table = 
+  direct_serialization_table<IArchiver, OArchiver>& table =
     get_direct_serialization_table<IArchiver, OArchiver>();
 
   int descriptor = 0;
@@ -434,9 +434,9 @@ save_impl(Archiver& ar, const boost::python::object& obj,
 
 /// Load a Python object by unpickling it
 template<typename Archiver>
-void 
-load_impl(Archiver& ar, boost::python::object& obj, 
-          const unsigned int /*version*/, 
+void
+load_impl(Archiver& ar, boost::python::object& obj,
+          const unsigned int /*version*/,
           mpl::false_ /*has_direct_serialization*/)
 {
   int len;
@@ -451,8 +451,8 @@ load_impl(Archiver& ar, boost::python::object& obj,
 /// Try to load a Python object by directly deserializing it; fall back
 /// on unpickling if required.
 template<typename Archiver>
-void 
-load_impl(Archiver& ar, boost::python::object& obj, 
+void
+load_impl(Archiver& ar, boost::python::object& obj,
           const unsigned int version,
           mpl::true_ /*has_direct_serialization*/)
 {
@@ -461,7 +461,7 @@ load_impl(Archiver& ar, boost::python::object& obj,
   typedef typename direct_serialization_table<IArchiver, OArchiver>::loader_t
     loader_t;
 
-  direct_serialization_table<IArchiver, OArchiver>& table = 
+  direct_serialization_table<IArchiver, OArchiver>& table =
     get_direct_serialization_table<IArchiver, OArchiver>();
 
   int descriptor;
@@ -481,31 +481,31 @@ load_impl(Archiver& ar, boost::python::object& obj,
 } // end namespace detail
 
 template<typename Archiver>
-void 
-save(Archiver& ar, const boost::python::object& obj, 
+void
+save(Archiver& ar, const boost::python::object& obj,
      const unsigned int version)
 {
   typedef Archiver OArchiver;
   typedef typename input_archiver<OArchiver>::type IArchiver;
 
-  detail::save_impl(ar, obj, version, 
+  detail::save_impl(ar, obj, version,
                     has_direct_serialization<IArchiver, OArchiver>());
 }
 
 template<typename Archiver>
-void 
-load(Archiver& ar, boost::python::object& obj, 
+void
+load(Archiver& ar, boost::python::object& obj,
      const unsigned int version)
 {
   typedef Archiver IArchiver;
   typedef typename output_archiver<IArchiver>::type OArchiver;
 
-  detail::load_impl(ar, obj, version, 
+  detail::load_impl(ar, obj, version,
                     has_direct_serialization<IArchiver, OArchiver>());
 }
 
 template<typename Archive>
-inline void 
+inline void
 serialize(Archive& ar, boost::python::object& obj, const unsigned int version)
 {
   boost::serialization::split_free(ar, obj, version);

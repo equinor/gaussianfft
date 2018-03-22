@@ -1,4 +1,4 @@
-// Copyright (C) 2007 Douglas Gregor 
+// Copyright (C) 2007 Douglas Gregor
 
 // Use, modification and distribution is subject to the Boost Software
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
@@ -14,14 +14,14 @@
 #error "Parallel BGL files should not be included unless <boost/graph/use_mpi.hpp> has been included"
 #endif
 
-namespace boost { 
+namespace boost {
 
 template<PBGL_DISTRIB_ADJLIST_TEMPLATE_PARMS>
 template<typename EdgeIterator>
 void
 PBGL_DISTRIB_ADJLIST_TYPE::
 initialize(EdgeIterator first, EdgeIterator last,
-           vertices_size_type, const base_distribution_type& distribution, 
+           vertices_size_type, const base_distribution_type& distribution,
            vecS)
 {
   process_id_type id = process_id(process_group_);
@@ -44,7 +44,7 @@ void
 PBGL_DISTRIB_ADJLIST_TYPE::
 initialize(EdgeIterator first, EdgeIterator last,
            EdgePropertyIterator ep_iter,
-           vertices_size_type, const base_distribution_type& distribution, 
+           vertices_size_type, const base_distribution_type& distribution,
            vecS)
 {
   process_id_type id = process_id(process_group_);

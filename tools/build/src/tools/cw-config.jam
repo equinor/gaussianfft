@@ -21,7 +21,7 @@ if [ os.name ] = NT
             "HKEY_LOCAL_MACHINE\\SOFTWARE\\Metrowerks\\CodeWarrior for Windows\\$(R).0"
             : "PATH" ] ;
         cw-version ?= $(R).0 ;
-        
+
         if $(cw-path)
         {
             if --debug-configuration in [ modules.peek : ARGV ]

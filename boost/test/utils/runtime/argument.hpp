@@ -97,7 +97,7 @@ public:
     T&          get( cstring parameter_name ) {
         storage_type::const_iterator found = m_arguments.find( parameter_name );
         BOOST_TEST_I_ASSRT( found != m_arguments.end(),
-                            access_to_missing_argument() 
+                            access_to_missing_argument()
                                 << "There is no argument provided for parameter "
                                 << parameter_name );
 

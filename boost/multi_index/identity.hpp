@@ -54,8 +54,8 @@ struct const_identity_base
   typename disable_if<is_convertible<const ChainedPtr&,Type&>,Type&>::type
 #else
   Type&
-#endif 
-  
+#endif
+
   operator()(const ChainedPtr& x)const
   {
     return operator()(*x);
@@ -67,7 +67,7 @@ struct const_identity_base
   }
 
   Type& operator()(const reference_wrapper<Type>& x)const
-  { 
+  {
     return x.get();
   }
 
@@ -80,7 +80,7 @@ struct const_identity_base
 #endif
 
   )const
-  { 
+  {
     return x.get();
   }
 };
@@ -91,7 +91,7 @@ struct non_const_identity_base
   typedef Type result_type;
 
   /* templatized for pointer-like types */
-  
+
   template<typename ChainedPtr>
 
 #if !defined(BOOST_NO_SFINAE)
@@ -99,8 +99,8 @@ struct non_const_identity_base
     is_convertible<const ChainedPtr&,const Type&>,Type&>::type
 #else
   Type&
-#endif 
-    
+#endif
+
   operator()(const ChainedPtr& x)const
   {
     return operator()(*x);
@@ -117,12 +117,12 @@ struct non_const_identity_base
   }
 
   const Type& operator()(const reference_wrapper<const Type>& x)const
-  { 
+  {
     return x.get();
   }
 
   Type& operator()(const reference_wrapper<Type>& x)const
-  { 
+  {
     return x.get();
   }
 };

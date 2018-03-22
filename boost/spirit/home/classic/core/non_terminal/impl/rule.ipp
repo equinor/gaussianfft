@@ -228,7 +228,7 @@ BOOST_SPIRIT_CLASSIC_NAMESPACE_BEGIN
 #pragma warning(push)
 #pragma warning(disable:4512) //assignment operator could not be generated
 #endif
-        
+
         template <typename ParserT, typename ScannerT, typename AttrT>
         struct concrete_parser : abstract_parser<ScannerT, AttrT>
         {
@@ -249,7 +249,7 @@ BOOST_SPIRIT_CLASSIC_NAMESPACE_BEGIN
 
             typename ParserT::embed_t p;
         };
-        
+
 #if BOOST_WORKAROUND(BOOST_MSVC, >= 1400)
 #pragma warning(pop)
 #endif

@@ -135,7 +135,7 @@ namespace boost { namespace detail {
                  // digits is the number of no-sign bits
                   || (int(x::digits) + 1 >= digit_traits<boost::intmax_t>::digits)))>::template then<
         Integer,
-          
+
       typename if_true<(int(x::digits) + 1 < digit_traits<signed int>::digits)>::template then<
         signed int,
 
@@ -150,7 +150,7 @@ namespace boost { namespace detail {
 
       typedef typename
       if_true<(sizeof(Integer) >= sizeof(intmax_t))>::template then<
-               
+
         typename if_true<(is_signed<Integer>::value)>::template then<
           Integer,
           intmax_t

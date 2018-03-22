@@ -33,7 +33,7 @@ struct is_subconcept_impl {
     typedef typename ::boost::type_erasure::detail::get_placeholder_normalization_map<
         Super
     >::type placeholder_subs_super;
-    
+
     typedef typename ::boost::type_erasure::detail::normalize_concept<
         Sub>::type normalized_sub;
     typedef typename ::boost::type_erasure::detail::get_placeholder_normalization_map<

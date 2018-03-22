@@ -1,4 +1,4 @@
-// (C) Copyright 2005 Matthias Troyer 
+// (C) Copyright 2005 Matthias Troyer
 
 // Use, modification and distribution is subject to the Boost Software
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
@@ -16,9 +16,9 @@ namespace boost { namespace mpi { namespace detail {
 /// @brief a minimal input archive, which forwards reading to another archive
 ///
 /// This class template is designed to use the loading facilities of another
-/// input archive (the "implementation archive", whose type is specified by 
-/// the template argument, to handle serialization of primitive types, 
-/// while serialization for specific types can be overriden independently 
+/// input archive (the "implementation archive", whose type is specified by
+/// the template argument, to handle serialization of primitive types,
+/// while serialization for specific types can be overriden independently
 /// of that archive.
 
 template <class ImplementationArchive>
@@ -39,7 +39,7 @@ public:
     {
       implementation_archive.load_binary(address,count);
     }
-    
+
     /// loading of arrays is forwarded to the implementation archive
     template<class T>
     void load_array(serialization::array_wrapper<T> & x, unsigned int file_version )
@@ -47,7 +47,7 @@ public:
       implementation_archive.load_array(x,file_version);
     }
 
-    typedef typename ImplementationArchive::use_array_optimization use_array_optimization;    
+    typedef typename ImplementationArchive::use_array_optimization use_array_optimization;
 
 #ifndef BOOST_NO_MEMBER_TEMPLATE_FRIENDS
     friend class archive::load_access;

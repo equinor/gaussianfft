@@ -144,7 +144,7 @@ struct intersection
             <
                 Geometry1, Geometry2
             >::type strategy_type;
-        
+
         return dispatch::intersection
             <
                 Geometry1,
@@ -159,7 +159,7 @@ struct intersection
 
 namespace resolve_variant
 {
-    
+
 template <typename Geometry1, typename Geometry2>
 struct intersection
 {
@@ -171,17 +171,17 @@ struct intersection
     {
         concepts::check<Geometry1 const>();
         concepts::check<Geometry2 const>();
-        
+
         typedef typename geometry::rescale_overlay_policy_type
             <
                 Geometry1,
                 Geometry2
             >::type rescale_policy_type;
-        
+
         rescale_policy_type robust_policy
             = geometry::get_rescale_policy<rescale_policy_type>(geometry1,
                                                                 geometry2);
-        
+
         return resolve_strategy::intersection::apply(geometry1,
                                                      geometry2,
                                                      robust_policy,
@@ -200,7 +200,7 @@ struct intersection<variant<BOOST_VARIANT_ENUM_PARAMS(T)>, Geometry2>
         Geometry2 const& m_geometry2;
         GeometryOut& m_geometry_out;
         Strategy const& m_strategy;
-        
+
         visitor(Geometry2 const& geometry2,
                 GeometryOut& geometry_out,
                 Strategy const& strategy)
@@ -208,7 +208,7 @@ struct intersection<variant<BOOST_VARIANT_ENUM_PARAMS(T)>, Geometry2>
             , m_geometry_out(geometry_out)
             , m_strategy(strategy)
         {}
-        
+
         template <typename Geometry1>
         bool operator()(Geometry1 const& geometry1) const
         {
@@ -219,7 +219,7 @@ struct intersection<variant<BOOST_VARIANT_ENUM_PARAMS(T)>, Geometry2>
                 >::apply(geometry1, m_geometry2, m_geometry_out, m_strategy);
         }
     };
-    
+
     template <typename GeometryOut, typename Strategy>
     static inline bool
     apply(variant<BOOST_VARIANT_ENUM_PARAMS(T)> const& geometry1,
@@ -244,7 +244,7 @@ struct intersection<Geometry1, variant<BOOST_VARIANT_ENUM_PARAMS(T)> >
         Geometry1 const& m_geometry1;
         GeometryOut& m_geometry_out;
         Strategy const& m_strategy;
-        
+
         visitor(Geometry1 const& geometry1,
                 GeometryOut& geometry_out,
                 Strategy const& strategy)
@@ -252,7 +252,7 @@ struct intersection<Geometry1, variant<BOOST_VARIANT_ENUM_PARAMS(T)> >
             , m_geometry_out(geometry_out)
             , m_strategy(strategy)
         {}
-        
+
         template <typename Geometry2>
         bool operator()(Geometry2 const& geometry2) const
         {
@@ -263,7 +263,7 @@ struct intersection<Geometry1, variant<BOOST_VARIANT_ENUM_PARAMS(T)> >
                 >::apply(m_geometry1, geometry2, m_geometry_out, m_strategy);
         }
     };
-    
+
     template <typename GeometryOut, typename Strategy>
     static inline bool
     apply(Geometry1 const& geometry1,
@@ -287,12 +287,12 @@ struct intersection<variant<BOOST_VARIANT_ENUM_PARAMS(T1)>, variant<BOOST_VARIAN
     {
         GeometryOut& m_geometry_out;
         Strategy const& m_strategy;
-        
+
         visitor(GeometryOut& geometry_out, Strategy const& strategy)
             : m_geometry_out(geometry_out)
             , m_strategy(strategy)
         {}
-        
+
         template <typename Geometry1, typename Geometry2>
         bool operator()(Geometry1 const& geometry1,
                         Geometry2 const& geometry2) const
@@ -304,7 +304,7 @@ struct intersection<variant<BOOST_VARIANT_ENUM_PARAMS(T1)>, variant<BOOST_VARIAN
                 >::apply(geometry1, geometry2, m_geometry_out, m_strategy);
         }
     };
-    
+
     template <typename GeometryOut, typename Strategy>
     static inline bool
     apply(variant<BOOST_VARIANT_ENUM_PARAMS(T1)> const& geometry1,
@@ -317,9 +317,9 @@ struct intersection<variant<BOOST_VARIANT_ENUM_PARAMS(T1)>, variant<BOOST_VARIAN
                                     geometry1, geometry2);
     }
 };
-    
+
 } // namespace resolve_variant
-    
+
 
 /*!
 \brief \brief_calc2{intersection}

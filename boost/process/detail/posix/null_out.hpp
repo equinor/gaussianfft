@@ -21,7 +21,7 @@ template<int p1, int p2>
 struct null_out : handler_base_ext
 {
     file_descriptor sink{"/dev/null", file_descriptor::write};
-    
+
     template <typename Executor>
     void on_exec_setup(Executor &e) const;
 };

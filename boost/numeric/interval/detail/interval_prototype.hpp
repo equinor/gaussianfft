@@ -29,11 +29,11 @@ struct default_policies
 {
   typedef policies<rounded_math<T>, checking_strict<T> > type;
 };
-    
+
 } // namespace interval_lib
 
 template<class T, class Policies = typename interval_lib::default_policies<T>::type >
-class interval;  
+class interval;
 
 } // namespace numeric
 } // namespace boost

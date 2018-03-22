@@ -30,16 +30,16 @@ struct A_Wrapper: A
     A_Wrapper(PyObject* self_): self(self_) {}
     A_Wrapper(PyObject* self_, const A& a): self(self_), A(a) {}
 
-    int f() 
+    int f()
     {
         return call_method<int>(self, "f");
     }
-    
-    int default_f() 
+
+    int default_f()
     {
         return A::f();
     }
-    
+
     PyObject* self;
 };
 

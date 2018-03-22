@@ -15,14 +15,14 @@ void translate(error const& /*e*/)
 void throw_error()
 {
     throw error();
-    
+
 }
 
 BOOST_PYTHON_MODULE(exception_translator_ext)
 {
   using namespace boost::python;
   register_exception_translator<error>(&translate);
-  
+
   def("throw_error", throw_error);
 }
 

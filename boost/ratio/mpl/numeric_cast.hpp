@@ -14,7 +14,7 @@
 #include <boost/ratio/mpl/rational_c_tag.hpp>
 #include <boost/mpl/numeric_cast.hpp>
 
-namespace boost { 
+namespace boost {
 namespace mpl {
 
 template<> struct numeric_cast< integral_c_tag,rational_c_tag >
@@ -24,7 +24,7 @@ template<> struct numeric_cast< integral_c_tag,rational_c_tag >
     {
     };
 };
-    
+
 }
 }
 

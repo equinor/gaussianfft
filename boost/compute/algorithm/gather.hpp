@@ -39,7 +39,7 @@ public:
 
         *this <<
             "const uint i = get_global_id(0);\n" <<
-            result[expr<uint_>("i")] << "=" << 
+            result[expr<uint_>("i")] << "=" <<
                 input[first[expr<uint_>("i")]] << ";\n";
     }
 
@@ -73,7 +73,7 @@ inline void gather(MapIterator first,
                    command_queue &queue = system::default_queue())
 {
     detail::gather_kernel<InputIterator, MapIterator, OutputIterator> kernel;
-    
+
     kernel.set_range(first, last, input, result);
     kernel.exec(queue);
 }

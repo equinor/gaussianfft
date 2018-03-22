@@ -57,7 +57,7 @@ public:
   explicit refcounted_value(const Value& x_):
     x(x_),ref(0),del_ref(0)
   {}
-  
+
   refcounted_value(const refcounted_value& r):
     x(r.x),ref(0),del_ref(0)
   {}
@@ -83,10 +83,10 @@ public:
     return *this;
   }
 #endif
-  
+
   operator const Value&()const{return x;}
   operator const Key&()const{return x;}
-    
+
 #if !defined(BOOST_NO_MEMBER_TEMPLATE_FRIENDS)
 private:
   template<typename,typename> friend class refcounted_handle;
@@ -115,7 +115,7 @@ public:
       TrackingHelper::entry(*this).add_deleter();
     }
   }
-  
+
   refcounted_handle(const refcounted_handle& x):h(x.h)
   {
     TrackingHelper::entry(*this).add_ref();

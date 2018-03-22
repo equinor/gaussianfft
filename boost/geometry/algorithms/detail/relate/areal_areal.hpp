@@ -34,7 +34,7 @@ namespace boost { namespace geometry
 
 #ifndef DOXYGEN_NO_DETAIL
 namespace detail { namespace relate {
-    
+
 // WARNING!
 // TODO: In the worst case calling this Pred in a loop for MultiPolygon/MultiPolygon may take O(NM)
 // Use the rtree in this case!
@@ -102,7 +102,7 @@ public:
                                           m_other_areal,
                                           m_point_in_areal_strategy);
         //BOOST_GEOMETRY_ASSERT( pig != 0 );
-        
+
         // inside
         if ( pig > 0 )
         {
@@ -185,7 +185,7 @@ public:
                 }
             }
         }
-                    
+
         return m_flags != 3 && !m_result.interrupt;
     }
 
@@ -208,7 +208,7 @@ struct areal_areal
 
     typedef typename geometry::point_type<Geometry1>::type point1_type;
     typedef typename geometry::point_type<Geometry2>::type point2_type;
-    
+
     template <typename Result, typename IntersectionStrategy>
     static inline void apply(Geometry1 const& geometry1, Geometry2 const& geometry2,
                              Result & result,
@@ -256,7 +256,7 @@ struct areal_areal
         for_each_disjoint_geometry_if<1, Geometry2>::apply(turns.begin(), turns.end(), geometry2, pred2);
         if ( BOOST_GEOMETRY_CONDITION(result.interrupt) )
             return;
-        
+
         if ( turns.empty() )
             return;
 
@@ -361,7 +361,7 @@ struct areal_areal
         inline bool apply(Range const& turns)
         {
             typedef typename boost::range_iterator<Range const>::type iterator;
-            
+
             for (iterator it = boost::begin(turns) ; it != boost::end(turns) ; ++it)
             {
                 per_turn<0>(*it);
@@ -478,7 +478,7 @@ struct areal_areal
                     {
                         m_exit_detected = false;
                     }
-                }                
+                }
                 /*else*/
                 if ( m_enter_detected /*m_previous_operation == overlay::operation_intersection*/ )
                 {
@@ -664,7 +664,7 @@ struct areal_areal
                 // TODO: throw an exception?
                 return; // ignore
             }
-                
+
             // TODO: possible optimization
             // if the range is an interior ring we may use other IPs generated for this single geometry
             // to know which other single geometries should be checked
@@ -717,12 +717,12 @@ struct areal_areal
 
             for ( TurnIt it = first ; it != last ; ++it )
             {
-                if ( it->operations[0].operation == overlay::operation_intersection 
+                if ( it->operations[0].operation == overlay::operation_intersection
                   && it->operations[1].operation == overlay::operation_intersection )
                 {
                     found_ii = true;
                 }
-                else if ( it->operations[0].operation == overlay::operation_union 
+                else if ( it->operations[0].operation == overlay::operation_union
                        && it->operations[1].operation == overlay::operation_union )
                 {
                     found_uu = true;
@@ -739,7 +739,7 @@ struct areal_areal
                 update<interior, interior, '2', transpose_result>(m_result);
                 m_flags |= 1;
 
-                //update<boundary, boundary, '0', transpose_result>(m_result);                
+                //update<boundary, boundary, '0', transpose_result>(m_result);
 
                 update<boundary, interior, '1', transpose_result>(m_result);
                 update<exterior, interior, '2', transpose_result>(m_result);
@@ -850,7 +850,7 @@ struct areal_areal
                 count = boost::numeric_cast<signed_size_type>(
                             geometry::num_interior_rings(
                                 detail::single_geometry(analyser.geometry, seg_id)));
-            
+
             for_no_turns_rings(analyser, turn, seg_id.ring_index + 1, count);
         }
 

@@ -1,6 +1,6 @@
 /*=============================================================================
     Boost.Wave: A Standard compliant C++ preprocessor library
-    The definition of a default set of token identifiers and related 
+    The definition of a default set of token identifiers and related
     functions.
 
     http://www.boost.org/
@@ -27,7 +27,7 @@
 #if !defined(BOOST_WAVE_TOKEN_IDS_DEFINED)
 #define BOOST_WAVE_TOKEN_IDS_DEFINED
 
-#if (defined (__FreeBSD__) || defined (__DragonFly__) || defined (__OpenBSD__)) && defined (T_DIVIDE) 
+#if (defined (__FreeBSD__) || defined (__DragonFly__) || defined (__OpenBSD__)) && defined (T_DIVIDE)
 #undef T_DIVIDE
 #endif
 
@@ -42,7 +42,7 @@ namespace wave {
 #define BASEID_FROM_TOKEN(tok)   ((tok) & ~ExtTokenTypeMask)
 
 ///////////////////////////////////////////////////////////////////////////////
-//  the token_category helps to classify the different token types 
+//  the token_category helps to classify the different token types
 enum token_category {
     IdentifierTokenType         = 0x10080000,
     ParameterTokenType          = 0x11080000,
@@ -303,7 +303,7 @@ enum token_id {
     T_LAST_TOKEN_ID,
     T_LAST_TOKEN = ID_FROM_TOKEN(T_LAST_TOKEN_ID & ~PPTokenFlag),
 
-// pseudo tokens to help streamlining macro replacement, these should not 
+// pseudo tokens to help streamlining macro replacement, these should not
 // returned from the lexer nor should these be returned from the pp-iterator
     T_NONREPLACABLE_IDENTIFIER = TOKEN_FROM_ID(T_LAST_TOKEN+1, IdentifierTokenType),
     T_PLACEHOLDER = TOKEN_FROM_ID(T_LAST_TOKEN+2, WhiteSpaceTokenType),
@@ -355,12 +355,12 @@ inline bool is_pp_token(TokenT const& tok)
 
 ///////////////////////////////////////////////////////////////////////////////
 //  return a token name
-BOOST_WAVE_DECL 
+BOOST_WAVE_DECL
 BOOST_WAVE_STRINGTYPE get_token_name(token_id tokid);
 
 ///////////////////////////////////////////////////////////////////////////////
 //  return a token name
-BOOST_WAVE_DECL 
+BOOST_WAVE_DECL
 char const *get_token_value(token_id tokid);
 
 ///////////////////////////////////////////////////////////////////////////////

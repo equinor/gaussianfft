@@ -42,12 +42,12 @@ void close(T& t, BOOST_IOS::openmode which);
 
 template<typename T, typename Sink>
 void close(T& t, Sink& snk, BOOST_IOS::openmode which);
-    
+
 namespace detail {
 
 template<typename T>
 void close_all(T& t)
-{ 
+{
     try {
         boost::iostreams::close(t, BOOST_IOS::in);
     } catch (...) {
@@ -61,7 +61,7 @@ void close_all(T& t)
 
 template<typename T, typename Sink>
 void close_all(T& t, Sink& snk)
-{ 
+{
     try {
         boost::iostreams::close(t, snk, BOOST_IOS::in);
     } catch (...) {
@@ -73,7 +73,7 @@ void close_all(T& t, Sink& snk)
     boost::iostreams::close(t, snk, BOOST_IOS::out);
 }
 
-} // End namespace detail. 
+} // End namespace detail.
 
 } } // End namespaces iostreams, boost.
 
@@ -91,7 +91,7 @@ void close(T& t) { detail::close_all(t); }
 
 template<typename T>
 void close(T& t, BOOST_IOS::openmode which)
-{ 
+{
 #ifdef BOOST_IOSTREAMS_STRICT
     BOOST_ASSERT(which == BOOST_IOS::in || which == BOOST_IOS::out);
 #else
@@ -100,12 +100,12 @@ void close(T& t, BOOST_IOS::openmode which)
         return;
     }
 #endif
-    detail::close_impl<T>::close(detail::unwrap(t), which); 
+    detail::close_impl<T>::close(detail::unwrap(t), which);
 }
 
 template<typename T, typename Sink>
 void close(T& t, Sink& snk, BOOST_IOS::openmode which)
-{ 
+{
 #ifdef BOOST_IOSTREAMS_STRICT
     BOOST_ASSERT(which == BOOST_IOS::in || which == BOOST_IOS::out);
 #else
@@ -114,7 +114,7 @@ void close(T& t, Sink& snk, BOOST_IOS::openmode which)
         return;
     }
 #endif
-    detail::close_impl<T>::close(detail::unwrap(t), snk, which); 
+    detail::close_impl<T>::close(detail::unwrap(t), snk, which);
 }
 
 namespace detail {

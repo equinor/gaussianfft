@@ -33,7 +33,7 @@ BOOST_SYMBOL_IMPORT boost::detail::winapi::DWORD_ WINAPI
     GetTempPathW(boost::detail::winapi::DWORD_ length, boost::detail::winapi::LPWSTR_ buffer);
 BOOST_SYMBOL_IMPORT boost::detail::winapi::BOOL_ WINAPI
     RemoveDirectoryW(boost::detail::winapi::LPCWSTR_);
-}    
+}
 #endif
 
 namespace boost {

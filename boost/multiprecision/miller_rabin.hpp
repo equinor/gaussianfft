@@ -76,10 +76,10 @@ bool check_small_factors(const I& n)
       { 181u, 191u, 193u, 197u },
       { 199u, 211u, 223u, 227u }
    };
-   static const boost::uint32_t pp5[6] = 
-   { 
-      121330189u, 
-      113u * 127u * 131u * 137u, 
+   static const boost::uint32_t pp5[6] =
+   {
+      121330189u,
+      113u * 127u * 131u * 137u,
       139u * 149u * 151u * 157u,
       163u * 167u * 173u * 179u,
       181u * 191u * 193u * 197u,
@@ -102,13 +102,13 @@ bool check_small_factors(const I& n)
 
 inline bool is_small_prime(unsigned n)
 {
-   static const unsigned char p[] = 
+   static const unsigned char p[] =
    {
-      3u, 5u, 7u, 11u, 13u, 17u, 19u, 23u, 29u, 31u, 
-      37u, 41u, 43u, 47u, 53u, 59u, 61u, 67u, 71u, 73u, 
-      79u, 83u, 89u, 97u, 101u, 103u, 107u, 109u, 113u, 
-      127u, 131u, 137u, 139u, 149u, 151u, 157u, 163u, 
-      167u, 173u, 179u, 181u, 191u, 193u, 197u, 199u, 
+      3u, 5u, 7u, 11u, 13u, 17u, 19u, 23u, 29u, 31u,
+      37u, 41u, 43u, 47u, 53u, 59u, 61u, 67u, 71u, 73u,
+      79u, 83u, 89u, 97u, 101u, 103u, 107u, 109u, 113u,
+      127u, 131u, 137u, 139u, 149u, 151u, 157u, 163u,
+      167u, 173u, 179u, 181u, 191u, 193u, 197u, 199u,
       211u, 223u, 227u
    };
    for(unsigned i = 0; i < sizeof(p) / sizeof(*p); ++i)
@@ -135,7 +135,7 @@ typename disable_if_c<is_convertible<I, unsigned>::value, unsigned>::type
 } // namespace detail
 
 template <class I, class Engine>
-typename enable_if_c<number_category<I>::value == number_kind_integer, bool>::type 
+typename enable_if_c<number_category<I>::value == number_kind_integer, bool>::type
    miller_rabin_test(const I& n, unsigned trials, Engine& gen)
 {
 #ifdef BOOST_MSVC
@@ -199,7 +199,7 @@ typename enable_if_c<number_category<I>::value == number_kind_integer, bool>::ty
 }
 
 template <class I>
-typename enable_if_c<number_category<I>::value == number_kind_integer, bool>::type 
+typename enable_if_c<number_category<I>::value == number_kind_integer, bool>::type
    miller_rabin_test(const I& x, unsigned trials)
 {
    static mt19937 gen;

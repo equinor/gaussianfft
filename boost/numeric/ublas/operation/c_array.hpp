@@ -23,8 +23,8 @@ namespace boost { namespace numeric { namespace ublas {
 
     namespace detail {
 
-    
-    
+
+
     } // namespace boost::numeric::ublas::detail
 
 

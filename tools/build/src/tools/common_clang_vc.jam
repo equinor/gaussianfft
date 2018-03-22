@@ -897,7 +897,7 @@ local rule toolset-tag ( name : type ? : property-set )
         local my_tmp = [ $(property-set).get <toolset-clang:compatibility> ] ;
         version = $(version[1])_$(version[2])_$(my_tmp) ;
     }
-    
+
     # On borland, version is not added for compatibility with V1.
     if $(tag) = bcb
     {

@@ -25,7 +25,7 @@ T binomial_coefficient(unsigned n, unsigned k, const Policy& pol)
    static const char* function = "boost::math::binomial_coefficient<%1%>(unsigned, unsigned)";
    if(k > n)
       return policies::raise_domain_error<T>(
-         function, 
+         function,
          "The binomial coefficient is undefined for k > n, but got k = %1%.",
          static_cast<T>(k), pol);
    T result;

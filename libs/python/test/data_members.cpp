@@ -30,10 +30,10 @@ double get_fair_value(X const& x) { return x.value(); }
 struct VarBase
 {
     VarBase(std::string name_) : name(name_) {}
-    
+
     std::string const name;
     std::string get_name1() const { return name; }
-    
+
 };
 
 struct Var : VarBase
@@ -68,7 +68,7 @@ namespace boost_python_test
   const Color3 Color3::black
 #if !BOOST_WORKAROUND(BOOST_MSVC, <= 1300)
   = {}
-#endif 
+#endif
       ;
 
   void compilability_test()
@@ -106,14 +106,14 @@ BOOST_PYTHON_MODULE(data_members_ext)
         .def_readonly("name2", &Var::name2)
         .def_readwrite("value", &Var::value)
         .def_readonly("y", &Var::y)
-        
+
         // Test return_by_value for plain values and for
         // pointers... return_by_value was implemented as a
         // side-effect of implementing data member support, so it made
         // sense to add the test here.
         .def("get_name1", &Var::get_name1, return_value_policy<return_by_value>())
         .def("get_name2", &Var::get_name2, return_value_policy<return_by_value>())
-        
+
         .add_property("name3", &Var::get_name1)
 
         // Test static data members

@@ -30,10 +30,10 @@ using namespace boost::python;
 struct X : test_class<>
 {
     typedef test_class<> base_t;
-    
+
     X(int x) : base_t(x) {}
     X const operator+(X const& r) const { return X(value() + r.value()); }
-    
+
 //    typedef int (X::*safe_bool)() const;
 //    operator safe_bool() const { return value() != 0 ? &X::value : 0; }
 };
@@ -85,15 +85,15 @@ struct number
     template <class T>
     number& operator-=(T const& rhs)
     { x -= rhs; return *this; }
-    
+
     template <class T>
     number& operator*=(T const& rhs)
     { x *= rhs; return *this; }
-    
+
     template <class T>
     number& operator/=(T const& rhs)
     { x /= rhs; return *this; }
-    
+
     template <class T>
     number& operator%=(T const& rhs)
     { x %= rhs; return *this; }
@@ -117,7 +117,7 @@ BOOST_PYTHON_MODULE(operators_ext)
 
         .def(abs(self))
         .def(str(self))
-            
+
         .def(pow(self,self))
         .def(pow(self,int()))
         .def(pow(int(),self))
@@ -164,7 +164,7 @@ BOOST_PYTHON_MODULE(operators_ext)
       .def(self % long())
       .def(long() % self)
       ;
-   
+
     class_<test_class<1> >("Z", init<int>())
         .def(int_(self))
         .def(float_(self))

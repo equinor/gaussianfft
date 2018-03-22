@@ -41,29 +41,29 @@ namespace converter
   {
       typedef Ptr result_type;
       extract_pointer(PyObject*);
-      
+
       bool check() const;
       Ptr operator()() const;
-      
+
    private:
       PyObject* m_source;
       void* m_result;
   };
-  
+
   template <class Ref>
   struct extract_reference
   {
       typedef Ref result_type;
       extract_reference(PyObject*);
-      
+
       bool check() const;
       Ref operator()() const;
-      
+
    private:
       PyObject* m_source;
       void* m_result;
   };
-  
+
   template <class T>
   struct extract_rvalue : private noncopyable
   {
@@ -81,7 +81,7 @@ namespace converter
       PyObject* m_source;
       mutable rvalue_from_python_data<T> m_data;
   };
-  
+
   template <class T>
   struct extract_object_manager
   {
@@ -93,7 +93,7 @@ namespace converter
    private:
       PyObject* m_source;
   };
-  
+
   template <class T>
   struct select_extract
   {
@@ -102,7 +102,7 @@ namespace converter
 
       BOOST_STATIC_CONSTANT(
           bool, ptr = is_pointer<T>::value);
-    
+
       BOOST_STATIC_CONSTANT(
           bool, ref = is_reference<T>::value);
 
@@ -130,12 +130,12 @@ struct extract
     typedef typename converter::select_extract<T>::type base;
  public:
     typedef typename base::result_type result_type;
-    
+
     operator result_type() const
     {
         return (*this)();
     }
-    
+
     extract(PyObject*);
     extract(api::object const&);
 };
@@ -165,7 +165,7 @@ namespace converter
           )
   {
   }
-  
+
   template <class T>
   inline bool
   extract_rvalue<T>::check() const
@@ -205,7 +205,7 @@ namespace converter
   {
       if (m_result == 0)
           (throw_no_reference_from_python)(m_source, registered<Ref>::converters);
-      
+
       return python::detail::void_ptr_to_reference(m_result, (Ref(*)())0);
   }
 
@@ -229,7 +229,7 @@ namespace converter
   {
       if (m_result == 0 && m_source != Py_None)
           (throw_no_pointer_from_python)(m_source, registered_pointee<Ptr>::converters);
-      
+
       return Ptr(m_result);
   }
 
@@ -253,7 +253,7 @@ namespace converter
           );
   }
 }
-  
+
 }} // namespace boost::python::converter
 
 #endif // EXTRACT_DWA200265_HPP

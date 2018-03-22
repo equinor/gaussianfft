@@ -17,7 +17,7 @@
 #include "boost/type_traits/remove_cv.hpp"
 #include "boost/type_traits/is_pointer.hpp"
 
-namespace boost { 
+namespace boost {
 namespace lambda {
 
   // constructor is used together with bind. constructor<A> creates a bindable
@@ -116,9 +116,9 @@ struct destructor_helper<true> {
 }
 
 // destructor funtion object
-struct destructor {  
+struct destructor {
 
-  template <class T> struct sig { typedef void type; };  
+  template <class T> struct sig { typedef void type; };
 
   template<class A1>
   void operator()(A1& a1) const {
@@ -135,7 +135,7 @@ struct destructor {
 
 template<class T> struct new_ptr {
 
-  template <class U> struct sig { typedef T* type; };  
+  template <class U> struct sig { typedef T* type; };
 
   T* operator()() const {
     return new T();
@@ -197,7 +197,7 @@ template<class T> struct new_ptr {
 
 struct delete_ptr {
 
-  template <class U> struct sig { typedef void type; };  
+  template <class U> struct sig { typedef void type; };
 
   template <class A1>
   void operator()(A1& a1) const {
@@ -211,7 +211,7 @@ struct delete_ptr {
 
 template<class T> struct new_array {
 
-  template <class U> struct sig { typedef T* type; };  
+  template <class U> struct sig { typedef T* type; };
 
   T* operator()(int size) const {
     return new T[size];
@@ -223,7 +223,7 @@ template<class T> struct new_array {
 
 struct delete_array {
 
-  template <class U> struct sig { typedef void type; };  
+  template <class U> struct sig { typedef void type; };
 
   template <class A1>
   void operator()(A1& a1) const {
@@ -234,7 +234,7 @@ struct delete_array {
 
 
 
-} // namespace lambda 
+} // namespace lambda
 } // namespace boost
 
 #endif

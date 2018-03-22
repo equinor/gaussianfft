@@ -32,11 +32,11 @@ namespace boost {
 
 // Default collection traits -----------------------------------------------------------------
 
-            // Default collection helper 
+            // Default collection helper
             /*
                 Wraps std::container compliant containers
             */
-            template< typename ContainerT >     
+            template< typename ContainerT >
             struct default_container_traits
             {
                 typedef typename ContainerT::value_type value_type;
@@ -45,11 +45,11 @@ namespace boost {
                 typedef typename
                     ::boost::mpl::if_< ::boost::is_const<ContainerT>,
                         const_iterator,
-                        iterator 
+                        iterator
                     >::type result_iterator;
                 typedef typename ContainerT::difference_type difference_type;
                 typedef typename ContainerT::size_type size_type;
-                
+
                 // static operations
                 template< typename C >
                 static size_type size( const C& c )
@@ -103,9 +103,9 @@ namespace boost {
                     return c.end();
                 }
 
-#endif // BOOST_NO_FUNCTION_TEMPLATE_ORDERING    
+#endif // BOOST_NO_FUNCTION_TEMPLATE_ORDERING
 
-            }; 
+            };
 
             template<typename T>
             struct default_container_traits_selector
@@ -153,7 +153,7 @@ namespace boost {
                 static size_type size( const P& p )
                 {
                     difference_type diff = std::distance( p.first, p.second );
-                    if ( diff < 0 ) 
+                    if ( diff < 0 )
                         return 0;
                     else
                         return diff;
@@ -165,7 +165,7 @@ namespace boost {
                     return p.first==p.second;
                 }
 
-                template< typename P > 
+                template< typename P >
                 static const_iterator begin( const P& p )
                 {
                     return p.first;
@@ -204,7 +204,7 @@ namespace boost {
                 BOOST_STATIC_CONSTANT( size_type, array_size = sz );
             };
 
-            
+
             // array length resolving
             /*
                 Lenght of string contained in a static array could
@@ -256,12 +256,12 @@ namespace boost {
                     template< typename A >
                     static size_type length( const A& a )
                     {
-                        if ( a==0 ) 
+                        if ( a==0 )
                             return 0;
                         else
                             return std::char_traits<char>::length(a);
                     }
-                    
+
                     template< typename A >
                     static bool empty( const A& a )
                     {
@@ -283,7 +283,7 @@ namespace boost {
                     template< typename A >
                     static size_type length( const A& a )
                     {
-                        if ( a==0 ) 
+                        if ( a==0 )
                             return 0;
                         else
                             return std::char_traits<wchar_t>::length(a);
@@ -319,9 +319,9 @@ namespace boost {
                 typedef typename
                     ::boost::mpl::if_< ::boost::is_const<T>,
                         const_iterator,
-                        iterator 
+                        iterator
                     >::type result_iterator;
-                
+
             private:
                 // resolve array size
                 typedef typename
@@ -345,7 +345,7 @@ namespace boost {
                 {
                     return array_length_type::empty(a);
                 }
-                
+
 
 #ifndef BOOST_NO_FUNCTION_TEMPLATE_ORDERING
 
@@ -387,9 +387,9 @@ namespace boost {
                     return a+array_length_type::length(a);
                 }
 
-#endif // BOOST_NO_FUNCTION_TEMPLATE_ORDERING    
+#endif // BOOST_NO_FUNCTION_TEMPLATE_ORDERING
 
-            }; 
+            };
 
             template<typename T>
             struct array_container_traits_selector
@@ -417,14 +417,14 @@ namespace boost {
                 typedef typename
                     ::boost::mpl::if_< ::boost::is_const<T>,
                         const_iterator,
-                        iterator 
+                        iterator
                     >::type result_iterator;
 
                 // static operations
                 template< typename P >
                 static size_type size( const P& p )
                 {
-                    if ( p==0 ) 
+                    if ( p==0 )
                         return 0;
                     else
                         return char_traits::length(p);
@@ -485,8 +485,8 @@ namespace boost {
                         return p+char_traits::length(p);
                 }
 
-#endif // BOOST_NO_FUNCTION_TEMPLATE_ORDERING    
-            }; 
+#endif // BOOST_NO_FUNCTION_TEMPLATE_ORDERING
+            };
 
             template<typename T>
             struct pointer_container_traits_selector

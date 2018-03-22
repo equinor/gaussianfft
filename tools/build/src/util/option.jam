@@ -20,8 +20,8 @@ rule get ( name : default-value ? : implied-value ? )
     {
         return $(m[1]) ;
     }
-    else  
-    {        
+    else
+    {
         m = [ MATCH (--$(name)) : [ modules.peek : ARGV ] ] ;
         if $(m) && $(implied-value)
         {
@@ -30,12 +30,12 @@ rule get ( name : default-value ? : implied-value ? )
         else if $(.option.$(name))
         {
             return $(.option.$(name)) ;
-        }    
+        }
         else
         {
             return $(default-value) ;
-        }    
-    }              
+        }
+    }
 }
 
 

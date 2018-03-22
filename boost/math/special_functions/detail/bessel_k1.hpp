@@ -1,5 +1,5 @@
 //  Copyright (c) 2006 Xiaogang Zhang
-//  Copyright (c) 2017 John Maddock 
+//  Copyright (c) 2017 John Maddock
 //  Use, modification and distribution are subject to the
 //  Boost Software License, Version 1.0. (See accompanying file
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -21,9 +21,9 @@
 // Modified Bessel function of the second kind of order zero
 // minimax rational approximations on intervals, see
 // Russon and Blair, Chalk River Report AECL-3461, 1969,
-// as revised by Pavel Holoborodko in "Rational Approximations 
-// for the Modified Bessel Function of the Second Kind - K0(x) 
-// for Computations with Double Precision", see 
+// as revised by Pavel Holoborodko in "Rational Approximations
+// for the Modified Bessel Function of the Second Kind - K0(x)
+// for Computations with Double Precision", see
 // http://www.advanpix.com/2016/01/05/rational-approximations-for-the-modified-bessel-function-of-the-second-kind-k1-for-computations-with-double-precision/
 //
 // The actual coefficients used are our own derivation (by JM)
@@ -190,7 +190,7 @@ namespace boost { namespace math { namespace detail{
             -2.70619343754051620e-03,
             -2.49549522229072008e-05
          };
-         static const T Q2[] = 
+         static const T Q2[] =
          {
             1.00000000000000000e+00,
             -2.36316836412163098e-02,
@@ -285,7 +285,7 @@ namespace boost { namespace math { namespace detail{
             BOOST_MATH_BIG_CONSTANT(T, 64, -4.023052834702215699504e-05),
             BOOST_MATH_BIG_CONSTANT(T, 64, -1.719459155018493821839e-07)
          };
-         static const T Q2[] = 
+         static const T Q2[] =
          {
             BOOST_MATH_BIG_CONSTANT(T, 64, 1.000000000000000000000e+00),
             BOOST_MATH_BIG_CONSTANT(T, 64, -1.863917670410152669768e-02),
@@ -391,7 +391,7 @@ namespace boost { namespace math { namespace detail{
             BOOST_MATH_BIG_CONSTANT(T, 113, -1.632502325880313239698965376754406011e-09),
             BOOST_MATH_BIG_CONSTANT(T, 113, -2.311973065898784812266544485665624227e-12)
          };
-         static const T Q2[] = 
+         static const T Q2[] =
          {
             BOOST_MATH_BIG_CONSTANT(T, 113, 1.000000000000000000000000000000000000e+00),
             BOOST_MATH_BIG_CONSTANT(T, 113, -1.311471216733781016657962995723287450e-02),

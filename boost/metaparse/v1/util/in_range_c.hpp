@@ -20,7 +20,7 @@ namespace boost
         struct in_range_c
         {
           typedef in_range_c type;
-        
+
           template <class Item>
           struct apply :
             boost::mpl::bool_<(

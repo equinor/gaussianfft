@@ -31,7 +31,7 @@ operator<<(std::basic_ostream<CharType, CharTrait>& out, none_t)
   {
     out << "--";
   }
-   
+
   return out;
 }
 

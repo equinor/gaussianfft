@@ -93,7 +93,7 @@ BOOST_PYTHON_MODULE(back_reference_ext)
     def("copy_Y", copy_Y, return_value_policy<copy_const_reference>());
     def("copy_Z", copy_Z, return_value_policy<copy_const_reference>());
     def("x_instances", &X::count);
-    
+
     class_<Y>("Y", init<int>())
         .def("value", &Y::value)
         .def("set", &Y::set)

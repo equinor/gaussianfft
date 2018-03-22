@@ -2,7 +2,7 @@
 [section Introduction]
 <boost/python/ptr.hpp> defines the ptr() function template, which allows users to specify how to convert C++ pointer values to python in the context of implementing overridable virtual functions, invoking Python callable objects, or explicitly converting C++ objects to Python. Normally, when passing pointers to Python callbacks, the pointee is copied to ensure that the Python object never holds a dangling reference. To specify that the new Python object should merely contain a copy of a pointer p, the user can pass ptr(p) instead of passing p directly. This interface is meant to mirror the use of boost::ref(), which can be similarly used to prevent copying of referents.
 
-ptr(p) returns an instance of [link function_invocation_and_creation.boost_python_ptr_hpp.class_template_pointer_wrapper `pointer_wrapper<>`], which can be detected using the [link function_invocation_and_creation.boost_python_ptr_hpp.metafunctions.class_template_is_pointer_wrappe `is_pointer_wrapper<>`] metafunction; [link function_invocation_and_creation.boost_python_ptr_hpp.metafunctions.class_template_unwrap_pointer `unwrap_pointer<>`] is a metafunction which extracts the original pointer type from a `pointer_wrapper<>`. These classes can be thought of as implementation details. 
+ptr(p) returns an instance of [link function_invocation_and_creation.boost_python_ptr_hpp.class_template_pointer_wrapper `pointer_wrapper<>`], which can be detected using the [link function_invocation_and_creation.boost_python_ptr_hpp.metafunctions.class_template_is_pointer_wrappe `is_pointer_wrapper<>`] metafunction; [link function_invocation_and_creation.boost_python_ptr_hpp.metafunctions.class_template_unwrap_pointer `unwrap_pointer<>`] is a metafunction which extracts the original pointer type from a `pointer_wrapper<>`. These classes can be thought of as implementation details.
 [endsect]
 [section Functions]
 ``
@@ -21,7 +21,7 @@ A "type envelope" which is returned by `ptr()`, used to indicate reference seman
 namespace boost { namespace python
 {
     template<class Ptr> class pointer_wrapper
-    { 
+    {
      public:
         typedef Ptr type;
 
@@ -36,7 +36,7 @@ namespace boost { namespace python
 ``
 typedef Ptr type;
 ``
-The type of the pointer being wrapped. 
+The type of the pointer being wrapped.
 [endsect]
 [section Class template `pointer_wrapper` constructors and destructor]
 ``
@@ -60,12 +60,12 @@ Ptr get() const;
 [endsect]
 [section Metafunctions]
 [section Class template `is_pointer_wrapper`]
-A unary metafunction whose value is true iff its argument is a pointer_wrapper<>. 
+A unary metafunction whose value is true iff its argument is a pointer_wrapper<>.
 ``
 namespace boost { namespace python
 {
     template<class T> class is_pointer_wrapper
-    { 
+    {
         static unspecified value = ...;
     };
 }}
@@ -81,7 +81,7 @@ A unary metafunction which extracts the wrapped pointer type from a specializati
 namespace boost { namespace python
 {
     template<class T> class unwrap_pointer
-    { 
+    {
         typedef unspecified type;
     };
 }}

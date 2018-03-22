@@ -180,7 +180,7 @@
         BOOST_PP_TUPLE_EAT(1) \
     )(qualified_name)
 
-// Recursive local function are specified by `..._NAME(recursive name)`. 
+// Recursive local function are specified by `..._NAME(recursive name)`.
 // They can never be inlined for faster run-time (not even by C++11 compilers).
 #define BOOST_LOCAL_FUNCTION_AUX_NAME_PARSE_RECURSIVE_( \
         typename01, qualified_name) \

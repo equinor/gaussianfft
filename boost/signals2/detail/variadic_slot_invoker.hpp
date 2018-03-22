@@ -110,7 +110,7 @@ namespace boost
         // only exists to quiet some unused parameter warnings
         // on certain compilers (some versions of gcc and msvc)
         template<typename Func>
-          R m_invoke(Func &func, unsigned_meta_array<>, const BOOST_SIGNALS2_TUPLE<> &, 
+          R m_invoke(Func &func, unsigned_meta_array<>, const BOOST_SIGNALS2_TUPLE<> &,
             typename boost::enable_if<boost::is_void<typename Func::result_type> >::type * = 0
           ) const
         {
@@ -130,7 +130,7 @@ namespace boost
         template<typename ConnectionBodyType>
           result_type operator ()(const ConnectionBodyType &connectionBody) const
         {
-          return call_with_tuple_args<result_type>()(connectionBody->slot().slot_function(), 
+          return call_with_tuple_args<result_type>()(connectionBody->slot().slot_function(),
             _args, mpl::size_t<sizeof...(Args)>());
         }
       private:

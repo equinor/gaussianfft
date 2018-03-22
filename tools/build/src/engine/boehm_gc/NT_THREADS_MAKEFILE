@@ -9,7 +9,7 @@ AO_VERSION=1.2
 !IF "$(CFG)" == ""
 CFG=gctest - Win32 Release
 !MESSAGE No configuration specified.  Defaulting to cord - Win32 Debug.
-!ENDIF 
+!ENDIF
 
 !IF "$(CFG)" != "gc - Win32 Release" && "$(CFG)" != "gc - Win32 Debug" &&\
  "$(CFG)" != "gctest - Win32 Release" && "$(CFG)" != "gctest - Win32 Debug" &&\
@@ -17,26 +17,26 @@ CFG=gctest - Win32 Release
 !MESSAGE Invalid configuration "$(CFG)" specified.
 !MESSAGE You can specify a configuration when running NMAKE on this makefile
 !MESSAGE by defining the macro CFG on the command line.  For example:
-!MESSAGE 
+!MESSAGE
 !MESSAGE NMAKE /f "gc.mak" CFG="cord - Win32 Debug"
-!MESSAGE 
+!MESSAGE
 !MESSAGE Possible choices for configuration are:
-!MESSAGE 
+!MESSAGE
 !MESSAGE "gc - Win32 Release" (based on "Win32 (x86) Dynamic-Link Library")
 !MESSAGE "gc - Win32 Debug" (based on "Win32 (x86) Dynamic-Link Library")
 !MESSAGE "gctest - Win32 Release" (based on "Win32 (x86) Application")
 !MESSAGE "gctest - Win32 Debug" (based on "Win32 (x86) Application")
 !MESSAGE "cord - Win32 Release" (based on "Win32 (x86) Application")
 !MESSAGE "cord - Win32 Debug" (based on "Win32 (x86) Application")
-!MESSAGE 
+!MESSAGE
 !ERROR An invalid configuration is specified.
-!ENDIF 
+!ENDIF
 
 !IF "$(OS)" == "Windows_NT"
 NULL=
-!ELSE 
+!ELSE
 NULL=nul
-!ENDIF 
+!ENDIF
 ################################################################################
 # Begin Project
 # PROP Target_Last_Scanned "gctest - Win32 Debug"
@@ -58,7 +58,7 @@ INTDIR=.\Release
 
 ALL : ".\Release\gc.dll" ".\Release\gc.bsc"
 
-CLEAN : 
+CLEAN :
 	-@erase ".\Release\allchblk.obj"
 	-@erase ".\Release\allchblk.sbr"
 	-@erase ".\Release\alloc.obj"
@@ -121,39 +121,39 @@ CPP=cl.exe
 CPP_PROJ=/nologo /MD /W3 /GX /O2 /I include /D "NDEBUG" /D "GC_BUILD" /D\
  "WIN32" /D "_WINDOWS" /D "ALL_INTERIOR_POINTERS" /D "__STDC__" /D\
  "GC_WIN32_THREADS" /FR"$(INTDIR)/" /Fp"$(INTDIR)/gc.pch" \
- /Ilibatomic_ops-$(AO_VERSION)/src /YX /Fo"$(INTDIR)/" /c 
+ /Ilibatomic_ops-$(AO_VERSION)/src /YX /Fo"$(INTDIR)/" /c
 CPP_OBJS=.\Release/
 CPP_SBRS=.\Release/
 
 .c{$(CPP_OBJS)}.obj:
-   $(CPP) $(CPP_PROJ) $<  
+   $(CPP) $(CPP_PROJ) $<
 
 .cpp{$(CPP_OBJS)}.obj:
-   $(CPP) $(CPP_PROJ) $<  
+   $(CPP) $(CPP_PROJ) $<
 
 .cxx{$(CPP_OBJS)}.obj:
-   $(CPP) $(CPP_PROJ) $<  
+   $(CPP) $(CPP_PROJ) $<
 
 .c{$(CPP_SBRS)}.sbr:
-   $(CPP) $(CPP_PROJ) $<  
+   $(CPP) $(CPP_PROJ) $<
 
 .cpp{$(CPP_SBRS)}.sbr:
-   $(CPP) $(CPP_PROJ) $<  
+   $(CPP) $(CPP_PROJ) $<
 
 .cxx{$(CPP_SBRS)}.sbr:
-   $(CPP) $(CPP_PROJ) $<  
+   $(CPP) $(CPP_PROJ) $<
 
 MTL=mktyplib.exe
 # ADD BASE MTL /nologo /D "NDEBUG" /win32
 # ADD MTL /nologo /D "NDEBUG" /win32
-MTL_PROJ=/nologo /D "NDEBUG" /win32 
+MTL_PROJ=/nologo /D "NDEBUG" /win32
 RSC=rc.exe
 # ADD BASE RSC /l 0x809 /d "NDEBUG"
 # ADD RSC /l 0x809 /d "NDEBUG"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
-BSC32_FLAGS=/nologo /o"$(OUTDIR)/gc.bsc" 
+BSC32_FLAGS=/nologo /o"$(OUTDIR)/gc.bsc"
 BSC32_SBRS= \
 	".\Release\allchblk.sbr" \
 	".\Release\alloc.sbr" \
@@ -192,7 +192,7 @@ LINK32_FLAGS=kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib\
  advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib\
  odbccp32.lib /nologo /subsystem:windows /dll /incremental:no\
  /pdb:"$(OUTDIR)/gc.pdb" /machine:I386 /out:"$(OUTDIR)/gc.dll"\
- /implib:"$(OUTDIR)/gc.lib" 
+ /implib:"$(OUTDIR)/gc.lib"
 LINK32_OBJS= \
 	".\Release\allchblk.obj" \
 	".\Release\alloc.obj" \
@@ -241,7 +241,7 @@ INTDIR=.\Debug
 
 ALL : ".\Debug\gc.dll" ".\Debug\gc.bsc"
 
-CLEAN : 
+CLEAN :
 	-@erase ".\Debug\allchblk.obj"
 	-@erase ".\Debug\allchblk.sbr"
 	-@erase ".\Debug\alloc.obj"
@@ -309,39 +309,39 @@ CPP_PROJ=/nologo /MDd /W3 /Gm /GX /Zi /Od /I include /D "_DEBUG" /D "GC_BUILD"\
  /D "WIN32" /D "_WINDOWS" /D "ALL_INTERIOR_POINTERS" \
  /D "GC_ASSERTIONS" /D "__STDC__" /D\
  "GC_WIN32_THREADS" /FR"$(INTDIR)/" /Fp"$(INTDIR)/gc.pch" /YX /Fo"$(INTDIR)/"\
- /Ilibatomic_ops-$(AO_VERSION)/src /Fd"$(INTDIR)/" /c 
+ /Ilibatomic_ops-$(AO_VERSION)/src /Fd"$(INTDIR)/" /c
 CPP_OBJS=.\Debug/
 CPP_SBRS=.\Debug/
 
 .c{$(CPP_OBJS)}.obj:
-   $(CPP) $(CPP_PROJ) $<  
+   $(CPP) $(CPP_PROJ) $<
 
 .cpp{$(CPP_OBJS)}.obj:
-   $(CPP) $(CPP_PROJ) $<  
+   $(CPP) $(CPP_PROJ) $<
 
 .cxx{$(CPP_OBJS)}.obj:
-   $(CPP) $(CPP_PROJ) $<  
+   $(CPP) $(CPP_PROJ) $<
 
 .c{$(CPP_SBRS)}.sbr:
-   $(CPP) $(CPP_PROJ) $<  
+   $(CPP) $(CPP_PROJ) $<
 
 .cpp{$(CPP_SBRS)}.sbr:
-   $(CPP) $(CPP_PROJ) $<  
+   $(CPP) $(CPP_PROJ) $<
 
 .cxx{$(CPP_SBRS)}.sbr:
-   $(CPP) $(CPP_PROJ) $<  
+   $(CPP) $(CPP_PROJ) $<
 
 MTL=mktyplib.exe
 # ADD BASE MTL /nologo /D "_DEBUG" /win32
 # ADD MTL /nologo /D "_DEBUG" /win32
-MTL_PROJ=/nologo /D "_DEBUG" /win32 
+MTL_PROJ=/nologo /D "_DEBUG" /win32
 RSC=rc.exe
 # ADD BASE RSC /l 0x809 /d "_DEBUG"
 # ADD RSC /l 0x809 /d "_DEBUG"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
-BSC32_FLAGS=/nologo /o"$(OUTDIR)/gc.bsc" 
+BSC32_FLAGS=/nologo /o"$(OUTDIR)/gc.bsc"
 BSC32_SBRS= \
 	".\Debug\allchblk.sbr" \
 	".\Debug\alloc.sbr" \
@@ -380,7 +380,7 @@ LINK32_FLAGS=kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib\
  advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib\
  odbccp32.lib /nologo /subsystem:windows /dll /incremental:no\
  /pdb:"$(OUTDIR)/gc.pdb" /map:"$(INTDIR)/gc.map" /debug /machine:I386\
- /out:"$(OUTDIR)/gc.dll" /implib:"$(OUTDIR)/gc.lib" 
+ /out:"$(OUTDIR)/gc.dll" /implib:"$(OUTDIR)/gc.lib"
 LINK32_OBJS= \
 	".\Debug\allchblk.obj" \
 	".\Debug\alloc.obj" \
@@ -429,7 +429,7 @@ INTDIR=.\gctest\Release
 
 ALL : "gc - Win32 Release" ".\Release\gctest.exe"
 
-CLEAN : 
+CLEAN :
 	-@erase ".\gctest\Release\test.obj"
 	-@erase ".\Release\gctest.exe"
 
@@ -445,39 +445,39 @@ CPP=cl.exe
 CPP_PROJ=/nologo /MD /W3 /GX /O2 /I include /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D\
  "ALL_INTERIOR_POINTERS" /D "__STDC__" /D "GC_WIN32_THREADS"\
  /Ilibatomic_ops-$(AO_VERSION)/src /Fp"$(INTDIR)/gctest.pch" \
- /YX /Fo"$(INTDIR)/" /c 
+ /YX /Fo"$(INTDIR)/" /c
 CPP_OBJS=.\gctest\Release/
 CPP_SBRS=.\.
 
 .c{$(CPP_OBJS)}.obj:
-   $(CPP) $(CPP_PROJ) $<  
+   $(CPP) $(CPP_PROJ) $<
 
 .cpp{$(CPP_OBJS)}.obj:
-   $(CPP) $(CPP_PROJ) $<  
+   $(CPP) $(CPP_PROJ) $<
 
 .cxx{$(CPP_OBJS)}.obj:
-   $(CPP) $(CPP_PROJ) $<  
+   $(CPP) $(CPP_PROJ) $<
 
 .c{$(CPP_SBRS)}.sbr:
-   $(CPP) $(CPP_PROJ) $<  
+   $(CPP) $(CPP_PROJ) $<
 
 .cpp{$(CPP_SBRS)}.sbr:
-   $(CPP) $(CPP_PROJ) $<  
+   $(CPP) $(CPP_PROJ) $<
 
 .cxx{$(CPP_SBRS)}.sbr:
-   $(CPP) $(CPP_PROJ) $<  
+   $(CPP) $(CPP_PROJ) $<
 
 MTL=mktyplib.exe
 # ADD BASE MTL /nologo /D "NDEBUG" /win32
 # ADD MTL /nologo /D "NDEBUG" /win32
-MTL_PROJ=/nologo /D "NDEBUG" /win32 
+MTL_PROJ=/nologo /D "NDEBUG" /win32
 RSC=rc.exe
 # ADD BASE RSC /l 0x809 /d "NDEBUG"
 # ADD RSC /l 0x809 /d "NDEBUG"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
-BSC32_FLAGS=/nologo /o"$(OUTDIR)/gctest.bsc" 
+BSC32_FLAGS=/nologo /o"$(OUTDIR)/gctest.bsc"
 BSC32_SBRS= \
 	
 LINK32=link.exe
@@ -486,7 +486,7 @@ LINK32=link.exe
 LINK32_FLAGS=kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib\
  advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib\
  odbccp32.lib /nologo /subsystem:windows /incremental:no\
- /pdb:"$(OUTDIR)/gctest.pdb" /machine:I386 /out:"Release/gctest.exe" 
+ /pdb:"$(OUTDIR)/gctest.pdb" /machine:I386 /out:"Release/gctest.exe"
 LINK32_OBJS= \
 	".\gctest\Release\test.obj" \
 	".\Release\gc.lib"
@@ -513,7 +513,7 @@ INTDIR=.\gctest\Debug
 
 ALL : "gc - Win32 Debug" ".\Debug\gctest.exe" ".\gctest\Debug\gctest.bsc"
 
-CLEAN : 
+CLEAN :
 	-@erase ".\Debug\gctest.exe"
 	-@erase ".\gctest\Debug\gctest.bsc"
 	-@erase ".\gctest\Debug\gctest.map"
@@ -531,39 +531,39 @@ CPP=cl.exe
 # ADD CPP /nologo /MDd /W3 /Gm /GX /Zi /Od /D "_DEBUG" /D "WIN32" /D "_WINDOWS" /D "ALL_INTERIOR_POINTERS" /D "__STDC__" /D "GC_WIN32_THREADS" /FR /YX /c
 CPP_PROJ=/nologo /MDd /W3 /Gm /GX /Zi /Od /I include /D "_DEBUG" /D "WIN32" /D "_WINDOWS"\
  /D "ALL_INTERIOR_POINTERS" /D "__STDC__" /D "GC_WIN32_THREADS" /FR"$(INTDIR)/"\
- /Ilibatomic_ops-$(AO_VERSION)/src /Fp"$(INTDIR)/gctest.pch" /YX /Fo"$(INTDIR)/" /Fd"$(INTDIR)/" /c 
+ /Ilibatomic_ops-$(AO_VERSION)/src /Fp"$(INTDIR)/gctest.pch" /YX /Fo"$(INTDIR)/" /Fd"$(INTDIR)/" /c
 CPP_OBJS=.\gctest\Debug/
 CPP_SBRS=.\gctest\Debug/
 
 .c{$(CPP_OBJS)}.obj:
-   $(CPP) $(CPP_PROJ) $<  
+   $(CPP) $(CPP_PROJ) $<
 
 .cpp{$(CPP_OBJS)}.obj:
-   $(CPP) $(CPP_PROJ) $<  
+   $(CPP) $(CPP_PROJ) $<
 
 .cxx{$(CPP_OBJS)}.obj:
-   $(CPP) $(CPP_PROJ) $<  
+   $(CPP) $(CPP_PROJ) $<
 
 .c{$(CPP_SBRS)}.sbr:
-   $(CPP) $(CPP_PROJ) $<  
+   $(CPP) $(CPP_PROJ) $<
 
 .cpp{$(CPP_SBRS)}.sbr:
-   $(CPP) $(CPP_PROJ) $<  
+   $(CPP) $(CPP_PROJ) $<
 
 .cxx{$(CPP_SBRS)}.sbr:
-   $(CPP) $(CPP_PROJ) $<  
+   $(CPP) $(CPP_PROJ) $<
 
 MTL=mktyplib.exe
 # ADD BASE MTL /nologo /D "_DEBUG" /win32
 # ADD MTL /nologo /D "_DEBUG" /win32
-MTL_PROJ=/nologo /D "_DEBUG" /win32 
+MTL_PROJ=/nologo /D "_DEBUG" /win32
 RSC=rc.exe
 # ADD BASE RSC /l 0x809 /d "_DEBUG"
 # ADD RSC /l 0x809 /d "_DEBUG"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
-BSC32_FLAGS=/nologo /o"$(OUTDIR)/gctest.bsc" 
+BSC32_FLAGS=/nologo /o"$(OUTDIR)/gctest.bsc"
 BSC32_SBRS= \
 	".\gctest\Debug\test.sbr"
 
@@ -579,7 +579,7 @@ LINK32_FLAGS=kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib\
  advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib\
  odbccp32.lib /nologo /subsystem:windows /incremental:no\
  /pdb:"$(OUTDIR)/gctest.pdb" /map:"$(INTDIR)/gctest.map" /debug /machine:I386\
- /out:"Debug/gctest.exe" 
+ /out:"Debug/gctest.exe"
 LINK32_OBJS= \
 	".\Debug\gc.lib" \
 	".\gctest\Debug\test.obj"
@@ -606,7 +606,7 @@ INTDIR=.\cord\Release
 
 ALL : "gc - Win32 Release" ".\Release\de.exe"
 
-CLEAN : 
+CLEAN :
 	-@erase ".\cord\Release\cordbscs.obj"
 	-@erase ".\cord\Release\cordxtra.obj"
 	-@erase ".\cord\Release\de.obj"
@@ -621,40 +621,40 @@ CPP=cl.exe
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /c
 # ADD CPP /nologo /MD /W3 /GX /O2 /I "." /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "ALL_INTERIOR_POINTERS" /YX /c
 CPP_PROJ=/nologo /MD /W3 /GX /O2 /I "." /I include /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D\
- /Ilibatomic_ops-$(AO_VERSION)/src "ALL_INTERIOR_POINTERS" /Fp"$(INTDIR)/cord.pch" /YX /Fo"$(INTDIR)/" /c 
+ /Ilibatomic_ops-$(AO_VERSION)/src "ALL_INTERIOR_POINTERS" /Fp"$(INTDIR)/cord.pch" /YX /Fo"$(INTDIR)/" /c
 CPP_OBJS=.\cord\Release/
 CPP_SBRS=.\.
 
 .c{$(CPP_OBJS)}.obj:
-   $(CPP) $(CPP_PROJ) $<  
+   $(CPP) $(CPP_PROJ) $<
 
 .cpp{$(CPP_OBJS)}.obj:
-   $(CPP) $(CPP_PROJ) $<  
+   $(CPP) $(CPP_PROJ) $<
 
 .cxx{$(CPP_OBJS)}.obj:
-   $(CPP) $(CPP_PROJ) $<  
+   $(CPP) $(CPP_PROJ) $<
 
 .c{$(CPP_SBRS)}.sbr:
-   $(CPP) $(CPP_PROJ) $<  
+   $(CPP) $(CPP_PROJ) $<
 
 .cpp{$(CPP_SBRS)}.sbr:
-   $(CPP) $(CPP_PROJ) $<  
+   $(CPP) $(CPP_PROJ) $<
 
 .cxx{$(CPP_SBRS)}.sbr:
-   $(CPP) $(CPP_PROJ) $<  
+   $(CPP) $(CPP_PROJ) $<
 
 MTL=mktyplib.exe
 # ADD BASE MTL /nologo /D "NDEBUG" /win32
 # ADD MTL /nologo /D "NDEBUG" /win32
-MTL_PROJ=/nologo /D "NDEBUG" /win32 
+MTL_PROJ=/nologo /D "NDEBUG" /win32
 RSC=rc.exe
 # ADD BASE RSC /l 0x809 /d "NDEBUG"
 # ADD RSC /l 0x809 /d "NDEBUG"
-RSC_PROJ=/l 0x809 /fo"$(INTDIR)/de_win.res" /d "NDEBUG" 
+RSC_PROJ=/l 0x809 /fo"$(INTDIR)/de_win.res" /d "NDEBUG"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
-BSC32_FLAGS=/nologo /o"$(OUTDIR)/cord.bsc" 
+BSC32_FLAGS=/nologo /o"$(OUTDIR)/cord.bsc"
 BSC32_SBRS= \
 	
 LINK32=link.exe
@@ -663,7 +663,7 @@ LINK32=link.exe
 LINK32_FLAGS=kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib\
  advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib\
  odbccp32.lib /nologo /subsystem:windows /incremental:no /pdb:"$(OUTDIR)/de.pdb"\
- /machine:I386 /out:"Release/de.exe" 
+ /machine:I386 /out:"Release/de.exe"
 LINK32_OBJS= \
 	".\cord\Release\cordbscs.obj" \
 	".\cord\Release\cordxtra.obj" \
@@ -694,7 +694,7 @@ INTDIR=.\cord\Debug
 
 ALL : "gc - Win32 Debug" ".\Debug\de.exe"
 
-CLEAN : 
+CLEAN :
 	-@erase ".\cord\Debug\cordbscs.obj"
 	-@erase ".\cord\Debug\cordxtra.obj"
 	-@erase ".\cord\Debug\de.obj"
@@ -714,40 +714,40 @@ CPP=cl.exe
 # ADD CPP /nologo /MDd /W3 /Gm /GX /Zi /Od /I "." /D "_DEBUG" /D "WIN32" /D "_WINDOWS" /D "ALL_INTERIOR_POINTERS" /YX /c
 CPP_PROJ=/nologo /MDd /W3 /Gm /GX /Zi /Od /I "." /I include /D "_DEBUG" /D "WIN32" /D\
  "_WINDOWS" /D "ALL_INTERIOR_POINTERS" /Fp"$(INTDIR)/cord.pch" /YX\
- /Ilibatomic_ops-$(AO_VERSION)/src /Fo"$(INTDIR)/" /Fd"$(INTDIR)/" /c 
+ /Ilibatomic_ops-$(AO_VERSION)/src /Fo"$(INTDIR)/" /Fd"$(INTDIR)/" /c
 CPP_OBJS=.\cord\Debug/
 CPP_SBRS=.\.
 
 .c{$(CPP_OBJS)}.obj:
-   $(CPP) $(CPP_PROJ) $<  
+   $(CPP) $(CPP_PROJ) $<
 
 .cpp{$(CPP_OBJS)}.obj:
-   $(CPP) $(CPP_PROJ) $<  
+   $(CPP) $(CPP_PROJ) $<
 
 .cxx{$(CPP_OBJS)}.obj:
-   $(CPP) $(CPP_PROJ) $<  
+   $(CPP) $(CPP_PROJ) $<
 
 .c{$(CPP_SBRS)}.sbr:
-   $(CPP) $(CPP_PROJ) $<  
+   $(CPP) $(CPP_PROJ) $<
 
 .cpp{$(CPP_SBRS)}.sbr:
-   $(CPP) $(CPP_PROJ) $<  
+   $(CPP) $(CPP_PROJ) $<
 
 .cxx{$(CPP_SBRS)}.sbr:
-   $(CPP) $(CPP_PROJ) $<  
+   $(CPP) $(CPP_PROJ) $<
 
 MTL=mktyplib.exe
 # ADD BASE MTL /nologo /D "_DEBUG" /win32
 # ADD MTL /nologo /D "_DEBUG" /win32
-MTL_PROJ=/nologo /D "_DEBUG" /win32 
+MTL_PROJ=/nologo /D "_DEBUG" /win32
 RSC=rc.exe
 # ADD BASE RSC /l 0x809 /d "_DEBUG"
 # ADD RSC /l 0x809 /d "_DEBUG"
-RSC_PROJ=/l 0x809 /fo"$(INTDIR)/de_win.res" /d "_DEBUG" 
+RSC_PROJ=/l 0x809 /fo"$(INTDIR)/de_win.res" /d "_DEBUG"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
-BSC32_FLAGS=/nologo /o"$(OUTDIR)/cord.bsc" 
+BSC32_FLAGS=/nologo /o"$(OUTDIR)/cord.bsc"
 BSC32_SBRS= \
 	
 LINK32=link.exe
@@ -756,7 +756,7 @@ LINK32=link.exe
 LINK32_FLAGS=kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib\
  advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib\
  odbccp32.lib /nologo /subsystem:windows /incremental:yes\
- /pdb:"$(OUTDIR)/de.pdb" /debug /machine:I386 /out:"Debug/de.exe" 
+ /pdb:"$(OUTDIR)/de.pdb" /debug /machine:I386 /out:"Debug/de.exe"
 LINK32_OBJS= \
 	".\cord\Debug\cordbscs.obj" \
 	".\cord\Debug\cordxtra.obj" \
@@ -770,7 +770,7 @@ LINK32_OBJS= \
   $(LINK32_FLAGS) $(LINK32_OBJS)
 <<
 
-!ENDIF 
+!ENDIF
 
 ################################################################################
 # Begin Target
@@ -782,7 +782,7 @@ LINK32_OBJS= \
 
 !ELSEIF  "$(CFG)" == "gc - Win32 Debug"
 
-!ENDIF 
+!ENDIF
 
 ################################################################################
 # Begin Source File
@@ -831,7 +831,7 @@ NODEP_CPP_RECLA=\
 ".\Debug\gc_cpp.sbr" : $(SOURCE) $(DEP_CPP_RECLA) "$(INTDIR)"
 
 
-!ENDIF 
+!ENDIF
 
 # End Source File
 ################################################################################
@@ -879,7 +879,7 @@ NODEP_CPP_RECLA=\
 ".\Debug\reclaim.sbr" : $(SOURCE) $(DEP_CPP_RECLA) "$(INTDIR)"
 
 
-!ENDIF 
+!ENDIF
 
 # End Source File
 
@@ -936,7 +936,7 @@ NODEP_CPP_OS_DE=\
 ".\Debug\os_dep.sbr" : $(SOURCE) $(DEP_CPP_OS_DE) "$(INTDIR)"
 
 
-!ENDIF 
+!ENDIF
 
 # End Source File
 ################################################################################
@@ -986,7 +986,7 @@ NODEP_CPP_MISC_=\
 ".\Debug\misc.sbr" : $(SOURCE) $(DEP_CPP_MISC_) "$(INTDIR)"
 
 
-!ENDIF 
+!ENDIF
 
 # End Source File
 ################################################################################
@@ -1034,7 +1034,7 @@ NODEP_CPP_MARK_=\
 ".\Debug\mark_rts.sbr" : $(SOURCE) $(DEP_CPP_MARK_) "$(INTDIR)"
 
 
-!ENDIF 
+!ENDIF
 
 # End Source File
 ################################################################################
@@ -1082,7 +1082,7 @@ NODEP_CPP_MACH_=\
 ".\Debug\mach_dep.sbr" : $(SOURCE) $(DEP_CPP_MACH_) "$(INTDIR)"
 
 
-!ENDIF 
+!ENDIF
 
 # End Source File
 ################################################################################
@@ -1130,7 +1130,7 @@ NODEP_CPP_HEADE=\
 ".\Debug\headers.sbr" : $(SOURCE) $(DEP_CPP_HEADE) "$(INTDIR)"
 
 
-!ENDIF 
+!ENDIF
 
 # End Source File
 ################################################################################
@@ -1178,7 +1178,7 @@ NODEP_CPP_ALLOC=\
 ".\Debug\alloc.sbr" : $(SOURCE) $(DEP_CPP_ALLOC) "$(INTDIR)"
 
 
-!ENDIF 
+!ENDIF
 
 # End Source File
 ################################################################################
@@ -1226,7 +1226,7 @@ NODEP_CPP_ALLCH=\
 ".\Debug\allchblk.sbr" : $(SOURCE) $(DEP_CPP_ALLCH) "$(INTDIR)"
 
 
-!ENDIF 
+!ENDIF
 
 # End Source File
 ################################################################################
@@ -1274,7 +1274,7 @@ NODEP_CPP_STUBB=\
 ".\Debug\stubborn.sbr" : $(SOURCE) $(DEP_CPP_STUBB) "$(INTDIR)"
 
 
-!ENDIF 
+!ENDIF
 
 # End Source File
 ################################################################################
@@ -1322,7 +1322,7 @@ NODEP_CPP_OBJ_M=\
 ".\Debug\obj_map.sbr" : $(SOURCE) $(DEP_CPP_OBJ_M) "$(INTDIR)"
 
 
-!ENDIF 
+!ENDIF
 
 # End Source File
 ################################################################################
@@ -1370,7 +1370,7 @@ NODEP_CPP_NEW_H=\
 ".\Debug\new_hblk.sbr" : $(SOURCE) $(DEP_CPP_NEW_H) "$(INTDIR)"
 
 
-!ENDIF 
+!ENDIF
 
 # End Source File
 ################################################################################
@@ -1422,7 +1422,7 @@ NODEP_CPP_MARK_C=\
 ".\Debug\mark.sbr" : $(SOURCE) $(DEP_CPP_MARK_C) "$(INTDIR)"
 
 
-!ENDIF 
+!ENDIF
 
 # End Source File
 ################################################################################
@@ -1470,7 +1470,7 @@ NODEP_CPP_MALLO=\
 ".\Debug\malloc.sbr" : $(SOURCE) $(DEP_CPP_MALLO) "$(INTDIR)"
 
 
-!ENDIF 
+!ENDIF
 
 # End Source File
 ################################################################################
@@ -1518,7 +1518,7 @@ NODEP_CPP_MALLX=\
 ".\Debug\mallocx.sbr" : $(SOURCE) $(DEP_CPP_MALLX) "$(INTDIR)"
 
 
-!ENDIF 
+!ENDIF
 
 # End Source File
 ################################################################################
@@ -1570,7 +1570,7 @@ NODEP_CPP_FINAL=\
 ".\Debug\finalize.sbr" : $(SOURCE) $(DEP_CPP_FINAL) "$(INTDIR)"
 
 
-!ENDIF 
+!ENDIF
 
 # End Source File
 ################################################################################
@@ -1618,7 +1618,7 @@ NODEP_CPP_DBG_M=\
 ".\Debug\dbg_mlc.sbr" : $(SOURCE) $(DEP_CPP_DBG_M) "$(INTDIR)"
 
 
-!ENDIF 
+!ENDIF
 
 # End Source File
 ################################################################################
@@ -1666,7 +1666,7 @@ NODEP_CPP_BLACK=\
 ".\Debug\blacklst.sbr" : $(SOURCE) $(DEP_CPP_BLACK) "$(INTDIR)"
 
 
-!ENDIF 
+!ENDIF
 
 # End Source File
 ################################################################################
@@ -1720,7 +1720,7 @@ NODEP_CPP_TYPD_=\
 ".\Debug\typd_mlc.sbr" : $(SOURCE) $(DEP_CPP_TYPD_) "$(INTDIR)"
 
 
-!ENDIF 
+!ENDIF
 
 # End Source File
 ################################################################################
@@ -1772,7 +1772,7 @@ NODEP_CPP_PTR_C=\
 ".\Debug\ptr_chck.sbr" : $(SOURCE) $(DEP_CPP_PTR_C) "$(INTDIR)"
 
 
-!ENDIF 
+!ENDIF
 
 # End Source File
 ################################################################################
@@ -1826,7 +1826,7 @@ NODEP_CPP_DYN_L=\
 ".\Debug\dyn_load.sbr" : $(SOURCE) $(DEP_CPP_DYN_L) "$(INTDIR)"
 
 
-!ENDIF 
+!ENDIF
 
 # End Source File
 ################################################################################
@@ -1874,7 +1874,7 @@ NODEP_CPP_WIN32=\
 ".\Debug\win32_threads.sbr" : $(SOURCE) $(DEP_CPP_WIN32) "$(INTDIR)"
 
 
-!ENDIF 
+!ENDIF
 
 # End Source File
 ################################################################################
@@ -1924,7 +1924,7 @@ NODEP_CPP_WIN32=\
 ".\Debug\msvc_dbg.sbr" : $(SOURCE) $(DEP_CPP_WIN32) "$(INTDIR)"
 
 
-!ENDIF 
+!ENDIF
 
 # End Source File
 ################################################################################
@@ -1972,7 +1972,7 @@ NODEP_CPP_CHECK=\
 ".\Debug\checksums.sbr" : $(SOURCE) $(DEP_CPP_CHECK) "$(INTDIR)"
 
 
-!ENDIF 
+!ENDIF
 
 # End Source File
 # End Target
@@ -1986,7 +1986,7 @@ NODEP_CPP_CHECK=\
 
 !ELSEIF  "$(CFG)" == "gctest - Win32 Debug"
 
-!ENDIF 
+!ENDIF
 
 ################################################################################
 # Begin Project Dependency
@@ -1995,15 +1995,15 @@ NODEP_CPP_CHECK=\
 
 !IF  "$(CFG)" == "gctest - Win32 Release"
 
-"gc - Win32 Release" : 
-   $(MAKE) /$(MAKEFLAGS) /F ".\gc.mak" CFG="gc - Win32 Release" 
+"gc - Win32 Release" :
+   $(MAKE) /$(MAKEFLAGS) /F ".\gc.mak" CFG="gc - Win32 Release"
 
 !ELSEIF  "$(CFG)" == "gctest - Win32 Debug"
 
-"gc - Win32 Debug" : 
-   $(MAKE) /$(MAKEFLAGS) /F ".\gc.mak" CFG="gc - Win32 Debug" 
+"gc - Win32 Debug" :
+   $(MAKE) /$(MAKEFLAGS) /F ".\gc.mak" CFG="gc - Win32 Debug"
 
-!ENDIF 
+!ENDIF
 
 # End Project Dependency
 ################################################################################
@@ -2038,7 +2038,7 @@ NODEP_CPP_TEST_=\
 ".\gctest\Debug\test.sbr" : $(SOURCE) $(DEP_CPP_TEST_) "$(INTDIR)"
 
 
-!ENDIF 
+!ENDIF
 
 # End Source File
 # End Target
@@ -2052,7 +2052,7 @@ NODEP_CPP_TEST_=\
 
 !ELSEIF  "$(CFG)" == "cord - Win32 Debug"
 
-!ENDIF 
+!ENDIF
 
 ################################################################################
 # Begin Project Dependency
@@ -2061,15 +2061,15 @@ NODEP_CPP_TEST_=\
 
 !IF  "$(CFG)" == "cord - Win32 Release"
 
-"gc - Win32 Release" : 
-   $(MAKE) /$(MAKEFLAGS) /F ".\gc.mak" CFG="gc - Win32 Release" 
+"gc - Win32 Release" :
+   $(MAKE) /$(MAKEFLAGS) /F ".\gc.mak" CFG="gc - Win32 Release"
 
 !ELSEIF  "$(CFG)" == "cord - Win32 Debug"
 
-"gc - Win32 Debug" : 
-   $(MAKE) /$(MAKEFLAGS) /F ".\gc.mak" CFG="gc - Win32 Debug" 
+"gc - Win32 Debug" :
+   $(MAKE) /$(MAKEFLAGS) /F ".\gc.mak" CFG="gc - Win32 Debug"
 
-!ENDIF 
+!ENDIF
 
 # End Project Dependency
 ################################################################################
@@ -2100,7 +2100,7 @@ NODEP_CPP_DE_WI=\
    $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-!ENDIF 
+!ENDIF
 
 # End Source File
 ################################################################################
@@ -2131,7 +2131,7 @@ NODEP_CPP_DE_C2e=\
    $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-!ENDIF 
+!ENDIF
 
 # End Source File
 ################################################################################
@@ -2161,7 +2161,7 @@ NODEP_CPP_CORDX=\
    $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-!ENDIF 
+!ENDIF
 
 # End Source File
 ################################################################################
@@ -2190,7 +2190,7 @@ NODEP_CPP_CORDB=\
    $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-!ENDIF 
+!ENDIF
 
 # End Source File
 ################################################################################
@@ -2212,7 +2212,7 @@ SOURCE=.\cord\de_win.RC
    $(RSC) /l 0x809 /fo"$(INTDIR)/de_win.res" /i "cord" /d "_DEBUG" $(SOURCE)
 
 
-!ENDIF 
+!ENDIF
 
 # End Source File
 # End Target

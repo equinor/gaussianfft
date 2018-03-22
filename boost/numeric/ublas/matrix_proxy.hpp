@@ -22,7 +22,7 @@
 
 namespace boost { namespace numeric { namespace ublas {
 
-    /** \brief 
+    /** \brief
      */
     template<class M>
     class matrix_row:
@@ -4423,7 +4423,7 @@ namespace boost { namespace numeric { namespace ublas {
     /** \brief A matrix referencing a non continuous submatrix of elements given another matrix of indices.
      *
      * It is the most general version of any submatrices because it uses another matrix of indices to reference
-     * the submatrix. 
+     * the submatrix.
      *
      * The matrix of indices can be of any type with the restriction that its elements must be
      * type-compatible with the size_type \c of the container. In practice, the following are good candidates:
@@ -4431,8 +4431,8 @@ namespace boost { namespace numeric { namespace ublas {
      * - \c boost::numeric::ublas::matrix<int> can work too (\c int can be replaced by another integer type)
      * - etc...
      *
-     * An indirect matrix can be used as a normal matrix in any expression. If the specified indirect matrix 
-     * falls outside that of the indices of the matrix, then the \c matrix_indirect is not a well formed 
+     * An indirect matrix can be used as a normal matrix in any expression. If the specified indirect matrix
+     * falls outside that of the indices of the matrix, then the \c matrix_indirect is not a well formed
      * \i Matrix \i Expression and access to an element outside of indices of the matrix is \b undefined.
      *
      * \tparam V the type of the referenced matrix, for example \c matrix<double>)

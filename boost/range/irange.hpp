@@ -217,7 +217,7 @@ namespace boost
     {
         BOOST_ASSERT( step_size != 0 );
         BOOST_ASSERT( (step_size > 0) ? (last >= first) : (last <= first) );
-        
+
         typedef typename range_detail::integer_iterator_with_step<Integer> iterator_t;
 
         const std::ptrdiff_t sz = static_cast<std::ptrdiff_t>(step_size >= 0 ? step_size : -step_size);
@@ -225,7 +225,7 @@ namespace boost
         const Integer f = step_size >= 0 ? first : last;
         const std::ptrdiff_t num_steps = (l - f) / sz + ((l - f) % sz ? 1 : 0);
         BOOST_ASSERT(num_steps >= 0);
-       
+
         return strided_integer_range<Integer>(
             iterator_t(first, 0, step_size),
             iterator_t(first, num_steps, step_size));

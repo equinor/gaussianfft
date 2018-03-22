@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 1988, 1989 Hans-J. Boehm, Alan J. Demers
  * Copyright (c) 1991-1994 by Xerox Corporation.  All rights reserved.
  * Copyright (c) 1999-2004 Hewlett-Packard Development Company, L.P.
@@ -12,7 +12,7 @@
  * provided the above notices are retained, and a notice that the code was
  * modified is included with the above copyright notice.
  */
- 
+
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
@@ -126,7 +126,7 @@ void * GC_generic_malloc_inner(size_t lb, int k)
 	op = (ptr_t)GC_alloc_large_and_clear(ADD_SLOP(lb), k, 0);
         GC_bytes_allocd += lb;
     }
-    
+
 out:
     return op;
 }
@@ -194,7 +194,7 @@ void * GC_generic_malloc(size_t lb, int k)
     } else {
         return(result);
     }
-}   
+}
 
 
 #define GENERAL_MALLOC(lb,k) \

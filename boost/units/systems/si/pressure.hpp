@@ -1,4 +1,4 @@
-// Boost.Units - A C++ library for zero-overhead dimensional analysis and 
+// Boost.Units - A C++ library for zero-overhead dimensional analysis and
 // unit/quantity manipulation and conversion
 //
 // Copyright (C) 2003-2008 Matthias Christian Schabel
@@ -16,7 +16,7 @@
 
 namespace boost {
 
-namespace units { 
+namespace units {
 
 namespace si {
 
@@ -36,9 +36,9 @@ typedef unit<pressure_dimension,si::system>      pressure;
 #endif
 
 #ifndef BOOST_UNITS_NO_PASCAL
-BOOST_UNITS_STATIC_CONSTANT(pascal,pressure);   
+BOOST_UNITS_STATIC_CONSTANT(pascal,pressure);
 #endif
-BOOST_UNITS_STATIC_CONSTANT(pascals,pressure);  
+BOOST_UNITS_STATIC_CONSTANT(pascals,pressure);
 
 } // namespace si
 

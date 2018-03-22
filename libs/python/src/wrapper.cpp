@@ -22,7 +22,7 @@ namespace detail
           )
           {
               PyObject* borrowed_f = 0;
-            
+
               if (
                   PyMethod_Check(m.get())
                   && ((PyMethodObject*)m.get())->im_self == this->m_self
@@ -59,8 +59,8 @@ namespace converter
           )
       }
   }
-  
+
 }
-#endif 
+#endif
 
 }} // namespace boost::python::detail

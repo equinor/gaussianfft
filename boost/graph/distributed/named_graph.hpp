@@ -1,4 +1,4 @@
-// Copyright (C) 2007 Douglas Gregor 
+// Copyright (C) 2007 Douglas Gregor
 // Copyright (C) 2007 Hartmut Kaiser
 
 // Use, modification and distribution is subject to the Boost Software
@@ -38,7 +38,7 @@ struct hashed_distribution
   hashed_distribution(const ProcessGroup& pg, std::size_t /*num_vertices*/ = 0)
     : n(num_processes(pg)) { }
 
-  int operator()(const T& value) const 
+  int operator()(const T& value) const
   {
     return hasher(value) % n;
   }
@@ -50,7 +50,7 @@ struct hashed_distribution
 /// Specialization for named graphs
 template <typename InDistribution, typename VertexProperty, typename VertexSize,
           typename ProcessGroup,
-          typename ExtractName 
+          typename ExtractName
             = typename internal_vertex_name<VertexProperty>::type>
 struct select_distribution
 {
@@ -73,10 +73,10 @@ public:
    */
   typedef typename mpl::if_<is_same<InDistribution, defaultS>,
                             hashed_distribution<vertex_name_type>,
-                            InDistribution>::type 
+                            InDistribution>::type
     type;
 
-  /// for named graphs the default type is the same as the stored distribution 
+  /// for named graphs the default type is the same as the stored distribution
   /// type
   typedef type default_type;
 };
@@ -84,13 +84,13 @@ public:
 /// Specialization for non-named graphs
 template <typename InDistribution, typename VertexProperty, typename VertexSize,
           typename ProcessGroup>
-struct select_distribution<InDistribution, VertexProperty, VertexSize, 
+struct select_distribution<InDistribution, VertexProperty, VertexSize,
                            ProcessGroup, void>
 {
   /// the distribution type stored in the graph for non-named graphs should be
   /// the variant_distribution type
   typedef typename mpl::if_<is_same<InDistribution, defaultS>,
-                            boost::parallel::variant_distribution<ProcessGroup, 
+                            boost::parallel::variant_distribution<ProcessGroup,
                                                                   VertexSize>,
                             InDistribution>::type type;
 
@@ -147,7 +147,7 @@ public:
 
     /**
      * Requests the vertex descriptor corresponding to the given
-     * vertex name. The remote process will reply with a 
+     * vertex name. The remote process will reply with a
      * @c msg_find_vertex_reply message containing the answer.
      */
     msg_find_vertex,
@@ -157,7 +157,7 @@ public:
      * data stored in these messages is a @c pair<source, target>@,
      * where @c source and @c target may be either names (of type @c
      * vertex_name_type) or vertex descriptors, depending on what
-     * information we have locally.  
+     * information we have locally.
      */
     msg_add_edge_name_name,
     msg_add_edge_vertex_name,
@@ -196,16 +196,16 @@ public:
 
   /// The vertex descriptor type
   typedef Vertex vertex_descriptor;
-  
+
   /// The edge descriptor type
   typedef Edge edge_descriptor;
 
   /// The vertex property type
   typedef typename Config::vertex_property_type vertex_property_type;
-  
+
   /// The vertex property type
   typedef typename Config::edge_property_type edge_property_type;
-  
+
   /// The type used to extract names from the property structure
   typedef typename internal_vertex_name<vertex_property_type>::type
     extract_name_type;
@@ -226,10 +226,10 @@ public:
   /// Type used to identify processes
   typedef typename process_group_type::process_id_type process_id_type;
 
-  /// a reference to this class, which is used for disambiguation of the 
+  /// a reference to this class, which is used for disambiguation of the
   //  add_vertex function
   typedef named_graph named_graph_type;
-  
+
   /// Structure returned when adding a vertex by vertex name
   struct lazy_add_vertex;
   friend struct lazy_add_vertex;
@@ -279,12 +279,12 @@ public:
   process_id_type owner_by_property(const vertex_property_type&);
 
 protected:
-  void 
+  void
   handle_add_vertex_name(int source, int tag, const vertex_name_type& msg,
                          trigger_receive_context);
 
-  vertex_descriptor 
-  handle_add_vertex_name_with_reply(int source, int tag, 
+  vertex_descriptor
+  handle_add_vertex_name_with_reply(int source, int tag,
                                     const vertex_name_type& msg,
                                     trigger_receive_context);
 
@@ -297,21 +297,21 @@ protected:
                        trigger_receive_context);
 
   template<typename U, typename V>
-  boost::parallel::detail::untracked_pair<edge_descriptor, bool> 
+  boost::parallel::detail::untracked_pair<edge_descriptor, bool>
   handle_add_edge_with_reply(int source, int tag, const boost::parallel::detail::untracked_pair<U, V>& msg,
                              trigger_receive_context);
 
   template<typename U, typename V>
-  void 
+  void
   handle_add_edge_with_property
-    (int source, int tag, 
+    (int source, int tag,
      const pair_with_property<U, V, edge_property_type>& msg,
      trigger_receive_context);
 
   template<typename U, typename V>
-  boost::parallel::detail::untracked_pair<edge_descriptor, bool> 
+  boost::parallel::detail::untracked_pair<edge_descriptor, bool>
   handle_add_edge_with_reply_and_property
-    (int source, int tag, 
+    (int source, int tag,
      const pair_with_property<U, V, edge_property_type>& msg,
      trigger_receive_context);
 
@@ -384,7 +384,7 @@ BGL_NAMED_GRAPH::lazy_add_vertex::~lazy_add_vertex()
   process_id_type owner = self.named_distribution()(name);
   if (owner == process_id(self.process_group()))
     /// Add the vertex locally
-    add_vertex(self.derived().base().vertex_constructor(name), self.derived()); 
+    add_vertex(self.derived().base().vertex_constructor(name), self.derived());
   else
     /// Ask the owner of the vertex to add a vertex with this name
     send(self.process_group(), owner, msg_add_vertex_name, name);
@@ -402,11 +402,11 @@ BGL_NAMED_GRAPH::lazy_add_vertex::commit() const
   if (owner == process_id(self.process_group()))
     /// Add the vertex locally
     return add_vertex(self.derived().base().vertex_constructor(name),
-                      self.derived()); 
+                      self.derived());
   else {
     /// Ask the owner of the vertex to add a vertex with this name
     vertex_descriptor result;
-    send_oob_with_reply(self.process_group(), owner, 
+    send_oob_with_reply(self.process_group(), owner,
                         msg_add_vertex_name_with_reply, name, result);
     return result;
   }
@@ -419,15 +419,15 @@ BGL_NAMED_GRAPH::lazy_add_vertex::commit() const
  * destroyed.
  */
 template<BGL_NAMED_GRAPH_PARAMS>
-struct BGL_NAMED_GRAPH::lazy_add_edge 
+struct BGL_NAMED_GRAPH::lazy_add_edge
 {
   /// The graph's edge descriptor
   typedef typename graph_traits<Graph>::edge_descriptor edge_descriptor;
 
   /// Add an edge for the edge (u, v) based on vertex names
-  lazy_add_edge(BGL_NAMED_GRAPH& self, 
+  lazy_add_edge(BGL_NAMED_GRAPH& self,
                 const vertex_name_type& u_name,
-                const vertex_name_type& v_name) 
+                const vertex_name_type& v_name)
     : self(self), u(u_name), v(v_name), committed(false) { }
 
   /// Add an edge for the edge (u, v) based on a vertex descriptor and name
@@ -496,7 +496,7 @@ BGL_NAMED_GRAPH::lazy_add_edge::~lazy_add_edge()
     // it must not be local. Send a message to the owner of the target
     // of the edge. If the owner of the target does not happen to own
     // the source, it will resolve the target to a vertex descriptor
-    // and pass the message along to the owner of the source. 
+    // and pass the message along to the owner of the source.
     if (vertex_name_type* u_name = boost::get<vertex_name_type>(&u))
       send(self.process_group(), self.distribution_(*v_name),
            BGL_NAMED_GRAPH::msg_add_edge_name_name,
@@ -517,8 +517,8 @@ BGL_NAMED_GRAPH::lazy_add_edge::~lazy_add_edge()
       // We have descriptors for both of the vertices, either of which
       // may be remote or local. Tell the owner of the source vertex
       // to add the edge (it may be us!).
-      add_edge(boost::get<vertex_descriptor>(u), 
-               boost::get<vertex_descriptor>(v), 
+      add_edge(boost::get<vertex_descriptor>(u),
+               boost::get<vertex_descriptor>(v),
                self.derived());
   }
 }
@@ -543,7 +543,7 @@ BGL_NAMED_GRAPH::lazy_add_edge::commit() const
   process_id_type rank = process_id(self.process_group());
   if (const vertex_name_type* u_name = boost::get<vertex_name_type>(&u)) {
     /// We haven't resolved the source vertex to a descriptor yet, so
-    /// it must not be local. 
+    /// it must not be local.
     u_owner = self.named_distribution()(*u_name);
 
     /// Send a message to the remote vertex requesting that it add the
@@ -556,13 +556,13 @@ BGL_NAMED_GRAPH::lazy_add_edge::commit() const
     else
       send_oob_with_reply(self.process_group(), u_owner,
                           BGL_NAMED_GRAPH::msg_add_edge_name_vertex_with_reply,
-                          make_untracked_pair(*u_name, 
+                          make_untracked_pair(*u_name,
                                          boost::get<vertex_descriptor>(v)),
                           result);
   } else {
     /// We have resolved the source vertex to a descriptor, which may
     /// either be local or remote.
-    u_owner 
+    u_owner
       = get(vertex_owner, self.derived(),
             boost::get<vertex_descriptor>(u));
     if (u_owner == rank) {
@@ -571,8 +571,8 @@ BGL_NAMED_GRAPH::lazy_add_edge::commit() const
         v = add_vertex(*v_name, self.derived());
 
       /// Add the edge using vertex descriptors
-      return add_edge(boost::get<vertex_descriptor>(u), 
-                      boost::get<vertex_descriptor>(v), 
+      return add_edge(boost::get<vertex_descriptor>(u),
+                      boost::get<vertex_descriptor>(v),
                       self.derived());
     } else {
       /// The source is remote. Just send a message to its owner
@@ -585,8 +585,8 @@ BGL_NAMED_GRAPH::lazy_add_edge::commit() const
            make_untracked_pair(boost::get<vertex_descriptor>(u), *v_name),
            result);
       else
-        return add_edge(boost::get<vertex_descriptor>(u), 
-                        boost::get<vertex_descriptor>(v), 
+        return add_edge(boost::get<vertex_descriptor>(u),
+                        boost::get<vertex_descriptor>(v),
                         self.derived());
     }
   }
@@ -603,21 +603,21 @@ BGL_NAMED_GRAPH::lazy_add_edge::commit() const
  * destroyed.
  */
 template<BGL_NAMED_GRAPH_PARAMS>
-struct BGL_NAMED_GRAPH::lazy_add_edge_with_property 
+struct BGL_NAMED_GRAPH::lazy_add_edge_with_property
 {
   /// The graph's edge descriptor
   typedef typename graph_traits<Graph>::edge_descriptor edge_descriptor;
 
   /// The Edge property type for our graph
   typedef typename Config::edge_property_type edge_property_type;
-  
+
   /// Add an edge for the edge (u, v) based on vertex names
-  lazy_add_edge_with_property(BGL_NAMED_GRAPH& self, 
+  lazy_add_edge_with_property(BGL_NAMED_GRAPH& self,
                               const vertex_name_type& u_name,
                               const vertex_name_type& v_name,
-                              const edge_property_type& property) 
+                              const edge_property_type& property)
     : self(self), u(u_name), v(v_name), property(property), committed(false)
-  { 
+  {
   }
 
   /// Add an edge for the edge (u, v) based on a vertex descriptor and name
@@ -645,7 +645,7 @@ struct BGL_NAMED_GRAPH::lazy_add_edge_with_property
   /// responsibility for adding the edge to the newly-constructed
   /// object.
   lazy_add_edge_with_property(const lazy_add_edge_with_property& other)
-    : self(other.self), u(other.u), v(other.v), property(other.property), 
+    : self(other.self), u(other.u), v(other.v), property(other.property),
       committed(other.committed)
   {
     other.committed = true;
@@ -692,7 +692,7 @@ BGL_NAMED_GRAPH::lazy_add_edge_with_property::~lazy_add_edge_with_property()
     // it must not be local. Send a message to the owner of the target
     // of the edge. If the owner of the target does not happen to own
     // the source, it will resolve the target to a vertex descriptor
-    // and pass the message along to the owner of the source. 
+    // and pass the message along to the owner of the source.
     if (vertex_name_type* u_name = boost::get<vertex_name_type>(&u))
       send(self.process_group(), self.distribution_(*v_name),
            BGL_NAMED_GRAPH::msg_add_edge_name_name_with_property,
@@ -700,7 +700,7 @@ BGL_NAMED_GRAPH::lazy_add_edge_with_property::~lazy_add_edge_with_property()
     else
       send(self.process_group(), self.distribution_(*v_name),
            BGL_NAMED_GRAPH::msg_add_edge_vertex_name_with_property,
-           make_pair_with_property(boost::get<vertex_descriptor>(u), *v_name, 
+           make_pair_with_property(boost::get<vertex_descriptor>(u), *v_name,
                                    property));
   } else {
     if (vertex_name_type* u_name = boost::get<vertex_name_type>(&u))
@@ -709,14 +709,14 @@ BGL_NAMED_GRAPH::lazy_add_edge_with_property::~lazy_add_edge_with_property()
       // source vertex requesting the edge addition.
       send(self.process_group(), self.distribution_(*u_name),
            BGL_NAMED_GRAPH::msg_add_edge_name_vertex_with_property,
-           make_pair_with_property(*u_name, boost::get<vertex_descriptor>(v), 
+           make_pair_with_property(*u_name, boost::get<vertex_descriptor>(v),
                                    property));
     else
       // We have descriptors for both of the vertices, either of which
       // may be remote or local. Tell the owner of the source vertex
       // to add the edge (it may be us!).
-      add_edge(boost::get<vertex_descriptor>(u), 
-               boost::get<vertex_descriptor>(v), 
+      add_edge(boost::get<vertex_descriptor>(u),
+               boost::get<vertex_descriptor>(v),
                property,
                self.derived());
   }
@@ -741,7 +741,7 @@ BGL_NAMED_GRAPH::lazy_add_edge_with_property::commit() const
   process_id_type rank = process_id(self.process_group());
   if (const vertex_name_type* u_name = boost::get<vertex_name_type>(&u)) {
     /// We haven't resolved the source vertex to a descriptor yet, so
-    /// it must not be local. 
+    /// it must not be local.
     u_owner = self.named_distribution()(*u_name);
 
     /// Send a message to the remote vertex requesting that it add the
@@ -757,14 +757,14 @@ BGL_NAMED_GRAPH::lazy_add_edge_with_property::commit() const
       send_oob_with_reply
         (self.process_group(), u_owner,
          BGL_NAMED_GRAPH::msg_add_edge_name_vertex_with_reply_and_property,
-         make_pair_with_property(*u_name, 
+         make_pair_with_property(*u_name,
                                  boost::get<vertex_descriptor>(v),
                                  property),
          result);
   } else {
     /// We have resolved the source vertex to a descriptor, which may
     /// either be local or remote.
-    u_owner 
+    u_owner
       = get(vertex_owner, self.derived(),
             boost::get<vertex_descriptor>(u));
     if (u_owner == rank) {
@@ -773,8 +773,8 @@ BGL_NAMED_GRAPH::lazy_add_edge_with_property::commit() const
         v = add_vertex(*v_name, self.derived());
 
       /// Add the edge using vertex descriptors
-      return add_edge(boost::get<vertex_descriptor>(u), 
-                      boost::get<vertex_descriptor>(v), 
+      return add_edge(boost::get<vertex_descriptor>(u),
+                      boost::get<vertex_descriptor>(v),
                       property,
                       self.derived());
     } else {
@@ -789,8 +789,8 @@ BGL_NAMED_GRAPH::lazy_add_edge_with_property::commit() const
                                    property),
            result);
       else
-        return add_edge(boost::get<vertex_descriptor>(u), 
-                        boost::get<vertex_descriptor>(v), 
+        return add_edge(boost::get<vertex_descriptor>(u),
+                        boost::get<vertex_descriptor>(v),
                         property,
                         self.derived());
     }
@@ -831,47 +831,47 @@ BGL_NAMED_GRAPH::setup_triggers()
                  &named_graph::handle_add_vertex_name);
   simple_trigger(process_group_, msg_add_vertex_name_with_reply, this,
                  &named_graph::handle_add_vertex_name_with_reply);
-  simple_trigger(process_group_, msg_find_vertex, this, 
+  simple_trigger(process_group_, msg_find_vertex, this,
                  &named_graph::handle_find_vertex);
-  simple_trigger(process_group_, msg_add_edge_name_name, this, 
-                 &named_graph::template handle_add_edge<vertex_name_type, 
+  simple_trigger(process_group_, msg_add_edge_name_name, this,
+                 &named_graph::template handle_add_edge<vertex_name_type,
                                                         vertex_name_type>);
   simple_trigger(process_group_, msg_add_edge_name_name_with_reply, this,
                  &named_graph::template handle_add_edge_with_reply
                    <vertex_name_type, vertex_name_type>);
   simple_trigger(process_group_, msg_add_edge_name_vertex, this,
-                 &named_graph::template handle_add_edge<vertex_name_type, 
+                 &named_graph::template handle_add_edge<vertex_name_type,
                                                         vertex_descriptor>);
   simple_trigger(process_group_, msg_add_edge_name_vertex_with_reply, this,
                  &named_graph::template handle_add_edge_with_reply
                    <vertex_name_type, vertex_descriptor>);
   simple_trigger(process_group_, msg_add_edge_vertex_name, this,
-                 &named_graph::template handle_add_edge<vertex_descriptor, 
+                 &named_graph::template handle_add_edge<vertex_descriptor,
                                                         vertex_name_type>);
   simple_trigger(process_group_, msg_add_edge_vertex_name_with_reply, this,
                  &named_graph::template handle_add_edge_with_reply
                    <vertex_descriptor, vertex_name_type>);
-  simple_trigger(process_group_, msg_add_edge_name_name_with_property, this, 
+  simple_trigger(process_group_, msg_add_edge_name_name_with_property, this,
                  &named_graph::
-                   template handle_add_edge_with_property<vertex_name_type, 
+                   template handle_add_edge_with_property<vertex_name_type,
                                                           vertex_name_type>);
-  simple_trigger(process_group_, 
+  simple_trigger(process_group_,
                  msg_add_edge_name_name_with_reply_and_property, this,
                  &named_graph::template handle_add_edge_with_reply_and_property
                    <vertex_name_type, vertex_name_type>);
   simple_trigger(process_group_, msg_add_edge_name_vertex_with_property, this,
                  &named_graph::
-                   template handle_add_edge_with_property<vertex_name_type, 
+                   template handle_add_edge_with_property<vertex_name_type,
                                                           vertex_descriptor>);
-  simple_trigger(process_group_, 
+  simple_trigger(process_group_,
                  msg_add_edge_name_vertex_with_reply_and_property, this,
                  &named_graph::template handle_add_edge_with_reply_and_property
                    <vertex_name_type, vertex_descriptor>);
   simple_trigger(process_group_, msg_add_edge_vertex_name_with_property, this,
                  &named_graph::
-                   template handle_add_edge_with_property<vertex_descriptor, 
+                   template handle_add_edge_with_property<vertex_descriptor,
                                                           vertex_name_type>);
-  simple_trigger(process_group_, 
+  simple_trigger(process_group_,
                  msg_add_edge_vertex_name_with_reply_and_property, this,
                  &named_graph::template handle_add_edge_with_reply_and_property
                    <vertex_descriptor, vertex_name_type>);
@@ -879,7 +879,7 @@ BGL_NAMED_GRAPH::setup_triggers()
 
 /// Retrieve the vertex associated with the given name
 template<BGL_NAMED_GRAPH_PARAMS>
-optional<Vertex> 
+optional<Vertex>
 find_vertex(typename BGL_NAMED_GRAPH::vertex_name_type const& name,
             const BGL_NAMED_GRAPH& g)
 {
@@ -887,12 +887,12 @@ find_vertex(typename BGL_NAMED_GRAPH::vertex_name_type const& name,
   typedef typename graph_traits<Graph>::vertex_descriptor vertex_descriptor;
 
   // Determine the owner of this name
-  typename BGL_NAMED_GRAPH::process_id_type owner 
+  typename BGL_NAMED_GRAPH::process_id_type owner
     = g.named_distribution()(name);
 
   if (owner == process_id(g.process_group())) {
     // The vertex is local, so search for a mapping here
-    optional<local_vertex_descriptor> result 
+    optional<local_vertex_descriptor> result
       = find_vertex(name, g.derived().base());
     if (result)
       return Vertex(owner, *result);
@@ -902,7 +902,7 @@ find_vertex(typename BGL_NAMED_GRAPH::vertex_name_type const& name,
   else {
     // Ask the ownering process for the name of this vertex
     boost::parallel::detail::untracked_pair<vertex_descriptor, bool> result;
-    send_oob_with_reply(g.process_group(), owner, 
+    send_oob_with_reply(g.process_group(), owner,
                         BGL_NAMED_GRAPH::msg_find_vertex, name, result);
     if (result.second)
       return result.first;
@@ -911,7 +911,7 @@ find_vertex(typename BGL_NAMED_GRAPH::vertex_name_type const& name,
   }
 }
 
-/// meta-function helping in figuring out if the given VertextProerty belongs to 
+/// meta-function helping in figuring out if the given VertextProerty belongs to
 /// a named graph
 template<typename VertexProperty>
 struct not_is_named_graph
@@ -922,9 +922,9 @@ struct not_is_named_graph
 template<typename Graph>
 typename Graph::named_graph_type::lazy_add_vertex
 add_vertex(typename Graph::vertex_name_type const& name,
-           Graph& g, 
+           Graph& g,
            typename disable_if<
-              not_is_named_graph<typename Graph::vertex_property_type>, 
+              not_is_named_graph<typename Graph::vertex_property_type>,
               void*>::type = 0)
 {
   return typename Graph::named_graph_type::lazy_add_vertex(g, name);
@@ -1004,7 +1004,7 @@ add_edge(typename BGL_NAMED_GRAPH::vertex_name_type const& u_name,
   // Resolve local vertex names before building the "lazy" edge
   // addition structure.
   if (u_owner == rank && v_owner == rank)
-    return lazy_add_edge(g, add_vertex(u_name, g), add_vertex(v_name, g), 
+    return lazy_add_edge(g, add_vertex(u_name, g), add_vertex(v_name, g),
                          property);
   else if (u_owner == rank && v_owner != rank)
     return lazy_add_edge(g, add_vertex(u_name, g), v_name, property);
@@ -1047,7 +1047,7 @@ add_edge(typename BGL_NAMED_GRAPH::vertex_descriptor const& u,
 }
 
 template<BGL_NAMED_GRAPH_PARAMS>
-typename BGL_NAMED_GRAPH::process_id_type 
+typename BGL_NAMED_GRAPH::process_id_type
 BGL_NAMED_GRAPH::owner_by_property(const vertex_property_type& property)
 {
   return distribution_(derived().base().extract_name(property));
@@ -1059,9 +1059,9 @@ BGL_NAMED_GRAPH::owner_by_property(const vertex_property_type& property)
  *******************************************************************/
 
 template<BGL_NAMED_GRAPH_PARAMS>
-void 
+void
 BGL_NAMED_GRAPH::
-handle_add_vertex_name(int /*source*/, int /*tag*/, 
+handle_add_vertex_name(int /*source*/, int /*tag*/,
                        const vertex_name_type& msg, trigger_receive_context)
 {
   add_vertex(msg, derived());
@@ -1070,8 +1070,8 @@ handle_add_vertex_name(int /*source*/, int /*tag*/,
 template<BGL_NAMED_GRAPH_PARAMS>
 typename BGL_NAMED_GRAPH::vertex_descriptor
 BGL_NAMED_GRAPH::
-handle_add_vertex_name_with_reply(int source, int /*tag*/, 
-                                  const vertex_name_type& msg, 
+handle_add_vertex_name_with_reply(int source, int /*tag*/,
+                                  const vertex_name_type& msg,
                                   trigger_receive_context)
 {
   return add_vertex(msg, derived());
@@ -1080,7 +1080,7 @@ handle_add_vertex_name_with_reply(int source, int /*tag*/,
 template<BGL_NAMED_GRAPH_PARAMS>
 boost::parallel::detail::untracked_pair<typename BGL_NAMED_GRAPH::vertex_descriptor, bool>
 BGL_NAMED_GRAPH::
-handle_find_vertex(int source, int /*tag*/, const vertex_name_type& msg, 
+handle_find_vertex(int source, int /*tag*/, const vertex_name_type& msg,
                    trigger_receive_context)
 {
   using boost::parallel::detail::make_untracked_pair;
@@ -1096,7 +1096,7 @@ template<BGL_NAMED_GRAPH_PARAMS>
 template<typename U, typename V>
 void
 BGL_NAMED_GRAPH::
-handle_add_edge(int source, int /*tag*/, const boost::parallel::detail::untracked_pair<U, V>& msg, 
+handle_add_edge(int source, int /*tag*/, const boost::parallel::detail::untracked_pair<U, V>& msg,
                 trigger_receive_context)
 {
   add_edge(msg.first, msg.second, derived());
@@ -1116,10 +1116,10 @@ handle_add_edge_with_reply(int source, int /*tag*/, const boost::parallel::detai
 
 template<BGL_NAMED_GRAPH_PARAMS>
 template<typename U, typename V>
-void 
+void
 BGL_NAMED_GRAPH::
 handle_add_edge_with_property
-  (int source, int tag, 
+  (int source, int tag,
    const pair_with_property<U, V, edge_property_type>& msg,
    trigger_receive_context)
 {
@@ -1131,7 +1131,7 @@ template<typename U, typename V>
 boost::parallel::detail::untracked_pair<typename BGL_NAMED_GRAPH::edge_descriptor, bool>
 BGL_NAMED_GRAPH::
 handle_add_edge_with_reply_and_property
-  (int source, int tag, 
+  (int source, int tag,
    const pair_with_property<U, V, edge_property_type>& msg,
    trigger_receive_context)
 {
@@ -1150,28 +1150,28 @@ handle_add_edge_with_reply_and_property
 /**
  * A graph mixin that can provide a mapping from names to vertices,
  * and use that mapping to simplify creation and manipulation of
- * graphs. 
+ * graphs.
  */
-template<typename Graph, typename Vertex, typename Edge, typename Config, 
-  typename ExtractName 
+template<typename Graph, typename Vertex, typename Edge, typename Config,
+  typename ExtractName
     = typename internal_vertex_name<typename Config::vertex_property_type>::type>
-struct maybe_named_graph 
-  : public named_graph<Graph, Vertex, Edge, Config> 
+struct maybe_named_graph
+  : public named_graph<Graph, Vertex, Edge, Config>
 {
 private:
   typedef named_graph<Graph, Vertex, Edge, Config> inherited;
   typedef typename Config::process_group_type process_group_type;
-  
+
 public:
   /// The type used to distribute named vertices in the graph
   typedef typename Config::distribution_type distribution_type;
   typedef typename Config::base_distribution_type base_distribution_type;
-  
+
   explicit maybe_named_graph(const process_group_type& pg) : inherited(pg) { }
 
-  maybe_named_graph(const process_group_type& pg, 
+  maybe_named_graph(const process_group_type& pg,
                     const base_distribution_type& distribution)
-    : inherited(pg, distribution) { }  
+    : inherited(pg, distribution) { }
 
   distribution_type&       distribution()       { return this->distribution_; }
   const distribution_type& distribution() const { return this->distribution_; }
@@ -1184,12 +1184,12 @@ public:
  * when the @c VertexProperty does not have an internal vertex name.
  */
 template<typename Graph, typename Vertex, typename Edge, typename Config>
-struct maybe_named_graph<Graph, Vertex, Edge, Config, void> 
-{ 
+struct maybe_named_graph<Graph, Vertex, Edge, Config, void>
+{
 private:
   typedef typename Config::process_group_type process_group_type;
   typedef typename Config::vertex_property_type vertex_property_type;
-  
+
 public:
   typedef typename process_group_type::process_id_type process_id_type;
 
@@ -1199,8 +1199,8 @@ public:
 
   explicit maybe_named_graph(const process_group_type&)  { }
 
-  maybe_named_graph(const process_group_type& pg, 
-                    const base_distribution_type& distribution) 
+  maybe_named_graph(const process_group_type& pg,
+                    const base_distribution_type& distribution)
     : distribution_(pg, distribution) { }
 
   /// Notify the named_graph that we have added the given vertex. This
@@ -1229,7 +1229,7 @@ public:
 protected:
   /// The process group of the graph
   process_group_type pg;
-  
+
   /// The distribution used for the graph
   distribution_type distribution_;
 };

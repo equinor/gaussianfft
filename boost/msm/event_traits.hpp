@@ -17,7 +17,7 @@
 namespace boost { namespace msm
 {
 
-template< typename Event > 
+template< typename Event >
 struct is_kleene_event
 {
   // default: no event is a kleene event (kleene: matches any event in a transitions)
@@ -26,9 +26,9 @@ struct is_kleene_event
 
 // add this way in this namespace specializations for events which you want to use as kleene
 // requirement: a copy-constructor matching the events which will be converted to this kleene
-template<> 
+template<>
 struct is_kleene_event< boost::any >
-{ 
+{
   typedef ::boost::mpl::true_ type;
 };
 

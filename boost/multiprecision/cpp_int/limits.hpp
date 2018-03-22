@@ -128,8 +128,8 @@ public:
       init.do_nothing();
       return detail::get_min<MinBits, MaxBits, SignType, Checked, Allocator, ExpressionTemplates>(boost::multiprecision::backends::is_fixed_precision<backend_type>(), boost::multiprecision::is_signed_number<backend_type>());
    }
-   static number_type (max)() 
-   { 
+   static number_type (max)()
+   {
       init.do_nothing();
       return detail::get_max<MinBits, MaxBits, SignType, Checked, Allocator, ExpressionTemplates>(boost::multiprecision::backends::is_fixed_precision<backend_type>(), boost::multiprecision::is_signed_number<backend_type>());
    }

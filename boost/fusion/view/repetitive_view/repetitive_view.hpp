@@ -24,7 +24,7 @@ namespace boost { namespace fusion
     struct repetitive_view_tag;
     struct fusion_sequence_tag;
 
-    template<typename Sequence> struct repetitive_view 
+    template<typename Sequence> struct repetitive_view
         : sequence_base< repetitive_view<Sequence> >
     {
         typedef repetitive_view_tag fusion_tag;
@@ -34,7 +34,7 @@ namespace boost { namespace fusion
         typedef single_pass_traversal_tag category;
 
         typedef typename boost::remove_reference<Sequence>::type sequence_type;
-        typedef typename 
+        typedef typename
             mpl::if_<traits::is_view<Sequence>, Sequence, sequence_type&>::type
         stored_seq_type;
 

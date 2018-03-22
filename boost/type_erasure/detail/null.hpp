@@ -50,7 +50,7 @@ struct get_null_vtable_entry {
 
 template<class R BOOST_PP_ENUM_TRAILING_PARAMS(N, class T)>
 struct null_throw<R(BOOST_PP_ENUM_PARAMS(N, T))> {
-    static R value(BOOST_PP_ENUM_PARAMS(N, T)) { 
+    static R value(BOOST_PP_ENUM_PARAMS(N, T)) {
         BOOST_THROW_EXCEPTION(::boost::type_erasure::bad_function_call());
     }
 };

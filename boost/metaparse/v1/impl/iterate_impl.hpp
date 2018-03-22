@@ -24,7 +24,7 @@ namespace boost
         struct iterate_impl
         {
           typedef iterate_impl type;
-          
+
           template <class S, class Pos>
           struct apply :
             boost::mpl::eval_if<
@@ -34,7 +34,7 @@ namespace boost
             >
           {};
         };
-        
+
         template <class P, class Accum>
         struct iterate_impl<0, P, Accum> : return_<Accum> {};
       }

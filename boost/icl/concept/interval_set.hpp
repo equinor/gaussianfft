@@ -1,4 +1,4 @@
-/*-----------------------------------------------------------------------------+    
+/*-----------------------------------------------------------------------------+
 Copyright (c) 2010-2010: Joachim Faulhaber
 +------------------------------------------------------------------------------+
    Distributed under the Boost Software License, Version 1.0.
@@ -33,26 +33,26 @@ contains(const Type& super, const typename Type::element_type& element)
 template<class Type>
 typename enable_if<is_interval_set<Type>, bool>::type
 contains(const Type& super, const typename Type::segment_type& inter_val)
-{ 
+{
     typedef typename Type::const_iterator const_iterator;
-    if(icl::is_empty(inter_val)) 
+    if(icl::is_empty(inter_val))
         return true;
 
-    std::pair<const_iterator, const_iterator> exterior 
+    std::pair<const_iterator, const_iterator> exterior
         = super.equal_range(inter_val);
     if(exterior.first == exterior.second)
         return false;
 
     const_iterator last_overlap = cyclic_prior(super, exterior.second);
 
-    return 
+    return
         icl::contains(hull(*(exterior.first), *last_overlap), inter_val)
     &&  Interval_Set::is_joinable(super, exterior.first, last_overlap);
 }
 
 template<class Type, class OperandT>
-typename enable_if<has_same_concept<is_interval_set, Type, OperandT>, 
-                   bool>::type 
+typename enable_if<has_same_concept<is_interval_set, Type, OperandT>,
+                   bool>::type
 contains(const Type& super, const OperandT& sub)
 {
     return Interval_Set::contains(super, sub);
@@ -84,7 +84,7 @@ add(Type& object, const typename Type::element_type& operand)
 //------------------------------------------------------------------------------
 template<class Type>
 inline typename enable_if<is_interval_set<Type>, typename Type::iterator>::type
-add(Type& object, typename Type::iterator      prior, 
+add(Type& object, typename Type::iterator      prior,
             const typename Type::segment_type& operand)
 {
     return object.add(prior, operand);
@@ -170,7 +170,7 @@ erase(Type& object, const typename Type::element_type& minuend)
 //------------------------------------------------------------------------------
 template<class Type>
 typename enable_if<is_interval_set<Type>, void>::type
-add_intersection(Type& section, const Type& object, 
+add_intersection(Type& section, const Type& object,
                  const typename Type::element_type& operand)
 {
     typedef typename Type::const_iterator const_iterator;
@@ -182,23 +182,23 @@ add_intersection(Type& section, const Type& object,
 
 template<class Type>
 typename enable_if<is_interval_set<Type>, void>::type
-add_intersection(Type& section, const Type& object, 
+add_intersection(Type& section, const Type& object,
                  const typename Type::segment_type& segment)
 {
     typedef typename Type::const_iterator const_iterator;
     typedef typename Type::iterator       iterator;
     typedef typename Type::interval_type  interval_type;
 
-    if(icl::is_empty(segment)) 
+    if(icl::is_empty(segment))
         return;
 
-    std::pair<const_iterator, const_iterator> exterior 
+    std::pair<const_iterator, const_iterator> exterior
         = object.equal_range(segment);
     if(exterior.first == exterior.second)
         return;
 
     iterator prior_ = section.end();
-    for(const_iterator it_=exterior.first; it_ != exterior.second; it_++) 
+    for(const_iterator it_=exterior.first; it_ != exterior.second; it_++)
     {
         interval_type common_interval = key_value<Type>(it_) & segment;
         if(!icl::is_empty(common_interval))
@@ -232,7 +232,7 @@ flip(Type& object, const typename Type::segment_type& segment)
     // That which is not shall be added
     // So x has to be 'complementary added' or flipped
     interval_type span = segment;
-    std::pair<const_iterator, const_iterator> exterior 
+    std::pair<const_iterator, const_iterator> exterior
         = object.equal_range(span);
 
     const_iterator fst_ = exterior.first;
@@ -240,9 +240,9 @@ flip(Type& object, const typename Type::segment_type& segment)
 
     interval_type covered, left_over;
     const_iterator it_ = fst_;
-    while(it_ != end_) 
+    while(it_ != end_)
     {
-        covered = *it_++; 
+        covered = *it_++;
         //[a      ...  : span
         //     [b ...  : covered
         //[a  b)       : left_over
@@ -324,7 +324,7 @@ between(Type& in_between, const Type& object)
         pred_ = it_++;
 
     while(it_ != object.end())
-        prior_ = icl::insert(in_between, prior_, 
+        prior_ = icl::insert(in_between, prior_,
                              icl::between(*pred_++, *it_++));
 
     return in_between;
@@ -335,8 +335,8 @@ between(Type& in_between, const Type& object)
 //= Streaming
 //==============================================================================
 template<class CharType, class CharTraits, class Type>
-typename enable_if<is_interval_set<Type>, 
-                   std::basic_ostream<CharType, CharTraits> >::type& 
+typename enable_if<is_interval_set<Type>,
+                   std::basic_ostream<CharType, CharTraits> >::type&
 operator << (std::basic_ostream<CharType, CharTraits>& stream, const Type& object)
 {
     stream << "{";

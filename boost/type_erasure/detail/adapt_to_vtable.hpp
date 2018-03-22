@@ -35,7 +35,7 @@ namespace boost {
 namespace type_erasure {
 
 namespace detail {
-    
+
 template<class T, class Out>
 struct get_placeholders;
 

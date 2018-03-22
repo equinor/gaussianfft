@@ -222,7 +222,7 @@ class single_client_gc_alloc_template {
 	{
             size_t nwords = GC_round_up(n);
             void ** flh;
-	   
+
 	    if (n > GC_max_fast_bytes)  {
 		GC_free(p);
 	    } else {
@@ -238,7 +238,7 @@ class single_client_gc_alloc_template {
 	{
             size_t nwords = GC_round_up(n);
             void ** flh;
-	   
+
 	    if (n > GC_max_fast_bytes) {
 		GC_free(p);
 	    } else {
@@ -292,7 +292,7 @@ class single_client_traceable_alloc_template {
 	{
             size_t nwords = GC_round_up_uncollectable(n);
             void ** flh;
-	   
+
 	    if (n > GC_max_fast_bytes)  {
 		GC_free(p);
 	    } else {
@@ -307,7 +307,7 @@ class single_client_traceable_alloc_template {
 	{
             size_t nwords = GC_round_up_uncollectable(n);
             void ** flh;
-	   
+
 	    if (n > GC_max_fast_bytes) {
 		GC_free(p);
 	    } else {

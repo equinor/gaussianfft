@@ -5,7 +5,7 @@
 #ifndef RAW_PYOBJECT_DWA2002628_HPP
 # define RAW_PYOBJECT_DWA2002628_HPP
 
-namespace boost { namespace python { namespace detail { 
+namespace boost { namespace python { namespace detail {
 
 //
 // Define some types which we can use to get around the vagaries of

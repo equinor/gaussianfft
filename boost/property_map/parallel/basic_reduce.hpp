@@ -26,10 +26,10 @@ struct basic_reduce
   /// Returns a default-constructed T object
   template<typename Key>
   T operator()(const Key&) const { return T(); }
-  
+
   /// Returns the remote value
   template<typename Key>
-  const T& operator()(const Key&, const T&, const T& remote) const 
+  const T& operator()(const Key&, const T&, const T& remote) const
   { return remote; }
 };
 

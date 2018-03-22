@@ -32,8 +32,8 @@ public:
     std::streamsize read(Ch*, std::streamsize) { return -1; }
     std::streamsize write(const Ch*, std::streamsize n) { return n; }
     std::streampos seek( stream_offset, BOOST_IOS::seekdir,
-                         BOOST_IOS::openmode = 
-                             BOOST_IOS::in | BOOST_IOS::out ) 
+                         BOOST_IOS::openmode =
+                             BOOST_IOS::in | BOOST_IOS::out )
     { return -1; }
     void close() { }
     void close(BOOST_IOS::openmode) { }

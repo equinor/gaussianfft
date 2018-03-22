@@ -14,7 +14,7 @@ Copyright (c) 2007-2011: Joachim Faulhaber
 #   include <boost/container/set.hpp>
 #elif defined(ICL_USE_STD_IMPLEMENTATION)
 #   include <set>
-#else 
+#else
 #   include <set>
 #endif
 

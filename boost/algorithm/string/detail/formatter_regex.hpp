@@ -36,7 +36,7 @@ namespace boost {
                     m_Fmt(Fmt), m_Flags( Flags ) {}
 
                 template<typename InputIteratorT>
-                result_type operator()( 
+                result_type operator()(
                     const regex_search_result<InputIteratorT>& Replace ) const
                 {
                     if ( Replace.empty() )
@@ -45,7 +45,7 @@ namespace boost {
                     }
                     else
                     {
-                        return Replace.match_results().format( m_Fmt, m_Flags );                      
+                        return Replace.match_results().format( m_Fmt, m_Flags );
                     }
                 }
             private:
@@ -53,7 +53,7 @@ namespace boost {
                 match_flag_type m_Flags;
             };
 
-        
+
         } // namespace detail
     } // namespace algorithm
 } // namespace boost

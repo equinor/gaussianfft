@@ -26,7 +26,7 @@ template <class T, class U>
 void assert_same(U* = 0, T* = 0)
 {
     BOOST_STATIC_ASSERT((boost::is_same<T,U>::value));
-    
+
 }
 
 
@@ -45,15 +45,15 @@ int main()
     ASSERT_SAME(
         select_arg_to_python<reference_wrapper<int> >::type, reference_arg_to_python<int>
         );
-    
+
     ASSERT_SAME(
         select_arg_to_python<pointer_wrapper<int> >::type, pointer_shallow_arg_to_python<int>
         );
-    
+
     ASSERT_SAME(
         select_arg_to_python<int*>::type, pointer_deep_arg_to_python<int*>
         );
-    
+
     ASSERT_SAME(
         select_arg_to_python<handle<> >::type, object_manager_arg_to_python<handle<> >
         );

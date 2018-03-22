@@ -27,7 +27,7 @@ namespace boost
 
     //  User code should use the portable "posix" enums for POSIX errors; this
     //  allows such code to be portable to non-POSIX systems. For the non-POSIX
-    //  errno values that POSIX-based systems typically provide in addition to 
+    //  errno values that POSIX-based systems typically provide in addition to
     //  POSIX values, use the system specific enums below.
 
    namespace cygwin_error

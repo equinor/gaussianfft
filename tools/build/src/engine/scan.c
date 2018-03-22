@@ -368,7 +368,7 @@ int yylex()
         if ( !notkeyword && !( isalpha( *buf ) && ( scanmode == SCAN_PUNCT ) ) )
             for ( k = keywords; k->word; ++k )
                 if ( ( *buf == *k->word ) && !strcmp( k->word, buf ) )
-                { 
+                {
                     yylval.type = k->type;
                     yylval.keyword = k->word;  /* used by symdump */
                     break;

@@ -18,7 +18,7 @@
 namespace boost { namespace geometry
 {
 
-namespace math 
+namespace math
 {
 
 #ifndef DOXYGEN_NO_DETAIL

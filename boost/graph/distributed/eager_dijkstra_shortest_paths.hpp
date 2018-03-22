@@ -67,7 +67,7 @@ struct eager_dijkstra_shortest_paths_stats_t
         << "Algorithm = \"Eager Dijkstra\"\n"
         << "Function = eager_dijkstra_shortest_paths\n"
         << "(P) Lookahead = " << lookahead << "\n"
-        << "Wall clock time = " << accounting::print_time(execution_time) 
+        << "Wall clock time = " << accounting::print_time(execution_time)
         << "\nSupersteps = " << deleted_vertices.size() << "\n"
         << "Avg. deletions per superstep = " << avg_deletions << "\n";
   }
@@ -181,11 +181,11 @@ template <class UniformCostVisitor, class Queue,
     typedef typename property_traits<DistanceMap>::value_type distance_type;
 
 #ifdef MUTABLE_QUEUE
-    typedef mutable_queue<vertex_descriptor, std::vector<vertex_descriptor>, 
+    typedef mutable_queue<vertex_descriptor, std::vector<vertex_descriptor>,
                           queue_compare_type, VertexIndexMap> queue_type;
 
 #else
-    typedef relaxed_heap<vertex_descriptor, queue_compare_type, 
+    typedef relaxed_heap<vertex_descriptor, queue_compare_type,
                          VertexIndexMap> queue_type;
 #endif // MUTABLE_QUEUE
 
@@ -214,17 +214,17 @@ template <class UniformCostVisitor, class Queue,
 
     void push(const value_type& x)
     {
-      msg_value_type msg_value = 
+      msg_value_type msg_value =
         msg_value_creator::create(get(distance_map, x),
                                   predecessor_value(get(predecessor_map, x)));
       inherited::update(x, msg_value);
     }
-    
+
     void update(const value_type& x) { push(x); }
 
-    void pop() 
-    { 
-      queue.pop(); 
+    void pop()
+    {
+      queue.pop();
 #ifdef PBGL_ACCOUNTING
       ++local_deletions;
 #endif
@@ -257,7 +257,7 @@ template <class UniformCostVisitor, class Queue,
 
     bool has_suitable_vertex() const
     {
-      return (!queue.empty() 
+      return (!queue.empty()
               && get(distance_map, queue.top()) <= min_distance + lookahead);
     }
 
@@ -270,7 +270,7 @@ template <class UniformCostVisitor, class Queue,
 
       // TBD: could use combine here, but then we need to stop using
       // minimum<distance_type>() as the function object.
-      distance_type local_distance = 
+      distance_type local_distance =
         queue.empty()? (std::numeric_limits<distance_type>::max)()
         : get(distance_map, queue.top());
 
@@ -290,9 +290,9 @@ template <class UniformCostVisitor, class Queue,
 
       return min_distance == (std::numeric_limits<distance_type>::max)();
     }
-    
+
   public:
-    void 
+    void
     receive_update(process_id_type source, vertex_descriptor vertex,
                    distance_type distance)
     {
@@ -305,14 +305,14 @@ template <class UniformCostVisitor, class Queue,
 
         bool is_in_queue = queue.contains(vertex);
 
-        if (!is_in_queue) 
+        if (!is_in_queue)
           queue.push(vertex);
-        else 
+        else
           queue.update(vertex);
       }
     }
 
-    void 
+    void
     receive_update(process_id_type source, vertex_descriptor vertex,
                    std::pair<distance_type, vertex_descriptor> p)
     {
@@ -343,7 +343,7 @@ void
 eager_dijkstra_shortest_paths
   (const DistributedGraph& g,
    typename graph_traits<DistributedGraph>::vertex_descriptor s,
-   PredecessorMap predecessor, DistanceMap distance, 
+   PredecessorMap predecessor, DistanceMap distance,
    typename property_traits<DistanceMap>::value_type lookahead,
    WeightMap weight, IndexMap index_map, ColorMap color_map,
    Compare compare, Combine combine, DistInf inf, DistZero zero,
@@ -368,12 +368,12 @@ eager_dijkstra_shortest_paths
             <DistributedGraph, Combine, Compare, IndexMap, DistanceMap,
              PredecessorMap> Queue;
 
-  Queue Q(g, combine, compare, index_map, distance, 
+  Queue Q(g, combine, compare, index_map, distance,
           predecessor, lookahead);
 
   // Parallel Dijkstra visitor
   detail::parallel_dijkstra_bfs_visitor
-    <DijkstraVisitor, Queue, WeightMap, PredecessorMap, DistanceMap, Combine, 
+    <DijkstraVisitor, Queue, WeightMap, PredecessorMap, DistanceMap, Combine,
      Compare> bfs_vis(vis, Q, weight, predecessor, distance, combine, compare,
                       zero);
 
@@ -383,8 +383,8 @@ eager_dijkstra_shortest_paths
   breadth_first_search(g, s, Q, bfs_vis, color_map);
 
 #ifdef PBGL_ACCOUNTING
-  eager_dijkstra_shortest_paths_stats.execution_time = 
-    accounting::get_time() 
+  eager_dijkstra_shortest_paths_stats.execution_time =
+    accounting::get_time()
     - eager_dijkstra_shortest_paths_stats.execution_time;
 #endif
 }
@@ -395,7 +395,7 @@ void
 eager_dijkstra_shortest_paths
   (const DistributedGraph& g,
    typename graph_traits<DistributedGraph>::vertex_descriptor s,
-   PredecessorMap predecessor, DistanceMap distance, 
+   PredecessorMap predecessor, DistanceMap distance,
    typename property_traits<DistanceMap>::value_type lookahead,
    WeightMap weight)
 {
@@ -406,7 +406,7 @@ eager_dijkstra_shortest_paths
   eager_dijkstra_shortest_paths(g, s, predecessor, distance, lookahead, weight,
                                 get(vertex_index, g),
                                 make_iterator_property_map(&colors[0],
-                                                           get(vertex_index, 
+                                                           get(vertex_index,
                                                                g)),
                                 std::less<distance_type>(),
                                 closed_plus<distance_type>(),

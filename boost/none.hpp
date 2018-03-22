@@ -35,7 +35,7 @@ namespace detail { namespace optional_detail {
   {
     static const T instance;
   };
-  
+
   template <typename T>
   const T none_instance<T>::instance = T(); // global, but because 'tis a template, no cpp file required
 
@@ -44,7 +44,7 @@ namespace detail { namespace optional_detail {
 
 namespace {
   // TU-local
-  const none_t& none = detail::optional_detail::none_instance<none_t>::instance; 
+  const none_t& none = detail::optional_detail::none_instance<none_t>::instance;
 }
 
 #else

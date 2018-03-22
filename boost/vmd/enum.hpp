@@ -27,33 +27,33 @@
     \brief Converts a sequence to comma-separated elements which are the elements of the sequence.
 
     ...       = Variadic parameters.
-    
+
     The first variadic parameter is required and is the sequence to convert.
-    
+
     Further optional variadic parameters can be return type parameters. Return type
     parameters allow each element in the sequence to be converted to a two-element
     tuple where the first tuple element is the type and the second tuple element
     is the element data.
-    
+
     The BOOST_VMD_RETURN_NO_TYPE, the default, does not return the type as part of each
     converted element but just the data. All of the rest return the type and data as the
     two-element tuple. If BOOST_VMD_RETURN_TYPE is specified the specific type of the element
-    is returned in the tuple. If BOOST_VMD_RETURN_TYPE_ARRAY is specified an array type is 
-    returned if the element is an array, else a tuple type is returned if the element is a tuple, 
+    is returned in the tuple. If BOOST_VMD_RETURN_TYPE_ARRAY is specified an array type is
+    returned if the element is an array, else a tuple type is returned if the element is a tuple,
     else the actual type is returned for non-tuple data. If BOOST_VMD_RETURN_TYPE_LIST is specified
-    a list type is returned if the element is a list, else a tuple type is returned if the element 
-    is a tuple, else the actual type is returned for non-tuple data. If BOOST_VMD_RETURN_TYPE_TUPLE 
-    is specified a tuple type is returned for all tuple-like data, else the actual type is returned 
-    for non-tuple data. If more than one return type optional parameter is specified the last one 
+    a list type is returned if the element is a list, else a tuple type is returned if the element
+    is a tuple, else the actual type is returned for non-tuple data. If BOOST_VMD_RETURN_TYPE_TUPLE
+    is specified a tuple type is returned for all tuple-like data, else the actual type is returned
+    for non-tuple data. If more than one return type optional parameter is specified the last one
     specified determines the return type.
-    
+
     returns   = Comma-separated data, otherwise known as variadic data.
-                If the sequence is empty the variadic data is empty. If an 
+                If the sequence is empty the variadic data is empty. If an
                 optional return type other than BOOST_VMD_RETURN_NO_TYPE
                 is specified the type and the data of each element is
                 returned as part of the variadic data. Otherwise just the data
                 of each element is returned, which is the default.
-    
+
 */
 
 #define BOOST_VMD_ENUM(...) \
@@ -64,35 +64,35 @@
 
     \brief Converts a sequence to comma-separated elements which are the elements of the sequence. Re-entrant version.
 
-    d         = The next available BOOST_PP_WHILE iteration. 
+    d         = The next available BOOST_PP_WHILE iteration.
     ...       = Variadic parameters.
-    
+
     The first variadic parameter is required and is the sequence to convert.
-    
+
     Further optional variadic parameters can be return type parameters. Return type
     parameters allow each element in the sequence to be converted to a two-element
     tuple where the first tuple element is the type and the second tuple element
     is the element data.
-    
+
     The BOOST_VMD_RETURN_NO_TYPE, the default, does not return the type as part of each
     converted element but just the data. All of the rest return the type and data as the
     two-element tuple. If BOOST_VMD_RETURN_TYPE is specified the specific type of the element
-    is returned in the tuple. If BOOST_VMD_RETURN_TYPE_ARRAY is specified an array type is 
-    returned if the element is an array, else a tuple type is returned if the element is a tuple, 
+    is returned in the tuple. If BOOST_VMD_RETURN_TYPE_ARRAY is specified an array type is
+    returned if the element is an array, else a tuple type is returned if the element is a tuple,
     else the actual type is returned for non-tuple data. If BOOST_VMD_RETURN_TYPE_LIST is specified
-    a list type is returned if the element is a list, else a tuple type is returned if the element 
-    is a tuple, else the actual type is returned for non-tuple data. If BOOST_VMD_RETURN_TYPE_TUPLE 
-    is specified a tuple type is returned for all tuple-like data, else the actual type is returned 
-    for non-tuple data. If more than one return type optional parameter is specified the last one 
+    a list type is returned if the element is a list, else a tuple type is returned if the element
+    is a tuple, else the actual type is returned for non-tuple data. If BOOST_VMD_RETURN_TYPE_TUPLE
+    is specified a tuple type is returned for all tuple-like data, else the actual type is returned
+    for non-tuple data. If more than one return type optional parameter is specified the last one
     specified determines the return type.
-    
+
     returns   = Comma-separated data, otherwise known as variadic data.
-                If the sequence is empty the variadic data is empty. If an 
+                If the sequence is empty the variadic data is empty. If an
                 optional return type other than BOOST_VMD_RETURN_NO_TYPE
                 is specified the type and the data of each element is
                 returned as part of the variadic data. Otherwise just the data
                 of each element is returned, which is the default.
-    
+
 */
 
 #define BOOST_VMD_ENUM_D(d,...) \

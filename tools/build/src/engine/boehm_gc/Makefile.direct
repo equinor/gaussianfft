@@ -9,7 +9,7 @@
 #      	 and runs some tests of collector and cords.  Does not add cords or
 #	 c++ interface to gc.a
 # cord/de - builds dumb editor based on cords.
-ABI_FLAG= 
+ABI_FLAG=
 # ABI_FLAG should be the cc flag that specifies the ABI.  On most
 # platforms this will be the empty string.  Possible values:
 # +DD64 for 64-bit executable on HP/UX.
@@ -97,7 +97,7 @@ HOSTCFLAGS=$(CFLAGS)
 #   threads.
 # -DPTW32_STATIC_LIB causes the static version of the Mingw pthreads library
 #   to be used.  Requires -DGC_WIN32_PTHREADS.
-#   
+#
 # -DALL_INTERIOR_POINTERS allows all pointers to the interior
 #   of objects to be recognized.  (See gc_priv.h for consequences.)
 #   Alternatively, GC_all_interior_pointers can be set at process
@@ -321,7 +321,7 @@ HOSTCFLAGS=$(CFLAGS)
 #   since it will scan inactive but cached NPTL thread stacks completely.
 #
 
-CXXFLAGS= $(CFLAGS) 
+CXXFLAGS= $(CFLAGS)
 AR= ar
 RANLIB= ranlib
 
@@ -426,7 +426,7 @@ all: gc.a gctest
 
 # if AO_INSTALL_DIR doesn't exist, we assume that it is pointing to
 # the default location, and we need to build
-$(AO_INSTALL_DIR): 
+$(AO_INSTALL_DIR):
 	CC=$(CC) $(srcdir)/configure_atomic_ops.sh
 	cd $(AO_SRC_DIR); make CC=$(CC) install
 
@@ -638,10 +638,10 @@ threadlibs: $(srcdir)/threadlibs.c $(srcdir)/include/private/gcconfig.h Makefile
 if_not_there: $(srcdir)/if_not_there.c
 	$(HOSTCC) $(HOSTCFLAGS) -o if_not_there $(srcdir)/if_not_there.c
 
-clean: 
+clean:
 	rm -f gc.a *.o *.exe tests/*.o gctest gctest_dyn_link test_cpp \
 	      setjmp_test  mon.out gmon.out a.out core if_not_there if_mach \
-	      threadlibs $(CORD_OBJS) cord/cordtest cord/de 
+	      threadlibs $(CORD_OBJS) cord/cordtest cord/de
 	-rm -f *~
 
 gctest: tests/test.o gc.a $(UTILS)

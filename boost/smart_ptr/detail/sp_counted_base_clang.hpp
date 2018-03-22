@@ -55,7 +55,7 @@ inline boost::int_least32_t atomic_conditional_increment( atomic_int_least32_t *
         {
             return r;
         }
-    }    
+    }
 }
 
 #if defined(__clang__)

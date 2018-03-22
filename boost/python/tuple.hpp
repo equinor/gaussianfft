@@ -21,7 +21,7 @@ namespace detail
    protected:
       tuple_base();
       tuple_base(object_cref sequence);
-      
+
       BOOST_PYTHON_FORWARD_OBJECT_CONSTRUCTORS(tuple_base, object)
 
    private:

@@ -23,24 +23,24 @@ namespace boost
 {
 
     template
-    < 
-        class T, 
+    <
+        class T,
         class CloneAllocator = heap_clone_allocator,
         class Allocator      = std::allocator<void*>
     >
-    class ptr_circular_buffer : public 
-        ptr_sequence_adapter< T, 
-                              boost::circular_buffer<void*,Allocator>, 
+    class ptr_circular_buffer : public
+        ptr_sequence_adapter< T,
+                              boost::circular_buffer<void*,Allocator>,
                               CloneAllocator >
-    {  
-        typedef ptr_sequence_adapter< T, 
-                                      boost::circular_buffer<void*,Allocator>, 
-                                      CloneAllocator > 
+    {
+        typedef ptr_sequence_adapter< T,
+                                      boost::circular_buffer<void*,Allocator>,
+                                      CloneAllocator >
             base_type;
 
         typedef boost::circular_buffer<void*,Allocator>         circular_buffer_type;
         typedef ptr_circular_buffer<T,CloneAllocator,Allocator> this_type;
-        
+
     public: // typedefs
         typedef typename base_type::value_type     value_type;
         typedef value_type*                        pointer;
@@ -50,7 +50,7 @@ namespace boost
         typedef typename base_type::iterator       iterator;
         typedef typename base_type::const_iterator const_iterator;
         typedef typename base_type::auto_type      auto_type;
-        
+
         typedef std::pair<pointer,size_type>                  array_range;
         typedef std::pair<const_pointer,size_type>            const_array_range;
         typedef typename circular_buffer_type::capacity_type  capacity_type;
@@ -62,7 +62,7 @@ namespace boost
         explicit ptr_circular_buffer( capacity_type n )
           : base_type( n, ptr_container_detail::fixed_length_sequence_tag() )
         { }
-        
+
         ptr_circular_buffer( capacity_type n,
                              const allocator_type& alloc )
           : base_type( n, alloc, ptr_container_detail::fixed_length_sequence_tag() )
@@ -79,13 +79,13 @@ namespace boost
         { }
 
         ptr_circular_buffer( const ptr_circular_buffer& r )
-          : base_type( r.size(), r.begin(), r.end(), 
+          : base_type( r.size(), r.begin(), r.end(),
                        ptr_container_detail::fixed_length_sequence_tag() )
         { }
 
         template< class U >
         ptr_circular_buffer( const ptr_circular_buffer<U>& r )
-          : base_type( r.size(), r.begin(), r.end(), 
+          : base_type( r.size(), r.begin(), r.end(),
                        ptr_container_detail::fixed_length_sequence_tag() )
         { }
 
@@ -97,9 +97,9 @@ namespace boost
 
         BOOST_PTR_CONTAINER_DEFINE_RELEASE_AND_CLONE( ptr_circular_buffer,
                                                       base_type, this_type )
-            
+
     public: // allocators
-        allocator_type& get_allocator() 
+        allocator_type& get_allocator()
         {
             return this->base().get_allocator();
         }
@@ -173,7 +173,7 @@ namespace boost
         {
             if( this->size() > new_capacity )
             {
-                this->erase( this->begin(), 
+                this->erase( this->begin(),
                              this->begin() + (this->size()-new_capacity) );
             }
             this->base().rset_capacity( new_capacity );
@@ -184,13 +184,13 @@ namespace boost
             size_type old_size = this->size();
             if( old_size > size )
             {
-                this->erase( boost::next( this->begin(), size ), this->end() );  
+                this->erase( boost::next( this->begin(), size ), this->end() );
             }
             else if( size > old_size )
             {
                 for( ; old_size != size; ++old_size )
-                    this->push_back( new BOOST_DEDUCED_TYPENAME 
-                                     boost::remove_pointer<value_type>::type() ); 
+                    this->push_back( new BOOST_DEDUCED_TYPENAME
+                                     boost::remove_pointer<value_type>::type() );
             }
 
             BOOST_ASSERT( this->size() == size );
@@ -201,15 +201,15 @@ namespace boost
             size_type old_size = this->size();
             if( old_size > size )
             {
-                this->erase( boost::next( this->begin(), size ), this->end() );  
+                this->erase( boost::next( this->begin(), size ), this->end() );
             }
             else if( size > old_size )
             {
                 for( ; old_size != size; ++old_size )
-                    this->push_back( this->null_policy_allocate_clone( to_clone ) ); 
+                    this->push_back( this->null_policy_allocate_clone( to_clone ) );
             }
 
-            BOOST_ASSERT( this->size() == size );        
+            BOOST_ASSERT( this->size() == size );
         }
 
         void rresize( size_type size ) // basic
@@ -217,14 +217,14 @@ namespace boost
             size_type old_size = this->size();
             if( old_size > size )
             {
-                this->erase( this->begin(), 
-                             boost::next( this->begin(), old_size - size ) );  
+                this->erase( this->begin(),
+                             boost::next( this->begin(), old_size - size ) );
             }
             else if( size > old_size )
             {
                 for( ; old_size != size; ++old_size )
-                    this->push_front( new BOOST_DEDUCED_TYPENAME 
-                                      boost::remove_pointer<value_type>::type() ); 
+                    this->push_front( new BOOST_DEDUCED_TYPENAME
+                                      boost::remove_pointer<value_type>::type() );
             }
 
             BOOST_ASSERT( this->size() == size );
@@ -235,21 +235,21 @@ namespace boost
             size_type old_size = this->size();
             if( old_size > size )
             {
-                this->erase( this->begin(), 
-                             boost::next( this->begin(), old_size - size ) );  
+                this->erase( this->begin(),
+                             boost::next( this->begin(), old_size - size ) );
             }
             else if( size > old_size )
             {
                 for( ; old_size != size; ++old_size )
-                    this->push_front( this->null_policy_allocate_clone( to_clone ) ); 
+                    this->push_front( this->null_policy_allocate_clone( to_clone ) );
             }
 
             BOOST_ASSERT( this->size() == size );
-        }           
+        }
 
         template< class InputIterator >
         void assign( InputIterator first, InputIterator last ) // strong
-        { 
+        {
             ptr_circular_buffer temp( first, last );
             this->swap( temp );
         }
@@ -265,17 +265,17 @@ namespace boost
             ptr_circular_buffer temp( n );
             for( size_type i = 0u; i != n; ++i )
                temp.push_back( this->null_policy_allocate_clone( to_clone ) );
-            this->swap( temp ); 
+            this->swap( temp );
         }
-        
-        void assign( capacity_type capacity, size_type n, 
+
+        void assign( capacity_type capacity, size_type n,
                      value_type to_clone ) // basic
         {
             this->assign( (std::min)(n,capacity), to_clone );
         }
 
         template< class InputIterator >
-        void assign( capacity_type capacity, 
+        void assign( capacity_type capacity,
                      InputIterator first, InputIterator last ) // basic
         {
             this->assign( first, last );
@@ -284,19 +284,19 @@ namespace boost
 
         void push_back( value_type ptr ) // nothrow
         {
-            BOOST_ASSERT( capacity() > 0 );   
+            BOOST_ASSERT( capacity() > 0 );
             this->enforce_null_policy( ptr, "Null pointer in 'push_back()'" );
-         
+
             auto_type old_ptr;
             if( full() )
                 old_ptr.reset( &*this->begin() );
-            this->base().push_back( ptr );            
+            this->base().push_back( ptr );
         }
 
         template< class U >
         void push_back( std::auto_ptr<U> ptr ) // nothrow
         {
-            push_back( ptr.release() ); 
+            push_back( ptr.release() );
         }
 
         void push_front( value_type ptr ) // nothrow
@@ -307,13 +307,13 @@ namespace boost
             auto_type old_ptr;
             if( full() )
                 old_ptr.reset( &*(--this->end()) );
-            this->base().push_front( ptr );            
+            this->base().push_front( ptr );
         }
 
         template< class U >
         void push_front( std::auto_ptr<U> ptr ) // nothrow
         {
-            push_front( ptr.release() ); 
+            push_front( ptr.release() );
         }
 
         iterator insert( iterator pos, value_type ptr ) // nothrow
@@ -325,7 +325,7 @@ namespace boost
             iterator b = this->begin();
             if( full() && pos == b )
                 return b;
-            
+
             auto_type old_ptr;
             if( full() )
                 old_ptr.reset( &*this->begin() );
@@ -344,7 +344,7 @@ namespace boost
         void insert( iterator pos, InputIterator first, InputIterator last ) // basic
         {
             for( ; first != last; ++first, ++pos )
-                pos = insert( pos, this->null_policy_allocate_clone( &*first ) );                
+                pos = insert( pos, this->null_policy_allocate_clone( &*first ) );
         }
 
 #if defined(BOOST_NO_SFINAE) || defined(BOOST_NO_FUNCTION_TEMPLATE_ORDERING)
@@ -358,7 +358,7 @@ namespace boost
         }
 
 #endif
-           
+
         iterator rinsert( iterator pos, value_type ptr ) // nothrow
         {
             BOOST_ASSERT( capacity() > 0 );
@@ -368,7 +368,7 @@ namespace boost
             iterator b = this->end();
             if (full() && pos == b)
                 return b;
-            
+
             auto_type old_ptr;
             if( full() )
                 old_ptr.reset( &this->back() );
@@ -383,12 +383,12 @@ namespace boost
             return rinsert( pos, ptr.release() );
         }
 
- 
+
         template< class InputIterator >
         void rinsert( iterator pos, InputIterator first, InputIterator last ) // basic
         {
             for( ; first != last; ++first, ++pos )
-                pos = rinsert( pos, this->null_policy_allocate_clone( &*first ) );                
+                pos = rinsert( pos, this->null_policy_allocate_clone( &*first ) );
         }
 
 #if defined(BOOST_NO_SFINAE) || defined(BOOST_NO_FUNCTION_TEMPLATE_ORDERING)
@@ -430,37 +430,37 @@ namespace boost
             this->base().rotate( new_begin.base() );
         }
 
-    public: // transfer        
+    public: // transfer
         template< class PtrSeqAdapter >
-        void transfer( iterator before, 
-                       BOOST_DEDUCED_TYPENAME PtrSeqAdapter::iterator first, 
-                       BOOST_DEDUCED_TYPENAME PtrSeqAdapter::iterator last, 
+        void transfer( iterator before,
+                       BOOST_DEDUCED_TYPENAME PtrSeqAdapter::iterator first,
+                       BOOST_DEDUCED_TYPENAME PtrSeqAdapter::iterator last,
                        PtrSeqAdapter& from ) // nothrow
         {
             BOOST_ASSERT( (void*)&from != (void*)this );
             if( from.empty() )
                 return;
-            for( BOOST_DEDUCED_TYPENAME PtrSeqAdapter::iterator begin = first; 
+            for( BOOST_DEDUCED_TYPENAME PtrSeqAdapter::iterator begin = first;
                  begin != last;  ++begin, ++before )
                 before = insert( before, &*begin );          // nothrow
             from.base().erase( first.base(), last.base() );  // nothrow
         }
 
         template< class PtrSeqAdapter >
-        void transfer( iterator before, 
-                       BOOST_DEDUCED_TYPENAME PtrSeqAdapter::iterator object, 
+        void transfer( iterator before,
+                       BOOST_DEDUCED_TYPENAME PtrSeqAdapter::iterator object,
                        PtrSeqAdapter& from ) // nothrow
         {
             BOOST_ASSERT( (void*)&from != (void*)this );
             if( from.empty() )
                 return;
-            insert( before, &*object );          // nothrow 
-            from.base().erase( object.base() );  // nothrow 
+            insert( before, &*object );          // nothrow
+            from.base().erase( object.base() );  // nothrow
         }
 
 #if defined(BOOST_NO_SFINAE) || defined(BOOST_NO_FUNCTION_TEMPLATE_ORDERING)
 #else
-        
+
         template< class PtrSeqAdapter, class Range >
         BOOST_DEDUCED_TYPENAME boost::disable_if< boost::is_same< Range,
                       BOOST_DEDUCED_TYPENAME PtrSeqAdapter::iterator > >::type
@@ -473,18 +473,18 @@ namespace boost
         template< class PtrSeqAdapter >
         void transfer( iterator before, PtrSeqAdapter& from ) // nothrow
         {
-            transfer( before, from.begin(), from.end(), from );            
+            transfer( before, from.begin(), from.end(), from );
         }
 
     public: // C-array support
-    
-        void transfer( iterator before, value_type* from, 
-                       size_type size, bool delete_from = true ) // nothrow 
+
+        void transfer( iterator before, value_type* from,
+                       size_type size, bool delete_from = true ) // nothrow
         {
             BOOST_ASSERT( from != 0 );
             if( delete_from )
             {
-                BOOST_DEDUCED_TYPENAME base_type::scoped_deleter 
+                BOOST_DEDUCED_TYPENAME base_type::scoped_deleter
                     deleter( from, size );                         // nothrow
                 for( size_type i = 0u; i != size; ++i, ++before )
                     before = insert( before, *(from+i) );          // nothrow
@@ -525,7 +525,7 @@ namespace boost
     {
         l.swap(r);
     }
-    
+
 }
 
 #endif

@@ -83,8 +83,8 @@ private:
   friend class boost::serialization::access;
 
   template<typename Archiver>
-  void serialize(Archiver& ar, const unsigned int /*version*/) 
-  { 
+  void serialize(Archiver& ar, const unsigned int /*version*/)
+  {
     ar & boost::serialization::base_object<pair_base>(*this)
        & boost::serialization::base_object<property_base>(*this);
   }
@@ -101,7 +101,7 @@ make_pair_with_property(const T& t, const U& u, const Property& property)
 
 namespace boost { namespace mpi {
 
-template<> 
+template<>
 struct is_mpi_datatype<boost::detail::parallel::maybe_store_property<no_property> > : mpl::true_ { };
 
 template<typename Property>

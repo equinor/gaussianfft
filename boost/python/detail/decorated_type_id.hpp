@@ -9,12 +9,12 @@
 # include <boost/python/detail/indirect_traits.hpp>
 # include <boost/python/detail/type_traits.hpp>
 
-namespace boost { namespace python { namespace detail { 
+namespace boost { namespace python { namespace detail {
 
 struct decorated_type_info : totally_ordered<decorated_type_info>
 {
     enum decoration { const_ = 0x1, volatile_ = 0x2, reference = 0x4 };
-    
+
     decorated_type_info(type_info, decoration = decoration());
 
     inline bool operator<(decorated_type_info const& rhs) const;
@@ -25,7 +25,7 @@ struct decorated_type_info : totally_ordered<decorated_type_info>
     operator type_info const&() const;
  private: // type
     typedef type_info base_id_t;
-    
+
  private: // data members
     decoration m_decoration;
     base_id_t m_base_type;

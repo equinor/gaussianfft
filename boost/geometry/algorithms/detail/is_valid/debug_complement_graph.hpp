@@ -36,7 +36,7 @@ debug_print_complement_graph(OutputStream& os,
     {
         os << " " << it->id();
     }
-    os << " }" << std::endl;        
+    os << " }" << std::endl;
 
     for (vertex_handle it = graph.m_vertices.begin();
          it != graph.m_vertices.end(); ++it)
@@ -51,7 +51,7 @@ debug_print_complement_graph(OutputStream& os,
         {
             os << " " << (*nit)->id();
         }
-        os << "}" << std::endl;        
+        os << "}" << std::endl;
     }
 }
 #else

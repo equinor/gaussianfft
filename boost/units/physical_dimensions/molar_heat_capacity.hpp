@@ -1,4 +1,4 @@
-// Boost.Units - A C++ library for zero-overhead dimensional analysis and 
+// Boost.Units - A C++ library for zero-overhead dimensional analysis and
 // unit/quantity manipulation and conversion
 //
 // Copyright (C) 2003-2008 Matthias Christian Schabel
@@ -27,7 +27,7 @@ typedef derived_dimension<length_base_dimension,2,
                           mass_base_dimension,1,
                           time_base_dimension,-2,
                           temperature_base_dimension,-1,
-                          amount_base_dimension,-1>::type molar_heat_capacity_dimension;                    
+                          amount_base_dimension,-1>::type molar_heat_capacity_dimension;
 
 } // namespace units
 

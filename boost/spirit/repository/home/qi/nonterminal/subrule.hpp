@@ -199,10 +199,10 @@ namespace boost { namespace spirit { namespace repository { namespace qi
             typedef traits::make_attribute<
                 subrule_attr_type, Attribute> make_attribute;
 
-            // do down-stream transformation, provides attribute for 
+            // do down-stream transformation, provides attribute for
             // rhs parser
             typedef traits::transform_attribute<
-                typename make_attribute::type, subrule_attr_type, spirit::qi::domain> 
+                typename make_attribute::type, subrule_attr_type, spirit::qi::domain>
             transform;
 
             typename make_attribute::type made_attr = make_attribute::call(attr);
@@ -215,7 +215,7 @@ namespace boost { namespace spirit { namespace repository { namespace qi
 
             if (def.binder(first, last, context, skipper))
             {
-                // do up-stream transformation, this integrates the results 
+                // do up-stream transformation, this integrates the results
                 // back into the original attribute value, if appropriate
                 traits::post_transform(attr, attr_);
                 return true;
@@ -253,10 +253,10 @@ namespace boost { namespace spirit { namespace repository { namespace qi
             typedef traits::make_attribute<
                 subrule_attr_type, Attribute> make_attribute;
 
-            // do down-stream transformation, provides attribute for 
+            // do down-stream transformation, provides attribute for
             // rhs parser
             typedef traits::transform_attribute<
-                typename make_attribute::type, subrule_attr_type, spirit::qi::domain> 
+                typename make_attribute::type, subrule_attr_type, spirit::qi::domain>
             transform;
 
             typename make_attribute::type made_attr = make_attribute::call(attr);
@@ -269,7 +269,7 @@ namespace boost { namespace spirit { namespace repository { namespace qi
 
             if (def.binder(first, last, context, skipper))
             {
-                // do up-stream transformation, this integrates the results 
+                // do up-stream transformation, this integrates the results
                 // back into the original attribute value, if appropriate
                 traits::post_transform(attr, attr_);
                 return true;

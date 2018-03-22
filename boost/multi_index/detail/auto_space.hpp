@@ -68,7 +68,7 @@ struct auto_space:private noncopyable
     std::swap(n_,x.n_);
     std::swap(data_,x.data_);
   }
-    
+
 private:
   typename boost::detail::allocator::rebind_to<
     Allocator,T>::type                          al_;

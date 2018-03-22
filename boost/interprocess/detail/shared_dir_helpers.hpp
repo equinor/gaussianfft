@@ -106,7 +106,7 @@ inline void get_shared_dir_root(std::string &dir_path)
 {
    #if defined (BOOST_INTERPROCESS_WINDOWS)
       winapi::get_shared_documents_folder(dir_path);
-   #else               
+   #else
       dir_path = "/tmp";
    #endif
 
@@ -134,7 +134,7 @@ inline void get_shared_dir(std::string &shared_dir)
 {
    #if defined(BOOST_INTERPROCESS_SHARED_DIR_PATH)
       shared_dir = BOOST_INTERPROCESS_SHARED_DIR_PATH;
-   #else 
+   #else
       get_shared_dir_root(shared_dir);
       #if defined(BOOST_INTERPROCESS_HAS_KERNEL_BOOTTIME)
          shared_dir += "/";

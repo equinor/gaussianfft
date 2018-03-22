@@ -28,17 +28,17 @@
 
     The macro checks that the sequence is a pplib list.
     It returns 1 if it is a list, else if returns 0.
-    
+
     sequence = input as a possible Boost PP list.
-    
+
     returns = 1 if it a list, else returns 0.
-    
+
     The macro will generate a preprocessing error if the input
     is in the form of a list but its end-of-list marker, instead
     of being an identifier, is a preprocessor token which VMD cannot parse,
     as in the example '(anything,&BOOST_PP_NIL)' which is a valid tuple but
     an invalid list.
-    
+
 */
 
 #define BOOST_VMD_IS_LIST(sequence) \
@@ -51,18 +51,18 @@
 
     The macro checks that the sequence is a pplib list.
     It returns 1 if it is a list, else if returns 0.
-    
-    d        = The next available BOOST_PP_WHILE iteration. 
+
+    d        = The next available BOOST_PP_WHILE iteration.
     sequence = input as a possible Boost PP list.
-    
+
     returns = 1 if it a list, else returns 0.
-    
+
     The macro will generate a preprocessing error if the input
     is in the form of a list but its end-of-list marker, instead
     of being an identifier, is a preprocessor token which VMD cannot parse,
     as in the example '(anything,&BOOST_PP_NIL)' which is a valid tuple but
     an invalid list.
-    
+
 */
 
 #define BOOST_VMD_IS_LIST_D(d,sequence) \

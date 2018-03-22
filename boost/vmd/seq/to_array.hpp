@@ -30,7 +30,7 @@
     \brief converts a seq to an array.
 
     seq = seq to be converted.
-    
+
     If the seq is an empty seq it is converted to an array with 0 elements.
     Otherwise the seq is converted to an array with the same number of elements as the seq.
 */

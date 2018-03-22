@@ -358,7 +358,7 @@ struct vector_alloc_holder
    static bool are_swap_propagable(const allocator_type &l_a, pointer l_p, const allocator_type &r_a, pointer r_p, bool const propagate_allocator)
    {
       (void)propagate_allocator; (void)l_p; (void)r_p; (void)l_a; (void)r_a;
-      const bool all_storage_propagable = !allocator_traits_type::is_partially_propagable::value || 
+      const bool all_storage_propagable = !allocator_traits_type::is_partially_propagable::value ||
               !(allocator_traits_type::storage_is_unpropagable(l_a, l_p) || allocator_traits_type::storage_is_unpropagable(r_a, r_p));
       return all_storage_propagable && (propagate_allocator || allocator_traits_type::equal(l_a, r_a));
    }
@@ -2279,7 +2279,7 @@ class vector
          if(!n) {
             ::boost::container::uninitialized_move_alloc(this->m_holder.alloc(), pbeg, pend, d_first);
             break;
-         } 
+         }
          else if(pbeg == pend) {
             ::boost::container::uninitialized_move_alloc_n(this->m_holder.alloc(), first, n, d_first);
             break;

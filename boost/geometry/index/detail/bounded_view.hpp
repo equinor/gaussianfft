@@ -43,7 +43,7 @@ public:
     explicit bounded_view(Segment const& segment)
         : m_segment(segment)
     {}
-    
+
     template <std::size_t Dimension>
     inline coordinate_type get_min() const
     {

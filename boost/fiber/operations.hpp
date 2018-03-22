@@ -8,7 +8,7 @@
 
 #include <chrono>
 
-#include <boost/config.hpp> 
+#include <boost/config.hpp>
 
 #include <boost/fiber/algo/algorithm.hpp>
 #include <boost/fiber/context.hpp>

@@ -85,7 +85,7 @@ extern mse * GC_mark_stack;
      *  The main mark stack never shrinks, but it can grow.
      *
      *	The initiating threads holds the GC lock, and sets GC_help_wanted.
-     *  
+     *
      *  Other threads:
      *     1) update helper_count (while holding mark_lock.)
      *	   2) allocate a local mark stack
@@ -221,7 +221,7 @@ exit_label: ; \
           \
 	if (mark_byte) goto exit_label; \
 	*mark_byte_addr = 1;  \
-    } 
+    }
 #endif /* USE_MARK_BYTES */
 
 #ifdef PARALLEL_MARK
@@ -427,7 +427,7 @@ mse * GC_mark_from(mse * top, mse * bottom, mse *limit);
 
 /*
  * Mark from one finalizable object using the specified
- * mark proc. May not mark the object pointed to by 
+ * mark proc. May not mark the object pointed to by
  * real_ptr. That is the job of the caller, if appropriate.
  * Note that this is called with the mutator running, but
  * with us holding the allocation lock.  This is safe only if the

@@ -37,7 +37,7 @@ template <class Keywords> init(char const* doc, Keywords const& kw);
 ``
 [variablelist
 [[Requires][If supplied, doc is an [link ntbs]. If supplied, kw is the result of a ]]
-[[Effects][The result is an init-expression whose docstring is doc and whose keywords are a reference to kw. If the first form is used, the resulting expression's keywords are empty. The expression's call policies are an instance of [link function_invocation_and_creation.models_of_callpolicies.boost_python_default_call_polici default_call_policies]. If Tn is [link high_level_components.boost_python_init_hpp.class_template_optional optional<U1, U2,... Um>], the expression's valid prefixes are given by: ``(T1, T2,...Tn-1), (T1, T2,...Tn-1 , U1), (T1, T2,...Tn-1 , U1, U2), ...(T1, T2,...Tn-1 , U1, U2,...Um)``. 
+[[Effects][The result is an init-expression whose docstring is doc and whose keywords are a reference to kw. If the first form is used, the resulting expression's keywords are empty. The expression's call policies are an instance of [link function_invocation_and_creation.models_of_callpolicies.boost_python_default_call_polici default_call_policies]. If Tn is [link high_level_components.boost_python_init_hpp.class_template_optional optional<U1, U2,... Um>], the expression's valid prefixes are given by: ``(T1, T2,...Tn-1), (T1, T2,...Tn-1 , U1), (T1, T2,...Tn-1 , U1, U2), ...(T1, T2,...Tn-1 , U1, U2,...Um)``.
 Otherwise, the expression has one valid prefix given by the template arguments the user specified. ]]
 ]
 [endsect]

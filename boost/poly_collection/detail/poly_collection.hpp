@@ -81,7 +81,7 @@ class poly_collection
   using enable_if_not_terminal=
     typename std::enable_if<!is_terminal<T>::value>::type*;
   template<typename InputIterator>
-  using derefs_to_terminal=is_terminal< 
+  using derefs_to_terminal=is_terminal<
     typename std::iterator_traits<InputIterator>::value_type
   >;
   template<typename InputIterator>
@@ -165,7 +165,7 @@ public:
   public:
     const_base_segment_info(const const_base_segment_info&)=default;
     const_base_segment_info& operator=(const const_base_segment_info&)=default;
-    
+
     const_local_base_iterator begin()const noexcept
       {return {it,it->second.begin()};}
     const_local_base_iterator end()const noexcept
@@ -225,7 +225,7 @@ public:
   public:
     const_segment_info(const const_segment_info&)=default;
     const_segment_info& operator=(const const_segment_info&)=default;
-    
+
     const_local_iterator<T> begin()const noexcept
       {return {it,it->second.begin()};}
     const_local_iterator<T> end()const noexcept
@@ -291,7 +291,7 @@ private:
     segment_info_iterator_impl(
       const segment_info_iterator_impl<SegmentInfo2>& x):
       segment_info_iterator_impl::iterator_adaptor_{x.base()}{}
-      
+
     template<
       typename SegmentInfo2,
       typename std::enable_if<
@@ -318,10 +318,10 @@ private:
 
 public:
   using base_segment_info_iterator=
-    segment_info_iterator_impl<base_segment_info>; 
+    segment_info_iterator_impl<base_segment_info>;
   using const_base_segment_info_iterator=
     segment_info_iterator_impl<const_base_segment_info>;
-    
+
 private:
   template<typename Iterator>
   static Iterator                   nonconst_hlp(Iterator);
@@ -342,7 +342,7 @@ public:
     const_segment_traversal_info(const const_segment_traversal_info&)=default;
     const_segment_traversal_info& operator=(
       const const_segment_traversal_info&)=default;
-    
+
     const_base_segment_info_iterator begin()const noexcept
                                        {return pmap->cbegin();}
     const_base_segment_info_iterator end()const noexcept{return pmap->cend();}
@@ -732,13 +732,13 @@ public:
     enable_if_derefs_to_subtype<InputIterator> =nullptr,
     enable_if_derefs_to_terminal<InputIterator> =nullptr
   >
-  void insert(InputIterator first,InputIterator last) 
+  void insert(InputIterator first,InputIterator last)
   {
     if(first==last)return;
 
     /* same segment for all (type is terminal) */
 
-    auto& seg=segment(get_map_iterator_for(*first)); 
+    auto& seg=segment(get_map_iterator_for(*first));
     seg.insert(first,last);
   }
 
@@ -786,14 +786,14 @@ public:
     enable_if_derefs_to_subtype<InputIterator> =nullptr,
     enable_if_derefs_to_terminal<InputIterator> =nullptr
   >
-  void insert(const_iterator hint,InputIterator first,InputIterator last) 
+  void insert(const_iterator hint,InputIterator first,InputIterator last)
   {
     if(first==last)return;
 
     /* same segment for all (type is terminal) */
 
     auto it=get_map_iterator_for(*first);
-    auto& seg=segment(it); 
+    auto& seg=segment(it);
     if(hint.mapit==it)seg.insert(hint.segpos,first,last); /* hint in segment */
     else seg.insert(first,last);
   }
@@ -823,7 +823,7 @@ public:
     /* same segment for all (iterator is local) */
 
     auto it=get_map_iterator_for(*first,first.segment());
-    auto& seg=segment(it); 
+    auto& seg=segment(it);
     if(hint.mapit==it){ /* hint in segment */
       do{
         hint={it,map.end(),seg.insert(hint.segpos,*first)};
@@ -902,7 +902,7 @@ public:
 
       /* entire segments till last one */
 
-      while(++fseg!=lseg)segment(fseg).clear(); 
+      while(++fseg!=lseg)segment(fseg).clear();
 
       /* remaining elements of last segment */
 
@@ -1147,7 +1147,7 @@ bool operator==(
     if(it==mapy.end()?ss!=0:p.second!=it->second)return false;
     s+=ss;
   }
-  return s==y.size(); 
+  return s==y.size();
 }
 
 template<typename Model,typename Allocator>

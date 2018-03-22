@@ -34,7 +34,7 @@ inline extents<sizeof...(Args)> dim(Args... args)
 }
 
 #if BOOST_WORKAROUND(BOOST_MSVC, <= 1800)
-// for some inexplicable reason passing one parameter to 'dim' variadic template 
+// for some inexplicable reason passing one parameter to 'dim' variadic template
 // generates compile error on msvc 2013 update 4
 template<class T>
 inline extents<1> dim(T arg)

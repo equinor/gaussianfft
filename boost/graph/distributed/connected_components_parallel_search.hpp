@@ -110,7 +110,7 @@ namespace boost { namespace graph { namespace distributed {
       // add new component mapping first time component is used.  Own
       // function only so that we can sanity check there isn't already
       // a mapping for that component number (which would be bad)
-      void add(const component_value_type &a) 
+      void add(const component_value_type &a)
       {
         BOOST_ASSERT(collisions.count(a) == 0);
         collisions[a] = a;
@@ -215,7 +215,7 @@ namespace boost { namespace graph { namespace distributed {
       typedef typename property_traits<ComponentMap>::key_type vertex_descriptor;
 
       update_reducer(work_queue *q,
-                     cc_ps_detail::collision_map<component_value_type> *collisions, 
+                     cc_ps_detail::collision_map<component_value_type> *collisions,
                      processor_id_type pg_id) :
         q(q), collisions(collisions), pg_id(pg_id)
       {
@@ -225,8 +225,8 @@ namespace boost { namespace graph { namespace distributed {
       // called in this imlementation.
       template<typename K>
       component_value_type operator()(const K&) const
-      { 
-        return component_value_type(0); 
+      {
+        return component_value_type(0);
       }
 
       // resolver for remote updates.  I'm not entirely sure why, but
@@ -253,7 +253,7 @@ namespace boost { namespace graph { namespace distributed {
         }
 
         return ret;
-      }                                    
+      }
 
       // So for whatever reason, the property map can in theory call
       // the resolver with a local descriptor in addition to the
@@ -262,8 +262,8 @@ namespace boost { namespace graph { namespace distributed {
       // have this code here to make it compile.  We just make a
       // global descriptor and call the "real" operator().
       template<typename K>
-      component_value_type operator()(const K& v, 
-                                      const component_value_type& current, 
+      component_value_type operator()(const K& v,
+                                      const component_value_type& current,
                                       const component_value_type& update) const
       {
           return (*this)(vertex_descriptor(pg_id, v), current, update);
@@ -292,7 +292,7 @@ namespace boost { namespace graph { namespace distributed {
     typedef typename process_group_type::process_id_type process_id_type;
     typedef std::queue<vertex_descriptor> work_queue;
 
-    static const component_value_type max_component = 
+    static const component_value_type max_component =
       (std::numeric_limits<component_value_type>::max)();
     typename property_map<Graph, vertex_owner_t>::const_type
       owner = get(vertex_owner, g);

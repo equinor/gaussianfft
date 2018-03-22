@@ -82,12 +82,12 @@ class auto-index-generator : generator
             {
                 auto-index-dir = [ path.make $(auto-index-dir[1]) ] ;
                 auto-index-dir = $(auto-index-dir)/build ;
-                
+
                 #ECHO $(auto-index-dir) ;
 
                 # Get the main-target in AutoIndex directory.
                 local auto-index-main-target = [ targets.resolve-reference $(auto-index-dir) : $(project) ] ;
-                
+
                 #ECHO $(auto-index-main-target) ;
 
                 # The first element are actual targets, the second are
@@ -111,8 +111,8 @@ class auto-index-generator : generator
                 {
                     if [ $(target).type ] = EXE
                     {
-                        auto-index-binary = 
-                            [ path.native 
+                        auto-index-binary =
+                            [ path.native
                                 [ path.join
                                     [ $(target).path ]
                                     [ $(target).name ]
@@ -153,7 +153,7 @@ class auto-index-generator : generator
             <auto-index-binary>$(auto-index-binary)
             <auto-index-binary-dependencies>$(auto-index-binary-dependencies)
         ] ;
-        
+
         #ECHO "binary = " $(auto-index-binary) ;
         #ECHO "dependencies = " $(auto-index-binary-dependencies) ;
 

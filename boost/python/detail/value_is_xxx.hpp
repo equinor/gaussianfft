@@ -26,7 +26,7 @@ struct value_is_##name                                                  \
                            >::value);                                   \
     typedef mpl::bool_<value> type;                                     \
                                                                         \
-};                                                              
+};
 
 }}} // namespace boost::python::detail
 

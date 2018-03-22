@@ -47,7 +47,7 @@ class BOOST_MPI_DECL exception : public std::exception
   virtual ~exception() throw();
 
   /**
-   * A description of the error that occurred. 
+   * A description of the error that occurred.
    */
   virtual const char * what () const throw ()
   {
@@ -67,8 +67,8 @@ class BOOST_MPI_DECL exception : public std::exception
    * @brief Returns the MPI error class associated with the error that
    * triggered this exception.
    */
-  int error_class() const 
-  { 
+  int error_class() const
+  {
     int result;
     MPI_Error_class(result_code_, &result);
     return result;

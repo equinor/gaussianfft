@@ -1,4 +1,4 @@
-/*-----------------------------------------------------------------------------+    
+/*-----------------------------------------------------------------------------+
 Copyright (c) 2010-2010: Joachim Faulhaber
 +------------------------------------------------------------------------------+
    Distributed under the Boost Software License, Version 1.0.
@@ -21,7 +21,7 @@ namespace boost{ namespace icl
 //= Emptieness
 //==============================================================================
 
-/** Tests if the container is empty. 
+/** Tests if the container is empty.
     Complexity: constant. */
 template<class Type>
 typename enable_if<is_container<Type>, bool>::type
@@ -31,7 +31,7 @@ is_empty(const Type& object)
 }
 
 
-/** All content of the container is dropped. 
+/** All content of the container is dropped.
     Complexity: linear. */
 template<class Type>
 typename enable_if<is_container<Type>, void>::type
@@ -44,13 +44,13 @@ clear(Type& object)
 //= Size
 //==============================================================================
 
-template<class Type> 
+template<class Type>
 typename enable_if<mpl::and_< is_container<Type>
                             , mpl::not_<is_icl_container<Type> > >
                   , std::size_t>::type
 iterative_size(const Type& object)
-{ 
-    return object.size(); 
+{
+    return object.size();
 }
 
 //==============================================================================

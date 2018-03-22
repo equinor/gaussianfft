@@ -10,18 +10,18 @@
 
 #if defined(_MSC_VER)
 # pragma once
-#endif              
+#endif
 
 #include <algorithm>                          // copy, min.
 #include <boost/assert.hpp>
 #include <iterator>                           // back_inserter
 #include <vector>
-#include <boost/iostreams/constants.hpp>      // default_device_buffer_size 
+#include <boost/iostreams/constants.hpp>      // default_device_buffer_size
 #include <boost/iostreams/categories.hpp>
 #include <boost/iostreams/detail/char_traits.hpp>
 #include <boost/iostreams/detail/ios.hpp>     // openmode, streamsize.
 #include <boost/iostreams/pipeline.hpp>
-#include <boost/iostreams/read.hpp>           // check_eof 
+#include <boost/iostreams/read.hpp>           // check_eof
 #include <boost/iostreams/write.hpp>
 #include <boost/mpl/bool.hpp>
 #include <boost/type_traits/is_convertible.hpp>
@@ -89,7 +89,7 @@ public:
             try {
                 vector_type filtered;
                 do_filter(data_, filtered);
-                do_write( 
+                do_write(
                     sink, &filtered[0],
                     static_cast<std::streamsize>(filtered.size())
                 );
@@ -126,15 +126,15 @@ private:
     }
 
     template<typename Sink>
-    void do_write(Sink& sink, const char_type* s, std::streamsize n) 
-    { 
+    void do_write(Sink& sink, const char_type* s, std::streamsize n)
+    {
         typedef typename iostreams::category_of<Sink>::type  category;
         typedef is_convertible<category, output>             can_write;
-        do_write(sink, s, n, can_write()); 
+        do_write(sink, s, n, can_write());
     }
 
     template<typename Sink>
-    void do_write(Sink& sink, const char_type* s, std::streamsize n, mpl::true_) 
+    void do_write(Sink& sink, const char_type* s, std::streamsize n, mpl::true_)
     { iostreams::write(sink, s, n); }
 
     template<typename Sink>

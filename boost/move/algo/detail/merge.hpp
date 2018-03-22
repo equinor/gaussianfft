@@ -274,7 +274,7 @@ void merge_bufferless_ONlogN_recursive
 
       if ((len1 | len2) == 1) {
          if (comp(*middle, *first))
-            adl_move_swap(*first, *middle);  
+            adl_move_swap(*first, *middle);
          return;
       }
       #else
@@ -299,7 +299,7 @@ void merge_bufferless_ONlogN_recursive
 
       if (len1 == 1 && len2 == 1) {
          //comp(*middle, *first) == true already tested in the loop
-         adl_move_swap(*first, *middle);  
+         adl_move_swap(*first, *middle);
          return;
       }
       #endif
@@ -348,7 +348,7 @@ template<class BidirIt, class Compare>
 void merge_bufferless_ONlogN(BidirIt first, BidirIt middle, BidirIt last, Compare comp)
 {
    merge_bufferless_ONlogN_recursive
-      (first, middle, last, middle - first, last - middle, comp); 
+      (first, middle, last, middle - first, last - middle, comp);
 }
 
 //Complexity: min(len1,len2)^2 + max(len1,len2)

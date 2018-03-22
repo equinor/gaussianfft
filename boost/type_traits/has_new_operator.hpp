@@ -15,7 +15,7 @@
 #include <boost/type_traits/detail/yes_no_type.hpp>
 #include <boost/detail/workaround.hpp>
 
-#if defined(new) 
+#if defined(new)
 #  if BOOST_WORKAROUND(BOOST_MSVC, >= 1310)
 #     define BOOST_TT_AUX_MACRO_NEW_DEFINED
 #     pragma push_macro("new")
@@ -27,14 +27,14 @@
 
 namespace boost {
 namespace detail {
-    template <class U, U x> 
+    template <class U, U x>
     struct test;
 
     template <typename T>
     struct has_new_operator_impl {
         template<class U>
         static type_traits::yes_type check_sig1(
-            U*, 
+            U*,
             test<
             void *(*)(std::size_t),
                 &U::operator new
@@ -45,7 +45,7 @@ namespace detail {
 
         template<class U>
         static type_traits::yes_type check_sig2(
-            U*, 
+            U*,
             test<
             void *(*)(std::size_t, const std::nothrow_t&),
                 &U::operator new
@@ -56,7 +56,7 @@ namespace detail {
 
         template<class U>
         static type_traits::yes_type check_sig3(
-            U*, 
+            U*,
             test<
             void *(*)(std::size_t, void*),
                 &U::operator new
@@ -68,7 +68,7 @@ namespace detail {
 
         template<class U>
         static type_traits::yes_type check_sig4(
-            U*, 
+            U*,
             test<
             void *(*)(std::size_t),
                 &U::operator new[]
@@ -79,7 +79,7 @@ namespace detail {
 
         template<class U>
         static type_traits::yes_type check_sig5(
-            U*, 
+            U*,
             test<
             void *(*)(std::size_t, const std::nothrow_t&),
                 &U::operator new[]
@@ -90,7 +90,7 @@ namespace detail {
 
         template<class U>
         static type_traits::yes_type check_sig6(
-            U*, 
+            U*,
             test<
             void *(*)(std::size_t, void*),
                 &U::operator new[]
@@ -125,7 +125,7 @@ namespace detail {
                 #pragma warning(pop)
             #endif
         #endif
-        BOOST_STATIC_CONSTANT(bool, value = 
+        BOOST_STATIC_CONSTANT(bool, value =
             (s1 == sizeof(type_traits::yes_type)) ||
             (s2 == sizeof(type_traits::yes_type)) ||
             (s3 == sizeof(type_traits::yes_type)) ||

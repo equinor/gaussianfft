@@ -2,12 +2,12 @@
 [section Introduction]
 <boost/python/register_ptr_to_python.hpp> supplies `register_ptr_to_python`, a function template which registers a conversion for smart pointers to Python. The resulting Python object holds a copy of the converted smart pointer, but behaves as though it were a wrapped copy of the pointee. If the pointee type has virtual functions and the class representing its dynamic (most-derived) type has been wrapped, the Python object will be an instance of the wrapper for the most-derived type. More than one smart pointer type for a pointee's class can be registered.
 
-Note that in order to convert a Python `X` object to a `smart_ptr<X>&` (non-const reference), the embedded C++ object must be held by `smart_ptr<X>`, and that when wrapped objects are created by calling the constructor from Python, how they are held is determined by the HeldType parameter to `class_<...>` instances. 
+Note that in order to convert a Python `X` object to a `smart_ptr<X>&` (non-const reference), the embedded C++ object must be held by `smart_ptr<X>`, and that when wrapped objects are created by calling the constructor from Python, how they are held is determined by the HeldType parameter to `class_<...>` instances.
 [endsect]
 [section Function `register_ptr_to_python`]
 ``
 template <class P>
-void register_ptr_to_python() 
+void register_ptr_to_python()
 ``
 [variablelist
 [[Requires][`P` is [link concepts.dereferenceable Dereferenceable].]]
@@ -33,8 +33,8 @@ int Fail( shared_ptr<A>& a ) { return a->f(); }
 struct A_Wrapper: A
 {
     A_Wrapper(PyObject* self_): self(self_) {}
-    int f() { return call_method<int>(self, "f"); }    
-    int default_f() { return A::f(); }    
+    int f() { return call_method<int>(self, "f"); }
+    int default_f() { return A::f(); }
     PyObject* self;
 };
 
@@ -43,13 +43,13 @@ BOOST_PYTHON_MODULE(register_ptr)
     class_<A, A_Wrapper>("A")
         .def("f", &A::f, &A_Wrapper::default_f)
     ;
-    
+
     def("New", &New);
     def("Ok", &Call);
     def("Fail", &Fail);
-    
+
     register_ptr_to_python< shared_ptr<A> >();
-} 
+}
 ``
 In Python:
 ``
@@ -62,7 +62,7 @@ Traceback (most recent call last):
   File "<stdin>", line 1, in ?
 TypeError: bad argument type for built-in operation
 >>>
->>> na = New()   # now "na" is actually a shared_ptr<A> 
+>>> na = New()   # now "na" is actually a shared_ptr<A>
 >>> Ok(a)
 0
 >>> Fail(a)
@@ -81,6 +81,6 @@ There will be an error when trying to convert shared_ptr<A> to shared_ptr<A_Wrap
 Traceback (most recent call last):
 File "<stdin>", line 1, in ?
 TypeError: No to_python (by-value) converter found for C++ type: class boost::shared_ptr<struct A>
->>> 
+>>>
 ``
 [endsect]

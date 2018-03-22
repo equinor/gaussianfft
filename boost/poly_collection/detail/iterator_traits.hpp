@@ -60,35 +60,35 @@ struct iterator_traits
   >::type;
   using iterator=typename std::conditional<
     is_const_iterator::value,
-    typename container_type::const_iterator,   
+    typename container_type::const_iterator,
     typename container_type::iterator
   >::type;
   using base_segment_info_iterator=typename std::conditional<
     is_const_iterator::value,
-    typename container_type::const_base_segment_info_iterator,   
+    typename container_type::const_base_segment_info_iterator,
     typename container_type::base_segment_info_iterator
   >::type;
   using local_base_iterator=typename std::conditional<
     is_const_iterator::value,
-    typename container_type::const_local_base_iterator,   
+    typename container_type::const_local_base_iterator,
     typename container_type::local_base_iterator
   >::type;
   template<typename T>
   using local_iterator=typename std::conditional<
     is_const_iterator::value,
-    typename container_type::template const_local_iterator<T>,   
+    typename container_type::template const_local_iterator<T>,
     typename container_type::template local_iterator<T>
   >::type;
 
   static base_segment_info_iterator
-  base_segment_info_iterator_from(iterator it)noexcept{return it.mapit;} 
+  base_segment_info_iterator_from(iterator it)noexcept{return it.mapit;}
 
   static base_segment_info_iterator
   base_segment_info_iterator_from(local_base_iterator it)noexcept
     {return it.mapit;}
 
   static base_segment_info_iterator
-  end_base_segment_info_iterator_from(iterator it)noexcept{return it.mapend;} 
+  end_base_segment_info_iterator_from(iterator it)noexcept{return it.mapend;}
 
   static local_base_iterator
   local_base_iterator_from(iterator it)noexcept
@@ -99,7 +99,7 @@ struct iterator_traits
     };
   }
 
-  static iterator 
+  static iterator
   iterator_from(
     local_base_iterator lbit,base_segment_info_iterator mapend)noexcept
   {

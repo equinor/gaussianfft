@@ -1,6 +1,6 @@
 http://www.linuxfromscratch.org/blfs/view/svn/introduction/locale-issues.html
 
-"The POSIX standard mandates that the filename encoding is the encoding implied by the current LC_CTYPE locale category." 
+"The POSIX standard mandates that the filename encoding is the encoding implied by the current LC_CTYPE locale category."
 
 -------
 
@@ -12,7 +12,7 @@ Tom Tromey wrote on 2001-02-05 00:36 UTC:
 > Kai> IMAO, a *real* filesystem should use some encoding of ISO 10646 -
 > Kai> UTF-8, UTF-16, or UTF-32 are all viable options. The same should
 > Kai> be true for the kernel filename interfaces.
-> 
+>
 > I like this, but what should I do right now?
 
 The POSIX kernel file system interface is engraved into stone and

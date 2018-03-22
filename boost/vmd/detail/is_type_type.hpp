@@ -13,7 +13,7 @@
 /*
 
     Check to see if the 'id' is BOOST_VMD_TYPE_TYPE
-    
+
     Returns 1 if it is, else 0
 
 */

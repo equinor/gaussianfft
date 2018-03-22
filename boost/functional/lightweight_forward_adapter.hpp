@@ -1,7 +1,7 @@
 /*=============================================================================
     Copyright (c) 2007 Tobias Schwinger
-  
-    Use modification and distribution are subject to the Boost Software 
+
+    Use modification and distribution are subject to the Boost Software
     License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
     http://www.boost.org/LICENSE_1_0.txt).
 ==============================================================================*/
@@ -29,7 +29,7 @@
 #     define BOOST_FUNCTIONAL_LIGHTWEIGHT_FORWARD_ADAPTER_MAX_ARITY 3
 #   endif
 
-namespace boost 
+namespace boost
 {
     template< typename Function, int Arity_Or_MinArity = -1, int MaxArity = -1 >
     class lightweight_forward_adapter;
@@ -38,7 +38,7 @@ namespace boost
 
     namespace detail
     {
-        template< class MostDerived, typename Function, typename FunctionConst, 
+        template< class MostDerived, typename Function, typename FunctionConst,
             int Arity, int MinArity >
         struct lightweight_forward_adapter_impl;
 
@@ -79,8 +79,8 @@ namespace boost
         , private Function
     {
       public:
-        lightweight_forward_adapter(Function const& f = Function()) 
-          : Function(f) 
+        lightweight_forward_adapter(Function const& f = Function())
+          : Function(f)
         { }
 
         typedef Function        target_function_t;
@@ -96,14 +96,14 @@ namespace boost
         using BOOST_TMP_MACRO(Function,Function, Function const)::operator();
     };
     template< typename Function, int Arity_Or_MinArity, int MaxArity >
-    class lightweight_forward_adapter< Function const, Arity_Or_MinArity, 
+    class lightweight_forward_adapter< Function const, Arity_Or_MinArity,
         MaxArity >
         : public BOOST_TMP_MACRO(Function const, Function const, Function const)
         , private Function
     {
       public:
         lightweight_forward_adapter(Function const& f = Function())
-          : Function(f) 
+          : Function(f)
         { }
 
         typedef Function const target_function_t;
@@ -125,7 +125,7 @@ namespace boost
         Function& ref_function;
       public:
         lightweight_forward_adapter(Function& f)
-          : ref_function(f) 
+          : ref_function(f)
         { }
 
         typedef Function target_function_t;
@@ -138,7 +138,7 @@ namespace boost
         { };
 
         using BOOST_TMP_MACRO(Function&, Function, Function)::operator();
-    }; 
+    };
 
     #undef BOOST_TMP_MACRO
 
@@ -198,7 +198,7 @@ namespace boost
 #       define  BOOST_PP_FILENAME_1 \
             <boost/functional/lightweight_forward_adapter.hpp>
 #       define  BOOST_PP_ITERATION_LIMITS                                     \
-            (1,BOOST_FUNCTIONAL_LIGHTWEIGHT_FORWARD_ADAPTER_MAX_ARITY) 
+            (1,BOOST_FUNCTIONAL_LIGHTWEIGHT_FORWARD_ADAPTER_MAX_ARITY)
 #       include BOOST_PP_ITERATE()
 
     } // namespace detail
@@ -228,7 +228,7 @@ namespace boost
 #     define BOOST_FUNCTIONAL_LIGHTWEIGHT_FORWARD_ADAPTER_HPP_INCLUDED
 
 #   else // defined(BOOST_PP_IS_ITERATING)
-#     define N BOOST_PP_ITERATION() 
+#     define N BOOST_PP_ITERATION()
 
         template< class Self, BOOST_PP_ENUM_PARAMS(N,typename T) >
         struct lightweight_forward_adapter_result::apply<

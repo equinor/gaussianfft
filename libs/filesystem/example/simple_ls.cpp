@@ -11,10 +11,10 @@
 #define BOOST_FILESYSTEM_VERSION 3
 
 //  As an example program, we don't want to use any deprecated features
-#ifndef BOOST_FILESYSTEM_NO_DEPRECATED 
+#ifndef BOOST_FILESYSTEM_NO_DEPRECATED
 #  define BOOST_FILESYSTEM_NO_DEPRECATED
 #endif
-#ifndef BOOST_SYSTEM_NO_DEPRECATED 
+#ifndef BOOST_SYSTEM_NO_DEPRECATED
 #  define BOOST_SYSTEM_NO_DEPRECATED
 #endif
 
@@ -85,7 +85,7 @@ int main(int argc, char* argv[])
   }
   else // must be a file
   {
-    std::cout << "\nFound: " << p << "\n";    
+    std::cout << "\nFound: " << p << "\n";
   }
   return 0;
 }

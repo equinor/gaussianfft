@@ -13,17 +13,17 @@ struct Widget
     Widget()
       : sensitive_(true)
     {}
-    
+
     bool get_sensitive() const
     {
         return sensitive_;
     }
-    
+
     void set_sensitive(bool s)
     {
         this->sensitive_ = s;
     }
-    
+
  private:
    bool sensitive_;
 };

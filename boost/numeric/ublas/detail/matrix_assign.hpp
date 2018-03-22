@@ -21,7 +21,7 @@
 
 namespace boost { namespace numeric { namespace ublas {
 namespace detail {
-    
+
     // Weak equality check - useful to compare equality two arbitary matrix expression results.
     // Since the actual expressions are unknown, we check for and arbitary error bound
     // on the relative error.

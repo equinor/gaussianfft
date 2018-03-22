@@ -52,7 +52,7 @@ Can you gesture in the general direction where these things are done?
                 >>> boring = Boost.Python.class(
                 ...     'boring'
                 ...   , bases_tuple       # in this case, just ()
-                ...   , { 
+                ...   , {
                 ...         '__module__' : module_name
                 ...       , '__doc__' : doc_string # optional
                 ...     }
@@ -115,7 +115,7 @@ Can you gesture in the general direction where these things are done?
 
   Big subject.  I suggest some background reading: look for relevant
   info in the LLNL progress reports and the messages they link to.
-  Also, 
+  Also,
 
         http://mail.python.org/pipermail/c++-sig/2002-May/001023.html
 

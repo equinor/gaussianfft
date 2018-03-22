@@ -86,7 +86,7 @@ struct normalized_view
                 closeable_type const,
                 closeable_type
             >::type closeable;
-    
+
     explicit inline normalized_view(range & r)
         : m_reversible(r)
         , m_closeable(m_reversible)

@@ -792,7 +792,7 @@ public:
     boost::asio::detail::throw_error(ec, "receive_from");
     return s;
   }
-  
+
   /// Receive a datagram with the endpoint of the sender.
   /**
    * This function is used to receive a datagram. The function call will block
@@ -819,7 +819,7 @@ public:
     boost::asio::detail::throw_error(ec, "receive_from");
     return s;
   }
-  
+
   /// Receive a datagram with the endpoint of the sender.
   /**
    * This function is used to receive a datagram. The function call will block

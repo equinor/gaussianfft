@@ -47,7 +47,7 @@ namespace boost { namespace spirit { namespace x3 { namespace traits
     template <typename T>
     struct attribute_category< T
 	, typename enable_if<
-	      typename mpl::eval_if< 
+	      typename mpl::eval_if<
 		  fusion::traits::is_sequence<T>
 		  , fusion::traits::is_associative<T>
 		  , mpl::false_
@@ -59,7 +59,7 @@ namespace boost { namespace spirit { namespace x3 { namespace traits
 	, typename enable_if<
 	      mpl::and_<
 		  fusion::traits::is_sequence<T>
-		  , mpl::not_<fusion::traits::is_associative<T> > 
+		  , mpl::not_<fusion::traits::is_associative<T> >
 		  > >::type >
         : mpl::identity<tuple_attribute> {};
 

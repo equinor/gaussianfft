@@ -20,9 +20,9 @@
 
 # include <boost/python/detail/type_traits.hpp>
 
-# if defined(__ICL) && __ICL < 600 
+# if defined(__ICL) && __ICL < 600
 #  include <boost/shared_ptr.hpp>
-# else 
+# else
 #  include <memory>
 # endif
 
@@ -54,7 +54,7 @@ struct to_python_indirect
         else
             return this->execute(*ptr, detail::false_());
     }
-    
+
     template <class U>
     inline PyObject* execute(U const& x, detail::false_) const
     {
@@ -81,7 +81,7 @@ namespace detail
           // can't use auto_ptr with Intel 5 and VC6 Dinkum library
           // for some reason. We get link errors against the auto_ptr
           // copy constructor.
-# if defined(__ICL) && __ICL < 600 
+# if defined(__ICL) && __ICL < 600
           typedef boost::shared_ptr<T> smart_pointer;
 # elif __cplusplus < 201103L
           typedef std::auto_ptr<T> smart_pointer;

@@ -25,7 +25,7 @@ namespace boost { namespace numeric { namespace ublas {
     struct divide_by_zero
 #if ! defined (BOOST_NO_EXCEPTIONS) && ! defined (BOOST_UBLAS_NO_EXCEPTIONS)
         // Inherit from standard exceptions as requested during review.
-        : public std::runtime_error 
+        : public std::runtime_error
     {
         explicit divide_by_zero (const char *s = "divide by zero") :
             std::runtime_error (s) {}
@@ -199,7 +199,7 @@ namespace boost { namespace numeric { namespace ublas {
     };
 
 #if BOOST_UBLAS_CHECK_ENABLE
-// Macros are equivilent to 
+// Macros are equivilent to
 //    template<class E>
 //    BOOST_UBLAS_INLINE
 //    void check (bool expression, const E &e) {
@@ -241,7 +241,7 @@ namespace boost { namespace numeric { namespace ublas {
     }
 #endif
 #else
-// Macros are equivilent to 
+// Macros are equivilent to
 //    template<class E>
 //    BOOST_UBLAS_INLINE
 //    void check (bool expression, const E &e) {}
@@ -255,7 +255,7 @@ namespace boost { namespace numeric { namespace ublas {
 
 
 #ifndef BOOST_UBLAS_USE_FAST_SAME
-// Macro is equivilent to 
+// Macro is equivilent to
 //    template<class T>
 //    BOOST_UBLAS_INLINE
 //    const T &same_impl (const T &size1, const T &size2) {
@@ -282,7 +282,7 @@ namespace boost { namespace numeric { namespace ublas {
     }
 #define BOOST_UBLAS_SAME(size1, size2) same_impl_ex ((size1), (size2), __FILE__, __LINE__)
 #else
-// Macros are equivilent to 
+// Macros are equivilent to
 //    template<class T>
 //    BOOST_UBLAS_INLINE
 //    const T &same_impl (const T &size1, const T &size2) {

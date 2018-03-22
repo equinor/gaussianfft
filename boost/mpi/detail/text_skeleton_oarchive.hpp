@@ -1,4 +1,4 @@
-// (C) Copyright 2005 Matthias Troyer 
+// (C) Copyright 2005 Matthias Troyer
 
 // Use, modification and distribution is subject to the Boost Software
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
@@ -19,12 +19,12 @@ namespace boost { namespace mpi {
 
 // an archive that writes a text skeleton into a stream
 
-class text_skeleton_oarchive 
+class text_skeleton_oarchive
   : public detail::ignore_oprimitive,
     public detail::forward_skeleton_oarchive<text_skeleton_oarchive,boost::archive::text_oarchive>
 {
 public:
-    text_skeleton_oarchive(std::ostream & s, unsigned int flags = 0) 
+    text_skeleton_oarchive(std::ostream & s, unsigned int flags = 0)
      : detail::forward_skeleton_oarchive<text_skeleton_oarchive,boost::archive::text_oarchive>(skeleton_archive_)
      , skeleton_archive_(s,flags)
     {}

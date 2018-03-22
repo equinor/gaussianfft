@@ -97,7 +97,7 @@ public:
         impl_t::flags_ &= ~flag_running;
         typename impl_t::param_type to;
         impl_t::callee_.jump(
-            impl_t::caller_, 
+            impl_t::caller_,
             & to);
         BOOST_ASSERT_MSG( false, "coroutine is complete");
     }
@@ -173,7 +173,7 @@ public:
         impl_t::flags_ &= ~flag_running;
         typename impl_t::param_type to;
         impl_t::callee_.jump(
-            impl_t::caller_, 
+            impl_t::caller_,
             & to);
         BOOST_ASSERT_MSG( false, "coroutine is complete");
     }
@@ -249,7 +249,7 @@ public:
         impl_t::flags_ &= ~flag_running;
         typename impl_t::param_type to;
         impl_t::callee_.jump(
-            impl_t::caller_, 
+            impl_t::caller_,
             & to);
         BOOST_ASSERT_MSG( false, "coroutine is complete");
     }

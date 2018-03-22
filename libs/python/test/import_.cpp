@@ -16,7 +16,7 @@ void import_test(char const *py_file_path)
 {
   // Retrieve the main module
   bpl::object main = bpl::import("__main__");
-  
+
   // Retrieve the main module's namespace
   bpl::object global(main.attr("__dict__"));
 
@@ -24,12 +24,12 @@ void import_test(char const *py_file_path)
 
   bpl::str script(
       "import sys, os.path\n"
-      "path = os.path.dirname(%r)\n" 
+      "path = os.path.dirname(%r)\n"
       "sys.path.insert(0, path)"
       % bpl::str(py_file_path));
-  
+
   bpl::object result = bpl::exec(script, global, global);
-  
+
   // Retrieve the main module
   bpl::object import_ = bpl::import("import_");
   int value = bpl::extract<int>(import_.attr("value")) BOOST_EXTRACT_WORKAROUND;
@@ -43,7 +43,7 @@ int main(int argc, char **argv)
 
   // Initialize the interpreter
   Py_Initialize();
-  
+
   if (bpl::handle_exception(boost::bind(import_test,argv[1])))
   {
     if (PyErr_Occurred())
@@ -57,7 +57,7 @@ int main(int argc, char **argv)
                     "there was no exception handler registered.");
     }
   }
-    
+
   // Boost.Python doesn't support Py_Finalize yet.
   // Py_Finalize();
   return boost::report_errors();

@@ -41,7 +41,7 @@
   { x = x | y ; return x ; }                                              \
                                                                           \
   inline Bitmask & operator^=(Bitmask & x , Bitmask y)                    \
-  { x = x ^ y ; return x ; }                                              
+  { x = x ^ y ; return x ; }
 
 #endif // BOOST_BITMASK_HPP
 

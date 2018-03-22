@@ -142,7 +142,7 @@ class map
    //! <b>Effects</b>: Default constructs an empty map.
    //!
    //! <b>Complexity</b>: Constant.
-   BOOST_CONTAINER_FORCEINLINE 
+   BOOST_CONTAINER_FORCEINLINE
    map() BOOST_NOEXCEPT_IF(container_detail::is_nothrow_default_constructible<Allocator>::value &&
                            container_detail::is_nothrow_default_constructible<Compare>::value)
       : base_t()
@@ -180,7 +180,7 @@ class map
       : base_t(true, first, last)
    {}
 
-   //! <b>Effects</b>: Constructs an empty map using the specified 
+   //! <b>Effects</b>: Constructs an empty map using the specified
    //! allocator, and inserts elements from the range [first ,last ).
    //!
    //! <b>Complexity</b>: Linear in N if the range [first ,last ) is already sorted using
@@ -333,7 +333,7 @@ class map
    BOOST_CONTAINER_FORCEINLINE map( ordered_unique_range_t, std::initializer_list<value_type> il
                                   , const Compare& comp, const allocator_type& a)
       : base_t(ordered_range, il.begin(), il.end(), comp, a)
-   {} 
+   {}
 
 #endif
 
@@ -568,7 +568,7 @@ class map
    //! <b>Effects</b>: If a key equivalent to k already exists in the container, assigns forward<M>(obj)
    //! to the mapped_type corresponding to the key k. If the key does not exist, inserts the new value
    //! as if by insert, constructing it from value_type(k, forward<M>(obj)).
-   //! 
+   //!
    //! No iterators or references are invalidated. If the insertion is successful, pointers and references
    //! to the element obtained while it is held in the node handle are invalidated, and pointers and
    //! references obtained to that element before it was extracted become valid.
@@ -584,7 +584,7 @@ class map
    //! <b>Effects</b>: If a key equivalent to k already exists in the container, assigns forward<M>(obj)
    //! to the mapped_type corresponding to the key k. If the key does not exist, inserts the new value
    //! as if by insert, constructing it from value_type(k, move(obj)).
-   //! 
+   //!
    //! No iterators or references are invalidated. If the insertion is successful, pointers and references
    //! to the element obtained while it is held in the node handle are invalidated, and pointers and
    //! references obtained to that element before it was extracted become valid.
@@ -601,7 +601,7 @@ class map
    //! to the mapped_type corresponding to the key k. If the key does not exist, inserts the new value
    //! as if by insert, constructing it from value_type(k, forward<M>(obj)) and the new element
    //! to the container as close as possible to the position just before hint.
-   //! 
+   //!
    //! No iterators or references are invalidated. If the insertion is successful, pointers and references
    //! to the element obtained while it is held in the node handle are invalidated, and pointers and
    //! references obtained to that element before it was extracted become valid.
@@ -619,7 +619,7 @@ class map
    //! to the mapped_type corresponding to the key k. If the key does not exist, inserts the new value
    //! as if by insert, constructing it from value_type(k, move(obj)) and the new element
    //! to the container as close as possible to the position just before hint.
-   //! 
+   //!
    //! No iterators or references are invalidated. If the insertion is successful, pointers and references
    //! to the element obtained while it is held in the node handle are invalidated, and pointers and
    //! references obtained to that element before it was extracted become valid.
@@ -854,60 +854,60 @@ class map
    BOOST_CONTAINER_FORCEINLINE iterator emplace_hint(const_iterator p, BOOST_FWD_REF(Args)... args)
    {  return this->base_t::emplace_hint_unique(p, boost::forward<Args>(args)...); }
 
-   //! <b>Requires</b>: value_type shall be EmplaceConstructible into map from piecewise_construct, 
+   //! <b>Requires</b>: value_type shall be EmplaceConstructible into map from piecewise_construct,
    //! forward_as_tuple(k), forward_as_tuple(forward<Args>(args)...).
-   //! 
+   //!
    //! <b>Effects</b>: If the map already contains an element whose key is equivalent to k, there is no effect. Otherwise
    //! inserts an object of type value_type constructed with piecewise_construct, forward_as_tuple(k),
    //! forward_as_tuple(forward<Args>(args)...).
-   //! 
+   //!
    //! <b>Returns</b>: The bool component of the returned pair is true if and only if the
    //! insertion took place. The returned iterator points to the map element whose key is equivalent to k.
-   //! 
+   //!
    //! <b>Complexity</b>: Logarithmic.
    template <class... Args>
    BOOST_CONTAINER_FORCEINLINE std::pair<iterator, bool> try_emplace(const key_type& k, BOOST_FWD_REF(Args)... args)
    {  return this->base_t::try_emplace(const_iterator(), k, boost::forward<Args>(args)...); }
 
-   //! <b>Requires</b>: value_type shall be EmplaceConstructible into map from piecewise_construct, 
+   //! <b>Requires</b>: value_type shall be EmplaceConstructible into map from piecewise_construct,
    //! forward_as_tuple(k), forward_as_tuple(forward<Args>(args)...).
-   //! 
+   //!
    //! <b>Effects</b>: If the map already contains an element whose key is equivalent to k, there is no effect. Otherwise
    //! inserts an object of type value_type constructed with piecewise_construct, forward_as_tuple(k),
    //! forward_as_tuple(forward<Args>(args)...).
-   //! 
+   //!
    //! <b>Returns</b>: The returned iterator points to the map element whose key is equivalent to k.
-   //! 
+   //!
    //! <b>Complexity</b>: Logarithmic in general, but amortized constant if value
    //!   is inserted right before p.
    template <class... Args>
    BOOST_CONTAINER_FORCEINLINE iterator try_emplace(const_iterator hint, const key_type &k, BOOST_FWD_REF(Args)... args)
    {  return this->base_t::try_emplace(hint, k, boost::forward<Args>(args)...).first; }
 
-   //! <b>Requires</b>: value_type shall be EmplaceConstructible into map from piecewise_construct, 
+   //! <b>Requires</b>: value_type shall be EmplaceConstructible into map from piecewise_construct,
    //! forward_as_tuple(move(k)), forward_as_tuple(forward<Args>(args)...).
-   //! 
+   //!
    //! <b>Effects</b>: If the map already contains an element whose key is equivalent to k, there is no effect. Otherwise
    //! inserts an object of type value_type constructed with piecewise_construct, forward_as_tuple(move(k)),
    //! forward_as_tuple(forward<Args>(args)...).
-   //! 
+   //!
    //! <b>Returns</b>: The bool component of the returned pair is true if and only if the
    //! insertion took place. The returned iterator points to the map element whose key is equivalent to k.
-   //! 
+   //!
    //! <b>Complexity</b>: Logarithmic.
    template <class... Args>
    BOOST_CONTAINER_FORCEINLINE std::pair<iterator, bool> try_emplace(BOOST_RV_REF(key_type) k, BOOST_FWD_REF(Args)... args)
    {  return this->base_t::try_emplace(const_iterator(), boost::move(k), boost::forward<Args>(args)...); }
 
-   //! <b>Requires</b>: value_type shall be EmplaceConstructible into map from piecewise_construct, 
+   //! <b>Requires</b>: value_type shall be EmplaceConstructible into map from piecewise_construct,
    //! forward_as_tuple(move(k)), forward_as_tuple(forward<Args>(args)...).
-   //! 
+   //!
    //! <b>Effects</b>: If the map already contains an element whose key is equivalent to k, there is no effect. Otherwise
    //! inserts an object of type value_type constructed with piecewise_construct, forward_as_tuple(move(k)),
    //! forward_as_tuple(forward<Args>(args)...).
-   //! 
+   //!
    //! <b>Returns</b>: The returned iterator points to the map element whose key is equivalent to k.
-   //! 
+   //!
    //! <b>Complexity</b>: Logarithmic in general, but amortized constant if value
    //!   is inserted right before p.
    template <class... Args>
@@ -1002,7 +1002,7 @@ class map
    //! <b>Effects</b>: Attempts to extract each element in source and insert it into a using
    //!   the comparison object of *this. If there is an element in a with key equivalent to the
    //!   key of an element from source, then that element is not extracted from source.
-   //! 
+   //!
    //! <b>Postcondition</b>: Pointers and references to the transferred elements of source refer
    //!   to those same elements but as members of *this. Iterators referring to the transferred
    //!   elements will continue to refer to their elements, but they now behave as iterators into *this,
@@ -1320,7 +1320,7 @@ class multimap
       : base_t(false, first, last)
    {}
 
-   //! <b>Effects</b>: Constructs an empty multimap using the specified 
+   //! <b>Effects</b>: Constructs an empty multimap using the specified
    //! allocator, and inserts elements from the range [first ,last ).
    //!
    //! <b>Complexity</b>: Linear in N if the range [first ,last ) is already sorted using
@@ -1725,9 +1725,9 @@ class multimap
 
    //! <b>Requires</b>: nh is empty or this->get_allocator() == nh.get_allocator().
    //!
-   //! <b>Effects/Returns</b>: If nh is empty, has no effect and returns end(). Otherwise, inserts 
+   //! <b>Effects/Returns</b>: If nh is empty, has no effect and returns end(). Otherwise, inserts
    //!   the element owned by nh and returns an iterator pointing to the newly inserted element.
-   //!   If a range containing elements with keys equivalent to nh.key() exists, 
+   //!   If a range containing elements with keys equivalent to nh.key() exists,
    //!   the element is inserted at the end of that range. nh is always emptied.
    //!
    //! <b>Complexity</b>: Logarithmic
@@ -1778,7 +1778,7 @@ class multimap
    //!
    //! <b>Effects</b>: Extracts each element in source and insert it into a using
    //!   the comparison object of *this.
-   //! 
+   //!
    //! <b>Postcondition</b>: Pointers and references to the transferred elements of source refer
    //!   to those same elements but as members of *this. Iterators referring to the transferred
    //!   elements will continue to refer to their elements, but they now behave as iterators into *this,

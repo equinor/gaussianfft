@@ -8,7 +8,7 @@
 # include <boost/python/detail/prefix.hpp>
 # include <boost/python/cast.hpp>
 
-namespace boost { namespace python { 
+namespace boost { namespace python {
 
 template <class T>
 inline T* incref(T* p)

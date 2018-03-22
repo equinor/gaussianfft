@@ -118,7 +118,7 @@ static void Set( T* t, void c( Data* d, T* t ), Data* d = 0 )
        and d can be null, but t cannot. Sets the clean-up queue for
        BO(t) to be the collector's queue. When t is removed from its
        clean-up queue, its clean-up will be applied by calling c(d,
-       t). It is an error if *t is not a collected object. */ 
+       t). It is an error if *t is not a collected object. */
        {_CleanUp_Set( t, c, d );}
 
 static void Call( T* t )

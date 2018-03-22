@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 1988, 1989 Hans-J. Boehm, Alan J. Demers
  * Copyright (c) 1991-1994 by Xerox Corporation.  All rights reserved.
  *
@@ -195,7 +195,7 @@ typedef struct bi {
 			      *_ha = (hhdr); }
 #   define HDR(p) GC_find_header((ptr_t)(p))
 # endif
-			    
+
 /* Is the result a forwarding address to someplace closer to the	*/
 /* beginning of the block or NIL?					*/
 # define IS_FORWARDING_ADDR_OR_NIL(hhdr) ((size_t) (hhdr) <= MAX_JUMP)

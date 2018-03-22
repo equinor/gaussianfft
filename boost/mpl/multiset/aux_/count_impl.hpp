@@ -4,8 +4,8 @@
 
 // Copyright Aleksey Gurtovoy 2003-2004
 //
-// Distributed under the Boost Software License, Version 1.0. 
-// (See accompanying file LICENSE_1_0.txt or copy at 
+// Distributed under the Boost Software License, Version 1.0.
+// (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 //
 // See http://www.boost.org/libs/mpl for documentation.
@@ -53,7 +53,7 @@ template<>
 struct count_impl< aux::multiset_tag >
 {
     template< typename Set, typename Key > struct apply
-        : if_< 
+        : if_<
               is_reference<Key>
             , aux::multiset_count_ref_impl<Set,Key>
             , aux::multiset_count_impl<Set,Key>

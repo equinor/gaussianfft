@@ -200,7 +200,7 @@ public:
             detail::print_vector(os, parm._weights);
             return os;
         }
-        
+
         /** Reads the parameters from a @c std::istream. */
         BOOST_RANDOM_DETAIL_ISTREAM_OPERATOR(is, param_type, parm)
         {
@@ -383,7 +383,7 @@ public:
             return (std::min)(dist(urng), dist(urng));
         }
     }
-    
+
     /**
      * Returns a value distributed according to the parameters
      * specified by param.
@@ -393,7 +393,7 @@ public:
     {
         return piecewise_linear_distribution(parm)(urng);
     }
-    
+
     /** Returns the smallest value that the distribution can produce. */
     result_type min BOOST_PREVENT_MACRO_SUBSTITUTION () const
     { return _intervals.front(); }
@@ -439,7 +439,7 @@ public:
         _intervals.swap(new_intervals);
         _weights.swap(new_weights);
     }
-    
+
     /**
      * Effects: Subsequent uses of the distribution do not depend
      * on values produced by any engine prior to invoking reset.

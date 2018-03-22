@@ -1,6 +1,6 @@
 //  Copyright (c) 2001 Daniel C. Nuffer
 //  Copyright (c) 2001-2011 Hartmut Kaiser
-// 
+//
 //  Distributed under the Boost Software License, Version 1.0. (See accompanying
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
@@ -18,13 +18,13 @@ namespace boost { namespace spirit { namespace iterator_policies
     //  class fixed_size_queue
     //  Implementation of the StoragePolicy used by multi_pass
     //  fixed_size_queue keeps a circular buffer (implemented by
-    //  boost::spirit::fixed_size_queue class) that is size N+1 and stores N 
+    //  boost::spirit::fixed_size_queue class) that is size N+1 and stores N
     //  elements.
-    // 
-    //  It is up to the user to ensure that there is enough look ahead for 
-    //  their grammar. Currently there is no way to tell if an iterator is 
-    //  pointing to forgotten data. The leading iterator will put an item in 
-    //  the queue and remove one when it is incremented. No dynamic allocation 
+    //
+    //  It is up to the user to ensure that there is enough look ahead for
+    //  their grammar. Currently there is no way to tell if an iterator is
+    //  pointing to forgotten data. The leading iterator will put an item in
+    //  the queue and remove one when it is incremented. No dynamic allocation
     //  is done, except on creation of the queue (fixed_size_queue constructor).
     ///////////////////////////////////////////////////////////////////////////
     template <std::size_t N>
@@ -48,11 +48,11 @@ namespace boost { namespace spirit { namespace iterator_policies
                 boost::swap(queued_position, x.queued_position);
             }
 
-            //  This is called when the iterator is dereferenced. It's a 
-            //  template method so we can recover the type of the multi_pass 
+            //  This is called when the iterator is dereferenced. It's a
+            //  template method so we can recover the type of the multi_pass
             //  iterator and access the m_input data member.
             template <typename MultiPass>
-            static typename MultiPass::reference 
+            static typename MultiPass::reference
             dereference(MultiPass const& mp)
             {
                 if (!mp.queued_position.get_position().is_initialized())
@@ -64,8 +64,8 @@ namespace boost { namespace spirit { namespace iterator_policies
                 return *mp.queued_position;
             }
 
-            //  This is called when the iterator is incremented. It's a 
-            //  template method so we can recover the type of the multi_pass 
+            //  This is called when the iterator is incremented. It's a
+            //  template method so we can recover the type of the multi_pass
             //  iterator and access the m_input data member.
             template <typename MultiPass>
             static void increment(MultiPass& mp)
@@ -98,7 +98,7 @@ namespace boost { namespace spirit { namespace iterator_policies
 
             // called by operator==
             template <typename MultiPass>
-            static bool equal_to(MultiPass const& mp, MultiPass const& x) 
+            static bool equal_to(MultiPass const& mp, MultiPass const& x)
             {
                 return mp.queued_position == x.queued_position;
             }
@@ -112,7 +112,7 @@ namespace boost { namespace spirit { namespace iterator_policies
 
         protected:
             mutable typename queue_type::iterator queued_position;
-        }; 
+        };
 
         ///////////////////////////////////////////////////////////////////////
         template <typename Value>
@@ -120,8 +120,8 @@ namespace boost { namespace spirit { namespace iterator_policies
         {
             typedef detail::fixed_size_queue<Value, N> queue_type;
             queue_type queued_elements;
-        }; 
-    }; 
+        };
+    };
 
 }}}
 

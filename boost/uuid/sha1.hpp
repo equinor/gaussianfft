@@ -207,7 +207,7 @@ inline void sha1::get_digest(digest_type digest)
         }
     }
 
-    // append length of message (before pre-processing) 
+    // append length of message (before pre-processing)
     // as a 64-bit big-endian integer
     process_byte_impl( static_cast<unsigned char>((bit_count_high>>24) & 0xFF) );
     process_byte_impl( static_cast<unsigned char>((bit_count_high>>16) & 0xFF) );

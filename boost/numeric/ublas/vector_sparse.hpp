@@ -262,15 +262,15 @@ namespace boost { namespace numeric { namespace ublas {
 
     /** \brief Index map based sparse vector
      *
-     * A sparse vector of values of type T of variable size. The sparse storage type A can be 
+     * A sparse vector of values of type T of variable size. The sparse storage type A can be
      * \c std::map<size_t, T> or \c map_array<size_t, T>. This means that only non-zero elements
      * are effectively stored.
      *
-     * For a \f$n\f$-dimensional sparse vector,  and 0 <= i < n the non-zero elements \f$v_i\f$ 
-     * are mapped to consecutive elements of the associative container, i.e. for elements 
+     * For a \f$n\f$-dimensional sparse vector,  and 0 <= i < n the non-zero elements \f$v_i\f$
+     * are mapped to consecutive elements of the associative container, i.e. for elements
      * \f$k = v_{i_1}\f$ and \f$k + 1 = v_{i_2}\f$ of the container, holds \f$i_1 < i_2\f$.
      *
-     * Supported parameters for the adapted array are \c map_array<std::size_t, T> and 
+     * Supported parameters for the adapted array are \c map_array<std::size_t, T> and
      * \c map_std<std::size_t, T>. The latter is equivalent to \c std::map<std::size_t, T>.
      *
      * \tparam T the type of object stored in the vector (like double, float, complex, etc...)
@@ -787,18 +787,18 @@ namespace boost { namespace numeric { namespace ublas {
 
 
     // Thanks to Kresimir Fresl for extending this to cover different index bases.
-    
+
     /** \brief Compressed array based sparse vector
      *
-     * a sparse vector of values of type T of variable size. The non zero values are stored as 
-     * two seperate arrays: an index array and a value array. The index array is always sorted 
+     * a sparse vector of values of type T of variable size. The non zero values are stored as
+     * two seperate arrays: an index array and a value array. The index array is always sorted
      * and there is at most one entry for each index. Inserting an element can be time consuming.
      * If the vector contains a few zero entries, then it is better to have a normal vector.
      * If the vector has a very high dimension with a few non-zero values, then this vector is
      * very memory efficient (at the cost of a few more computations).
      *
-     * For a \f$n\f$-dimensional compressed vector and \f$0 \leq i < n\f$ the non-zero elements 
-     * \f$v_i\f$ are mapped to consecutive elements of the index and value container, i.e. for 
+     * For a \f$n\f$-dimensional compressed vector and \f$0 \leq i < n\f$ the non-zero elements
+     * \f$v_i\f$ are mapped to consecutive elements of the index and value container, i.e. for
      * elements \f$k = v_{i_1}\f$ and \f$k + 1 = v_{i_2}\f$ of these containers holds \f$i_1 < i_2\f$.
      *
      * Supported parameters for the adapted array (indices and values) are \c unbounded_array<> ,
@@ -1446,15 +1446,15 @@ namespace boost { namespace numeric { namespace ublas {
 
     /** \brief Coordimate array based sparse vector
      *
-     * a sparse vector of values of type \c T of variable size. The non zero values are stored 
-     * as two seperate arrays: an index array and a value array. The arrays may be out of order 
-     * with multiple entries for each vector element. If there are multiple values for the same 
+     * a sparse vector of values of type \c T of variable size. The non zero values are stored
+     * as two seperate arrays: an index array and a value array. The arrays may be out of order
+     * with multiple entries for each vector element. If there are multiple values for the same
      * index the sum of these values is the real value. It is way more efficient for inserting values
-     * than a \c compressed_vector but less memory efficient. Also linearly parsing a vector can 
+     * than a \c compressed_vector but less memory efficient. Also linearly parsing a vector can
      * be longer in specific cases than a \c compressed_vector.
      *
-     * For a n-dimensional sorted coordinate vector and \f$ 0 \leq i < n\f$ the non-zero elements 
-     * \f$v_i\f$ are mapped to consecutive elements of the index and value container, i.e. for 
+     * For a n-dimensional sorted coordinate vector and \f$ 0 \leq i < n\f$ the non-zero elements
+     * \f$v_i\f$ are mapped to consecutive elements of the index and value container, i.e. for
      * elements \f$k = v_{i_1}\f$ and \f$k + 1 = v_{i_2}\f$ of these containers holds \f$i_1 < i_2\f$.
      *
      * Supported parameters for the adapted array (indices and values) are \c unbounded_array<> ,

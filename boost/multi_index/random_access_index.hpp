@@ -37,12 +37,12 @@
 #include <boost/multi_index/detail/scope_guard.hpp>
 #include <boost/multi_index/detail/vartempl_support.hpp>
 #include <boost/multi_index/random_access_index_fwd.hpp>
-#include <boost/throw_exception.hpp> 
+#include <boost/throw_exception.hpp>
 #include <boost/tuple/tuple.hpp>
 #include <boost/type_traits/is_integral.hpp>
 #include <cstddef>
 #include <functional>
-#include <stdexcept> 
+#include <stdexcept>
 #include <utility>
 
 #if !defined(BOOST_NO_CXX11_HDR_INITIALIZER_LIST)
@@ -84,7 +84,7 @@ class random_access_index:
     random_access_index<SuperMeta,TagList> >
 #endif
 
-{ 
+{
 #if defined(BOOST_MULTI_INDEX_ENABLE_INVARIANT_CHECKING)&&\
     BOOST_WORKAROUND(__MWERKS__,<=0x3003)
 /* The "ISO C++ Template Parser" option in CW8.3 has a problem with the
@@ -126,7 +126,7 @@ public:
 
   typedef iterator                                 const_iterator;
 
-  typedef std::size_t                              size_type;      
+  typedef std::size_t                              size_type;
   typedef std::ptrdiff_t                           difference_type;
   typedef typename allocator_type::pointer         pointer;
   typedef typename allocator_type::const_pointer   const_pointer;
@@ -139,7 +139,7 @@ public:
 protected:
   typedef typename super::final_node_type     final_node_type;
   typedef tuples::cons<
-    ctor_args, 
+    ctor_args,
     typename super::ctor_args_list>           ctor_args_list;
   typedef typename mpl::push_front<
     typename super::index_type_list,
@@ -214,7 +214,7 @@ public:
     clear();
     for(size_type i=0;i<n;++i)push_back(value);
   }
-    
+
   allocator_type get_allocator()const BOOST_NOEXCEPT
   {
     return this->final().get_allocator();
@@ -269,7 +269,7 @@ public:
     BOOST_MULTI_INDEX_RND_INDEX_CHECK_INVARIANT;
     ptrs.reserve(n);
   }
-  
+
   void shrink_to_fit()
   {
     BOOST_MULTI_INDEX_RND_INDEX_CHECK_INVARIANT;
@@ -288,7 +288,7 @@ public:
   void resize(size_type n,value_param_type x)
   {
     BOOST_MULTI_INDEX_RND_INDEX_CHECK_INVARIANT;
-    if(n>size())for(size_type m=n-size();m--;)this->final_insert_(x); 
+    if(n>size())for(size_type m=n-size();m--;)this->final_insert_(x);
     else if(n<size())erase(begin()+n,end());
   }
 
@@ -315,7 +315,7 @@ public:
 
   BOOST_MULTI_INDEX_OVERLOADS_TO_VARTEMPL(
     emplace_return_type,emplace_front,emplace_front_impl)
-    
+
   std::pair<iterator,bool> push_front(const value_type& x)
                              {return insert(begin(),x);}
   std::pair<iterator,bool> push_front(BOOST_RV_REF(value_type) x)
@@ -333,7 +333,7 @@ public:
 
   BOOST_MULTI_INDEX_OVERLOADS_TO_VARTEMPL_EXTRA_ARG(
     emplace_return_type,emplace,emplace_impl,iterator,position)
-    
+
   std::pair<iterator,bool> insert(iterator position,const value_type& x)
   {
     BOOST_MULTI_INDEX_CHECK_VALID_ITERATOR(position);
@@ -376,7 +376,7 @@ public:
     BOOST_CATCH_END
     relocate(position,end()-s,end());
   }
- 
+
   template<typename InputIterator>
   void insert(iterator position,InputIterator first,InputIterator last)
   {
@@ -399,7 +399,7 @@ public:
     this->final_erase_(static_cast<final_node_type*>(position++.get_node()));
     return position;
   }
-  
+
   iterator erase(iterator first,iterator last)
   {
     BOOST_MULTI_INDEX_CHECK_VALID_ITERATOR(first);
@@ -703,7 +703,7 @@ public:
       (*p1)->up()=p1;
     }
   }
-    
+
 BOOST_MULTI_INDEX_PROTECTED_IF_MEMBER_TEMPLATE_FRIENDS:
   random_access_index(
     const ctor_args_list& args_list,const allocator_type& al):
@@ -1008,7 +1008,7 @@ private:
     BOOST_CATCH_END
     relocate(position,end()-s,end());
   }
- 
+
   template<BOOST_MULTI_INDEX_TEMPLATE_PARAM_PACK>
   std::pair<iterator,bool> emplace_front_impl(
     BOOST_MULTI_INDEX_FUNCTION_PARAM_PACK)

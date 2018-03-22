@@ -113,5 +113,5 @@
     { \
     }; \
 /**/
-    
+
 #endif // BOOST_TTI_DETAIL_STATIC_MEM_DATA_HPP

@@ -20,7 +20,7 @@
 #include <utility>
 
 /* Assorted functional utilities. Much of this would be almost trivial with
- * C++14 generic lambdas. 
+ * C++14 generic lambdas.
  */
 
 #if BOOST_WORKAROUND(BOOST_MSVC,>=1910)
@@ -76,9 +76,9 @@ struct tail_closure_class
       make_index_sequence<std::tuple_size<Tuple>::value>{},
       std::forward<Args>(args)...);
   }
-  
+
   F     f;
-  Tuple t; 
+  Tuple t;
 };
 
 template<typename F,typename... Args>
@@ -109,9 +109,9 @@ struct head_closure_class
       make_index_sequence<std::tuple_size<Tuple>::value>{},
       std::forward<Args>(args)...);
   }
-  
+
   F     f;
-  Tuple t; 
+  Tuple t;
 };
 
 template<typename F,typename... Args>

@@ -112,7 +112,7 @@ class set
    //! <b>Effects</b>: Default constructs an empty set.
    //!
    //! <b>Complexity</b>: Constant.
-   
+
    BOOST_CONTAINER_FORCEINLINE set()
       BOOST_NOEXCEPT_IF(container_detail::is_nothrow_default_constructible<Allocator>::value &&
                         container_detail::is_nothrow_default_constructible<Compare>::value)

@@ -77,7 +77,7 @@ struct state_machine_def :  public boost::msm::front::detail::state_base<BaseSta
         , class Event
         , typename T2
         , void (Derived::*action)(Event const&)
-        , bool (Derived::*guard)(Event const&) 
+        , bool (Derived::*guard)(Event const&)
     >
     struct row
     {
@@ -103,7 +103,7 @@ struct state_machine_def :  public boost::msm::front::detail::state_base<BaseSta
         typename T1
         , class Event
         , typename T2
-        , bool (Derived::*guard)(Event const&) 
+        , bool (Derived::*guard)(Event const&)
     >
     struct g_row
     {
@@ -143,7 +143,7 @@ struct state_machine_def :  public boost::msm::front::detail::state_base<BaseSta
         typename T1
         , class Event
         , void (Derived::*action)(Event const&)
-        , bool (Derived::*guard)(Event const&) 
+        , bool (Derived::*guard)(Event const&)
     >
     struct irow
     {
@@ -168,7 +168,7 @@ struct state_machine_def :  public boost::msm::front::detail::state_base<BaseSta
     template<
         typename T1
         , class Event
-        , bool (Derived::*guard)(Event const&) 
+        , bool (Derived::*guard)(Event const&)
     >
     struct g_irow
     {

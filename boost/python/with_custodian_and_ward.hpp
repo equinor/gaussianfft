@@ -11,7 +11,7 @@
 # include <boost/python/object/life_support.hpp>
 # include <algorithm>
 
-namespace boost { namespace python { 
+namespace boost { namespace python {
 
 namespace detail
 {
@@ -65,13 +65,13 @@ struct with_custodian_and_ward : BasePolicy_
         PyObject* life_support = python::objects::make_nurse_and_patient(nurse, patient);
         if (life_support == 0)
             return false;
-    
+
         bool result = BasePolicy_::precall(args_);
 
         if (!result) {
             Py_DECREF(life_support);
         }
-    
+
         return result;
     }
 };
@@ -80,7 +80,7 @@ template <std::size_t custodian, std::size_t ward, class BasePolicy_ = default_c
 struct with_custodian_and_ward_postcall : BasePolicy_
 {
     BOOST_STATIC_ASSERT(custodian != ward);
-    
+
     template <class ArgumentPackage>
     static PyObject* postcall(ArgumentPackage const& args_, PyObject* result)
     {
@@ -96,16 +96,16 @@ struct with_custodian_and_ward_postcall : BasePolicy_
             );
             return 0;
         }
-        
+
         PyObject* patient = detail::get_prev<ward>::execute(args_, result);
         PyObject* nurse = detail::get_prev<custodian>::execute(args_, result);
 
         if (nurse == 0) return 0;
-    
+
         result = BasePolicy_::postcall(args_, result);
         if (result == 0)
             return 0;
-            
+
         if (python::objects::make_nurse_and_patient(nurse, patient) == 0)
         {
             Py_XDECREF(result);

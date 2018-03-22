@@ -432,7 +432,7 @@ class simple_state : public detail::simple_state_base_type< MostDerived,
     typedef mpl::bool_< ( historyMode & has_deep_history ) != 0 >
       deep_history;
     typedef typename mpl::or_<
-      deep_history, 
+      deep_history,
       typename context_type::inherited_deep_history
     >::type inherited_deep_history;
     typedef typename mpl::and_<
@@ -644,7 +644,7 @@ class simple_state : public detail::simple_state_base_type< MostDerived,
       static const typename OtherContext::inner_context_ptr_type &
       context_ptr_impl( const State & stt )
       {
-        // This assert fails when an attempt is made to access an outer 
+        // This assert fails when an attempt is made to access an outer
         // context from a constructor of a state that is *not* a subtype of
         // state<>. To correct this, derive from state<> instead of
         // simple_state<>.
@@ -660,7 +660,7 @@ class simple_state : public detail::simple_state_base_type< MostDerived,
       static const typename OtherContext::inner_context_ptr_type &
       context_ptr_impl( const State & stt )
       {
-        // This assert fails when an attempt is made to access an outer 
+        // This assert fails when an attempt is made to access an outer
         // context from a constructor of a state that is *not* a subtype of
         // state<>. To correct this, derive from state<> instead of
         // simple_state<>.
@@ -675,7 +675,7 @@ class simple_state : public detail::simple_state_base_type< MostDerived,
       template< class OtherContext, class State >
       static OtherContext & context_impl( State & stt )
       {
-        // This assert fails when an attempt is made to access an outer 
+        // This assert fails when an attempt is made to access an outer
         // context from a constructor of a state that is *not* a subtype of
         // state<>. To correct this, derive from state<> instead of
         // simple_state<>.

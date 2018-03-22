@@ -33,8 +33,8 @@
 // Elliptic integrals (complete and incomplete) of the third kind
 // Carlson, Numerische Mathematik, vol 33, 1 (1979)
 
-namespace boost { namespace math { 
-   
+namespace boost { namespace math {
+
 namespace detail{
 
 template <typename T, typename Policy>
@@ -108,7 +108,7 @@ T ellint_pi_imp(T v, T phi, T k, T vc, const Policy& pol)
             return policies::raise_domain_error<T>(
             function,
             "Got v = %1%, but this is only supported for 0 <= phi <= pi/2", v, pol);
-         //  
+         //
          // Phi is so large that phi%pi is necessarily zero (or garbage),
          // just return the second part of the duplication formula:
          //
@@ -224,7 +224,7 @@ T ellint_pi_imp(T v, T phi, T k, T vc, const Policy& pol)
       // If v > 1 we can use the identity in A&S 17.7.7/8
       // to shift to 0 <= v <= 1.  In contrast to previous
       // revisions of this header, this identity does now work
-      // but appears not to produce better error rates in 
+      // but appears not to produce better error rates in
       // practice.  Archived here for future reference...
       //
       T k2 = k * k;
@@ -242,7 +242,7 @@ T ellint_pi_imp(T v, T phi, T k, T vc, const Policy& pol)
       //
       // This log term gives the complex result when
       //     n > 1/sin^2(phi)
-      // However that case is dealt with as an error above, 
+      // However that case is dealt with as an error above,
       // so we should always get a real result here:
       //
       result += log((delta + p1 * tan(phi)) / (delta - p1 * tan(phi))) / (2 * p1);
@@ -335,7 +335,7 @@ inline typename tools::promote_args<T1, T2>::type ellint_3(T1 k, T2 v, const Pol
    typedef typename policies::evaluation<result_type, Policy>::type value_type;
    return policies::checked_narrowing_cast<result_type, Policy>(
       detail::ellint_pi_imp(
-         static_cast<value_type>(v), 
+         static_cast<value_type>(v),
          static_cast<value_type>(k),
          static_cast<value_type>(1-v),
          pol), "boost::math::ellint_3<%1%>(%1%,%1%)");
@@ -350,8 +350,8 @@ inline typename tools::promote_args<T1, T2, T3>::type ellint_3(T1 k, T2 v, T3 ph
    typedef typename policies::evaluation<result_type, Policy>::type value_type;
    return policies::checked_narrowing_cast<result_type, Policy>(
       detail::ellint_pi_imp(
-         static_cast<value_type>(v), 
-         static_cast<value_type>(phi), 
+         static_cast<value_type>(v),
+         static_cast<value_type>(phi),
          static_cast<value_type>(k),
          static_cast<value_type>(1-v),
          pol), "boost::math::ellint_3<%1%>(%1%,%1%,%1%)");

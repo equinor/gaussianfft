@@ -382,7 +382,7 @@ protected:
     }
 
     struct has_holes_inside
-    {    
+    {
         template <typename TurnIterator, typename VisitPolicy, typename Strategy>
         static inline bool apply(Polygon const& polygon,
                                  TurnIterator first,

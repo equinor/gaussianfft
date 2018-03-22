@@ -65,7 +65,7 @@ inline void unpack_0(const Tuple& t, T& val) BOOST_MATH_NOEXCEPT(T)
 {
    using dummy::get;
    // Rely on ADL to find the correct overload of get:
-   val = get<0>(t); 
+   val = get<0>(t);
 }
 
 template <class T, class U, class V>

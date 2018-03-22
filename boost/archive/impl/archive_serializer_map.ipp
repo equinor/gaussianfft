@@ -28,7 +28,7 @@ namespace detail {
 
 namespace extra_detail { // anon
     template<class Archive>
-    class map : public basic_serializer_map 
+    class map : public basic_serializer_map
     {};
 }
 

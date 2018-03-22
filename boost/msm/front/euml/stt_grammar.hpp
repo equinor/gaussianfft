@@ -77,31 +77,31 @@ struct BuildNextStates
                     proto::comma<BuildNextStates,BuildEntry >,
                     ::boost::mpl::push_back<
                                 BuildNextStates(proto::_left),
-                                BuildEntry(proto::_right) >()                
+                                BuildEntry(proto::_right) >()
         >
    >
 {};
 
 template <class EventGuard,class ActionClass>
-struct fusion_event_action_guard 
+struct fusion_event_action_guard
 {
     typedef TempRow<none,typename EventGuard::Evt,none,typename ActionClass::Action,typename EventGuard::Guard> type;
 };
 
 template <class SourceGuard,class ActionClass>
-struct fusion_source_action_guard 
+struct fusion_source_action_guard
 {
     typedef TempRow<typename SourceGuard::Source,none,none,typename ActionClass::Action,typename SourceGuard::Guard> type;
 };
 
 template <class SourceClass,class EventClass>
-struct fusion_source_event_action_guard 
+struct fusion_source_event_action_guard
 {
     typedef TempRow<typename SourceClass::Source,typename EventClass::Evt,
                     none,typename EventClass::Action,typename EventClass::Guard> type;
 };
 template <class Left,class Right>
-struct fusion_left_right 
+struct fusion_left_right
 {
     typedef TempRow<typename Right::Source,typename Right::Evt,typename Left::Target
                    ,typename Right::Action,typename Right::Guard> type;
@@ -150,12 +150,12 @@ struct BuildEvent
        , proto::when<
                 proto::subscript<proto::terminal<event_tag>,GuardGrammar >,
                 TempRow<none,proto::_left,none,none,GuardGrammar(proto::_right)>(proto::_right) >
-        // event [ guard ] / action 
+        // event [ guard ] / action
        , proto::when<
                 proto::divides<BuildEventPlusGuard, ActionGrammar>,
                 fusion_event_action_guard<BuildEventPlusGuard(proto::_left),
                                           TempRow<none,none,none,ActionGrammar(proto::_right)>(proto::_right)
-                                           >() 
+                                           >()
                 >
         >
 {};
@@ -173,13 +173,13 @@ struct BuildSource
        , proto::when<
                 proto::subscript<BuildSourceState,GuardGrammar >,
                 TempRow<BuildSourceState(proto::_left),none,none,none,GuardGrammar(proto::_right)>(proto::_right) >
-        // == source [ guard ] / action 
+        // == source [ guard ] / action
        , proto::when<
                 proto::divides<BuildSourcePlusGuard,
                                ActionGrammar >,
                 fusion_source_action_guard<BuildSourcePlusGuard(proto::_left),
                                            TempRow<none,none,none,ActionGrammar(proto::_right)>(proto::_right)
-                                           >() 
+                                           >()
                 >
         >
 {};

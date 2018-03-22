@@ -436,7 +436,7 @@ namespace boost { namespace numeric { namespace ublas {
 
         BOOST_UBLAS_INLINE
         const_iterator begin () const {
-            return find (0); 
+            return find (0);
         }
         BOOST_UBLAS_INLINE
         const_iterator cbegin () const {
@@ -487,7 +487,7 @@ namespace boost { namespace numeric { namespace ublas {
     };
 
     // (- v) [i] = - v [i]
-    template<class E> 
+    template<class E>
     BOOST_UBLAS_INLINE
     typename vector_unary_traits<E, scalar_negate<typename E::value_type> >::result_type
     operator - (const vector_expression<E> &e) {
@@ -496,7 +496,7 @@ namespace boost { namespace numeric { namespace ublas {
     }
 
     // (conj v) [i] = conj (v [i])
-    template<class E> 
+    template<class E>
     BOOST_UBLAS_INLINE
     typename vector_unary_traits<E, scalar_conj<typename E::value_type> >::result_type
     conj (const vector_expression<E> &e) {
@@ -577,8 +577,8 @@ namespace boost { namespace numeric { namespace ublas {
 
         // Accessors
         BOOST_UBLAS_INLINE
-        size_type size () const { 
-            return BOOST_UBLAS_SAME (e1_.size (), e2_.size ()); 
+        size_type size () const {
+            return BOOST_UBLAS_SAME (e1_.size (), e2_.size ());
         }
 
     private:
@@ -671,7 +671,7 @@ namespace boost { namespace numeric { namespace ublas {
                             const const_subiterator2_type &it2, const const_subiterator2_type &it2_end):
                 container_const_reference<self_type> (vb), i_ (i), it1_ (it1), it1_end_ (it1_end), it2_ (it2), it2_end_ (it2_end) {}
 
-        private: 
+        private:
             // Dense specializations
             BOOST_UBLAS_INLINE
             void increment (dense_random_access_iterator_tag) {
@@ -822,7 +822,7 @@ namespace boost { namespace numeric { namespace ublas {
                 return functor_type::apply (t1, t2);
             }
 
-        public: 
+        public:
             // Arithmetic
             BOOST_UBLAS_INLINE
             const_iterator &operator ++ () {
@@ -945,7 +945,7 @@ namespace boost { namespace numeric { namespace ublas {
     struct vector_binary_traits {
         typedef vector_binary<E1, E2, F> expression_type;
 #ifndef BOOST_UBLAS_SIMPLE_ET_DEBUG
-        typedef expression_type result_type; 
+        typedef expression_type result_type;
 #else
         typedef typename E1::vector_temporary_type result_type;
 #endif
@@ -954,7 +954,7 @@ namespace boost { namespace numeric { namespace ublas {
     // (v1 + v2) [i] = v1 [i] + v2 [i]
     template<class E1, class E2>
     BOOST_UBLAS_INLINE
-    typename vector_binary_traits<E1, E2, scalar_plus<typename E1::value_type, 
+    typename vector_binary_traits<E1, E2, scalar_plus<typename E1::value_type,
                                                       typename E2::value_type> >::result_type
     operator + (const vector_expression<E1> &e1,
                 const vector_expression<E2> &e2) {
@@ -1149,7 +1149,7 @@ namespace boost { namespace numeric { namespace ublas {
                 return it2_.index ();
             }
 
-            // Assignment 
+            // Assignment
             BOOST_UBLAS_INLINE
             const_iterator &operator = (const const_iterator &it) {
                 container_const_reference<self_type>::assign (&it ());
@@ -1182,7 +1182,7 @@ namespace boost { namespace numeric { namespace ublas {
 
         BOOST_UBLAS_INLINE
         const_iterator begin () const {
-            return find (0); 
+            return find (0);
         }
         BOOST_UBLAS_INLINE
         const_iterator cbegin () const {
@@ -1190,7 +1190,7 @@ namespace boost { namespace numeric { namespace ublas {
         }
         BOOST_UBLAS_INLINE
         const_iterator end () const {
-            return find (size ()); 
+            return find (size ());
         }
         BOOST_UBLAS_INLINE
         const_iterator cend () const {
@@ -1235,7 +1235,7 @@ namespace boost { namespace numeric { namespace ublas {
     // (t * v) [i] = t * v [i]
     template<class T1, class E2>
     BOOST_UBLAS_INLINE
-    typename enable_if< is_convertible<T1, typename E2::value_type >,    
+    typename enable_if< is_convertible<T1, typename E2::value_type >,
     typename vector_binary_scalar1_traits<const T1, E2, scalar_multiplies<T1, typename E2::value_type> >::result_type
     >::type
     operator * (const T1 &e1,
@@ -1276,7 +1276,7 @@ namespace boost { namespace numeric { namespace ublas {
         // Accessors
         BOOST_UBLAS_INLINE
         size_type size () const {
-            return e1_.size (); 
+            return e1_.size ();
         }
 
     public:
@@ -1478,7 +1478,7 @@ namespace boost { namespace numeric { namespace ublas {
     // (v * t) [i] = v [i] * t
     template<class E1, class T2>
     BOOST_UBLAS_INLINE
-    typename enable_if< is_convertible<T2, typename E1::value_type >,    
+    typename enable_if< is_convertible<T2, typename E1::value_type >,
     typename vector_binary_scalar2_traits<E1, const T2, scalar_multiplies<typename E1::value_type, T2> >::result_type
     >::type
     operator * (const vector_expression<E1> &e1,
@@ -1490,7 +1490,7 @@ namespace boost { namespace numeric { namespace ublas {
     // (v / t) [i] = v [i] / t
     template<class E1, class T2>
     BOOST_UBLAS_INLINE
-    typename enable_if< is_convertible<T2, typename E1::value_type >,    
+    typename enable_if< is_convertible<T2, typename E1::value_type >,
     typename vector_binary_scalar2_traits<E1, const T2, scalar_divides<typename E1::value_type, T2> >::result_type
     >::type
     operator / (const vector_expression<E1> &e1,

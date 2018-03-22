@@ -1,4 +1,4 @@
-/*-----------------------------------------------------------------------------+    
+/*-----------------------------------------------------------------------------+
 Copyright (c) 2010-2010: Joachim Faulhaber
 +------------------------------------------------------------------------------+
    Distributed under the Boost Software License, Version 1.0.
@@ -22,11 +22,11 @@ namespace boost{ namespace icl
 
     //--------------------------------------------------------------------------
     template <class Type>
-    struct has_key_object_type 
+    struct has_key_object_type
       : mpl::bool_<detail::has_key_object_type<Type>::value>
     {};
 
-    template <class Type, bool HasKeyContainerType, bool IsSet> 
+    template <class Type, bool HasKeyContainerType, bool IsSet>
     struct get_key_object_type;
 
     template <class Type>
@@ -50,7 +50,7 @@ namespace boost{ namespace icl
     template <class Type>
     struct key_container_type_of
     {
-        typedef typename 
+        typedef typename
             get_key_object_type
             < Type
             , has_key_object_type<Type>::value
@@ -74,7 +74,7 @@ namespace boost{ namespace icl
     {
         typedef is_key_container_of<KeyT, ObjectT> type;
         BOOST_STATIC_CONSTANT(bool, value =
-            (mpl::or_< is_strict_key_container_of<KeyT, ObjectT> 
+            (mpl::or_< is_strict_key_container_of<KeyT, ObjectT>
                      , mpl::and_< mpl::or_<is_set<ObjectT>, is_map<ObjectT> >
                                 , boost::is_same<ObjectT, KeyT> > >::value)
             );

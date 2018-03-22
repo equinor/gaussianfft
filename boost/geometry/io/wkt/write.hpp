@@ -51,8 +51,8 @@ namespace boost { namespace geometry
 
 // Silence warning C4512: 'boost::geometry::wkt_manipulator<Geometry>' : assignment operator could not be generated
 #if defined(_MSC_VER)
-#pragma warning(push)  
-#pragma warning(disable : 4512)  
+#pragma warning(push)
+#pragma warning(disable : 4512)
 #endif
 
 #ifndef DOXYGEN_NO_DETAIL
@@ -153,7 +153,7 @@ struct wkt_range
         }
 
         // optionally, close range to ring by repeating the first point
-        if (force_closed 
+        if (force_closed
             && boost::size(range) > 1
             && detail::disjoint::disjoint_point_point(*begin, *(end - 1)))
         {
@@ -507,7 +507,7 @@ inline wkt_manipulator<Geometry> wkt(Geometry const& geometry)
 }
 
 #if defined(_MSC_VER)
-#pragma warning(pop)  
+#pragma warning(pop)
 #endif
 
 }} // namespace boost::geometry

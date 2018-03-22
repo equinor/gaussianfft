@@ -122,7 +122,7 @@ template <typename Point, typename SideStrategy>
 struct angle_equal_to
 {
     typedef Point vector_type;
-    
+
     inline angle_equal_to(Point const& origin, SideStrategy const& strategy)
         : m_origin(origin)
         , m_strategy(strategy)

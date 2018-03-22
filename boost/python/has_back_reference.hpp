@@ -8,7 +8,7 @@
 # include <boost/python/detail/prefix.hpp>
 # include <boost/mpl/bool.hpp>
 
-namespace boost { namespace python { 
+namespace boost { namespace python {
 
 // traits class which users can specialize to indicate that a class
 // contains a back-reference to its owning PyObject*

@@ -8,7 +8,7 @@
 //           Andrew Lumsdaine
 
 //
-// This file contains traits that describe 
+// This file contains traits that describe
 //
 #ifndef BOOST_GRAPH_PARALLEL_CONTAINER_TRAITS_HPP
 #define BOOST_GRAPH_PARALLEL_CONTAINER_TRAITS_HPP
@@ -40,6 +40,6 @@ process_group_adl(const Container& container)
 }
 
 
-} } } // end namespace boost::graph::parallel 
+} } } // end namespace boost::graph::parallel
 
 #endif // BOOST_GRAPH_PARALLEL_CONTAINER_TRAITS_HPP

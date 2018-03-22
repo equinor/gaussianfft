@@ -46,13 +46,13 @@ namespace boost
             > : \
             boost::mpl::int_<n> \
           {};
-  
+
         BOOST_PP_REPEAT(
           BOOST_METAPARSE_LIMIT_STRING_SIZE,
           BOOST_METAPARSE_STRING_CASE,
           ~
         )
-  
+
         #undef BOOST_METAPARSE_STRING_CASE
       }
     }

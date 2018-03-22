@@ -345,15 +345,15 @@ struct tommath_int
       d = v;
       return t.compare(d);
    }
-   ::mp_int& data() 
-   { 
+   ::mp_int& data()
+   {
       BOOST_ASSERT(m_data.dp);
-      return m_data; 
+      return m_data;
    }
-   const ::mp_int& data()const 
-   { 
+   const ::mp_int& data()const
+   {
       BOOST_ASSERT(m_data.dp);
-      return m_data; 
+      return m_data;
    }
    void swap(tommath_int& o)BOOST_NOEXCEPT
    {
@@ -539,8 +539,8 @@ inline void eval_complement(tommath_int& result, const tommath_int& u)
    //
    unsigned shift = result.data().used * DIGIT_BIT;    // How many bits we're actually using
    // How many bits we actually need, reduced by one to account for a mythical sign bit:
-   int padding = result.data().used * std::numeric_limits<mp_digit>::digits - shift - 1; 
-   while(padding >= std::numeric_limits<mp_digit>::digits) 
+   int padding = result.data().used * std::numeric_limits<mp_digit>::digits - shift - 1;
+   while(padding >= std::numeric_limits<mp_digit>::digits)
       padding -= std::numeric_limits<mp_digit>::digits;
 
    // Create a mask providing the extra bits we need and add to result:
@@ -597,7 +597,7 @@ inline void eval_powm(tommath_int& result, const tommath_int& base, const tommat
 }
 
 
-inline void eval_qr(const tommath_int& x, const tommath_int& y, 
+inline void eval_qr(const tommath_int& x, const tommath_int& y,
    tommath_int& q, tommath_int& r)
 {
    detail::check_tommath_result(mp_div(const_cast< ::mp_int*>(&x.data()), const_cast< ::mp_int*>(&y.data()), &q.data(), &r.data()));
@@ -677,7 +677,7 @@ typedef number<tommath_rational>                 tom_rational;
 
 namespace std{
 
-template<boost::multiprecision::expression_template_option ExpressionTemplates> 
+template<boost::multiprecision::expression_template_option ExpressionTemplates>
 class numeric_limits<boost::multiprecision::number<boost::multiprecision::tommath_int, ExpressionTemplates> >
 {
    typedef boost::multiprecision::number<boost::multiprecision::tommath_int, ExpressionTemplates> number_type;
@@ -688,11 +688,11 @@ public:
    // to zero:
    //
    static number_type (min)()
-   { 
+   {
       return number_type();
    }
-   static number_type (max)() 
-   { 
+   static number_type (max)()
+   {
       return number_type();
    }
    static number_type lowest() { return (min)(); }

@@ -71,7 +71,7 @@ struct is_empty_impl
 {
     typedef typename remove_cv<T>::type cvt;
     BOOST_STATIC_CONSTANT(
-        bool, 
+        bool,
         value = ( ::boost::detail::empty_helper<cvt,::boost::is_class<T>::value>::value || BOOST_INTERNAL_IS_EMPTY(cvt)));
 };
 

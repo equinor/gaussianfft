@@ -652,7 +652,7 @@ class treap_impl
    template<class KeyType, class KeyTypeKeyCompare, class KeyValuePrioCompare>
    BOOST_INTRUSIVE_DOC1ST(std::pair<iterator BOOST_INTRUSIVE_I bool>
       , typename detail::disable_if_convertible
-         <KeyType BOOST_INTRUSIVE_I const_iterator BOOST_INTRUSIVE_I 
+         <KeyType BOOST_INTRUSIVE_I const_iterator BOOST_INTRUSIVE_I
          std::pair<iterator BOOST_INTRUSIVE_I bool> >::type)
       insert_unique_check
       ( const KeyType &key, KeyTypeKeyCompare comp

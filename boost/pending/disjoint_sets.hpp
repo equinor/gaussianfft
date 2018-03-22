@@ -19,7 +19,7 @@ namespace boost {
 
   struct find_with_path_halving {
     template <class ParentPA, class Vertex>
-    Vertex operator()(ParentPA p, Vertex v) { 
+    Vertex operator()(ParentPA p, Vertex v) {
       return detail::find_representative_with_path_halving(p, v);
     }
   };
@@ -48,15 +48,15 @@ namespace boost {
     >
   class disjoint_sets {
     typedef disjoint_sets self;
-    
+
     inline disjoint_sets() {}
   public:
-    inline disjoint_sets(RankPA r, ParentPA p) 
+    inline disjoint_sets(RankPA r, ParentPA p)
       : rank(r), parent(p) {}
 
-    inline disjoint_sets(const self& c) 
+    inline disjoint_sets(const self& c)
       : rank(c.rank), parent(c.parent) {}
-    
+
     // Make Set -- Create a singleton set containing vertex x
     template <class Element>
     inline void make_set(Element x)
@@ -65,21 +65,21 @@ namespace boost {
       typedef typename property_traits<RankPA>::value_type R;
       put(rank, x, R());
     }
-    
+
     // Link - union the two sets represented by vertex x and y
     template <class Element>
     inline void link(Element x, Element y)
     {
       detail::link_sets(parent, rank, x, y, rep);
     }
-    
-    // Union-Set - union the two sets containing vertex x and y 
+
+    // Union-Set - union the two sets containing vertex x and y
     template <class Element>
     inline void union_set(Element x, Element y)
     {
       link(find_set(x), find_set(y));
     }
-    
+
     // Find-Set - returns the Element representative of the set
     // containing Element x and applies path compression.
     template <class Element>
@@ -91,7 +91,7 @@ namespace boost {
     template <class ElementIterator>
     inline std::size_t count_sets(ElementIterator first, ElementIterator last)
     {
-      std::size_t count = 0;  
+      std::size_t count = 0;
       for ( ; first != last; ++first)
       if (get(parent, *first) == *first)
         ++count;
@@ -101,16 +101,16 @@ namespace boost {
     template <class ElementIterator>
     inline void normalize_sets(ElementIterator first, ElementIterator last)
     {
-      for (; first != last; ++first) 
+      for (; first != last; ++first)
         detail::normalize_node(parent, *first);
-    }    
-    
+    }
+
     template <class ElementIterator>
     inline void compress_sets(ElementIterator first, ElementIterator last)
     {
-      for (; first != last; ++first) 
+      for (; first != last; ++first)
         detail::find_representative_with_full_compression(parent, *first);
-    }    
+    }
   protected:
     RankPA rank;
     ParentPA parent;
@@ -118,7 +118,7 @@ namespace boost {
   };
 
 
-  
+
 
   template <class ID = identity_property_map,
             class InverseID = identity_property_map,
@@ -142,21 +142,21 @@ namespace boost {
     }
     // note this is not normally needed
     template <class Element>
-    inline void 
+    inline void
     make_set(Element x) {
       parent[x] = x;
       rank[x]   = 0;
     }
     template <class Element>
-    inline void 
+    inline void
     link(Element x, Element y)
     {
       extend_sets(x,y);
-      detail::link_sets(&parent[0], &rank[0], 
+      detail::link_sets(&parent[0], &rank[0],
                         get(id,x), get(id,y), rep);
     }
     template <class Element>
-    inline void 
+    inline void
     union_set(Element x, Element y) {
       Element rx = find_set(x);
       Element ry = find_set(y);
@@ -170,7 +170,7 @@ namespace boost {
     template <class ElementIterator>
     inline std::size_t count_sets(ElementIterator first, ElementIterator last)
     {
-      std::size_t count = 0;  
+      std::size_t count = 0;
       for ( ; first != last; ++first)
       if (parent[*first] == *first)
         ++count;
@@ -180,24 +180,24 @@ namespace boost {
     template <class ElementIterator>
     inline void normalize_sets(ElementIterator first, ElementIterator last)
     {
-      for (; first != last; ++first) 
+      for (; first != last; ++first)
         detail::normalize_node(&parent[0], *first);
-    }    
-    
+    }
+
     template <class ElementIterator>
     inline void compress_sets(ElementIterator first, ElementIterator last)
     {
-      for (; first != last; ++first) 
+      for (; first != last; ++first)
         detail::find_representative_with_full_compression(&parent[0],
                                                           *first);
-    }    
+    }
 
     const ParentContainer& parents() { return parent; }
 
   protected:
 
     template <class Element>
-    inline void 
+    inline void
     extend_sets(Element x, Element y)
     {
       Index needed = get(id,x) > get(id,y) ? get(id,x) + 1 : get(id,y) + 1;
@@ -205,7 +205,7 @@ namespace boost {
         rank.insert(rank.end(), needed - rank.size(), 0);
         for (Index k = parent.size(); k < needed; ++k)
         parent.push_back(k);
-      } 
+      }
     }
 
     ID id;

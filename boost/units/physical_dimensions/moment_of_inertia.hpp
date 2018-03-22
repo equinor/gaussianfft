@@ -1,4 +1,4 @@
-// Boost.Units - A C++ library for zero-overhead dimensional analysis and 
+// Boost.Units - A C++ library for zero-overhead dimensional analysis and
 // unit/quantity manipulation and conversion
 //
 // Copyright (C) 2003-2008 Matthias Christian Schabel
@@ -23,7 +23,7 @@ namespace units {
 /// derived dimension for moment of inertia : L^2 M QP^-2
 typedef derived_dimension<length_base_dimension,2,
                           mass_base_dimension,1,
-                          plane_angle_base_dimension,-2>::type moment_of_inertia_dimension;                
+                          plane_angle_base_dimension,-2>::type moment_of_inertia_dimension;
 
 } // namespace units
 

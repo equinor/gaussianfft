@@ -31,7 +31,7 @@ public:
     double const & operator()(int i, int j) const {
         return _data[i*2 + j];
     }
-    
+
     double const * data() const { return _data; }
 
 private:
@@ -53,7 +53,7 @@ public:
     double const & operator[](int i) const {
         return _data[i];
     }
-    
+
     double const * data() const { return _data; }
 
     vector2 operator+(vector2 const & other) const {
@@ -126,7 +126,7 @@ public:
     bivariate_gaussian(vector2 const & mu, matrix2 const & sigma)
         : _mu(mu), _sigma(sigma), _cholesky(compute_inverse_cholesky(sigma))
     {}
-    
+
 private:
 
     /**
@@ -149,7 +149,7 @@ private:
     vector2 _mu;
     matrix2 _sigma;
     matrix2 _cholesky;
-                        
+
 };
 
 /*
@@ -173,7 +173,7 @@ private:
  *  conversion with reference counting described above.
  *
  *  It's also worth noting that these return NumPy arrays that cannot be modified in Python;
- *  the const overloads of vector::data() and matrix::data() return const references, 
+ *  the const overloads of vector::data() and matrix::data() return const references,
  *  and passing a const pointer to from_data causes NumPy's 'writeable' flag to be set to false.
  */
 static bn::ndarray py_get_mu(bp::object const & self) {
@@ -184,7 +184,7 @@ static bn::ndarray py_get_mu(bp::object const & self) {
         bp::make_tuple(2),
         bp::make_tuple(sizeof(double)),
         self
-    );  
+    );
 }
 static bn::ndarray py_get_sigma(bp::object const & self) {
     matrix2 const & sigma = bp::extract<bivariate_gaussian const &>(self)().get_sigma();
@@ -233,7 +233,7 @@ static void copy_ndarray_to_mv2(bn::ndarray const & array, matrix2 & mat) {
  */
 template <typename T, int N>
 struct mv2_from_python {
-    
+
     /**
      *  Register the converter.
      */

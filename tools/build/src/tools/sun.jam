@@ -46,12 +46,12 @@ feature.compose <stdlib>gnu
     : <cxxflags>-std=c++03 <linkflags>-std=c++03
     ;
 
-rule init ( version ? : command * : options * ) 
+rule init ( version ? : command * : options * )
 {
-    local condition = [ 
+    local condition = [
       common.check-init-parameters sun : version $(version) ] ;
-    
-    command = [ common.get-invocation-command sun : CC 
+
+    command = [ common.get-invocation-command sun : CC
         : $(command) : "/opt/SUNWspro/bin" ] ;
 
     # Even if the real compiler is not found, put CC to
@@ -59,7 +59,7 @@ rule init ( version ? : command * : options * )
     command ?= CC ;
 
     common.handle-options sun : $(condition) : $(command) : $(options) ;
-    
+
     command_c = $(command[1--2]) $(command[-1]:B=cc) ;
 
     toolset.flags sun CONFIG_C_COMMAND $(condition) : $(command_c) ;

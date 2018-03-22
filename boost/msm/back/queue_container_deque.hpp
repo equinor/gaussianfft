@@ -20,7 +20,7 @@ namespace boost { namespace msm { namespace back
         typedef int queue_container_policy;
 
         template <class Element>
-        struct In 
+        struct In
         {
             typedef typename std::deque<Element> type;
         };

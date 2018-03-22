@@ -12,7 +12,7 @@
 #define BOOST_CONTAINER_PMR_RESOURCE_ADAPTOR_HPP
 
 #if defined (_MSC_VER)
-#  pragma once 
+#  pragma once
 #endif
 
 #include <boost/config.hpp>
@@ -118,7 +118,7 @@ class resource_adaptor_imp
    {  (void)alignment;  return this->ebo_alloc_t::get().allocate(bytes);  }
 
    //! <b>Requires</b>: p was previously allocated using A.allocate, where A == m_alloc, and not
-   //!   subsequently deallocated. 
+   //!   subsequently deallocated.
    //!
    //! <b>Effects</b>: Returns memory to the allocator using m_alloc.deallocate().
    virtual void do_deallocate(void* p, size_t bytes, size_t alignment)

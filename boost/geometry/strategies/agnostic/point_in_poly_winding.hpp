@@ -167,7 +167,7 @@ struct winding_check_touch
         //  it doesn't matter what lon it is if it's a pole
         //  so e.g. if one of the segment endpoints is a pole
         //  then only the other lon matters
-        
+
         bool eq1_strict = math::equals(s1x, px);
         bool eq2_strict = math::equals(s2x, px);
 
@@ -175,7 +175,7 @@ struct winding_check_touch
            || math::equals(s1y, pi2) || math::equals(s1y, -pi2); // s1 is pole
         eq2 = eq2_strict // lon strictly equal to s2
            || math::equals(s2y, pi2) || math::equals(s2y, -pi2); // s2 is pole
-        
+
         // segment overlapping pole
         calc_t s1x_anti = s1x + constants::half_period();
         math::normalize_longitude<units_t, calc_t>(s1x_anti);
@@ -190,7 +190,7 @@ struct winding_check_touch
                 eq1 = eq2 = true;
             }
         }
-        
+
         // Both equal p -> segment vertical
         // The only thing which has to be done is check if point is ON segment
         if (eq1 && eq2)
@@ -294,7 +294,7 @@ template <typename Point, typename CalculationType>
 struct winding_calculate_count<Point, CalculationType, cartesian_tag>
 {
     typedef CalculationType calc_t;
-    
+
     static inline int apply(calc_t const& p,
                             calc_t const& s1, calc_t const& s2,
                             bool eq1, bool eq2)
@@ -344,7 +344,7 @@ class winding
             PointOfSegment,
             CalculationType
         >::type calculation_type;
-    
+
     /*! subclass to keep state */
     class counter
     {
@@ -437,7 +437,7 @@ public:
                 // 1 left, -1 right
                 side = m_side_strategy.apply(s1, s2, point);
             }
-            
+
             if (side == 0)
             {
                 // Point is lying on segment

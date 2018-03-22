@@ -44,13 +44,13 @@ namespace boost
               fail<error::index_out_of_range<0, n - 1, K> > \
             >::type \
           {};
-        
+
         BOOST_PP_REPEAT(
           BOOST_METAPARSE_LIMIT_SEQUENCE_SIZE,
           BOOST_METAPARSE_NTH_OF_CASE,
           ~
         )
-        
+
         #undef BOOST_METAPARSE_NTH_OF_CASE
       }
     }

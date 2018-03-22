@@ -1,6 +1,6 @@
 //  (C) Copyright Gennadiy Rozental 2001.
 //  Distributed under the Boost Software License, Version 1.0.
-//  (See accompanying file LICENSE_1_0.txt or copy at 
+//  (See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org/libs/test for the library home page.
@@ -39,11 +39,11 @@ public:
 
     struct iterator {
         // Constructor
-        explicit            iterator( singleton<T> const* owner ) 
-        : m_owner( owner ) 
+        explicit            iterator( singleton<T> const* owner )
+        : m_owner( owner )
         {}
 
-        // forward iterator interface 
+        // forward iterator interface
         sample const&       operator*() const   { return m_owner->value(); }
         void                operator++() {}
 
@@ -81,9 +81,9 @@ struct is_dataset<singleton<T>> : mpl::true_ {};
 
 /// @overload boost::unit_test::data::make()
 template<typename T>
-inline typename std::enable_if<!is_container_forward_iterable<T>::value && 
+inline typename std::enable_if<!is_container_forward_iterable<T>::value &&
                                !monomorphic::is_dataset<T>::value &&
-                               !boost::is_array<typename boost::remove_reference<T>::type>::value, 
+                               !boost::is_array<typename boost::remove_reference<T>::type>::value,
                                monomorphic::singleton<T>
 >::type
 make( T&& v )

@@ -86,7 +86,7 @@ public:
      * \throws Nothing.
      */
     binding() { BOOST_MPL_ASSERT((::boost::type_erasure::is_relaxed<Concept>)); }
-    
+
     /**
      * \pre @c Map must be an MPL map with an entry for each placeholder
      *      referred to by @c Concept.
@@ -100,7 +100,7 @@ public:
             static_binding<Map>()
         ))
     {}
-    
+
     /**
      * \pre @c Map must be an MPL map with an entry for each placeholder
      *      referred to by @c Concept.
@@ -195,7 +195,7 @@ public:
      */
     friend bool operator==(const binding& lhs, const binding& rhs)
     { return *lhs.impl.table == *rhs.impl.table; }
-    
+
     /**
      * \return true iff the arguments do not map to identical
      *         sets of types.

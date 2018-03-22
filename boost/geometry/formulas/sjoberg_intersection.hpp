@@ -71,7 +71,7 @@ struct sjoberg_intersection_spherical_02
 
         CT const tan_lat_a2 = tan(lat_a2);
         CT const tan_lat_b2 = tan(lat_b2);
-        
+
         return apply(lon1, lon_a2, lon2, lon_b2,
                      sin_lon1, cos_lon1, sin_lat1, cos_lat1,
                      sin_lon2, cos_lon2, sin_lat2, cos_lat2,
@@ -97,7 +97,7 @@ private:
         CT const sin_dlon1 = sin(dlon1);
         CT const dlon2 = lon_b2 - lon2;
         CT const sin_dlon2 = sin(dlon2);
-        
+
         CT const c0 = 0;
         bool const is_vertical1 = math::equals(sin_dlon1, c0);
         bool const is_vertical2 = math::equals(sin_dlon2, c0);
@@ -135,7 +135,7 @@ private:
             CT const tan_alpha2_x = cos_lat2 * tan_lat_b2 - sin_lat2 * cos_dlon2;
             tan_alpha1 = sin_dlon1 / tan_alpha1_x;
             tan_alpha2 = sin_dlon2 / tan_alpha2_x;
-        
+
             CT const T1 = tan_alpha1 * cos_lat1;
             CT const T2 = tan_alpha2 * cos_lat2;
             CT const T1T2 = T1*T2;
@@ -155,12 +155,12 @@ private:
         CT const lon_dist2 = (std::max)((std::min)(math::longitude_difference<radian>(lon1, lon_2),
                                                    math::longitude_difference<radian>(lon_a2, lon_2)),
                                         (std::min)(math::longitude_difference<radian>(lon2, lon_2),
-                                                   math::longitude_difference<radian>(lon_b2, lon_2)));        
+                                                   math::longitude_difference<radian>(lon_b2, lon_2)));
         if (lon_dist2 < lon_dist1)
         {
             lon = lon_2;
         }
-        
+
         CT const sin_lon = sin(lon);
         CT const cos_lon = cos(lon);
 
@@ -180,7 +180,7 @@ private:
             CT const lat_x_2 = tan_alpha2 * cos_lat2;
             tan_lat = lat_y_2 / lat_x_2;
         }
-        
+
         return true;
     }
 };
@@ -216,7 +216,7 @@ inline CT sjoberg_d_lambda_e_sqr(CT const& sin_betaj, CT const& sin_beta,
 
     CT const c1 = 1;
     CT const c2 = 2;
-        
+
     CT const asin_B = asin(bounded(sin_beta / sqrt_1_Cj_sqr, -c1, c1));
     CT const asin_Bj = asin(sin_betaj / sqrt_1_Cj_sqr);
     CT const L0 = (asin_B - asin_Bj) / c2;
@@ -408,7 +408,7 @@ public:
         {
             return false;
         }
-        
+
         // NOTE: beta may be slightly out of bounds here but d_lambda handles that
         CT const dLj = d_lambda(sin_beta);
         delta_k = sign_lon_diff * (/*asin_t_t0j*/ - asin_tj_t0j + dLj);
@@ -454,7 +454,7 @@ public:
             delta_k_behind = sign_lon_diff * pi;
             return true;
         }
-        
+
         // beta out of bounds and not close
         if (check_sin_beta
             && ! (is_sin_beta_ok(sin_beta)
@@ -462,7 +462,7 @@ public:
         {
             return false;
         }
-        
+
         // NOTE: beta may be slightly out of bounds here but d_lambda handles that
         CT const dLj = d_lambda(sin_beta);
         delta_k_before = sign_lon_diff * (/*asin_t_t0j*/ - asin_tj_t0j + dLj);
@@ -785,7 +785,7 @@ private:
         CT const c1 = 1;
 
         CT const e_sqr = geod1.e_sqr;
-        
+
         CT lon1_diff = 0;
         CT lon2_diff = 0;
 
@@ -847,7 +847,7 @@ private:
             if (math::equals(dbeta_denom, c0))
             {
                 return false;
-            }            
+            }
 
             // The sign of dbeta is changed WRT [Sjoberg02]
             CT const dbeta = (lon1_minus_lon2 + lon1_diff - lon2_diff) / dbeta_denom;
@@ -960,7 +960,7 @@ private:
             {
                 break;
             }
-                    
+
             bool try_t2 = false;
             converge_07_result result_curr;
             if (converge_07_step_one(CT(sin(beta1)), t1, lon1_minus_lon2, geodesics, lon_sph, result_curr))
@@ -996,7 +996,7 @@ private:
                 }
             }
 
-            
+
             if (try_t2)
             {
                 CT t2 = t;
@@ -1089,7 +1089,7 @@ private:
     {
         using math::detail::bounded;
         CT const c1 = 1;
-        
+
         CT k_diff_before = 0;
         CT k_diff_behind = 0;
 

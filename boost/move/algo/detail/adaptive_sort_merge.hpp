@@ -22,7 +22,7 @@
 // (http://comjnl.oxfordjournals.org/content/35/6/643.full.pdf).
 //
 // This implementation by Ion Gaztanaga uses previous ideas with additional changes:
-// 
+//
 // - Use of GCD-based rotation.
 // - Non power of two buffer-sizes.
 // - Tries to find sqrt(len)*2 unique keys, so that the merge sort
@@ -643,7 +643,7 @@ void buffered_merge
 //
 // Tries to collect at most n_keys unique elements from [first, last),
 // in the begining of the range, and ordered according to comp
-// 
+//
 // Returns the number of collected keys
 template<class RandIt, class Compare, class XBuf>
 typename iterator_traits<RandIt>::size_type
@@ -830,7 +830,7 @@ Unsigned lblock_for_combine
    //If l_block != 0, then n_keys is already enough to merge all blocks in all
    //phases as we've found all needed keys for that buffer and length before.
    //If l_block == 0 then see if half keys can be used as buffer and the rest
-   //as keys guaranteeing that n_keys >= (2*l_merged)/lblock = 
+   //as keys guaranteeing that n_keys >= (2*l_merged)/lblock =
    if(!l_block){
       //If l_block == 0 then n_keys is power of two
       //(guaranteed by build_params(...))
@@ -897,10 +897,10 @@ void move_data_backward( RandIt cur_pos
 {
    //Move buffer to the total combination right
    if(xbuf_used){
-      boost::move_backward(cur_pos, cur_pos+l_data, new_pos+l_data);      
+      boost::move_backward(cur_pos, cur_pos+l_data, new_pos+l_data);
    }
    else{
-      boost::adl_move_swap_ranges_backward(cur_pos, cur_pos+l_data, new_pos+l_data);      
+      boost::adl_move_swap_ranges_backward(cur_pos, cur_pos+l_data, new_pos+l_data);
       //Rotate does less moves but it seems slower due to cache issues
       //rotate_gcd(first-l_block, first+len-l_block, first+len);
    }
@@ -1062,7 +1062,7 @@ OutputIt op_partial_merge_and_swap_impl
 {
    InputIt1 first1(r_first1);
    InputIt2 first2(r_first2);
-   
+
    if(first2 != last2 && last1 != first1) {
       InputIt2 first_min(r_first_min);
       bool non_empty_ranges = true;
@@ -1162,7 +1162,7 @@ OutputIt op_merge_blocks_with_irreg
    typedef typename iterator_traits<RandIt>::size_type size_type;
 
    for(; n_block_left; --n_block_left, ++key_first, min_check -= min_check != 0, max_check -= max_check != 0){
-      size_type next_key_idx = find_next_block(key_first, key_comp, first_reg, l_block, min_check, max_check, comp);  
+      size_type next_key_idx = find_next_block(key_first, key_comp, first_reg, l_block, min_check, max_check, comp);
       max_check = min_value(max_value(max_check, next_key_idx+2), n_block_left);
       RandIt const last_reg  = first_reg + l_block;
       RandIt first_min = first_reg + next_key_idx*l_block;
@@ -1274,7 +1274,7 @@ void op_merge_blocks_left
             buf_end = buf_beg = first2 - (last1-first1);
             unmerged = op_partial_merge_and_save( first1, last1, first2, last2, first_min
                                                 , buf_beg, buf_end, comp, op, is_range1_A);
-         }  
+         }
          else{
             buf_beg = first1;
             buf_end = last1;
@@ -1597,7 +1597,7 @@ typename iterator_traits<RandIt>::size_type
 }
 
 template<class RandIt, class Compare, class Op>
-typename iterator_traits<RandIt>::size_type  
+typename iterator_traits<RandIt>::size_type
    op_merge_left_step_multiple
       ( RandIt first_block
       , typename iterator_traits<RandIt>::size_type const elements_in_blocks
@@ -1678,7 +1678,7 @@ void op_merge_right_step_once
 // As a last step, if auxiliary memory is available in-place merge is performed.
 // until all is merged or auxiliary memory is not large enough.
 template<class RandIt, class Compare, class XBuf>
-typename iterator_traits<RandIt>::size_type  
+typename iterator_traits<RandIt>::size_type
    adaptive_sort_build_blocks
       ( RandIt const first
       , typename iterator_traits<RandIt>::size_type const len
@@ -1828,7 +1828,7 @@ void adaptive_sort_combine_blocks
    }
 }
 
-//Returns true if buffer is placed in 
+//Returns true if buffer is placed in
 //[buffer+len-l_intbuf, buffer+len). Otherwise, buffer is
 //[buffer,buffer+l_intbuf)
 template<class RandIt, class Compare, class XBuf>
@@ -1869,7 +1869,7 @@ bool adaptive_sort_combine_all_blocks
       BOOST_ASSERT(!l_intbuf || (l_block == l_intbuf));
       BOOST_ASSERT(n == 0 || (!use_internal_buf || prev_use_internal_buf) );
       BOOST_ASSERT(n == 0 || (!use_internal_buf || l_prev_block == l_block) );
-      
+
       bool const is_merge_left = (n&1) == 0;
       size_type const l_total_combined = calculate_total_combined(l_data, l_merged);
       if(n && prev_use_internal_buf && prev_merge_left){
@@ -2000,7 +2000,7 @@ bool adaptive_sort_build_params
    //l_base <= AdaptiveSortInsertionSortThreshold. This property is important
    //as build_blocks merges to the left iteratively duplicating the
    //merged size and all the buffer must be used just before the final
-   //merge to right step. This guarantees "build_blocks" produces 
+   //merge to right step. This guarantees "build_blocks" produces
    //segments of size l_build_buf*2, maximizing the classic merge phase.
    l_intbuf = size_type(ceil_sqrt_multiple(len, &l_base));
 
@@ -2035,18 +2035,18 @@ bool adaptive_sort_build_params
       size_type const to_collect = non_unique_buf ? n_min_ideal_keys : l_intbuf*2;
       size_type collected = collect_unique(first, first+len, to_collect, comp, xbuf);
 
-      //If available memory is 2*sqrt(l), then for "build_params" 
+      //If available memory is 2*sqrt(l), then for "build_params"
       //the situation is the same as if 2*l_intbuf were collected.
       if(non_unique_buf && collected == n_min_ideal_keys){
          l_build_buf = l_intbuf;
          n_keys = n_min_ideal_keys;
       }
       else if(collected == 2*l_intbuf){
-         //l_intbuf*2 elements found. Use all of them in the build phase 
+         //l_intbuf*2 elements found. Use all of them in the build phase
          l_build_buf = l_intbuf*2;
          n_keys = l_intbuf;
       }
-      else if(collected == (n_min_ideal_keys+l_intbuf)){ 
+      else if(collected == (n_min_ideal_keys+l_intbuf)){
          l_build_buf = l_intbuf;
          n_keys = n_min_ideal_keys;
       }
@@ -2243,7 +2243,7 @@ inline SizeType adaptive_merge_n_keys_intbuf(SizeType &rl_block, SizeType len1, 
 //   elements, etc) of until all trailing (len-2*csqrtlen) elements are merged.
 //
 //   In "combine_blocks" len/csqrtlen elements used are as "keys" (markers) to
-//   know if elements belong to the first or second block to be merged and another 
+//   know if elements belong to the first or second block to be merged and another
 //   leading csqrtlen elements are used as buffer. Explanation of the "combine_blocks" step:
 //
 //   Iteratively until all trailing (len-2*csqrtlen) elements are merged:
@@ -2265,7 +2265,7 @@ inline SizeType adaptive_merge_n_keys_intbuf(SizeType &rl_block, SizeType len1, 
 //    * If csqrtlen+len/csqrtlen are extracted, then only csqrtlen elements are used
 //      as buffer in the "build_blocks" step forming blocks of 2*csqrtlen elements. This
 //      means that an additional "combine_blocks" step will be needed to merge all elements.
-//    
+//
 //    * If no csqrtlen+len/csqrtlen elements can be extracted, but still more than a minimum,
 //      then reduces the number of elements used as buffer and keys in the "build_blocks"
 //      and "combine_blocks" steps. If "combine_blocks" has no enough keys due to this reduction
@@ -2296,7 +2296,7 @@ void adaptive_sort_impl
       insertion_sort(first, first + len, comp);
       return;
    }
-   
+
    if((len-len/2) <= xbuf.capacity()){
       merge_sort(first, first+len, comp, xbuf.data());
       return;

@@ -11,7 +11,7 @@
 # include <boost/python/converter/rvalue_from_python_data.hpp>
 # include <boost/python/converter/registered.hpp>
 
-namespace boost { namespace python { 
+namespace boost { namespace python {
 
 template <class T>
 struct enum_ : public objects::enum_base
@@ -70,7 +70,7 @@ void* enum_<T>::convertible_from_python(PyObject* obj)
         obj
         , upcast<PyObject>(
             converter::registered<T>::converters.m_class_object))
-        
+
         ? obj : 0;
 }
 

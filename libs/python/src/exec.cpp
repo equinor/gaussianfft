@@ -9,9 +9,9 @@
 #include <boost/python/extract.hpp>
 #include <boost/python/handle.hpp>
 
-namespace boost 
-{ 
-namespace python 
+namespace boost
+{
+namespace python
 {
 
 object BOOST_PYTHON_DECL eval(str string, object global, object local)

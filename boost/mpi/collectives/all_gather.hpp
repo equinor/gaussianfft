@@ -24,7 +24,7 @@ namespace detail {
   // datatype, so we'll use MPI_Gather to do all of the work.
   template<typename T>
   void
-  all_gather_impl(const communicator& comm, const T* in_values, int n, 
+  all_gather_impl(const communicator& comm, const T* in_values, int n,
                   T* out_values, mpl::true_)
   {
     MPI_Datatype type = boost::mpi::get_mpi_datatype<T>(*in_values);
@@ -37,7 +37,7 @@ namespace detail {
   // type. So, we'll do a manual gather followed by a broadcast.
   template<typename T>
   void
-  all_gather_impl(const communicator& comm, const T* in_values, int n, 
+  all_gather_impl(const communicator& comm, const T* in_values, int n,
                   T* out_values, mpl::false_)
   {
     gather(comm, in_values, n, out_values, 0);
@@ -54,7 +54,7 @@ all_gather(const communicator& comm, const T& in_value, T* out_values)
 
 template<typename T>
 void
-all_gather(const communicator& comm, const T& in_value, 
+all_gather(const communicator& comm, const T& in_value,
            std::vector<T>& out_values)
 {
   out_values.resize(comm.size());

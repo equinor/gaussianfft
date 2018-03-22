@@ -8,7 +8,7 @@
 # include <boost/python/detail/prefix.hpp>
 # include <boost/python/converter/rvalue_from_python_data.hpp>
 
-namespace boost { namespace python { namespace converter { 
+namespace boost { namespace python { namespace converter {
 
 struct registration;
 

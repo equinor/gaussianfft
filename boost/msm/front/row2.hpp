@@ -47,7 +47,7 @@ namespace boost { namespace msm { namespace front
         typedef T2 Target;
         typedef Event Evt;
         template <class FSM,class SourceState,class TargetState,class AllStates>
-        static ::boost::msm::back::HandledEnum action_call(FSM& fsm,Event const& evt,SourceState& src,TargetState& tgt, 
+        static ::boost::msm::back::HandledEnum action_call(FSM& fsm,Event const& evt,SourceState& src,TargetState& tgt,
                                 AllStates& all_states)
         {
             // in this front-end, we don't need to know source and target states
@@ -74,7 +74,7 @@ namespace boost { namespace msm { namespace front
         typedef T2 Target;
         typedef Event Evt;
         template <class FSM,class SourceState,class TargetState, class AllStates>
-        static ::boost::msm::back::HandledEnum action_call(FSM& fsm,Event const& evt,SourceState& src,TargetState& tgt, 
+        static ::boost::msm::back::HandledEnum action_call(FSM& fsm,Event const& evt,SourceState& src,TargetState& tgt,
                                 AllStates& all_states)
         {
             // in this front-end, we don't need to know source and target states
@@ -130,7 +130,7 @@ namespace boost { namespace msm { namespace front
         typedef T1 Target;
         typedef Event Evt;
         template <class FSM,class SourceState,class TargetState,class AllStates>
-        static ::boost::msm::back::HandledEnum action_call(FSM& fsm,Event const& evt,SourceState& src,TargetState& tgt, 
+        static ::boost::msm::back::HandledEnum action_call(FSM& fsm,Event const& evt,SourceState& src,TargetState& tgt,
                                 AllStates& all_states)
         {
             // in this front-end, we don't need to know source and target states
@@ -156,7 +156,7 @@ namespace boost { namespace msm { namespace front
         typedef T1 Target;
         typedef Event Evt;
         template <class FSM,class SourceState,class TargetState,class AllStates>
-        static ::boost::msm::back::HandledEnum action_call(FSM& fsm,Event const& evt,SourceState& src,TargetState& tgt, 
+        static ::boost::msm::back::HandledEnum action_call(FSM& fsm,Event const& evt,SourceState& src,TargetState& tgt,
                                 AllStates& all_states)
         {
             // in this front-end, we don't need to know source and target states

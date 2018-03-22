@@ -43,7 +43,7 @@ private:
   template<typename Archiver>
   void serialize(Archiver& ar, unsigned int /*version*/)
   {
-    ar & boost::serialization::base_object<inherited>(*this) 
+    ar & boost::serialization::base_object<inherited>(*this)
        & unsafe_serialize(descriptor);
   }
 };
@@ -173,10 +173,10 @@ PBGL_DISTRIB_ADJLIST_TYPE
     || is_same<typename config_type::vertex_list_selector, setS>::value
     || is_same<typename config_type::vertex_list_selector, multisetS>::value;
 
-  typedef detail::parallel::redistributed_descriptor<vertex_descriptor, 
+  typedef detail::parallel::redistributed_descriptor<vertex_descriptor,
                                                      vertex_property_type>
     redistributed_vertex;
-  typedef detail::parallel::redistributed_descriptor<edge_descriptor, 
+  typedef detail::parallel::redistributed_descriptor<edge_descriptor,
                                                      edge_property_type>
     redistributed_edge;
 
@@ -385,7 +385,7 @@ PBGL_DISTRIB_ADJLIST_TYPE
 
   this->distribution().clear();
 
-  detail::parallel::maybe_initialize_vertex_indices(vertices(base()), 
+  detail::parallel::maybe_initialize_vertex_indices(vertices(base()),
                                                     get(vertex_index, base()));
 }
 

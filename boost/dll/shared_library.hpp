@@ -55,7 +55,7 @@ class shared_library
 public:
 #ifdef BOOST_DLL_DOXYGEN
     typedef platform_specific native_handle_t;
-#else 
+#else
     typedef shared_library_impl::native_handle_t native_handle_t;
 #endif
 

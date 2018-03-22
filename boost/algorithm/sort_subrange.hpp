@@ -1,4 +1,4 @@
-/* 
+/*
    Copyright (c) Marshall Clow 2008-2012.
 
    Distributed under the Boost Software License, Version 1.0. (See accompanying
@@ -6,7 +6,7 @@
 
  Revision history:
    28 Sep 2015 mtc First version
-   
+
 */
 
 /// \file sort_subrange.hpp
@@ -27,13 +27,13 @@
 
 namespace boost { namespace algorithm {
 
-/// \fn sort_subrange ( T const& val, 
-///               Iterator first,     Iterator last, 
-///               Iterator sub_first, Iterator sub_last, 
+/// \fn sort_subrange ( T const& val,
+///               Iterator first,     Iterator last,
+///               Iterator sub_first, Iterator sub_last,
 ///               Pred p )
 /// \brief Sort the subrange [sub_first, sub_last) that is inside
 ///     the range [first, last) as if you had sorted the entire range.
-/// 
+///
 /// \param first       The start of the larger range
 /// \param last        The end of the larger range
 /// \param sub_first   The start of the sub range
@@ -41,9 +41,9 @@ namespace boost { namespace algorithm {
 /// \param p           A predicate to use to compare the values.
 ///                        p ( a, b ) returns a boolean.
 ///
-  template<typename Iterator, typename Pred> 
+  template<typename Iterator, typename Pred>
   void sort_subrange (
-  	Iterator first,     Iterator last, 
+  	Iterator first,     Iterator last,
   	Iterator sub_first, Iterator sub_last,
   	Pred p)
   {
@@ -58,7 +58,7 @@ namespace boost { namespace algorithm {
 
 
 
-  template<typename Iterator> 
+  template<typename Iterator>
   void sort_subrange (Iterator first, Iterator last, Iterator sub_first, Iterator sub_last)
   {
   	typedef typename std::iterator_traits<Iterator>::value_type value_type;
@@ -68,13 +68,13 @@ namespace boost { namespace algorithm {
 /// range versions?
 
 
-/// \fn partition_subrange ( T const& val, 
-///               Iterator first,     Iterator last, 
-///               Iterator sub_first, Iterator sub_last, 
+/// \fn partition_subrange ( T const& val,
+///               Iterator first,     Iterator last,
+///               Iterator sub_first, Iterator sub_last,
 ///               Pred p )
-/// \brief Gather the elements of the subrange [sub_first, sub_last) that is 
+/// \brief Gather the elements of the subrange [sub_first, sub_last) that is
 ///     inside the range [first, last) as if you had sorted the entire range.
-/// 
+///
 /// \param first       The start of the larger range
 /// \param last        The end of the larger range
 /// \param sub_first   The start of the sub range
@@ -82,9 +82,9 @@ namespace boost { namespace algorithm {
 /// \param p           A predicate to use to compare the values.
 ///                        p ( a, b ) returns a boolean.
 ///
-  template<typename Iterator, typename Pred> 
+  template<typename Iterator, typename Pred>
   void partition_subrange (
-  	Iterator first,     Iterator last, 
+  	Iterator first,     Iterator last,
   	Iterator sub_first, Iterator sub_last,
   	Pred p)
   {
@@ -97,7 +97,7 @@ namespace boost { namespace algorithm {
   		(void) std::nth_element(sub_first, sub_last, last, p);
   }
 
-  template<typename Iterator> 
+  template<typename Iterator>
   void partition_subrange (Iterator first, Iterator last, Iterator sub_first, Iterator sub_last)
   {
   	typedef typename std::iterator_traits<Iterator>::value_type value_type;

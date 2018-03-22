@@ -148,7 +148,7 @@ class bimap
             ::boost::bimaps::detail::bimap_core<KeyTypeA,KeyTypeB,AP1,AP2,AP3>
         >::type
     >,
-    public ::boost::bimaps::detail::right_map_view_extra_typedefs< 
+    public ::boost::bimaps::detail::right_map_view_extra_typedefs<
         BOOST_DEDUCED_TYPENAME ::boost::bimaps::detail::right_map_view_type<
             ::boost::bimaps::detail::bimap_core<KeyTypeA,KeyTypeB,AP1,AP2,AP3>
         >::type
@@ -166,16 +166,16 @@ class bimap
     /*
     // The rest is computed in the core, because it is quite difficult to
     // expose a nice interface with so many metaprogramming stuff.
-    
+
     // Map by {side} metadata
 
     typedef -unspecified- {side}_tag;
     typedef -unspecified- {side}_data_type;
     typedef -unspecified- {side}_value_type;
     typedef -unspecified- {side}_key_type;
-    
+
     // There are other typedefs for definitions of different map views
-    
+
     ------------------------------------------------------------------*/
 
     typedef BOOST_DEDUCED_TYPENAME ::boost::bimaps::detail::
@@ -205,19 +205,19 @@ class bimap
 
     typedef BOOST_DEDUCED_TYPENAME base_::relation::info_type info_type;
 
-    typedef BOOST_DEDUCED_TYPENAME base_::core_type::allocator_type allocator_type; 
-    
+    typedef BOOST_DEDUCED_TYPENAME base_::core_type::allocator_type allocator_type;
+
     /// Left map view
     left_map  left;
 
     /// Right map view
     right_map right;
 
-    typedef BOOST_DEDUCED_TYPENAME base_::logic_relation_set_tag 
+    typedef BOOST_DEDUCED_TYPENAME base_::logic_relation_set_tag
                                           logic_relation_set_tag;
     typedef BOOST_DEDUCED_TYPENAME base_::logic_left_tag logic_left_tag;
     typedef BOOST_DEDUCED_TYPENAME base_::logic_right_tag logic_right_tag;
-    typedef BOOST_DEDUCED_TYPENAME base_::core_type::ctor_args_list 
+    typedef BOOST_DEDUCED_TYPENAME base_::core_type::ctor_args_list
                                                      ctor_args_list;
 
    bimap(const allocator_type& al = allocator_type()) :

@@ -64,7 +64,7 @@ register_serialized(const T& value = T(), PyTypeObject* type = 0);
  *  value.
  */
 template<typename T>
-void 
+void
 register_skeleton_and_content(const T& value = T(), PyTypeObject* type = 0);
 
 } } } // end namespace boost::mpi::python

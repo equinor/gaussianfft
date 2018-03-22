@@ -160,7 +160,7 @@
                 ( (this_type), BOOST_PP_NIL ) ) \
     , /* error message (if any) */ \
         BOOST_LOCAL_FUNCTION_AUX_PP_DECL_TRAITS_ERROR(decl_traits) \
-    ) 
+    )
 
 // var_without_type: `[&] var_` (var_ != this).
 // var_with_type: `BOOST_PP_EMPTY | type_ [&] name_` (var_ != this).
@@ -184,7 +184,7 @@
         BOOST_LOCAL_FUNCTION_AUX_PP_DECL_TRAITS_BIND_THIS_TYPES(decl_traits) \
     , /* error message (if any) */ \
         BOOST_LOCAL_FUNCTION_AUX_PP_DECL_TRAITS_ERROR(decl_traits) \
-    ) 
+    )
 
 // this_type: `PP_EMPTY | type`.
 #define BOOST_LOCAL_FUNCTION_AUX_PP_DECL_TRAITS_APPEND_CONST_BIND_THIS_TYPE( \

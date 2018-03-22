@@ -207,8 +207,8 @@ template<typename SampleType,typename StepType>
 inline monomorphic::generated_by<monomorphic::xrange_t<SampleType>>
 xrange( SampleType const& begin_val, SampleType const& end_val, StepType const& step_val )
 {
-    return monomorphic::ds_detail::make_xrange<SampleType,StepType>::_(( 
-                data::begin=begin_val, 
+    return monomorphic::ds_detail::make_xrange<SampleType,StepType>::_((
+                data::begin=begin_val,
                 data::end=end_val,
                 data::step=step_val ));
 }

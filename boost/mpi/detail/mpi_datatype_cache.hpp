@@ -79,8 +79,8 @@ public:
 
     return datatype;
   }
-  
-  void clear(); 
+
+  void clear();
 
 private:
   MPI_Datatype get(const std::type_info* t);

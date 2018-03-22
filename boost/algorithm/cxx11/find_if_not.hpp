@@ -1,4 +1,4 @@
-/* 
+/*
    Copyright (c) Marshall Clow 2011-2012.
 
    Distributed under the Boost Software License, Version 1.0. (See accompanying
@@ -20,12 +20,12 @@ namespace boost { namespace algorithm {
 /// \fn find_if_not(InputIterator first, InputIterator last, Predicate p)
 /// \brief Finds the first element in the sequence that does not satisfy the predicate.
 /// \return         The iterator pointing to the desired element.
-/// 
+///
 /// \param first    The start of the input sequence
 /// \param last     One past the end of the input sequence
 /// \param p        A predicate for testing the elements of the range
 /// \note           This function is part of the C++2011 standard library.
-template<typename InputIterator, typename Predicate> 
+template<typename InputIterator, typename Predicate>
 InputIterator find_if_not ( InputIterator first, InputIterator last, Predicate p )
 {
     for ( ; first != last; ++first )
@@ -37,7 +37,7 @@ InputIterator find_if_not ( InputIterator first, InputIterator last, Predicate p
 /// \fn find_if_not ( const Range &r, Predicate p )
 /// \brief Finds the first element in the sequence that does not satisfy the predicate.
 /// \return         The iterator pointing to the desired element.
-/// 
+///
 /// \param r        The input range
 /// \param p        A predicate for testing the elements of the range
 ///

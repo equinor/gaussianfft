@@ -35,7 +35,7 @@ BOOST_PYTHON_MODULE(extending)
         // Add invite() as a member of hello!
         .def("invite", invite)
         ;
-    
+
     // Also add invite() as a regular function to the module.
     def("invite", invite);
 }

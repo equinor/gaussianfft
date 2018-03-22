@@ -3,7 +3,7 @@
     Copyright (c) 2007 Dan Marsden
     Copyright (c) 2009 Christopher Schmidt
 
-    Distributed under the Boost Software License, Version 1.0. (See accompanying 
+    Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================*/
 #if !defined(FUSION_FIND_IF_05052005_1107)
@@ -23,7 +23,7 @@
 #include <boost/fusion/sequence/intrinsic/end.hpp>
 #include <boost/fusion/support/category_of.hpp>
 
-namespace boost { namespace fusion { 
+namespace boost { namespace fusion {
     struct random_access_traversal_tag;
 namespace detail
 {
@@ -66,7 +66,7 @@ namespace detail
     };
 
     template<
-        typename First, typename Last, 
+        typename First, typename Last,
         typename Pred, bool>
     struct choose_find_if;
 

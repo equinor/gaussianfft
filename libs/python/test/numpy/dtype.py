@@ -13,7 +13,7 @@ if (sys.version_info.major >= 3):
     long = int
 
 class DtypeTestCase(unittest.TestCase):
-    
+
     def assertEquivalent(self, a, b):
         return self.assert_(dtype_ext.equivalent(a, b), "%r is not equivalent to %r")
 
@@ -57,7 +57,7 @@ class DtypeTestCase(unittest.TestCase):
             c = numpy.clongdouble
             self.assertEquivalent(dtype_ext.accept_longdouble(f(numpy.pi)), numpy.dtype(f))
             self.assertEquivalent(dtype_ext.accept_clongdouble(c(1+2j)), numpy.dtype(c))
-            
+
 
 if __name__=="__main__":
     unittest.main()

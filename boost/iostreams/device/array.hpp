@@ -42,7 +42,7 @@ public:
     array_adapter(const char_type* begin, std::size_t length);
     template<int N>
     array_adapter(char_type (&ar)[N])
-        : begin_(ar), end_(ar + N) 
+        : begin_(ar), end_(ar + N)
         { }
     pair_type input_sequence();
     pair_type output_sequence();
@@ -88,26 +88,26 @@ namespace detail {
 
 template<typename Mode, typename Ch>
 array_adapter<Mode, Ch>::array_adapter
-    (char_type* begin, char_type* end) 
-    : begin_(begin), end_(end) 
+    (char_type* begin, char_type* end)
+    : begin_(begin), end_(end)
     { }
 
 template<typename Mode, typename Ch>
 array_adapter<Mode, Ch>::array_adapter
-    (char_type* begin, std::size_t length) 
-    : begin_(begin), end_(begin + length) 
+    (char_type* begin, std::size_t length)
+    : begin_(begin), end_(begin + length)
     { }
 
 template<typename Mode, typename Ch>
 array_adapter<Mode, Ch>::array_adapter
-    (const char_type* begin, const char_type* end) 
+    (const char_type* begin, const char_type* end)
     : begin_(const_cast<char_type*>(begin)),  // Treated as read-only.
       end_(const_cast<char_type*>(end))       // Treated as read-only.
 { BOOST_STATIC_ASSERT((!is_convertible<Mode, output>::value)); }
 
 template<typename Mode, typename Ch>
 array_adapter<Mode, Ch>::array_adapter
-    (const char_type* begin, std::size_t length) 
+    (const char_type* begin, std::size_t length)
     : begin_(const_cast<char_type*>(begin)),       // Treated as read-only.
       end_(const_cast<char_type*>(begin) + length) // Treated as read-only.
 { BOOST_STATIC_ASSERT((!is_convertible<Mode, output>::value)); }

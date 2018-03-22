@@ -40,7 +40,7 @@ struct index_applier
     typedef typename IndexSpecifierMeta::type            index_specifier;
     typedef typename index_specifier::
       BOOST_NESTED_TEMPLATE index_class<SuperMeta>::type type;
-  }; 
+  };
 };
 
 template<int N,typename Value,typename IndexSpecifierList,typename Allocator>

@@ -10,7 +10,7 @@
 #include <boost/python/detail/is_xxx.hpp>
 #include <boost/shared_ptr.hpp>
 
-namespace boost { namespace python { namespace detail { 
+namespace boost { namespace python { namespace detail {
 
 BOOST_PYTHON_IS_XXX_DEF(shared_ptr, shared_ptr, 1)
 #if __cplusplus >= 201103L

@@ -36,14 +36,14 @@ namespace detail{
 
 template<typename F,typename... Ts>
 struct restitute_range_class;
-       
+
 template<typename F,typename T,typename... Ts>
 struct restitute_range_class<F,T,Ts...>:
   restitute_range_class<F,Ts...>
 {
   using super=restitute_range_class<F,Ts...>;
   using super::super;
-  
+
   template<typename SegmentInfo>
   auto operator()(SegmentInfo&& s)
     ->decltype(std::declval<F>()(s.begin(),s.end()))
@@ -63,7 +63,7 @@ template<typename F>
 struct restitute_range_class<F>
 {
   restitute_range_class(const F& f):f{f}{}
-  
+
   template<typename SegmentInfo>
   auto operator()(SegmentInfo&& s)
     ->decltype(std::declval<F>()(s.begin(),s.end()))
@@ -90,14 +90,14 @@ auto restitute_range(const F& f,Args&&... args)
 
 template<typename F,typename... Ts>
 struct restitute_iterator_class;
-       
+
 template<typename F,typename T,typename... Ts>
 struct restitute_iterator_class<F,T,Ts...>:
   restitute_iterator_class<F,Ts...>
 {
   using super=restitute_iterator_class<F,Ts...>;
   using super::super;
-  
+
   template<typename Iterator,typename... Args>
   auto operator()(
     const std::type_info& info,Iterator&& it,Args&&... args)
@@ -121,7 +121,7 @@ template<typename F>
 struct restitute_iterator_class<F>
 {
   restitute_iterator_class(const F& f):f{f}{}
-  
+
   template<typename Iterator,typename... Args>
   auto operator()(
     const std::type_info&,Iterator&& it,Args&&... args)
@@ -176,7 +176,7 @@ struct binary_restitute_iterator_class
     return restitute_iterator<Ts...>(f)(
       info1,std::forward<Iterator1>(it1),std::forward<Iterator2>(it2));
   }
-  
+
   F f;
 };
 

@@ -24,7 +24,7 @@ template< typename Device,
 struct stream : detail::stream_base<Device, Tr, Alloc> {
 public:
     typedef typename char_type_of<Device>::type  char_type;
-    struct category 
+    struct category
         : mode_of<Device>::type,
           closable_tag,
           detail::stream_traits<Device, Tr>::stream_tag
@@ -112,68 +112,68 @@ private:
     template<typename U0>
     void open_impl(mpl::false_, const U0& u0)
     {
-        this->clear(); 
+        this->clear();
         this->member.open(u0);
     }
 #if !BOOST_WORKAROUND(BOOST_MSVC, <= 1300) //---------------------------------//
     template<typename U0>
     void open_impl(mpl::false_, U0& u0)
     {
-        this->clear(); 
+        this->clear();
         this->member.open(detail::wrap(u0));
     }
 #endif // !BOOST_WORKAROUND(BOOST_MSVC, <= 1300) //---------------------------//
     template<typename U0>
     void open_impl(mpl::true_, const U0& u0)
     {
-        this->clear(); 
+        this->clear();
         this->member.open(Device(const_cast<U0&>(u0)));
     }
 #if !BOOST_WORKAROUND(BOOST_MSVC, <= 1300) //---------------------------------//
     template<typename U0>
     void open_impl(mpl::true_, U0& u0)
     {
-        this->clear(); 
+        this->clear();
         this->member.open(Device(u0));
     }
 #endif // !BOOST_WORKAROUND(BOOST_MSVC, <= 1300) //---------------------------//
     template<typename U0, typename U1>
     void open_impl(mpl::false_, const U0& u0, const U1& u1)
     {
-        this->clear(); 
+        this->clear();
         this->member.open(u0, u1);
     }
     template<typename U0, typename U1>
     void open_impl(mpl::true_, const U0& u0, const U1& u1)
     {
-        this->clear(); 
+        this->clear();
         this->member.open(Device(const_cast<U0&>(u0), u1));
     }
 #if !BOOST_WORKAROUND(BOOST_MSVC, <= 1300) //---------------------------------//
     template<typename U0, typename U1>
     void open_impl(mpl::true_, U0& u0, const U1& u1)
     {
-        this->clear(); 
+        this->clear();
         this->member.open(Device(u0, u1));
     }
 #endif // !BOOST_WORKAROUND(BOOST_MSVC, <= 1300) //---------------------------//
     template<typename U0, typename U1, typename U2>
     void open_impl(mpl::false_, const U0& u0, const U1& u1, const U2& u2)
     {
-        this->clear(); 
+        this->clear();
         this->member.open(u0, u1, u2);
     }
     template<typename U0, typename U1, typename U2>
     void open_impl(mpl::true_, const U0& u0, const U1& u1, const U2& u2)
     {
-        this->clear(); 
+        this->clear();
         this->member.open(Device(const_cast<U0&>(u0), u1, u2));
     }
 #if !BOOST_WORKAROUND(BOOST_MSVC, <= 1300) //---------------------------------//
     template<typename U0, typename U1, typename U2>
     void open_impl(mpl::true_, U0& u0, const U1& u1, const U2& u2)
     {
-        this->clear(); 
+        this->clear();
         this->member.open(Device(u0, u1, u2));
     }
 #endif

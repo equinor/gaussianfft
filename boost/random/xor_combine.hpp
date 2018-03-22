@@ -121,7 +121,7 @@ public:
     {
         return (_rng1() << s1) ^ (_rng2() << s2);
     }
-  
+
     /** Fills a range with random values */
     template<class Iter>
     void generate(Iter first, Iter last)
@@ -147,7 +147,7 @@ public:
         os << s._rng1 << ' ' << s._rng2;
         return os;
     }
-    
+
     /**
      * Reads the textual representation of the generator from a @c std::istream.
      */
@@ -156,11 +156,11 @@ public:
         is >> s._rng1 >> std::ws >> s._rng2;
         return is;
     }
-    
+
     /** Returns true if the two generators will produce identical sequences. */
     BOOST_RANDOM_DETAIL_EQUALITY_OPERATOR(xor_combine_engine, x, y)
     { return x._rng1 == y._rng1 && x._rng2 == y._rng2; }
-    
+
     /** Returns true if the two generators will produce different sequences. */
     BOOST_RANDOM_DETAIL_INEQUALITY_OPERATOR(xor_combine_engine)
 

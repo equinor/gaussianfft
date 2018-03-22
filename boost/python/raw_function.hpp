@@ -15,7 +15,7 @@
 # include <boost/limits.hpp>
 # include <cstddef>
 
-namespace boost { namespace python { 
+namespace boost { namespace python {
 
 namespace detail
 {
@@ -23,7 +23,7 @@ namespace detail
   struct raw_dispatcher
   {
       raw_dispatcher(F f) : f(f) {}
-      
+
       PyObject* operator()(PyObject* args, PyObject* keywords)
       {
           return incref(
@@ -55,7 +55,7 @@ object raw_function(F f, std::size_t min_args = 0)
         )
     );
 }
-    
+
 }} // namespace boost::python
 
 #endif // RAW_FUNCTION_DWA200336_HPP

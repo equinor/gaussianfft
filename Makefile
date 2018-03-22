@@ -12,14 +12,32 @@ DOCKERFILE := $(CODE_DIR)/Dockerfile
 
 PYTHON ?= $(shell which python)
 PIP ?= $(PYTHON) -m pip
+PIPENV ?= $(PYTHON) -m pipenv
 PY.TEST ?= $(PYTHON) -m pytest
 
 DISTRIBUTION_DIR ?= $(CODE_DIR)/dist
 
 NRLIB_LINKING ?= static
 
+PYPI_SERVER ?= http://pypi.aps.statoil.no:8080
+PYPI_NAME := statoil
+
+define PYPIRC
+[distutils]
+index-servers =
+    $(PYPI_NAME)
+
+[$(PYPI_NAME)]
+repository: $(PYPI_SERVER)
+username: $(PYPI_USER)
+password: $(PYPI_PASSWORD)
+endef
+export PYPIRC
+
+.PHONY: all tests clean
+
 docker-image:
-	docker build --rm --tag $(IMAGE_NAME) --file $(DOCKERFILE) $(CODE_DIR)
+	docker build --pull --rm --tag $(IMAGE_NAME) --file $(DOCKERFILE) $(CODE_DIR)
 
 docker-push-image: docker-image
 	docker push $(IMAGE_NAME)
@@ -28,21 +46,28 @@ docker-login:
 	docker login $(DOCKER_REGISTRY_SERVER)
 
 install-wheel:
-	$(PIP) install -U $(DISTRIBUTION_DIR)/$(shell ls $(DISTRIBUTION_DIR))
+	$(PIPENV) install -U $(DISTRIBUTION_DIR)/$(shell ls $(DISTRIBUTION_DIR)) || $(PIP) install -U $(DISTRIBUTION_DIR)/$(shell ls $(DISTRIBUTION_DIR))
 
 install: install-requirements build-boost-python
 	NRLIB_LINKING=$(NRLIB_LINKING) \
 	CXXFLAGS="-fPIC" \
 	$(PYTHON) $(SETUP.PY) build_ext --inplace build install
 
-install-requirements:
-	$(PIP) install --user -r $(CODE_DIR)/requirements.txt || $(PIP) install -r $(CODE_DIR)/requirements.txt
+install-requirements: install-pipenv
+	$(PIPENV) --python=$(PYTHON) --site-packages
+	$(PIPENV) install --dev
 
-tests: pytest-instalation
+install-pipenv:
+	$(PIP) install 'pipenv<11'
+
+tests:
 	$(PY.TEST) $(CODE_DIR)/tests
 
-pytest-instalation:
-	type pytest 2>/dev/null || { $(PIP) install pytest; }
+upload: pypirc
+	$(PYTHON) $(SETUP.PY) register -r $(PYPI_NAME) upload -r $(PYPI_NAME)
+
+pypirc:
+	echo "$$PYPIRC" > $(CODE_DIR)/.pypirc
 
 build: install-requirements build-boost-python
 	NRLIB_LINKING=$(NRLIB_LINKING) \
@@ -51,12 +76,16 @@ build: install-requirements build-boost-python
 
 build-boost-python:
 	CODE_DIR=$(CODE_DIR) \
-	  $(CODE_DIR)/bootstrap.sh --prefix=$(shell pwd)/build --with-python=$(PYTHON) --with-icu && \
+	  $(CODE_DIR)/bootstrap.sh \
+	                   --prefix=$(shell pwd)/build \
+	                   --with-python=$(PYTHON) \
+	                   --with-icu && \
 	CPLUS_INCLUDE_PATH=$(shell $(PYTHON) -c "from sysconfig import get_paths; print(get_paths()['include'])") \
 	  $(CODE_DIR)/bjam --with-python \
 	                   --with-filesystem \
 	                   --with-system \
-	                   cxxflags=-fPIC \
+	                   -q \
+	                   cxxflags="-fPIC -D_GLIBCXX_USE_CXX11_ABI=0" \
 	                   cflags=-fPIC \
 	                   python-debugging=off \
 	                   threading=multi \
@@ -66,6 +95,7 @@ build-boost-python:
 	                   stage
 
 clean:
+	cd $(CODE_DIR) && \
 	rm -rf build \
 	       nrlib.egg-info \
 	       dist \
@@ -75,4 +105,5 @@ clean:
 	       b2 \
 	       bjam \
 	       bootstrap.log \
+	       .pypirc \
 	       *.so

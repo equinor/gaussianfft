@@ -15,12 +15,12 @@
 
 #include <boost/config.hpp> /* keep it first to prevent nasty warns in MSVC */
 #include <boost/type_traits/aligned_storage.hpp>
-#include <boost/type_traits/alignment_of.hpp> 
+#include <boost/type_traits/alignment_of.hpp>
 
 #if !defined(BOOST_MULTI_INDEX_DISABLE_SERIALIZATION)
 #include <boost/archive/archive_exception.hpp>
 #include <boost/serialization/access.hpp>
-#include <boost/throw_exception.hpp> 
+#include <boost/throw_exception.hpp>
 #endif
 
 namespace boost{
@@ -67,13 +67,13 @@ struct index_node_base:private pod_value_holder<Value>
   {
     return static_cast<index_node_base *>(
       reinterpret_cast<pod_value_holder<Value>*>( /* std 9.2.17 */
-        const_cast<value_type*>(p))); 
+        const_cast<value_type*>(p)));
   }
 
 private:
 #if !defined(BOOST_MULTI_INDEX_DISABLE_SERIALIZATION)
   friend class boost::serialization::access;
-  
+
   /* nodes do not emit any kind of serialization info. They are
    * fed to Boost.Serialization so that pointers to nodes are
    * tracked correctly.

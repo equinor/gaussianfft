@@ -27,11 +27,11 @@
 #include <ostream>         // for ostream
 
 # if defined(__BORLANDC__) && (__BORLANDC__ <= 0x0551)
-#   define BOOST_BUILT_IN_EXCEPTIONS_MISSING_WHAT 
+#   define BOOST_BUILT_IN_EXCEPTIONS_MISSING_WHAT
 # endif
 
 #if defined(MPW_CPLUS) && (MPW_CPLUS <= 0x890)
-#   define BOOST_BUILT_IN_EXCEPTIONS_MISSING_WHAT 
+#   define BOOST_BUILT_IN_EXCEPTIONS_MISSING_WHAT
     namespace std { class bad_typeid { }; }
 # endif
 
@@ -41,7 +41,7 @@ namespace boost
   namespace detail
   {
     //  A separate reporting function was requested during formal review.
-    inline void report_exception( std::ostream & os, 
+    inline void report_exception( std::ostream & os,
                                   const char * name, const char * info )
       { os << "\n** uncaught exception: " << name << " " << info << std::endl; }
   }
@@ -68,7 +68,7 @@ namespace boost
     //  under some compilers, there is a lot of use of endl in the code below
     //  where a simple '\n' might appear to do.
 
-    //  The rules for catch & arguments are a bit different from function 
+    //  The rules for catch & arguments are a bit different from function
     //  arguments (ISO 15.3 paragraphs 18 & 19). Apparently const isn't
     //  required, but it doesn't hurt and some programmers ask for it.
 

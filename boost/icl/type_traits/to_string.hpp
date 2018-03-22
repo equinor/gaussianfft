@@ -21,7 +21,7 @@ Function-templates for discrete Datatypes like int, unsigned or
 #include <sstream>
 
 namespace boost{ namespace icl
-{    
+{
 
 /// Static class template for the string representation of values
 template <class Type>

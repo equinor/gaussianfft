@@ -19,7 +19,7 @@
 # include <iostream>
 #endif
 
-namespace boost { namespace python { namespace converter { 
+namespace boost { namespace python { namespace converter {
 BOOST_PYTHON_DECL PyTypeObject const* registration::expected_from_python_type() const
 {
     if (this->m_class_object != 0)
@@ -58,13 +58,13 @@ BOOST_PYTHON_DECL PyTypeObject* registration::get_class_object() const
             PyExc_TypeError
             , const_cast<char*>("No Python class registered for C++ class %s")
             , this->target_type.name());
-    
+
         throw_error_already_set();
     }
-    
+
     return this->m_class_object;
 }
-  
+
 BOOST_PYTHON_DECL PyObject* registration::to_python(void const volatile* source) const
 {
     if (this->m_to_python == 0)
@@ -80,12 +80,12 @@ BOOST_PYTHON_DECL PyObject* registration::to_python(void const volatile* source)
                 , this->target_type.name()
                 )
             );
-            
+
         PyErr_SetObject(PyExc_TypeError, msg.get());
 
         throw_error_already_set();
     }
-        
+
     return source == 0
         ? incref(Py_None)
         : this->m_to_python(const_cast<void*>(source));
@@ -112,9 +112,9 @@ registration::~registration()
 namespace // <unnamed>
 {
   typedef registration entry;
-  
+
   typedef std::set<entry> registry_t;
-  
+
 #ifndef BOOST_PYTHON_CONVERTER_REGISTRY_APPLE_MACH_WORKAROUND
   registry_t& entries()
   {
@@ -127,7 +127,7 @@ namespace // <unnamed>
           // Make this true early because registering the builtin
           // converters will cause recursion.
           builtin_converters_initialized = true;
-          
+
           initialize_builtin_converters();
       }
 #  ifdef BOOST_PYTHON_TRACE_REGISTRY
@@ -137,8 +137,8 @@ namespace // <unnamed>
           std::cout << p->target_type << "; ";
       }
       std::cout << '\n';
-#  endif 
-# endif 
+#  endif
+# endif
       return registry;
   }
 #else
@@ -173,8 +173,8 @@ namespace // <unnamed>
           std::cout << p->target_type << "; ";
       }
       std::cout << '\n';
-#  endif 
-# endif 
+#  endif
+# endif
       return static_registry();
   }
 #endif // BOOST_PYTHON_CONVERTER_REGISTRY_APPLE_MACH_WORKAROUND
@@ -183,14 +183,14 @@ namespace // <unnamed>
   {
 #  ifdef BOOST_PYTHON_TRACE_REGISTRY
       registry_t::iterator p = entries().find(entry(type));
-      
+
       std::cout << "looking up " << type << ": "
                 << (p == entries().end() || p->target_type != type
                     ? "...NOT found\n" : "...found\n");
 #  endif
       std::pair<registry_t::const_iterator,bool> pos_ins
           = entries().insert(entry(type,is_shared_ptr));
-      
+
 #  if __MWERKS__ >= 0x3000
       // do a little invariant checking if a change was made
       if ( pos_ins.second )
@@ -206,9 +206,9 @@ namespace registry
   {
 #  ifdef BOOST_PYTHON_TRACE_REGISTRY
       std::cout << "inserting to_python " << source_t << "\n";
-#  endif 
+#  endif
       entry* slot = get(source_t);
-      
+
       assert(slot->m_to_python == 0); // we have a problem otherwise
       if (slot->m_to_python != 0)
       {
@@ -217,7 +217,7 @@ namespace registry
               + source_t.name()
               + " already registered; second conversion method ignored."
           );
-          
+
           if ( ::PyErr_Warn( NULL, const_cast<char*>(msg.c_str()) ) )
           {
               throw_error_already_set();
@@ -232,13 +232,13 @@ namespace registry
   {
 #  ifdef BOOST_PYTHON_TRACE_REGISTRY
       std::cout << "inserting lvalue from_python " << key << "\n";
-#  endif 
+#  endif
       entry* found = get(key);
       lvalue_from_python_chain *registration = new lvalue_from_python_chain;
       registration->convert = convert;
       registration->next = found->lvalue_chain;
       found->lvalue_chain = registration;
-      
+
       insert(convert, 0, key,exp_pytype);
   }
 
@@ -250,7 +250,7 @@ namespace registry
   {
 #  ifdef BOOST_PYTHON_TRACE_REGISTRY
       std::cout << "inserting rvalue from_python " << key << "\n";
-#  endif 
+#  endif
       entry* found = get(key);
       rvalue_from_python_chain *registration = new rvalue_from_python_chain;
       registration->convertible = convertible;
@@ -268,11 +268,11 @@ namespace registry
   {
 #  ifdef BOOST_PYTHON_TRACE_REGISTRY
       std::cout << "push_back rvalue from_python " << key << "\n";
-#  endif 
+#  endif
       rvalue_from_python_chain** found = &get(key)->rvalue_chain;
       while (*found != 0)
           found = &(*found)->next;
-      
+
       rvalue_from_python_chain *registration = new rvalue_from_python_chain;
       registration->convertible = convertible;
       registration->construct = construct;
@@ -298,7 +298,7 @@ namespace registry
       std::cout << "querying " << type
                 << (p == entries().end() || p->target_type != type
                     ? "...NOT found\n" : "...found\n");
-#  endif 
+#  endif
       return (p == entries().end() || p->target_type != type) ? 0 : &*p;
   }
 } // namespace registry

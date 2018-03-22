@@ -10,7 +10,7 @@
 #include <boost/python/numpy/config.hpp>
 
 /**
- *  @brief Macro that specializes object_manager_traits by requiring a 
+ *  @brief Macro that specializes object_manager_traits by requiring a
  *         source-file implementation of get_pytype().
  */
 

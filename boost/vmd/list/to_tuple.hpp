@@ -30,7 +30,7 @@
     \brief converts a list to a tuple.
 
     list = list to be converted.
-    
+
     If the list is an empty list (BOOST_PP_NIL) it is converted to an empty tuple.
     Otherwise the list is converted to a tuple with the same number of elements as the list.
 */

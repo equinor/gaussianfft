@@ -25,12 +25,12 @@ namespace ll {
 // for_each ---------------------------------
 
 struct for_each {
-  
+
   template <class Args>
-  struct sig { 
+  struct sig {
     typedef typename boost::remove_const<
-        typename boost::tuples::element<3, Args>::type 
-     >::type type; 
+        typename boost::tuples::element<3, Args>::type
+     >::type type;
   };
 
   template <class A, class C>
@@ -42,12 +42,12 @@ struct for_each {
 // find  ---------------------------------
 
 struct find {
-  
+
   template <class Args>
-  struct sig { 
+  struct sig {
     typedef typename boost::remove_const<
-        typename boost::tuples::element<1, Args>::type 
-     >::type type; 
+        typename boost::tuples::element<1, Args>::type
+     >::type type;
   };
 
   template <class A, class C>
@@ -60,12 +60,12 @@ struct find {
 // find_if  ---------------------------------
 
 struct find_if {
-  
+
   template <class Args>
-  struct sig { 
+  struct sig {
     typedef typename boost::remove_const<
-        typename boost::tuples::element<1, Args>::type 
-     >::type type; 
+        typename boost::tuples::element<1, Args>::type
+     >::type type;
   };
 
   template <class A, class C>
@@ -79,10 +79,10 @@ struct find_if {
 struct find_end {
 
   template <class Args>
-  struct sig { 
+  struct sig {
     typedef typename boost::remove_const<
-        typename boost::tuples::element<1, Args>::type 
-     >::type type; 
+        typename boost::tuples::element<1, Args>::type
+     >::type type;
   };
 
   template <class A, class C>
@@ -102,10 +102,10 @@ struct find_end {
 struct find_first_of {
 
   template <class Args>
-  struct sig { 
+  struct sig {
     typedef typename boost::remove_const<
-        typename boost::tuples::element<1, Args>::type 
-     >::type type; 
+        typename boost::tuples::element<1, Args>::type
+     >::type type;
   };
 
   template <class A, class C>
@@ -125,10 +125,10 @@ struct find_first_of {
 struct adjacent_find {
 
   template <class Args>
-  struct sig { 
+  struct sig {
     typedef typename boost::remove_const<
-        typename boost::tuples::element<1, Args>::type 
-     >::type type; 
+        typename boost::tuples::element<1, Args>::type
+     >::type type;
   };
 
   template <class A>
@@ -148,11 +148,11 @@ struct adjacent_find {
 struct count {
 
   template <class Args>
-  struct sig { 
+  struct sig {
     typedef typename ::std::iterator_traits<
       typename boost::remove_const<
            typename boost::tuples::element<1, Args>::type
-      >::type 
+      >::type
     >::difference_type type;
   };
 
@@ -167,7 +167,7 @@ struct count {
 struct count_if {
 
   template <class Args>
-  struct sig { 
+  struct sig {
     typedef typename ::std::iterator_traits<
      typename boost::remove_const<
            typename boost::tuples::element<1, Args>::type
@@ -187,14 +187,14 @@ struct count_if {
 struct mismatch {
 
   template <class Args>
-  struct sig { 
+  struct sig {
     typedef typename boost::remove_const<
         typename boost::tuples::element<1, Args>::type
-     >::type element1_type; 
+     >::type element1_type;
 
     typedef typename boost::remove_const<
         typename boost::tuples::element<3, Args>::type
-     >::type element2_type; 
+     >::type element2_type;
 
     typedef ::std::pair< element1_type, element2_type > type;
    };
@@ -216,7 +216,7 @@ struct mismatch {
 struct equal {
 
   template <class Args>
-  struct sig { 
+  struct sig {
     typedef bool type;
   };
 
@@ -235,12 +235,12 @@ struct equal {
 // search --------------------------------
 
 struct search {
-  
+
   template <class Args>
-  struct sig { 
+  struct sig {
     typedef typename boost::remove_const<
         typename boost::tuples::element<1, Args>::type
-     >::type type; 
+     >::type type;
   };
 
   template <class A, class C>
@@ -260,10 +260,10 @@ struct search {
 struct copy {
 
   template <class Args>
-  struct sig { 
+  struct sig {
     typedef typename boost::remove_const<
-        typename boost::tuples::element<3, Args>::type 
-     >::type type; 
+        typename boost::tuples::element<3, Args>::type
+     >::type type;
   };
 
   template <class A, class C>
@@ -278,10 +278,10 @@ struct copy {
 struct copy_backward {
 
   template <class Args>
-  struct sig { 
+  struct sig {
     typedef typename boost::remove_const<
-        typename boost::tuples::element<3, Args>::type 
-     >::type type; 
+        typename boost::tuples::element<3, Args>::type
+     >::type type;
   };
 
   template <class A, class C>
@@ -296,8 +296,8 @@ struct copy_backward {
 struct swap {
 
   template <class Args>
-  struct sig { 
-    typedef void type; 
+  struct sig {
+    typedef void type;
   };
 
   template <class A>
@@ -312,10 +312,10 @@ struct swap {
 struct swap_ranges {
 
   template <class Args>
-  struct sig { 
+  struct sig {
     typedef typename boost::remove_const<
-        typename boost::tuples::element<3, Args>::type 
-     >::type type; 
+        typename boost::tuples::element<3, Args>::type
+     >::type type;
   };
 
   template <class A, class C>
@@ -330,12 +330,12 @@ struct swap_ranges {
 struct iter_swap {
 
   template <class Args>
-  struct sig { 
-     typedef void type; 
+  struct sig {
+     typedef void type;
   };
 
   template <class A>
-  void 
+  void
   operator()(A a, A b) const
   { ::std::iter_swap(a, b); }
 
@@ -345,15 +345,15 @@ struct iter_swap {
 // transform --------------------------------
 
 struct transform {
-  
+
   template <class Args>
-  struct sig { 
+  struct sig {
     typedef typename boost::remove_const<
         typename boost::tuples::element<
-          boost::tuples::length<Args>::value - 2, 
+          boost::tuples::length<Args>::value - 2,
           Args
       >::type
-     >::type type; 
+     >::type type;
   };
 
   template <class A, class C, class D>
@@ -405,10 +405,10 @@ struct replace_if {
 struct replace_copy {
 
  template <class Args>
-  struct sig { 
+  struct sig {
     typedef typename boost::remove_const<
-        typename boost::tuples::element<3, Args>::type 
-     >::type type; 
+        typename boost::tuples::element<3, Args>::type
+     >::type type;
   };
 
   template <class A, class C, class D>
@@ -423,10 +423,10 @@ struct replace_copy {
 struct replace_copy_if {
 
  template <class Args>
-  struct sig { 
+  struct sig {
     typedef typename boost::remove_const<
-        typename boost::tuples::element<3, Args>::type 
-     >::type type; 
+        typename boost::tuples::element<3, Args>::type
+     >::type type;
   };
 
   template <class A, class C, class D, class E>
@@ -441,12 +441,12 @@ struct replace_copy_if {
 struct fill {
 
   template <class Args>
-  struct sig { 
-     typedef void type; 
+  struct sig {
+     typedef void type;
   };
 
   template <class A, class C>
-  void 
+  void
   operator()(A a, A b, const C& c) const
   { ::std::fill(a, b, c); }
 
@@ -457,12 +457,12 @@ struct fill {
 struct fill_n {
 
   template <class Args>
-  struct sig { 
-     typedef void type; 
+  struct sig {
+     typedef void type;
   };
 
   template <class A, class B, class C>
-  void 
+  void
   operator()(A a, B b, const C& c) const
   { ::std::fill_n(a, b, c); }
 
@@ -473,12 +473,12 @@ struct fill_n {
 struct generate {
 
   template <class Args>
-  struct sig { 
-     typedef void type; 
+  struct sig {
+     typedef void type;
   };
 
   template <class A, class C>
-  void 
+  void
   operator()(A a, A b, C c) const
   { ::std::generate(a, b, c); }
 
@@ -489,12 +489,12 @@ struct generate {
 struct generate_n {
 
   template <class Args>
-  struct sig { 
-     typedef void type; 
+  struct sig {
+     typedef void type;
   };
 
   template <class A, class B, class C>
-  void 
+  void
   operator()(A a, B b, C c) const
   { ::std::generate_n(a, b, c); }
 
@@ -505,10 +505,10 @@ struct generate_n {
 struct remove {
 
   template <class Args>
-  struct sig { 
+  struct sig {
     typedef typename boost::remove_const<
-        typename boost::tuples::element<1, Args>::type 
-     >::type type; 
+        typename boost::tuples::element<1, Args>::type
+     >::type type;
   };
 
   template <class A, class C >
@@ -522,10 +522,10 @@ struct remove {
 struct remove_if {
 
   template <class Args>
-  struct sig { 
+  struct sig {
     typedef typename boost::remove_const<
        typename boost::tuples::element<1, Args>::type
-     >::type type; 
+     >::type type;
   };
 
   template <class A, class C >
@@ -539,10 +539,10 @@ struct remove_if {
 struct remove_copy {
 
   template <class Args>
-  struct sig { 
+  struct sig {
     typedef typename boost::remove_const<
        typename boost::tuples::element<3, Args>::type
-     >::type type; 
+     >::type type;
   };
 
   template <class A, class C, class D >
@@ -556,10 +556,10 @@ struct remove_copy {
 struct remove_copy_if {
 
   template <class Args>
-  struct sig { 
+  struct sig {
     typedef typename boost::remove_const<
        typename boost::tuples::element<3, Args>::type
-     >::type type; 
+     >::type type;
   };
 
   template <class A, class C, class D >
@@ -573,10 +573,10 @@ struct remove_copy_if {
 struct unique {
 
   template <class Args>
-  struct sig { 
+  struct sig {
     typedef typename boost::remove_const<
-        typename boost::tuples::element<1, Args>::type 
-     >::type type; 
+        typename boost::tuples::element<1, Args>::type
+     >::type type;
   };
 
   template <class A>
@@ -596,10 +596,10 @@ struct unique {
 struct unique_copy {
 
   template <class Args>
-  struct sig { 
+  struct sig {
     typedef typename boost::remove_const<
-        typename boost::tuples::element<3, Args>::type 
-     >::type type; 
+        typename boost::tuples::element<3, Args>::type
+     >::type type;
   };
 
   template <class A, class C >
@@ -619,8 +619,8 @@ struct unique_copy {
 struct reverse {
 
   template <class Args>
-  struct sig { 
-    typedef void type; 
+  struct sig {
+    typedef void type;
   };
 
   template <class A>
@@ -635,10 +635,10 @@ struct reverse {
 struct reverse_copy {
 
   template <class Args>
-  struct sig { 
+  struct sig {
     typedef typename boost::remove_const<
-        typename boost::tuples::element<3, Args>::type 
-     >::type type; 
+        typename boost::tuples::element<3, Args>::type
+     >::type type;
   };
 
   template <class A, class C >
@@ -653,8 +653,8 @@ struct reverse_copy {
 struct rotate {
 
   template <class Args>
-  struct sig { 
-    typedef void type; 
+  struct sig {
+    typedef void type;
   };
 
   template <class A>
@@ -669,10 +669,10 @@ struct rotate {
 struct rotate_copy {
 
   template <class Args>
-  struct sig { 
+  struct sig {
     typedef typename boost::remove_const<
-        typename boost::tuples::element<3, Args>::type 
-     >::type type; 
+        typename boost::tuples::element<3, Args>::type
+     >::type type;
   };
 
   template <class A, class D>
@@ -687,8 +687,8 @@ struct rotate_copy {
 struct random_shuffle {
 
   template <class Args>
-  struct sig { 
-    typedef void type; 
+  struct sig {
+    typedef void type;
   };
 
   template <class A>
@@ -709,10 +709,10 @@ struct random_shuffle {
 struct partition {
 
   template <class Args>
-  struct sig { 
+  struct sig {
     typedef typename boost::remove_const<
-        typename boost::tuples::element<1, Args>::type 
-     >::type type; 
+        typename boost::tuples::element<1, Args>::type
+     >::type type;
   };
 
   template <class A, class C>
@@ -727,10 +727,10 @@ struct partition {
 struct stable_partition {
 
   template <class Args>
-  struct sig { 
+  struct sig {
     typedef typename boost::remove_const<
-        typename boost::tuples::element<1, Args>::type 
-     >::type type; 
+        typename boost::tuples::element<1, Args>::type
+     >::type type;
   };
 
   template <class A, class C>
@@ -745,17 +745,17 @@ struct stable_partition {
 struct sort {
 
   template <class Args>
-  struct sig { 
-     typedef void type; 
+  struct sig {
+     typedef void type;
   };
 
   template <class A>
-  void 
+  void
   operator()(A a, A b) const
   { ::std::sort(a, b); }
 
   template <class A, class C>
-  void 
+  void
   operator()(A a, A b, C c) const
   { ::std::sort(a, b, c); }
 
@@ -766,17 +766,17 @@ struct sort {
 struct stable_sort {
 
   template <class Args>
-  struct sig { 
-     typedef void type; 
+  struct sig {
+     typedef void type;
   };
 
   template <class A>
-  void 
+  void
   operator()(A a, A b) const
   { ::std::stable_sort(a, b); }
 
   template <class A, class C>
-  void 
+  void
   operator()(A a, A b, C c) const
   { ::std::stable_sort(a, b, c); }
 
@@ -787,17 +787,17 @@ struct stable_sort {
 struct partial_sort {
 
   template <class Args>
-  struct sig { 
-     typedef void type; 
+  struct sig {
+     typedef void type;
   };
 
   template <class A>
-  void 
+  void
   operator()(A a, A b, A c) const
   { ::std::partial_sort(a, b, c); }
 
   template <class A, class D>
-  void 
+  void
   operator()(A a, A b, A c, D d) const
   { ::std::partial_sort(a, b, c, d); }
 
@@ -808,10 +808,10 @@ struct partial_sort {
 struct partial_sort_copy {
 
   template <class Args>
-  struct sig { 
+  struct sig {
     typedef typename boost::remove_const<
        typename boost::tuples::element<3, Args>::type
-     >::type type; 
+     >::type type;
   };
 
   template <class A, class C>
@@ -830,17 +830,17 @@ struct partial_sort_copy {
 struct nth_element {
 
   template <class Args>
-  struct sig { 
-     typedef void type; 
+  struct sig {
+     typedef void type;
   };
 
   template <class A>
-  void 
+  void
   operator()(A a, A b, A c) const
   { ::std::nth_element(a, b, c); }
 
   template <class A, class D>
-  void 
+  void
   operator()(A a, A b, A c, D d) const
   { ::std::nth_element(a, b, c, d); }
 
@@ -851,10 +851,10 @@ struct nth_element {
 struct lower_bound {
 
   template <class Args>
-  struct sig { 
+  struct sig {
     typedef typename boost::remove_const<
-        typename boost::tuples::element<1, Args>::type 
-     >::type type; 
+        typename boost::tuples::element<1, Args>::type
+     >::type type;
   };
 
   template <class A, class C>
@@ -874,10 +874,10 @@ struct lower_bound {
 struct upper_bound {
 
   template <class Args>
-  struct sig { 
+  struct sig {
     typedef typename boost::remove_const<
-        typename boost::tuples::element<1, Args>::type 
-     >::type type; 
+        typename boost::tuples::element<1, Args>::type
+     >::type type;
   };
 
   template <class A, class C>
@@ -897,10 +897,10 @@ struct upper_bound {
 struct equal_range {
 
  template <class Args>
-  struct sig { 
+  struct sig {
     typedef typename boost::remove_const<
         typename boost::tuples::element<1, Args>::type
-     >::type element_type; 
+     >::type element_type;
 
     typedef ::std::pair< element_type, element_type > type;
    };
@@ -922,7 +922,7 @@ struct equal_range {
 struct binary_search {
 
   template <class Args>
-  struct sig { 
+  struct sig {
     typedef bool type;
   };
 
@@ -941,12 +941,12 @@ struct binary_search {
 // merge --------------------------------
 
 struct merge {
-  
+
   template <class Args>
-  struct sig { 
+  struct sig {
     typedef typename boost::remove_const<
-        typename boost::tuples::element<5, Args>::type 
-     >::type type; 
+        typename boost::tuples::element<5, Args>::type
+     >::type type;
   };
 
   template <class A, class C, class E>
@@ -987,7 +987,7 @@ struct inplace_merge {
 struct includes {
 
   template <class Args>
-  struct sig { 
+  struct sig {
     typedef bool type;
   };
 
@@ -1006,12 +1006,12 @@ struct includes {
 // set_union --------------------------------
 
 struct set_union {
-  
+
   template <class Args>
-  struct sig { 
+  struct sig {
     typedef typename boost::remove_const<
-        typename boost::tuples::element<5, Args>::type 
-     >::type type; 
+        typename boost::tuples::element<5, Args>::type
+     >::type type;
   };
 
   template <class A, class C, class E>
@@ -1029,12 +1029,12 @@ struct set_union {
 // set_intersection --------------------------------
 
 struct set_intersection {
-  
+
   template <class Args>
-  struct sig { 
+  struct sig {
     typedef typename boost::remove_const<
-        typename boost::tuples::element<5, Args>::type 
-     >::type type; 
+        typename boost::tuples::element<5, Args>::type
+     >::type type;
   };
 
   template <class A, class C, class E>
@@ -1052,12 +1052,12 @@ struct set_intersection {
 // set_difference --------------------------------
 
 struct set_difference {
-  
+
   template <class Args>
-  struct sig { 
+  struct sig {
     typedef typename boost::remove_const<
-        typename boost::tuples::element<5, Args>::type 
-     >::type type; 
+        typename boost::tuples::element<5, Args>::type
+     >::type type;
   };
 
   template <class A, class C, class E>
@@ -1076,12 +1076,12 @@ struct set_difference {
 // set_symmetric_difference --------------------------------
 
 struct set_symmetric_difference {
-  
+
   template <class Args>
-  struct sig { 
+  struct sig {
     typedef typename boost::remove_const<
-        typename boost::tuples::element<5, Args>::type 
-     >::type type; 
+        typename boost::tuples::element<5, Args>::type
+     >::type type;
   };
 
   template <class A, class C, class E>
@@ -1101,8 +1101,8 @@ struct set_symmetric_difference {
 struct push_heap {
 
   template <class Args>
-  struct sig { 
-    typedef void type; 
+  struct sig {
+    typedef void type;
   };
 
   template <class A>
@@ -1122,8 +1122,8 @@ struct push_heap {
 struct pop_heap {
 
   template <class Args>
-  struct sig { 
-    typedef void type; 
+  struct sig {
+    typedef void type;
   };
 
   template <class A>
@@ -1144,8 +1144,8 @@ struct pop_heap {
 struct make_heap {
 
   template <class Args>
-  struct sig { 
-    typedef void type; 
+  struct sig {
+    typedef void type;
   };
 
   template <class A>
@@ -1165,8 +1165,8 @@ struct make_heap {
 struct sort_heap {
 
   template <class Args>
-  struct sig { 
-    typedef void type; 
+  struct sig {
+    typedef void type;
   };
 
   template <class A>
@@ -1186,10 +1186,10 @@ struct sort_heap {
 struct min {
 
   template <class Args>
-  struct sig { 
+  struct sig {
     typedef typename boost::remove_const<
-        typename boost::tuples::element<1, Args>::type 
-     >::type type; 
+        typename boost::tuples::element<1, Args>::type
+     >::type type;
   };
 
   template <class A>
@@ -1209,10 +1209,10 @@ struct min {
 struct max {
 
   template <class Args>
-  struct sig { 
+  struct sig {
     typedef typename boost::remove_const<
-        typename boost::tuples::element<1, Args>::type 
-     >::type type; 
+        typename boost::tuples::element<1, Args>::type
+     >::type type;
   };
 
   template <class A>
@@ -1230,10 +1230,10 @@ struct max {
 struct min_element {
 
   template <class Args>
-  struct sig { 
+  struct sig {
     typedef typename boost::remove_const<
-        typename boost::tuples::element<1, Args>::type 
-     >::type type; 
+        typename boost::tuples::element<1, Args>::type
+     >::type type;
   };
 
   template <class A>
@@ -1253,10 +1253,10 @@ struct min_element {
 struct max_element {
 
   template <class Args>
-  struct sig { 
+  struct sig {
     typedef typename boost::remove_const<
-        typename boost::tuples::element<1, Args>::type 
-     >::type type; 
+        typename boost::tuples::element<1, Args>::type
+     >::type type;
   };
 
   template <class A>
@@ -1277,7 +1277,7 @@ struct max_element {
 struct lexicographical_compare {
 
   template <class Args>
-  struct sig { 
+  struct sig {
     typedef bool type;
   };
 
@@ -1298,7 +1298,7 @@ struct lexicographical_compare {
 struct next_permutation {
 
   template <class Args>
-  struct sig { 
+  struct sig {
     typedef bool type;
   };
 
@@ -1319,7 +1319,7 @@ struct next_permutation {
 struct prev_permutation {
 
   template <class Args>
-  struct sig { 
+  struct sig {
     typedef bool type;
   };
 
@@ -1341,8 +1341,8 @@ struct prev_permutation {
 
 } // end of ll namespace
 
-// There is no good way to call an overloaded member function in a 
-// lambda expression. 
+// There is no good way to call an overloaded member function in a
+// lambda expression.
 // The macro below defines a function object class for calling a
 // const_iterator returning member function of a container.
 

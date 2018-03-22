@@ -181,11 +181,11 @@ namespace boost
     struct equal_to_impl<boost::metaparse::v1::string_tag, T>
     {
       typedef equal_to_impl type;
-      
+
       template <class, class>
       struct apply : false_ {};
     };
-    
+
     template <class T>
     struct equal_to_impl<T, boost::metaparse::v1::string_tag> :
       equal_to_impl<boost::metaparse::v1::string_tag, T>

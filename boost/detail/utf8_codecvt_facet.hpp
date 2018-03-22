@@ -14,7 +14,7 @@
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
 // utf8_codecvt_facet.hpp
 
-// This header defines class utf8_codecvt_facet, derived from 
+// This header defines class utf8_codecvt_facet, derived from
 // std::codecvt<wchar_t, char>, which can be used to convert utf8 data in
 // files into wchar_t strings in the application.
 //
@@ -23,10 +23,10 @@
 // we want to avoid code duplication. It would be possible to create utf8
 // library, but:
 // - this requires review process first
-// - in the case, when linking the a library which uses utf8 
+// - in the case, when linking the a library which uses utf8
 //   (say 'program_options'), user should also link to the utf8 library.
-//   This seems inconvenient, and asking a user to link to an unrevieved 
-//   library is strange. 
+//   This seems inconvenient, and asking a user to link to an unrevieved
+//   library is strange.
 // Until the above points are fixed, a library which wants to use utf8 must:
 // - include this header in one of it's headers or sources
 // - include the corresponding boost/detail/utf8_codecvt_facet.ipp file in one
@@ -39,14 +39,14 @@
 //     symbols.
 //
 // For example, program_options library might contain:
-//    #define BOOST_UTF8_BEGIN_NAMESPACE <backslash character> 
+//    #define BOOST_UTF8_BEGIN_NAMESPACE <backslash character>
 //             namespace boost { namespace program_options {
 //    #define BOOST_UTF8_END_NAMESPACE }}
 //    #define BOOST_UTF8_DECL BOOST_PROGRAM_OPTIONS_DECL
 //    #include <boost/detail/utf8_codecvt_facet.ipp>
 //
 // Essentially, each library will have its own copy of utf8 code, in
-// different namespaces. 
+// different namespaces.
 
 // Note:(Robert Ramey).  I have made the following alterations in the original
 // code.
@@ -67,7 +67,7 @@
 // use two template parameters
 //
 // utf8_codecvt_facet
-//   This is an implementation of a std::codecvt facet for translating 
+//   This is an implementation of a std::codecvt facet for translating
 //   from UTF-8 externally to UCS-4.  Note that this is not tied to
 //   any specific types in order to allow customization on platforms
 //   where wchar_t is not big enough.
@@ -110,19 +110,19 @@ BOOST_UTF8_BEGIN_NAMESPACE
 #endif
 
 struct BOOST_SYMBOL_VISIBLE utf8_codecvt_facet :
-    public std::codecvt<wchar_t, char, std::mbstate_t>  
+    public std::codecvt<wchar_t, char, std::mbstate_t>
 {
 public:
     BOOST_UTF8_DECL explicit utf8_codecvt_facet(std::size_t no_locale_manage=0);
     virtual  ~utf8_codecvt_facet(){}
 protected:
     BOOST_UTF8_DECL virtual std::codecvt_base::result do_in(
-        std::mbstate_t& state, 
+        std::mbstate_t& state,
         const char * from,
-        const char * from_end, 
+        const char * from_end,
         const char * & from_next,
-        wchar_t * to, 
-        wchar_t * to_end, 
+        wchar_t * to,
+        wchar_t * to_end,
         wchar_t*& to_next
     ) const;
 
@@ -181,7 +181,7 @@ protected:
     BOOST_UTF8_DECL virtual int do_length(
         const std::mbstate_t &,
         const char * from,
-        const char * from_end, 
+        const char * from_end,
         std::size_t max_limit
     ) const
 #if BOOST_WORKAROUND(__IBMCPP__, BOOST_TESTED_AT(600))
@@ -191,7 +191,7 @@ protected:
     virtual int do_length(
         std::mbstate_t & s,
         const char * from,
-        const char * from_end, 
+        const char * from_end,
         std::size_t max_limit
     ) const
 #if BOOST_WORKAROUND(__IBMCPP__, BOOST_TESTED_AT(600))

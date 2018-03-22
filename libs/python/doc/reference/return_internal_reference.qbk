@@ -1,6 +1,6 @@
 [section boost/python/return_internal_reference.hpp]
 [section Introduction]
-`return_internal_reference` instantiations are models of [link concepts.callpolicies `CallPolicies`] which allow pointers and references to objects held internally by a free or member function argument or from the target of a member function to be returned safely without making a copy of the referent. The default for its first template argument handles the common case where the containing object is the target (`*this`) of a wrapped member function. 
+`return_internal_reference` instantiations are models of [link concepts.callpolicies `CallPolicies`] which allow pointers and references to objects held internally by a free or member function argument or from the target of a member function to be returned safely without making a copy of the referent. The default for its first template argument handles the common case where the containing object is the target (`*this`) of a wrapped member function.
 [endsect]
 [section Class template `return_internal_reference`]
 [table

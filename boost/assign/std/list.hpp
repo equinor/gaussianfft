@@ -31,7 +31,7 @@ namespace assign
     {
         return push_back( c )( v );
     }
-    
+
 }
 }
 

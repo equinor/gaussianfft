@@ -41,8 +41,8 @@ union aligned_storage
   // Compute the size of T's referent. We wouldn't need this at all,
   // but sizeof() is broken in CodeWarriors <= 8.0
   template <class T> struct referent_size;
-  
-  
+
+
   template <class T>
   struct referent_size<T&>
   {

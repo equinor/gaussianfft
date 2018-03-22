@@ -154,7 +154,7 @@ inline RealType pdf(const inverse_gamma_distribution<RealType, Policy>& dist, co
    if(false == detail::check_inverse_gamma(function, scale, shape, &result, Policy()))
    { // distribution parameters bad.
       return result;
-   } 
+   }
    if(x == 0)
    { // Treat random variate zero as a special case.
       return 0;

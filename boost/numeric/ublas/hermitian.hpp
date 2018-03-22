@@ -104,7 +104,7 @@ namespace boost { namespace numeric { namespace ublas {
             dirty_ = true;
             return *this;
         }
-        
+
         // Comparison
         template<class D>
         BOOST_UBLAS_INLINE
@@ -224,13 +224,13 @@ namespace boost { namespace numeric { namespace ublas {
 #endif
     /** \brief A hermitian matrix of values of type \c T
      *
-     * For a \f$(n \times n)\f$-dimensional matrix and \f$ 0 \leq i < n, 0 \leq j < n\f$, every element 
-     * \f$m_{i,j}\f$ is mapped to the \f$(i.n + j)\f$-th element of the container for row major orientation 
-     * or the \f$(i + j.m)\f$-th element of the container for column major orientation. And 
+     * For a \f$(n \times n)\f$-dimensional matrix and \f$ 0 \leq i < n, 0 \leq j < n\f$, every element
+     * \f$m_{i,j}\f$ is mapped to the \f$(i.n + j)\f$-th element of the container for row major orientation
+     * or the \f$(i + j.m)\f$-th element of the container for column major orientation. And
      * \f$\forall i,j\f$, \f$m_{i,j} = \overline{m_{i,j}}\f$.
      *
-     * Orientation and storage can also be specified, otherwise a row major and unbounded array are used. 
-     * It is \b not required by the storage to initialize elements of the matrix. 
+     * Orientation and storage can also be specified, otherwise a row major and unbounded array are used.
+     * It is \b not required by the storage to initialize elements of the matrix.
      * Moreover, only the given triangular matrix is stored and the storage of hermitian matrices is packed.
      *
      * See http://en.wikipedia.org/wiki/Hermitian_matrix for more details on hermitian matrices.

@@ -181,7 +181,7 @@ template <class RealType, class Policy>
 inline const std::pair<RealType, RealType> range(const cauchy_distribution<RealType, Policy>&)
 { // Range of permissible values for random variable x.
   if (std::numeric_limits<RealType>::has_infinity)
-  { 
+  {
      return std::pair<RealType, RealType>(-std::numeric_limits<RealType>::infinity(), std::numeric_limits<RealType>::infinity()); // - to + infinity.
   }
   else
@@ -196,7 +196,7 @@ inline const std::pair<RealType, RealType> support(const cauchy_distribution<Rea
 { // Range of supported values for random variable x.
    // This is range where cdf rises from 0 to 1, and outside it, the pdf is zero.
   if (std::numeric_limits<RealType>::has_infinity)
-  { 
+  {
      return std::pair<RealType, RealType>(-std::numeric_limits<RealType>::infinity(), std::numeric_limits<RealType>::infinity()); // - to + infinity.
   }
   else
@@ -208,7 +208,7 @@ inline const std::pair<RealType, RealType> support(const cauchy_distribution<Rea
 
 template <class RealType, class Policy>
 inline RealType pdf(const cauchy_distribution<RealType, Policy>& dist, const RealType& x)
-{  
+{
    BOOST_MATH_STD_USING  // for ADL of std functions
 
    static const char* function = "boost::math::pdf(cauchy<%1%>&, %1%)";

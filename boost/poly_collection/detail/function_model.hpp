@@ -76,7 +76,7 @@ struct function_model<R(Args...)>
   {
     return f.data();
   }
-  
+
   template<typename Signature>
   static const void* subaddress(const callable_wrapper<Signature>& f)
   {

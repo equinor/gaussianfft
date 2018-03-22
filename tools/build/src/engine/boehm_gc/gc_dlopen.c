@@ -69,7 +69,7 @@
 #endif
 {
     void * result;
-    
+
 #   ifndef USE_PROC_FOR_LIBRARIES
       disable_gc_for_dlopen();
 #   endif

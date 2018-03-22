@@ -50,13 +50,13 @@ namespace boost
             n - 1 BOOST_PP_COMMA_IF(n) BOOST_PP_ENUM_PARAMS(n, P) \
           > \
         {};
-      
+
       BOOST_PP_REPEAT(
         BOOST_METAPARSE_LIMIT_SEQUENCE_SIZE,
         BOOST_METAPARSE_LAST_OF_N,
         ~
       )
-      
+
       #undef BOOST_METAPARSE_LAST_OF_N
     }
   }

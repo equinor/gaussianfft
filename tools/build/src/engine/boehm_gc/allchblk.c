@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 1988, 1989 Hans-J. Boehm, Alan J. Demers
  * Copyright (c) 1991-1994 by Xerox Corporation.  All rights reserved.
  * Copyright (c) 1998-1999 by Silicon Graphics.  All rights reserved.
@@ -26,7 +26,7 @@ GC_bool GC_use_entire_heap = 0;
  * Adjacent free blocks are coalesced.
  */
 
- 
+
 # define MAX_BLACK_LIST_ALLOC (2*HBLKSIZE)
 		/* largest block we will allocate starting on a black   */
 		/* listed block.  Must be >= HBLKSIZE.			*/
@@ -84,7 +84,7 @@ int GC_hblk_fl_from_blocks(word blocks_needed)
     if (blocks_needed >= HUGE_THRESHOLD) return N_HBLK_FLS;
     return (int)(blocks_needed - UNIQUE_THRESHOLD)/FL_COMPRESSION
 					+ UNIQUE_THRESHOLD;
-    
+
 }
 
 # define PHDR(hhdr) HDR(hhdr -> hb_prev)
@@ -104,7 +104,7 @@ void GC_print_hblkfreelist()
     hdr * hhdr;
     word sz;
     unsigned i;
-    
+
     for (i = 0; i <= N_HBLK_FLS; ++i) {
       h = GC_hblkfreelist[i];
 #     ifdef USE_MUNMAP
@@ -145,7 +145,7 @@ int free_list_index_of(hdr *wanted)
     struct hblk * h;
     hdr * hhdr;
     int i;
-    
+
     for (i = 0; i <= N_HBLK_FLS; ++i) {
       h = GC_hblkfreelist[i];
       while (h != 0) {
@@ -222,7 +222,7 @@ static GC_bool setup_header(hdr * hhdr, struct hblk *block, size_t byte_sz,
 {
     word descr;
     size_t granules;
-    
+
     /* Set size, kind and mark proc fields */
       hhdr -> hb_sz = byte_sz;
       hhdr -> hb_obj_kind = (unsigned char)kind;
@@ -231,7 +231,7 @@ static GC_bool setup_header(hdr * hhdr, struct hblk *block, size_t byte_sz,
       descr = GC_obj_kinds[kind].ok_descriptor;
       if (GC_obj_kinds[kind].ok_relocate_descr) descr += byte_sz;
       hhdr -> hb_descr = descr;
-    
+
 #   ifdef MARK_BIT_PER_OBJ
      /* Set hb_inv_sz as portably as possible. 				*/
      /* We set it to the smallest value such that sz * inv_sz > 2**32    */
@@ -267,10 +267,10 @@ static GC_bool setup_header(hdr * hhdr, struct hblk *block, size_t byte_sz,
         hhdr -> hb_map = GC_obj_map[index];
       }
 #   endif /* MARK_BIT_PER_GRANULE */
-      
+
     /* Clear mark bits */
       GC_clear_hdr_marks(hhdr);
-      
+
     hhdr -> hb_last_reclaimed = (unsigned short)GC_gc_no;
     return(TRUE);
 }
@@ -391,7 +391,7 @@ void GC_unmap_old(void)
     unsigned short last_rec, threshold;
     int i;
 #   define UNMAP_THRESHOLD 6
-    
+
     for (i = 0; i <= N_HBLK_FLS; ++i) {
       for (h = GC_hblkfreelist[i]; 0 != h; h = hhdr -> hb_next) {
         hhdr = HDR(h);
@@ -405,7 +405,7 @@ void GC_unmap_old(void)
 	  hhdr -> hb_flags |= WAS_UNMAPPED;
     	}
       }
-    }  
+    }
 }
 
 /* Merge all unmapped blocks that are adjacent to other free		*/
@@ -417,7 +417,7 @@ void GC_merge_unmapped(void)
     hdr * hhdr, *nexthdr;
     word size, nextsize;
     int i;
-    
+
     for (i = 0; i <= N_HBLK_FLS; ++i) {
       h = GC_hblkfreelist[i];
       while (h != 0) {
@@ -453,9 +453,9 @@ void GC_merge_unmapped(void)
 	    /* If they are both unmapped, we merge, but leave unmapped. */
 	    GC_remove_from_fl(hhdr, i);
 	    GC_remove_from_fl(nexthdr, FL_UNKNOWN);
-	    hhdr -> hb_sz += nexthdr -> hb_sz; 
+	    hhdr -> hb_sz += nexthdr -> hb_sz;
 	    GC_remove_header(next);
-	    GC_add_to_fl(h, hhdr); 
+	    GC_add_to_fl(h, hhdr);
 	    /* Start over at beginning of list */
 	    h = GC_hblkfreelist[i];
 	  } else /* not mergable with successor */ {
@@ -621,7 +621,7 @@ GC_allochblk_nth(size_t sz, int kind, unsigned flags, int n)
 		    /* heap if we allocate only small objects.		*/
 		    if (!GC_enough_large_bytes_left(GC_large_allocd_bytes, n)) {
 		      continue;
-		    } 
+		    }
 		    /* If we are deallocating lots of memory from	*/
 		    /* finalizers, fail and collect sooner rather	*/
 		    /* than later.					*/
@@ -635,7 +635,7 @@ GC_allochblk_nth(size_t sz, int kind, unsigned flags, int n)
 	    /* to get tiny blocks.					*/
 	    {
 	      signed_word next_size;
-	      
+
 	      thishbp = hhdr -> hb_next;
 	      if (thishbp != 0) {
 		GET_HDR(thishbp, thishdr);
@@ -655,8 +655,8 @@ GC_allochblk_nth(size_t sz, int kind, unsigned flags, int n)
 	      signed_word eff_size_needed = ((flags & IGNORE_OFF_PAGE)?
 	      					HBLKSIZE
 	      					: size_needed);
-	      
-	      
+
+
 	      while ((ptr_t)lasthbp <= search_end
 	             && (thishbp = GC_is_black_listed(lasthbp,
 	             				      (word)eff_size_needed))
@@ -700,7 +700,7 @@ GC_allochblk_nth(size_t sz, int kind, unsigned flags, int n)
 			 && IS_MAPPED(hhdr)) {
 		if (!GC_find_leak) {
 	      	  static unsigned count = 0;
-	      	  
+
 	      	  /* The block is completely blacklisted.  We need 	*/
 	      	  /* to drop some such blocks, since otherwise we spend */
 	      	  /* all our time traversing them if pointerfree	*/
@@ -714,7 +714,7 @@ GC_allochblk_nth(size_t sz, int kind, unsigned flags, int n)
 	              struct hblk * limit = hbp + divHBLKSZ(total_size);
 	              struct hblk * h;
 		      struct hblk * prev = hhdr -> hb_prev;
-	              
+
 		      GC_large_free_bytes -= total_size;
 		      GC_remove_from_fl(hhdr, n);
 	              for (h = hbp; h < limit; h++) {
@@ -768,7 +768,7 @@ GC_allochblk_nth(size_t sz, int kind, unsigned flags, int n)
     /* Ensure that pointerfree objects are not protected if it's avoidable. */
     	GC_remove_protection(hbp, divHBLKSZ(size_needed),
 			     (hhdr -> hb_descr == 0) /* pointer-free */);
-        
+
     /* We just successfully allocated a block.  Restart count of	*/
     /* consecutive failures.						*/
     {
@@ -778,11 +778,11 @@ GC_allochblk_nth(size_t sz, int kind, unsigned flags, int n)
     }
 
     GC_large_free_bytes -= size_needed;
-    
+
     GC_ASSERT(IS_MAPPED(hhdr));
     return( hbp );
 }
- 
+
 struct hblk * GC_freehblk_ptr = 0;  /* Search position hint for GC_freehblk */
 
 /*
@@ -808,7 +808,7 @@ signed_word size;
 #   ifdef USE_MUNMAP
       hhdr -> hb_last_reclaimed = (unsigned short)GC_gc_no;
 #   endif
-    
+
     /* Check for duplicate deallocation in the easy case */
       if (HBLK_IS_FREE(hhdr)) {
         GC_printf("Duplicate large block deallocation of %p\n", hbp);
@@ -823,7 +823,7 @@ signed_word size;
     /* Coalesce with successor, if possible */
       if(0 != nexthdr && HBLK_IS_FREE(nexthdr) && IS_MAPPED(nexthdr)) {
 	GC_remove_from_fl(nexthdr, FL_UNKNOWN);
-	hhdr -> hb_sz += nexthdr -> hb_sz; 
+	hhdr -> hb_sz += nexthdr -> hb_sz;
 	GC_remove_header(next);
       }
     /* Coalesce with predecessor, if possible. */
@@ -845,6 +845,6 @@ signed_word size;
     /* unmapping. 							*/
 
     GC_large_free_bytes += size;
-    GC_add_to_fl(hbp, hhdr);    
+    GC_add_to_fl(hbp, hhdr);
 }
 

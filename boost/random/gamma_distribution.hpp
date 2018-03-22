@@ -75,7 +75,7 @@ public:
             os << parm._alpha << ' ' << parm._beta;
             return os;
         }
-        
+
         /** Reads the parameters from a @c std::istream. */
         template<class CharT, class Traits>
         friend std::basic_istream<CharT, Traits>&
@@ -147,7 +147,7 @@ public:
         _beta = parm.beta();
         init();
     }
-    
+
     /**
      * Effects: Subsequent uses of the distribution do not depend
      * on values produced by any engine prior to invoking reset.
@@ -220,7 +220,7 @@ public:
         os << gd.param();
         return os;
     }
-    
+
     /** Reads a @c gamma_distribution from a @c std::istream. */
     template<class CharT, class Traits>
     friend std::basic_istream<CharT,Traits>&

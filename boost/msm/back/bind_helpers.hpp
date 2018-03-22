@@ -29,7 +29,7 @@ namespace boost { namespace msm { namespace back
     };
     // helper to dereference a pointer to a function pointer
     template <class T>
-    struct deref 
+    struct deref
     {
         typedef T& result_type;
         T& operator()(T*  f) const

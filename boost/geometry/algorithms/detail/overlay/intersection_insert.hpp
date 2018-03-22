@@ -358,7 +358,7 @@ struct intersection_of_linestring_with_areal
             // or outside (exterior + borders)
 
             // analyse the turns
-            int inside_value = inside_or_outside_turn(turns);            
+            int inside_value = inside_or_outside_turn(turns);
             if (inside_value == 0)
             {
                 // if needed analyse points of a linestring
@@ -1071,7 +1071,7 @@ inline OutputIterator intersection_insert(Geometry1 const& geometry1,
         <
             typename cs_tag<GeometryOut>::type
         >::type strategy_type;
-    
+
     return intersection_insert<GeometryOut>(geometry1, geometry2, out,
                                             strategy_type());
 }

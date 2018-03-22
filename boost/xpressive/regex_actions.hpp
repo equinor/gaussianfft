@@ -1058,7 +1058,7 @@ namespace boost { namespace xpressive
         }
     };
 
-    /// \brief \c reference\<\> is a lazy wrapper for a reference that can be used in 
+    /// \brief \c reference\<\> is a lazy wrapper for a reference that can be used in
     /// xpressive semantic actions.
     ///
     /// \tparam T The type of the referent.
@@ -1070,7 +1070,7 @@ namespace boost { namespace xpressive
         using namespace boost::xpressive;
         std::map<std::string, int> result;
         reference<std::map<std::string, int> > result_ref(result);
-       
+
         // Match a word and an integer, separated by =>,
         // and then stuff the result into a std::map<>
         sregex pair = ( (s1= +_w) >> "=>" >> (s2= +_d) )

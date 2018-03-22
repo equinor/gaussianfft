@@ -7,7 +7,7 @@
 
 # include <boost/python/type_id.hpp>
 
-namespace boost { namespace python { namespace objects { 
+namespace boost { namespace python { namespace objects {
 
 // Given a type_id, find the instance data which corresponds to it, or
 // return 0 in case no such type is held.  If null_shared_ptr_only is

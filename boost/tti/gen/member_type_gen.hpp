@@ -27,5 +27,5 @@
 #define BOOST_TTI_MEMBER_TYPE_GEN(name) \
   BOOST_PP_CAT(member_type_,name) \
 /**/
-  
+
 #endif // BOOST_TTI_MEMBER_TYPE_GEN_HPP

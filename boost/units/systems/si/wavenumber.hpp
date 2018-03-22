@@ -1,4 +1,4 @@
-// Boost.Units - A C++ library for zero-overhead dimensional analysis and 
+// Boost.Units - A C++ library for zero-overhead dimensional analysis and
 // unit/quantity manipulation and conversion
 //
 // Copyright (C) 2003-2008 Matthias Christian Schabel
@@ -16,16 +16,16 @@
 
 namespace boost {
 
-namespace units { 
+namespace units {
 
 namespace si {
 
 typedef unit<wavenumber_dimension,si::system>    wavenumber;
-    
-BOOST_UNITS_STATIC_CONSTANT(reciprocal_meter,wavenumber);   
-BOOST_UNITS_STATIC_CONSTANT(reciprocal_meters,wavenumber);  
-BOOST_UNITS_STATIC_CONSTANT(reciprocal_metre,wavenumber);   
-BOOST_UNITS_STATIC_CONSTANT(reciprocal_metres,wavenumber);  
+
+BOOST_UNITS_STATIC_CONSTANT(reciprocal_meter,wavenumber);
+BOOST_UNITS_STATIC_CONSTANT(reciprocal_meters,wavenumber);
+BOOST_UNITS_STATIC_CONSTANT(reciprocal_metre,wavenumber);
+BOOST_UNITS_STATIC_CONSTANT(reciprocal_metres,wavenumber);
 
 } // namespace si
 

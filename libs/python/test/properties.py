@@ -48,7 +48,7 @@ class instance count from object
 >>> x1.instance_count_direct
 1
 
-class instance count from object: 
+class instance count from object:
 >>> x1.instance_count_injected
 1
 
@@ -59,12 +59,12 @@ Traceback (most recent call last):
     x1.value_r = 2
 AttributeError: can't set attribute
 
-setting value_rw to 2. value_direct: 
+setting value_rw to 2. value_direct:
 >>> x1.value_rw = 2
 >>> x1.value_rw
 2
 
-setting value_direct to 3. value_direct: 
+setting value_direct to 3. value_direct:
 >>> x1.value_direct = 3
 >>> x1.value_direct
 3
@@ -97,7 +97,7 @@ def run(args = None):
     if args is not None:
         sys.argv = args
     return doctest.testmod(sys.modules.get(__name__))
-    
+
 if __name__ == '__main__':
     print("running...")
     import sys

@@ -5,8 +5,8 @@
 // Copyright Aleksey Gurtovoy 2003-2004
 // Copyright David Abrahams 2003-2004
 //
-// Distributed under the Boost Software License, Version 1.0. 
-// (See accompanying file LICENSE_1_0.txt or copy at 
+// Distributed under the Boost Software License, Version 1.0.
+// (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 //
 // See http://www.boost.org/libs/mpl for documentation.
@@ -28,7 +28,7 @@ template<
     , typename BOOST_MPL_AUX_NA_PARAM(T)
     >
 struct key_type
-    : apply_wrap2< 
+    : apply_wrap2<
           key_type_impl< typename sequence_tag<AssociativeSequence>::type >
         , AssociativeSequence, T>
 {

@@ -162,7 +162,7 @@ inline void intrusive_ptr_add_ref(
 }
 
 template< class Allocator, class RttiPolicy >
-inline void intrusive_ptr_release( 
+inline void intrusive_ptr_release(
   const ::boost::statechart::detail::state_base< Allocator, RttiPolicy > * pBase )
 {
   if ( pBase->release() )

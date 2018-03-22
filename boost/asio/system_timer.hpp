@@ -52,7 +52,7 @@ typedef basic_waitable_timer<boost::chrono::system_clock> system_timer;
 } // namespace asio
 } // namespace boost
 
-#endif // defined(BOOST_ASIO_HAS_STD_CHRONO) 
+#endif // defined(BOOST_ASIO_HAS_STD_CHRONO)
        //   || defined(BOOST_ASIO_HAS_BOOST_CHRONO)
        //   || defined(GENERATING_DOCUMENTATION)
 

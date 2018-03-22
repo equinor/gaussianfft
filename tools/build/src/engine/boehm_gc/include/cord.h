@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 1993-1994 by Xerox Corporation.  All rights reserved.
  *
  * THIS MATERIAL IS PROVIDED AS IS, WITH ABSOLUTELY NO WARRANTY EXPRESSED
@@ -13,7 +13,7 @@
  * Author: Hans-J. Boehm (boehm@parc.xerox.com)
  */
 /* Boehm, October 5, 1995 4:20 pm PDT */
- 
+
 /*
  * Cords are immutable character strings.  A number of operations
  * on long cords are much more efficient than their strings.h counterpart.
@@ -36,7 +36,7 @@
  * This interface is designed for maximum compatibility with C strings.
  * ASCII NUL characters may be embedded in cords using CORD_from_fn.
  * This is handled correctly, but CORD_to_char_star will produce a string
- * with embedded NULs when given such a cord. 
+ * with embedded NULs when given such a cord.
  *
  * This interface is fairly big, largely for performance reasons.
  * The most basic constants and functions:
@@ -240,7 +240,7 @@ CORD CORD_chars(char c, size_t i);
 /* where we left it.  Normally this should be invoked as		*/
 /* CORD_from_file(fopen(...))						*/
 /* CORD_from_file arranges to close the file descriptor when it is no	*/
-/* longer needed (e.g. when the result becomes inaccessible).		*/ 
+/* longer needed (e.g. when the result becomes inaccessible).		*/
 /* The file f must be such that ftell reflects the actual character	*/
 /* position in the file, i.e. the number of characters that can be 	*/
 /* or were read with fread.  On UNIX systems this is always true.  On	*/
@@ -266,7 +266,7 @@ CORD CORD_from_char_star(const char *s);
 
 /* Identical to the above, but the result may share structure with	*/
 /* the argument and is thus not modifiable.				*/
-const char * CORD_to_const_char_star(CORD x); 
+const char * CORD_to_const_char_star(CORD x);
 
 /* Write a cord to a file, starting at the current position.  No	*/
 /* trailing NULs are newlines are added.				*/

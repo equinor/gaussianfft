@@ -1,6 +1,6 @@
 // Copyright 2002 The Trustees of Indiana University.
 
-// Use, modification and distribution is subject to the Boost Software 
+// Use, modification and distribution is subject to the Boost Software
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
@@ -59,10 +59,10 @@ namespace multi_array_types {
 
 
 // boost::extents and boost::indices are now a part of the public
-// interface.  That way users don't necessarily have to create their 
-// own objects.  On the other hand, one may not want the overhead of 
+// interface.  That way users don't necessarily have to create their
+// own objects.  On the other hand, one may not want the overhead of
 // object creation in small-memory environments.  Thus, the objects
-// can be left undefined by defining BOOST_MULTI_ARRAY_NO_GENERATORS 
+// can be left undefined by defining BOOST_MULTI_ARRAY_NO_GENERATORS
 // before loading multi_array.hpp.
 #ifndef BOOST_MULTI_ARRAY_NO_GENERATORS
 namespace {
@@ -116,7 +116,7 @@ class value_accessor_n : public multi_array_base {
 public:
   typedef typename super_type::index index;
 
-  // 
+  //
   // public typedefs used by classes that inherit from this base
   //
   typedef T element;
@@ -201,7 +201,7 @@ struct choose_value_accessor_one {
 template <typename T, typename NumDims>
 struct value_accessor_generator {
     BOOST_STATIC_CONSTANT(std::size_t, dimensionality = NumDims::value);
-    
+
   typedef typename
   mpl::eval_if_c<(dimensionality == 1),
                   choose_value_accessor_one<T>,
@@ -218,9 +218,9 @@ struct associated_types
 // choose value accessor ends
 /////////////////////////////////////////////////////////////////////////
 
-// Due to some imprecision in the C++ Standard, 
+// Due to some imprecision in the C++ Standard,
 // MSVC 2010 is broken in debug mode: it requires
-// that an Output Iterator have output_iterator_tag in its iterator_category if 
+// that an Output Iterator have output_iterator_tag in its iterator_category if
 // that iterator is not bidirectional_iterator or random_access_iterator.
 #if BOOST_WORKAROUND(BOOST_MSVC, >= 1600)
 struct mutable_iterator_tag
@@ -316,7 +316,7 @@ protected:
     index offset = 0;
     {
       typename IndexList::const_iterator i = indices.begin();
-      size_type n = 0; 
+      size_type n = 0;
       while (n != NumDims) {
         offset += (*i) * strides[n];
         ++n;
@@ -334,16 +334,16 @@ protected:
     index stride = 1;
     for (size_type n = 0; n != NumDims; ++n) {
       index stride_sign = +1;
-      
+
       if (!storage.ascending(storage.ordering(n)))
         stride_sign = -1;
-      
+
       // The stride for this dimension is the product of the
       // lengths of the ranks minor to it.
       stride_list[storage.ordering(n)] = stride * stride_sign;
-      
+
       stride *= extent_list[storage.ordering(n)];
-    } 
+    }
   }
 
   // This calculates the offset to the array base pointer due to:
@@ -371,7 +371,7 @@ protected:
                                 const general_storage_order<NumDims>& storage)
   {
     index offset = 0;
-    if (!storage.all_dims_ascending()) 
+    if (!storage.all_dims_ascending())
       for (size_type n = 0; n != NumDims; ++n)
         if (!storage.ascending(n))
           offset -= (extent_list[n] - 1) * stride_list[n];
@@ -396,11 +396,11 @@ protected:
 
   // Slicing using an index_gen.
   // Note that populating an index_gen creates a type that encodes
-  // both the number of dimensions in the current Array (NumDims), and 
-  // the Number of dimensions for the resulting view.  This allows the 
+  // both the number of dimensions in the current Array (NumDims), and
+  // the Number of dimensions for the resulting view.  This allows the
   // compiler to fail if the dimensions aren't completely accounted
   // for.  For reasons unbeknownst to me, a BOOST_STATIC_ASSERT
-  // within the member function template does not work. I should add a 
+  // within the member function template does not work. I should add a
   // note to the documentation specifying that you get a damn ugly
   // error message if you screw up in your slicing code.
   template <typename ArrayRef, int NDims, typename TPtr>
@@ -429,21 +429,21 @@ protected:
       index stride = current_range.stride();
       BOOST_ASSERT(stride != 0);
 
-      // An index range indicates a half-open strided interval 
-      // [start,finish) (with stride) which faces upward when stride 
-      // is positive and downward when stride is negative, 
+      // An index range indicates a half-open strided interval
+      // [start,finish) (with stride) which faces upward when stride
+      // is positive and downward when stride is negative,
 
-      // RG: The following code for calculating length suffers from 
+      // RG: The following code for calculating length suffers from
       // some representation issues: if finish-start cannot be represented as
       // by type index, then overflow may result.
 
       index len;
       if ((finish - start) / stride < 0) {
-        // [start,finish) is empty according to the direction imposed by 
+        // [start,finish) is empty according to the direction imposed by
         // the stride.
         len = 0;
       } else {
-        // integral trick for ceiling((finish-start) / stride) 
+        // integral trick for ceiling((finish-start) / stride)
         // taking into account signs.
         index shrinkage = stride > 0 ? 1 : -1;
         len = (finish - start + (stride - shrinkage)) / stride;
@@ -475,7 +475,7 @@ protected:
         // The stride for each dimension is included into the
         // strides for the array_view (see [Garcia] for the math involved).
         new_strides[dim] = stride * strides[n];
-        
+
         // calculate new extents
         new_extents[dim] = len;
         ++dim;
@@ -488,7 +488,7 @@ protected:
                new_extents,
                new_strides);
   }
-                     
+
 
 };
 

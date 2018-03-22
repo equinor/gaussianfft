@@ -442,7 +442,7 @@ struct lanczos13 : public mpl::int_<72>
 struct lanczos22 : public mpl::int_<120>
 {
    //
-   // Produces slightly better than 128-bit long-double precision when 
+   // Produces slightly better than 128-bit long-double precision when
    // evaluated at higher precision:
    //
    template <class T>
@@ -1253,13 +1253,13 @@ struct undefined_lanczos : public mpl::int_<INT_MAX - 1> { };
 #endif
 
 typedef mpl::list<
-   lanczos6m24, 
+   lanczos6m24,
 /*   lanczos6, */
-   lanczos13m53, 
+   lanczos13m53,
 /*   lanczos13, */
-   lanczos17m64, 
-   lanczos24m113, 
-   lanczos22, 
+   lanczos17m64,
+   lanczos24m113,
+   lanczos22,
    undefined_lanczos> lanczos_list;
 
 template <class Real, class Policy>
@@ -1275,7 +1275,7 @@ struct lanczos
    >::type target_precision;
 
    typedef typename mpl::deref<typename mpl::find_if<
-      lanczos_list, 
+      lanczos_list,
       mpl::less_equal<target_precision, mpl::_1> >::type>::type type;
 };
 

@@ -7,7 +7,7 @@
 
 //  See http://www.boost.org/libs/system for documentation.
 
-#ifndef BOOST_SYSTEM_CONFIG_HPP                  
+#ifndef BOOST_SYSTEM_CONFIG_HPP
 #define BOOST_SYSTEM_CONFIG_HPP
 
 #include <boost/config.hpp>
@@ -25,9 +25,9 @@
 #endif
 
 #if defined(BOOST_ALL_DYN_LINK) && !defined(BOOST_SYSTEM_DYN_LINK)
-# define BOOST_SYSTEM_DYN_LINK 
+# define BOOST_SYSTEM_DYN_LINK
 #elif defined(BOOST_ALL_STATIC_LINK) && !defined(BOOST_SYSTEM_STATIC_LINK)
-# define BOOST_SYSTEM_STATIC_LINK 
+# define BOOST_SYSTEM_STATIC_LINK
 #endif
 
 #if defined(BOOST_SYSTEM_DYN_LINK) && defined(BOOST_SYSTEM_STATIC_LINK)
@@ -39,14 +39,14 @@
 #if defined(BOOST_ALL_DYN_LINK) || defined(BOOST_SYSTEM_DYN_LINK)
 # if defined(BOOST_SYSTEM_SOURCE)
 #   define BOOST_SYSTEM_DECL BOOST_SYMBOL_EXPORT
-# else 
+# else
 #   define BOOST_SYSTEM_DECL BOOST_SYMBOL_IMPORT
 # endif
 #else
 # define BOOST_SYSTEM_DECL
 #endif
 
-//  enable automatic library variant selection  ----------------------------------------// 
+//  enable automatic library variant selection  ----------------------------------------//
 
 #if !defined(BOOST_SYSTEM_SOURCE) && !defined(BOOST_ALL_NO_LIB) && !defined(BOOST_SYSTEM_NO_LIB)
 //

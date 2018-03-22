@@ -63,12 +63,12 @@ namespace boost { namespace math { namespace detail{
      // (n-1)! / x^(n+1)
      //
      // which is common to both the first term of the series (with k = 1)
-     // and to the leading part.  
+     // and to the leading part.
      // We can then get to the leading term by:
      //
      // part_term * (n + 2 * x) / 2
      //
-     // and to the first term in the series 
+     // and to the first term in the series
      // (excluding the Bernoulli number) by:
      //
      // part_term n * (n + 1) / (2x)
@@ -77,7 +77,7 @@ namespace boost { namespace math { namespace detail{
      // or the power term underflows, this just gets set to 0 and then we
      // know that we have to use logs for the initial terms:
      //
-     part_term = ((n > (int)boost::math::max_factorial<T>::value) && (T(n) * n > tools::log_max_value<T>())) 
+     part_term = ((n > (int)boost::math::max_factorial<T>::value) && (T(n) * n > tools::log_max_value<T>()))
         ? T(0) : static_cast<T>(boost::math::factorial<T>(n - 1, pol) * pow(x, -n - 1));
      if(part_term == 0)
      {
@@ -124,7 +124,7 @@ namespace boost { namespace math { namespace detail{
            return policies::raise_evaluation_error(function, "Series did not converge, closest value was %1%", sum, pol);
         }
      }
-     
+
      if((n - 1) & 1)
         sum = -sum;
 
@@ -198,7 +198,7 @@ namespace boost { namespace math { namespace detail{
      T factorial_part = 1;
      //
      // "prefix" is what we'll be adding the accumulated sum to, it will
-     // be n! / z^(n+1), but since we're scaling by n! it's just 
+     // be n! / z^(n+1), but since we're scaling by n! it's just
      // 1 / z^(n+1) for now:
      //
      T prefix = pow(x, n + 1);
@@ -210,10 +210,10 @@ namespace boost { namespace math { namespace detail{
      // ignore the sum if it will have no effect on the result anyway:
      //
      if(prefix > 2 / policies::get_epsilon<T, Policy>())
-        return ((n & 1) ? 1 : -1) * 
+        return ((n & 1) ? 1 : -1) *
          (tools::max_value<T>() / prefix < scale ? policies::raise_overflow_error<T>(function, 0, pol) : prefix * scale);
      //
-     // As this is an alternating series we could accelerate it using 
+     // As this is an alternating series we could accelerate it using
      // "Convergence Acceleration of Alternating Series",
      // Henri Cohen, Fernando Rodriguez Villegas, and Don Zagier, Experimental Mathematics, 1999.
      // In practice however, it appears not to make any difference to the number of terms
@@ -396,7 +396,7 @@ namespace boost { namespace math { namespace detail{
      }
 
      //
-     // We'll have to compute the coefficients up to n, 
+     // We'll have to compute the coefficients up to n,
      // complexity is O(n^2) which we don't worry about for now
      // as the values are computed once and then cached.
      // However, if the final evaluation would have too many
@@ -489,7 +489,7 @@ namespace boost { namespace math { namespace detail{
 
   template <class T, class Policy>
   const typename polygamma_initializer<T, Policy>::init polygamma_initializer<T, Policy>::initializer;
-  
+
   template<class T, class Policy>
   inline T polygamma_imp(const int n, T x, const Policy &pol)
   {

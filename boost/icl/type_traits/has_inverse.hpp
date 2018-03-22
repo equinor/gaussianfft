@@ -1,4 +1,4 @@
-/*-----------------------------------------------------------------------------+    
+/*-----------------------------------------------------------------------------+
 Copyright (c) 2008-2009: Joachim Faulhaber
 +------------------------------------------------------------------------------+
    Distributed under the Boost Software License, Version 1.0.
@@ -15,11 +15,11 @@ namespace boost{ namespace icl
 {
 
     template <class Type> struct has_inverse
-    { 
+    {
         typedef has_inverse<Type> type;
-        BOOST_STATIC_CONSTANT(bool, 
-            value = (   boost::is_signed<Type>::value 
-                     || is_floating_point<Type>::value ) ); 
+        BOOST_STATIC_CONSTANT(bool,
+            value = (   boost::is_signed<Type>::value
+                     || is_floating_point<Type>::value ) );
     };
 
 }} // namespace boost icl

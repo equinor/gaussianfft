@@ -4,8 +4,8 @@
 // Boost.Range MFC/ATL Extension
 //
 // Copyright Shunsuke Sogame 2005-2006.
-// Distributed under the Boost Software License, Version 1.0. 
-// (See accompanying file LICENSE_1_0.txt or copy at 
+// Distributed under the Boost Software License, Version 1.0.
+// (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
 
@@ -193,7 +193,7 @@ namespace boost { namespace range_detail_microsoft {
 
 
     template< class Range >
-    struct compatible_mutable_iterator : 
+    struct compatible_mutable_iterator :
         BOOST_RANGE_DETAIL_MICROSOFT_range_mutable_iterator<Range>
     { };
 

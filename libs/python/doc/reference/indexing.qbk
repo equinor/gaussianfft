@@ -13,7 +13,7 @@ The goals:
         val = c[i]
         c[i].m()
         val == c[i]
-  ``            
+  ``
 
   where m is a non-const (mutating) member function (method).
 * Return safe references from `__getitem__` such that subsequent adds and deletes to and from the container will not result in dangling references (will not crash Python).
@@ -58,7 +58,7 @@ class_<std::vector<X> >("XVec")
 ;
 ``
 
-XVec is now a full-fledged Python container (see the example in full, along with its python test). 
+XVec is now a full-fledged Python container (see the example in full, along with its python test).
 [endsect]
 [section map_index_suite]
 The `map_indexing_suite` class is a predefined `indexing_suite` derived class designed to wrap `std::map` (and `std::map`-like [i.e. a class with `std::map` interface]) classes. It provides all the policies required by the `indexing_suite`.
@@ -104,7 +104,7 @@ public:
 ``
 [section DerivedPolicies]
 
-Derived classes provide the hooks needed by the indexing_suite: 
+Derived classes provide the hooks needed by the indexing_suite:
 ``
 data_type&
 get_item(Container& container, index_type i);
@@ -160,7 +160,7 @@ When a container expands or contracts, held indexes to its elements must be adju
                  4           1
 ``
 
-adjust_index takes care of the adjustment. Given a current index, the function should return the adjusted index when data in the container at index from..to is replaced by len elements. 
+adjust_index takes care of the adjustment. Given a current index, the function should return the adjusted index when data in the container at index from..to is replaced by len elements.
 [endsect]
 [endsect]
 [section class `vector_indexing_suite`]
@@ -194,7 +194,7 @@ public:
     set_item(Container& container, index_type i, data_type const& v);
 
     static void
-    set_slice(Container& container, index_type from, 
+    set_slice(Container& container, index_type from,
         index_type to, data_type const& v);
 
     template <class Iter>
@@ -202,23 +202,23 @@ public:
     set_slice(Container& container, index_type from,
         index_type to, Iter first, Iter last);
 
-    static void 
+    static void
     delete_item(Container& container, index_type i);
 
-    static void 
+    static void
     delete_slice(Container& container, index_type from, index_type to);
- 
+
     static size_t
     size(Container& container);
- 
+
     static bool
     contains(Container& container, key_type const& key);
- 
+
     static index_type
     convert_index(Container& container, PyObject* i);
- 
+
     static index_type
-    adjust_index(index_type current, index_type from, 
+    adjust_index(index_type current, index_type from,
         index_type to, size_type len);
 };
 ``
@@ -251,15 +251,15 @@ public:
     static void
     set_item(Container& container, index_type i, data_type const& v);
 
-    static void 
+    static void
     delete_item(Container& container, index_type i);
- 
+
     static size_t
     size(Container& container);
- 
+
     static bool
     contains(Container& container, key_type const& key);
- 
+
     static bool
     compare_index(Container& container, index_type a, index_type b);
 

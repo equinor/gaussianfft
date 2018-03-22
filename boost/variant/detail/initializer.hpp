@@ -82,15 +82,15 @@ struct make_initializer_node
                 public_T;
 
 #ifndef BOOST_NO_CXX11_RVALUE_REFERENCES
-            typedef boost::is_reference<public_T> 
+            typedef boost::is_reference<public_T>
                 is_reference_content_t;
 
-            typedef typename boost::mpl::if_<is_reference_content_t, public_T, const public_T& >::type 
+            typedef typename boost::mpl::if_<is_reference_content_t, public_T, const public_T& >::type
                 param_T;
 
             template <class T> struct disable_overload{};
 
-            typedef typename boost::mpl::if_<is_reference_content_t, disable_overload<public_T>, public_T&& >::type 
+            typedef typename boost::mpl::if_<is_reference_content_t, disable_overload<public_T>, public_T&& >::type
                 param2_T;
 #else
             typedef typename call_traits<public_T>::param_type

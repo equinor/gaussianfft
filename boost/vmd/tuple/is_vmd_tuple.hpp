@@ -32,11 +32,11 @@
     The macro checks that the sequence is a VMD tuple.
     A VMD tuple, which may be a Boost PP tuple or emptiness, is a superset of a Boost PP tuple.
     It returns 1 if it is a VMD tuple, else if returns 0.
-    
+
     sequence = a possible Boost PP tuple
 
     returns = 1 if it a VMD tuple, else returns 0.
-    
+
 */
 
 #define BOOST_VMD_IS_VMD_TUPLE(sequence) \

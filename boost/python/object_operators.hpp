@@ -18,7 +18,7 @@ namespace boost { namespace python { namespace api {
 
 template <class X>
 char is_object_operators_helper(object_operators<X> const*);
-    
+
 typedef char (&no_type)[2];
 no_type is_object_operators_helper(...);
 
@@ -28,7 +28,7 @@ template <class L, class R = L>
 struct is_object_operators
 {
     enum {
-        value 
+        value
         = (sizeof(api::is_object_operators_helper(api::make_ptr<L>()))
            + sizeof(api::is_object_operators_helper(api::make_ptr<R>()))
            < 4
@@ -83,7 +83,7 @@ BOOST_PYTHON_BINARY_RETURN(object) operator op(L const& l, R const& r)    \
         object(l).ptr(), object(r).ptr(), opid);                        \
 }
 # undef BOOST_PYTHON_COMPARE_OP
-    
+
 # define BOOST_PYTHON_BINARY_OPERATOR(op)                               \
 BOOST_PYTHON_DECL object operator op(object const& l, object const& r); \
 template <class L, class R>                                             \
@@ -109,7 +109,7 @@ BOOST_PYTHON_BINARY_OPERATOR(^)
 BOOST_PYTHON_BINARY_OPERATOR(|)
 # undef BOOST_PYTHON_BINARY_OPERATOR
 
-        
+
 # define BOOST_PYTHON_INPLACE_OPERATOR(op)                              \
 BOOST_PYTHON_DECL object& operator op(object& l, object const& r);      \
 template <class R>                                                      \

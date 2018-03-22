@@ -5,12 +5,12 @@
 >>> from operators_ext import *
 
   Check __nonzero__ support
-  
+
 >>> assert X(2)
 >>> assert not X(0)
 
  ----
- 
+
 >>> x = X(42)
 >>> x.value()
 42
@@ -93,7 +93,7 @@ def run(args = None):
     if args is not None:
         sys.argv = args
     return doctest.testmod(sys.modules.get(__name__))
-    
+
 if __name__ == '__main__':
     print("running...")
     import sys

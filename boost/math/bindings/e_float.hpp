@@ -491,7 +491,7 @@ namespace std{
          return (numeric_limits< ::e_float>::quiet_NaN)();
       }
       //
-      // e_float's supplied digits member is wrong 
+      // e_float's supplied digits member is wrong
       // - it should be same the same as digits 10
       // - given that radix is 10.
       //
@@ -510,7 +510,7 @@ struct precision< ::boost::math::ef::e_float, Policy>
    typedef typename Policy::precision_type precision_type;
    typedef digits2<((::std::numeric_limits< ::boost::math::ef::e_float>::digits10 + 1) * 1000L) / 301L> digits_2;
    typedef typename mpl::if_c<
-      ((digits_2::value <= precision_type::value) 
+      ((digits_2::value <= precision_type::value)
       || (Policy::precision_type::value <= 0)),
       // Default case, full precision for RealType:
       digits_2,

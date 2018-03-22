@@ -55,7 +55,7 @@ private:
 };
 
 // displays the typeid of the given Type
-struct display_type 
+struct display_type
 {
     template <class Type>
     void operator()(boost::msm::wrap<Type> const&)

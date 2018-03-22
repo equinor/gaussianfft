@@ -14,7 +14,7 @@ BOOST_PYTHON_DECL object getattr(object const& target, object const& key)
 {
     return object(detail::new_reference(PyObject_GetAttr(target.ptr(), key.ptr())));
 }
-    
+
 BOOST_PYTHON_DECL object getattr(object const& target, object const& key, object const& default_)
 {
     PyObject* result = PyObject_GetAttr(target.ptr(), key.ptr());
@@ -25,7 +25,7 @@ BOOST_PYTHON_DECL object getattr(object const& target, object const& key, object
     }
     return object(detail::new_reference(result));
 }
-        
+
 BOOST_PYTHON_DECL void setattr(object const& target, object const& key, object const& value)
 {
     if (PyObject_SetAttr(target.ptr(), key.ptr(), value.ptr()) == -1)
@@ -45,7 +45,7 @@ BOOST_PYTHON_DECL object getattr(object const& target, char const* key)
             PyObject_GetAttrString(target.ptr(), const_cast<char*>(key))
         ));
 }
-    
+
 BOOST_PYTHON_DECL object getattr(object const& target, char const* key, object const& default_)
 {
     PyObject* result = PyObject_GetAttrString(target.ptr(), const_cast<char*>(key));
@@ -55,7 +55,7 @@ BOOST_PYTHON_DECL object getattr(object const& target, char const* key, object c
         return default_;
     }
     return object(detail::new_reference(result));
-    
+
 }
 BOOST_PYTHON_DECL void setattr(object const& target, char const* key, object const& value)
 {
@@ -82,13 +82,13 @@ BOOST_PYTHON_DECL object getitem(object const& target, object const& key)
     return object(detail::new_reference(
                       PyObject_GetItem(target.ptr(), key.ptr())));
 }
-    
+
 BOOST_PYTHON_DECL void setitem(object const& target, object const& key, object const& value)
 {
     if (PyObject_SetItem(target.ptr(), key.ptr(), value.ptr()) == -1)
         throw_error_already_set();
 }
-    
+
 BOOST_PYTHON_DECL void delitem(object const& target, object const& key)
 {
     if (PyObject_DelItem(target.ptr(), key.ptr()) == -1)
@@ -115,7 +115,7 @@ namespace // slicing code copied directly out of the Python implementation
               return NULL;
           return PySequence_GetSlice(u, ilow, ihigh);
       }
-      else 
+      else
 #endif
       {
           PyObject *slice = PySlice_New(v, w, NULL);
@@ -148,7 +148,7 @@ namespace // slicing code copied directly out of the Python implementation
           else
               return PySequence_SetSlice(u, ilow, ihigh, x);
       }
-      else 
+      else
 #endif
       {
           PyObject *slice = PySlice_New(v, w, NULL);

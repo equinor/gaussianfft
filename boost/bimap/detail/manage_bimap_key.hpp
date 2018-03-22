@@ -65,7 +65,7 @@ typedef BOOST_DEDUCED_TYPENAME
 
     // Returns set_type and evaluate the concept_checked_type
 
-    typedef BOOST_DEDUCED_TYPENAME mpl::if_c< true, set_type, 
+    typedef BOOST_DEDUCED_TYPENAME mpl::if_c< true, set_type,
         BOOST_DEDUCED_TYPENAME set_type::lazy_concept_checked::type
     >::type type;
 };

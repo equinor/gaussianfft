@@ -15,7 +15,7 @@
 #include <boost/math/constants/constants.hpp>
 #include <utility>
 
-namespace boost { namespace math { 
+namespace boost { namespace math {
 
     template <class RealType = double, class Policy = policies::policy<> >
     class logistic_distribution
@@ -23,12 +23,12 @@ namespace boost { namespace math {
     public:
       typedef RealType value_type;
       typedef Policy policy_type;
-      
+
       logistic_distribution(RealType l_location=0, RealType l_scale=1) // Constructor.
-        : m_location(l_location), m_scale(l_scale) 
+        : m_location(l_location), m_scale(l_scale)
       {
         static const char* function = "boost::math::logistic_distribution<%1%>::logistic_distribution";
-        
+
         RealType result;
         detail::check_scale(function, l_scale, &result, Policy());
         detail::check_location(function, l_location, &result, Policy());
@@ -38,7 +38,7 @@ namespace boost { namespace math {
       {
         return m_scale;
       }
-      
+
       RealType location()const
       {
         return m_location;
@@ -48,19 +48,19 @@ namespace boost { namespace math {
       RealType m_location;  // distribution location aka mu.
       RealType m_scale;  // distribution scale aka s.
     }; // class logistic_distribution
-    
-    
+
+
     typedef logistic_distribution<double> logistic;
-    
+
     template <class RealType, class Policy>
     inline const std::pair<RealType, RealType> range(const logistic_distribution<RealType, Policy>& /* dist */)
     { // Range of permissible values for random variable x.
       using boost::math::tools::max_value;
       return std::pair<RealType, RealType>(
-         std::numeric_limits<RealType>::has_infinity ? -std::numeric_limits<RealType>::infinity() : -max_value<RealType>(), 
+         std::numeric_limits<RealType>::has_infinity ? -std::numeric_limits<RealType>::infinity() : -max_value<RealType>(),
          std::numeric_limits<RealType>::has_infinity ? std::numeric_limits<RealType>::infinity() : max_value<RealType>());
     }
-    
+
     template <class RealType, class Policy>
     inline const std::pair<RealType, RealType> support(const logistic_distribution<RealType, Policy>& /* dist */)
     { // Range of supported values for random variable x.
@@ -68,7 +68,7 @@ namespace boost { namespace math {
       using boost::math::tools::max_value;
       return std::pair<RealType, RealType>(-max_value<RealType>(), max_value<RealType>()); // - to + infinity
     }
-     
+
     template <class RealType, class Policy>
     inline RealType pdf(const logistic_distribution<RealType, Policy>& dist, const RealType& x)
     {
@@ -104,8 +104,8 @@ namespace boost { namespace math {
        if((exp_term * scale > 1) && (exp_term > tools::max_value<RealType>() / (scale * exp_term)))
           return 1 / (scale * exp_term);
        return (exp_term) / (scale * (1 + exp_term) * (1 + exp_term));
-    } 
-    
+    }
+
     template <class RealType, class Policy>
     inline RealType cdf(const logistic_distribution<RealType, Policy>& dist, const RealType& x)
     {
@@ -138,9 +138,9 @@ namespace boost { namespace math {
           return 0;
        if(power < -tools::log_max_value<RealType>())
           return 1;
-       return 1 / (1 + exp(power)); 
-    } 
-    
+       return 1 / (1 + exp(power));
+    }
+
     template <class RealType, class Policy>
     inline RealType quantile(const logistic_distribution<RealType, Policy>& dist, const RealType& p)
     {
@@ -176,7 +176,7 @@ namespace boost { namespace math {
        //return -scale*log(1/p-1) + location;
        return location - scale * log((1 - p) / p);
      } // RealType quantile(const logistic_distribution<RealType, Policy>& dist, const RealType& p)
-    
+
     template <class RealType, class Policy>
     inline RealType cdf(const complemented2_type<logistic_distribution<RealType, Policy>, RealType>& c)
     {
@@ -209,8 +209,8 @@ namespace boost { namespace math {
           return 0;
        if(power < -tools::log_max_value<RealType>())
           return 1;
-       return 1 / (1 + exp(power)); 
-    } 
+       return 1 / (1 + exp(power));
+    }
 
     template <class RealType, class Policy>
     inline RealType quantile(const complemented2_type<logistic_distribution<RealType, Policy>, RealType>& c)
@@ -237,7 +237,7 @@ namespace boost { namespace math {
        {
           return policies::raise_overflow_error<RealType>(function,"probability argument is 0, but must be >0 and <1",Policy());
        }
-       //Expressions to try 
+       //Expressions to try
        //return location+scale*log((1-q)/q);
        return location + scale * log((1 - q) / q);
 
@@ -246,14 +246,14 @@ namespace boost { namespace math {
 
        //return location+scale*log(1/q-1);
        //return location+scale*log1p(1/q-2);
-    } 
-    
+    }
+
     template <class RealType, class Policy>
     inline RealType mean(const logistic_distribution<RealType, Policy>& dist)
     {
       return dist.location();
     } // RealType mean(const logistic_distribution<RealType, Policy>& dist)
-    
+
     template <class RealType, class Policy>
     inline RealType variance(const logistic_distribution<RealType, Policy>& dist)
     {
@@ -261,13 +261,13 @@ namespace boost { namespace math {
       RealType scale = dist.scale();
       return boost::math::constants::pi<RealType>()*boost::math::constants::pi<RealType>()*scale*scale/3;
     } // RealType variance(const logistic_distribution<RealType, Policy>& dist)
-    
+
     template <class RealType, class Policy>
     inline RealType mode(const logistic_distribution<RealType, Policy>& dist)
     {
       return dist.location();
     }
-    
+
     template <class RealType, class Policy>
     inline RealType median(const logistic_distribution<RealType, Policy>& dist)
     {
@@ -278,11 +278,11 @@ namespace boost { namespace math {
     {
       return 0;
     } // RealType skewness(const logistic_distribution<RealType, Policy>& dist)
-    
+
     template <class RealType, class Policy>
     inline RealType kurtosis_excess(const logistic_distribution<RealType, Policy>& /*dist*/)
     {
-      return static_cast<RealType>(6)/5; 
+      return static_cast<RealType>(6)/5;
     } // RealType kurtosis_excess(const logistic_distribution<RealType, Policy>& dist)
 
     template <class RealType, class Policy>

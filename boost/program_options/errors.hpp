@@ -41,13 +41,13 @@ namespace boost { namespace program_options {
     };
 
 
-    /** Class thrown when there are too many positional options. 
+    /** Class thrown when there are too many positional options.
         This is a programming error.
     */
     class BOOST_PROGRAM_OPTIONS_DECL too_many_positional_options_error : public error {
     public:
-        too_many_positional_options_error() 
-         : error("too many positional options have been specified on the command line") 
+        too_many_positional_options_error()
+         : error("too many positional options have been specified on the command line")
         {}
     };
 
@@ -69,27 +69,27 @@ namespace boost { namespace program_options {
 
 
     /** Base class for most exceptions in the library.
-     *  
+     *
      *  Substitutes the values for the parameter name
      *      placeholders in the template to create the human
      *      readable error message
-     *  
+     *
      *  Placeholders are surrounded by % signs: %example%
      *      Poor man's version of boost::format
-     *  
+     *
      *  If a parameter name is absent, perform default substitutions
      *      instead so ugly placeholders are never left in-place.
-     *  
+     *
      *  Options are displayed in "canonical" form
      *      This is the most unambiguous form of the
      *      *parsed* option name and would correspond to
      *      option_description::format_name()
      *      i.e. what is shown by print_usage()
-     *  
+     *
      *  The "canonical" form depends on whether the option is
      *      specified in short or long form, using dashes or slashes
      *      or without a prefix (from a configuration file)
-     *  
+     *
      *   */
     class BOOST_PROGRAM_OPTIONS_DECL error_with_option_name : public error {
 
@@ -118,9 +118,9 @@ namespace boost { namespace program_options {
                                const std::string& original_token = "",
                                int option_style = 0);
 
-        /** gcc says that throw specification on dtor is loosened 
-         *  without this line                                     
-         *  */ 
+        /** gcc says that throw specification on dtor is loosened
+         *  without this line
+         *  */
         ~error_with_option_name() throw() {}
 
 
@@ -149,11 +149,11 @@ namespace boost { namespace program_options {
 
         /** If the parameter is missing, then make the
          *      from->to substitution instead */
-        void set_substitute_default(const std::string& parameter_name, 
-                                    const std::string& from,  
+        void set_substitute_default(const std::string& parameter_name,
+                                    const std::string& from,
                                     const std::string& to)
-        {           
-            m_substitution_defaults[parameter_name] = std::make_pair(from, to); 
+        {
+            m_substitution_defaults[parameter_name] = std::make_pair(from, to);
         }
 
 
@@ -206,18 +206,18 @@ namespace boost { namespace program_options {
         user called a method which cannot return them all. */
     class BOOST_PROGRAM_OPTIONS_DECL multiple_values : public error_with_option_name {
     public:
-        multiple_values() 
+        multiple_values()
          : error_with_option_name("option '%canonical_option%' only takes a single argument"){}
 
         ~multiple_values() throw() {}
     };
 
     /** Class thrown when there are several occurrences of an
-        option, but user called a method which cannot return 
+        option, but user called a method which cannot return
         them all. */
     class BOOST_PROGRAM_OPTIONS_DECL multiple_occurrences : public error_with_option_name {
     public:
-        multiple_occurrences() 
+        multiple_occurrences()
          : error_with_option_name("option '%canonical_option%' cannot be specified more than once"){}
 
         ~multiple_occurrences() throw() {}
@@ -238,14 +238,14 @@ namespace boost { namespace program_options {
 
     /** Base class of unparsable options,
      *  when the desired option cannot be identified.
-     *  
-     *  
+     *
+     *
      *  It makes no sense to have an option name, when we can't match an option to the
      *      parameter
-     *  
+     *
      *  Having this a part of the error_with_option_name hierachy makes error handling
      *      a lot easier, even if the name indicates some sort of conceptual dissonance!
-     *  
+     *
      *   */
     class BOOST_PROGRAM_OPTIONS_DECL error_with_no_option_name : public error_with_option_name {
     public:
@@ -311,7 +311,7 @@ namespace boost { namespace program_options {
             unrecognized_line
         };
 
-        invalid_syntax(kind_t kind, 
+        invalid_syntax(kind_t kind,
                        const std::string& option_name = "",
                        const std::string& original_token = "",
                        int option_style              = 0):
@@ -364,14 +364,14 @@ namespace boost { namespace program_options {
     public:
         enum kind_t {
             multiple_values_not_allowed = 30,
-            at_least_one_value_required, 
+            at_least_one_value_required,
             invalid_bool_value,
             invalid_option_value,
             invalid_option
         };
-        
+
     public:
-        validation_error(kind_t kind, 
+        validation_error(kind_t kind,
                    const std::string& option_name = "",
                    const std::string& original_token = "",
                    int option_style              = 0):
@@ -388,7 +388,7 @@ namespace boost { namespace program_options {
     };
 
     /** Class thrown if there is an invalid option value given */
-    class BOOST_PROGRAM_OPTIONS_DECL invalid_option_value 
+    class BOOST_PROGRAM_OPTIONS_DECL invalid_option_value
         : public validation_error
     {
     public:
@@ -399,7 +399,7 @@ namespace boost { namespace program_options {
     };
 
     /** Class thrown if there is an invalid bool value given */
-    class BOOST_PROGRAM_OPTIONS_DECL invalid_bool_value 
+    class BOOST_PROGRAM_OPTIONS_DECL invalid_bool_value
         : public validation_error
     {
     public:
@@ -410,7 +410,7 @@ namespace boost { namespace program_options {
 
 
 
-    
+
 
 }}
 

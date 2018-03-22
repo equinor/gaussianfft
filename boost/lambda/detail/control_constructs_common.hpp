@@ -14,7 +14,7 @@
 #if !defined(BOOST_CONTROL_CONSTRUCTS_COMMON_HPP)
 #define BOOST_CONTROL_CONSTRUCTS_COMMON_HPP
 
-namespace boost { 
+namespace boost {
 namespace lambda {
 
   // special types of lambda functors, used with control structures
@@ -24,13 +24,13 @@ template<class Tag, class LambdaFunctor>
 class tagged_lambda_functor;
 
 template<class Tag, class Args>
-class tagged_lambda_functor<Tag, lambda_functor<Args> > 
-  : public lambda_functor<Args> 
+class tagged_lambda_functor<Tag, lambda_functor<Args> >
+  : public lambda_functor<Args>
 {
 public:
   tagged_lambda_functor(const Args& a) : lambda_functor<Args>(a) {}
 
-  tagged_lambda_functor(const lambda_functor<Args>& a) 
+  tagged_lambda_functor(const lambda_functor<Args>& a)
     : lambda_functor<Args>(a) {}
 
   // for the no body cases in control structures.

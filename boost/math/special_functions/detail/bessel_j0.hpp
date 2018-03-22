@@ -53,7 +53,7 @@ template <typename T>
 T bessel_j0(T x)
 {
     bessel_j0_initializer<T>::force_instantiate();
-    
+
     static const T P1[] = {
          static_cast<T>(BOOST_MATH_BIG_CONSTANT(T, 64, -4.1298668500990866786e+11)),
          static_cast<T>(BOOST_MATH_BIG_CONSTANT(T, 64, 2.7282507878605942706e+10)),

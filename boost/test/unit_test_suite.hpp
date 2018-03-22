@@ -343,7 +343,7 @@ typedef ::boost::unit_test::ut_detail::nil_t BOOST_AUTO_TEST_CASE_FIXTURE;
 // ************************************************************************** //
 
 // Facility for having a unique name based on __LINE__ and __COUNTER__ (later if available)
-#if defined(__COUNTER__) 
+#if defined(__COUNTER__)
   #define BOOST_TEST_INTERNAL_HAS_COUNTER
 #endif
 

@@ -1,4 +1,4 @@
-// $Id: gaussianfield.cpp 1759 2018-02-28 12:41:12Z vegard $
+// $Id: gaussianfield.cpp 1761 2018-03-13 07:55:09Z vegard $
 
 // Copyright (c)  2011, Norwegian Computing Center
 // All rights reserved.
@@ -338,7 +338,7 @@ NRLib::Simulate1DGaussianField(const Variogram       & variogram,
   }
 
   for(size_t i = 0; i < cov_fft.size(); i++)
-    convolve[i] = std::sqrt(cov_fft[i])*noise_fft[i];
+    convolve[i] = cov_fft[i]*noise_fft[i];
 
   std::vector<double> tmp(nxp);
 

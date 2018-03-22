@@ -30,20 +30,20 @@
     \brief Tests whether a sequence is an empty Boost PP array.
 
     An empty Boost PP array is a two element tuple where the first
-    size element is 0 and the second element is a tuple with a single 
+    size element is 0 and the second element is a tuple with a single
     empty element, ie. '(0,())'.
-    
+
     sequence = a possible empty array
 
     returns = 1 if the sequence is an empty Boost PP array
               0 if it is not.
-              
+
     The macro will generate a preprocessing error if the sequence
     is in the form of an array but its first tuple element, instead
     of being a number, is a preprocessor token which VMD cannot parse,
     as in the example '(&0,())' which is a valid tuple but an invalid
     array.
-    
+
 */
 
 #define BOOST_VMD_IS_EMPTY_ARRAY(sequence) \
@@ -64,21 +64,21 @@
     \brief Tests whether a sequence is an empty Boost PP array. Re-entrant version.
 
     An empty Boost PP array is a two element tuple where the first
-    size element is 0 and the second element is a tuple with a single 
+    size element is 0 and the second element is a tuple with a single
     empty element, ie. '(0,())'.
-    
-    d        = The next available BOOST_PP_WHILE iteration. 
+
+    d        = The next available BOOST_PP_WHILE iteration.
     sequence = a possible empty array
 
     returns = 1 if the sequence is an empty Boost PP array
               0 if it is not.
-              
+
     The macro will generate a preprocessing error if the sequence
     is in the form of an array but its first tuple element, instead
     of being a number, is a preprocessor token which VMD cannot parse,
     as in the example '(&0,())' which is a valid tuple but an invalid
     array.
-    
+
 */
 
 #define BOOST_VMD_IS_EMPTY_ARRAY_D(d,sequence) \

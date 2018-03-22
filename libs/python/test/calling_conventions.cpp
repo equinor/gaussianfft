@@ -1,7 +1,7 @@
 //
 //  adapted from bind_stdcall_test.cpp - test for bind.hpp + __stdcall (free functions)
 //   The purpose of this simple test is to determine if a function can be
-//   called from Python with the various existing calling conventions 
+//   called from Python with the various existing calling conventions
 //
 //  Copyright (c) 2001 Peter Dimov and Multi Media Ltd.
 //
@@ -41,7 +41,7 @@ using namespace boost::python;
 #include "calling_conventions.cpp"
 #undef TESTED_CALLING_CONVENTION
 
-#undef TEST_DECLARE_FUNCTIONS 
+#undef TEST_DECLARE_FUNCTIONS
 
 // then create a module wrapping the defined functions for every calling convention
 
@@ -77,58 +77,58 @@ BOOST_PYTHON_MODULE( calling_conventions_ext )
 #   error "One calling convention must be defined"
 #  endif // !defined(TESTED_CALLING_CONVENTION)
 
-namespace BOOST_PP_CAT(test, TESTED_CALLING_CONVENTION) { 
+namespace BOOST_PP_CAT(test, TESTED_CALLING_CONVENTION) {
 
   long TESTED_CALLING_CONVENTION f_0()
   {
       return 17041L;
   }
-  
+
   long TESTED_CALLING_CONVENTION f_1(long a)
   {
       return a;
   }
-  
+
   long TESTED_CALLING_CONVENTION f_2(long a, long b)
   {
       return a + 10 * b;
   }
-  
+
   long TESTED_CALLING_CONVENTION f_3(long a, long b, long c)
   {
       return a + 10 * b + 100 * c;
   }
-  
+
   long TESTED_CALLING_CONVENTION f_4(long a, long b, long c, long d)
   {
       return a + 10 * b + 100 * c + 1000 * d;
   }
-  
+
   long TESTED_CALLING_CONVENTION f_5(long a, long b, long c, long d, long e)
   {
       return a + 10 * b + 100 * c + 1000 * d + 10000 * e;
   }
-  
+
   long TESTED_CALLING_CONVENTION f_6(long a, long b, long c, long d, long e, long f)
   {
       return a + 10 * b + 100 * c + 1000 * d + 10000 * e + 100000 * f;
   }
-  
+
   long TESTED_CALLING_CONVENTION f_7(long a, long b, long c, long d, long e, long f, long g)
   {
       return a + 10 * b + 100 * c + 1000 * d + 10000 * e + 100000 * f + 1000000 * g;
   }
-  
+
   long TESTED_CALLING_CONVENTION f_8(long a, long b, long c, long d, long e, long f, long g, long h)
   {
       return a + 10 * b + 100 * c + 1000 * d + 10000 * e + 100000 * f + 1000000 * g + 10000000 * h;
   }
-  
+
   long TESTED_CALLING_CONVENTION f_9(long a, long b, long c, long d, long e, long f, long g, long h, long i)
   {
       return a + 10 * b + 100 * c + 1000 * d + 10000 * e + 100000 * f + 1000000 * g + 10000000 * h + 100000000 * i;
   }
-  
+
 } // namespace test##TESTED_CALLING_CONVENTION
 
 # endif // defined(TEST_DECLARE_FUNCTIONS)

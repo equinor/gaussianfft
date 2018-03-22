@@ -44,9 +44,9 @@ public:
 
   /** Return an estimate of the maximum possible value of
    *  elapsed(). Note that this routine may return too high a value on
-   *  some systems. 
+   *  some systems.
    */
-  double elapsed_max() const;  
+  double elapsed_max() const;
 
   /** Returns the minimum non-zero value that @c elapsed() may
    *  return. This is the resolution of the timer.
@@ -61,9 +61,9 @@ private:
   double start_time;
 }; // timer
 
-inline timer::timer() 
-{ 
-  restart(); 
+inline timer::timer()
+{
+  restart();
 }
 
 inline void timer::restart()

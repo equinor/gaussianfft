@@ -10,7 +10,7 @@
  * provided the above notices are retained, and a notice that the code was
  * modified is included with the above copyright notice.
  */
- 
+
 /* Check whether setjmp actually saves registers in jmp_buf. */
 /* If it doesn't, the generic mark_regs code won't work.     */
 /* Compilers vary as to whether they will put x in a 	     */
@@ -38,7 +38,7 @@ int
 getpagesize()
 {
     ULONG result[1];
-    
+
     if (DosQuerySysInfo(QSV_PAGE_SIZE, QSV_PAGE_SIZE,
     		        (void *)result, sizeof(ULONG)) != NO_ERROR) {
     	fprintf(stderr, "DosQuerySysInfo failed\n");
@@ -53,7 +53,7 @@ struct {char a_a; char * a_b;} a;
 int * nested_sp()
 {
     int dummy;
-    
+
     return(&dummy);
 }
 

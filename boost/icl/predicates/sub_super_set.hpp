@@ -15,11 +15,11 @@ namespace boost{namespace icl
 {
 
     /// Functor class template contained_in implements the subset relation.
-    template<class Type> 
+    template<class Type>
     struct sub_super_set : public relation<Type,Type>
     {
         /// Apply the subset relation.
-        /** <tt>contained_in(sub, super)</tt> is true if <tt>sub</tt> 
+        /** <tt>contained_in(sub, super)</tt> is true if <tt>sub</tt>
             is contained in <tt>super</tt> */
         bool operator()(const Type& sub, const Type& super)const
         {
@@ -28,15 +28,15 @@ namespace boost{namespace icl
     };
 
     template<>
-    inline std::string unary_template_to_string<icl::sub_super_set>::apply()  
+    inline std::string unary_template_to_string<icl::sub_super_set>::apply()
     { return "C="; }
 
-    /// Functor class template <b>contains</b> implements the superset relation. 
-    template<class Type> 
+    /// Functor class template <b>contains</b> implements the superset relation.
+    template<class Type>
     struct super_sub_set : public relation<Type,Type>
     {
         /// Apply the superset relation.
-        /** <tt>contains(super, sub)</tt> is true if <tt>super</tt> containes 
+        /** <tt>contains(super, sub)</tt> is true if <tt>super</tt> containes
             <tt>sub</tt> */
         bool operator()(const Type& super, const Type& sub)const
         {
@@ -45,7 +45,7 @@ namespace boost{namespace icl
     };
 
     template<>
-    inline std::string unary_template_to_string<icl::super_sub_set>::apply()  
+    inline std::string unary_template_to_string<icl::super_sub_set>::apply()
     { return "D="; }
 
 }} // namespace icl boost

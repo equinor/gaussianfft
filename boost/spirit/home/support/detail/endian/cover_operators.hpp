@@ -56,7 +56,7 @@ namespace boost { namespace spirit
       friend bool operator==(const T& x, IntegerType y) { return +x == y; }
       friend bool operator<(const T& x, IntegerType y) { return +x < y; }
 #   endif
-      
+
       // The basic arithmetic operations.
       friend T& operator+=(T& x, IntegerType y) { return x = +x + y; }
       friend T& operator-=(T& x, IntegerType y) { return x = +x - y; }
@@ -68,11 +68,11 @@ namespace boost { namespace spirit
       friend T& operator^=(T& x, IntegerType y) { return x = +x ^ y; }
       friend T& operator<<=(T& x, IntegerType y) { return x = +x << y; }
       friend T& operator>>=(T& x, IntegerType y) { return x = +x >> y; }
-      
+
       // A few binary arithmetic operations not covered by operators base class.
       friend IntegerType operator<<(const T& x, IntegerType y) { return +x << y; }
       friend IntegerType operator>>(const T& x, IntegerType y) { return +x >> y; }
-      
+
       // Auto-increment and auto-decrement can be defined in terms of the
       // arithmetic operations.
       friend T& operator++(T& x) { return x += 1; }
@@ -80,13 +80,13 @@ namespace boost { namespace spirit
 
 #   ifdef BOOST_MINIMAL_INTEGER_COVER_OPERATORS
       friend T operator++(T& x, int)
-      { 
+      {
         T tmp(x);
         x += 1;
         return tmp;
       }
       friend T operator--(T& x, int)
-      { 
+      {
         T tmp(x);
         x -= 1;
         return tmp;

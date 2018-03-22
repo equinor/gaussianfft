@@ -19,9 +19,9 @@ namespace boost{namespace icl
 
 template <class Type>
 struct is_set<std::set<Type> >
-{ 
+{
     typedef is_set<std::set<Type> > type;
-    BOOST_STATIC_CONSTANT(bool, value = true); 
+    BOOST_STATIC_CONSTANT(bool, value = true);
 };
 
 

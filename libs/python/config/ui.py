@@ -26,12 +26,12 @@ def options_help(env):
 
     return '\n  '.join(options)
 
-    
+
 def variables_help(vars, env):
     """This is cloned from SCons' Variables.GenerateHelpText, to only report 'public' variables."""
 
     opts = [o for o in vars.options if o.key in variables]
-    
+
     def format(opt):
         if opt.key in env:
             actual = env.subst('${%s}' % opt.key)
@@ -43,7 +43,7 @@ def variables_help(vars, env):
     return '\n'.join(lines)
 
 
-    
+
 def help(vars, env):
 
     return """Usage: scons [--option...] [variable=value...] [target...]

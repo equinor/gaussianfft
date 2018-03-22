@@ -379,7 +379,7 @@ inline std::size_t buffer_size(const const_buffers_1& b)
 }
 
 /// Get the total number of bytes in a buffer sequence.
-/** 
+/**
  * The @c BufferSequence template parameter may meet either of the @c
  * ConstBufferSequence or @c MutableBufferSequence type requirements.
  */
@@ -789,7 +789,7 @@ inline mutable_buffers_1 buffer(PodType (&data)[N])
 {
   return mutable_buffers_1(mutable_buffer(data, N * sizeof(PodType)));
 }
- 
+
 /// Create a new modifiable buffer that represents the given POD array.
 /**
  * @returns A mutable_buffers_1 value equivalent to:
@@ -806,7 +806,7 @@ inline mutable_buffers_1 buffer(PodType (&data)[N],
         N * sizeof(PodType) < max_size_in_bytes
         ? N * sizeof(PodType) : max_size_in_bytes));
 }
- 
+
 /// Create a new non-modifiable buffer that represents the given POD array.
 /**
  * @returns A const_buffers_1 value equivalent to:

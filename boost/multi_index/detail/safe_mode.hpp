@@ -202,9 +202,9 @@ inline bool check_outside_range(
     Iterator first=it0;
     for(;first!=last;++first){
       if(first==it1)break;
-    
+
       /* crucial that this check goes after previous break */
-    
+
       if(first==it)found=true;
     }
     if(first!=it1)return false;
@@ -403,7 +403,7 @@ namespace safe_mode{
  *   - iterators must be generated via safe_iterator, which adapts a
  *     preexistent unsafe iterator class.
  */
- 
+
 template<typename Container>
 class safe_container;
 
@@ -513,7 +513,7 @@ private:
    * deeper, this is especially relevant with XML archives.
    * It'd be nice if Boost.Serialization provided some forwarding
    * facility for use by adaptor classes.
-   */ 
+   */
 
   friend class boost::serialization::access;
 

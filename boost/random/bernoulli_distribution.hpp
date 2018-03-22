@@ -47,7 +47,7 @@ public:
 
         typedef bernoulli_distribution distribution_type;
 
-        /** 
+        /**
          * Constructs the parameters of the distribution.
          *
          * Requires: 0 <= p <= 1
@@ -87,13 +87,13 @@ public:
         RealType _p;
     };
 
-    /** 
+    /**
      * Constructs a \bernoulli_distribution object.
      * p is the parameter of the distribution.
      *
      * Requires: 0 <= p <= 1
      */
-    explicit bernoulli_distribution(const RealType& p_arg = RealType(0.5)) 
+    explicit bernoulli_distribution(const RealType& p_arg = RealType(0.5))
       : _p(p_arg)
     {
         BOOST_ASSERT(_p >= 0);
@@ -177,7 +177,7 @@ public:
      */
     BOOST_RANDOM_DETAIL_EQUALITY_OPERATOR(bernoulli_distribution, lhs, rhs)
     { return lhs._p == rhs._p; }
-    
+
     /**
      * Returns true iff the two distributions will produce different
      * sequences of values given equal generators.

@@ -1,4 +1,4 @@
-// Copyright (C) 2007 Douglas Gregor 
+// Copyright (C) 2007 Douglas Gregor
 
 // Use, modification and distribution is subject to the Boost Software
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
@@ -17,7 +17,7 @@
 #include <boost/graph/parallel/simple_trigger.hpp>
 #include <boost/graph/parallel/detail/untracked_pair.hpp>
 
-namespace boost { 
+namespace boost {
 
 template<PBGL_DISTRIB_ADJLIST_TEMPLATE_PARMS>
 void
@@ -30,9 +30,9 @@ setup_triggers()
                  &adjacency_list::handle_add_vertex_with_property);
   simple_trigger(process_group_, msg_add_vertex_with_property_and_reply, this,
                  &adjacency_list::handle_add_vertex_with_property_and_reply);
-  simple_trigger(process_group_, msg_add_edge, this, 
+  simple_trigger(process_group_, msg_add_edge, this,
                  &adjacency_list::handle_add_edge);
-  simple_trigger(process_group_, msg_add_edge_with_reply, this, 
+  simple_trigger(process_group_, msg_add_edge_with_reply, this,
                  &adjacency_list::handle_add_edge_with_reply);
   simple_trigger(process_group_, msg_add_edge_with_property, this,
                  &adjacency_list::handle_add_edge_with_property);
@@ -45,14 +45,14 @@ setup_triggers()
 }
 
 template<PBGL_DISTRIB_ADJLIST_TEMPLATE_PARMS>
-void 
+void
 PBGL_DISTRIB_ADJLIST_TYPE::
-handle_add_vertex_with_property(int source, int tag, 
-                                const vertex_property_type& data, 
+handle_add_vertex_with_property(int source, int tag,
+                                const vertex_property_type& data,
                                 trigger_receive_context)
 {
-  vertex_descriptor v(this->processor(), 
-                      add_vertex(this->build_vertex_property(data), 
+  vertex_descriptor v(this->processor(),
+                      add_vertex(this->build_vertex_property(data),
                                  this->base()));
   if (on_add_vertex)
     on_add_vertex(v, *this);
@@ -61,8 +61,8 @@ handle_add_vertex_with_property(int source, int tag,
 template<PBGL_DISTRIB_ADJLIST_TEMPLATE_PARMS>
 typename PBGL_DISTRIB_ADJLIST_TYPE::local_vertex_descriptor
 PBGL_DISTRIB_ADJLIST_TYPE::
-handle_add_vertex_with_property_and_reply(int source, int tag, 
-                                          const vertex_property_type& data, 
+handle_add_vertex_with_property_and_reply(int source, int tag,
+                                          const vertex_property_type& data,
                                           trigger_receive_context)
 {
   // Try to find a vertex with this name
@@ -77,12 +77,12 @@ handle_add_vertex_with_property_and_reply(int source, int tag,
 }
 
 template<PBGL_DISTRIB_ADJLIST_TEMPLATE_PARMS>
-void 
+void
 PBGL_DISTRIB_ADJLIST_TYPE::
 handle_add_edge(int source, int tag, const msg_add_edge_data& data,
                 trigger_receive_context)
 {
-  add_edge(vertex_descriptor(processor(), data.source), 
+  add_edge(vertex_descriptor(processor(), data.source),
            data.target, *this);
 }
 
@@ -92,19 +92,19 @@ PBGL_DISTRIB_ADJLIST_TYPE::
 handle_add_edge_with_reply(int source, int tag, const msg_add_edge_data& data,
                            trigger_receive_context)
 {
-  std::pair<typename PBGL_DISTRIB_ADJLIST_TYPE::edge_descriptor, bool> p = 
+  std::pair<typename PBGL_DISTRIB_ADJLIST_TYPE::edge_descriptor, bool> p =
     add_edge(vertex_descriptor(processor(), data.source),data.target, *this);
   return p;
 }
 
 template<PBGL_DISTRIB_ADJLIST_TEMPLATE_PARMS>
-void 
+void
 PBGL_DISTRIB_ADJLIST_TYPE::
-handle_add_edge_with_property(int source, int tag, 
+handle_add_edge_with_property(int source, int tag,
                               const msg_add_edge_with_property_data& data,
                               trigger_receive_context)
 {
-  add_edge(vertex_descriptor(processor(), data.source), 
+  add_edge(vertex_descriptor(processor(), data.source),
            data.target, data.get_property(), *this);
 }
 
@@ -112,20 +112,20 @@ template<PBGL_DISTRIB_ADJLIST_TEMPLATE_PARMS>
 boost::parallel::detail::untracked_pair<typename PBGL_DISTRIB_ADJLIST_TYPE::edge_descriptor, bool>
 PBGL_DISTRIB_ADJLIST_TYPE::
 handle_add_edge_with_property_and_reply
-  (int source, int tag, 
+  (int source, int tag,
    const msg_add_edge_with_property_data& data,
    trigger_receive_context)
 {
-  std::pair<typename PBGL_DISTRIB_ADJLIST_TYPE::edge_descriptor, bool> p = 
-    add_edge(vertex_descriptor(processor(), data.source), 
+  std::pair<typename PBGL_DISTRIB_ADJLIST_TYPE::edge_descriptor, bool> p =
+    add_edge(vertex_descriptor(processor(), data.source),
                   data.target, data.get_property(), *this);
   return p;
 }
 
 template<PBGL_DISTRIB_ADJLIST_TEMPLATE_PARMS>
-void 
+void
 PBGL_DISTRIB_ADJLIST_TYPE::
-handle_nonlocal_edge(int source, int tag, 
+handle_nonlocal_edge(int source, int tag,
                      const msg_nonlocal_edge_data& data,
                      trigger_receive_context)
 {
@@ -133,16 +133,16 @@ handle_nonlocal_edge(int source, int tag,
 }
 
 template<PBGL_DISTRIB_ADJLIST_TEMPLATE_PARMS>
-void 
+void
 PBGL_DISTRIB_ADJLIST_TYPE::
-handle_remove_edge(int source, int tag, 
+handle_remove_edge(int source, int tag,
                    const msg_remove_edge_data& data,
                    trigger_receive_context)
 {
   remove_local_edge(data, source, directed_selector());
 }
 
-} 
+}
 
 #endif // BOOST_GRAPH_DISTRIBUTED_ADJLIST_HANDLERS_HPP
 

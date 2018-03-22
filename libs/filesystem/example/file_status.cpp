@@ -19,7 +19,7 @@ using namespace boost::filesystem;
 namespace
 {
   path p;
-  
+
   void print_boost_macros()
   {
     std::cout << "Boost "
@@ -36,7 +36,7 @@ namespace
               << std::endl;
   }
 
-  const char* file_type_tab[] = 
+  const char* file_type_tab[] =
     { "status_error", "file_not_found", "regular_file", "directory_file",
       "symlink_file", "block_file", "character_file", "fifo_file", "socket_file",
       "type_unknown"

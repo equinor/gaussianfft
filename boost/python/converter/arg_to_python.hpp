@@ -28,7 +28,7 @@
 
 # include <boost/mpl/or.hpp>
 
-namespace boost { namespace python { namespace converter { 
+namespace boost { namespace python { namespace converter {
 
 template <class T> struct is_object_manager;
 
@@ -84,12 +84,12 @@ namespace detail
   struct object_manager_arg_to_python
   {
       object_manager_arg_to_python(T const& x) : m_src(x) {}
-      
+
       PyObject* get() const
       {
           return python::upcast<PyObject>(get_managed_object(m_src, tag));
       }
-      
+
    private:
       T const& m_src;
   };
@@ -109,7 +109,7 @@ namespace detail
         , typename mpl::if_<
               python::detail::value_is_shared_ptr<T>
             , shared_ptr_arg_to_python<T>
-      
+
             , typename mpl::if_<
                 mpl::or_<
                     boost::python::detail::is_function<T>
@@ -141,7 +141,7 @@ namespace detail
               >::type
           >::type
       >::type
-      
+
       type;
   };
 }
@@ -166,7 +166,7 @@ namespace detail
   using python::detail::yes_convertible;
   using python::detail::no_convertible;
   using python::detail::unspecialized;
-  
+
   template <class T> struct cannot_convert_raw_PyObject;
 
   template <class T, class Convertibility>
@@ -178,22 +178,22 @@ namespace detail
       }
       static void error(...) {}
   };
-  
+
   template <class T>
   inline void reject_raw_object_ptr(T*)
   {
       reject_raw_object_helper<T,yes_convertible>::error(
           python::detail::convertible<PyObject const volatile*>::check((T*)0));
-      
+
       typedef typename remove_cv<T>::type value_type;
-      
+
       reject_raw_object_helper<T,no_convertible>::error(
           python::detail::convertible<unspecialized*>::check(
               (base_type_traits<value_type>*)0
               ));
   }
   // ---------
-      
+
   template <class T>
   inline function_arg_to_python<T>::function_arg_to_python(T const& x)
       : handle<>(python::objects::make_function_handle(x))

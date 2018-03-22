@@ -48,9 +48,9 @@ typename Dist::value_type generic_quantile(const Dist& dist, const typename Dist
    typedef typename Dist::value_type value_type;
    typedef typename Dist::policy_type policy_type;
    typedef typename policies::normalise<
-      policy_type, 
-      policies::promote_float<false>, 
-      policies::promote_double<false>, 
+      policy_type,
+      policies::promote_float<false>,
+      policies::promote_double<false>,
       policies::discrete_quantile<>,
       policies::assert_undefined<> >::type forwarding_policy;
 

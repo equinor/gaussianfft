@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2000-2005 by Hewlett-Packard Company.  All rights reserved.
  *
  * THIS MATERIAL IS PROVIDED AS IS, WITH ABSOLUTELY NO WARRANTY EXPRESSED
@@ -93,7 +93,7 @@ void GC_init_thread_local(GC_tlfs p)
 #	ifdef GC_GCJ_SUPPORT
 	  p -> gcj_freelists[i] = (void *)1;
 #	endif
-    }   
+    }
     /* Set up the size 0 free lists.	*/
     /* We now handle most of them like regular free lists, to ensure	*/
     /* That explicit deallocation works.  However, allocation of a	*/
@@ -269,7 +269,7 @@ void GC_mark_thread_local_fls_for(GC_tlfs p)
 {
     ptr_t q;
     int j;
-    
+
     for (j = 1; j < TINY_FREELISTS; ++j) {
       q = p -> ptrfree_freelists[j];
       if ((word)q > HBLKSIZE) GC_set_fl_marks(q);

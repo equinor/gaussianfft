@@ -1,4 +1,4 @@
-// Boost.Units - A C++ library for zero-overhead dimensional analysis and 
+// Boost.Units - A C++ library for zero-overhead dimensional analysis and
 // unit/quantity manipulation and conversion
 //
 // Copyright (C) 2003-2008 Matthias Christian Schabel
@@ -16,12 +16,12 @@
 
 namespace boost {
 
-namespace units { 
+namespace units {
 
 namespace cgs {
 
 typedef unit<force_dimension,cgs::system>        force;
-    
+
 BOOST_UNITS_STATIC_CONSTANT(dyne,force);
 BOOST_UNITS_STATIC_CONSTANT(dynes,force);
 

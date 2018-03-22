@@ -125,19 +125,19 @@ BOOST_PYTHON_MODULE(callbacks_ext)
     def("apply_void_X_cref", apply_void_X_cref);
     def("apply_void_X_ptr", apply_void_X_ptr);
     def("apply_void_X_deep_ptr", apply_void_X_deep_ptr);
-        
+
     def("apply_X_ptr_handle_cref", apply_X_ptr_handle_cref
         , return_value_policy<reference_existing_object>());
-        
+
     def("apply_X_ref_handle", apply_X_ref_handle
         , return_value_policy<reference_existing_object>());
-        
+
     def("apply_cstring_cstring", apply_cstring_cstring);
     def("apply_cstring_pyobject", apply_cstring_pyobject);
     def("apply_char_char", apply_char_char);
     def("apply_to_string_literal", apply_to_string_literal);
-        
-    
+
+
     class_<X>("X", init<int>())
         .def(init<X const&>())
         .def("value", &X::value)

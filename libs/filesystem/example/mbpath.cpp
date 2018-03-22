@@ -40,7 +40,7 @@ namespace user
     std::mbstate_t state;
     const internal_string_type::value_type * from_next;
     external_string_type::value_type * to_next;
-    if ( cvt->out( 
+    if ( cvt->out(
       state, src.c_str(), src.c_str()+src.size(), from_next, work.get(),
       work.get()+work_size, to_next ) != std::codecvt_base::ok )
       boost::throw_exception<fs::basic_filesystem_error<mbpath> >(
@@ -51,7 +51,7 @@ namespace user
     return external_string_type( work.get() );
   }
 
-  mbpath_traits::internal_string_type 
+  mbpath_traits::internal_string_type
   mbpath_traits::to_internal( const external_string_type & src )
   {
       std::size_t work_size( src.size()+1 );
@@ -59,7 +59,7 @@ namespace user
       std::mbstate_t state;
       const external_string_type::value_type * from_next;
       internal_string_type::value_type * to_next;
-      if ( cvt->in( 
+      if ( cvt->in(
         state, src.c_str(), src.c_str()+src.size(), from_next, work.get(),
         work.get()+work_size, to_next ) != std::codecvt_base::ok )
         boost::throw_exception<fs::basic_filesystem_error<mbpath> >(

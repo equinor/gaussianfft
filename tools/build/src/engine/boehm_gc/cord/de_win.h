@@ -70,7 +70,7 @@ extern int col;
 /*
  *  Calls from de_win.c to de.c
  */
-  
+
 CORD retrieve_screen_line(int i);
 			/* Get the contents of i'th screen line.	*/
 			/* Relies on COLS.				*/
@@ -90,7 +90,7 @@ void generic_init(void);
 /*
  * Calls from de.c to de_win.c
  */
- 
+
 void move_cursor(int column, int line);
 			/* Physically move the cursor on the display,	*/
 			/* so that it appears at			*/

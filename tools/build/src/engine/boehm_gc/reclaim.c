@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 1988, 1989 Hans-J. Boehm, Alan J. Demers
  * Copyright (c) 1991-1996 by Xerox Corporation.  All rights reserved.
  * Copyright (c) 1996-1999 by Silicon Graphics.  All rights reserved.
@@ -89,7 +89,7 @@ void GC_print_all_errors ()
  * objects.  This does not require the block to be in physical
  * memory.
  */
- 
+
 GC_bool GC_block_empty(hdr *hhdr)
 {
     return (hhdr -> hb_n_marks == 0);
@@ -115,7 +115,7 @@ ptr_t GC_reclaim_clear(struct hblk *hbp, hdr *hhdr, size_t sz,
     word bit_no = 0;
     word *p, *q, *plim;
     signed_word n_bytes_found = 0;
-    
+
     GC_ASSERT(hhdr == GC_find_header((ptr_t)hbp));
     GC_ASSERT(sz == hhdr -> hb_sz);
     GC_ASSERT((sz & (BYTES_PER_WORD-1)) == 0);
@@ -163,7 +163,7 @@ ptr_t GC_reclaim_uninit(struct hblk *hbp, hdr *hhdr, size_t sz,
     word bit_no = 0;
     word *p, *plim;
     signed_word n_bytes_found = 0;
-    
+
     GC_ASSERT(sz == hhdr -> hb_sz);
     p = (word *)(hbp->hb_body);
     plim = (word *)((ptr_t)hbp + HBLKSIZE - sz);
@@ -189,7 +189,7 @@ void GC_reclaim_check(struct hblk *hbp, hdr *hhdr, word sz)
 {
     word bit_no = 0;
     ptr_t p, plim;
-    
+
     GC_ASSERT(sz == hhdr -> hb_sz);
     p = hbp->hb_body;
     plim = p + HBLKSIZE - sz;
@@ -222,7 +222,7 @@ ptr_t GC_reclaim_generic(struct hblk * hbp, hdr *hhdr, size_t sz,
     } else {
       GC_ASSERT((hhdr)->hb_descr == 0 /* Pointer-free block */);
       result = GC_reclaim_uninit(hbp, hhdr, sz, list, count);
-    } 
+    }
     if (IS_UNCOLLECTABLE(hhdr -> hb_obj_kind)) GC_set_hdr_marks(hhdr);
     return result;
 }
@@ -241,7 +241,7 @@ void GC_reclaim_small_nonempty_block(struct hblk *hbp,
     int kind = hhdr -> hb_obj_kind;
     struct obj_kind * ok = &GC_obj_kinds[kind];
     void **flh = &(ok -> ok_freelist[BYTES_TO_GRANULES(sz)]);
-    
+
     hhdr -> hb_last_reclaimed = (unsigned short) GC_gc_no;
 
     if (report_if_found) {
@@ -360,7 +360,7 @@ static int set_bits(word n)
 {
     word m = n;
     int result = 0;
-    
+
     while (m > 0) {
     	if (m & 1) result++;
     	m >>= 1;
@@ -376,7 +376,7 @@ int GC_n_set_marks(hdr *hhdr)
     int n_mark_words;
 #   ifdef MARK_BIT_PER_OBJ
       int n_objs = HBLK_OBJS(hhdr -> hb_sz);
-    
+
       if (0 == n_objs) n_objs = 1;
       n_mark_words = divWORDSZ(n_objs + WORDSZ - 1);
 #   else /* MARK_BIT_PER_GRANULE */
@@ -403,7 +403,7 @@ void GC_print_block_descr(struct hblk *h, word /* struct PrintStats */ raw_ps)
     size_t bytes = hhdr -> hb_sz;
     struct Print_stats *ps;
     unsigned n_marks = GC_n_set_marks(hhdr);
-    
+
     if (hhdr -> hb_n_marks != n_marks) {
       GC_printf("(%u:%u,%u!=%u)", hhdr -> hb_obj_kind,
     			          bytes,
@@ -479,7 +479,7 @@ void GC_clear_fl_links(void **flp)
 void GC_start_reclaim(GC_bool report_if_found)
 {
     unsigned kind;
-    
+
 #   if defined(PARALLEL_MARK) || defined(THREAD_LOCAL_ALLOC)
       GC_ASSERT(0 == GC_fl_builder_count);
 #   endif
@@ -494,7 +494,7 @@ void GC_start_reclaim(GC_bool report_if_found)
         struct hblk ** rlim;
         struct hblk ** rlist = GC_obj_kinds[kind].ok_reclaim_list;
 	GC_bool should_clobber = (GC_obj_kinds[kind].ok_descriptor != 0);
-        
+
         if (rlist == 0) continue;	/* This kind not used.	*/
         if (!report_if_found) {
             lim = &(GC_obj_kinds[kind].ok_freelist[MAXOBJGRANULES+1]);
@@ -514,7 +514,7 @@ void GC_start_reclaim(GC_bool report_if_found)
 	    *rlp = 0;
 	}
       }
-    
+
 
   /* Go through all heap blocks (in hblklist) and reclaim unmarked objects */
   /* or enqueue the block for later processing.				   */
@@ -528,7 +528,7 @@ void GC_start_reclaim(GC_bool report_if_found)
 # if defined(PARALLEL_MARK) || defined(THREAD_LOCAL_ALLOC)
     GC_ASSERT(0 == GC_fl_builder_count);
 # endif
-    
+
 }
 
 /*
@@ -543,7 +543,7 @@ void GC_continue_reclaim(size_t sz /* granules */, int kind)
     struct obj_kind * ok = &(GC_obj_kinds[kind]);
     struct hblk ** rlh = ok -> ok_reclaim_list;
     void **flh = &(ok -> ok_freelist[sz]);
-    
+
     if (rlh == 0) return;	/* No blocks of this kind.	*/
     rlh += sz;
     while ((hbp = *rlh) != 0) {
@@ -559,7 +559,7 @@ void GC_continue_reclaim(size_t sz /* granules */, int kind)
  * Abort and return FALSE when/if (*stop_func)() returns TRUE.
  * If this returns TRUE, then it's safe to restart the world
  * with incorrectly cleared mark bits.
- * If ignore_old is TRUE, then reclaim only blocks that have been 
+ * If ignore_old is TRUE, then reclaim only blocks that have been
  * recently reclaimed, and discard the rest.
  * Stop_func may be 0.
  */
@@ -577,7 +577,7 @@ GC_bool GC_reclaim_all(GC_stop_func stop_func, GC_bool ignore_old)
 	
     if (GC_print_stats == VERBOSE)
 	GET_TIME(start_time);
-    
+
     for (kind = 0; kind < GC_n_kinds; kind++) {
     	ok = &(GC_obj_kinds[kind]);
     	rlp = ok -> ok_reclaim_list;

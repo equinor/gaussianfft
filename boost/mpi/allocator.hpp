@@ -28,19 +28,19 @@ template<typename T> class allocator;
  *  The @c void specialization of @c allocator is useful only for
  *  rebinding to another, different value type.
  */
-template<> 
-class BOOST_MPI_DECL allocator<void> 
-{ 
-public: 
-  typedef void* pointer; 
-  typedef const void* const_pointer; 
-  typedef void value_type; 
+template<>
+class BOOST_MPI_DECL allocator<void>
+{
+public:
+  typedef void* pointer;
+  typedef const void* const_pointer;
+  typedef void value_type;
 
-  template <class U> 
-  struct rebind 
-  { 
-    typedef allocator<U> other; 
-  }; 
+  template <class U>
+  struct rebind
+  {
+    typedef allocator<U> other;
+  };
 };
 
 /** @brief Standard Library-compliant allocator for the MPI-2 memory
@@ -63,8 +63,8 @@ public:
  *  throughout. The macro @c BOOST_MPI_HAS_MEMORY_ALLOCATION will be
  *  defined when the MPI-2 memory allocation facilities are available.
  */
-template<typename T> 
-class BOOST_MPI_DECL allocator 
+template<typename T>
+class BOOST_MPI_DECL allocator
 {
 public:
   /// Holds the size of objects
@@ -91,10 +91,10 @@ public:
   /** @brief Retrieve the type of an allocator similar to this
    * allocator but for a different value type.
    */
-  template <typename U> 
-  struct rebind 
-  { 
-    typedef allocator<U> other; 
+  template <typename U>
+  struct rebind
+  {
+    typedef allocator<U> other;
   };
 
   /** Default-construct an allocator. */
@@ -103,11 +103,11 @@ public:
   /** Copy-construct an allocator. */
   allocator(const allocator&) throw() { }
 
-  /** 
+  /**
    * Copy-construct an allocator from another allocator for a
    * different value type.
    */
-  template <typename U> 
+  template <typename U>
   allocator(const allocator<U>&) throw() { }
 
   /** Destroy an allocator. */
@@ -125,7 +125,7 @@ public:
     return &x;
   }
 
-  /** 
+  /**
    *  Allocate enough memory for @p n elements of type @c T.
    *
    *  @param n The number of elements for which memory should be
@@ -137,8 +137,8 @@ public:
   {
     pointer result;
     BOOST_MPI_CHECK_RESULT(MPI_Alloc_mem,
-                           (static_cast<MPI_Aint>(n * sizeof(T)), 
-                            MPI_INFO_NULL, 
+                           (static_cast<MPI_Aint>(n * sizeof(T)),
+                            MPI_INFO_NULL,
                             &result));
     return result;
   }
@@ -155,7 +155,7 @@ public:
     BOOST_MPI_CHECK_RESULT(MPI_Free_mem, (p));
   }
 
-  /** 
+  /**
    * Returns the maximum number of elements that can be allocated
    * with @c allocate().
    */

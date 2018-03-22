@@ -32,7 +32,7 @@ namespace boost
         {};
       public:
         typedef look_ahead type;
-        
+
         template <class S, class Pos>
         struct apply :
           boost::mpl::eval_if<

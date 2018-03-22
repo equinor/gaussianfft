@@ -47,7 +47,7 @@
       &nbsp;&nbsp;&nbsp;<a href="#Class-error_category-synopsis">Class <code>error_category</code> synopsis</a><br>
       &nbsp;&nbsp;&nbsp;<a href="#Class-error_category-virtual-members">Class <code>error_category</code> virtual members</a><br>
       &nbsp;&nbsp;&nbsp;<a href="#Class-error_category-non-virtual-members">Class <code>error_category</code> non-virtual members</a><br>
-&nbsp;&nbsp; <a href="#Class-error_category-non-member-functions">Class <code>error_category</code> 
+&nbsp;&nbsp; <a href="#Class-error_category-non-member-functions">Class <code>error_category</code>
       non-member functions</a><br>
       &nbsp;&nbsp;&nbsp;<a href="#Class-error_category-predefined-objects">Class <code>error_category</code> predefined objects</a><br>
       <a href="#Class-error_code">Class <code>error_code</code></a><br>
@@ -71,17 +71,17 @@
 
 <h2><a name="Introduction">Introduction</a></h2>
 
-<p>This reference documentation describes components that&nbsp;programs may use to report error conditions originating from the operating 
+<p>This reference documentation describes components that&nbsp;programs may use to report error conditions originating from the operating
 system or other low-level application program interfaces.</p>
 <p>Boost.System library components never change the value of <code>
 errno</code>.</p>
 <h2><a name="C++11">C++11</a></h2>
 <p>The library is documented to use several C++11 features, including <code>
-noexcept</code> and explicit conversion operators. The actual implementation 
-uses C++11 features only when they are available, and otherwise falls back on 
+noexcept</code> and explicit conversion operators. The actual implementation
+uses C++11 features only when they are available, and otherwise falls back on
 C++03 features.</p>
 <h2><a name="Macros">Macros</a></h2>
-<p>Users may defined the following macros if desired. Sensible defaults are 
+<p>Users may defined the following macros if desired. Sensible defaults are
 provided, so users may ignore these macros if they prefer.</p>
 <table border="1" cellpadding="5" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" height="368">
   <tr>
@@ -92,21 +92,21 @@ provided, so users may ignore these macros if they prefer.</p>
   <tr>
     <td valign="top" height="64"><code>BOOST_ERROR_CODE_HEADER_ONLY</code></td>
     <td valign="top" height="64">Not defined.</td>
-    <td valign="top" height="64">The implementation is header-only, and the 
+    <td valign="top" height="64">The implementation is header-only, and the
     Boost.System library is not built. Overrides other link and library macros.</td>
   </tr>
   <tr>
     <td valign="top" height="64"><code>BOOST_SYSTEM_DYN_LINK</code></td>
-    <td valign="top" height="64">Defined if <code>BOOST_ALL_DYN_LINK</code> is defined, 
+    <td valign="top" height="64">Defined if <code>BOOST_ALL_DYN_LINK</code> is defined,
     otherwise not defined.</td>
-    <td valign="top" height="64">Boost.System library is dynamically linked. If not defined, 
+    <td valign="top" height="64">Boost.System library is dynamically linked. If not defined,
     static linking is assumed.</td>
   </tr>
   <tr>
     <td valign="top" height="47"><code>BOOST_SYSTEM_NO_LIB</code></td>
-    <td valign="top" height="47">Defined if <code>BOOST_ALL_NO_LIB</code> is defined, 
+    <td valign="top" height="47">Defined if <code>BOOST_ALL_NO_LIB</code> is defined,
     otherwise not defined.</td>
-    <td valign="top" height="47">Boost.System library does not use the Boost auto-link 
+    <td valign="top" height="47">Boost.System library does not use the Boost auto-link
     facility.</td>
   </tr>
   <tr>
@@ -116,10 +116,10 @@ provided, so users may ignore these macros if they prefer.</p>
   </tr>
   </table>
 <h2><a name="Deprecated-names">Deprecated names</a></h2>
-<p>In the process of adding Boost.System to C++0x standard library, the C++ 
-committee changed some  
-names. To ease transition, Boost.System deprecates the old 
-names, but continues to provide them unless macro <code>BOOST_SYSTEM_NO_DEPRECATED</code> 
+<p>In the process of adding Boost.System to C++0x standard library, the C++
+committee changed some
+names. To ease transition, Boost.System deprecates the old
+names, but continues to provide them unless macro <code>BOOST_SYSTEM_NO_DEPRECATED</code>
 is defined.</p>
 <table border="1" cellpadding="5" cellspacing="1" style="border-collapse: collapse" bordercolor="#111111">
   <tr>
@@ -164,7 +164,7 @@ is defined.</p>
   </tr>
 </table>
 <h2><a name="Breaking-changes">Breaking changes</a></h2>
-<p>Two static consts are replaced by functions. These are breaking changes best 
+<p>Two static consts are replaced by functions. These are breaking changes best
 fixed by globally adding () to these names to turn them into function calls.</p>
 <table border="1" cellpadding="5" cellspacing="1" style="border-collapse: collapse" bordercolor="#111111">
   <tr>
@@ -319,36 +319,36 @@ fixed by globally adding () to these names to turn them into function calls.</p>
   }
 }</pre>
 </blockquote>
-<p>The value of each<code> errc_t</code> constant shall be the same as the 
+<p>The value of each<code> errc_t</code> constant shall be the same as the
 value of the <code>&lt;cerrno&gt;</code> macro shown in the above synopsis.</p>
 <p>Users may specialize <code>is_error_code_enum</code> and <code>
-is_error_condition_enum</code> templates to indicate that a type is eligible for 
-class <code>error_code</code> and <code>error_condition</code> automatic 
+is_error_condition_enum</code> templates to indicate that a type is eligible for
+class <code>error_code</code> and <code>error_condition</code> automatic
 conversions respectively.</p>
 
 <pre>const error_category &amp; <a name="system_category">system_category</a>();</pre>
 <blockquote>
-  <p><i>Returns:</i> A reference to a <code>error_category</code> object 
+  <p><i>Returns:</i> A reference to a <code>error_category</code> object
   identifying errors originating from the operating system.</p>
 </blockquote>
 <pre>const error_category &amp; <a name="generic_category">generic_category</a>();</pre>
 <blockquote>
-  <p><i>Returns:</i> A reference to a <code>error_category</code> object 
+  <p><i>Returns:</i> A reference to a <code>error_category</code> object
   identifying portable error conditions.</p>
 </blockquote>
 
 <h2><a name="Class-error_category">Class <code>error_category</code></a></h2>
-<p>The class <code>error_category</code> defines the base class for types used 
+<p>The class <code>error_category</code> defines the base class for types used
 to identify the source and encoding of a particular category of error code.</p>
-<p><i>[Note:</i> Classes may be derived from <code>error_category</code> 
+<p><i>[Note:</i> Classes may be derived from <code>error_category</code>
 to support additional categories of errors. <i>--end note]</i></p>
-<p>The class <code>error_category</code> serves as a base class for types used 
-to identify the source and encoding of a particular category of error code. 
-Classes may be derived from <code>error_category</code> to support categories of 
-errors in addition to those defined in the Boost System library. Such classes 
-shall behave as specified in this subclause. [<i> Note:</i> <code>error_category</code> 
-objects are passed by reference, and two such objects are equal if they have the 
-same address. This means that applications using custom <code>error_category</code> 
+<p>The class <code>error_category</code> serves as a base class for types used
+to identify the source and encoding of a particular category of error code.
+Classes may be derived from <code>error_category</code> to support categories of
+errors in addition to those defined in the Boost System library. Such classes
+shall behave as specified in this subclause. [<i> Note:</i> <code>error_category</code>
+objects are passed by reference, and two such objects are equal if they have the
+same address. This means that applications using custom <code>error_category</code>
 types should create a single object of each such type. <i>—end note</i> ]</p>
 <h3><a name="Class-error_category-synopsis">Class <code>error_category</code> synopsis</a></h3>
 <blockquote>
@@ -376,7 +376,7 @@ types should create a single object of each such type. <i>—end note</i> ]</p>
 }</pre>
 </blockquote>
 <h3><a name="Class-error_category-virtual-members">Class <code>error_category</code> virtual members</a></h3>
-<p>Classes derived from <code>error_category</code> shall behave as specified in 
+<p>Classes derived from <code>error_category</code> shall behave as specified in
 this subclause.</p>
 <pre>virtual const char * name() const noexcept =0;</pre>
 <blockquote>
@@ -391,9 +391,9 @@ this subclause.</p>
 <blockquote>
   <p><i>Returns:</i>&nbsp; <code>error_condition( ev, *this )</code>.</p>
   <blockquote>
-    <p dir="ltr">&nbsp;[<i>--Note:</i> Derived classes will typically convert <code>ev</code> 
-    to some portable <code>error_category</code>, such as <code>generic_category()</code>, 
-    and return it as an <code>error_condition</code> for that category. <i>--end 
+    <p dir="ltr">&nbsp;[<i>--Note:</i> Derived classes will typically convert <code>ev</code>
+    to some portable <code>error_category</code>, such as <code>generic_category()</code>,
+    and return it as an <code>error_condition</code> for that category. <i>--end
     note</i>]</p>
   </blockquote>
   </blockquote>
@@ -417,16 +417,16 @@ this subclause.</p>
 
 <pre>bool operator&lt;( const error_category &amp; rhs ) const noexcept;</pre>
 <blockquote>
-  <p><i>Returns:</i> <code>std::less&lt;const error_category*&gt;()( this, &amp;rhs&nbsp; 
+  <p><i>Returns:</i> <code>std::less&lt;const error_category*&gt;()( this, &amp;rhs&nbsp;
   noexcept)</code>.</p>
   <blockquote>
-    <p><i>[Note:</i> <code>std::less</code> provides a total ordering for 
+    <p><i>[Note:</i> <code>std::less</code> provides a total ordering for
     pointers. <i>--end note]</i></p>
   </blockquote>
 </blockquote>
 <h2><a name="Class-error_code">Class <code>
 error_code</code></a></h2>
-<p>The class <code>error_code</code> describes an object used to hold error code 
+<p>The class <code>error_code</code> describes an object used to hold error code
 values, such as those originating from the operating<br>
 system or other low-level application program interfaces. <i>[ Note: </i>Class
 <code>error_code</code> is an adjunct to error reporting by<br>
@@ -484,7 +484,7 @@ error_code</code> constructors</a></h3>
 <blockquote>
   <p><i>Effects: </i>Constructs an object of type <code>error_code</code>.</p>
   <p><i>Postconditions:</i> <code>*this == make_error_code( val )</code>.</p>
-  <p><i>Remarks:</i> This constructor shall not participate in overload 
+  <p><i>Remarks:</i> This constructor shall not participate in overload
   resolution unless <code>is_error_code_enum&lt;ErrorCodeEnum&gt;::value</code> is
   <code>true</code>.</p>
 </blockquote>
@@ -498,12 +498,12 @@ error_code</code> modifiers</a></h3>
   error_code &amp; operator=( <code>ErrorCodeEnum</code> val ) noexcept;</pre>
 <blockquote>
   <p><i>Postconditions:</i> <code>*this == make_error_code( val )</code>.</p>
-  <p><i>Remarks:</i> This operator shall not participate in overload resolution 
+  <p><i>Remarks:</i> This operator shall not participate in overload resolution
   unless <code>is_error_code_enum&lt;ErrorCodeEnum&gt;::value</code> is <code>true</code>.</p>
 </blockquote>
 <pre><code>void clear() noexcept;</code></pre>
 <blockquote>
-  <p><i>postcondition:</i> <code>value() == 0 &amp;&amp; category() == 
+  <p><i>postcondition:</i> <code>value() == 0 &amp;&amp; category() ==
   system_category()</code></p>
 </blockquote>
   <h3><a name="Class-error_code-observers">Class <code>
@@ -528,20 +528,20 @@ error_code</code> observers</a></h3>
 <pre>operator unspecified-bool-type() const;</pre>
 <blockquote>
 <p><i>Returns:</i> if <code>value() != 0</code>, returns a value that will evaluate
-<code>true</code> in a boolean context; otherwise, returns a value that will 
-evaluate <code>false</code> in a boolean context. The value type returned shall 
+<code>true</code> in a boolean context; otherwise, returns a value that will
+evaluate <code>false</code> in a boolean context. The value type returned shall
 not be convertible to <code>int</code>.</p>
 <p><i>Throws:</i> nothing.</p>
-<p><i>[Note: </i>This conversion can be used in contexts where a <code>bool</code> 
-is expected ( e.g., an <code>if</code> condition ); however, implicit conversions 
-( e.g., to <code>int</code>) that can occur with <code>bool</code> are not 
-allowed, eliminating some sources of user error. One possible implementation 
+<p><i>[Note: </i>This conversion can be used in contexts where a <code>bool</code>
+is expected ( e.g., an <code>if</code> condition ); however, implicit conversions
+( e.g., to <code>int</code>) that can occur with <code>bool</code> are not
+allowed, eliminating some sources of user error. One possible implementation
 choice for this type is pointer-to-member. <i>--end note ]</i></p>
 </blockquote>
 <h2><a name="Class-error_condition">Class <code>error_condition</code></a></h2>
-<p>The class <code>error_condition</code> describes an object used to hold 
-values identifying error conditions. <i>[ Note: </i><code>error_condition</code> 
-values are portable abstractions, while <code>error_code</code> values are 
+<p>The class <code>error_condition</code> describes an object used to hold
+values identifying error conditions. <i>[ Note: </i><code>error_condition</code>
+values are portable abstractions, while <code>error_code</code> values are
 implementation specific. <i>--end note ]</i></p>
 <h3><a name="Class-error_condition-synopsis">Class <code>error_condition</code> synopsis</a></h3>
 <blockquote>
@@ -578,7 +578,7 @@ implementation specific. <i>--end note ]</i></p>
   }
 }</pre>
 </blockquote>
-<h3><a name="Class-error_condition-constructors">Class <code>error_condition</code> 
+<h3><a name="Class-error_condition-constructors">Class <code>error_condition</code>
 constructors</a></h3>
 <pre>error_condition() noexcept; </pre>
 <blockquote>
@@ -595,11 +595,11 @@ constructors</a></h3>
 <blockquote>
   <p><i>Effects:</i> Constructs an object of type <code>error_condition</code>.</p>
   <p><i>Postconditions:</i> <code>*this == make_error_condition(e)</code>.</p>
-  <p><i>Remarks:</i> This constructor shall not participate in overload 
-  resolution unless <code>is_error_condition_enum&lt;ErrorConditionEnum&gt;::value</code> 
+  <p><i>Remarks:</i> This constructor shall not participate in overload
+  resolution unless <code>is_error_condition_enum&lt;ErrorConditionEnum&gt;::value</code>
   is <code>true</code>.</p>
 </blockquote>
-<h3><a name="Class-error_condition-modifiers">Class <code>error_condition</code> 
+<h3><a name="Class-error_condition-modifiers">Class <code>error_condition</code>
 modifiers</a></h3>
 <pre>void assign( int val, const error_category &amp; cat ) noexcept; </pre>
 <blockquote>
@@ -610,7 +610,7 @@ modifiers</a></h3>
 <blockquote>
   <p><i>Postconditions:</i> <code>*this == make_error_condition( e )</code>.</p>
   <p><i>Returns:</i> <code>*this</code>.</p>
-  <p><i>Remarks:</i> This operator shall not participate in overload resolution 
+  <p><i>Remarks:</i> This operator shall not participate in overload resolution
   unless <code>is_error_condition_enum&lt;ErrorConditionEnum&gt;::value</code> is
   <code>true</code>.</p>
 </blockquote>
@@ -618,7 +618,7 @@ modifiers</a></h3>
 <blockquote>
   <p><i>Postcondition:</i> <code>value() == 0 &amp;&amp; category() == generic_category()</code></p>
 </blockquote>
-<h3><a name="Class-error_condition-observers">Class <code>error_condition</code> 
+<h3><a name="Class-error_condition-observers">Class <code>error_condition</code>
 observers</a></h3>
 <pre>int value() const noexcept;</pre>
 <blockquote>
@@ -634,31 +634,31 @@ observers</a></h3>
 </blockquote>
 <pre>operator unspecified-bool-type () const;</pre>
 <blockquote>
-  <p><i>Returns: </i>If <code>value() != 0</code>, returns a value that will 
-  evaluate <code>true</code> in a boolean context; otherwise, returns a value 
-  that will evaluate <code>false</code>. The return type shall not be 
+  <p><i>Returns: </i>If <code>value() != 0</code>, returns a value that will
+  evaluate <code>true</code> in a boolean context; otherwise, returns a value
+  that will evaluate <code>false</code>. The return type shall not be
   convertible to <code>int</code>. </p>
   <p><i>Throws:</i> Nothing.</p>
-  <p><i>&nbsp;[ Note:</i> This conversion can be used in contexts where a <code>bool</code> 
+  <p><i>&nbsp;[ Note:</i> This conversion can be used in contexts where a <code>bool</code>
   is expected ( e.g., an if condition ); however, implicit conversions ( e.g., to
-  <code>int</code>) that can occur with <code>bool</code> are not allowed, 
-  eliminating some sources of user error. One possible implementation choice for 
+  <code>int</code>) that can occur with <code>bool</code> are not allowed,
+  eliminating some sources of user error. One possible implementation choice for
   this type is pointer to member. <i>--end note</i> <i>]</i></p>
 </blockquote>
   <h2><a name="throws-object"><code>throws</code> object</a></h2>
   <pre>extern error_code throws;</pre>
-<p>The predefined <code>error_code</code> object <code>throws</code> is supplied 
+<p>The predefined <code>error_code</code> object <code>throws</code> is supplied
 for use as a &quot;throw on error&quot; tag.</p>
 <h2><a name="Semantics-of-throws">Semantics of <code>throws</code></a> object</h2>
-<p>Functions that specify an argument in the form <code>error_code&amp; ec=throws</code>, 
-with appropriate namespace qualifiers, have the following error handling 
+<p>Functions that specify an argument in the form <code>error_code&amp; ec=throws</code>,
+with appropriate namespace qualifiers, have the following error handling
 semantics:</p>
 <blockquote>
   <p><i>Postconditions:</i></p>
   <blockquote>
     <p>If <code>&amp;ec != &amp;throws</code> and an error occurred:</p>
     <ul>
-      <li> <code>ec.value()</code> returns the implementation specific error 
+      <li> <code>ec.value()</code> returns the implementation specific error
       number for the particular error that occurred.</li>
       <li><code>ec.category()</code> returns the <code>
     <a href="#Class-error_category">error_category</a></code> for <code>ec.value()</code>.</li>
@@ -668,8 +668,8 @@ semantics:</p>
   <p><i>Throws:</i></p>
   <blockquote>
   <p>If an error occurs and <code>&amp;ec == &amp;throws</code>, throws an exception of type
-  <code><a href="#Class-system_error">system_error</a></code> or of a type 
-  derived from <code><a href="#Class-system_error">system_error</a></code>. The 
+  <code><a href="#Class-system_error">system_error</a></code> or of a type
+  derived from <code><a href="#Class-system_error">system_error</a></code>. The
   exception's <code>code()</code> member function returns a reference to an
   <code>error_code</code> object with the behavior specified in <i>
   Postconditions</i>.</p>
@@ -678,7 +678,7 @@ semantics:</p>
 <h2><a name="Non-member-functions">Non-member functions</a></h2>
   <pre>bool operator==( const error_code &amp; lhs, const error_code &amp; rhs ) noexcept;</pre>
 <blockquote>
-  <p><i>Returns:</i> <code>lhs.category() == rhs.category() &amp;&amp; lhs.value() == 
+  <p><i>Returns:</i> <code>lhs.category() == rhs.category() &amp;&amp; lhs.value() ==
   rhs.value()</code>.</p>
 </blockquote>
 <pre>bool operator==( const error_code &amp; code, const error_condition &amp; condition ) noexcept;
@@ -689,7 +689,7 @@ bool operator==( const error_condition &amp; condition, const error_code &amp; c
 </blockquote>
 <pre>bool operator==( const error_condition &amp; lhs, const error_condition &amp; rhs ) noexcept;</pre>
 <blockquote>
-  <p><i>Returns:</i> <code>lhs.category() == rhs.category() &amp;&amp; lhs.value() == 
+  <p><i>Returns:</i> <code>lhs.category() == rhs.category() &amp;&amp; lhs.value() ==
   rhs.value()</code>.</p>
 </blockquote>
 <pre>bool operator!=( const error_code &amp; lhs, const error_code &amp; rhs ) noexcept;</pre>
@@ -740,8 +740,8 @@ bool operator!=( const error_condition &amp; condition, const error_code &amp; c
 
 <h3><a name="Class-system_error">Class <code>
 system_error</code></a></h3>
-<p>The class <code>system_error</code> describes an exception object used to 
-report errors that have an associated <code><a href="#Class-error_code">error_code</a></code>. Such errors typically originate from operating system or other low-level 
+<p>The class <code>system_error</code> describes an exception object used to
+report errors that have an associated <code><a href="#Class-error_code">error_code</a></code>. Such errors typically originate from operating system or other low-level
 application program interfaces.</p>
 <blockquote>
 <pre>namespace boost
@@ -806,7 +806,7 @@ application program interfaces.</p>
 </blockquote>
 <pre>const error_code &amp; code() const;</pre>
 <blockquote>
-  <p><i>Returns:</i> <code>ec</code> or <code>error_code( ev, ecat )</code>, from 
+  <p><i>Returns:</i> <code>ec</code> or <code>error_code( ev, ecat )</code>, from
   the constructor, as appropriate.</p>
 </blockquote>
 <pre>const char * what() const;</pre>
@@ -817,7 +817,7 @@ application program interfaces.</p>
 </blockquote>
 <hr>
 
-<p>Revised 
+<p>Revised
 <!--webbot bot="Timestamp" S-Type="EDITED" S-Format="%B %d, %Y" startspan -->January 06, 2014<!--webbot bot="Timestamp" endspan i-checksum="31400" --> </font>
 </p>
 

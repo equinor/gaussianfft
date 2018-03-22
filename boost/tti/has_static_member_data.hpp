@@ -25,24 +25,24 @@
 /**
 
     trait = the name of the metafunction within the tti namespace.
-    
+
     name  = the name of the inner member.
 
     generates a metafunction called "trait" where 'trait' is the macro parameter.
-    
+
               The metafunction types and return:
-    
+
                 BOOST_TTI_TP_T    = the enclosing type.
-                
+
                 BOOST_TTI_TP_TYPE = the static member data type,
                            in the form of a data type,
                            in which to look for our 'name'.
-                       
+
                 returns = 'value' is true if the 'name' exists,
                           with the BOOST_TTI_TP_TYPE type,
                           within the enclosing BOOST_TTI_TP_T type,
                           otherwise 'value' is false.
-                          
+
 */
 #define BOOST_TTI_TRAIT_HAS_STATIC_MEMBER_DATA(trait,name) \
   BOOST_TTI_DETAIL_TRAIT_HAS_STATIC_MEMBER_DATA(trait,name) \
@@ -61,20 +61,20 @@
     name  = the name of the inner member.
 
     generates a metafunction called "has_static_member_data_name" where 'name' is the macro parameter.
-    
+
               The metafunction types and return:
-    
+
                 BOOST_TTI_TP_T    = the enclosing type.
-                
+
                 BOOST_TTI_TP_TYPE = the static member data type,
                            in the form of a data type,
                            in which to look for our 'name'.
-                       
+
                 returns = 'value' is true if the 'name' exists,
                           with the appropriate BOOST_TTI_TP_TYPE type,
                           within the enclosing BOOST_TTI_TP_T type,
                           otherwise 'value' is false.
-                          
+
 */
 #define BOOST_TTI_HAS_STATIC_MEMBER_DATA(name) \
   BOOST_TTI_TRAIT_HAS_STATIC_MEMBER_DATA \

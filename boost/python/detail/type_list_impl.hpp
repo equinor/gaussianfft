@@ -16,7 +16,7 @@
 #  include <boost/preprocessor/iterate.hpp>
 #  include <boost/preprocessor/repetition/enum_trailing.hpp>
 
-namespace boost { namespace python { namespace detail { 
+namespace boost { namespace python { namespace detail {
 
 template <BOOST_PP_ENUM_PARAMS_WITH_A_DEFAULT(BOOST_PYTHON_LIST_SIZE, class T, mpl::void_)>
 struct type_list
@@ -54,4 +54,4 @@ struct type_list<
 # undef BOOST_PYTHON_VOID_ARGS
 # undef N
 
-#endif // BOOST_PP_IS_ITERATING 
+#endif // BOOST_PP_IS_ITERATING

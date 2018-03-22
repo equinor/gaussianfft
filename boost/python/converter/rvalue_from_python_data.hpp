@@ -35,7 +35,7 @@
 // references can bind to temporary rvalues, we allow rvalue
 // converters to be chosen when the target type is T const& for some
 // T.
-namespace boost { namespace python { namespace converter { 
+namespace boost { namespace python { namespace converter {
 
 // Conversions begin by filling in and returning a copy of this
 // structure. The process looks up a converter in the rvalue converter
@@ -97,8 +97,8 @@ struct rvalue_from_python_data : rvalue_from_python_storage<T>
     // This must always be a POD struct with m_data its first member.
     BOOST_STATIC_ASSERT(BOOST_PYTHON_OFFSETOF(rvalue_from_python_storage<T>,stage1) == 0);
 # endif
-    
-    // The usual constructor 
+
+    // The usual constructor
     rvalue_from_python_data(rvalue_from_python_stage1_data const&);
 
     // This constructor just sets m_convertible -- used by

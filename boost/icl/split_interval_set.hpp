@@ -16,17 +16,17 @@ Copyright (c) 1999-2006: Cortex Software GmbH, Kantstrasse 57, Berlin
 namespace boost{namespace icl
 {
 
-/** \brief implements a set as a set of intervals - on insertion 
+/** \brief implements a set as a set of intervals - on insertion
     overlapping intervals are split */
-template 
+template
 <
-    typename                  DomainT, 
+    typename                  DomainT,
     ICL_COMPARE               Compare  = ICL_COMPARE_INSTANCE(ICL_COMPARE_DEFAULT, DomainT),
     ICL_INTERVAL(ICL_COMPARE) Interval = ICL_INTERVAL_INSTANCE(ICL_INTERVAL_DEFAULT, DomainT, Compare),
     ICL_ALLOC                 Alloc    = std::allocator
-> 
-class split_interval_set: 
-    public interval_base_set<split_interval_set<DomainT,Compare,Interval,Alloc>, 
+>
+class split_interval_set:
+    public interval_base_set<split_interval_set<DomainT,Compare,Interval,Alloc>,
                              DomainT,Compare,Interval,Alloc>
 {
 public:
@@ -66,7 +66,7 @@ public:
     /// The corresponding atomized type representing this interval container of elements
     typedef typename base_type::atomized_type atomized_type;
 
-    /// Container type for the implementation 
+    /// Container type for the implementation
     typedef typename base_type::ImplSetT ImplSetT;
 
     /// key type of the implementing container
@@ -116,9 +116,9 @@ public:
     template<class SubType>
     split_interval_set& operator =
         (const interval_base_set<SubType,DomainT,Compare,Interval,Alloc>& src)
-    { 
-        this->assign(src); 
-        return *this; 
+    {
+        this->assign(src);
+        return *this;
     }
 
 #   ifndef BOOST_ICL_NO_CXX11_RVALUE_REFERENCES
@@ -133,7 +133,7 @@ public:
 
     /// Move assignment operator
     split_interval_set& operator = (split_interval_set src)
-    { 
+    {
         base_type::operator=(boost::move(src));
         return *this;
     }
@@ -142,22 +142,22 @@ public:
 
     /// Assignment operator
     split_interval_set& operator = (const split_interval_set& src)
-    { 
+    {
         base_type::operator=(src);
         return *this;
     }
 
 #   endif // BOOST_ICL_NO_CXX11_RVALUE_REFERENCES
-    
+
 private:
     // Private functions that shall be accessible by the baseclass:
     friend class
-        interval_base_set<split_interval_set<DomainT,Compare,Interval,Alloc>, 
+        interval_base_set<split_interval_set<DomainT,Compare,Interval,Alloc>,
                                              DomainT,Compare,Interval,Alloc>;
 
     iterator handle_inserted(iterator inserted_)
-    { 
-        return inserted_; 
+    {
+        return inserted_;
     }
 
     iterator add_over(const interval_type& addend, iterator last_)
@@ -199,21 +199,21 @@ private:
 //-----------------------------------------------------------------------------
 template <class DomainT, ICL_COMPARE Compare, ICL_INTERVAL(ICL_COMPARE)  Interval, ICL_ALLOC Alloc>
 struct is_set<icl::split_interval_set<DomainT,Compare,Interval,Alloc> >
-{ 
+{
     typedef is_set<icl::split_interval_set<DomainT,Compare,Interval,Alloc> > type;
-    BOOST_STATIC_CONSTANT(bool, value = true); 
+    BOOST_STATIC_CONSTANT(bool, value = true);
 };
 
 template <class DomainT, ICL_COMPARE Compare, ICL_INTERVAL(ICL_COMPARE)  Interval, ICL_ALLOC Alloc>
 struct is_interval_container<icl::split_interval_set<DomainT,Compare,Interval,Alloc> >
-{ 
+{
     typedef is_interval_container<icl::split_interval_set<DomainT,Compare,Interval,Alloc> > type;
-    BOOST_STATIC_CONSTANT(bool, value = true); 
+    BOOST_STATIC_CONSTANT(bool, value = true);
 };
 
 template <class DomainT, ICL_COMPARE Compare, ICL_INTERVAL(ICL_COMPARE)  Interval, ICL_ALLOC Alloc>
 struct is_interval_splitter<icl::split_interval_set<DomainT,Compare,Interval,Alloc> >
-{ 
+{
     typedef is_interval_splitter<icl::split_interval_set<DomainT,Compare,Interval,Alloc> > type;
     BOOST_STATIC_CONSTANT(bool, value = true);
 };

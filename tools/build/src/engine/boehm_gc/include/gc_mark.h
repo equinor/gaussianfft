@@ -18,7 +18,7 @@
  * clients that provide detailed heap layout information to the collector.
  * This interface should not be used by normal C or C++ clients.
  * It will be useful to runtimes for other languages.
- * 
+ *
  * This is an experts-only interface!  There are many ways to break the
  * collector in subtle ways by using this functionality.
  */
@@ -185,7 +185,7 @@ typedef void (*GC_describe_type_fn) (void *p, char *out_buf);
 				/* p into the buffer out_buf of length	*/
 				/* GC_TYPE_DESCR_LEN.  This is used by	*/
 				/* the debug support when printing 	*/
-				/* objects.				*/ 
+				/* objects.				*/
 				/* These functions should be as robust	*/
 				/* as possible, though we do avoid 	*/
 				/* invoking them on objects on the 	*/

@@ -14,8 +14,8 @@
 
 namespace boost {
 
-    class environment_iterator 
-        : public eof_iterator<environment_iterator, 
+    class environment_iterator
+        : public eof_iterator<environment_iterator,
                               std::pair<std::string, std::string> >
     {
     public:
@@ -24,12 +24,12 @@ namespace boost {
         {
             get();
         }
-        
+
         environment_iterator()
         {
             found_eof();
         }
-        
+
         void get()
         {
             if (*m_environment == 0)
@@ -40,11 +40,11 @@ namespace boost {
                 assert(n != s.npos);
                 value().first = s.substr(0, n);
                 value().second = s.substr(n+1);
-                
+
                 ++m_environment;
             }
         }
-        
+
     private:
         char** m_environment;
     };

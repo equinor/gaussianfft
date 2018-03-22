@@ -22,7 +22,7 @@ namespace boost
       struct return_
       {
         typedef return_ type;
-        
+
         template <class S, class Pos>
         struct apply : accept<C, S, Pos> {};
       };

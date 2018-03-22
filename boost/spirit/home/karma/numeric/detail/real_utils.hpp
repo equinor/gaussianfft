@@ -1,6 +1,6 @@
 //  Copyright (c) 2001-2011 Hartmut Kaiser
-// 
-//  Distributed under the Boost Software License, Version 1.0. (See accompanying 
+//
+//  Distributed under the Boost Software License, Version 1.0. (See accompanying
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #if !defined(BOOST_SPIRIT_KARMA_REAL_UTILS_FEB_23_2007_0841PM)
@@ -23,11 +23,11 @@
 #include <boost/spirit/home/karma/detail/string_generate.hpp>
 #include <boost/spirit/home/karma/numeric/detail/numeric_utils.hpp>
 
-namespace boost { namespace spirit { namespace karma 
-{ 
+namespace boost { namespace spirit { namespace karma
+{
     ///////////////////////////////////////////////////////////////////////////
     //
-    //  The real_inserter template takes care of the floating point number to 
+    //  The real_inserter template takes care of the floating point number to
     //  string conversion. The Policies template parameter is used to allow
     //  customization of the formatting process
     //
@@ -56,12 +56,12 @@ namespace boost { namespace spirit { namespace karma
             return p.template call<real_inserter>(sink, n, p);
         }
 
-#if BOOST_WORKAROUND(BOOST_MSVC, >= 1400)  
+#if BOOST_WORKAROUND(BOOST_MSVC, >= 1400)
 # pragma warning(push)
-# pragma warning(disable: 4100)   // 'p': unreferenced formal parameter  
+# pragma warning(disable: 4100)   // 'p': unreferenced formal parameter
 # pragma warning(disable: 4127)   // conditional expression is constant
 # pragma warning(disable: 4267)   // conversion from 'size_t' to 'unsigned int', possible loss of data
-#endif 
+#endif
         ///////////////////////////////////////////////////////////////////////
         //  This is the workhorse behind the real generator
         ///////////////////////////////////////////////////////////////////////
@@ -73,21 +73,21 @@ namespace boost { namespace spirit { namespace karma
             bool force_sign = p.force_sign(n);
             bool sign_val = false;
             int flags = p.floatfield(n);
-            if (traits::test_negative(n)) 
+            if (traits::test_negative(n))
             {
                 n = -n;
                 sign_val = true;
             }
 
-        // The scientific representation requires the normalization of the 
+        // The scientific representation requires the normalization of the
         // value to convert.
 
             // get correct precision for generated number
             unsigned precision = p.precision(n);
-            if (std::numeric_limits<U>::digits10) 
+            if (std::numeric_limits<U>::digits10)
             {
                 // limit generated precision to digits10, if defined
-                precision = (std::min)(precision, 
+                precision = (std::min)(precision,
                     (unsigned)std::numeric_limits<U>::digits10 + 1);
             }
 
@@ -98,7 +98,7 @@ namespace boost { namespace spirit { namespace karma
             if (0 == (Policies::fmtflags::fixed & flags) && !traits::test_zero(n))
             {
                 dim = log10(n);
-                if (dim > 0) 
+                if (dim > 0)
                     n /= spirit::traits::pow10<U>(traits::truncate_to_long::call(dim));
                 else if (n < 1.) {
                     long exp = traits::truncate_to_long::call(-dim);
@@ -115,7 +115,7 @@ namespace boost { namespace spirit { namespace karma
             U fractional_part = modf(n, &integer_part);
 
             fractional_part = floor(fractional_part * precexp + U(0.5));
-            if (fractional_part >= precexp) 
+            if (fractional_part >= precexp)
             {
                 fractional_part = floor(fractional_part - precexp);
                 integer_part += 1;    // handle rounding overflow
@@ -131,22 +131,22 @@ namespace boost { namespace spirit { namespace karma
                 U frac_part_floor = long_frac_part;
                 if (0 != long_frac_part) {
                     // remove the trailing zeros
-                    while (0 != prec && 
-                           0 == traits::remainder<10>::call(long_frac_part)) 
+                    while (0 != prec &&
+                           0 == traits::remainder<10>::call(long_frac_part))
                     {
                         long_frac_part = traits::divide<10>::call(long_frac_part);
                         --prec;
                     }
                 }
                 else {
-                    // if the fractional part is zero, we don't need to output 
+                    // if the fractional part is zero, we don't need to output
                     // any additional digits
                     prec = 0;
                 }
 
                 if (precision != prec)
                 {
-                    long_frac_part = frac_part_floor / 
+                    long_frac_part = frac_part_floor /
                         spirit::traits::pow10<U>(precision-prec);
                 }
             }
@@ -170,7 +170,7 @@ namespace boost { namespace spirit { namespace karma
             r = r && p.fraction_part(sink, long_frac_part, prec, precision);
 
             if (r && 0 == (Policies::fmtflags::fixed & flags)) {
-                return p.template exponent<CharEncoding, Tag>(sink, 
+                return p.template exponent<CharEncoding, Tag>(sink,
                     traits::truncate_to_long::call(dim));
             }
             return r;
@@ -178,7 +178,7 @@ namespace boost { namespace spirit { namespace karma
 
 #if BOOST_WORKAROUND(BOOST_MSVC, >= 1400)
 # pragma warning(pop)
-#endif 
+#endif
 
     };
 }}}

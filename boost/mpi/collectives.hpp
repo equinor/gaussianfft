@@ -49,7 +49,7 @@ namespace boost { namespace mpi {
  */
 template<typename T>
 void
-all_gather(const communicator& comm, const T& in_value, 
+all_gather(const communicator& comm, const T& in_value,
            std::vector<T>& out_values);
 
 /**
@@ -125,7 +125,7 @@ all_gather(const communicator& comm, const T* in_values, int n, T* out_values);
  */
 template<typename T, typename Op>
 void
-all_reduce(const communicator& comm, const T* value, int n, T* out_value, 
+all_reduce(const communicator& comm, const T* value, int n, T* out_value,
            Op op);
 /**
  * \overload
@@ -201,7 +201,7 @@ all_to_all(const communicator& comm, const std::vector<T>& in_values, int n,
  * \overload
  */
 template<typename T>
-void 
+void
 all_to_all(const communicator& comm, const T* in_values, int n, T* out_values);
 
 /**
@@ -315,7 +315,7 @@ void gather(const communicator& comm, const T& in_value, int root);
  */
 template<typename T>
 void
-gather(const communicator& comm, const T* in_values, int n, 
+gather(const communicator& comm, const T* in_values, int n,
        std::vector<T>& out_values, int root);
 
 /**
@@ -323,7 +323,7 @@ gather(const communicator& comm, const T* in_values, int n,
  */
 template<typename T>
 void
-gather(const communicator& comm, const T* in_values, int n, T* out_values, 
+gather(const communicator& comm, const T* in_values, int n, T* out_values,
        int root);
 
 /**
@@ -453,7 +453,7 @@ void scatter(const communicator& comm, T& out_value, int root);
  */
 template<typename T>
 void
-scatter(const communicator& comm, const std::vector<T>& in_values, 
+scatter(const communicator& comm, const std::vector<T>& in_values,
         T* out_values, int n, int root);
 
 /**
@@ -546,7 +546,7 @@ scatterv(const communicator& comm, const std::vector<T>& in_values,
  *  serializable or has an associated MPI data type. One can think of
  *  this operation as a @c gather to the @p root, followed by an @c
  *  std::accumulate() over the gathered values and using the operation
- *  @c op. 
+ *  @c op.
  *
  *  When the type @c T has an associated MPI data type, this routine
  *  invokes @c MPI_Reduce to perform the reduction. If possible,
@@ -602,14 +602,14 @@ void reduce(const communicator& comm, const T& in_value, Op op, int root);
  */
 template<typename T, typename Op>
 void
-reduce(const communicator& comm, const T* in_values, int n, T* out_values, 
+reduce(const communicator& comm, const T* in_values, int n, T* out_values,
        Op op, int root);
 
 /**
  * \overload
  */
 template<typename T, typename Op>
-void 
+void
 reduce(const communicator& comm, const T* in_values, int n, Op op, int root);
 
 /**

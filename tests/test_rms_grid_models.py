@@ -3,7 +3,7 @@ import nrlib
 import numpy as np
 
 """
-The contents of these tests are intended to be able to run in RMS as well simply by copying the contents without 
+The contents of these tests are intended to be able to run in RMS as well simply by copying the contents without
 modification, the exception being that import statements must be included and self.assert... does not make sense
 outside a test class context.
 """

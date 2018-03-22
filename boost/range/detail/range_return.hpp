@@ -102,7 +102,7 @@ namespace boost
         static type pack(BOOST_DEDUCED_TYPENAME range_iterator<SinglePassRange>::type found,
                          SinglePassRange& rng)
         {
-            return type( boost::begin(rng), 
+            return type( boost::begin(rng),
                          found == boost::end(rng) ? found : boost::next(found) );
         }
     };

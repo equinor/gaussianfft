@@ -1,6 +1,6 @@
 /*
     Copyright 2005-2007 Adobe Systems Incorporated
-   
+
     Use, modification and distribution are subject to the Boost Software License,
     Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
     http://www.boost.org/LICENSE_1_0.txt).
@@ -170,7 +170,7 @@ public:
 };
 
 // This code will be simplified...
-template <typename CC>  
+template <typename CC>
 class tiff_reader_color_convert : public tiff_reader {
 private:
     CC _cc;
@@ -277,7 +277,7 @@ public:
         default: {
             // reads an image in incompatible format via TIFFReadRGBAImage
             rgba8_image_t rgbaImg(dims);
-            io_error_if(!TIFFReadRGBAImage(_tp, dims.x, dims.y, (uint32*)&gil::view(rgbaImg)(0,0), 0), 
+            io_error_if(!TIFFReadRGBAImage(_tp, dims.x, dims.y, (uint32*)&gil::view(rgbaImg)(0,0), 0),
                 "tiff_reader_color_convert::unsupported image format");
             copy_and_convert_pixels(flipped_up_down_view(const_view(rgbaImg)), view, _cc);
         }
@@ -373,7 +373,7 @@ inline point2<std::ptrdiff_t> tiff_read_dimensions(const std::string& filename,t
 /// \ingroup TIFF_IO
 /// \brief Loads the image specified by the given tiff image file name into the given view.
 /// Triggers a compile assert if the view color space and channel depth are not supported by the TIFF library or by the I/O extension.
-/// Throws std::ios_base::failure if the file is not a valid TIFF file, or if its color space or channel depth are not 
+/// Throws std::ios_base::failure if the file is not a valid TIFF file, or if its color space or channel depth are not
 /// compatible with the ones specified by View, or if its dimensions don't match the ones of the view.
 template <typename View>
 inline void tiff_read_view(const char* filename,const View& view,tdir_t dirnum=0) {
@@ -392,7 +392,7 @@ inline void tiff_read_view(const std::string& filename,const View& view,tdir_t d
 /// \ingroup TIFF_IO
 /// \brief Allocates a new image whose dimensions are determined by the given tiff image file, and loads the pixels into it.
 /// Triggers a compile assert if the image color space or channel depth are not supported by the TIFF library or by the I/O extension.
-/// Throws std::ios_base::failure if the file is not a valid TIFF file, or if its color space or channel depth are not 
+/// Throws std::ios_base::failure if the file is not a valid TIFF file, or if its color space or channel depth are not
 /// compatible with the ones specified by Image
 template <typename Image>
 void tiff_read_image(const char* filename,Image& im,tdir_t dirnum=0) {

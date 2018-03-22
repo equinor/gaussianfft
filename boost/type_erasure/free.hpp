@@ -152,12 +152,12 @@ struct first_placeholder_index :
 
 namespace boost {
 namespace type_erasure {
-    
+
 template<int... N>
 struct index_list {};
 
 namespace detail {
-    
+
 template<class... T>
 struct first_placeholder;
 
@@ -274,7 +274,7 @@ struct make_index_list<0> {
     }
 
 #endif
-    
+
 /** INTERNAL ONLY */
 #define BOOST_TYPE_ERASURE_FREE_I(namespace_name, concept_name, function_name, N)\
     BOOST_TYPE_ERASURE_FREE_II(namespace_name, concept_name, function_name, N)

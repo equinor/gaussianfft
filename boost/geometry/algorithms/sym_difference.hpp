@@ -337,7 +337,7 @@ struct sym_difference
                              default_strategy)
     {
         typedef typename boost::range_value<Collection>::type geometry_out;
-        
+
         detail::sym_difference::sym_difference_insert<geometry_out>(
             geometry1, geometry2, robust_policy,
             range::back_inserter(output_collection));
@@ -349,7 +349,7 @@ struct sym_difference
 
 namespace resolve_variant
 {
-    
+
 template <typename Geometry1, typename Geometry2>
 struct sym_difference
 {
@@ -368,7 +368,7 @@ struct sym_difference
         rescale_policy_type robust_policy
                 = geometry::get_rescale_policy<rescale_policy_type>(geometry1,
                                                                     geometry2);
-        
+
         resolve_strategy::sym_difference::apply(geometry1, geometry2,
                                                 robust_policy,
                                                 output_collection,
@@ -386,7 +386,7 @@ struct sym_difference<variant<BOOST_VARIANT_ENUM_PARAMS(T)>, Geometry2>
         Geometry2 const& m_geometry2;
         Collection& m_output_collection;
         Strategy const& m_strategy;
-        
+
         visitor(Geometry2 const& geometry2,
                 Collection& output_collection,
                 Strategy const& strategy)
@@ -394,7 +394,7 @@ struct sym_difference<variant<BOOST_VARIANT_ENUM_PARAMS(T)>, Geometry2>
             , m_output_collection(output_collection)
             , m_strategy(strategy)
         {}
-        
+
         template <typename Geometry1>
         void operator()(Geometry1 const& geometry1) const
         {
@@ -405,7 +405,7 @@ struct sym_difference<variant<BOOST_VARIANT_ENUM_PARAMS(T)>, Geometry2>
                 >::apply(geometry1, m_geometry2, m_output_collection, m_strategy);
         }
     };
-    
+
     template <typename Collection, typename Strategy>
     static inline void
     apply(variant<BOOST_VARIANT_ENUM_PARAMS(T)> const& geometry1,
@@ -430,7 +430,7 @@ struct sym_difference<Geometry1, variant<BOOST_VARIANT_ENUM_PARAMS(T)> >
         Geometry1 const& m_geometry1;
         Collection& m_output_collection;
         Strategy const& m_strategy;
-        
+
         visitor(Geometry1 const& geometry1,
                 Collection& output_collection,
                 Strategy const& strategy)
@@ -438,7 +438,7 @@ struct sym_difference<Geometry1, variant<BOOST_VARIANT_ENUM_PARAMS(T)> >
             , m_output_collection(output_collection)
             , m_strategy(strategy)
         {}
-        
+
         template <typename Geometry2>
         void operator()(Geometry2 const& geometry2) const
         {
@@ -449,7 +449,7 @@ struct sym_difference<Geometry1, variant<BOOST_VARIANT_ENUM_PARAMS(T)> >
                 >::apply(m_geometry1, geometry2, m_output_collection, m_strategy);
         }
     };
-    
+
     template <typename Collection, typename Strategy>
     static inline void
     apply(Geometry1 const& geometry1,
@@ -473,12 +473,12 @@ struct sym_difference<variant<BOOST_VARIANT_ENUM_PARAMS(T1)>, variant<BOOST_VARI
     {
         Collection& m_output_collection;
         Strategy const& m_strategy;
-        
+
         visitor(Collection& output_collection, Strategy const& strategy)
             : m_output_collection(output_collection)
             , m_strategy(strategy)
         {}
-        
+
         template <typename Geometry1, typename Geometry2>
         void operator()(Geometry1 const& geometry1,
                         Geometry2 const& geometry2) const
@@ -490,7 +490,7 @@ struct sym_difference<variant<BOOST_VARIANT_ENUM_PARAMS(T1)>, variant<BOOST_VARI
                 >::apply(geometry1, geometry2, m_output_collection, m_strategy);
         }
     };
-    
+
     template <typename Collection, typename Strategy>
     static inline void
     apply(variant<BOOST_VARIANT_ENUM_PARAMS(T1)> const& geometry1,
@@ -503,7 +503,7 @@ struct sym_difference<variant<BOOST_VARIANT_ENUM_PARAMS(T1)>, variant<BOOST_VARI
                              geometry1, geometry2);
     }
 };
-    
+
 } // namespace resolve_variant
 
 
@@ -572,7 +572,7 @@ inline void sym_difference(Geometry1 const& geometry1,
         <
             Geometry1,
             Geometry2
-        >::apply(geometry1, geometry2, output_collection, default_strategy());    
+        >::apply(geometry1, geometry2, output_collection, default_strategy());
 }
 
 

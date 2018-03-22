@@ -61,7 +61,7 @@ protected:
   typedef multi_index_container<
     Value,IndexSpecifierList,Allocator>       final_type;
   typedef tuples::null_type                   ctor_args_list;
-  typedef typename 
+  typedef typename
   boost::detail::allocator::rebind_to<
     Allocator,
     typename Allocator::value_type
@@ -117,7 +117,7 @@ protected:
     x=final().allocate_node();
     BOOST_TRY{
       /* This shoud have used a modified, T&&-compatible version of
-       * boost::detail::allocator::construct, but 
+       * boost::detail::allocator::construct, but
        * <boost/detail/allocator_utilities.hpp> is too old and venerable to
        * mess with; besides, it is a general internal utility and the imperfect
        * perfect forwarding emulation of Boost.Move might break other libs.

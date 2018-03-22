@@ -10,7 +10,7 @@ The objects of class arg are keyword-expressions holding one keyword ( size one 
 ``
 namespace boost { namespace python
 {
-        struct arg 
+        struct arg
         {
           template <class T>
                   arg &operator = (T const &value);

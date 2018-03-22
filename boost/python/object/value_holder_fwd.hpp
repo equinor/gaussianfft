@@ -5,7 +5,7 @@
 #ifndef VALUE_HOLDER_FWD_DWA2002311_HPP
 # define VALUE_HOLDER_FWD_DWA2002311_HPP
 
-namespace boost { namespace python { namespace objects { 
+namespace boost { namespace python { namespace objects {
 
 struct no_back_reference;
 

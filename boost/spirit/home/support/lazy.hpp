@@ -27,7 +27,7 @@ namespace boost { namespace spirit
 
     namespace tag
     {
-        struct lazy_eval 
+        struct lazy_eval
         {
             BOOST_SPIRIT_IS_TAG()
         };

@@ -52,7 +52,7 @@ BOOST_PYTHON_MODULE(andreas_beyer_ext) {
     .def_readwrite("val", &A::val)
   ;
   python::register_ptr_to_python< A::A_ptr >();
- 
+
   python::class_<B>("B")
      .def("set", &B::set)
 //     .def("get", &B::get)

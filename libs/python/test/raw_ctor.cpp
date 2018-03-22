@@ -16,7 +16,7 @@ class Foo
  public:
     Foo(tuple args, dict kw)
       : args(args), kw(kw) {}
-    
+
     tuple args;
     dict kw;
 };
@@ -32,7 +32,7 @@ BOOST_PYTHON_MODULE(raw_ctor_ext)
     // using no_init postpones defining __init__ function until after
     // raw_function for proper overload resolution order, since later
     // defs get higher priority.
-    class_<Foo>("Foo", no_init) 
+    class_<Foo>("Foo", no_init)
         .def("__init__", raw_function(&init_foo))
         .def(init<tuple, dict>())
         .def_readwrite("args", &Foo::args)

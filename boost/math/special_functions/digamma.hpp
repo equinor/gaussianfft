@@ -207,7 +207,7 @@ T digamma_imp_1_2(T x, const mpl::int_<113>*)
    static const T root4 = (((T(503992070) / 1073741824uL) / 1073741824uL) / 1073741824uL) / 1073741824uL;
    static const T root5 = BOOST_MATH_BIG_CONSTANT(T, 113, 0.52112228569249997894452490385577338504019838794544e-36);
 
-   static const T P[] = {    
+   static const T P[] = {
       BOOST_MATH_BIG_CONSTANT(T, 113, 0.25479851061131551526977464225335883769),
       BOOST_MATH_BIG_CONSTANT(T, 113, -0.18684290534374944114622235683619897417),
       BOOST_MATH_BIG_CONSTANT(T, 113, -0.80360876047931768958995775910991929922),
@@ -219,7 +219,7 @@ T digamma_imp_1_2(T x, const mpl::int_<113>*)
       BOOST_MATH_BIG_CONSTANT(T, 113, -0.16454996865214115723416538844975174761e-4),
       BOOST_MATH_BIG_CONSTANT(T, 113, -0.20327832297631728077731148515093164955e-6)
    };
-   static const T Q[] = {    
+   static const T Q[] = {
       BOOST_MATH_BIG_CONSTANT(T, 113, 1.0),
       BOOST_MATH_BIG_CONSTANT(T, 113, 2.6210924610812025425088411043163287646),
       BOOST_MATH_BIG_CONSTANT(T, 113, 2.6850757078559596612621337395886392594),
@@ -267,7 +267,7 @@ T digamma_imp_1_2(T x, const mpl::int_<64>*)
    static const T root2 = (T(381566830) / 1073741824uL) / 1073741824uL;
    static const T root3 = BOOST_MATH_BIG_CONSTANT(T, 64, 0.9016312093258695918615325266959189453125e-19);
 
-   static const T P[] = {    
+   static const T P[] = {
       BOOST_MATH_BIG_CONSTANT(T, 64, 0.254798510611315515235),
       BOOST_MATH_BIG_CONSTANT(T, 64, -0.314628554532916496608),
       BOOST_MATH_BIG_CONSTANT(T, 64, -0.665836341559876230295),
@@ -275,7 +275,7 @@ T digamma_imp_1_2(T x, const mpl::int_<64>*)
       BOOST_MATH_BIG_CONSTANT(T, 64, -0.0541156266153505273939),
       BOOST_MATH_BIG_CONSTANT(T, 64, -0.00289268368333918761452)
    };
-   static const T Q[] = {    
+   static const T Q[] = {
       BOOST_MATH_BIG_CONSTANT(T, 64, 1.0),
       BOOST_MATH_BIG_CONSTANT(T, 64, 2.1195759927055347547),
       BOOST_MATH_BIG_CONSTANT(T, 64, 1.54350554664961128724),
@@ -317,7 +317,7 @@ T digamma_imp_1_2(T x, const mpl::int_<53>*)
    static const T root2 = (T(381566830) / 1073741824uL) / 1073741824uL;
    static const T root3 = BOOST_MATH_BIG_CONSTANT(T, 53, 0.9016312093258695918615325266959189453125e-19);
 
-   static const T P[] = {    
+   static const T P[] = {
       BOOST_MATH_BIG_CONSTANT(T, 53, 0.25479851061131551),
       BOOST_MATH_BIG_CONSTANT(T, 53, -0.32555031186804491),
       BOOST_MATH_BIG_CONSTANT(T, 53, -0.65031853770896507),
@@ -325,7 +325,7 @@ T digamma_imp_1_2(T x, const mpl::int_<53>*)
       BOOST_MATH_BIG_CONSTANT(T, 53, -0.045251321448739056),
       BOOST_MATH_BIG_CONSTANT(T, 53, -0.0020713321167745952)
    };
-   static const T Q[] = {    
+   static const T Q[] = {
       BOOST_MATH_BIG_CONSTANT(T, 53, 1.0),
       BOOST_MATH_BIG_CONSTANT(T, 53, 2.0767117023730469),
       BOOST_MATH_BIG_CONSTANT(T, 53, 1.4606242909763515),
@@ -363,13 +363,13 @@ inline T digamma_imp_1_2(T x, const mpl::int_<24>*)
    static const float Y = 0.99558162689208984f;
    static const T root = 1532632.0f / 1048576;
    static const T root_minor = static_cast<T>(0.3700660185912626595423257213284682051735604e-6L);
-   static const T P[] = {    
+   static const T P[] = {
       0.25479851023250261e0f,
       -0.44981331915268368e0f,
       -0.43916936919946835e0f,
       -0.61041765350579073e-1f
    };
-   static const T Q[] = {    
+   static const T Q[] = {
       0.1e1,
       0.15890202430554952e1f,
       0.65341249856146947e0f,
@@ -575,7 +575,7 @@ const typename digamma_initializer<T, Policy>::init digamma_initializer<T, Polic
 } // namespace detail
 
 template <class T, class Policy>
-inline typename tools::promote_args<T>::type 
+inline typename tools::promote_args<T>::type
    digamma(T x, const Policy&)
 {
    typedef typename tools::promote_args<T>::type result_type;
@@ -618,7 +618,7 @@ inline typename tools::promote_args<T>::type
 }
 
 template <class T>
-inline typename tools::promote_args<T>::type 
+inline typename tools::promote_args<T>::type
    digamma(T x)
 {
    return digamma(x, policies::policy<>());

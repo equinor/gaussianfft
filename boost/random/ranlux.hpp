@@ -31,11 +31,11 @@ namespace detail {
  *  @blockquote
  *  "A portable high-quality random number generator for lattice field theory
  *  calculations", M. Luescher, Computer Physics Communications, 79 (1994)
- *  pp 100-110. 
+ *  pp 100-110.
  *  @endblockquote
  *
  * The levels are given in
- * 
+ *
  *  @blockquote
  *  "RANLUX: A Fortran implementation of the high-quality
  *  pseudorandom number generator of Luescher", F. James,

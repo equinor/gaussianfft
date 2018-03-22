@@ -21,7 +21,7 @@
 
 namespace boost { namespace algorithm {
 
-/// \fn is_permutation ( ForwardIterator1 first, ForwardIterator1 last, 
+/// \fn is_permutation ( ForwardIterator1 first, ForwardIterator1 last,
 ///                      ForwardIterator2 first2, ForwardIterator2 last2 )
 /// \brief Tests to see if the sequence [first,last) is a permutation of the sequence starting at first2
 ///
@@ -31,7 +31,7 @@ namespace boost { namespace algorithm {
 /// \param last1    One past the end of the second sequence
 /// \note           This function is part of the C++2014 standard library.
 template< class ForwardIterator1, class ForwardIterator2 >
-bool is_permutation ( ForwardIterator1 first1, ForwardIterator1 last1, 
+bool is_permutation ( ForwardIterator1 first1, ForwardIterator1 last1,
                       ForwardIterator2 first2, ForwardIterator2 last2 )
 {
 //  How should I deal with the idea that ForwardIterator1::value_type
@@ -41,14 +41,14 @@ bool is_permutation ( ForwardIterator1 first1, ForwardIterator1 last1,
     if ( eq.first == last1 && eq.second == last2)
         return true;
     return boost::algorithm::detail::is_permutation_tag (
-        eq.first, last1, eq.second, last2, 
+        eq.first, last1, eq.second, last2,
         std::equal_to<typename std::iterator_traits<ForwardIterator1>::value_type> (),
         typename std::iterator_traits<ForwardIterator1>::iterator_category (),
         typename std::iterator_traits<ForwardIterator2>::iterator_category ());
 }
 
-/// \fn is_permutation ( ForwardIterator1 first, ForwardIterator1 last, 
-///                      ForwardIterator2 first2, ForwardIterator2 last2, 
+/// \fn is_permutation ( ForwardIterator1 first, ForwardIterator1 last,
+///                      ForwardIterator2 first2, ForwardIterator2 last2,
 ///                      BinaryPredicate p )
 /// \brief Tests to see if the sequence [first,last) is a permutation of the sequence starting at first2
 ///
@@ -61,7 +61,7 @@ bool is_permutation ( ForwardIterator1 first1, ForwardIterator1 last1,
 /// \note           This function is part of the C++2014 standard library.
 template< class ForwardIterator1, class ForwardIterator2, class BinaryPredicate >
 bool is_permutation ( ForwardIterator1 first1, ForwardIterator1 last1,
-                      ForwardIterator2 first2, ForwardIterator2 last2, 
+                      ForwardIterator2 first2, ForwardIterator2 last2,
                       BinaryPredicate pred )
 {
     std::pair<ForwardIterator1, ForwardIterator2> eq = boost::algorithm::mismatch
@@ -69,7 +69,7 @@ bool is_permutation ( ForwardIterator1 first1, ForwardIterator1 last1,
     if ( eq.first == last1 && eq.second == last2)
         return true;
     return boost::algorithm::detail::is_permutation_tag (
-        first1, last1, first2, last2, pred, 
+        first1, last1, first2, last2, pred,
         typename std::iterator_traits<ForwardIterator1>::iterator_category (),
         typename std::iterator_traits<ForwardIterator2>::iterator_category ());
 }

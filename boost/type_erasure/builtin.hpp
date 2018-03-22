@@ -46,7 +46,7 @@ struct destructible
     }
     /** INTERNAL ONLY */
     static void apply(detail::storage& arg)
-    { 
+    {
         delete static_cast<T*>(arg.data);
     }
 };

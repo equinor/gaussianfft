@@ -66,11 +66,11 @@ namespace boost { namespace python
 {
   namespace api
   {
-    class object; 
+    class object;
   }
 }}
 
-namespace boost { namespace python { namespace converter { 
+namespace boost { namespace python { namespace converter {
 
 
 // Specializations for handle<T>
@@ -80,7 +80,7 @@ struct handle_object_manager_traits
 {
  private:
   typedef pyobject_traits<typename T::element_type> base;
-  
+
  public:
   BOOST_STATIC_CONSTANT(bool, is_specialized = true);
 
@@ -113,7 +113,7 @@ struct object_manager_traits
 //
 // Traits for detecting whether a type is an object manager or a
 // (cv-qualified) reference to an object manager.
-// 
+//
 
 template <class T>
 struct is_object_manager

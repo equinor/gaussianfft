@@ -16,7 +16,7 @@ namespace boost { namespace msm
 // policy classes
 
 // Default: new active state set after the transition (after entry)
-struct active_state_switch_after_entry 
+struct active_state_switch_after_entry
 {
     static int after_guard(int current_state,int){return current_state;}
     static int after_exit(int current_state,int){return current_state;}
@@ -25,7 +25,7 @@ struct active_state_switch_after_entry
 };
 
 // new state set before the transition starts
-struct active_state_switch_before_transition 
+struct active_state_switch_before_transition
 {
     static int after_guard(int,int next_state){return next_state;}
     static int after_exit(int,int next_state){return next_state;}
@@ -34,7 +34,7 @@ struct active_state_switch_before_transition
 };
 
 // new state set after exit action completed
-struct active_state_switch_after_exit 
+struct active_state_switch_after_exit
 {
     static int after_guard(int current_state,int){return current_state;}
     static int after_exit(int,int next_state){return next_state;}
@@ -43,7 +43,7 @@ struct active_state_switch_after_exit
 };
 
 // new state set after transition action completed
-struct active_state_switch_after_transition_action 
+struct active_state_switch_after_transition_action
 {
     static int after_guard(int current_state,int){return current_state;}
     static int after_exit(int current_state,int){return current_state;}

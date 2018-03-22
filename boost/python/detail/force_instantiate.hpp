@@ -5,7 +5,7 @@
 #ifndef FORCE_INSTANTIATE_DWA200265_HPP
 # define FORCE_INSTANTIATE_DWA200265_HPP
 
-namespace boost { namespace python { namespace detail { 
+namespace boost { namespace python { namespace detail {
 
 // Allows us to force the argument to be instantiated without
 // incurring unused variable warnings

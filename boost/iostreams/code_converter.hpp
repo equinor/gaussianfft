@@ -24,7 +24,7 @@
 #include <algorithm>                       // max.
 #include <cstring>                         // memcpy.
 #include <exception>
-#include <boost/config.hpp>                // DEDUCED_TYPENAME, 
+#include <boost/config.hpp>                // DEDUCED_TYPENAME,
 #include <boost/iostreams/char_traits.hpp>
 #include <boost/iostreams/constants.hpp>   // default_filter_buffer_size.
 #include <boost/iostreams/detail/adapter/concept_adapter.hpp>
@@ -54,7 +54,7 @@
 namespace boost { namespace iostreams {
 
 struct code_conversion_error : BOOST_IOSTREAMS_FAILURE {
-    code_conversion_error() 
+    code_conversion_error()
         : BOOST_IOSTREAMS_FAILURE("code conversion error")
         { }
 };
@@ -91,28 +91,28 @@ Tgt* strncpy_if_same(Tgt* tgt, const Src* src, std::streamsize n)
 
 // Buffer and conversion state for reading.
 template<typename Codecvt, typename Alloc>
-class conversion_buffer 
+class conversion_buffer
     : public buffer<
                  BOOST_DEDUCED_TYPENAME detail::codecvt_extern<Codecvt>::type,
                  Alloc
-             > 
+             >
 {
 public:
     typedef typename Codecvt::state_type state_type;
-    conversion_buffer() 
+    conversion_buffer()
         : buffer<
               BOOST_DEDUCED_TYPENAME detail::codecvt_extern<Codecvt>::type,
               Alloc
-          >(0) 
-    { 
-        reset(); 
+          >(0)
+    {
+        reset();
     }
     state_type& state() { return state_; }
-    void reset() 
-    { 
-        if (this->size()) 
+    void reset()
+    {
+        if (this->size())
             this->set(0, 0);
-        state_ = state_type(); 
+        state_ = state_type();
     }
 private:
     state_type state_;
@@ -128,12 +128,12 @@ struct code_converter_impl {
     typedef is_convertible<device_category, input>          can_read;
     typedef is_convertible<device_category, output>         can_write;
     typedef is_convertible<device_category, bidirectional>  is_bidir;
-    typedef typename 
+    typedef typename
             iostreams::select<  // Disambiguation for Tru64.
                 is_bidir, bidirectional,
                 can_read, input,
                 can_write, output
-            >::type                                         mode;      
+            >::type                                         mode;
     typedef typename
             mpl::if_<
                 is_direct<Device>,
@@ -147,10 +147,10 @@ struct code_converter_impl {
     code_converter_impl() : cvt_(), flags_(0) { }
 
     ~code_converter_impl()
-    { 
-        try { 
-            if (flags_ & f_open) close(); 
-        } catch (...) { /* */ } 
+    {
+        try {
+            if (flags_ & f_open) close();
+        } catch (...) { /* */ }
     }
 
     template <class T>
@@ -213,7 +213,7 @@ struct code_converter_impl {
     codecvt_holder<Codecvt>  cvt_;
     storage_type             dev_;
     double_object<
-        buffer_type, 
+        buffer_type,
         is_double
     >                        buf_;
     int                      flags_;
@@ -235,10 +235,10 @@ struct code_converter_base {
     shared_ptr<impl_type> pimpl_;
 };
 
-template< typename Device, 
-          typename Codecvt = detail::default_codecvt, 
+template< typename Device,
+          typename Codecvt = detail::default_codecvt,
           typename Alloc = std::allocator<char> >
-class code_converter 
+class code_converter
     : protected code_converter_base<Device, Codecvt, Alloc>
 {
 private:
@@ -252,20 +252,20 @@ private:
     typedef typename detail::codecvt_extern<Codecvt>::type          extern_type;
     typedef typename detail::codecvt_state<Codecvt>::type           state_type;
 public:
-    typedef intern_type                                             char_type;    
-    struct category 
+    typedef intern_type                                             char_type;
+    struct category
         : impl_type::mode, device_tag, closable_tag, localizable_tag
         { };
     BOOST_STATIC_ASSERT((
         is_same<
-            extern_type, 
+            extern_type,
             BOOST_DEDUCED_TYPENAME char_type_of<Device>::type
         >::value
     ));
 public:
     code_converter() { }
     BOOST_IOSTREAMS_FORWARD( code_converter, open_impl, Device,
-                             BOOST_IOSTREAMS_CONVERTER_PARAMS, 
+                             BOOST_IOSTREAMS_CONVERTER_PARAMS,
                              BOOST_IOSTREAMS_CONVERTER_ARGS )
 
         // fstream-like interface.
@@ -286,9 +286,9 @@ public:
     Device* operator->() { return &detail::unwrap_direct(dev()); }
 private:
     template<typename T> // Used for forwarding.
-    void open_impl(const T& t BOOST_IOSTREAMS_CONVERTER_PARAMS()) 
-    { 
-        impl().open(t BOOST_IOSTREAMS_CONVERTER_ARGS()); 
+    void open_impl(const T& t BOOST_IOSTREAMS_CONVERTER_PARAMS())
+    {
+        impl().open(t BOOST_IOSTREAMS_CONVERTER_ARGS());
     }
 
     const codecvt_type& cvt() { return impl().cvt_.get(); }
@@ -339,7 +339,7 @@ std::streamsize code_converter<Device, Codevt, Alloc>::read
             break;
         case std::codecvt_base::noconv:
             {
-                std::streamsize amt = 
+                std::streamsize amt =
                     std::min<std::streamsize>(next - buf.ptr(), n - total);
                 detail::strncpy_if_same(s + total, buf.ptr(), amt);
                 total += amt;
@@ -374,7 +374,7 @@ std::streamsize code_converter<Device, Codevt, Alloc>::write
                 break;
             partial = false;
         }
-       
+
         // Convert.
         std::codecvt_base::result result =
             cvt().out( buf.state(),
@@ -392,8 +392,8 @@ std::streamsize code_converter<Device, Codevt, Alloc>::write
             break;
         case std::codecvt_base::noconv:
             {
-                std::streamsize amt = 
-                    std::min<std::streamsize>( nint - total - s, 
+                std::streamsize amt =
+                    std::min<std::streamsize>( nint - total - s,
                                                buf.end() - buf.eptr() );
                 detail::strncpy_if_same(buf.eptr(), s + total, amt);
                 total += amt;

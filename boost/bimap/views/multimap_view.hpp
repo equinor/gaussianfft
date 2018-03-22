@@ -66,7 +66,7 @@ class multimap_view
 
     BOOST_BIMAP_MAP_VIEW_RANGE_IMPLEMENTATION(base_)
 
-    multimap_view & operator=(const multimap_view & v) 
+    multimap_view & operator=(const multimap_view & v)
     {
         this->base() = v.base();
         return *this;

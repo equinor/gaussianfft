@@ -52,7 +52,7 @@ public: // metafunction result
         typename convert_void< BOOST_PP_CAT(T,N) >::type
 
     // [...so that the specified types can be passed to mpl::list...]
-    typedef typename mpl::list< 
+    typedef typename mpl::list<
           BOOST_PP_ENUM(
               BOOST_VARIANT_LIMIT_TYPES
             , BOOST_VARIANT_AUX_CONVERT_VOID

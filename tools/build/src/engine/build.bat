@@ -159,7 +159,7 @@ if errorlevel 1 (
     goto Setup_Args
 )
 :Config_Toolset
-call config_toolset.bat 
+call config_toolset.bat
 if "_%_known_%_" == "__" (
     call :Error_Print "Unknown toolset: %BOOST_JAM_TOOLSET%"
 )

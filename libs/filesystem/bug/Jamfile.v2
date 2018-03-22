@@ -1,5 +1,5 @@
 # Boost Filesystem Library Bug report Jamfile
- 
+
 # Copyright Beman Dawes 2014
 # Distributed under the Boost Software License, Version 1.0.
 # See www.boost.org/LICENSE_1_0.txt
@@ -12,7 +12,7 @@ project
       <library>/boost/system//boost_system
       <toolset>msvc:<asynch-exceptions>on
     ;
-    
+
 exe bug : bug.cpp : <link>static ;
 
 # install in ./bin; invoke via "b2", not "b2 install"

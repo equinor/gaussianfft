@@ -337,8 +337,8 @@ namespace detail {
             it += size;
         }
 #if BOOST_UBLAS_TYPE_CHECK
-        if (! disable_type_check<bool>::value) 
-            BOOST_UBLAS_CHECK (detail::expression_type_check (v, cv), 
+        if (! disable_type_check<bool>::value)
+            BOOST_UBLAS_CHECK (detail::expression_type_check (v, cv),
                                external_logic ("external logic or bad condition of inputs"));
 #endif
     }
@@ -365,8 +365,8 @@ namespace detail {
             ++ ite;
         }
 #if BOOST_UBLAS_TYPE_CHECK
-        if (! disable_type_check<bool>::value) 
-            BOOST_UBLAS_CHECK (detail::expression_type_check (v, cv), 
+        if (! disable_type_check<bool>::value)
+            BOOST_UBLAS_CHECK (detail::expression_type_check (v, cv),
                                external_logic ("external logic or bad condition of inputs"));
 #endif
     }
@@ -433,7 +433,7 @@ namespace detail {
         }
 #if BOOST_UBLAS_TYPE_CHECK
         if (! disable_type_check<bool>::value)
-            BOOST_UBLAS_CHECK (detail::expression_type_check (v, cv), 
+            BOOST_UBLAS_CHECK (detail::expression_type_check (v, cv),
                                external_logic ("external logic or bad condition of inputs"));
 #endif
     }

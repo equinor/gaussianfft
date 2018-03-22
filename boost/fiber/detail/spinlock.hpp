@@ -11,7 +11,7 @@
 
 #include <boost/fiber/detail/config.hpp>
 
-#if !defined(BOOST_FIBERS_NO_ATOMICS) 
+#if !defined(BOOST_FIBERS_NO_ATOMICS)
 # include <mutex>
 # include <boost/fiber/detail/spinlock_ttas_adaptive.hpp>
 # include <boost/fiber/detail/spinlock_ttas.hpp>

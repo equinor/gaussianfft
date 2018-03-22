@@ -286,7 +286,7 @@ rule import ( module-names + : rules-opt * : rename-opt * )
             {
                 search = $(caller-location) $(search) ;
             }
-            
+
             if $(m:D)
             {
                 search = $(caller-location)/$(m:D) $(search)/$(m:D) $(search) ;

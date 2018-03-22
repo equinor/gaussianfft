@@ -32,8 +32,8 @@ struct return_opaque_pointer
     struct apply
     {
         BOOST_MPL_ASSERT_MSG( is_pointer<R>::value, RETURN_OPAQUE_POINTER_EXPECTS_A_POINTER_TYPE, (R));
-        
-        struct type :  
+
+        struct type :
           boost::python::to_python_value<
               typename detail::value_arg<R>::type
           >

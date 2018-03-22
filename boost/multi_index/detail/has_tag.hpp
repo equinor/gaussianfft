@@ -30,7 +30,7 @@ struct has_tag
   template<typename Index>
   struct apply:mpl::contains<BOOST_DEDUCED_TYPENAME Index::tag_list,Tag>
   {
-  }; 
+  };
 };
 
 } /* namespace multi_index::detail */

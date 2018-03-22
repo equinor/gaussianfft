@@ -18,7 +18,7 @@
 # include <boost/mpl/and.hpp>
 # include <boost/mpl/bool.hpp>
 
-namespace boost { namespace python { namespace converter { 
+namespace boost { namespace python { namespace converter {
 
 template <class T> struct is_object_manager;
 
@@ -30,14 +30,14 @@ namespace detail
       typedef T result_type;
       T operator()(PyObject*) const;
   };
-  
+
   template <class T>
   struct return_reference_from_python
   {
       typedef T result_type;
       T operator()(PyObject*) const;
   };
-  
+
   template <class T>
   struct return_rvalue_from_python
   {
@@ -48,14 +48,14 @@ namespace detail
    private:
       rvalue_from_python_data<T> m_data;
   };
-  
+
   template <class T>
   struct return_object_manager_from_python
   {
       typedef T result_type;
       result_type operator()(PyObject*) const;
   };
-  
+
   template <class T>
   struct select_return_from_python
   {
@@ -64,7 +64,7 @@ namespace detail
 
       BOOST_STATIC_CONSTANT(
           bool, ptr = is_pointer<T>::value);
-    
+
       BOOST_STATIC_CONSTANT(
           bool, ref = is_reference<T>::value);
 
@@ -95,13 +95,13 @@ template <>
 struct return_from_python<void>
 {
     typedef python::detail::returnable<void>::type result_type;
-    
+
     result_type operator()(PyObject* x) const
     {
         (void_result_from_python)(x);
 # ifdef BOOST_NO_VOID_RETURNS
         return result_type();
-# endif 
+# endif
     }
 };
 
@@ -117,7 +117,7 @@ namespace detail
           )
   {
   }
-  
+
   template <class T>
   inline typename return_rvalue_from_python<T>::result_type
   return_rvalue_from_python<T>::operator()(PyObject* obj)
@@ -156,7 +156,7 @@ namespace detail
           );
   }
 }
-  
+
 }}} // namespace boost::python::converter
 
 #endif // RETURN_FROM_PYTHON_DWA200265_HPP

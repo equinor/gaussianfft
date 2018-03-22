@@ -105,7 +105,7 @@ template<class F, class Bindings>
 struct rebind_placeholders_in_argument<
     ::boost::type_erasure::deduced<F>,
     Bindings
-> 
+>
 {
     typedef typename ::boost::mpl::eval_if<
         ::boost::mpl::has_key<Bindings, ::boost::type_erasure::deduced<F> >,

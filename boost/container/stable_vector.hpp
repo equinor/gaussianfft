@@ -728,7 +728,7 @@ class stable_vector
       : internal_data(a), index(a)
    {
       if(this->priv_node_alloc() == x.priv_node_alloc()){
-         this->index.swap(x.index);         
+         this->index.swap(x.index);
          this->priv_swap_members(x);
       }
       else{

@@ -181,7 +181,7 @@ GC_FirstDLOpenedLinkMap()
 void GC_register_dynamic_libraries()
 {
   struct link_map *lm = GC_FirstDLOpenedLinkMap();
-  
+
 
   for (lm = GC_FirstDLOpenedLinkMap();
        lm != (struct link_map *) 0;  lm = lm->l_next)
@@ -191,7 +191,7 @@ void GC_register_dynamic_libraries()
         unsigned long offset;
         char * start;
         register int i;
-        
+
 	e = (ElfW(Ehdr) *) lm->l_addr;
         p = ((ElfW(Phdr) *)(((char *)(e)) + e->e_phoff));
         offset = ((unsigned long)(lm->l_addr));
@@ -266,7 +266,7 @@ word GC_register_map_entries(char *maps)
 	    if (sect_end > greatest_ha) greatest_ha = sect_end;
         }
     	if (greatest_ha < (ptr_t)GC_scratch_last_end_ptr)
-	    greatest_ha = (ptr_t)GC_scratch_last_end_ptr; 
+	    greatest_ha = (ptr_t)GC_scratch_last_end_ptr;
 
     for (;;) {
         buf_ptr = GC_parse_map_entry(buf_ptr, &start, &end, &prot, &maj_dev, 0);
@@ -320,7 +320,7 @@ GC_bool GC_register_main_static_data()
 {
     return FALSE;
 }
-  
+
 # define HAVE_REGISTER_MAIN_STATIC_DATA
 
 #endif /* USE_PROC_FOR_LIBRARIES */
@@ -332,7 +332,7 @@ GC_bool GC_register_main_static_data()
 
 # if (defined(LINUX) || defined (__GLIBC__)) /* Are others OK here, too? */ \
      && (__GLIBC__ > 2 || (__GLIBC__ == 2 && __GLIBC_MINOR__ > 2) \
-         || (__GLIBC__ == 2 && __GLIBC_MINOR__ == 2 && defined(DT_CONFIG))) 
+         || (__GLIBC__ == 2 && __GLIBC_MINOR__ == 2 && defined(DT_CONFIG)))
 
 /* We have the header files for a glibc that includes dl_iterate_phdr.	*/
 /* It may still not be available in the library on the target system.   */
@@ -375,7 +375,7 @@ static int GC_register_dynlib_callback(info, size, ptr)
 
   * (int *)ptr = 1;	/* Signal that we were called */
   return 0;
-}     
+}
 
 /* Return TRUE if we succeed, FALSE if dl_iterate_phdr wasn't there. */
 
@@ -412,7 +412,7 @@ GC_bool GC_register_main_static_data()
 # else /* !LINUX || version(glibc) < 2.2.4 */
 
 /* Dynamic loading code for Linux running ELF. Somewhat tested on
- * Linux/x86, untested but hopefully should work on Linux/Alpha. 
+ * Linux/x86, untested but hopefully should work on Linux/Alpha.
  * This code was derived from the Solaris/ELF support. Thanks to
  * whatever kind soul wrote that.  - Patrick Bridges */
 
@@ -470,7 +470,7 @@ GC_FirstDLOpenedLinkMap()
 void GC_register_dynamic_libraries()
 {
   struct link_map *lm;
-  
+
 
 # ifdef HAVE_DL_ITERATE_PHDR
     if (GC_register_dynamic_libraries_dl_iterate_phdr()) {
@@ -486,7 +486,7 @@ void GC_register_dynamic_libraries()
         unsigned long offset;
         char * start;
         register int i;
-        
+
 	e = (ElfW(Ehdr) *) lm->l_addr;
         p = ((ElfW(Phdr) *)(((char *)(e)) + e->e_phoff));
         offset = ((unsigned long)(lm->l_addr));
@@ -575,7 +575,7 @@ void GC_register_dynamic_libraries()
     if (GC_n_heap_sects > 0) {
     	heap_end = GC_heap_sects[GC_n_heap_sects-1].hs_start
     			+ GC_heap_sects[GC_n_heap_sects-1].hs_bytes;
-    	if (heap_end < GC_scratch_last_end_ptr) heap_end = GC_scratch_last_end_ptr; 
+    	if (heap_end < GC_scratch_last_end_ptr) heap_end = GC_scratch_last_end_ptr;
     }
     for (i = 0; i < needed_sz; i++) {
         flags = addr_map[i].pr_mflags;
@@ -612,7 +612,7 @@ void GC_register_dynamic_libraries()
 	    static int n_irr = 0;
 	    struct stat buf;
 	    register int i;
-	    
+
 	    for (i = 0; i < n_irr; i++) {
 	        if (map_irr[i] == start) goto irrelevant;
 	    }
@@ -650,7 +650,7 @@ void GC_register_dynamic_libraries()
 
   /* We traverse the entire address space and register all segments 	*/
   /* that could possibly have been written to.				*/
-  
+
   extern GC_bool GC_is_heap_base (ptr_t p);
 
 # ifdef GC_WIN32_THREADS
@@ -660,7 +660,7 @@ void GC_register_dynamic_libraries()
       char * curr_base = base;
       char * next_stack_lo;
       char * next_stack_hi;
-   
+
       if (base == limit) return;
       for(;;) {
 	  GC_get_next_stack(curr_base, &next_stack_lo, &next_stack_hi);
@@ -699,7 +699,7 @@ void GC_register_dynamic_libraries()
     return GC_no_win32_dlls;
   }
 # endif /* win32 */
-  
+
 # define HAVE_REGISTER_MAIN_STATIC_DATA
 
 # ifdef DEBUG_VIRTUALQUERY
@@ -778,7 +778,7 @@ void GC_register_dynamic_libraries()
   }
 
 #endif /* MSWIN32 || MSWINCE || CYGWIN32 */
-  
+
 #if defined(ALPHA) && defined(OSF1)
 
 #include <loader.h>
@@ -792,17 +792,17 @@ void GC_register_dynamic_libraries()
     ldr_module_t moduleid = LDR_NULL_MODULE;
     ldr_module_info_t moduleinfo;
     size_t moduleinfosize = sizeof(moduleinfo);
-    size_t modulereturnsize;    
+    size_t modulereturnsize;
 
   /* region */
-    ldr_region_t region; 
+    ldr_region_t region;
     ldr_region_info_t regioninfo;
     size_t regioninfosize = sizeof(regioninfo);
     size_t regionreturnsize;
 
   /* Obtain id of this process */
     mypid = ldr_my_process();
-  
+
   /* For each module */
     while (TRUE) {
 
@@ -832,7 +832,7 @@ void GC_register_dynamic_libraries()
 
       /* Get the module information */
         status = ldr_inq_module(mypid, moduleid, &moduleinfo,
-                                moduleinfosize, &modulereturnsize); 
+                                moduleinfosize, &modulereturnsize);
         if (status != 0 )
             ABORT("ldr_inq_module failed");
 
@@ -844,7 +844,7 @@ void GC_register_dynamic_libraries()
           GC_printf("---Module---\n");
           GC_printf("Module ID            = %16ld\n", moduleinfo.lmi_modid);
           GC_printf("Count of regions     = %16d\n", moduleinfo.lmi_nregion);
-          GC_printf("flags for module     = %16lx\n", moduleinfo.lmi_flags); 
+          GC_printf("flags for module     = %16lx\n", moduleinfo.lmi_flags);
           GC_printf("pathname of module   = \"%s\"\n", moduleinfo.lmi_name);
 #     endif
 
@@ -992,7 +992,7 @@ void GC_register_dynamic_libraries()
 
 /*#define DARWIN_DEBUG*/
 
-const static struct { 
+const static struct {
         const char *seg;
         const char *sect;
 } GC_dyld_sections[] = {
@@ -1000,7 +1000,7 @@ const static struct {
         { SEG_DATA, SECT_BSS },
         { SEG_DATA, SECT_COMMON }
 };
-    
+
 #ifdef DARWIN_DEBUG
 static const char *GC_dyld_name_for_hdr(const struct GC_MACH_HEADER *hdr) {
     unsigned long i,c;
@@ -1010,7 +1010,7 @@ static const char *GC_dyld_name_for_hdr(const struct GC_MACH_HEADER *hdr) {
     return NULL;
 }
 #endif
-        
+
 /* This should never be called by a thread holding the lock */
 static void GC_dyld_image_add(const struct GC_MACH_HEADER *hdr, intptr_t slide)
 {
@@ -1068,7 +1068,7 @@ static void GC_dyld_image_remove(const struct GC_MACH_HEADER *hdr,
 }
 
 void GC_register_dynamic_libraries() {
-    /* Currently does nothing. The callbacks are setup by GC_init_dyld() 
+    /* Currently does nothing. The callbacks are setup by GC_init_dyld()
     The dyld library takes it from there. */
 }
 
@@ -1077,28 +1077,28 @@ void GC_register_dynamic_libraries() {
    Because of this we MUST setup callbacks BEFORE we ever stop the world.
    This should be called BEFORE any thread in created and WITHOUT the
    allocation lock held. */
-   
+
 void GC_init_dyld() {
   static GC_bool initialized = FALSE;
   char *bind_fully_env = NULL;
-  
+
   if(initialized) return;
-  
+
 #   ifdef DARWIN_DEBUG
       GC_printf("Registering dyld callbacks...\n");
 #   endif
-  
+
   /* Apple's Documentation:
      When you call _dyld_register_func_for_add_image, the dynamic linker runtime
      calls the specified callback (func) once for each of the images that is
      currently loaded into the program. When a new image is added to the program,
      your callback is called again with the mach_header for the new image, and the 	
-     virtual memory slide amount of the new image. 
-     
-     This WILL properly register already linked libraries and libraries 
+     virtual memory slide amount of the new image.
+
+     This WILL properly register already linked libraries and libraries
      linked in the future
   */
-  
+
     _dyld_register_func_for_add_image(GC_dyld_image_add);
     _dyld_register_func_for_remove_image(GC_dyld_image_remove);
 
@@ -1106,12 +1106,12 @@ void GC_init_dyld() {
     initialized = TRUE;
 
     bind_fully_env = getenv("DYLD_BIND_AT_LAUNCH");
-    
+
     if (bind_fully_env == NULL) {
 #   ifdef DARWIN_DEBUG
       GC_printf("Forcing full bind of GC code...\n");
 #   endif
-      
+
       if(!_dyld_bind_fully_image_containing_address((unsigned long*)GC_malloc))
         GC_abort("_dyld_bind_fully_image_containing_address failed");
     }
@@ -1141,7 +1141,7 @@ void GC_register_dynamic_libraries()
         {
           PCR_IL_LoadedFile * p = PCR_IL_GetLastLoadedFile();
           PCR_IL_LoadedSegment * q;
-          
+
           /* Skip uncommited files */
           while (p != NIL && !(p -> lf_commitPoint)) {
               /* The loading of this file has not yet been committed	*/
@@ -1156,7 +1156,7 @@ void GC_register_dynamic_libraries()
               if ((q -> ls_flags & PCR_IL_SegFlags_Traced_MASK)
                   == PCR_IL_SegFlags_Traced_on) {
                 GC_add_roots_inner
-                	((char *)(q -> ls_addr), 
+                	((char *)(q -> ls_addr),
                 	 (char *)(q -> ls_addr) + q -> ls_bytes,
                 	 TRUE);
               }

@@ -578,7 +578,7 @@ class treap_algorithms
       bool const transferable = insert_unique_check(header1, z, comp, pcomp, commit_data).second;
       if(transferable){
          erase(header2, z, pcomp);
-         insert_unique_commit(header1, z, commit_data);         
+         insert_unique_commit(header1, z, commit_data);
       }
       return transferable;
    }

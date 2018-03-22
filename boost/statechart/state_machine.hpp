@@ -196,7 +196,7 @@ class history_key
       const history_key & left, const history_key & right )
     {
       return
-        std::less< typename RttiPolicy::id_type >()( 
+        std::less< typename RttiPolicy::id_type >()(
           left.historyContextType_, right.historyContextType_ ) ||
         ( ( left.historyContextType_ == right.historyContextType_ ) &&
           ( left.historizedOrthogonalRegion_ <
@@ -206,7 +206,7 @@ class history_key
   private:
     //////////////////////////////////////////////////////////////////////////
     history_key(
-      typename RttiPolicy::id_type historyContextType, 
+      typename RttiPolicy::id_type historyContextType,
       orthogonal_position_type historizedOrthogonalRegion
     ) :
       historyContextType_( historyContextType ),
@@ -367,7 +367,7 @@ class state_machine : noncopyable
       public:
         //////////////////////////////////////////////////////////////////////
         explicit state_iterator(
-          typename state_base_type::state_list_type::const_iterator 
+          typename state_base_type::state_list_type::const_iterator
             baseIterator
         ) : baseIterator_( baseIterator ) {}
 
@@ -675,13 +675,13 @@ class state_machine : noncopyable
       typedef typename detail::make_context_list<
         typename HistorizedState::context_type,
         LeafState >::type history_context_list;
-      typedef detail::constructor< 
+      typedef detail::constructor<
         history_context_list, outermost_context_base_type > constructor_type;
       // 5.2.10.6 declares that reinterpret_casting a function pointer to a
       // different function pointer and back must yield the same value. The
       // following reinterpret_cast is the first half of such a sequence.
       store_history_impl(
-        deepHistoryMap_, 
+        deepHistoryMap_,
         history_key_type::make_history_key< HistorizedState >(),
         reinterpret_cast< void (*)() >( &constructor_type::construct ) );
     }
@@ -873,7 +873,7 @@ class state_machine : noncopyable
       BOOST_ASSERT( get_pointer( pOutermostUnstableState_ ) == 0 );
       const typename rtti_policy_type::id_type eventType = evt.dynamic_type();
       detail::reaction_result reactionResult = detail::do_forward_event;
-      
+
       for (
         typename state_list_type::iterator pState = currentStates_.begin();
         ( reactionResult == detail::do_forward_event ) &&
@@ -972,7 +972,7 @@ class state_machine : noncopyable
     {
       if ( currentStatesEnd_ == currentStates_.end() )
       {
-        pState->set_list_position( 
+        pState->set_list_position(
           currentStates_.insert( currentStatesEnd_, pState ) );
       }
       else
@@ -997,7 +997,7 @@ class state_machine : noncopyable
     {
       return mpl::equal_to<
         typename State::orthogonal_position,
-        mpl::minus< 
+        mpl::minus<
           typename State::context_type::no_of_orthogonal_regions,
           mpl::integral_c< detail::orthogonal_position_type, 1 > >
       >::value;
@@ -1029,7 +1029,7 @@ class state_machine : noncopyable
     {
       typename history_map_type::iterator pFoundSlot = historyMap.find(
         history_key_type::make_history_key< DefaultState >() );
-      
+
       if ( ( pFoundSlot == historyMap.end() ) || ( pFoundSlot->second == 0 ) )
       {
         // We have never entered this state before or history was cleared
