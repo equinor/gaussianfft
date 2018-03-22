@@ -19,6 +19,7 @@ stages:
   - build
   - testing
   - deploy
+  - clean
 
 test:SDPsoft (3.6.1):
   stage: testing  # https://github.com/ksator/continuous-integration-with-python
@@ -80,3 +81,9 @@ deploy release candidate:
   artifacts:
     paths:
       - '$BASE_DIST'
+
+cleanup:
+  stage: clean
+  script:
+    - 'eval $MAKE clean'
+  when: always
