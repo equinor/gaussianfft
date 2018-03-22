@@ -6,7 +6,7 @@
 # define IF_ELSE_DWA2002322_HPP
 # include <boost/config.hpp>
 
-namespace boost { namespace python { namespace detail { 
+namespace boost { namespace python { namespace detail {
 
 template <class T> struct elif_selected;
 
@@ -35,7 +35,7 @@ struct elif_selected
     struct then : if_selected<T>
     {
     };
-# endif 
+# endif
 };
 
 # if !(defined(__MWERKS__) && __MWERKS__ <= 0x2407)
@@ -44,7 +44,7 @@ template <class U>
 class elif_selected<T>::then : public if_selected<T>
 {
 };
-# endif 
+# endif
 
 template <bool b> struct if_
 {

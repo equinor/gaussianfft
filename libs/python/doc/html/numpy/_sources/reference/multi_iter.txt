@@ -13,14 +13,14 @@ synopsis
 
 ::
 
-  namespace boost 
+  namespace boost
   {
   namespace python
   {
-  namespace numpy 
+  namespace numpy
   {
 
-  class multi_iter : public object 
+  class multi_iter : public object
   {
   public:
     void next();
@@ -90,5 +90,5 @@ accessors
   Py_intptr_t const shape(int n) const;
 
 :Returns: the shape of the broadcasted array expression in the nth dimension.
-	    
+
 

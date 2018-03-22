@@ -67,7 +67,7 @@ struct list_map_adaptor_base
             // {
                     detail::key_from_pair_extractor
                     <
-                        BOOST_DEDUCED_TYPENAME Iterator::value_type 
+                        BOOST_DEDUCED_TYPENAME Iterator::value_type
                     >,
             // }
             // else
@@ -164,7 +164,7 @@ class list_map_adaptor :
 
     public:
 
-    // The following functions are overwritten in order to work 
+    // The following functions are overwritten in order to work
     // with key_type instead of value_type
 
     template< class Predicate >

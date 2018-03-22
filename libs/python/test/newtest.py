@@ -9,7 +9,7 @@
    Prove that we get an appropriate error from trying to return a type
    for which we have no registered to_python converter
 
->>> def check_unregistered(f, msgprefix):   
+>>> def check_unregistered(f, msgprefix):
 ...     try:
 ...         f(1)
 ...     except TypeError as x:
@@ -101,7 +101,7 @@ are a complicated constructor and member function, respectively.
      to the target of any member function. To see it, we need to
      access the __dict__ directly, to bypass the type check supplied
      by the Method property which wraps the method when accessed as an
-     attribute. 
+     attribute.
 
 >>> try: A.__dict__['name'](None)
 ... except TypeError: pass
@@ -197,7 +197,7 @@ def run(args = None):
         sys.argv = args
 
     return doctest.testmod(sys.modules.get(__name__))
-    
+
 if __name__ == '__main__':
     print("running...")
     import sys

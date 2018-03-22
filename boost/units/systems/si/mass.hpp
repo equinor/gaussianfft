@@ -1,4 +1,4 @@
-// Boost.Units - A C++ library for zero-overhead dimensional analysis and 
+// Boost.Units - A C++ library for zero-overhead dimensional analysis and
 // unit/quantity manipulation and conversion
 //
 // Copyright (C) 2003-2008 Matthias Christian Schabel
@@ -15,16 +15,16 @@
 
 namespace boost {
 
-namespace units { 
+namespace units {
 
 namespace si {
 
 typedef unit<mass_dimension,si::system>      mass;
-    
-BOOST_UNITS_STATIC_CONSTANT(kilogram,mass); 
-BOOST_UNITS_STATIC_CONSTANT(kilograms,mass);    
-BOOST_UNITS_STATIC_CONSTANT(kilogramme,mass);   
-BOOST_UNITS_STATIC_CONSTANT(kilogrammes,mass);  
+
+BOOST_UNITS_STATIC_CONSTANT(kilogram,mass);
+BOOST_UNITS_STATIC_CONSTANT(kilograms,mass);
+BOOST_UNITS_STATIC_CONSTANT(kilogramme,mass);
+BOOST_UNITS_STATIC_CONSTANT(kilogrammes,mass);
 
 } // namespace si
 

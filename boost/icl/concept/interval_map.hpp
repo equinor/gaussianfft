@@ -1,4 +1,4 @@
-/*-----------------------------------------------------------------------------+    
+/*-----------------------------------------------------------------------------+
 Copyright (c) 2010-2010: Joachim Faulhaber
 +------------------------------------------------------------------------------+
    Distributed under the Boost Software License, Version 1.0.
@@ -55,7 +55,7 @@ contains(const Type& super, const typename Type::segment_type& sub_segment)
     typedef typename Type::const_iterator const_iterator;
 
     interval_type sub_interval = sub_segment.first;
-    if(icl::is_empty(sub_interval)) 
+    if(icl::is_empty(sub_interval))
         return true;
 
     std::pair<const_iterator, const_iterator> exterior = super.equal_range(sub_interval);
@@ -85,7 +85,7 @@ contains(const Type& super, const CoType& sub)
 //------------------------------------------------------------------------------
 template<class Type, class CoType>
 typename enable_if< mpl::and_< is_interval_map<Type>
-                             , is_total<Type> 
+                             , is_total<Type>
                              , is_cross_derivative<Type, CoType> >
             , bool>::type
 contains(const Type&, const CoType&)
@@ -100,7 +100,7 @@ template<class Type>
 typename enable_if< mpl::and_< is_interval_map<Type>
                              , mpl::not_<is_total<Type> > >
             , bool>::type
-contains(const Type& super, const typename Type::domain_type& key)    
+contains(const Type& super, const typename Type::domain_type& key)
 {
     return icl::find(super, key) != super.end();
 }
@@ -113,7 +113,7 @@ contains(const Type& super, const typename Type::interval_type& sub_interval)
 {
     typedef typename Type::const_iterator const_iterator;
 
-    if(icl::is_empty(sub_interval)) 
+    if(icl::is_empty(sub_interval))
         return true;
 
     std::pair<const_iterator, const_iterator> exterior = super.equal_range(sub_interval);
@@ -244,7 +244,7 @@ erase(Type& object, const typename Type::element_type& operand)
 //- T& subtract(T&, c P&) T:{M} P:{b p} fragment_types
 //------------------------------------------------------------------------------
 template<class Type>
-typename enable_if<is_interval_map<Type>, Type>::type& 
+typename enable_if<is_interval_map<Type>, Type>::type&
 subtract(Type& object, const typename Type::segment_type& operand)
 {
     return object.subtract(operand);
@@ -284,8 +284,8 @@ template<class Type>
 typename enable_if<is_interval_map<Type>, Type>::type&
 set_at(Type& object, const typename Type::segment_type& operand)
 {
-    icl::erase(object, operand.first); 
-    return icl::insert(object, operand); 
+    icl::erase(object, operand.first);
+    return icl::insert(object, operand);
 }
 
 template<class Type>
@@ -303,7 +303,7 @@ set_at(Type& object, const typename Type::element_type& operand)
 //------------------------------------------------------------------------------
 template<class Type>
 typename enable_if<is_interval_map<Type>, void>::type
-add_intersection(Type& section, const Type& object, 
+add_intersection(Type& section, const Type& object,
                  const typename Type::element_type& operand)
 {
     //CL typedef typename Type::segment_type segment_type;
@@ -312,7 +312,7 @@ add_intersection(Type& section, const Type& object,
 
 template<class Type>
 typename enable_if<is_interval_map<Type>, void>::type
-add_intersection(Type& section, const Type& object, 
+add_intersection(Type& section, const Type& object,
                  const typename Type::segment_type& operand)
 {
     object.add_intersection(section, operand);
@@ -350,7 +350,7 @@ add_intersection(Type& section, const Type& object, const MapT& operand)
     //CL typedef typename Type::interval_type  interval_type;
     typedef typename MapT::const_iterator const_iterator;
 
-    if(operand.empty()) 
+    if(operand.empty())
         return;
     const_iterator common_lwb, common_upb;
     if(!Set::common_range(common_lwb, common_upb, operand, object))
@@ -365,7 +365,7 @@ add_intersection(Type& section, const Type& object, const MapT& operand)
 //------------------------------------------------------------------------------
 template<class Type>
 typename enable_if<is_interval_map<Type>, void>::type
-add_intersection(Type& section, const Type& object, 
+add_intersection(Type& section, const Type& object,
                  const typename Type::domain_type& key_value)
 {
     typedef typename Type::interval_type  interval_type;
@@ -379,7 +379,7 @@ add_intersection(Type& section, const Type& object,
 
 template<class Type>
 typename enable_if<is_interval_map<Type>, void>::type
-add_intersection(Type& section, const Type& object, 
+add_intersection(Type& section, const Type& object,
                  const typename Type::interval_type& inter_val)
 {
     typedef typename Type::interval_type  interval_type;
@@ -387,20 +387,20 @@ add_intersection(Type& section, const Type& object,
     typedef typename Type::const_iterator const_iterator;
     typedef typename Type::iterator       iterator;
 
-    if(icl::is_empty(inter_val)) 
+    if(icl::is_empty(inter_val))
         return;
 
-    std::pair<const_iterator, const_iterator> exterior 
+    std::pair<const_iterator, const_iterator> exterior
         = object.equal_range(inter_val);
     if(exterior.first == exterior.second)
         return;
 
     iterator prior_ = section.end();
-    for(const_iterator it_=exterior.first; it_ != exterior.second; it_++) 
+    for(const_iterator it_=exterior.first; it_ != exterior.second; it_++)
     {
-        interval_type common_interval = (*it_).first & inter_val; 
+        interval_type common_interval = (*it_).first & inter_val;
         if(!icl::is_empty(common_interval))
-            prior_ = add(section, prior_, 
+            prior_ = add(section, prior_,
                          value_type(common_interval, (*it_).second) );
     }
 }
@@ -411,7 +411,7 @@ add_intersection(Type& section, const Type& object, const KeySetT& key_set)
 {
     typedef typename KeySetT::const_iterator const_iterator;
 
-    if(icl::is_empty(key_set)) 
+    if(icl::is_empty(key_set))
         return;
 
     const_iterator common_lwb, common_upb;
@@ -430,7 +430,7 @@ template<class Type, class OperandT>
 typename enable_if<mpl::and_< is_interval_map<Type>
                             , is_total<Type>
                             , boost::is_same< OperandT
-                                            , typename segment_type_of<Type>::type> >, 
+                                            , typename segment_type_of<Type>::type> >,
                    bool>::type
 intersects(const Type&, const OperandT&)
 {
@@ -440,22 +440,22 @@ intersects(const Type&, const OperandT&)
 template<class Type, class OperandT>
 typename enable_if<mpl::and_< is_interval_map<Type>
                             , mpl::not_<is_total<Type> >
-                            , boost::is_same<OperandT, typename segment_type_of<Type>::type> >, 
+                            , boost::is_same<OperandT, typename segment_type_of<Type>::type> >,
                    bool>::type
 intersects(const Type& object, const OperandT& operand)
 {
     Type intersection;
     icl::add_intersection(intersection, object, operand);
-    return !icl::is_empty(intersection); 
+    return !icl::is_empty(intersection);
 }
 
 template<class Type, class OperandT>
 typename enable_if<mpl::and_< is_interval_map<Type>
-                            , boost::is_same<OperandT, typename element_type_of<Type>::type> >, 
+                            , boost::is_same<OperandT, typename element_type_of<Type>::type> >,
                    bool>::type
 intersects(const Type& object, const OperandT& operand)
 {
-    return icl::intersects(object, make_segment<Type>(operand)); 
+    return icl::intersects(object, make_segment<Type>(operand));
 }
 
 //==============================================================================
@@ -479,12 +479,12 @@ flip(Type& object, const typename Type::element_type& operand)
 }
 
 //------------------------------------------------------------------------------
-//- T& flip(T&, c P&) T:{M} P:{M'} total absorber 
+//- T& flip(T&, c P&) T:{M} P:{M'} total absorber
 //------------------------------------------------------------------------------
 template<class Type, class OperandT>
 typename enable_if< mpl::and_< is_total<Type>
                              , absorbs_identities<Type>
-                             , is_concept_compatible<is_interval_map, 
+                             , is_concept_compatible<is_interval_map,
                                                      Type, OperandT >
                              >
                   , Type>::type&
@@ -495,16 +495,16 @@ flip(Type& object, const OperandT&)
 }
 
 //------------------------------------------------------------------------------
-//- T& flip(T&, c P&) T:{M} P:{M'} total enricher 
+//- T& flip(T&, c P&) T:{M} P:{M'} total enricher
 //------------------------------------------------------------------------------
-#ifdef BOOST_MSVC 
+#ifdef BOOST_MSVC
 #pragma warning(push)
 #pragma warning(disable:4127) // conditional expression is constant
-#endif                        
+#endif
 template<class Type, class OperandT>
 typename enable_if< mpl::and_< is_total<Type>
                              , mpl::not_<absorbs_identities<Type> >
-                             , is_concept_compatible<is_interval_map, 
+                             , is_concept_compatible<is_interval_map,
                                                      Type, OperandT >
                              >
                   , Type>::type&
@@ -527,11 +527,11 @@ flip(Type& object, const OperandT& operand)
 
 
 //------------------------------------------------------------------------------
-//- T& flip(T&, c P&) T:{M} P:{M'} partial 
+//- T& flip(T&, c P&) T:{M} P:{M'} partial
 //------------------------------------------------------------------------------
 template<class Type, class OperandT>
-typename enable_if< mpl::and_< mpl::not_<is_total<Type> > 
-                             , is_concept_compatible<is_interval_map, 
+typename enable_if< mpl::and_< mpl::not_<is_total<Type> >
+                             , is_concept_compatible<is_interval_map,
                                                      Type, OperandT >
                              >
                   , Type>::type&
@@ -564,21 +564,21 @@ flip(Type& object, const OperandT& operand)
 //= Set selection
 //==============================================================================
 template<class Type, class SetT>
-typename enable_if<is_concept_combinable<is_interval_set, is_interval_map, 
+typename enable_if<is_concept_combinable<is_interval_set, is_interval_map,
                                          SetT, Type>, SetT>::type&
 domain(SetT& result, const Type& object)
 {
     typedef typename SetT::iterator set_iterator;
-    result.clear(); 
+    result.clear();
     set_iterator prior_ = result.end();
-    ICL_const_FORALL(typename Type, it_, object) 
-        prior_ = icl::insert(result, prior_, (*it_).first); 
-    
+    ICL_const_FORALL(typename Type, it_, object)
+        prior_ = icl::insert(result, prior_, (*it_).first);
+
     return result;
 }
 
 template<class Type, class SetT>
-typename enable_if<is_concept_combinable<is_interval_set, is_interval_map, 
+typename enable_if<is_concept_combinable<is_interval_set, is_interval_map,
                                          SetT, Type>, SetT>::type&
 between(SetT& in_between, const Type& object)
 {
@@ -592,9 +592,9 @@ between(SetT& in_between, const Type& object)
         pred_ = it_++;
 
     while(it_ != object.end())
-        prior_ = icl::insert(in_between, prior_, 
+        prior_ = icl::insert(in_between, prior_,
                              between((*pred_++).first, (*it_++).first));
-    
+
     return in_between;
 }
 
@@ -608,7 +608,7 @@ erase_if(const Predicate& pred, MapT& object)
     typename MapT::iterator it_ = object.begin();
     while(it_ != object.end())
         if(pred(*it_))
-            object.erase(it_++); 
+            object.erase(it_++);
         else ++it_;
     return object;
 }
@@ -619,9 +619,9 @@ add_if(const Predicate& pred, MapT& object, const MapT& src)
 {
     typename MapT::const_iterator it_ = src.begin();
     while(it_ != src.end())
-        if(pred(*it_)) 
-            icl::add(object, *it_++); 
-    
+        if(pred(*it_))
+            icl::add(object, *it_++);
+
     return object;
 }
 
@@ -658,8 +658,8 @@ absorb_identities(Type& object)
 //= Streaming
 //==============================================================================
 template<class CharType, class CharTraits, class Type>
-typename enable_if<is_interval_map<Type>, 
-                   std::basic_ostream<CharType, CharTraits> >::type& 
+typename enable_if<is_interval_map<Type>,
+                   std::basic_ostream<CharType, CharTraits> >::type&
 operator << (std::basic_ostream<CharType, CharTraits>& stream, const Type& object)
 {
     stream << "{";

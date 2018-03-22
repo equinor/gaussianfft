@@ -8,7 +8,7 @@
 #define BOOST_FIBERS_DETAIL_FUTEX_H
 
 #include <boost/config.hpp>
-#include <boost/predef.h> 
+#include <boost/predef.h>
 
 #include <boost/fiber/detail/config.hpp>
 

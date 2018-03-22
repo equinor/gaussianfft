@@ -17,7 +17,7 @@ Boost.Python requires [@http://www.python.org/2.2 Python 2.2]
  with Python 2.2, and we don't *think* we've done anything to break
  compatibility, this release of Boost.Python may not have been tested
  with versions of Python earlier than 2.4, so we're not 100% sure that
- python 2.2 and 2.3 are supported.] *or* [@http://www.python.org newer].  
+ python 2.2 and 2.3 are supported.] *or* [@http://www.python.org newer].
 
 [endsect]
 [section Background]
@@ -71,7 +71,7 @@ compiler options to use yourself.
    If you want to use another system anyway, we suggest that you
    follow these instructions, and then invoke `bjam` with the
 
-   `-a -o`\ /filename/ 
+   `-a -o`\ /filename/
 
    options to dump the build commands it executes to a file, so
    you can see what your alternate build system needs to do.]
@@ -212,7 +212,7 @@ tell Boost.Build about it by editing the name in `Jamroot`.
 
 The name of the extension module is determined by two things:
 
-# the name in `Jamroot` immediately following `python-extension`, and 
+# the name in `Jamroot` immediately following `python-extension`, and
 # the name passed to `BOOST_PYTHON_MODULE` in `extending.cpp`.
 
 To change the name of the extension module from `extending` to
@@ -240,7 +240,7 @@ to
 
 Since Boost.Python is a separately-compiled (as opposed to
 `header-only`) library, its user relies on the services of a
-Boost.Python library binary.  
+Boost.Python library binary.
 
 If you need a regular installation of the Boost.Python library
 binaries on your system, the _gsg_ will
@@ -275,7 +275,7 @@ specify `--without-python` on the Boost.Build command line),
 Boost.Build will automatically execute the equivalent of
 
 ``
-  import toolset : using ; 
+  import toolset : using ;
   using python ;
 ``
 which automatically looks for Python in the most likely places.
@@ -348,10 +348,10 @@ significant.
 
 * If you have both python 2.5 and python 2.4 installed,
   `user-config.jam` might contain
-  
+
   ``
-    using python : 2.5 ;  # Make both versions of Python available 
-    using python : 2.4 ;  # To build with python 2.4, add python=2.4 
+    using python : 2.5 ;  # Make both versions of Python available
+    using python : 2.4 ;  # To build with python 2.4, add python=2.4
                           # to your command line.
   ``
   The first version configured (2.5) becomes the default.  To build
@@ -371,9 +371,9 @@ significant.
 
   ``
     using python ;  # use for most toolsets
-    
+
     # Use with Intel C++ toolset
-    using python 
+    using python
          : # version
          : c:\\Devel\\Python-2.5-IntelBuild\\PCBuild\\python # cmd-or-prefix
          : # includes
@@ -393,7 +393,7 @@ significant.
       : # libs
       : <python-debugging>on ;
   ``
-* You can set up your user-config.jam so a bjam built under Windows 
+* You can set up your user-config.jam so a bjam built under Windows
   can build/test both Windows and Cygwin_ python extensions.  Just pass
   `<target-os>cygwin` in the `condition` parameter
   for the cygwin python installation:
@@ -409,7 +409,7 @@ significant.
   with the cygwin version of python: [#flavor]_
 
   ``
-    bjam target-os=cygwin toolset=gcc 
+    bjam target-os=cygwin toolset=gcc
   ``
   This is supposed to work the other way, too (targeting windows
   python with a [@http://cygwin.com Cygwin] bjam) but it seems as though the support in

@@ -35,7 +35,7 @@ def BPLTest(env, name, sources = None, deps = None):
     if deps:
         Depends(run, deps)
     return run
-        
+
 env.AddMethod(BPLTest)
 
 env.AppendENVPath('PYTHONPATH', Dir('.').path)

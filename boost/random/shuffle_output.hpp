@@ -23,8 +23,8 @@ namespace random {
 
 /// \cond
 
-template<typename URNG, int k, 
-         typename URNG::result_type val = 0> 
+template<typename URNG, int k,
+         typename URNG::result_type val = 0>
 class shuffle_output : public shuffle_order_engine<URNG, k>
 {
     typedef shuffle_order_engine<URNG, k> base_t;

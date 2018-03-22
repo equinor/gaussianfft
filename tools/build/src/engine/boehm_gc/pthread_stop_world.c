@@ -82,7 +82,7 @@ volatile AO_t GC_world_is_stopped = FALSE;
 
 /*
  * We use signals to stop threads during GC.
- * 
+ *
  * Suspended threads wait in signal handler for SIG_THR_RESTART.
  * That's more portable than semaphores or condition variables.
  * (We do use sem_post from a signal handler, but that should be portable.)
@@ -249,7 +249,7 @@ void GC_push_all_stacks()
     /* On IA64, we also need to scan the register backing store. */
     IF_IA64(ptr_t bs_lo; ptr_t bs_hi;)
     pthread_t me = pthread_self();
-    
+
     if (!GC_thr_initialized) GC_thr_init();
 #   if DEBUG_THREADS
         GC_printf("Pushing stacks from thread 0x%x\n", (unsigned) me);
@@ -326,7 +326,7 @@ int GC_suspend_all()
     GC_thread p;
     int result;
     pthread_t my_thread = pthread_self();
-    
+
     GC_stopping_thread = my_thread;    /* debugging only.      */
     GC_stopping_pid = getpid();                /* debugging only.      */
     for (i = 0; i < THREAD_TABLE_SZ; i++) {
@@ -340,7 +340,7 @@ int GC_suspend_all()
 	      GC_printf("Sending suspend signal to 0x%x\n",
 			(unsigned)(p -> id));
 #	    endif
-        
+
             result = pthread_kill(p -> id, SIG_SUSPEND);
 	    switch(result) {
                 case ESRCH:
@@ -368,7 +368,7 @@ void GC_stop_world()
 #   if DEBUG_THREADS
       GC_printf("Stopping the world from 0x%x\n", (unsigned)pthread_self());
 #   endif
-       
+
     /* Make sure all free list construction has stopped before we start. */
     /* No new construction can start, since free list construction is	*/
     /* required to acquire and release the GC lock before it starts,	*/
@@ -459,7 +459,7 @@ void GC_start_world()
 	      GC_printf("Sending restart signal to 0x%x\n",
 			(unsigned)(p -> id));
 	    #endif
-        
+
             result = pthread_kill(p -> id, SIG_THR_RESTART);
 	    switch(result) {
                 case ESRCH:
@@ -490,7 +490,7 @@ void GC_start_world()
 
 void GC_stop_init() {
     struct sigaction act;
-    
+
     if (sem_init(&GC_suspend_ack_sem, 0, 0) != 0)
         ABORT("sem_init failed");
 #   ifdef GC_NETBSD_THREADS_WORKAROUND

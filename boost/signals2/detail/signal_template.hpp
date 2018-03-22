@@ -364,7 +364,7 @@ namespace boost
             return void_type();
           }
           template<typename SlotResultType>
-          result_type m_invoke(const connection_body_type &connectionBody, 
+          result_type m_invoke(const connection_body_type &connectionBody,
             typename boost::disable_if<boost::is_void<SlotResultType> >::type * = 0) const
           {
             return connectionBody->slot().slot_function()(BOOST_SIGNALS2_M_ARG_NAMES(BOOST_SIGNALS2_NUM_ARGS));
@@ -662,7 +662,7 @@ namespace boost
       virtual ~BOOST_SIGNALS2_SIGNAL_CLASS_NAME(BOOST_SIGNALS2_NUM_ARGS)()
       {
       }
-      
+
       //move support
 #if !defined(BOOST_NO_CXX11_RVALUE_REFERENCES)
       BOOST_SIGNALS2_SIGNAL_CLASS_NAME(BOOST_SIGNALS2_NUM_ARGS)(
@@ -671,8 +671,8 @@ namespace boost
         using std::swap;
         swap(_pimpl, other._pimpl);
       };
-      
-      BOOST_SIGNALS2_SIGNAL_CLASS_NAME(BOOST_SIGNALS2_NUM_ARGS) & 
+
+      BOOST_SIGNALS2_SIGNAL_CLASS_NAME(BOOST_SIGNALS2_NUM_ARGS) &
         operator=(BOOST_SIGNALS2_SIGNAL_CLASS_NAME(BOOST_SIGNALS2_NUM_ARGS) && rhs)
       {
         if(this == &rhs)
@@ -685,7 +685,7 @@ namespace boost
         return *this;
       }
 #endif // !defined(BOOST_NO_CXX11_RVALUE_REFERENCES)
-      
+
       connection connect(const slot_type &slot, connect_position position = at_back)
       {
         return (*_pimpl).connect(slot, position);

@@ -7,5 +7,5 @@ struct thread_stop_info {
     				/* signal.				*/
     ptr_t stack_ptr;  		/* Valid only when stopped.      	*/
 };
-    
+
 #endif

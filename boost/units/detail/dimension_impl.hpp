@@ -1,4 +1,4 @@
-// Boost.Units - A C++ library for zero-overhead dimensional analysis and 
+// Boost.Units - A C++ library for zero-overhead dimensional analysis and
 // unit/quantity manipulation and conversion
 //
 // Copyright (C) 2003-2008 Matthias Christian Schabel
@@ -27,7 +27,7 @@
 #include <boost/units/detail/push_front_if.hpp>
 #include <boost/units/detail/push_front_or_add.hpp>
 
-/// \file 
+/// \file
 /// \brief Core class and metaprogramming utilities for compile-time dimensional analysis.
 
 namespace boost {
@@ -209,8 +209,8 @@ struct merge_dimensions_impl {
 template<typename Sequence1, typename Sequence2>
 struct merge_dimensions
 {
-    typedef typename detail::merge_dimensions_impl<Sequence1::size::value, 
-                                                   Sequence2::size::value>::template 
+    typedef typename detail::merge_dimensions_impl<Sequence1::size::value,
+                                                   Sequence2::size::value>::template
         apply<
             Sequence1,
             Sequence2
@@ -332,7 +332,7 @@ struct static_root_impl {
 template<>
 struct static_root_impl<0> {
     template<class Begin, class Ex>
-    struct apply 
+    struct apply
     {
         typedef dimensionless_type type;
     };

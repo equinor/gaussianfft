@@ -7,12 +7,12 @@
 
 # include <boost/config.hpp>
 
-namespace boost { namespace python { namespace detail { 
+namespace boost { namespace python { namespace detail {
 
 struct void_return
 {
     void_return() {}
- private: 
+ private:
     void operator=(void_return const&);
 };
 

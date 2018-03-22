@@ -44,7 +44,7 @@ namespace boost { namespace python {
 # if !(BOOST_WORKAROUND(__MWERKS__, > 0x3100)                      \
         && BOOST_WORKAROUND(__MWERKS__, BOOST_TESTED_AT(0x3201)))
 #  line BOOST_PP_LINE(__LINE__, call_method.hpp)
-# endif 
+# endif
 
 # define N BOOST_PP_ITERATION()
 
@@ -58,14 +58,14 @@ call_method(PyObject* self, char const* name
     , boost::type<R>* = 0
     )
 {
-    PyObject* const result = 
+    PyObject* const result =
         PyEval_CallMethod(
             self
             , const_cast<char*>(name)
             , const_cast<char*>("(" BOOST_PP_REPEAT_1ST(N, BOOST_PYTHON_FIXED, "O") ")")
             BOOST_PP_REPEAT_1ST(N, BOOST_PYTHON_FAST_ARG_TO_PYTHON_GET, nil)
             );
-    
+
     // This conversion *must not* be done in the same expression as
     // the call, because, in the special case where the result is a
     // reference a Python object which was created by converting a C++

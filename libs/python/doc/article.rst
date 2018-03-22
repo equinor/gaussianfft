@@ -146,7 +146,7 @@ she does need to take control.
 .. _Boost.Python: http://www.boost.org/libs/python/doc
 
 ===========================
- Boost.Python Design Goals 
+ Boost.Python Design Goals
 ===========================
 
 The primary goal of Boost.Python is to allow users to expose C++
@@ -189,7 +189,7 @@ expose::
     {
        static char const* const msgs[] = { "hello", "Boost.Python", "world!" };
 
-       if (x > 2) 
+       if (x > 2)
            throw std::range_error("greet: index out of range");
 
        return msgs[x];
@@ -298,7 +298,7 @@ Given::
     };
 
 The following code will expose it in our extension module::
-    
+
     #include <boost/python.hpp>
     BOOST_PYTHON_MODULE(hello)
     {
@@ -489,7 +489,7 @@ parameter list as follows::
      class_<Derived, bases<Base1,Base2> >("Derived")
           ...
 
-This has two effects:  
+This has two effects:
 
 1. When the ``class_<...>`` is created, Python type objects
    corresponding to ``Base1`` and ``Base2`` are looked up in
@@ -522,7 +522,7 @@ class before invoking its methods : ::
     ...          pass
     ...
     >>> L().reverse()
-    >>> 
+    >>>
 
 Because C++ object construction is a one-step operation, C++ instance
 data cannot be constructed until the arguments are available, in the
@@ -627,7 +627,7 @@ limitations in C++'s compile-time introspection capabilities: there's
 no way to enumerate the members of a class and find out which are
 virtual functions.  At least one very promising project has been
 started to write a front-end which can generate these dispatchers (and
-other wrapping code) automatically from C++ headers.  
+other wrapping code) automatically from C++ headers.
 
 Pyste_ is being developed by Bruno da Silva de Oliveira.  It builds on
 GCC_XML_, which generates an XML version of GCC's internal program

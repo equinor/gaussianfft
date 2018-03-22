@@ -124,7 +124,7 @@ class block_list_base
          n = list_algo::node_traits::get_next(n);
          std::size_t size = d.size;
          d.~DerivedFromBlockListHeader();
-         mr.deallocate(reinterpret_cast<char*>(&d), size, memory_resource::max_align);         
+         mr.deallocate(reinterpret_cast<char*>(&d), size, memory_resource::max_align);
       }
       list_algo::init_header(&m_list);
    }

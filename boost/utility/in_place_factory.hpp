@@ -35,7 +35,7 @@ class in_place_factory_base {} ;
 template< BOOST_PP_ENUM_PARAMS(N, class A) >
 #endif
 class BOOST_PP_CAT(in_place_factory,N)
-  : 
+  :
   public in_place_factory_base
 {
 public:
@@ -59,7 +59,7 @@ public:
     for(char* next = address = this->BOOST_NESTED_TEMPLATE apply<T>(address);
         !! --n;)
       this->BOOST_NESTED_TEMPLATE apply<T>(next = next+sizeof(T));
-    return address; 
+    return address;
   }
 
   BOOST_PP_REPEAT(N, BOOST_DEFINE_INPLACE_FACTORY_CLASS_MEMBER_DECL, _)

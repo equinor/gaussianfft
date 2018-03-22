@@ -1,6 +1,6 @@
 /*
     Copyright 2005-2007 Adobe Systems Incorporated
-   
+
     Use, modification and distribution are subject to the Boost Software License,
     Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
     http://www.boost.org/LICENSE_1_0.txt).
@@ -17,7 +17,7 @@
 #include <boost/bind.hpp>
 
 ////////////////////////////////////////////////////////////////////////////////////////
-/// \file               
+/// \file
 /// \brief Some basic STL-style algorithms when applied to runtime type specified image views
 /// \author Lubomir Bourdev and Hailin Jin \n
 ///         Adobe Systems Incorporated

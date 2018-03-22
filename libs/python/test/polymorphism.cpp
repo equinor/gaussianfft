@@ -30,7 +30,7 @@ struct P
 struct PCallback : P, Callback
 {
     PCallback (PyObject* self) : Callback(self) {}
-    
+
     std::string f()
     {
         return call_method<std::string>(mSelf, "f");
@@ -39,7 +39,7 @@ struct PCallback : P, Callback
 
 struct Q : virtual P
 {
-    std::string f() { return "Q::f()"; } 
+    std::string f() { return "Q::f()"; }
 };
 
 struct A
@@ -51,13 +51,13 @@ struct A
 struct ACallback :  A,  Callback
 {
     ACallback (PyObject* self) : Callback(self) {}
-    
-    
+
+
     std::string f()
     {
         return call_method<std::string>(mSelf, "f");
     }
-    
+
     std::string default_f()
     {
         return A::f();
@@ -66,7 +66,7 @@ struct ACallback :  A,  Callback
 
 struct B : A
 {
-    virtual std::string f() { return "B::f()"; } 
+    virtual std::string f() { return "B::f()"; }
 };
 
 struct C : A
@@ -83,19 +83,19 @@ struct D : A
 struct DCallback :  D,  Callback
 {
     DCallback (PyObject* self) : Callback(self) {}
-     
+
     std::string f()
     {
         return call_method<std::string>(mSelf, "f");
     }
-    
+
     std::string default_f()
     {
         return A::f();
     }
 };
 
-    
+
 A& getBCppObj ()
 {
     static B b;
@@ -130,20 +130,20 @@ BOOST_PYTHON_MODULE_INIT(polymorphism_ext)
     class_<A,boost::noncopyable,ACallback>("A")
         .def("f", &A::f, &ACallback::default_f)
         ;
-    
+
     def("getBCppObj", getBCppObj, return_value_policy<reference_existing_object>());
 
     class_<C,bases<A>,boost::noncopyable>("C")
         .def("f", &C::f)
         ;
-    
+
     class_<D,bases<A>,DCallback,boost::noncopyable>("D")
         .def("f", &D::f, &DCallback::default_f)
         .def("g", &D::g)
         ;
 
     def("pass_a", &pass_a,  return_internal_reference<>());
-    
+
     def("getCCppObj", getCCppObj, return_value_policy<reference_existing_object>());
 
     def("factory", factory, return_value_policy<manage_new_object>());

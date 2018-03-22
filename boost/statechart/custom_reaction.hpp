@@ -38,7 +38,7 @@ class custom_reaction
     {
       if ( eventType == Event::static_type() )
       {
-        return detail::result_utility::get_result( 
+        return detail::result_utility::get_result(
           stt.react( *polymorphic_downcast< const Event * >( &evt ) ) );
       }
       else

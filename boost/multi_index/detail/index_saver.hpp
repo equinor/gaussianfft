@@ -79,13 +79,13 @@ public:
      * sequence
      *
      *   a,B,c,D
-     * 
+     *
      * where B and D are displaced, but c is in its correct position.
      * Applying the schema described above we would serialize 6 pointers:
      *
      *  p(a),p(B),0
      *  p(c),p(D),0
-     * 
+     *
      * but this can be reduced to 5 pointers by treating c as a displaced
      * element:
      *

@@ -12,13 +12,13 @@
 /*
 The following algorithm is used:
 
-  If all exponent bits, the flag bit (if there is one), 
+  If all exponent bits, the flag bit (if there is one),
   and all mantissa bits are 0, then the number is zero.
 
-  If all exponent bits and the flag bit (if there is one) are 0, 
+  If all exponent bits and the flag bit (if there is one) are 0,
   and at least one mantissa bit is 1, then the number is subnormal.
 
-  If all exponent bits are 1 and all mantissa bits are 0, 
+  If all exponent bits are 1 and all mantissa bits are 0,
   then the number is infinity.
 
   If all exponent bits are 1 and at least one mantissa bit is 1,
@@ -57,7 +57,7 @@ depending on whether all the mantissa bits are copied or not.
 namespace boost {
 namespace spirit {
 namespace math {
-    
+
 //------------------------------------------------------------------------------
 
 template<class T> bool (isfinite)(T x)
@@ -196,7 +196,7 @@ namespace detail {
         typedef BOOST_DEDUCED_TYPENAME fp_traits<T>::type traits;
 
         BOOST_DEDUCED_TYPENAME traits::bits a;
-        traits::get_bits(x,a); 
+        traits::get_bits(x,a);
         a &= traits::exponent | traits::flag | traits::mantissa;
 
         if(a <= traits::mantissa) {
@@ -205,7 +205,7 @@ namespace detail {
             else
                 return FP_SUBNORMAL;
         }
-            
+
         if(a < traits::exponent)
             return FP_NORMAL;
 
@@ -213,7 +213,7 @@ namespace detail {
         traits::set_bits(x,a);
         if(x == 0)
             return FP_INFINITE;
-        
+
         return FP_NAN;
     }
 

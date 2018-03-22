@@ -1,4 +1,4 @@
-/* 
+/*
    Copyright (c) Marshall Clow 2011-2012.
 
    Distributed under the Boost Software License, Version 1.0. (See accompanying
@@ -21,11 +21,11 @@ namespace boost { namespace algorithm {
 
 /// \fn partition_copy ( InputIterator first, InputIterator last,
 ///     OutputIterator1 out_true, OutputIterator2 out_false, UnaryPredicate p )
-/// \brief Copies the elements that satisfy the predicate p from the range [first, last) 
+/// \brief Copies the elements that satisfy the predicate p from the range [first, last)
 ///     to the range beginning at d_first_true, and
 ///     copies the elements that do not satisfy p to the range beginning at d_first_false.
 ///
-/// 
+///
 /// \param first     The start of the input sequence
 /// \param last      One past the end of the input sequence
 /// \param out_true  An output iterator to write the elements that satisfy the predicate into
@@ -33,7 +33,7 @@ namespace boost { namespace algorithm {
 /// \param p         A predicate for dividing the elements of the input sequence.
 ///
 /// \note            This function is part of the C++2011 standard library.
-template <typename InputIterator, 
+template <typename InputIterator,
         typename OutputIterator1, typename OutputIterator2, typename UnaryPredicate>
 std::pair<OutputIterator1, OutputIterator2>
 partition_copy ( InputIterator first, InputIterator last,
@@ -47,21 +47,21 @@ partition_copy ( InputIterator first, InputIterator last,
     return std::pair<OutputIterator1, OutputIterator2> ( out_true, out_false );
 }
 
-/// \fn partition_copy ( const Range &r, 
+/// \fn partition_copy ( const Range &r,
 ///     OutputIterator1 out_true, OutputIterator2 out_false, UnaryPredicate p )
-/// 
+///
 /// \param r         The input range
 /// \param out_true  An output iterator to write the elements that satisfy the predicate into
 /// \param out_false An output iterator to write the elements that do not satisfy the predicate into
 /// \param p         A predicate for dividing the elements of the input sequence.
 ///
-template <typename Range, typename OutputIterator1, typename OutputIterator2, 
+template <typename Range, typename OutputIterator1, typename OutputIterator2,
             typename UnaryPredicate>
 std::pair<OutputIterator1, OutputIterator2>
-partition_copy ( const Range &r, OutputIterator1 out_true, OutputIterator2 out_false, 
+partition_copy ( const Range &r, OutputIterator1 out_true, OutputIterator2 out_false,
                                 UnaryPredicate p )
 {
-    return boost::algorithm::partition_copy 
+    return boost::algorithm::partition_copy
                       (boost::begin(r), boost::end(r), out_true, out_false, p );
 }
 

@@ -7,7 +7,7 @@
 
 # include <boost/python/detail/prefix.hpp>
 
-namespace boost { namespace python { 
+namespace boost { namespace python {
 
 // used only to prevent argument-dependent lookup from finding the
 // wrong function in some cases. Cheaper than qualification.

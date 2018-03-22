@@ -39,7 +39,7 @@ namespace boost {
 namespace random {
 
 namespace detail {
-   
+
 struct subtract_with_carry_discard
 {
     template<class Engine>
@@ -81,7 +81,7 @@ struct subtract_with_carry_discard
             }
 
             // Update the last partial block
-            std::size_t limit = short_lag < k? short_lag : k; 
+            std::size_t limit = short_lag < k? short_lag : k;
             for(std::size_t j = 0; j < limit; ++j) {
                 carry = eng.do_update(j, j + long_lag - short_lag, carry);
             }
@@ -121,7 +121,7 @@ public:
     BOOST_STATIC_CONSTANT(bool, has_fixed_range = false);
     // Backwards compatibility
     BOOST_STATIC_CONSTANT(result_type, modulus = (result_type(1) << w));
-    
+
     BOOST_STATIC_ASSERT(std::numeric_limits<result_type>::is_integer);
 
     /**
@@ -220,7 +220,7 @@ public:
     template<class It>
     void generate(It first, It last)
     { detail::generate_from_int(*this, first, last); }
- 
+
     /** Writes a @c subtract_with_carry_engine to a @c std::ostream. */
     BOOST_RANDOM_DETAIL_OSTREAM_OPERATOR(os, subtract_with_carry_engine, f)
     {
@@ -455,14 +455,14 @@ public:
     BOOST_RANDOM_DETAIL_OSTREAM_OPERATOR(os, subtract_with_carry_01_engine, f)
     {
         std::ios_base::fmtflags oldflags =
-            os.flags(os.dec | os.fixed | os.left); 
+            os.flags(os.dec | os.fixed | os.left);
         for(unsigned int j = 0; j < f.long_lag; ++j)
             os << (f.compute(j) * f._modulus) << ' ';
         os << (f.carry * f._modulus);
         os.flags(oldflags);
         return os;
     }
-    
+
     /** Reads a \subtract_with_carry_01_engine from a @c std::istream. */
     BOOST_RANDOM_DETAIL_ISTREAM_OPERATOR(is, subtract_with_carry_01_engine, f)
     {

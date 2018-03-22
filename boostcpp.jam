@@ -259,7 +259,7 @@ rule declare_install_and_stage_proper_targets ( libraries * : headers * )
         }
         else
         {
-            alias $(l)-for-install : libs/$(l)/build ; 
+            alias $(l)-for-install : libs/$(l)/build ;
             $(p).mark-target-as-explicit $(l)-for-install ;
         }
     }

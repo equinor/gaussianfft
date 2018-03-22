@@ -38,21 +38,21 @@ namespace boost {
    * Reduction of vertex colors can only darken, not lighten, the
    * color. Black cannot turn black, grey can only turn black, and
    * white can be changed to either color. The default color is white.
-   */ 
-  template<> 
+   */
+  template<>
   struct property_reduce<vertex_color_t>
   {
     template<typename Color>
     class apply
     {
       typedef color_traits<Color> traits;
-      
+
     public:
       BOOST_STATIC_CONSTANT(bool, non_default_resolver = true);
 
       template<typename Key>
       Color operator()(const Key&) const { return traits::white(); }
-      
+
       template<typename Key>
       Color operator()(const Key&, Color local, Color remote) const {
         if (local == traits::white()) return remote;
@@ -66,7 +66,7 @@ namespace boost {
    * Reduction of a distance always takes the shorter distance. The
    * default distance value is the maximum value for the data type.
    */
-  template<> 
+  template<>
   struct property_reduce<vertex_distance_t>
   {
     template<typename T>
@@ -83,7 +83,7 @@ namespace boost {
     };
   };
 
-  template<> 
+  template<>
   struct property_reduce<vertex_predecessor_t>
   {
     template<typename T>

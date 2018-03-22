@@ -19,15 +19,15 @@ struct data
         return 42;
     }
 };
-    
+
 std::auto_ptr<data> create_data()
-{ 
-    return std::auto_ptr<data>( new data ); 
+{
+    return std::auto_ptr<data>( new data );
 }
 
 void do_nothing( std::auto_ptr<data>& ){}
 
-    
+
 namespace bp = boost::python;
 
 struct data_wrapper : data, bp::wrapper< data >
@@ -49,7 +49,7 @@ struct data_wrapper : data, bp::wrapper< data >
         else
             return data::id(  );
     }
-    
+
     virtual int default_id(  ) const
     {
         return this->data::id( );
@@ -59,11 +59,11 @@ struct data_wrapper : data, bp::wrapper< data >
 
 BOOST_PYTHON_MODULE(wrapper_held_type_ext)
 {
-    bp::class_< data_wrapper, std::auto_ptr< data > >( "data" )    
+    bp::class_< data_wrapper, std::auto_ptr< data > >( "data" )
         .def( "id", &data::id, &::data_wrapper::default_id );
 
     bp::def( "do_nothing", &do_nothing );
     bp::def( "create_data", &create_data );
-}    
+}
 
 #include "module_tail.cpp"

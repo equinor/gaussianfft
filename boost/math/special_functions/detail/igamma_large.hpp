@@ -15,7 +15,7 @@
 //
 // A different way of evaluating these expansions,
 // plus a lot of very useful background information is in:
-// 
+//
 // "A Set of Algorithms For the Incomplete Gamma Functions."
 // N. M. Temme.
 // Probability in the Engineering and Informational Sciences,
@@ -62,7 +62,7 @@ inline T igamma_temme_large(T, T, const Policy& /* pol */, mpl::int_<0> const *)
    return 0;
 }
 //
-// This version is accurate for up to 64-bit mantissa's, 
+// This version is accurate for up to 64-bit mantissa's,
 // (80-bit long double, or 10^-20).
 //
 template <class T, class Policy>

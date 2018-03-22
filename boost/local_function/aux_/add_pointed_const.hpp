@@ -11,7 +11,7 @@
 namespace boost { namespace local_function { namespace aux {
 
 // Metafunction to add const to pointed type `T` (i.e. converts
-// `T* [const]` to `T const* [const]`). `boost::add_const<>` cannot be used 
+// `T* [const]` to `T const* [const]`). `boost::add_const<>` cannot be used
 // instead because only adds outer const.
 
 template<typename T> struct add_pointed_const { typedef T type; };

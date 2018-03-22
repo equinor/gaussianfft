@@ -8,7 +8,7 @@
 # include <boost/python/handle.hpp>
 # include <boost/python/type_id.hpp>
 
-namespace boost { namespace python { namespace objects { 
+namespace boost { namespace python { namespace objects {
 
 BOOST_PYTHON_DECL type_handle registered_class_object(type_info id);
 BOOST_PYTHON_DECL type_handle class_metatype();

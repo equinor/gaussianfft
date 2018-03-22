@@ -1,6 +1,6 @@
 [section boost/python/to_python_converter.hpp]
 [section Introduction]
-`to_python_converter` registers a conversion from objects of a given C++ type into a Python object. 
+`to_python_converter` registers a conversion from objects of a given C++ type into a Python object.
 [endsect]
 [section Class template `to_python_converter`]
 `to_python_converter` adds a wrapper around a static member function of its second template parameter, handling low-level details such as insertion into the converter registry.

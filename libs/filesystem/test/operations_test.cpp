@@ -10,10 +10,10 @@
 #include <boost/config/warning_disable.hpp>
 
 //  See deprecated_test for tests of deprecated features
-#ifndef BOOST_FILESYSTEM_NO_DEPRECATED 
+#ifndef BOOST_FILESYSTEM_NO_DEPRECATED
 #  define BOOST_FILESYSTEM_NO_DEPRECATED
 #endif
-#ifndef BOOST_SYSTEM_NO_DEPRECATED 
+#ifndef BOOST_SYSTEM_NO_DEPRECATED
 #  define BOOST_SYSTEM_NO_DEPRECATED
 #endif
 
@@ -52,7 +52,7 @@ using std::endl;
 inline std::wstring convert(const char* c)
 {
    std::string s(c);
-   
+
    return std::wstring(s.begin(), s.end());
 }
 
@@ -63,19 +63,19 @@ inline std::wstring convert(const char* c)
 //  to work for both the MSVC Runtime and the Windows Runtime (which does not support
 //  _putenv).
 
-inline void setenv(const char* name, const fs::path::value_type* val, int) 
+inline void setenv(const char* name, const fs::path::value_type* val, int)
 {
-  SetEnvironmentVariableW(convert(name).c_str(), val); 
+  SetEnvironmentVariableW(convert(name).c_str(), val);
 }
 
-inline void setenv(const char* name, const char* val, int) 
+inline void setenv(const char* name, const char* val, int)
 {
-  SetEnvironmentVariableW(convert(name).c_str(), convert(val).c_str()); 
+  SetEnvironmentVariableW(convert(name).c_str(), convert(val).c_str());
 }
 
-inline void unsetenv(const char* name) 
-{ 
-  SetEnvironmentVariableW(convert(name).c_str(), 0); 
+inline void unsetenv(const char* name)
+{
+  SetEnvironmentVariableW(convert(name).c_str(), 0);
 }
 #endif
 
@@ -196,18 +196,18 @@ namespace
   {
     fs::file_size(" No way, Jose");
   }
-  
+
   void bad_directory_size()
   {
     fs::file_size(fs::current_path());
   }
-  
+
   fs::path bad_create_directory_path;
   void bad_create_directory()
   {
     fs::create_directory(bad_create_directory_path);
   }
-  
+
   void bad_equivalent()
   {
     fs::equivalent("no-such-path", "another-not-present-path");
@@ -293,7 +293,7 @@ namespace
       if (report_throws) cout << x.what() << endl;
       if (platform == "Windows" && language_id == 0x0409) // English (United States)
         // the stdcxx standard library apparently appends additional info
-        // to what(), so check only the initial portion: 
+        // to what(), so check only the initial portion:
         BOOST_TEST(std::strncmp(x.what(),
           "boost::filesystem::create_directory",
           sizeof("boost::filesystem::create_directory")-1) == 0);
@@ -395,7 +395,7 @@ namespace
   //        d1f1       // an empty file
   //      f0           // an empty file
   //      f1           // a file containing "file-f1"
- 
+
   void create_tree()
   {
     cout << "creating test directories and files in " << dir << endl;
@@ -476,7 +476,7 @@ namespace
     }
     catch (const fs::filesystem_error &) { dir_itr_exception = true; }
     BOOST_TEST(!dir_itr_exception);
-    
+
     // create a second directory named d2
     d2 = dir / "d2";
     fs::create_directory(d2);
@@ -600,7 +600,7 @@ namespace
     // close of an OS handle. This block will detect regression.
     {
       fs::directory_iterator di;
-      { 
+      {
         di = fs::directory_iterator(dir);
       }
       BOOST_TEST(++di != fs::directory_iterator());
@@ -719,7 +719,7 @@ namespace
       //  cout << "    Note: unexpected directory entry " << it->path().filename() << endl;
     }
   }
-  
+
   //  recursive_iterator_status_tests  -------------------------------------------------//
 
   void recursive_iterator_status_tests()
@@ -733,7 +733,7 @@ namespace
       BOOST_TEST(fs::symlink_status(it->path()).type() == it->symlink_status().type());
     }
   }
-  
+
   //  create_hard_link_tests  ----------------------------------------------------------//
 
   void create_hard_link_tests()
@@ -779,7 +779,7 @@ namespace
       fs::path("shouldnotwork"), ec);
     BOOST_TEST(ec);
   }
-  
+
   //  create_symlink_tests  ------------------------------------------------------------//
 
   void create_symlink_tests()
@@ -794,7 +794,7 @@ namespace
     catch (const fs::filesystem_error & ex)
     {
       create_symlink_ok = false;
-      cout                             
+      cout
         << "     *** For information only ***\n"
            "     create_symlink() attempt failed\n"
            "     filesystem_error.what() reports: " << ex.what() << "\n"
@@ -825,7 +825,7 @@ namespace
       BOOST_TEST(fs::is_regular_file(stat));
       BOOST_TEST(!fs::is_other(stat));
       BOOST_TEST(!fs::is_symlink(stat));
-       
+
       // since create_symlink worked, copy_symlink should also work
       fs::path symlink2_ph(dir / "symlink2");
       fs::copy_symlink(from_ph, symlink2_ph);
@@ -877,11 +877,11 @@ namespace
         BOOST_TEST(fs::status(p).permissions() == fs::owner_all);
         fs::path p2(dir / "permissions-symlink.txt");
         fs::create_symlink(p, p2);
-        cout << std::oct; 
+        cout << std::oct;
         cout << "   status(p).permissions() "  << fs::status(p).permissions() << endl;
         cout << "  status(p2).permissions() "  << fs::status(p).permissions() << endl;
         fs::permissions(p2, fs::add_perms | fs::others_read);
-        cout << "   status(p).permissions(): " << fs::status(p).permissions() << endl; 
+        cout << "   status(p).permissions(): " << fs::status(p).permissions() << endl;
         cout << "  status(p2).permissions(): " << fs::status(p2).permissions() << endl;
         cout << std::dec;
       }
@@ -896,7 +896,7 @@ namespace
       BOOST_TEST(fs::status(p).permissions() == 0666);
     }
   }
-  
+
   //  rename_tests  --------------------------------------------------------------------//
 
   void rename_tests()
@@ -1001,7 +1001,7 @@ namespace
     BOOST_TEST(!fs::exists(d2 / "d20"));
     BOOST_TEST(fs::exists(d1 / "f2"));
   }
-  
+
   //  predicate_and_status_tests  ------------------------------------------------------//
 
   void predicate_and_status_tests()
@@ -1031,7 +1031,7 @@ namespace
     BOOST_TEST(!fs::is_other(stat));
     BOOST_TEST(!fs::is_symlink(stat));
   }
-  
+
   //  create_directory_tests  ----------------------------------------------------------//
 
   void create_directory_tests()
@@ -1102,7 +1102,7 @@ namespace
 
     cout << "  create_directory_tests complete" << endl;
   }
-  
+
   //  current_directory_tests  ---------------------------------------------------------//
 
   void current_directory_tests()
@@ -1163,7 +1163,7 @@ namespace
                                                       //  but unlikely to be OK on POSIX
     BOOST_TEST(ec);
 #endif
- 
+
     fs::path p = dir / "level1/." / "level2/./.." / "level3/";
     // trailing "/.", "/./..", and "/" in the above elements test ticket #7258 and
     // related issues
@@ -1250,10 +1250,10 @@ namespace
     // test status, ec, for existing file
     ec.assign(-1,poison_category());
     BOOST_TEST(ec.value() == -1);
-    BOOST_TEST(&ec.category() == &poison_category()); 
+    BOOST_TEST(&ec.category() == &poison_category());
     fs::file_status s = fs::status(".",ec);
     BOOST_TEST(ec.value() == 0);
-    BOOST_TEST(ec.category() == system_category()); 
+    BOOST_TEST(ec.category() == system_category());
     BOOST_TEST(fs::exists(s));
     BOOST_TEST(fs::is_directory(s));
 
@@ -1262,7 +1262,7 @@ namespace
     ec.assign(-1,poison_category());
     s = fs::status(p,ec);
     BOOST_TEST(ec.value() != 0);
-    BOOST_TEST(ec.category() == system_category()); 
+    BOOST_TEST(ec.category() == system_category());
 
     BOOST_TEST(!fs::exists(s));
     BOOST_TEST_EQ(s.type(), fs::file_not_found);
@@ -1276,29 +1276,29 @@ namespace
     ec.assign(-1,poison_category());
     BOOST_TEST(fs::exists(".", ec));
     BOOST_TEST(ec.value() == 0);
-    BOOST_TEST(ec.category() == system_category()); 
+    BOOST_TEST(ec.category() == system_category());
     ec.assign(-1,poison_category());
     BOOST_TEST(!fs::is_regular_file(".", ec));
     BOOST_TEST(ec.value() == 0);
-    BOOST_TEST(ec.category() == system_category()); 
+    BOOST_TEST(ec.category() == system_category());
     ec.assign(-1,poison_category());
     BOOST_TEST(fs::is_directory(".", ec));
     BOOST_TEST(ec.value() == 0);
-    BOOST_TEST(ec.category() == system_category()); 
+    BOOST_TEST(ec.category() == system_category());
 
     // test queries, ec, for non-existing file
     ec.assign(-1,poison_category());
     BOOST_TEST(!fs::exists(p, ec));
     BOOST_TEST(ec.value() != 0);
-    BOOST_TEST(ec.category() == system_category()); 
+    BOOST_TEST(ec.category() == system_category());
     ec.assign(-1,poison_category());
     BOOST_TEST(!fs::is_regular_file(p, ec));
     BOOST_TEST(ec.value() != 0);
-    BOOST_TEST(ec.category() == system_category()); 
+    BOOST_TEST(ec.category() == system_category());
     ec.assign(-1,poison_category());
     BOOST_TEST(!fs::is_directory(p, ec));
     BOOST_TEST(ec.value() != 0);
-    BOOST_TEST(ec.category() == system_category()); 
+    BOOST_TEST(ec.category() == system_category());
   }
 
   //  remove_tests  --------------------------------------------------------------------//
@@ -1332,7 +1332,7 @@ namespace
   }
 
   //  remove_symlink_tests  ------------------------------------------------------------//
-      
+
   void remove_symlink_tests()
   {
     cout << "remove_symlink_tests..." << endl;
@@ -1683,7 +1683,7 @@ namespace
   //  write_time_tests  ----------------------------------------------------------------//
 
   void write_time_tests(const fs::path& dirx)
-  {    
+  {
     cout << "write_time_tests..." << endl;
 
     fs::path f1x = dirx / "foobar2";
@@ -1696,7 +1696,7 @@ namespace
 
     // Some file system report last write time as local (FAT), while
     // others (NTFS) report it as UTC. The C standard does not specify
-    // if time_t is local or UTC. 
+    // if time_t is local or UTC.
 
     std::time_t ft = fs::last_write_time(f1x);
     cout << "\n  UTC last_write_time() for a file just created is "
@@ -1715,7 +1715,7 @@ namespace
     cout << "\n  Reset to current time" << endl;
     fs::last_write_time(f1x, ft);
     double time_diff = std::difftime(ft, fs::last_write_time(f1x));
-    cout 
+    cout
       << "  original last_write_time() - current last_write_time() is "
       << time_diff << " seconds" << endl;
     BOOST_TEST(time_diff >= -60.0 && time_diff <= 60.0);
@@ -1876,7 +1876,7 @@ namespace
     BOOST_TEST(spi.capacity > spi.free);
     BOOST_TEST(spi.free >= spi.available);
 
-    // it is convenient to display space, but older VC++ versions choke 
+    // it is convenient to display space, but older VC++ versions choke
 #   if !defined(BOOST_MSVC) || _MSC_VER >= 1300  // 1300 == VC++ 7.0
       cout << "   capacity = " << spi.capacity << '\n';
       cout << "       free = " << spi.free << '\n';
@@ -1904,7 +1904,7 @@ namespace
 
   //  temp_directory_path_tests  -------------------------------------------------------//
   //    contributed by Jeff Flinn
-  
+
   struct guarded_env_var
   {
     struct previous_value
@@ -1912,7 +1912,7 @@ namespace
       std::string m_name;
       std::string m_string;
       bool        m_empty;
-      
+
       previous_value(const char* name)
       : m_name(name)
       , m_empty (true)
@@ -1929,15 +1929,15 @@ namespace
       }
       ~previous_value()
       {
-        m_empty? unsetenv(m_name.c_str()) 
+        m_empty? unsetenv(m_name.c_str())
                : setenv(m_name.c_str(), m_string.c_str(), 1);
       }
     };
-  
+
     previous_value m_previous_value;
-    
-    guarded_env_var(const char* name, const char* value) 
-    : m_previous_value(name) 
+
+    guarded_env_var(const char* name, const char* value)
+    : m_previous_value(name)
     {
 //      std::cout << name << " old value is \"" << getenv(name) << "\"" << std::endl;
       value ? setenv(name, value, 1) : unsetenv(name);
@@ -1954,7 +1954,7 @@ namespace
 
 //**************************************************************************************//
 //   Bug in GCC 4.9 getenv() when !defined(__GXX_EXPERIMENTAL_CXX0X__) makes these
-//   tests meaningless, so skip them 
+//   tests meaningless, so skip them
 //**************************************************************************************//
 
 #if defined(__CYGWIN__) && !defined(__GXX_EXPERIMENTAL_CXX0X__) && __GNUC__ == 4
@@ -1963,7 +1963,7 @@ namespace
       return;
 #endif
       // Test ticket #5300, temp_directory_path failure on Windows with path length > 130.
-      // (This test failed prior to the fix being applied.) 
+      // (This test failed prior to the fix being applied.)
       {
         const wchar_t long_name[] =
           L"12345678901234567890123456789012345678901234567890"
@@ -1988,7 +1988,7 @@ namespace
 
         error_code ec;
         fs::path tmp_path = fs::temp_directory_path(ec);
-        BOOST_TEST_EQ(tmp_path, fs::initial_path()); 
+        BOOST_TEST_EQ(tmp_path, fs::initial_path());
       }
 
 #endif
@@ -2010,7 +2010,7 @@ namespace
       remove(ph);
       BOOST_TEST(!exists(ph));
     }
-    
+
     fs::path test_temp_dir = temp_dir;
 
 #if defined(BOOST_POSIX_API)
@@ -2023,16 +2023,16 @@ namespace
         guarded_env_var m_tempdir;
 
         guarded_tmp_vars
-        ( const fs::path::value_type* tmpdir  
-        , const fs::path::value_type* tmp    
-        , const fs::path::value_type* temp   
+        ( const fs::path::value_type* tmpdir
+        , const fs::path::value_type* tmp
+        , const fs::path::value_type* temp
         , const fs::path::value_type* tempdir
         )
         : m_tmpdir ("TMPDIR" , tmpdir )
         , m_tmp    ("TMP"    , tmp    )
         , m_temp   ("TEMP"   , temp   )
         , m_tempdir("TEMPDIR", tempdir)
-        {}                
+        {}
       };
 
       {
@@ -2068,7 +2068,7 @@ namespace
       guarded_env_var m_userprofile;
 
       guarded_tmp_vars
-      ( const char* tmp    
+      ( const char* tmp
       , const char* temp
       , const char* localappdata
       , const char* userprofile
@@ -2077,7 +2077,7 @@ namespace
       , m_temp         ("TEMP"          , temp        )
       , m_localappdata ("LOCALAPPDATA"  , localappdata)
       , m_userprofile  ("USERPROFILE"   , userprofile )
-      {}                
+      {}
     };
 
     // test the GetWindowsDirectoryW()/Temp fallback
@@ -2113,7 +2113,7 @@ namespace
       BOOST_TEST(equivalent(test_temp_dir/L"Temp", ph));
       cout << "temp_directory_path() returned " << ph << endl;
     }
-#endif    
+#endif
   }
 
   //  weakly_canonical_tests  ----------------------------------------------------------//
@@ -2144,7 +2144,7 @@ namespace
   //{
   //  cout << "_tests..." << endl;
   //}
-  
+
 } // unnamed namespace
 
   //------------------------------------------------------------------------------------//
@@ -2245,7 +2245,7 @@ int cpp_main(int argc, char* argv[])
   BOOST_TEST(fs::is_regular_file(stat));
   BOOST_TEST(!fs::is_other(stat));
   BOOST_TEST(!fs::is_symlink(stat));
-  
+
   equivalent_tests(f1);
   create_hard_link_tests();
   create_symlink_tests();
@@ -2274,7 +2274,7 @@ int cpp_main(int argc, char* argv[])
 
   platform_specific_tests();  // do these last since they take a lot of time on Windows,
                               // and that's a pain during manual testing
-  
+
   cout << "testing complete" << endl;
 
   // post-test cleanup
@@ -2283,7 +2283,7 @@ int cpp_main(int argc, char* argv[])
     cout << "post-test removal of " << dir << endl;
     BOOST_TEST(fs::remove_all(dir) != 0);
     // above was added just to simplify testing, but it ended up detecting
-    // a bug (failure to close an internal search handle). 
+    // a bug (failure to close an internal search handle).
     cout << "post-test removal complete" << endl;
 //    BOOST_TEST(!fs::exists(dir));  // nice test, but doesn't play well with TortoiseGit cache
   }

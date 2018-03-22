@@ -154,7 +154,7 @@ namespace boost {
        struct result<This(A0, A1)>
          : boost::remove_reference<std::pair<A0, A1> >
        {};
-      
+
 #endif
 
 

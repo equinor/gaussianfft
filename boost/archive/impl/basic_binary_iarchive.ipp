@@ -1,7 +1,7 @@
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
 // basic_binary_iarchive.ipp:
 
-// (C) Copyright 2002 Robert Ramey - http://www.rrsd.com . 
+// (C) Copyright 2002 Robert Ramey - http://www.rrsd.com .
 // Use, modification and distribution is subject to the Boost Software
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -14,8 +14,8 @@
 
 #include <boost/config.hpp>
 #if defined(BOOST_NO_STDC_NAMESPACE)
-namespace std{ 
-    using ::memcpy; 
+namespace std{
+    using ::memcpy;
     using ::strlen;
     using ::size_t;
 }
@@ -51,7 +51,7 @@ BOOST_ARCHIVE_OR_WARCHIVE_DECL void
 basic_binary_iarchive<Archive>::init(void){
     // read signature in an archive version independent manner
     std::string file_signature;
-    
+
     #if 0 // commented out since it interfers with derivation
     BOOST_TRY {
         std::size_t l;
@@ -69,7 +69,7 @@ basic_binary_iarchive<Archive>::init(void){
     }
     BOOST_CATCH(archive_exception const &) {  // catch stream_error archive exceptions
         // will cause invalid_signature archive exception to be thrown below
-        file_signature = "";   
+        file_signature = "";
     }
     BOOST_CATCH_END
     #else
@@ -117,13 +117,13 @@ basic_binary_iarchive<Archive>::init(void){
         #endif
         input_library_version = static_cast<library_version_type>(v);
     }
-    
+
     #if BOOST_WORKAROUND(__MWERKS__, BOOST_TESTED_AT(0x3205))
     this->set_library_version(input_library_version);
     #else
     detail::basic_iarchive::set_library_version(input_library_version);
     #endif
-    
+
     if(BOOST_ARCHIVE_VERSION() < input_library_version)
         boost::serialization::throw_exception(
             archive_exception(archive_exception::unsupported_version)

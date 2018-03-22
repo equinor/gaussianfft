@@ -40,7 +40,7 @@ struct hblk *h;
     register word *p = (word *)h;
     register word *lim = (word *)(h+1);
     register word result = 0;
-    
+
     while (p < lim) {
         result += *p++;
     }
@@ -56,7 +56,7 @@ struct hblk *h;
     hdr * hhdr = HDR(h);
     int sz = BYTES_TO_WORDS(hhdr -> hb_sz);
     ptr_t p;
-    
+
     if (sz > MAXOBJWORDS) return(FALSE);
     for (p = GC_sobjfreelist[sz]; p != 0; p = obj_link(p)) {
         if (HBLKPTR(p) == h) return(TRUE);
@@ -64,7 +64,7 @@ struct hblk *h;
     return(FALSE);
 }
 # endif
- 
+
 int GC_n_dirty_errors;
 int GC_n_changed_errors;
 int GC_n_clean;
@@ -75,7 +75,7 @@ void GC_update_check_page(struct hblk *h, int index)
     page_entry *pe = GC_sums + index;
     register hdr * hhdr = HDR(h);
     struct hblk *b;
-    
+
     if (pe -> block != 0 && pe -> block != h + OFFSET) ABORT("goofed");
     pe -> old_sum = pe -> new_sum;
     pe -> new_sum = GC_checksum(h);
@@ -123,7 +123,7 @@ word dummy;
 {
    hdr * hhdr = HDR(h);
    bytes = hhdr -> hb_sz;
-   
+
    bytes += HBLKSIZE-1;
    bytes &= ~(HBLKSIZE-1);
    GC_bytes_in_used_blocks += bytes;
@@ -132,7 +132,7 @@ word dummy;
 void GC_check_blocks()
 {
     unsigned long bytes_in_free_blocks = GC_large_free_bytes;
-    
+
     GC_bytes_in_used_blocks = 0;
     GC_apply_to_all_blocks(GC_add_block, (word)0);
     GC_printf("GC_bytes_in_used_blocks = %lu, bytes_in_free_blocks = %lu ",
@@ -150,14 +150,14 @@ void GC_check_dirty()
     register unsigned i;
     register struct hblk *h;
     register ptr_t start;
-    
+
     GC_check_blocks();
-    
+
     GC_n_dirty_errors = 0;
     GC_n_changed_errors = 0;
     GC_n_clean = 0;
     GC_n_dirty = 0;
-    
+
     index = 0;
     for (i = 0; i < GC_n_heap_sects; i++) {
     	start = GC_heap_sects[i].hs_start;

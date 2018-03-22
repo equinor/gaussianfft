@@ -114,7 +114,7 @@ class map_view_base
            pair_type_by<Tag,
               BOOST_DEDUCED_TYPENAME BimapType::relation>::type value_type_;
 
-    typedef 
+    typedef
         ::boost::bimaps::detail::map_view_iterator<Tag,BimapType> iterator_;
 
     public:
@@ -392,7 +392,7 @@ struct unique_map_view_access
 };
 
 // Map views specialize the following structs to provide to the bimap class
-// the extra side typedefs (i.e. left_local_iterator for unordered_maps, 
+// the extra side typedefs (i.e. left_local_iterator for unordered_maps,
 // right_range_type for maps)
 
 template< class MapView >

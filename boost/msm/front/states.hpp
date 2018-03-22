@@ -20,23 +20,23 @@
 namespace boost { namespace msm { namespace front
 {
 
-struct no_sm_ptr 
+struct no_sm_ptr
 {
     // tags
     typedef ::boost::mpl::bool_<false>   needs_sm;
 };
-struct sm_ptr 
+struct sm_ptr
 {
     // tags
     typedef ::boost::mpl::bool_<true>    needs_sm;
 };
 // kept for backward compatibility
-struct NoSMPtr 
+struct NoSMPtr
 {
     // tags
     typedef ::boost::mpl::bool_<false>   needs_sm;
 };
-struct SMPtr 
+struct SMPtr
 {
     // tags
     typedef ::boost::mpl::bool_<true>    needs_sm;
@@ -77,7 +77,7 @@ struct interrupt_state : public boost::msm::front::detail::state_base<BASE>, SMP
     typedef ::boost::mpl::vector0<>                           flag_list;
     typedef typename boost::msm::back::build_interrupt_state_flag_list<
         typename boost::msm::back::get_interrupt_events<EndInterruptEvent>::type
-    >::type internal_flag_list; 
+    >::type internal_flag_list;
 
     //default: no deferred events
     typedef ::boost::mpl::vector0<>                           deferred_events;
@@ -86,7 +86,7 @@ struct interrupt_state : public boost::msm::front::detail::state_base<BASE>, SMP
 // not a state but a bunch of extra typedefs to handle direct entry into a composite state. To be derived from
 // template argument: zone index of this state
 template <int ZoneIndex=-1>
-struct explicit_entry 
+struct explicit_entry
 {
     typedef int explicit_entry_state;
     enum {zone_index=ZoneIndex};

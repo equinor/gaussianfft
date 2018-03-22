@@ -38,8 +38,8 @@ namespace boost { namespace numeric { namespace ublas {
 
 	 /** \brief A dense vector of values of type \c T.
 	  *
-	  * For a \f$n\f$-dimensional vector \f$v\f$ and \f$0\leq i < n\f$ every element \f$v_i\f$ is mapped 
-	  * to the \f$i\f$-th element of the container. A storage type \c A can be specified which defaults to \c unbounded_array. 
+	  * For a \f$n\f$-dimensional vector \f$v\f$ and \f$0\leq i < n\f$ every element \f$v_i\f$ is mapped
+	  * to the \f$i\f$-th element of the container. A storage type \c A can be specified which defaults to \c unbounded_array.
 	  * Elements are constructed by \c A, which need not initialise their value.
 	  *
 	  * \tparam T type of the objects stored in the vector (like int, double, complex,...)
@@ -120,7 +120,7 @@ namespace boost { namespace numeric { namespace ublas {
 	        data_ (v.data_) {}
 
 	/// \brief Copy-constructor of a vector from a vector_expression
-	/// Depending on the vector_expression, this constructor can have the cost of the computations 
+	/// Depending on the vector_expression, this constructor can have the cost of the computations
 	/// of the expression (trivial to say it, but it is to take into account in your complexity calculations).
 	/// \param ae the vector_expression which values will be duplicated into the vector
 	    template<class AE>
@@ -141,7 +141,7 @@ namespace boost { namespace numeric { namespace ublas {
 	    size_type max_size () const {
 	        return data_.max_size ();
 	    }
-	    
+
 	/// \brief Return true if the vector is empty (\c size==0)
 	/// \return \c true if empty, \c false otherwise
 	    BOOST_UBLAS_INLINE
@@ -264,7 +264,7 @@ namespace boost { namespace numeric { namespace ublas {
 	     void erase_element (size_type i) {
 	         data () [i] = value_type/*zero*/();
 	     }
-	     
+
 	// -------
 	     // Zeroing
 	// -------
@@ -557,8 +557,8 @@ namespace boost { namespace numeric { namespace ublas {
 	            -- it_;
 	            return *this;
 	        }
-	  
-	    /// \brief Increment by \e n the position of the iterator 
+
+	    /// \brief Increment by \e n the position of the iterator
 	    /// \return a reference to the const iterator
 	        BOOST_UBLAS_INLINE
 	        const_iterator &operator += (difference_type n) {
@@ -566,7 +566,7 @@ namespace boost { namespace numeric { namespace ublas {
 	            return *this;
 	        }
 	
-	    /// \brief Decrement by \e n the position of the iterator 
+	    /// \brief Decrement by \e n the position of the iterator
 	    /// \return a reference to the const iterator
 	        BOOST_UBLAS_INLINE
 	        const_iterator &operator -= (difference_type n) {
@@ -609,7 +609,7 @@ namespace boost { namespace numeric { namespace ublas {
 
 	         // Assignment
 	         BOOST_UBLAS_INLINE
-	    /// \brief assign the value of an iterator to the iterator	   
+	    /// \brief assign the value of an iterator to the iterator
 	         const_iterator &operator = (const const_iterator &it) {
 	             container_const_reference<self_type>::assign (&it ());
 	             it_ = it.it_;
@@ -785,7 +785,7 @@ namespace boost { namespace numeric { namespace ublas {
             return rbegin ();
         }
 
-	/// \brief Return a const reverse iterator on the end of the reverse vector (i.e. first element of the normal vector) 
+	/// \brief Return a const reverse iterator on the end of the reverse vector (i.e. first element of the normal vector)
 	    BOOST_UBLAS_INLINE
 	    const_reverse_iterator rend () const {
 	        return const_reverse_iterator (begin ());
@@ -803,7 +803,7 @@ namespace boost { namespace numeric { namespace ublas {
 	        return reverse_iterator (end ());
 	    }
 	
-	/// \brief Return a const reverse iterator on the end of the reverse vector (i.e. first element of the normal vector) 
+	/// \brief Return a const reverse iterator on the end of the reverse vector (i.e. first element of the normal vector)
 	    BOOST_UBLAS_INLINE
 	    reverse_iterator rend () {
 	        return reverse_iterator (begin ());
@@ -1610,7 +1610,7 @@ namespace boost { namespace numeric { namespace ublas {
 	 // --------------------
 
 	 /// \brief a dense vector of values of type \c T, of variable size but with maximum \f$N\f$.
-	 /// A dense vector of values of type \c T, of variable size but with maximum \f$N\f$.  The default constructor 
+	 /// A dense vector of values of type \c T, of variable size but with maximum \f$N\f$.  The default constructor
 	 /// creates the vector with size \f$N\f$. Elements are constructed by the storage type \c bounded_array, which \b need \b not \b initialise their value.
 	 template<class T, std::size_t N>
 	 class bounded_vector:
@@ -1683,9 +1683,9 @@ namespace boost { namespace numeric { namespace ublas {
 	 // -----------------
 	 // Zero vector class
 	 // -----------------
-	 
+
 	 /// \brief A zero vector of type \c T and a given \c size
-	 /// A zero vector of type \c T and a given \c size. This is a virtual vector in the sense that no memory is allocated 
+	 /// A zero vector of type \c T and a given \c size. This is a virtual vector in the sense that no memory is allocated
 	 /// for storing the zero values: it still acts like any other vector. However assigning values to it will not change the zero
 	 /// vector into a normal vector. It must first be assigned to another normal vector by any suitable means. Its memory footprint is constant.
 	 template<class T, class ALLOC>
@@ -2168,7 +2168,7 @@ namespace boost { namespace numeric { namespace ublas {
 	 typename unit_vector<T, ALLOC>::const_value_type unit_vector<T, ALLOC>::one_ (1);  // ISSUE: need 'one'-traits here
 
 	 /// \brief A scalar (i.e. unique value) vector of type \c T and a given \c size
-	 /// A scalar (i.e. unique value) vector of type \c T and a given \c size. This is a virtual vector in the sense that no memory is allocated 
+	 /// A scalar (i.e. unique value) vector of type \c T and a given \c size. This is a virtual vector in the sense that no memory is allocated
 	 /// for storing the unique value more than once: it still acts like any other vector. However assigning a new value will change all the value at once.
 	 /// vector into a normal vector. It must first be assigned to another normal vector by any suitable means. Its memory footprint is constant.
 	 /// \tparam T type of the objects stored in the vector: it can be anything even if most of the time, scalar types will be used like \c double or \c int. Complex types can be used, or even classes like boost::interval.
@@ -2540,7 +2540,7 @@ namespace boost { namespace numeric { namespace ublas {
 	         BOOST_UBLAS_CHECK (i < size_, bad_index ());
 	         data_ [i] = value_type/*zero*/();
 	     }
-	     
+
 	     // Zeroing
 	     BOOST_UBLAS_INLINE
 	     void clear () {
@@ -2934,7 +2934,7 @@ namespace boost { namespace numeric { namespace ublas {
 	     void serialize(Archive & ar, const unsigned int /* file_version */){
 	         serialization::collection_size_type s (size_);
 	         ar & serialization::make_nvp("size",s);
-	         
+
 	         // copy the value back if loading
 	         if (Archive::is_loading::value) {
 	           if (s > N) bad_size("too large size in bounded_vector::load()\n").raise();

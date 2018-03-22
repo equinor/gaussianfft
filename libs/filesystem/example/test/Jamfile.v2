@@ -1,5 +1,5 @@
 # Boost Filesystem Library Tutorial Jamfile
- 
+
 # (C) Copyright Beman Dawes 2010
 # (C) Copyright Vladimir Prus 2003
 
@@ -14,7 +14,7 @@ project
       <library>/boost/system//boost_system
       <toolset>msvc:<asynch-exceptions>on
     ;
-    
+
 exe tut1 : tut1.cpp ;
 exe tut2 : tut2.cpp ;
 exe tut3 : tut3.cpp ;
@@ -28,4 +28,4 @@ install tut3-copy : tut3 : <location>. ;
 install tut4-copy : tut4 : <location>. ;
 install tut5-copy : tut5 : <location>. ;
 install path_info-copy : path_info : <location>. ;
-  
+

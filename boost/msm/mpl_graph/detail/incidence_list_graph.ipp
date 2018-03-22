@@ -1,12 +1,12 @@
 // Copyright 2008-2010 Gordon Woodhull
-// Distributed under the Boost Software License, Version 1.0. 
+// Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #ifndef BOOST_MSM_MPL_GRAPH_DETAIL_INCIDENCE_LIST_GRAPH_IPP_INCLUDED
 
 #define BOOST_MSM_MPL_GRAPH_DETAIL_INCIDENCE_LIST_GRAPH_IPP_INCLUDED
 
-// these metafunctions provide the metadata structures needed by the public interface 
+// these metafunctions provide the metadata structures needed by the public interface
 // in mpl_graph.hpp
 
 #include <boost/mpl/map.hpp>
@@ -46,13 +46,13 @@ namespace detail {
 
 // tag to identify this graph implementation (not defined)
 struct incidence_list_tag;
-    
+
 // clarifiers
-template<typename EST> struct fetch_edge : 
+template<typename EST> struct fetch_edge :
     mpl::front<EST> {};
-template<typename EST> struct fetch_source : 
+template<typename EST> struct fetch_source :
     mpl::deref<typename mpl::next<typename mpl::begin<EST>::type>::type> {};
-template<typename EST> struct fetch_target : 
+template<typename EST> struct fetch_target :
     mpl::back<EST> {};
 
 // Edge->Target map for an Source for out_*, adjacent_vertices
@@ -66,7 +66,7 @@ struct produce_out_map<incidence_list_tag, Source, ESTSequence> :
 // Edge->Source map for a Target for in_*, degree
 template<typename Target, typename ESTSequence>
 struct produce_in_map<incidence_list_tag, Target, ESTSequence> :
-    mpl::fold<typename mpl::filter_view<ESTSequence, 
+    mpl::fold<typename mpl::filter_view<ESTSequence,
                                         boost::is_same<fetch_target<mpl::_1>,Target> >::type,
          mpl::map<>,
          mpl::insert<mpl::_1,mpl::pair<fetch_edge<mpl::_2>,fetch_source<mpl::_2> > > >
@@ -78,7 +78,7 @@ struct produce_edge_st_map<incidence_list_tag, ESTSequence> :
     mpl::fold<ESTSequence,
          mpl::map<>,
          mpl::insert<mpl::_1,mpl::pair<fetch_edge<mpl::_2>,
-                        mpl::pair<fetch_source<mpl::_2>, 
+                        mpl::pair<fetch_source<mpl::_2>,
                              fetch_target<mpl::_2> > > > >
 {};
 // Vertex set for VertexListGraph

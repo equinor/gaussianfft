@@ -65,27 +65,27 @@ public:
 
     /** Constructs a @c linear_feedback_shift_engine, using the default seed. */
     linear_feedback_shift_engine() { seed(); }
-    
+
     /** Constructs a @c linear_feedback_shift_engine, seeding it with s0. */
     BOOST_RANDOM_DETAIL_ARITHMETIC_CONSTRUCTOR(linear_feedback_shift_engine,
         UIntType, s0)
     { seed(s0); }
-    
+
     /** Constructs a @c linear_feedback_shift_engine, seeding it with seq. */
     BOOST_RANDOM_DETAIL_SEED_SEQ_CONSTRUCTOR(linear_feedback_shift_engine,
         SeedSeq, seq)
     { seed(seq); }
-    
+
     /**
-     * Constructs a @c linear_feedback_shift_engine, seeding it with 
+     * Constructs a @c linear_feedback_shift_engine, seeding it with
      * values from the range [first, last).
      */
     template<class It> linear_feedback_shift_engine(It& first, It last)
     { seed(first, last); }
-    
+
     /** Seeds a @c linear_feedback_shift_engine with the default seed. */
     void seed() {  seed(default_seed); }
-    
+
     /** Seeds a @c linear_feedback_shift_engine with @c s0. */
     BOOST_RANDOM_DETAIL_ARITHMETIC_SEED(linear_feedback_shift_engine,
         UIntType, s0)
@@ -95,7 +95,7 @@ public:
             value += 1 << (w-k);
         }
     }
-    
+
     /**
      * Seeds a @c linear_feedback_shift_engine with values
      * produced by @c seq.generate().
@@ -103,7 +103,7 @@ public:
     BOOST_RANDOM_DETAIL_SEED_SEQ_SEED(linear_feedback_shift_engine,
         SeedSeq, seq)
     { seed(detail::seed_one_int<UIntType, (UIntType(2) << (w - 1))>(seq)); }
-    
+
     /**
      * Seeds a @c linear_feedback_shift_engine with values
      * from the range [first, last).
@@ -121,7 +121,7 @@ public:
         value = ((value & mask) << s) ^ b;
         return value;
     }
-  
+
     /** Fills a range with random values */
     template<class Iter>
     void generate(Iter first, Iter last)
@@ -134,7 +134,7 @@ public:
             (*this)();
         }
     }
-    
+
     /**
      * Writes the textual representation of the generator to a @c std::ostream.
      */
@@ -143,7 +143,7 @@ public:
         os << x.value;
         return os;
     }
-    
+
     /**
      * Reads the textual representation of the generator from a @c std::istream.
      */
@@ -159,7 +159,7 @@ public:
      */
     BOOST_RANDOM_DETAIL_EQUALITY_OPERATOR(linear_feedback_shift_engine, x, y)
     { return x.value == y.value; }
-    
+
     /**
      * Returns true if the two generators will produce different
      * sequences of outputs.

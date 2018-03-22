@@ -881,7 +881,7 @@ static void debug_parent_child_exited( int pid, int exit_code )
 
 static void debug_parent_child_signalled( int pid, int sigid )
 {
-    
+
     if ( debug_interface == DEBUG_INTERFACE_CONSOLE )
     {
         printf( "Child %d exited on signal %d\n", child_pid, sigid );
@@ -1028,7 +1028,7 @@ void debug_init_handles( const char * in, const char * out )
     sscanf( in, "%p", &read_handle );
     read_fd = _open_osfhandle( (intptr_t)read_handle, _O_RDONLY );
     command_input = _fdopen( read_fd, "r" );
-    
+
     sscanf( out, "%p", &write_handle );
     write_fd = _open_osfhandle( (intptr_t)write_handle, _O_WRONLY );
     command_output = _fdopen( write_fd, "w" );
@@ -1479,7 +1479,7 @@ static void debug_parent_clear( int argc, const char * * argv )
     {
         printf( "Deleted breakpoint %d\n", id );
     }
-    
+
     sprintf( buf, "%d", id );
     new_args[ 0 ] = "delete";
     new_args[ 1 ] = buf;
@@ -1517,7 +1517,7 @@ static void debug_parent_backtrace( int argc, const char * * argv )
     int depth;
     int i;
     FRAME_INFO frame;
-    
+
     if ( debug_state == DEBUG_NO_CHILD )
     {
         debug_error( "The program is not being run." );
@@ -1561,7 +1561,7 @@ static void debug_parent_quit( int argc, const char * * argv )
 static const char * const help_text[][2] =
 {
     {
-        "run", 
+        "run",
         "run <args>\n"
         "Creates a new b2 child process passing <args> on the command line."
         "  Terminates\nthe current child (if any).\n"
@@ -2069,7 +2069,7 @@ static void debug_mi_break_list( int argc, const char * * argv )
         debug_mi_error( "Too many arguments for -break-list" );
         return;
     }
-    
+
     number = 0;
     for ( i = 0; i < num_breakpoints; ++i )
         if ( breakpoints[ i ].status != BREAKPOINT_DELETED )
@@ -2289,7 +2289,7 @@ static void debug_mi_stack_list_variables( int argc, const char * * argv )
         printf( "^error,msg=\"Too many arguments for -stack-list-variables\"\n(gdb) \n" );
         return;
     }
-    
+
     {
         LIST * vars;
         LISTITER iter, end;
@@ -2394,7 +2394,7 @@ static void debug_mi_stack_list_locals( int argc, const char * * argv )
         printf( "^error,msg=\"Too many arguments for -stack-list-variables\"\n(gdb) \n" );
         return;
     }
-    
+
     {
         LIST * vars;
         LISTITER iter, end;
@@ -2441,7 +2441,7 @@ static void debug_mi_stack_list_frames( int argc, const char * * argv )
     const char * new_args[ 3 ];
     int depth;
     int i;
-    
+
     if ( debug_state == DEBUG_NO_CHILD )
     {
         debug_mi_format_token();

@@ -51,7 +51,7 @@ public:
         ::boost::ignore_unused_variable_warning(parameters);
 
         children_type & children = rtree::elements(n);
-        
+
         // children are leafs
         if ( node_relative_level <= 1 )
         {

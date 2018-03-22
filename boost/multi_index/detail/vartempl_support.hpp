@@ -24,7 +24,7 @@
  * defined in such way accepts *exactly* BOOST_MULTI_INDEX_LIMIT_VARTEMPL_ARGS
  * arguments: variable number of arguments is emulated by providing a set of
  * overloads foo forwarding to foo_impl with
- * 
+ *
  *   BOOST_MULTI_INDEX_OVERLOADS_TO_VARTEMPL
  *   BOOST_MULTI_INDEX_OVERLOADS_TO_VARTEMPL_EXTRA_ARG (initial extra arg)
  *
@@ -157,9 +157,9 @@ BOOST_PP_REPEAT_FROM_TO(                                             \
   (ret)(name_from)(name_to)(extra_arg_type)(extra_arg_name))
 
 namespace boost{
-  
+
 namespace multi_index{
-  
+
 namespace detail{
 
 #define BOOST_MULTI_INDEX_VARTEMPL_TO_PLACEMENT_NEW_AUX(z,n,name)    \
@@ -226,9 +226,9 @@ template<typename... Args> ret name_from(                            \
 }
 
 namespace boost{
-  
+
 namespace multi_index{
-  
+
 namespace detail{
 
 template<typename Value,typename... Args>

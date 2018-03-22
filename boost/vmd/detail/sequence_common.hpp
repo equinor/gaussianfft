@@ -367,7 +367,7 @@
         call(BOOST_VMD_DETAIL_SEQUENCE_STATE_INPUT(state),BOOST_VMD_RETURN_AFTER) \
         ) \
 /**/
-    
+
 #define    BOOST_VMD_DETAIL_SEQUENCE_TEST_TYPE_D(d,call,state) \
     BOOST_VMD_DETAIL_SEQUENCE_TEST_TYPE_TUPLE \
         ( \
@@ -376,7 +376,7 @@
         call(d,BOOST_VMD_DETAIL_SEQUENCE_STATE_INPUT(state),BOOST_VMD_RETURN_AFTER) \
         ) \
 /**/
-    
+
 #define BOOST_VMD_DETAIL_SEQUENCE_GCLRT(state) \
     BOOST_PP_CAT \
         ( \
@@ -700,7 +700,7 @@
             BOOST_VMD_DETAIL_SEQUENCE_STATE_INPUT(state) \
             ), \
             BOOST_VMD_DETAIL_SEQUENCE_STATE_RESULT(state) \
-        ) 
+        )
 /**/
 
 #define BOOST_VMD_DETAIL_SEQUENCE_ELEM_PROCESS_TUPLE_GET_D(d,state) \
@@ -716,7 +716,7 @@
             BOOST_VMD_DETAIL_SEQUENCE_STATE_INPUT(state) \
             ), \
             BOOST_VMD_DETAIL_SEQUENCE_STATE_RESULT(state) \
-        ) 
+        )
 /**/
 
 #define BOOST_VMD_DETAIL_SEQUENCE_ELEM_PROCESS_TUPLE(vseq,elem,output,from) \

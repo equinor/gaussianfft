@@ -11,7 +11,7 @@
 # include <boost/mpl/bool.hpp>
 # include <boost/detail/workaround.hpp>
 
-namespace boost { namespace python { namespace detail { 
+namespace boost { namespace python { namespace detail {
 
 template <class T>
 struct is_string_literal : mpl::false_
@@ -42,7 +42,7 @@ struct is_string_literal<T[n]>
     : is_same<T, char const>
 {
 };
-#  endif 
+#  endif
 
 }}} // namespace boost::python::detail
 

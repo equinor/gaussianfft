@@ -42,7 +42,7 @@ LIST * regex_split( FRAME * frame, int flags )
     LISTITER iter = list_begin( args );
     s = list_item( iter );
     separator = list_item( list_next( iter ) );
-    
+
     re = regex_compile( separator );
 
     pos = object_str( s );
@@ -98,9 +98,9 @@ LIST * regex_replace( FRAME * frame, int flags )
     match = list_item( iter );
     iter = list_next( iter );
     replacement = list_item(iter );
-    
+
     re = regex_compile( match );
-    
+
     string_new( buf );
 
     pos = object_str( s );

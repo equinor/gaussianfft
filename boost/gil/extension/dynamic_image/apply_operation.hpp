@@ -1,6 +1,6 @@
 /*
     Copyright 2005-2007 Adobe Systems Incorporated
-   
+
     Use, modification and distribution are subject to the Boost Software License,
     Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
     http://www.boost.org/LICENSE_1_0.txt).
@@ -14,7 +14,7 @@
 #define GIL_APPLY_OPERATION_HPP
 
 ////////////////////////////////////////////////////////////////////////////////////////
-/// \file               
+/// \file
 /// \brief Implements apply_operation for variants. Optionally performs type reduction
 /// \author Lubomir Bourdev and Hailin Jin \n
 ///         Adobe Systems Incorporated
@@ -46,14 +46,14 @@ typename UnaryOp::result_type apply_operation(const variant<Types>& arg, UnaryOp
 /// \ingroup Variant
 /// \brief Invokes a generic constant operation (represented as a binary function object) on two variants
 template <typename Types1, typename Types2, typename BinaryOp> GIL_FORCEINLINE
-typename BinaryOp::result_type apply_operation(const variant<Types1>& arg1, const variant<Types2>& arg2, BinaryOp op) {    
+typename BinaryOp::result_type apply_operation(const variant<Types1>& arg1, const variant<Types2>& arg2, BinaryOp op) {
     return apply_operation_base<Types1,Types2>(arg1._bits, arg1._index, arg2._bits, arg2._index, op);
 }
 
 } }  // namespace boost::gil
 
 #else
-   
+
 #include "reduce.hpp"
 
 #endif

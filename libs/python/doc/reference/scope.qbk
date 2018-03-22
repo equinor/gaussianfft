@@ -33,7 +33,7 @@ Stores a reference to the current associated scope object. The object base class
 
 ``~scope()``
 
-Sets the current associated Python object to the stored object. 
+Sets the current associated Python object to the stored object.
 [endsect]
 [section Example]
 The following example shows how scope setting can be used to define nested classes.
@@ -58,7 +58,7 @@ BOOST_PYTHON_MODULE(nested)
    scope().attr("yes") = 1;
    scope().attr("no") = 0;
 
-   // Change the current scope 
+   // Change the current scope
    scope outer
        = class_<X>("X")
             .def("f", &X::f)

@@ -61,7 +61,7 @@
 /*
 
   Input is any VMD data and a VMD type for that data
-  
+
   If the type is a tuple, checks to see if it is a more specific
   type and, if it is, returns that type,
   otherwise returns the type passed as a parameter

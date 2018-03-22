@@ -194,7 +194,7 @@ struct mpfi_float_imp
    mpfi_float_imp& operator = (const char* s)
    {
       using default_ops::eval_fpclassify;
-   
+
       if(m_data[0].left._mpfr_d == 0)
          mpfi_init2(m_data, multiprecision::detail::digits10_2_2(digits10 ? digits10 : get_default_precision()));
 
@@ -796,7 +796,7 @@ inline void assign_components(mpfi_float_backend<D1>& result, const mpfr_float_b
 }
 
 template <unsigned Digits10, class V>
-inline typename enable_if_c<is_convertible<V, number<mpfr_float_backend<Digits10, allocate_dynamic>, et_on> >::value >::type 
+inline typename enable_if_c<is_convertible<V, number<mpfr_float_backend<Digits10, allocate_dynamic>, et_on> >::value >::type
    assign_components(mpfi_float_backend<Digits10>& result, const V& a, const V& b)
 {
    number<mpfr_float_backend<Digits10, allocate_dynamic>, et_on> x(a), y(b);

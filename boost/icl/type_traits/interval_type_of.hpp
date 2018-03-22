@@ -1,4 +1,4 @@
-/*-----------------------------------------------------------------------------+    
+/*-----------------------------------------------------------------------------+
 Copyright (c) 2010-2010: Joachim Faulhaber
 +------------------------------------------------------------------------------+
    Distributed under the Boost Software License, Version 1.0.
@@ -20,11 +20,11 @@ namespace boost{ namespace icl
     }
 
     template <class Type>
-    struct has_interval_type 
+    struct has_interval_type
       : mpl::bool_<detail::has_interval_type<Type>::value>
     {};
 
-    template <class Type, bool has_interval_type> 
+    template <class Type, bool has_interval_type>
     struct get_interval_type;
 
     template <class Type>
@@ -42,7 +42,7 @@ namespace boost{ namespace icl
     template <class Type>
     struct interval_type_of
     {
-        typedef typename 
+        typedef typename
             get_interval_type<Type, has_interval_type<Type>::value>::type type;
     };
 

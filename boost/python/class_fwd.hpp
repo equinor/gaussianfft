@@ -8,7 +8,7 @@
 # include <boost/python/detail/prefix.hpp>
 # include <boost/python/detail/not_specified.hpp>
 
-namespace boost { namespace python { 
+namespace boost { namespace python {
 
 template <
     class T // class being wrapped

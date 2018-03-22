@@ -91,7 +91,7 @@ class circular_buffer
 
 public:
 // Basic types
-    
+
     //! The type of this <code>circular_buffer</code>.
     typedef circular_buffer<T, Alloc> this_type;
 
@@ -669,7 +669,7 @@ public:
                         boost::container::allocator_traits<Alloc>::construct(m_alloc, cb_details::to_address(dest), boost::move_if_noexcept(*src));
                         ++constructed;
                     } else {
-                        value_type tmp = boost::move_if_noexcept(*src); 
+                        value_type tmp = boost::move_if_noexcept(*src);
                         replace(src, boost::move_if_noexcept(*dest));
                         replace(dest, boost::move(tmp));
                     }
@@ -850,7 +850,7 @@ public:
     capacity_type capacity() const BOOST_NOEXCEPT { return m_end - m_buff; }
 
     //! Change the capacity of the <code>circular_buffer</code>.
-    /*! 
+    /*!
         \pre If <code>T</code> is a move only type, then compiler shall support <code>noexcept</code> modifiers
                 and move constructor of <code>T</code> must be marked with it (must not throw exceptions).
         \post <code>capacity() == new_capacity \&\& size() \<= new_capacity</code><br><br>
@@ -926,7 +926,7 @@ public:
     }
 
     //! Change the capacity of the <code>circular_buffer</code>.
-    /*! 
+    /*!
         \pre If <code>T</code> is a move only type, then compiler shall support <code>noexcept</code> modifiers
                 and move constructor of <code>T</code> must be marked with it (must not throw exceptions).
         \post <code>capacity() == new_capacity \&\& size() \<= new_capacity</code><br><br>
@@ -1110,7 +1110,7 @@ public:
         if (m_last == m_end)
             m_last = m_buff;
     }
-    
+
 #ifndef BOOST_NO_CXX11_RVALUE_REFERENCES
     //! The move constructor.
     /*! \brief Move constructs a <code>circular_buffer</code> from <code>cb</code>, leaving <code>cb</code> empty.
@@ -1425,7 +1425,7 @@ private:
             boost::container::allocator_traits<Alloc>::construct(m_alloc, cb_details::to_address(m_last), static_cast<ValT>(item));
             increment(m_last);
             ++m_size;
-        }        
+        }
     }
 
     template <class ValT>
@@ -1646,7 +1646,7 @@ public:
         \throws Whatever <code>T::T(const T&)</code> throws.
                 Whatever <code>T::operator = (const T&)</code> throws.
                 <a href="circular_buffer/implementation.html#circular_buffer.implementation.exceptions_of_move_if_noexcept_t">Exceptions of move_if_noexcept(T&)</a>.
-         
+
         \par Exception Safety
              Basic; no-throw if the operation in the <i>Throws</i> section does not throw anything.
         \par Iterator Invalidation
@@ -1887,7 +1887,7 @@ private:
     }
 
 public:
-   
+
     //! Insert an element before the specified position.
     /*!
         \pre <code>pos</code> is a valid iterator pointing to the <code>circular_buffer</code> or its end.

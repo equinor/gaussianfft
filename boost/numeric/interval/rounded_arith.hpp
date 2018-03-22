@@ -74,7 +74,7 @@ struct rounded_arith_std: Rounding {
 # undef BOOST_NR
 # undef BOOST_UP
 };
-  
+
 template<class T, class Rounding>
 struct rounded_arith_opp: Rounding {
   void init() { this->upward(); }

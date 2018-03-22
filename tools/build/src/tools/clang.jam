@@ -16,12 +16,12 @@ rule init ( * : * )
 {
     if [ os.name ] = MACOSX
     {
-        toolset.using clang-darwin : 
+        toolset.using clang-darwin :
           $(1) : $(2) : $(3) : $(4) : $(5) : $(6) : $(7) : $(8) : $(9) ;
     }
     else
     {
-        toolset.using clang-linux : 
+        toolset.using clang-linux :
           $(1) : $(2) : $(3) : $(4) : $(5) : $(6) : $(7) : $(8) : $(9) ;
     }
 }

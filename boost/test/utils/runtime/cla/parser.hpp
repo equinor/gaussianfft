@@ -109,12 +109,12 @@ struct parameter_trie {
 // **************      runtime::cla::report_foreing_token      ************** //
 // ************************************************************************** //
 
-static void 
+static void
 report_foreing_token( cstring program_name, cstring token )
 {
     std::cerr << "Boost.Test WARNING: token \"" << token << "\" does not correspond to the Boost.Test argument \n"
               << "                    and should be placed after all Boost.Test arguments and the -- separator.\n"
-              << "                    For example: " << program_name << " --random -- " << token << "\n"; 
+              << "                    For example: " << program_name << " --random -- " << token << "\n";
 }
 
 } // namespace rt_cla_detail
@@ -203,7 +203,7 @@ public:
 
             if( negative_form ) {
                 BOOST_TEST_I_ASSRT( found_id.m_negatable,
-                                    format_error( found_param->p_name ) 
+                                    format_error( found_param->p_name )
                                         << "Parameter tag " << found_id.m_tag << " is not negatable." );
 
                 curr_token.trim_left( m_negation_prefix.size() );
@@ -217,7 +217,7 @@ public:
             if( !value_separator.is_empty() || !found_param->p_has_optional_value ) {
                 // Validate and skip value separator in the input
                 BOOST_TEST_I_ASSRT( found_id.m_value_separator == value_separator,
-                                    format_error( found_param->p_name ) 
+                                    format_error( found_param->p_name )
                                         << "Invalid separator for the parameter "
                                         << found_param->p_name
                                         << " in the argument " << tr.current_token() );

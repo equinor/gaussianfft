@@ -117,9 +117,9 @@ See also unordered_multiset_of_relation.
 template
 <
     class KeyType,
-    class HashFunctor   = hash< BOOST_DEDUCED_TYPENAME 
+    class HashFunctor   = hash< BOOST_DEDUCED_TYPENAME
         ::boost::bimaps::tags::support::value_type_of<KeyType>::type >,
-    class EqualKey      = std::equal_to< BOOST_DEDUCED_TYPENAME 
+    class EqualKey      = std::equal_to< BOOST_DEDUCED_TYPENAME
         ::boost::bimaps::tags::support::value_type_of<KeyType>::type >
 >
 struct unordered_multiset_of : public ::boost::bimaps::detail::set_type_of_tag

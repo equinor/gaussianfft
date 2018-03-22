@@ -13,24 +13,24 @@ synopsis
 
 ::
 
-  namespace boost 
+  namespace boost
   {
   namespace python
   {
-  namespace numpy 
+  namespace numpy
   {
 
-  template <typename TUnaryFunctor, 
-            typename TArgument=typename TUnaryFunctor::argument_type, 
+  template <typename TUnaryFunctor,
+            typename TArgument=typename TUnaryFunctor::argument_type,
             typename TResult=typename TUnaryFunctor::result_type>
-  struct unary_ufunc 
+  struct unary_ufunc
   {
 
-    static object call(TUnaryFunctor & self, 
-                       object const & input, 
+    static object call(TUnaryFunctor & self,
+                       object const & input,
                        object const & output) ;
 
-    static object make(); 
+    static object make();
 
   };
   }
@@ -58,11 +58,11 @@ accessors
 
 ::
 
-  template <typename TUnaryFunctor, 
+  template <typename TUnaryFunctor,
             typename TArgument=typename TUnaryFunctor::argument_type,
             typename TResult=typename TUnaryFunctor::result_type>
-  static object call(TUnaryFunctor & self, 
-                     object const & input, 
+  static object call(TUnaryFunctor & self,
+                     object const & input,
                      object const & output);
 
 :Requires: Typenames ``TUnaryFunctor`` and optionally ``TArgument`` for argument type and ``TResult`` for result type
@@ -71,10 +71,10 @@ accessors
 
 ::
 
-  template <typename TUnaryFunctor, 
+  template <typename TUnaryFunctor,
             typename TArgument=typename TUnaryFunctor::argument_type,
             typename TResult=typename TUnaryFunctor::result_type>
-  static object make(); 
+  static object make();
 
 :Requires: Typenames ``TUnaryFunctor`` and optionally ``TArgument`` for argument type and ``TResult`` for result type
 
@@ -90,7 +90,7 @@ Example(s)
   namespace p = boost::python;
   namespace np = boost::python::numpy;
 
-  struct UnarySquare 
+  struct UnarySquare
   {
     typedef double argument_type;
     typedef double result_type;
@@ -99,5 +99,5 @@ Example(s)
 
   p::object ud = p::class_<UnarySquare, boost::shared_ptr<UnarySquare> >("UnarySquare").def("__call__", np::unary_ufunc<UnarySquare>::make());
   p::object inst = ud();
-  std::cout << "Square of unary scalar 1.0 is " << p::extract <char const * > (p::str(inst.attr("__call__")(1.0))) << std::endl ; 
+  std::cout << "Square of unary scalar 1.0 is " << p::extract <char const * > (p::str(inst.attr("__call__")(1.0))) << std::endl ;
 

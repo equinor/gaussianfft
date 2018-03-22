@@ -28,7 +28,7 @@
   //------------------------------------------------------------------------------------//
 
   class test_codecvt
-    : public std::codecvt< wchar_t, char, std::mbstate_t >  
+    : public std::codecvt< wchar_t, char, std::mbstate_t >
   {
   public:
     explicit test_codecvt()
@@ -39,7 +39,7 @@
 
     virtual int do_encoding() const throw() { return 0; }
 
-    virtual std::codecvt_base::result do_in(std::mbstate_t&, 
+    virtual std::codecvt_base::result do_in(std::mbstate_t&,
       const char* from, const char* from_end, const char*& from_next,
       wchar_t* to, wchar_t* to_end, wchar_t*& to_next) const
     {
@@ -68,7 +68,7 @@
     }
 
     virtual std::codecvt_base::result do_unshift(std::mbstate_t&,
-        char* /*from*/, char* /*to*/, char* & /*next*/) const  { return ok; } 
+        char* /*from*/, char* /*to*/, char* & /*next*/) const  { return ok; }
 
     virtual int do_length(std::mbstate_t&,
       const char* /*from*/, const char* /*from_end*/, std::size_t /*max*/) const  { return 0; }

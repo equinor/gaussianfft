@@ -48,7 +48,7 @@ public:
     ~shared_library_impl() BOOST_NOEXCEPT {
         unload();
     }
-    
+
     shared_library_impl(BOOST_RV_REF(shared_library_impl) sl) BOOST_NOEXCEPT
         : handle_(sl.handle_)
     {
@@ -137,9 +137,9 @@ public:
         boost::system::error_code prog_loc_err;
         boost::filesystem::path loc = boost::dll::detail::program_location_impl(prog_loc_err);
         if (!prog_loc_err && boost::filesystem::equivalent(sl, loc, prog_loc_err) && !prog_loc_err) {
-            // As is known the function dlopen() loads the dynamic library file 
-            // named by the null-terminated string filename and returns an opaque 
-            // "handle" for the dynamic library. If filename is NULL, then the 
+            // As is known the function dlopen() loads the dynamic library file
+            // named by the null-terminated string filename and returns an opaque
+            // "handle" for the dynamic library. If filename is NULL, then the
             // returned handle is for the main program.
             ec.clear();
             boost::dll::detail::reset_dlerror();

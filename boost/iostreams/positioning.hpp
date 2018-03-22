@@ -23,14 +23,14 @@
 #include <boost/iostreams/detail/ios.hpp> // streamoff, streampos.
 
 // Must come last.
-#include <boost/iostreams/detail/config/disable_warnings.hpp> 
+#include <boost/iostreams/detail/config/disable_warnings.hpp>
 
 #ifdef BOOST_NO_STDC_NAMESPACE
 namespace std { using ::fpos_t; }
 #endif
 
 namespace boost { namespace iostreams {
-                    
+
 //------------------Definition of stream_offset-------------------------------//
 
 typedef boost::intmax_t stream_offset;
@@ -56,7 +56,7 @@ inline std::streampos offset_to_position(stream_offset off)
 //------------------Definition of position_to_offset--------------------------//
 
 // Hande custom pos_type's
-template<typename PosType> 
+template<typename PosType>
 inline stream_offset position_to_offset(PosType pos)
 { return std::streamoff(pos); }
 
@@ -68,15 +68,15 @@ inline stream_offset position_to_offset(std::streampos pos) { return pos; }
 
 // In the Dinkumware standard library, a std::streampos consists of two stream
 // offsets -- _Fpos, of type std::fpos_t, and _Myoff, of type std::streamoff --
-// together with a conversion state. A std::streampos is converted to a 
+// together with a conversion state. A std::streampos is converted to a
 // boost::iostreams::stream_offset by extracting the two stream offsets and
 // summing them. The value of _Fpos can be extracted using the implementation-
-// defined member functions seekpos() or get_fpos_t(), depending on the 
+// defined member functions seekpos() or get_fpos_t(), depending on the
 // Dinkumware version. The value of _Myoff cannot be extracted directly, but can
-// be calculated as the difference between the result of converting the 
+// be calculated as the difference between the result of converting the
 // std::fpos to a std::streamoff and the result of converting the member _Fpos
 // to a long. The latter operation is accomplished with the macro BOOST_IOSTREAMS_FPOSOFF,
-// which works correctly on platforms where std::fpos_t is an integral type and 
+// which works correctly on platforms where std::fpos_t is an integral type and
 // platforms where it is a struct
 
 // Converts a std::fpos_t to a stream_offset
@@ -108,10 +108,10 @@ inline stream_offset position_to_offset(std::streampos pos)
         );
 }
 
-# endif // # ifndef BOOST_IOSTREAMS_HAS_DINKUMWARE_FPOS 
+# endif // # ifndef BOOST_IOSTREAMS_HAS_DINKUMWARE_FPOS
 
 } } // End namespaces iostreams, boost.
 
-#include <boost/iostreams/detail/config/enable_warnings.hpp> 
+#include <boost/iostreams/detail/config/enable_warnings.hpp>
 
 #endif // #ifndef BOOST_IOSTREAMS_POSITIONING_HPP_INCLUDED

@@ -152,7 +152,7 @@ public:
                     BOOST_FUNCTIONAL_base_init, ~)
     {}
 
-    BOOST_PP_REPEAT(BOOST_FUNCTIONAL_overloads, 
+    BOOST_PP_REPEAT(BOOST_FUNCTIONAL_overloads,
             BOOST_FUNCTIONAL_using_operator_call, ~)
 };
 

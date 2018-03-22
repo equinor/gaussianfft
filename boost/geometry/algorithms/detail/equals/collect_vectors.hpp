@@ -71,7 +71,7 @@ struct collected_vector
     >
 {
     typedef T type;
-    
+
     inline collected_vector()
     {}
 
@@ -167,7 +167,7 @@ struct collected_vector
     >
 {
     typedef T type;
-    
+
     typedef typename coordinate_system<Geometry>::type cs_type;
     typedef model::point<T, 2, cs_type> point_type;
     typedef model::point<T, 3, cs::cartesian> vector_type;
@@ -245,7 +245,7 @@ private:
         return formula::sph_side_value(direction, other.prev) == 0
             && formula::sph_side_value(direction, other.next) == 0;
     }
-    
+
     /*bool same_direction(collected_vector const& other) const
     {
         return math::equals_with_epsilon(get<0>(direction), get<0>(other.direction))

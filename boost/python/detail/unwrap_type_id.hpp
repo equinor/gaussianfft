@@ -12,7 +12,7 @@ namespace boost { namespace python {
 
 template <class T> class wrapper;
 
-namespace detail { 
+namespace detail {
 
 template <class T>
 inline type_info unwrap_type_id(T*, ...)

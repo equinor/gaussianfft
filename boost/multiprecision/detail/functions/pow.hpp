@@ -10,7 +10,7 @@
 // in ACM TOMS, {VOL 37, ISSUE 4, (February 2011)} (C) ACM, 2011. http://doi.acm.org/10.1145/1916461.1916469
 //
 // This file has no include guards or namespaces - it's expanded inline inside default_ops.hpp
-// 
+//
 
 #ifdef BOOST_MSVC
 #pragma warning(push)
@@ -19,7 +19,7 @@
 
 namespace detail{
 
-template<typename T, typename U> 
+template<typename T, typename U>
 inline void pow_imp(T& result, const T& t, const U& p, const mpl::false_&)
 {
    // Compute the pure power of typename T t^p.
@@ -66,7 +66,7 @@ inline void pow_imp(T& result, const T& t, const U& p, const mpl::false_&)
    }
 }
 
-template<typename T, typename U> 
+template<typename T, typename U>
 inline void pow_imp(T& result, const T& t, const U& p, const mpl::true_&)
 {
    // Signed integer power, just take care of the sign then call the unsigned version:
@@ -87,7 +87,7 @@ inline void pow_imp(T& result, const T& t, const U& p, const mpl::true_&)
 
 } // namespace detail
 
-template<typename T, typename U> 
+template<typename T, typename U>
 inline typename enable_if<is_integral<U> >::type eval_pow(T& result, const T& t, const U& p)
 {
    detail::pow_imp(result, t, p, boost::is_signed<U>());
@@ -117,7 +117,7 @@ void hyp0F0(T& H0F0, const T& x)
 
    ui_type n;
 
-   const unsigned series_limit = 
+   const unsigned series_limit =
       boost::multiprecision::detail::digits2<number<T, et_on> >::value() < 100
       ? 100 : boost::multiprecision::detail::digits2<number<T, et_on> >::value();
    // Series expansion of hyperg_0f0(; ; x).
@@ -215,7 +215,7 @@ void eval_exp(T& result, const T& x)
    {
       if(isneg)
          result = ui_type(0u);
-      else 
+      else
          result = x;
       return;
    }
@@ -279,7 +279,7 @@ void eval_exp(T& result, const T& x)
    }
    else if(exp_series.compare(x) == 0)
    {
-      // We have a value that has no fractional part, but is too large to fit 
+      // We have a value that has no fractional part, but is too large to fit
       // in a long long, in this situation the code below will fail, so
       // we're just going to assume that this will overflow:
       if(isneg)
@@ -382,7 +382,7 @@ void eval_log(T& result, const T& arg)
       eval_ldexp(t, t, 1);
       --e;
    }
-   
+
    eval_multiply(result, get_constant_ln2<T>(), canonical_exp_type(e));
    INSTRUMENT_BACKEND(result);
    eval_subtract(t, ui_type(1)); /* -0.3 <= t <= 0.3 */
@@ -456,7 +456,7 @@ inline void eval_log2(R& result, const T& a)
    eval_divide(result, get_constant_ln2<R>());
 }
 
-template<typename T> 
+template<typename T>
 inline void eval_pow(T& result, const T& x, const T& a)
 {
    BOOST_STATIC_ASSERT_MSG(number_category<T>::value == number_kind_floating_point, "The pow function is only valid for floating point types.");
@@ -498,7 +498,7 @@ inline void eval_pow(T& result, const T& x, const T& a)
       case FP_NORMAL:
       {
          // Need to check for a an odd integer as a special case:
-         try 
+         try
          {
             typename boost::multiprecision::detail::canonical<boost::intmax_t, T>::type i;
             eval_convert_to(&i, a);
@@ -567,13 +567,13 @@ inline void eval_pow(T& result, const T& x, const T& a)
       eval_divide(result, si_type(1), da);
       return;
    }
-   
+
    typename boost::multiprecision::detail::canonical<boost::intmax_t, T>::type an;
    typename boost::multiprecision::detail::canonical<boost::intmax_t, T>::type max_an =
       std::numeric_limits<typename boost::multiprecision::detail::canonical<boost::intmax_t, T>::type>::is_specialized ?
       (std::numeric_limits<typename boost::multiprecision::detail::canonical<boost::intmax_t, T>::type>::max)() :
       static_cast<typename boost::multiprecision::detail::canonical<boost::intmax_t, T>::type>(1) << (sizeof(typename boost::multiprecision::detail::canonical<boost::intmax_t, T>::type) * CHAR_BIT - 2);
-   typename boost::multiprecision::detail::canonical<boost::intmax_t, T>::type min_an = 
+   typename boost::multiprecision::detail::canonical<boost::intmax_t, T>::type min_an =
       std::numeric_limits<typename boost::multiprecision::detail::canonical<boost::intmax_t, T>::type>::is_specialized ?
       (std::numeric_limits<typename boost::multiprecision::detail::canonical<boost::intmax_t, T>::type>::min)() :
       -min_an;
@@ -714,7 +714,7 @@ inline void eval_pow(T& result, const T& x, const T& a)
    }
 }
 
-template<class T, class A> 
+template<class T, class A>
 inline typename enable_if<is_floating_point<A>, void>::type eval_pow(T& result, const T& x, const A& a)
 {
    // Note this one is restricted to float arguments since pow.hpp already has a version for
@@ -726,7 +726,7 @@ inline typename enable_if<is_floating_point<A>, void>::type eval_pow(T& result, 
    eval_pow(result, x, c);
 }
 
-template<class T, class A> 
+template<class T, class A>
 inline typename enable_if<is_arithmetic<A>, void>::type eval_pow(T& result, const A& x, const T& a)
 {
    typedef typename boost::multiprecision::detail::canonical<A, T>::type canonical_type;
@@ -832,8 +832,8 @@ namespace detail{
          if(eval_signbit(e_mx) != eval_signbit(e_px))
             e_mx.negate();  // Handles lack of signed zero in some types
 
-         if(p_sinh) 
-         { 
+         if(p_sinh)
+         {
             if(small_sinh)
             {
                small_sinh_series(x, *p_sinh);
@@ -844,10 +844,10 @@ namespace detail{
                eval_ldexp(*p_sinh, *p_sinh, -1);
             }
          }
-         if(p_cosh) 
-         { 
+         if(p_cosh)
+         {
             eval_add(*p_cosh, e_px, e_mx);
-            eval_ldexp(*p_cosh, *p_cosh, -1); 
+            eval_ldexp(*p_cosh, *p_cosh, -1);
          }
       }
       else

@@ -42,7 +42,7 @@ struct multipoint_to_multipoint
             Strategy,
             typename point_type<MultiPoint1>::type,
             typename point_type<MultiPoint2>::type
-        >::type return_type;   
+        >::type return_type;
 
     static inline return_type apply(MultiPoint1 const& multipoint1,
                                     MultiPoint2 const& multipoint2,

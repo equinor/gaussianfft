@@ -101,7 +101,7 @@ python::detail::new_reference dtype::convert(object const & arg, bool align)
 int dtype::get_itemsize() const { return reinterpret_cast<PyArray_Descr*>(ptr())->elsize;}
 
 bool equivalent(dtype const & a, dtype const & b) {
-    // On Windows x64, the behaviour described on 
+    // On Windows x64, the behaviour described on
     // http://docs.scipy.org/doc/numpy/reference/c-api.array.html for
     // PyArray_EquivTypes unfortunately does not extend as expected:
     // "For example, on 32-bit platforms, NPY_LONG and NPY_INT are equivalent".

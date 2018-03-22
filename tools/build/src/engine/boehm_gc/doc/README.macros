@@ -1,7 +1,7 @@
 The collector uses a large amount of conditional compilation in order to
 deal with platform dependencies.  This violates a number of known coding
 standards.  On the other hand, it seems to be the only practical way to
-support this many platforms without excessive code duplication. 
+support this many platforms without excessive code duplication.
 
 A few guidelines have mostly been followed in order to keep this manageable:
 
@@ -55,7 +55,7 @@ GC_DLL		User-settable macro that forces the effect of _DLL.  Set
 		its symbols, etc.  But in clients it indicates that the
 		GC resides in a different DLL, its entry points should
 		be referenced accordingly, and precautions may need to
-		be taken to properly deal with statically allocated 
+		be taken to properly deal with statically allocated
 		variables in the main program.  Used only for MS Windows.
 
 GC_NOT_DLL	User-settable macro that overrides _DLL, e.g. if dynamic

@@ -78,7 +78,7 @@ void eval_exp(cpp_bin_float<Digits, DigitBase, Allocator, Exponent, MinE, MaxE> 
       res = arg;
       if(isneg)
          res = limb_type(0u);
-      else 
+      else
          res = arg;
       return;
    }

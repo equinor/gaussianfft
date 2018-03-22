@@ -36,7 +36,7 @@ namespace boost
         {};
       public:
         typedef transform type;
-        
+
         template <class S, class Pos>
         struct apply :
           unless_error<typename P::template apply<S, Pos>, no_error<S, Pos> >

@@ -89,7 +89,7 @@ class set_view
     }
     */
 
-    set_view & operator=(const set_view & v) 
+    set_view & operator=(const set_view & v)
     {
         this->base() = v.base();
         return *this;

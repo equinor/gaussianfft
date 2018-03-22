@@ -14,7 +14,7 @@ namespace statechart
 {
 
 
-  
+
 class event_base;
 
 

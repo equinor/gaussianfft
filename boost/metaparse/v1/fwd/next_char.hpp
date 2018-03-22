@@ -14,7 +14,7 @@ namespace boost
     {
       template <class P>
       struct next_char_impl;
-      
+
       template <class P, class Ch>
       struct next_char;
     }

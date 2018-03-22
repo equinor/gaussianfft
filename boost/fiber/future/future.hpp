@@ -285,20 +285,20 @@ public:
 
     shared_future & operator=( shared_future const& other) noexcept {
         if ( BOOST_LIKELY( this != & other) ) {
-            base_type::operator=( other); 
+            base_type::operator=( other);
         }
         return * this;
     }
 
     shared_future & operator=( shared_future && other) noexcept {
         if ( BOOST_LIKELY( this != & other) ) {
-            base_type::operator=( std::move( other) ); 
+            base_type::operator=( std::move( other) );
         }
         return * this;
     }
 
     shared_future & operator=( future< R > && other) noexcept {
-        base_type::operator=( std::move( other) ); 
+        base_type::operator=( std::move( other) );
         return * this;
     }
 

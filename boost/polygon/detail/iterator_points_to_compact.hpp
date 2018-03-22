@@ -1,6 +1,6 @@
 /*
   Copyright 2008 Intel Corporation
- 
+
   Use, modification and distribution are subject to the Boost Software License,
   Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
   http://www.boost.org/LICENSE_1_0.txt).
@@ -23,9 +23,9 @@ public:
   typedef const coordinate_type& reference; //immutable
 
   inline iterator_points_to_compact() : iter_(), iterEnd_(), orient_(), coord_() {}
-  inline iterator_points_to_compact(iT iter, iT iterEnd) : 
+  inline iterator_points_to_compact(iT iter, iT iterEnd) :
     iter_(iter), iterEnd_(iterEnd), orient_(HORIZONTAL), coord_() {}
-  inline iterator_points_to_compact(const iterator_points_to_compact& that) : 
+  inline iterator_points_to_compact(const iterator_points_to_compact& that) :
     iter_(that.iter_), iterEnd_(that.iterEnd_), orient_(that.orient_), coord_(that.coord_) {}
   //use bitwise copy and assign provided by the compiler
   inline iterator_points_to_compact& operator++() {
@@ -50,7 +50,7 @@ public:
   inline bool operator!=(const iterator_points_to_compact& that) const {
     return (iter_ != that.iter_);
   }
-  inline reference operator*() const { coord_ = get(*iter_, orient_); 
+  inline reference operator*() const { coord_ = get(*iter_, orient_);
     return coord_;
   }
 };

@@ -1,4 +1,4 @@
-/*-----------------------------------------------------------------------------+    
+/*-----------------------------------------------------------------------------+
 Copyright (c) 2010-2010: Joachim Faulhaber
 +------------------------------------------------------------------------------+
    Distributed under the Boost Software License, Version 1.0.
@@ -40,7 +40,7 @@ erase_if(const Predicate& pred, Type& object);
 template<class Type>
 typename enable_if<is_element_map<Type>, bool>::type
 within(const typename Type::element_type& value_pair, const Type& super)
-{ 
+{
     typedef typename Type::const_iterator const_iterator;
     const_iterator found_ = super.find(value_pair.first);
     return found_ != super.end() && (*found_).second == value_pair.second;
@@ -71,25 +71,25 @@ is_distinct_equal(const Type& lhs, const Type& rhs)
 //==============================================================================
 //= Addition<ElementMap>
 //==============================================================================
-/** \c add inserts \c value_pair into the map if it's key does 
-    not exist in the map.    
+/** \c add inserts \c value_pair into the map if it's key does
+    not exist in the map.
     If \c value_pairs's key value exists in the map, it's data
     value is added to the data value already found in the map. */
 template <class Type>
 typename enable_if<is_element_map<Type>, Type>::type&
 add(Type& object, const typename Type::value_type& value_pair)
 {
-    return object.add(value_pair); 
+    return object.add(value_pair);
 }
 
 /** \c add add \c value_pair into the map using \c prior as a hint to
     insert \c value_pair after the position \c prior is pointing to. */
 template <class Type>
 typename enable_if<is_element_map<Type>, typename Type::iterator>::type
-add(Type& object, typename Type::iterator prior, 
-    const typename Type::value_type& value_pair) 
-{ 
-    return object.add(prior, value_pair); 
+add(Type& object, typename Type::iterator prior,
+    const typename Type::value_type& value_pair)
+{
+    return object.add(prior, value_pair);
 }
 
 //==============================================================================
@@ -106,7 +106,7 @@ erase(Type& object, const typename Type::element_type& value_pair)
     typedef typename Type::iterator              iterator;
     typedef typename Type::on_identity_absorbtion on_identity_absorbtion;
 
-    if(on_identity_absorbtion::is_absorbable(value_pair.second)) 
+    if(on_identity_absorbtion::is_absorbable(value_pair.second))
         return identity_element<size_type>::value();
 
     iterator it_ = object.find(value_pair.first);
@@ -124,10 +124,10 @@ typename enable_if<is_element_map<Type>, Type>::type&
 erase(Type& object, const typename Type::set_type& erasure)
 {
     typedef typename Type::set_type set_type;
-    ICL_const_FORALL(typename set_type, elem_, erasure) 
-        icl::erase(object, *elem_); 
+    ICL_const_FORALL(typename set_type, elem_, erasure)
+        icl::erase(object, *elem_);
 
-    return object; 
+    return object;
 }
 
 //==============================================================================
@@ -138,9 +138,9 @@ erase(Type& object, const typename Type::set_type& erasure)
 //------------------------------------------------------------------------------
 template <class Type>
 inline typename enable_if<is_element_map<Type>, Type>::type&
-subtract(Type& object, const typename Type::element_type& operand) 
-{ 
-    return object.subtract(operand); 
+subtract(Type& object, const typename Type::element_type& operand)
+{
+    return object.subtract(operand);
 }
 
 //------------------------------------------------------------------------------
@@ -154,12 +154,12 @@ subtract(Type& object, const typename Type::domain_type& key_value)
 }
 
 //------------------------------------------------------------------------------
-//- T& subtract(T&, c P&) T:{m} P:{s} set key_type 
+//- T& subtract(T&, c P&) T:{m} P:{s} set key_type
 //------------------------------------------------------------------------------
 template <class Type>
 inline typename enable_if<is_element_map<Type>, Type>::type&
-operator -= (Type& object, const typename Type::set_type& operand) 
-{ 
+operator -= (Type& object, const typename Type::set_type& operand)
+{
     typedef typename Type::set_type           set_type;
     typedef typename set_type::const_iterator co_iterator;
     typedef typename Type::iterator           iterator;
@@ -179,9 +179,9 @@ operator -= (Type& object, const typename Type::set_type& operand)
 
 template <class Type>
 inline typename enable_if<is_element_map<Type>, Type>::type
-operator - (Type object, const typename Type::set_type& subtrahend) 
-{ 
-    return object -= subtrahend; 
+operator - (Type object, const typename Type::set_type& subtrahend)
+{
+    return object -= subtrahend;
 }
 
 //==============================================================================
@@ -214,7 +214,7 @@ set_at(Type& object, const typename Type::element_type& operand)
 //==============================================================================
 template<class Type>
 inline typename enable_if<is_element_map<Type>, void>::type
-add_intersection(Type& section, const Type&               object, 
+add_intersection(Type& section, const Type&               object,
                        const typename Type::element_type& operand)
 {
     object.add_intersection(section, operand);
@@ -224,8 +224,8 @@ template<class Type>
 inline typename enable_if<is_element_map<Type>, void>::type
 add_intersection(Type& section, const Type& object, const Type& operand)
 {
-    ICL_const_FORALL(typename Type, it_, operand) 
-        icl::add_intersection(section, object, *it_); 
+    ICL_const_FORALL(typename Type, it_, operand)
+        icl::add_intersection(section, object, *it_);
 }
 
 //------------------------------------------------------------------------------
@@ -247,7 +247,7 @@ operator &=(Type& object, const typename Type::element_type& operand)
     Type section;
     icl::add_intersection(section, object, operand);
     object.swap(section);
-    return object; 
+    return object;
 }
 
 template<class Type>
@@ -269,7 +269,7 @@ template<class Type>
 inline typename enable_if<mpl::and_<is_element_map<Type>, is_total<Type> >, Type>::type&
 operator &=(Type& object, const Type& operand)
 {
-    object += operand; 
+    object += operand;
     return object;
 }
 
@@ -280,7 +280,7 @@ operator &=(Type& object, const Type& operand)
     Type section;
     icl::add_intersection(section, object, operand);
     object.swap(section);
-    return object; 
+    return object;
 }
 
 template<class Type>
@@ -302,7 +302,7 @@ operator & (const typename Type::key_object_type& operand, Type object)
 //==============================================================================
 template<class Type, class CoType>
 inline typename enable_if< mpl::and_< is_element_map<Type>
-                                    , is_total<Type>      > 
+                                    , is_total<Type>      >
                          , bool>::type
 intersects(const Type&, const CoType&)
 {
@@ -311,7 +311,7 @@ intersects(const Type&, const CoType&)
 
 template<class Type>
 inline typename enable_if< mpl::and_< is_element_map<Type>
-                                    , mpl::not_<is_total<Type> > > 
+                                    , mpl::not_<is_total<Type> > >
                          , bool>::type
 intersects(const Type& object, const typename Type::domain_type& operand)
 {
@@ -320,7 +320,7 @@ intersects(const Type& object, const typename Type::domain_type& operand)
 
 template<class Type>
 inline typename enable_if< mpl::and_< is_element_map<Type>
-                                    , mpl::not_<is_total<Type> > > 
+                                    , mpl::not_<is_total<Type> > >
                          , bool>::type
 intersects(const Type& object, const typename Type::set_type& operand)
 {
@@ -332,7 +332,7 @@ intersects(const Type& object, const typename Type::set_type& operand)
 
 template<class Type>
 inline typename enable_if< mpl::and_< is_element_map<Type>
-                                    , mpl::not_<is_total<Type> > > 
+                                    , mpl::not_<is_total<Type> > >
                          , bool>::type
 intersects(const Type& object, const typename Type::element_type& operand)
 {
@@ -343,7 +343,7 @@ intersects(const Type& object, const typename Type::element_type& operand)
 
 template<class Type>
 inline typename enable_if< mpl::and_< is_element_map<Type>
-                                    , mpl::not_<is_total<Type> > > 
+                                    , mpl::not_<is_total<Type> > >
                          , bool>::type
 intersects(const Type& object, const Type& operand)
 {
@@ -365,8 +365,8 @@ flip(Type& object, const typename Type::element_type& operand)
 
 template<class Type, class CoType>
 inline typename enable_if< mpl::and_< is_element_map<Type>
-                                    , is_total<Type>       
-                                    , absorbs_identities<Type> > 
+                                    , is_total<Type>
+                                    , absorbs_identities<Type> >
                          , Type>::type&
 operator ^= (Type& object, const CoType&)
 {
@@ -376,8 +376,8 @@ operator ^= (Type& object, const CoType&)
 
 template<class Type>
 inline typename enable_if< mpl::and_< is_element_map<Type>
-                                    , is_total<Type>       
-                                    , mpl::not_<absorbs_identities<Type> > > 
+                                    , is_total<Type>
+                                    , mpl::not_<absorbs_identities<Type> > >
                          , Type>::type&
 operator ^= (Type& object, const typename Type::element_type& operand)
 {
@@ -386,8 +386,8 @@ operator ^= (Type& object, const typename Type::element_type& operand)
 
 template<class Type>
 inline typename enable_if< mpl::and_< is_element_map<Type>
-                                    , is_total<Type>       
-                                    , mpl::not_<absorbs_identities<Type> > > 
+                                    , is_total<Type>
+                                    , mpl::not_<absorbs_identities<Type> > >
                          , Type>::type&
 operator ^= (Type& object, const Type& operand)
 {
@@ -403,7 +403,7 @@ operator ^= (Type& object, const Type& operand)
 
 template<class Type>
 inline typename enable_if< mpl::and_< is_element_map<Type>
-                                    , mpl::not_<is_total<Type> > > 
+                                    , mpl::not_<is_total<Type> > >
                          , Type>::type&
 operator ^= (Type& object, const typename Type::element_type& operand)
 {
@@ -412,7 +412,7 @@ operator ^= (Type& object, const typename Type::element_type& operand)
 
 template<class Type>
 inline typename enable_if< mpl::and_< is_element_map<Type>
-                                    , mpl::not_<is_total<Type> > > 
+                                    , mpl::not_<is_total<Type> > >
                          , Type>::type&
 operator ^= (Type& object, const Type& operand)
 {
@@ -429,7 +429,7 @@ operator ^= (Type& object, const Type& operand)
 //= Set selection
 //==============================================================================
 template<class Type>
-inline typename enable_if<is_element_map<Type>, 
+inline typename enable_if<is_element_map<Type>,
                           typename Type::set_type>::type&
 domain(typename Type::set_type& domain_set, const Type& object)
 {

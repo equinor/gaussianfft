@@ -138,7 +138,7 @@ namespace
       outfile << "<td><font size=\"-1\"><i>empty</i></font></td>\n";
     else
       outfile << "<td><code>" << test_case << "</code></td>\n";
-    
+
     for ( int i = 0; i < sizeof(column)/sizeof(column_base&); ++i )
     {
       do_cell( test_case, i );
@@ -155,7 +155,7 @@ namespace
       "<h1>Path Decomposition Table</h1>\n"
       "<p>Shaded entries indicate cases where <i>POSIX</i> and <i>Windows</i>\n"
       "implementations yield different results. The top value is the\n"
-      "<i>POSIX</i> result and the bottom value is the <i>Windows</i> result.\n" 
+      "<i>POSIX</i> result and the bottom value is the <i>Windows</i> result.\n"
       "<table border=\"1\" cellspacing=\"0\" cellpadding=\"5\">\n"
       "<p>\n"
       ;

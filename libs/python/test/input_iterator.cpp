@@ -37,7 +37,7 @@ list_range2 range2(list_int& x)
 BOOST_PYTHON_MODULE(input_iterator)
 {
     def("range2", &::range2);
-    
+
     class_<list_range2>("list_range2")
         // We can wrap InputIterators which return by-value
         .def("__iter__"

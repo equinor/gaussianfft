@@ -19,8 +19,8 @@ namespace boost { namespace python { namespace api {
 // coming up as ambiguous with the one taking a char const* when a
 // string literal is passed
 #  define BOOST_PYTHON_NO_ARRAY_ARG(T)             , T (*)() = 0
-# else 
-#  define BOOST_PYTHON_NO_ARRAY_ARG(T) 
+# else
+#  define BOOST_PYTHON_NO_ARRAY_ARG(T)
 # endif
 
 template <class Target, class Key>

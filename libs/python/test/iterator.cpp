@@ -64,13 +64,13 @@ struct two_lists
         result_type operator()(two_lists& ll) const { return ll.two.begin(); }
     };
     friend struct two_start;
-    
+
     list_int::iterator one_begin() { return one.begin(); }
     list_int::iterator two_begin() { return two.begin(); }
 
     list_int::iterator one_end() { return one.end(); }
     list_int::iterator two_end() { return two.end(); }
-        
+
 private:
     list_int one;
     list_int two;
@@ -124,7 +124,7 @@ BOOST_PYTHON_MODULE(iterator_ext)
                 two_lists::two_start()
 # else
                 &two_lists::two_begin
-# endif 
+# endif
                 , &two_lists::two_end))
         ;
 

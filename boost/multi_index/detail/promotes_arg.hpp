@@ -54,7 +54,7 @@ namespace boost{
 namespace multi_index{
 
 namespace detail{
-  
+
 template<typename F,typename Arg1,typename Arg2>
 struct promotes_1st_arg:
   mpl::and_<

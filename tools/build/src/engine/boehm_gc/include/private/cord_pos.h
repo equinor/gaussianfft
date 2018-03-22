@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 1993-1994 by Xerox Corporation.  All rights reserved.
  *
  * THIS MATERIAL IS PROVIDED AS IS, WITH ABSOLUTELY NO WARRANTY EXPRESSED

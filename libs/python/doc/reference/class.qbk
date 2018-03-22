@@ -60,7 +60,7 @@ Creates a Python class associated with the C++ type passed as its first paramete
 
     // declaring method as static
     class_& staticmethod(char const* name);
-    
+
     // exposing operators
     template <unspecified>
     class_& def(detail::operator_<unspecified>);
@@ -132,7 +132,7 @@ Creates a Python class associated with the C++ type passed as its first paramete
  [[Requires][`init_expr` is the result of an [link high_level_components.boost_python_init_hpp.introduction.init_expressions init-expression] compatible with `T`.]]
  [[Effects][For each [link high_level_components.boost_python_init_hpp.introduction.init_expressions valid prefix] `P` of `Init`, adds an `__init__(...)` function overload to the extension class accepting P as arguments. Each overload generated constructs an object of HeldType according to the semantics described above, using a copy of init_expr's call policies. If the longest [link high_level_components.boost_python_init_hpp.introduction.init_expressions valid prefix] of Init contains N types and init_expr holds M keywords, an initial sequence of the keywords are used for all but the first N - M arguments of each overload.]]
  [[Returns][`*this`]]
- [[Rationale][Allows users to easily expose a class' constructor to Python.]] 
+ [[Rationale][Allows users to easily expose a class' constructor to Python.]]
 ]
 ``
   template <class F>

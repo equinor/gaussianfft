@@ -925,7 +925,7 @@ public:
             )
         )
     {}
-    
+
     // disambiguate
     template<class U0, class... U>
     any(binding<Concept>& binding_arg, U0&& u0, U&&... u)
@@ -1431,7 +1431,7 @@ public:
       : data(::boost::type_erasure::detail::access::data(other)),
         table(binding_arg)
     {}
-    
+
     /**
      * Assigns to an @ref any.
      *
@@ -1451,7 +1451,7 @@ public:
         _boost_type_erasure_resolve_assign(other);
         return *this;
     }
-    
+
     /**
      * Assigns to an @ref any.
      *
@@ -1472,7 +1472,7 @@ public:
         _boost_type_erasure_resolve_assign(other);
         return *this;
     }
-    
+
     /**
      * Assigns to an @ref any.
      *
@@ -1493,7 +1493,7 @@ public:
         _boost_type_erasure_resolve_assign(other);
         return *this;
     }
-    
+
 #ifndef BOOST_NO_FUNCTION_REFERENCE_QUALIFIERS
     /** INTERNAL ONLY */
     operator param<Concept, T&>() const { return param<Concept, T&>(data, table); }
@@ -1748,8 +1748,8 @@ public:
       : data(::boost::type_erasure::detail::access::data(other)),
         table(binding_arg)
     {}
-    
-    
+
+
     /**
      * Assigns to an @ref any.
      *
@@ -1779,7 +1779,7 @@ public:
         _boost_type_erasure_swap(temp);
         return *this;
     }
-    
+
 #ifndef BOOST_NO_FUNCTION_REFERENCE_QUALIFIERS
     /** INTERNAL ONLY */
     operator param<Concept, const T&>() const { return param<Concept, const T&>(data, table); }
@@ -2064,7 +2064,7 @@ public:
       : data(::boost::type_erasure::detail::access::data(other)),
         table(binding_arg)
     {}
-    
+
     /**
      * Assigns to an @ref any.
      *
@@ -2084,7 +2084,7 @@ public:
         _boost_type_erasure_resolve_assign(other);
         return *this;
     }
-    
+
     /**
      * Assigns to an @ref any.
      *
@@ -2105,7 +2105,7 @@ public:
         _boost_type_erasure_resolve_assign(other);
         return *this;
     }
-    
+
     /**
      * Assigns to an @ref any.
      *
@@ -2126,7 +2126,7 @@ public:
         _boost_type_erasure_resolve_assign(other);
         return *this;
     }
-    
+
 #ifndef BOOST_NO_FUNCTION_REFERENCE_QUALIFIERS
     /** INTERNAL ONLY */
     operator param<Concept, T&&>() const { return param<Concept, T&&>(data, table); }

@@ -1,6 +1,6 @@
 /*
     Copyright 2005-2007 Adobe Systems Incorporated
-   
+
     Use, modification and distribution are subject to the Boost Software License,
     Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
     http://www.boost.org/LICENSE_1_0.txt).
@@ -14,10 +14,10 @@
 #define GIL_DEPRECATED_HPP
 
 ////////////////////////////////////////////////////////////////////////////////////////
-/// \file               
+/// \file
 /// \brief Deprecated names
 ///        This file is provided as a courtesy to ease upgrading GIL client code.
-///        Please make sure your code compiles when this file is not included. 
+///        Please make sure your code compiles when this file is not included.
 ///
 /// \author Lubomir Bourdev and Hailin Jin \n
 ///         Adobe Systems Incorporated

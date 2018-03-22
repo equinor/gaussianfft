@@ -183,7 +183,7 @@ extern "C" char *gets (char *__s);
 
 #if defined(__SUNPRO_CC) && (__SUNPRO_CC >= 0x5130) && (__cplusplus >= 201103L)
 //
-// Oracle Solaris compiler uses it's own verison of libstdc++ but doesn't 
+// Oracle Solaris compiler uses it's own verison of libstdc++ but doesn't
 // set __GNUC__
 //
 #if __SUNPRO_CC >= 0x5140
@@ -230,8 +230,8 @@ extern "C" char *gets (char *__s);
 #  define BOOST_NO_CXX11_HDR_SYSTEM_ERROR
 #  define BOOST_NO_CXX11_SMART_PTR
 #else
-#  define BOOST_HAS_TR1_COMPLEX_INVERSE_TRIG 
-#  define BOOST_HAS_TR1_COMPLEX_OVERLOADS 
+#  define BOOST_HAS_TR1_COMPLEX_INVERSE_TRIG
+#  define BOOST_HAS_TR1_COMPLEX_OVERLOADS
 #endif
 
 //  C++0x features in GCC 4.5.0 and later
@@ -314,7 +314,7 @@ extern "C" char *gets (char *__s);
 // Headers not present on Solaris with the Oracle compiler:
 #if defined(__SUNPRO_CC) && (__SUNPRO_CC < 0x5140)
 #define BOOST_NO_CXX11_HDR_FUTURE
-#define BOOST_NO_CXX11_HDR_FORWARD_LIST 
+#define BOOST_NO_CXX11_HDR_FORWARD_LIST
 #define BOOST_NO_CXX11_HDR_ATOMIC
 // shared_ptr is present, but is not convertible to bool
 // which causes all kinds of problems especially in Boost.Thread

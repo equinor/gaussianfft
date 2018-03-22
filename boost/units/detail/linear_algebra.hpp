@@ -1,4 +1,4 @@
-// Boost.Units - A C++ library for zero-overhead dimensional analysis and 
+// Boost.Units - A C++ library for zero-overhead dimensional analysis and
 // unit/quantity manipulation and conversion
 //
 // Copyright (C) 2003-2008 Matthias Christian Schabel
@@ -295,7 +295,7 @@ struct invert_strip_leading_zeroes;
 template<int N>
 struct invert_handle_after_pivot_row;
 
-// When processing column N, none of the first N rows 
+// When processing column N, none of the first N rows
 // can be the pivot column.
 template<int N>
 struct invert_handle_inital_rows {
@@ -695,7 +695,7 @@ struct calculate_base_dimension_coefficients_func<false> {
 template<class Iterator>
 struct begins_with_dimension {
     template<class Dim>
-    struct apply : 
+    struct apply :
         boost::is_same<
             Dim,
             typename Iterator::item::tag_type

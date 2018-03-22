@@ -17,7 +17,7 @@ namespace backends{
 #pragma warning(push)
 #pragma warning(disable:4127) // conditional expression is constant
 #endif
-   
+
    template <class Backend>
 struct debug_adaptor
 {

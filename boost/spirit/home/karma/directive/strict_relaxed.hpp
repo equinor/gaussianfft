@@ -1,6 +1,6 @@
 //  Copyright (c) 2001-2011 Hartmut Kaiser
-// 
-//  Distributed under the Boost Software License, Version 1.0. (See accompanying 
+//
+//  Distributed under the Boost Software License, Version 1.0. (See accompanying
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #if !defined(SPIRIT_STRICT_RELAXED_APR_22_2010_0959AM)
@@ -38,7 +38,7 @@ namespace boost { namespace spirit
       : mpl::true_ {};
 
     ///////////////////////////////////////////////////////////////////////////
-    // Don't add tag::strict or tag::relaxed if there is already one of those 
+    // Don't add tag::strict or tag::relaxed if there is already one of those
     // in the modifier list
     template <typename Current>
     struct compound_modifier<Current, tag::strict

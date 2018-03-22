@@ -1,4 +1,4 @@
-// Boost.Units - A C++ library for zero-overhead dimensional analysis and 
+// Boost.Units - A C++ library for zero-overhead dimensional analysis and
 // unit/quantity manipulation and conversion
 //
 // Copyright (C) 2003-2008 Matthias Christian Schabel
@@ -15,14 +15,14 @@
 
 namespace boost {
 
-namespace units { 
+namespace units {
 
 namespace si {
 
 typedef unit<plane_angle_dimension,si::system>      plane_angle;
-    
-BOOST_UNITS_STATIC_CONSTANT(radian,plane_angle); 
-BOOST_UNITS_STATIC_CONSTANT(radians,plane_angle);    
+
+BOOST_UNITS_STATIC_CONSTANT(radian,plane_angle);
+BOOST_UNITS_STATIC_CONSTANT(radians,plane_angle);
 
 } // namespace si
 

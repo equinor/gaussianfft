@@ -14,7 +14,7 @@
 
     Determines whether or not the BOOST_VMD_RETURN_ONLY_AFTER modifiers has been passed
     as a variadic parameter.
-    
+
     Returns 1 = BOOST_VMD_RETURN_ONLY_AFTER has been passed
             0 = BOOST_VMD_RETURN_ONLY_AFTER has not been passed
 

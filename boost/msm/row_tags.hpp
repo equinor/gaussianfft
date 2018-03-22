@@ -32,7 +32,7 @@ struct sm__i_row_tag {};
 struct sm_i_row_tag {};
 
 // flags used internally to handle terminate / interrupt states
-struct TerminateFlag 
+struct TerminateFlag
 {
     typedef int non_forwarding_flag;
     typedef int event_blocking_flag;

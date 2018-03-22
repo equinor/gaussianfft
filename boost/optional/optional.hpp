@@ -56,15 +56,15 @@
 #include <boost/optional/detail/old_optional_implementation.hpp>
 #else
 namespace boost {
-  
+
 namespace optional_ns {
-  
+
 // a tag for in-place initialization of contained value
 struct in_place_init_t
 {
   struct init_tag{};
   explicit in_place_init_t(init_tag){}
-};            
+};
 const in_place_init_t in_place_init ((in_place_init_t::init_tag()));
 
 // a tag for conditional in-place initialization of contained value	
@@ -74,7 +74,7 @@ struct in_place_init_if_t
   explicit in_place_init_if_t(init_tag){}
 };
 const in_place_init_if_t in_place_init_if ((in_place_init_if_t::init_tag()));
-  
+
 } // namespace optional_ns
 
 using optional_ns::in_place_init_t;
@@ -217,7 +217,7 @@ class optional_base : public optional_tag
           construct(rhs.get_impl());
       }
     }
-    
+
 #ifndef BOOST_OPTIONAL_DETAIL_NO_RVALUE_REFERENCES
     // Assigns from another optional<T> (deep-moves the rhs value)
     void assign ( optional_base&& rhs )
@@ -234,7 +234,7 @@ class optional_base : public optional_tag
           construct(boost::move(rhs.get_impl()));
       }
     }
-#endif 
+#endif
 
     // Assigns from another _convertible_ optional<U> (deep-copies the rhs value)
     template<class U>
@@ -248,7 +248,7 @@ class optional_base : public optional_tag
 #else
           assign_value( static_cast<value_type>(rhs.get()) );
 #endif
-          
+
         else destroy();
       }
       else
@@ -281,7 +281,7 @@ class optional_base : public optional_tag
       }
     }
 #endif
-    
+
     // Assigns from a T (deep-copies the rhs value)
     void assign ( argument_type val )
     {
@@ -289,7 +289,7 @@ class optional_base : public optional_tag
            assign_value(val);
       else construct(val);
     }
-    
+
 #ifndef BOOST_OPTIONAL_DETAIL_NO_RVALUE_REFERENCES
     // Assigns from a T (deep-moves the rhs value)
     void assign ( rval_reference_type val )
@@ -350,7 +350,7 @@ class optional_base : public optional_tag
        ::new (m_storage.address()) value_type(val) ;
        m_initialized = true ;
      }
-     
+
 #ifndef  BOOST_OPTIONAL_DETAIL_NO_RVALUE_REFERENCES
     void construct ( rval_reference_type val )
      {
@@ -376,7 +376,7 @@ class optional_base : public optional_tag
       destroy();
       construct(in_place_init, boost::forward<Args>(args)...);
     }
-     
+
     template<class... Args>
     explicit optional_base ( in_place_init_t, Args&&... args )
       :
@@ -384,7 +384,7 @@ class optional_base : public optional_tag
     {
       construct(in_place_init, boost::forward<Args>(args)...);
     }
-    
+
     template<class... Args>
     explicit optional_base ( in_place_init_if_t, bool cond, Args&&... args )
       :
@@ -400,26 +400,26 @@ class optional_base : public optional_tag
        ::new (m_storage.address()) value_type( boost::forward<Arg>(arg) );
        m_initialized = true ;
      }
-     
+
     void construct ( in_place_init_t )
      {
        ::new (m_storage.address()) value_type();
        m_initialized = true ;
      }
-     
+
     template<class Arg>
     void emplace_assign ( Arg&& arg )
      {
        destroy();
        construct(in_place_init, boost::forward<Arg>(arg)) ;
      }
-     
+
     void emplace_assign ()
      {
        destroy();
        construct(in_place_init) ;
      }
-     
+
     template<class Arg>
     explicit optional_base ( in_place_init_t, Arg&& arg )
       :
@@ -427,14 +427,14 @@ class optional_base : public optional_tag
     {
       construct(in_place_init, boost::forward<Arg>(arg));
     }
-    
+
     explicit optional_base ( in_place_init_t )
       :
       m_initialized(false)
     {
       construct(in_place_init);
     }
-    
+
     template<class Arg>
     explicit optional_base ( in_place_init_if_t, bool cond, Arg&& arg )
       :
@@ -443,7 +443,7 @@ class optional_base : public optional_tag
       if ( cond )
         construct(in_place_init, boost::forward<Arg>(arg));
     }
-    
+
     explicit optional_base ( in_place_init_if_t, bool cond )
       :
       m_initialized(false)
@@ -453,21 +453,21 @@ class optional_base : public optional_tag
     }
 
 #else
-     
+
     template<class Arg>
     void construct ( in_place_init_t, const Arg& arg )
      {
        ::new (m_storage.address()) value_type( arg );
        m_initialized = true ;
      }
-     
+
     template<class Arg>
     void construct ( in_place_init_t, Arg& arg )
      {
        ::new (m_storage.address()) value_type( arg );
        m_initialized = true ;
      }
-     
+
     void construct ( in_place_init_t )
      {
        ::new (m_storage.address()) value_type();
@@ -480,20 +480,20 @@ class optional_base : public optional_tag
       destroy();
       construct(in_place_init, arg);
     }
-     
+
     template<class Arg>
     void emplace_assign ( Arg& arg )
     {
       destroy();
       construct(in_place_init, arg);
     }
-     
+
     void emplace_assign ()
     {
       destroy();
       construct(in_place_init);
     }
-    
+
     template<class Arg>
     explicit optional_base ( in_place_init_t, const Arg& arg )
       : m_initialized(false)
@@ -507,13 +507,13 @@ class optional_base : public optional_tag
     {
       construct(in_place_init, arg);
     }
-    
+
     explicit optional_base ( in_place_init_t )
       : m_initialized(false)
     {
       construct(in_place_init);
     }
-    
+
     template<class Arg>
     explicit optional_base ( in_place_init_if_t, bool cond, const Arg& arg )
       : m_initialized(false)
@@ -521,15 +521,15 @@ class optional_base : public optional_tag
       if ( cond )
         construct(in_place_init, arg);
     }
-    
+
     template<class Arg>
     explicit optional_base ( in_place_init_if_t, bool cond, Arg& arg )
       : m_initialized(false)
     {
       if ( cond )
         construct(in_place_init, arg);
-    } 
-    
+    }
+
     explicit optional_base ( in_place_init_if_t, bool cond )
       : m_initialized(false)
     {
@@ -734,7 +734,7 @@ struct is_optional_related
 {};
 
 #if !defined(BOOST_OPTIONAL_DETAIL_NO_IS_CONSTRUCTIBLE_TRAIT)
-  
+
 template <typename T, typename U>
 struct is_convertible_to_T_or_factory
   : boost::conditional< boost::is_base_of<boost::in_place_factory_base, BOOST_DEDUCED_TYPENAME boost::decay<U>::type>::value
@@ -764,7 +764,7 @@ struct is_optional_val_init_candidate
   : boost::conditional< !is_optional_related<U>::value && is_convertible_to_T_or_factory<T, U>::value
                       , boost::true_type, boost::false_type>::type
 {};
-    
+
 } // namespace optional_detail
 
 template<class T>
@@ -802,7 +802,7 @@ class optional : public optional_detail::optional_base<T>
 #ifndef  BOOST_OPTIONAL_DETAIL_NO_RVALUE_REFERENCES
     // Creates an optional<T> initialized with 'move(val)'.
     // Can throw if T::T(T &&) does
-    optional ( rval_reference_type val ) : base( boost::forward<T>(val) ) 
+    optional ( rval_reference_type val ) : base( boost::forward<T>(val) )
       {}
 #endif
 
@@ -827,7 +827,7 @@ class optional : public optional_detail::optional_base<T>
       if ( rhs.is_initialized() )
         this->construct(rhs.get());
     }
-    
+
 #ifndef  BOOST_OPTIONAL_DETAIL_NO_RVALUE_REFERENCES
     // Creates a deep move of another convertible optional<U>
     // Requires a valid conversion from U to T.
@@ -860,10 +860,10 @@ class optional : public optional_detail::optional_base<T>
 
 
   template<class Expr>
-  explicit optional ( Expr&& expr, 
-                      BOOST_DEDUCED_TYPENAME boost::enable_if< optional_detail::is_optional_val_init_candidate<T, Expr> >::type* = 0 
-  ) 
-    : base(boost::forward<Expr>(expr),boost::addressof(expr)) 
+  explicit optional ( Expr&& expr,
+                      BOOST_DEDUCED_TYPENAME boost::enable_if< optional_detail::is_optional_val_init_candidate<T, Expr> >::type* = 0
+  )
+    : base(boost::forward<Expr>(expr),boost::addressof(expr))
     {}
 
 #else
@@ -879,9 +879,9 @@ class optional : public optional_detail::optional_base<T>
 #ifndef  BOOST_OPTIONAL_DETAIL_NO_RVALUE_REFERENCES
 	// Creates a deep move of another optional<T>
 	// Can throw if T::T(T&&) does
-	optional ( optional && rhs ) 
+	optional ( optional && rhs )
 	  BOOST_NOEXCEPT_IF(::boost::is_nothrow_move_constructible<T>::value)
-	  : base( boost::move(rhs) ) 
+	  : base( boost::move(rhs) )
 	{}
 
 #endif
@@ -898,7 +898,7 @@ class optional : public optional_detail::optional_base<T>
 #ifndef  BOOST_OPTIONAL_DETAIL_NO_RVALUE_REFERENCES
 
     template<class Expr>
-    BOOST_DEDUCED_TYPENAME boost::enable_if<optional_detail::is_optional_val_init_candidate<T, Expr>, optional&>::type 
+    BOOST_DEDUCED_TYPENAME boost::enable_if<optional_detail::is_optional_val_init_candidate<T, Expr>, optional&>::type
     operator= ( Expr&& expr )
       {
         this->assign_expr(boost::forward<Expr>(expr),boost::addressof(expr));
@@ -924,7 +924,7 @@ class optional : public optional_detail::optional_base<T>
         this->assign(rhs);
         return *this ;
       }
-      
+
 #ifndef  BOOST_OPTIONAL_DETAIL_NO_RVALUE_REFERENCES
     // Move-assigns from another convertible optional<U> (converts && deep-moves the rhs value)
     // Requires a valid conversion from U to T.
@@ -948,7 +948,7 @@ class optional : public optional_detail::optional_base<T>
 
 #ifndef  BOOST_OPTIONAL_DETAIL_NO_RVALUE_REFERENCES
     // Assigns from another optional<T> (deep-moves the rhs value)
-    optional& operator= ( optional && rhs ) 
+    optional& operator= ( optional && rhs )
 	  BOOST_NOEXCEPT_IF(::boost::is_nothrow_move_constructible<T>::value && ::boost::is_nothrow_move_assignable<T>::value)
       {
         this->assign( static_cast<base &&>(rhs) ) ;
@@ -966,7 +966,7 @@ class optional : public optional_detail::optional_base<T>
         this->assign( boost::forward<T_>(val) ) ;
         return *this ;
       }
-      
+
 #else
 
     // Assigns from a T (deep-copies the rhs value)
@@ -976,7 +976,7 @@ class optional : public optional_detail::optional_base<T>
         this->assign( val ) ;
         return *this ;
       }
-      
+
 #ifndef BOOST_OPTIONAL_DETAIL_NO_RVALUE_REFERENCES
     // Assigns from a T (deep-moves the rhs value)
     optional& operator= ( rval_reference_type val )
@@ -985,9 +985,9 @@ class optional : public optional_detail::optional_base<T>
         return *this ;
       }
 #endif
-      
+
 #endif // BOOST_NO_CXX11_UNIFIED_INITIALIZATION_SYNTAX
-      
+
     // Assigns from a "none"
     // Which destroys the current value, if any, leaving this UNINITIALIZED
     // No-throw (assuming T::~T() doesn't)
@@ -996,7 +996,7 @@ class optional : public optional_detail::optional_base<T>
         this->assign( none_ ) ;
         return *this ;
       }
-      
+
 #if (!defined BOOST_OPTIONAL_DETAIL_NO_RVALUE_REFERENCES) && (!defined BOOST_NO_CXX11_VARIADIC_TEMPLATES)
     // Constructs in-place
     // upon exception *this is always uninitialized
@@ -1005,29 +1005,29 @@ class optional : public optional_detail::optional_base<T>
     {
       this->emplace_assign( boost::forward<Args>(args)... );
     }
-     
+
     template<class... Args>
     explicit optional ( in_place_init_t, Args&&... args )
     : base( in_place_init, boost::forward<Args>(args)... )
     {}
-    
+
     template<class... Args>
     explicit optional ( in_place_init_if_t, bool cond, Args&&... args )
     : base( in_place_init_if, cond, boost::forward<Args>(args)... )
     {}
-    
+
 #elif (!defined BOOST_OPTIONAL_DETAIL_NO_RVALUE_REFERENCES)
     template<class Arg>
     void emplace ( Arg&& arg )
      {
        this->emplace_assign( boost::forward<Arg>(arg) );
      }
-     
+
     void emplace ()
      {
        this->emplace_assign();
      }
-     
+
     template<class Args>
     explicit optional ( in_place_init_t, Args&& args )
     : base( in_place_init, boost::forward<Args>(args) )
@@ -1036,12 +1036,12 @@ class optional : public optional_detail::optional_base<T>
     explicit optional ( in_place_init_t )
     : base( in_place_init )
     {}
-    
+
     template<class Args>
     explicit optional ( in_place_init_if_t, bool cond, Args&& args )
     : base( in_place_init_if, cond, boost::forward<Args>(args) )
     {}
-    
+
     explicit optional ( in_place_init_if_t, bool cond )
     : base( in_place_init_if, cond )
     {}
@@ -1051,23 +1051,23 @@ class optional : public optional_detail::optional_base<T>
      {
        this->emplace_assign( arg );
      }
-     
+
     template<class Arg>
     void emplace ( Arg& arg )
      {
        this->emplace_assign( arg );
      }
-     
+
     void emplace ()
      {
        this->emplace_assign();
      }
-     
+
     template<class Arg>
     explicit optional ( in_place_init_t, const Arg& arg )
     : base( in_place_init, arg )
     {}
-    
+
     template<class Arg>
     explicit optional ( in_place_init_t, Arg& arg )
     : base( in_place_init, arg )
@@ -1076,17 +1076,17 @@ class optional : public optional_detail::optional_base<T>
     explicit optional ( in_place_init_t )
     : base( in_place_init )
     {}
-    
+
     template<class Arg>
     explicit optional ( in_place_init_if_t, bool cond, const Arg& arg )
     : base( in_place_init_if, cond, arg )
     {}
-    
+
     template<class Arg>
     explicit optional ( in_place_init_if_t, bool cond, Arg& arg )
     : base( in_place_init_if, cond, arg )
-    {} 
-    
+    {}
+
     explicit optional ( in_place_init_if_t, bool cond )
     : base( in_place_init_if, cond )
     {}
@@ -1119,7 +1119,7 @@ class optional : public optional_detail::optional_base<T>
     // Returns a reference to the value if this is initialized, otherwise,
     // the behaviour is UNDEFINED
     // No-throw
-#if (!defined BOOST_NO_CXX11_REF_QUALIFIERS) && (!defined BOOST_OPTIONAL_DETAIL_NO_RVALUE_REFERENCES) 
+#if (!defined BOOST_NO_CXX11_REF_QUALIFIERS) && (!defined BOOST_OPTIONAL_DETAIL_NO_RVALUE_REFERENCES)
     reference_const_type operator *() const& { return this->get() ; }
     reference_type       operator *() &      { return this->get() ; }
     reference_type_of_temporary_wrapper operator *() && { return boost::move(this->get()) ; }
@@ -1128,42 +1128,42 @@ class optional : public optional_detail::optional_base<T>
     reference_type       operator *()       { return this->get() ; }
 #endif // !defined BOOST_NO_CXX11_REF_QUALIFIERS
 
-#if (!defined BOOST_NO_CXX11_REF_QUALIFIERS) && (!defined BOOST_OPTIONAL_DETAIL_NO_RVALUE_REFERENCES) 
+#if (!defined BOOST_NO_CXX11_REF_QUALIFIERS) && (!defined BOOST_OPTIONAL_DETAIL_NO_RVALUE_REFERENCES)
     reference_const_type value() const&
-      { 
+      {
         if (this->is_initialized())
           return this->get() ;
         else
           throw_exception(bad_optional_access());
       }
-      
+
     reference_type value() &
-      { 
+      {
         if (this->is_initialized())
           return this->get() ;
         else
           throw_exception(bad_optional_access());
       }
-      
+
     reference_type_of_temporary_wrapper value() &&
-      { 
+      {
         if (this->is_initialized())
           return boost::move(this->get()) ;
         else
           throw_exception(bad_optional_access());
       }
 
-#else 
+#else
     reference_const_type value() const
-      { 
+      {
         if (this->is_initialized())
           return this->get() ;
         else
           throw_exception(bad_optional_access());
       }
-      
+
     reference_type value()
-      { 
+      {
         if (this->is_initialized())
           return this->get() ;
         else
@@ -1175,16 +1175,16 @@ class optional : public optional_detail::optional_base<T>
 #ifndef BOOST_NO_CXX11_REF_QUALIFIERS
     template <class U>
     value_type value_or ( U&& v ) const&
-      { 
+      {
         if (this->is_initialized())
           return get();
         else
           return boost::forward<U>(v);
       }
-    
+
     template <class U>
-    value_type value_or ( U&& v ) && 
-      { 
+    value_type value_or ( U&& v ) &&
+      {
         if (this->is_initialized())
           return boost::move(get());
         else
@@ -1192,7 +1192,7 @@ class optional : public optional_detail::optional_base<T>
       }
 #elif !defined BOOST_OPTIONAL_DETAIL_NO_RVALUE_REFERENCES
     template <class U>
-    value_type value_or ( U&& v ) const 
+    value_type value_or ( U&& v ) const
       {
         if (this->is_initialized())
           return get();
@@ -1201,17 +1201,17 @@ class optional : public optional_detail::optional_base<T>
       }
 #else
     template <class U>
-    value_type value_or ( U const& v ) const 
-      { 
+    value_type value_or ( U const& v ) const
+      {
         if (this->is_initialized())
           return get();
         else
           return v;
       }
-      
+
     template <class U>
-    value_type value_or ( U& v ) const 
-      { 
+    value_type value_or ( U& v ) const
+      {
         if (this->is_initialized())
           return get();
         else
@@ -1229,7 +1229,7 @@ class optional : public optional_detail::optional_base<T>
         else
           return f();
       }
-      
+
     template <typename F>
     value_type value_or_eval ( F f ) &&
       {
@@ -1248,9 +1248,9 @@ class optional : public optional_detail::optional_base<T>
           return f();
       }
 #endif
-      
+
     bool operator!() const BOOST_NOEXCEPT { return !this->is_initialized() ; }
-    
+
     BOOST_EXPLICIT_OPERATOR_BOOL_NOEXCEPT()
 } ;
 
@@ -1259,7 +1259,7 @@ class optional : public optional_detail::optional_base<T>
 #endif // BOOST_OPTIONAL_CONFIG_USE_OLD_IMPLEMENTATION_OF_OPTIONAL
 
 namespace boost {
-  
+
 #ifndef  BOOST_OPTIONAL_DETAIL_NO_RVALUE_REFERENCES
 template<class T>
 class optional<T&&>
@@ -1367,14 +1367,14 @@ get_pointer ( optional<T>& opt )
 } // namespace boost
 
 namespace boost {
-  
+
 // The following declaration prevents a bug where operator safe-bool is used upon streaming optional object if you forget the IO header.
 template<class CharType, class CharTrait>
 std::basic_ostream<CharType, CharTrait>&
 operator<<(std::basic_ostream<CharType, CharTrait>& os, optional_detail::optional_tag const&)
 {
   BOOST_STATIC_ASSERT_MSG(sizeof(CharType) == 0, "If you want to output boost::optional, include header <boost/optional/optional_io.hpp>");
-  return os;  
+  return os;
 }
 
 } // namespace boost

@@ -34,12 +34,12 @@ namespace boost{
          static boost::type_traits::no_type test(...);
       };
 #if BOOST_WORKAROUND(BOOST_GCC_VERSION, < 40700)
-      template<class T, bool b> 
+      template<class T, bool b>
       struct is_default_constructible_abstract_filter
       {
           static const bool value = sizeof(is_default_constructible_imp::test<T>(0)) == sizeof(boost::type_traits::yes_type);
       };
-      template<class T> 
+      template<class T>
       struct is_default_constructible_abstract_filter<T, true>
       {
           static const bool value = false;
@@ -55,7 +55,7 @@ namespace boost{
    template <class T, std::size_t N> struct is_default_constructible<T[N]> : public is_default_constructible<T>{};
    template <class T> struct is_default_constructible<T[]> : public is_default_constructible<T>{};
    template <class T> struct is_default_constructible<T&> : public integral_constant<bool, false>{};
-#if !defined(BOOST_NO_CXX11_RVALUE_REFERENCES) 
+#if !defined(BOOST_NO_CXX11_RVALUE_REFERENCES)
    template <class T> struct is_default_constructible<T&&> : public integral_constant<bool, false>{};
 #endif
    template <> struct is_default_constructible<void> : public integral_constant<bool, false>{};

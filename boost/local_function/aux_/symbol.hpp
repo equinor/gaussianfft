@@ -26,7 +26,7 @@
 // begins with an underscore is reserved to the implementation for use as a
 // name in the global namespace".
 #define BOOST_LOCAL_FUNCTION_AUX_SYMBOL_INFIX_ X // `X` used as separator.
-            
+
 #define BOOST_LOCAL_FUNCTION_AUX_SYMBOL_PREFIX_ boost_local_function_aux
 
 #define BOOST_LOCAL_FUNCTION_AUX_SYMBOL_POSTFIX_(s, unused, tokens) \

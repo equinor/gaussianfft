@@ -67,7 +67,7 @@ const View&
 >::type mutate( Type & m )
 {
     BOOST_MPL_ASSERT((
-        ::boost::mpl::contains<BOOST_DEDUCED_TYPENAME Type::mutant_views,View> 
+        ::boost::mpl::contains<BOOST_DEDUCED_TYPENAME Type::mutant_views,View>
     ));
     return *reinterpret_cast< const View* >(boost::addressof(m));
 }

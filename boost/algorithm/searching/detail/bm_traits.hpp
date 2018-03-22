@@ -1,4 +1,4 @@
-/* 
+/*
    Copyright (c) Marshall Clow 2010-2012.
 
    Distributed under the Boost Software License, Version 1.0. (See accompanying
@@ -46,11 +46,11 @@ namespace boost { namespace algorithm { namespace detail {
 #endif
         const value_type k_default_value;
         skip_map skip_;
-        
+
     public:
-        skip_table ( std::size_t patSize, value_type default_value ) 
+        skip_table ( std::size_t patSize, value_type default_value )
             : k_default_value ( default_value ), skip_ ( patSize ) {}
-        
+
         void insert ( key_type key, value_type val ) {
             skip_ [ key ] = val;    // Would skip_.insert (val) be better here?
             }
@@ -59,7 +59,7 @@ namespace boost { namespace algorithm { namespace detail {
             typename skip_map::const_iterator it = skip_.find ( key );
             return it == skip_.end () ? k_default_value : it->second;
             }
-            
+
         void PrintSkipTable () const {
             std::cout << "BM(H) Skip Table <unordered_map>:" << std::endl;
             for ( typename skip_map::const_iterator it = skip_.begin (); it != skip_.end (); ++it )
@@ -68,8 +68,8 @@ namespace boost { namespace algorithm { namespace detail {
             std::cout << std::endl;
             }
         };
-        
-    
+
+
 //  Special case small numeric values; use an array
     template<typename key_type, typename value_type>
     class skip_table<key_type, value_type, true> {
@@ -82,7 +82,7 @@ namespace boost { namespace algorithm { namespace detail {
         skip_table ( std::size_t /*patSize*/, value_type default_value ) : k_default_value ( default_value ) {
             std::fill_n ( skip_.begin(), skip_.size(), default_value );
             }
-        
+
         void insert ( key_type key, value_type val ) {
             skip_ [ static_cast<unsigned_key_type> ( key ) ] = val;
             }
@@ -104,7 +104,7 @@ namespace boost { namespace algorithm { namespace detail {
     struct BM_traits {
         typedef typename std::iterator_traits<Iterator>::difference_type value_type;
         typedef typename std::iterator_traits<Iterator>::value_type key_type;
-        typedef boost::algorithm::detail::skip_table<key_type, value_type, 
+        typedef boost::algorithm::detail::skip_table<key_type, value_type,
                 boost::is_integral<key_type>::value && (sizeof(key_type)==1)> skip_table_t;
         };
 

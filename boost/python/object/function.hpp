@@ -12,7 +12,7 @@
 # include <boost/python/object_core.hpp>
 # include <boost/python/object/py_function.hpp>
 
-namespace boost { namespace python { namespace objects { 
+namespace boost { namespace python { namespace objects {
 
 
 struct BOOST_PYTHON_DECL function : PyObject
@@ -21,9 +21,9 @@ struct BOOST_PYTHON_DECL function : PyObject
         py_function const&
         , python::detail::keyword const* names_and_defaults
         , unsigned num_keywords);
-      
+
     ~function();
-    
+
     PyObject* call(PyObject*, PyObject*) const;
 
     // Add an attribute to the name_space with the given name. If it is
@@ -37,17 +37,17 @@ struct BOOST_PYTHON_DECL function : PyObject
 
     object const& doc() const;
     void doc(object const& x);
-    
+
     object const& name() const;
 
     object const& get_namespace() const { return m_namespace; }
-    
+
  private: // helper functions
     object signature(bool show_return_type=false) const;
     object signatures(bool show_return_type=false) const;
     void argument_error(PyObject* args, PyObject* keywords) const;
     void add_overload(handle<function> const&);
-    
+
  private: // data members
     py_function m_fn;
     handle<function> m_overloads;
@@ -76,7 +76,7 @@ inline object const& function::name() const
 {
     return this->m_name;
 }
-  
+
 }}} // namespace boost::python::objects
 
 #endif // FUNCTION_DWA20011214_HPP

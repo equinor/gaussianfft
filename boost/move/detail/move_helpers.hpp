@@ -59,7 +59,7 @@
    struct boost_move_conversion_aware_catch_2
       : public ::boost::move_detail::disable_if_or
                         < RETURN_VALUE
-                        , ::boost::move_detail::is_same<TYPE, BOOST_MOVE_TEMPL_PARAM> 
+                        , ::boost::move_detail::is_same<TYPE, BOOST_MOVE_TEMPL_PARAM>
                         , ::boost::move_detail::is_rv_impl<BOOST_MOVE_TEMPL_PARAM>
                         , ::boost::move_detail::and_
                                     < ::boost::move_detail::is_rv_impl<BOOST_MOVE_TEMPL_PARAM>

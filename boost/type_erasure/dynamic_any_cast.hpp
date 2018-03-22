@@ -147,7 +147,7 @@ R dynamic_any_cast_impl(Any& arg, const static_binding<Map>& map)
  *      be the corresponding placeholder in Any.
  * \pre The concept of Any must include @ref typeid_, for every
  *      @ref placeholder which is used by R.
- * 
+ *
  * The single argument form can only be used when @c R uses
  * a single non-deduced placeholder.
  *

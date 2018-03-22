@@ -99,7 +99,7 @@ struct has_spikes
         boost::ignore_unused(visitor);
 
         typedef typename closeable_view<Range const, Closure>::type view_type;
-        typedef typename boost::range_iterator<view_type const>::type iterator; 
+        typedef typename boost::range_iterator<view_type const>::type iterator;
 
         bool const is_linear
             = boost::is_same<typename tag<Range>::type, linestring_tag>::value;

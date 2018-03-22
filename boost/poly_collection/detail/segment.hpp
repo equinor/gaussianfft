@@ -237,7 +237,7 @@ public:
   {
     return filter(impl().erase_from_begin(l));
   }
-  
+
   void                 clear()noexcept{filter(impl().clear());}
   template<typename U>
   void                 clear()noexcept{filter(impl<U>().nv_clear());}

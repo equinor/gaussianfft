@@ -112,7 +112,7 @@ template< typename Device,
 struct stream : detail::stream_base<Device, Tr, Alloc> {
 public:
     typedef typename char_type_of<Device>::type  char_type;
-    struct category 
+    struct category
         : mode_of<Device>::type,
           closable_tag,
           detail::stream_traits<Device, Tr>::stream_tag
@@ -138,9 +138,9 @@ public:
     Device* component() { return this->member.component(); }
 private:
     void open_impl(const Device& dev BOOST_IOSTREAMS_PUSH_PARAMS()) // For forwarding.
-    { 
-        this->clear(); 
-        this->member.open(dev BOOST_IOSTREAMS_PUSH_ARGS()); 
+    {
+        this->clear();
+        this->member.open(dev BOOST_IOSTREAMS_PUSH_ARGS());
     }
 };
 

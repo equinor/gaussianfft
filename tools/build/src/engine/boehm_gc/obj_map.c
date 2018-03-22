@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 1988, 1989 Hans-J. Boehm, Alan J. Demers
  * Copyright (c) 1991, 1992 by Xerox Corporation.  All rights reserved.
  * Copyright (c) 1999-2001 by Hewlett-Packard Company. All rights reserved.
@@ -12,13 +12,13 @@
  * provided the above notices are retained, and a notice that the code was
  * modified is included with the above copyright notice.
  */
-  
+
 /* Routines for maintaining maps describing heap block
  * layouts for various object sizes.  Allows fast pointer validity checks
  * and fast location of object start locations on machines (such as SPARC)
  * with slow division.
  */
- 
+
 # include "private/gc_priv.h"
 
 /* Consider pointers that are offset bytes displaced from the beginning */
@@ -27,13 +27,13 @@
 void GC_register_displacement(size_t offset)
 {
     DCL_LOCK_STATE;
-    
+
     LOCK();
     GC_register_displacement_inner(offset);
     UNLOCK();
 }
 
-void GC_register_displacement_inner(size_t offset) 
+void GC_register_displacement_inner(size_t offset)
 {
     if (offset >= VALID_OFFSET_SZ) {
         ABORT("Bad argument to GC_register_displacement");
@@ -52,7 +52,7 @@ GC_bool GC_add_map_entry(size_t granules)
 {
     unsigned displ;
     short * new_map;
-    
+
     if (granules > BYTES_TO_GRANULES(MAXOBJBYTES)) granules = 0;
     if (GC_obj_map[granules] != 0) {
         return(TRUE);

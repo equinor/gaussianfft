@@ -215,7 +215,7 @@ typename enable_if_c<is_integral<Integer>::value, Integer>::type sqrt(const Inte
       r = 1;
       return s;
    }
-   
+
    Integer t = 0;
    r = x;
    g /= 2;

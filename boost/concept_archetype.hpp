@@ -6,7 +6,7 @@
 //
 // Revision History:
 //
-//   17 July  2001: Added const to some member functions. (Jeremy Siek) 
+//   17 July  2001: Added const to some member functions. (Jeremy Siek)
 //   05 May   2001: Removed static dummy_cons object. (Jeremy Siek)
 
 // See http://www.boost.org/libs/concept_check for documentation.
@@ -28,7 +28,7 @@ namespace boost {
     class dummy_constructor { };
   }
 
-  // A type that models no concept. The template parameter 
+  // A type that models no concept. The template parameter
   // is only there so that null_archetype types can be created
   // that have different type.
   template <class T = int>
@@ -58,17 +58,17 @@ namespace boost {
       {
 #if BOOST_WORKAROUND(__BORLANDC__, BOOST_TESTED_AT(0x564))
           return *reinterpret_cast<T*>(0);
-#else 
+#else
           static char d[sizeof(T)];
           return *reinterpret_cast<T*>(d);
-#endif 
+#endif
       }
   };
 
   template <class Base = null_archetype<> >
   class default_constructible_archetype : public Base {
   public:
-    default_constructible_archetype() 
+    default_constructible_archetype()
       : Base(static_object<detail::dummy_constructor>::get()) { }
     default_constructible_archetype(detail::dummy_constructor x) : Base(x) { }
   };
@@ -87,7 +87,7 @@ namespace boost {
   template <class Base = null_archetype<> >
   class copy_constructible_archetype : public Base {
   public:
-    copy_constructible_archetype() 
+    copy_constructible_archetype()
       : Base(static_object<detail::dummy_constructor>::get()) { }
     copy_constructible_archetype(const copy_constructible_archetype&)
       : Base(static_object<detail::dummy_constructor>::get()) { }
@@ -147,7 +147,7 @@ namespace boost {
     boolean_archetype() { }
     boolean_archetype& operator=(const boolean_archetype&) { return *this; }
   };
-  
+
   template <class Base = null_archetype<> >
   class equality_comparable_archetype : public Base {
   public:
@@ -156,8 +156,8 @@ namespace boost {
   template <class Base>
   boolean_archetype
   operator==(const equality_comparable_archetype<Base>&,
-             const equality_comparable_archetype<Base>&) 
-  { 
+             const equality_comparable_archetype<Base>&)
+  {
     return boolean_archetype(static_object<detail::dummy_constructor>::get());
   }
   template <class Base>
@@ -172,19 +172,19 @@ namespace boost {
   template <class Base = null_archetype<> >
   class equality_comparable2_first_archetype : public Base {
   public:
-    equality_comparable2_first_archetype(detail::dummy_constructor x) 
+    equality_comparable2_first_archetype(detail::dummy_constructor x)
       : Base(x) { }
   };
   template <class Base = null_archetype<> >
   class equality_comparable2_second_archetype : public Base {
   public:
-    equality_comparable2_second_archetype(detail::dummy_constructor x) 
+    equality_comparable2_second_archetype(detail::dummy_constructor x)
       : Base(x) { }
   };
   template <class Base1, class Base2>
   boolean_archetype
   operator==(const equality_comparable2_first_archetype<Base1>&,
-             const equality_comparable2_second_archetype<Base2>&) 
+             const equality_comparable2_second_archetype<Base2>&)
   {
     return boolean_archetype(static_object<detail::dummy_constructor>::get());
   }
@@ -352,7 +352,7 @@ namespace boost {
   class generator_archetype {
   public:
     const Return& operator()() {
-      return static_object<Return>::get(); 
+      return static_object<Return>::get();
     }
   };
 
@@ -368,7 +368,7 @@ namespace boost {
   public:
     unary_function_archetype(detail::dummy_constructor) { }
     const Return& operator()(const Arg&) const {
-      return static_object<Return>::get(); 
+      return static_object<Return>::get();
     }
   };
 
@@ -379,7 +379,7 @@ namespace boost {
   public:
     binary_function_archetype(detail::dummy_constructor) { }
     const Return& operator()(const Arg1&, const Arg2&) const {
-      return static_object<Return>::get(); 
+      return static_object<Return>::get();
     }
   };
 
@@ -390,7 +390,7 @@ namespace boost {
   public:
     unary_predicate_archetype(detail::dummy_constructor) { }
     const Return& operator()(const Arg&) const {
-      return static_object<Return>::get(); 
+      return static_object<Return>::get();
     }
   };
 
@@ -401,7 +401,7 @@ namespace boost {
   public:
     binary_predicate_archetype(detail::dummy_constructor) { }
     const Return& operator()(const Arg1&, const Arg2&) const {
-      return static_object<Return>::get(); 
+      return static_object<Return>::get();
     }
   };
 
@@ -618,9 +618,9 @@ namespace boost {
     bool operator>=(const self&) const { return true; }
   };
   template <class T>
-  random_access_iterator_archetype<T> 
-  operator+(typename random_access_iterator_archetype<T>::difference_type, 
-            const random_access_iterator_archetype<T>& x) 
+  random_access_iterator_archetype<T>
+  operator+(typename random_access_iterator_archetype<T>::difference_type,
+            const random_access_iterator_archetype<T>& x)
     { return x; }
 
 
@@ -658,10 +658,10 @@ namespace boost {
     bool operator>=(const self&) const { return true; }
   };
   template <class T>
-  mutable_random_access_iterator_archetype<T> 
+  mutable_random_access_iterator_archetype<T>
   operator+
-    (typename mutable_random_access_iterator_archetype<T>::difference_type, 
-     const mutable_random_access_iterator_archetype<T>& x) 
+    (typename mutable_random_access_iterator_archetype<T>::difference_type,
+     const mutable_random_access_iterator_archetype<T>& x)
     { return x; }
 
 } // namespace boost

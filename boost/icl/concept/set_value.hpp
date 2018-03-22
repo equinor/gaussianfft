@@ -1,4 +1,4 @@
-/*-----------------------------------------------------------------------------+    
+/*-----------------------------------------------------------------------------+
 Copyright (c) 2010-2010: Joachim Faulhaber
 +------------------------------------------------------------------------------+
    Distributed under the Boost Software License, Version 1.0.
@@ -26,7 +26,7 @@ key_value(Iterator it_)
 
 template<class Type>
 inline typename enable_if<is_set<Type>, typename Type::value_type>::type
-make_value(const typename Type::key_type& key_val, 
+make_value(const typename Type::key_type& key_val,
            const typename codomain_type_of<Type>::type& )
 {
     return typename Type::value_type(key_val);

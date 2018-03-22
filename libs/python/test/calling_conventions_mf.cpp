@@ -1,7 +1,7 @@
 //
 //  adapted from bind_stdcall_mf_test.cpp - test for bind.hpp + __stdcall (free functions)
 //   The purpose of this simple test is to determine if a function can be
-//   called from Python with the various existing calling conventions 
+//   called from Python with the various existing calling conventions
 //
 //  Copyright (c) 2001 Peter Dimov and Multi Media Ltd.
 //
@@ -41,7 +41,7 @@ using namespace boost::python;
 #include "calling_conventions_mf.cpp"
 #undef TESTED_CALLING_CONVENTION
 
-#undef TEST_DECLARE_FUNCTIONS 
+#undef TEST_DECLARE_FUNCTIONS
 
 // then create a module wrapping the defined functions for every calling convention
 
@@ -77,7 +77,7 @@ BOOST_PYTHON_MODULE( calling_conventions_mf_ext )
 #   error "One calling convention must be defined"
 #  endif // !defined(TESTED_CALLING_CONVENTION)
 
-namespace BOOST_PP_CAT(test, TESTED_CALLING_CONVENTION) { 
+namespace BOOST_PP_CAT(test, TESTED_CALLING_CONVENTION) {
 
 struct X
 {
@@ -127,7 +127,7 @@ struct X
 #  endif // !defined(TESTED_CALLING_CONVENTION)
 
 {
-  
+
   typedef BOOST_PP_CAT(test, TESTED_CALLING_CONVENTION)::X X;
 
   class_<X>("X" BOOST_PP_STRINGIZE(TESTED_CALLING_CONVENTION))

@@ -38,7 +38,7 @@ struct is_deduced< ::boost::type_erasure::deduced<T> > : boost::mpl::true_ {};
 template<class Concept, class Map>
 struct check_map {
     typedef typename normalize_concept<Concept>::basic basic_components;
-    
+
     // Every non-deduced placeholder referenced in this
     // map is indirectly deduced.
     typedef typename ::boost::type_erasure::detail::get_placeholder_normalization_map<

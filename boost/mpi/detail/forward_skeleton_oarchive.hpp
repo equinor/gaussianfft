@@ -1,4 +1,4 @@
-// (C) Copyright 2005 Matthias Troyer 
+// (C) Copyright 2005 Matthias Troyer
 
 // Use, modification and distribution is subject to the Boost Software
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
@@ -18,14 +18,14 @@
 namespace boost { namespace mpi { namespace detail {
 
 template<class Archive, class ImplementationArchive>
-class forward_skeleton_oarchive 
+class forward_skeleton_oarchive
   : public archive::detail::common_oarchive<Archive>
 {
 public:
 
     typedef ImplementationArchive implementation_archive_type;
 
-    forward_skeleton_oarchive(implementation_archive_type& ar) 
+    forward_skeleton_oarchive(implementation_archive_type& ar)
       : archive::detail::common_oarchive<Archive>(archive::no_header),
         implementation_archive(ar)
     {
@@ -61,9 +61,9 @@ BOOST_ARCHIVE_FORWARD_IMPLEMENTATION(archive::tracking_type)
 BOOST_ARCHIVE_FORWARD_IMPLEMENTATION(archive::class_name_type)
 BOOST_ARCHIVE_FORWARD_IMPLEMENTATION(serialization::collection_size_type)
 
-    void save_override(std::string const & t)    
-    {                                          
-      save_override(serialization::collection_size_type(t.size()));       
+    void save_override(std::string const & t)
+    {
+      save_override(serialization::collection_size_type(t.size()));
     }
 
 

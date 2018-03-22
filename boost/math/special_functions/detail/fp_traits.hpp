@@ -51,9 +51,9 @@ With these techniques, the code could be simplified.
          && (_GLIBCXX_USE_C99_FP_MACROS_DYNAMIC != 0))
 #     ifdef _STLP_VENDOR_CSTD
 #        if _STLPORT_VERSION >= 0x520
-#           define BOOST_FPCLASSIFY_PREFIX ::__std_alias:: 
+#           define BOOST_FPCLASSIFY_PREFIX ::__std_alias::
 #        else
-#           define BOOST_FPCLASSIFY_PREFIX ::_STLP_VENDOR_CSTD:: 
+#           define BOOST_FPCLASSIFY_PREFIX ::_STLP_VENDOR_CSTD::
 #        endif
 #     else
 #        define BOOST_FPCLASSIFY_PREFIX ::std::
@@ -84,7 +84,7 @@ namespace detail {
 
 //------------------------------------------------------------------------------
 
-/* 
+/*
 The following classes are used to tag the different methods that are used
 for floating point classification
 */

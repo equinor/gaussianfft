@@ -30,7 +30,7 @@
     \brief converts a seq to a tuple.
 
     seq = seq to be converted.
-    
+
     If the seq is an empty seq it is converted to an empty tuple.
     Otherwise the seq is converted to a tuple with the same number of elements as the seq.
 */

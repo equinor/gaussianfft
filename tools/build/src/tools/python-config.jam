@@ -14,7 +14,7 @@ if [ os.name ] = NT
         local python-path = [ W32_GETREG
             "HKEY_LOCAL_MACHINE\\SOFTWARE\\Python\\PythonCore\\$(R)\\InstallPath" ] ;
         local python-version = $(R) ;
-        
+
         if $(python-path)
         {
             if --debug-configuration in [ modules.peek : ARGV ]

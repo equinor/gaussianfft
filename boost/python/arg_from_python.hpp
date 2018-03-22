@@ -12,7 +12,7 @@
 # include <boost/python/detail/type_traits.hpp>
 #endif
 
-namespace boost { namespace python { 
+namespace boost { namespace python {
 
 template <class T>
 struct arg_from_python
@@ -22,7 +22,7 @@ struct arg_from_python
           typename detail::remove_cv<T>::type
 # else
           T
-# endif 
+# endif
       >::type
 {
     typedef typename converter::select_arg_from_python<
@@ -31,9 +31,9 @@ struct arg_from_python
           typename detail::remove_cv<T>::type
 # else
           T
-# endif 
+# endif
         >::type base;
-    
+
     arg_from_python(PyObject*);
 };
 
@@ -42,7 +42,7 @@ template <>
 struct arg_from_python<PyObject*>
 {
     typedef PyObject* result_type;
-    
+
     arg_from_python(PyObject* p) : m_source(p) {}
     bool convertible() const { return true; }
     PyObject* operator()() const { return m_source; }
@@ -54,7 +54,7 @@ template <>
 struct arg_from_python<PyObject* const&>
 {
     typedef PyObject* const& result_type;
-    
+
     arg_from_python(PyObject* p) : m_source(p) {}
     bool convertible() const { return true; }
     PyObject*const& operator()() const { return m_source; }

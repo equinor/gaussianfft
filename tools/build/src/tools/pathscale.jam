@@ -20,24 +20,24 @@ generators.override pathscale.searched-lib-generator : searched-lib-generator ;
 # Documentation and toolchain description located
 # http://www.pathscale.com/docs.html
 
-rule init ( version ? : command * : options * ) 
+rule init ( version ? : command * : options * )
 {
-  command = [ common.get-invocation-command pathscale : pathCC : $(command) 
+  command = [ common.get-invocation-command pathscale : pathCC : $(command)
     : /opt/ekopath/bin ] ;
-  
+
   # Determine the version
   local command-string = $(command:J=" ") ;
   if $(command)
-  {    
+  {
       version ?= [ MATCH "^([0-9.]+)"
           : [ SHELL "$(command-string) -dumpversion" ] ] ;
   }
-  
+
   local condition = [ common.check-init-parameters pathscale
     : version $(version) ] ;
 
   common.handle-options pathscale : $(condition) : $(command) : $(options) ;
-    
+
   toolset.flags pathscale.compile.fortran90 OPTIONS $(condition) :
     [ feature.get-values <fflags> : $(options) ] : unchecked ;
 

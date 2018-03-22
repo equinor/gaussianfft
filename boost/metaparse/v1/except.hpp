@@ -22,7 +22,7 @@ namespace boost
       struct except
       {
         typedef except type;
-        
+
         template <class S, class Pos>
         struct apply :
           boost::mpl::if_<

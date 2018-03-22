@@ -90,9 +90,9 @@ public:
     explicit file_descriptor( const Path& path,
                               BOOST_IOS::openmode mode =
                                   BOOST_IOS::in | BOOST_IOS::out )
-    { 
+    {
         init();
-        open(detail::path(path), mode); 
+        open(detail::path(path), mode);
     }
 
     // Copy constructor
@@ -139,8 +139,8 @@ private:
     void init();
 
     // open overload taking a detail::path
-    void open( const detail::path& path, 
-               BOOST_IOS::openmode, 
+    void open( const detail::path& path,
+               BOOST_IOS::openmode,
                BOOST_IOS::openmode = BOOST_IOS::openmode(0) );
 
     typedef detail::file_descriptor_impl impl_type;
@@ -297,16 +297,16 @@ public:
 #endif
 
     // open overload taking a std::string
-    void open( const std::string& path, 
+    void open( const std::string& path,
                BOOST_IOS::openmode mode = BOOST_IOS::out );
 
     // open overload taking C-style string
-    void open( const char* path, 
+    void open( const char* path,
                BOOST_IOS::openmode mode = BOOST_IOS::out );
 
     // open overload taking a Boost.Filesystem path
     template<typename Path>
-    void open( const Path& path, 
+    void open( const Path& path,
                BOOST_IOS::openmode mode = BOOST_IOS::out )
     { open(detail::path(path), mode); }
 private:

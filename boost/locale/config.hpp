@@ -11,8 +11,8 @@
 #include <boost/locale/definitions.hpp>
 
 //
-// Automatically link to the correct build variant where possible. 
-// 
+// Automatically link to the correct build variant where possible.
+//
 #if !defined(BOOST_ALL_NO_LIB) && !defined(BOOST_LOCALE_NO_LIB) && !defined(BOOST_LOCALE_SOURCE)
 //
 // Set the name of our library, this will get undef'ed by auto_link.hpp

@@ -1157,7 +1157,7 @@ public:
     matrix_expression_assigner &operator, (const index_manipulator<T> &ta) {
         ta().manip(i, j);
         return *this;
-    } 
+    }
 
     template <class T>
     BOOST_UBLAS_INLINE

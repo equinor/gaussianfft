@@ -25,7 +25,7 @@ class compose_property_map
 {
 public:
     typedef typename boost::property_traits<FPMap>::category category;
-    typedef typename boost::property_traits<GPMap>::key_type key_type; 
+    typedef typename boost::property_traits<GPMap>::key_type key_type;
     typedef typename boost::property_traits<FPMap>::value_type value_type;
     typedef typename boost::property_traits<FPMap>::reference reference;
 

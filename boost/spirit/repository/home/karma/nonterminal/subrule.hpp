@@ -200,7 +200,7 @@ namespace boost { namespace spirit { namespace repository { namespace karma
             context_type;
 
             // Create an attribute if none is supplied.
-            typedef traits::make_attribute<subrule_attr_type, Attribute> 
+            typedef traits::make_attribute<subrule_attr_type, Attribute>
                 make_attribute;
 
             // If you are seeing a compilation error here, you are probably
@@ -235,7 +235,7 @@ namespace boost { namespace spirit { namespace repository { namespace karma
             context_type;
 
             // Create an attribute if none is supplied.
-            typedef traits::make_attribute<subrule_attr_type, Attribute> 
+            typedef traits::make_attribute<subrule_attr_type, Attribute>
                 make_attribute;
 
             // If you are seeing a compilation error here, you are probably

@@ -8,7 +8,7 @@
 # include <boost/concept/assert.hpp>
 # include <boost/preprocessor/seq/for_each.hpp>
 
-namespace boost { 
+namespace boost {
 
 // unaryfunptr_arg_type from parameter/aux_/parenthesized_type.hpp
 
@@ -56,7 +56,7 @@ struct Requires_ : ::boost::ccheck_aux::unaryfunptr_arg_type<Result>
 
 # if BOOST_WORKAROUND(BOOST_INTEL_WIN, BOOST_TESTED_AT(1010))
 #  define BOOST_CONCEPT_REQUIRES_(r,data,t) | (::boost::_requires_<void(*)t>::value)
-# else 
+# else
 #  define BOOST_CONCEPT_REQUIRES_(r,data,t) + (::boost::_requires_<void(*)t>::value)
 # endif
 
@@ -83,7 +83,7 @@ struct Requires_ : ::boost::ccheck_aux::unaryfunptr_arg_type<Result>
       void(*)result                                                                 \
     >::type
 
-#endif 
+#endif
 
 // C++0x proposed syntax changed.  This supports an older usage
 #define BOOST_CONCEPT_WHERE(models,result) BOOST_CONCEPT_REQUIRES(models,result)

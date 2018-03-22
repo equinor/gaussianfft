@@ -146,7 +146,7 @@ struct find_greatest_normalized_separation
         }
 
         coordinate_type const width = highest_high - lowest_low;
-        
+
         // highest_low - lowest_high
         separation = difference<separation_type>(lowest_high, highest_low);
         // BOOST_GEOMETRY_INDEX_ASSERT(0 <= width);
@@ -419,7 +419,7 @@ struct redistribute_elements<Value, Options, Translator, Box, Allocators, linear
                             content2 = enlarged_content2;
                         }
                     }
-                
+
                     BOOST_GEOMETRY_INDEX_ASSERT(0 < remaining, "unexpected value");
                     --remaining;
                 }

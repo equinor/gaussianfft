@@ -38,14 +38,14 @@ void assert_destructions(int n)
 int main()
 {
     assert_destructions(0);
-    
+
     foo* f1 = new foo;
     boost::python::detail::destroy_referent<foo const volatile&>(f1);
     assert_destructions(1);
-    
+
     foo* f2 = new foo[2];
     typedef foo x[2];
-    
+
     boost::python::detail::destroy_referent<x const&>(f2);
     assert_destructions(3);
 

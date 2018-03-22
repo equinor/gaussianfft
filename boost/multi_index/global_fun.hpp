@@ -74,7 +74,7 @@ struct const_ref_global_fun_base
   Type operator()(
     const reference_wrapper<
       typename remove_reference<Value>::type>& x)const
-  { 
+  {
     return operator()(x.get());
   }
 
@@ -89,7 +89,7 @@ struct const_ref_global_fun_base
 #endif
 
   )const
-  { 
+  {
     return operator()(x.get());
   }
 };
@@ -121,7 +121,7 @@ struct non_const_ref_global_fun_base
   Type operator()(
     const reference_wrapper<
       typename remove_reference<Value>::type>& x)const
-  { 
+  {
     return operator()(x.get());
   }
 };
@@ -151,13 +151,13 @@ struct non_ref_global_fun_base
   }
 
   Type operator()(const reference_wrapper<const Value>& x)const
-  { 
+  {
     return operator()(x.get());
   }
 
   Type operator()(
     const reference_wrapper<typename remove_const<Value>::type>& x)const
-  { 
+  {
     return operator()(x.get());
   }
 };

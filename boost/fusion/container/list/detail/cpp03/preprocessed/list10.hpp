@@ -32,13 +32,13 @@ namespace boost { namespace fusion
         list(Sequence const& rhs
             , typename enable_if<traits::is_sequence<Sequence>, detail::enabler_>::type = detail::enabler)
             : inherited_type(rhs) {}
-        
-        
-        
-        
-        
-        
-        
+
+
+
+
+
+
+
     BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
     explicit
     list(typename detail::call_param<T0 >::type arg0)

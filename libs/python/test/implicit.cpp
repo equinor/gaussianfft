@@ -33,7 +33,7 @@ BOOST_PYTHON_MODULE(implicit_ext)
 {
     implicitly_convertible<foo,bar>();
     implicitly_convertible<int,X>();
-    
+
     def("x_value", x_value);
     def("make_x", make_x);
 
@@ -41,7 +41,7 @@ BOOST_PYTHON_MODULE(implicit_ext)
         .def("value", &X::value)
         .def("set", &X::set)
         ;
-    
+
     implicitly_convertible<X,int>();
 }
 

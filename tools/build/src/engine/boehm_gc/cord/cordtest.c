@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 1993-1994 by Xerox Corporation.  All rights reserved.
  *
  * THIS MATERIAL IS PROVIDED AS IS, WITH ABSOLUTELY NO WARRANTY EXPRESSED
@@ -55,23 +55,23 @@ void test_basics()
     char c;
     CORD y;
     CORD_pos p;
-    
+
     x = CORD_cat(x,x);
     if (!CORD_IS_STRING(x)) ABORT("short cord should usually be a string");
     if (strcmp(x, "abab") != 0) ABORT("bad CORD_cat result");
-    
+
     for (i = 1; i < 16; i++) {
         x = CORD_cat(x,x);
     }
     x = CORD_cat(x,"c");
     if (CORD_len(x) != 128*1024+1) ABORT("bad length");
-    
+
     count = 0;
     if (CORD_iter5(x, 64*1024-1, test_fn, CORD_NO_FN, (void *)13) == 0) {
         ABORT("CORD_iter5 failed");
     }
     if (count != 64*1024 + 2) ABORT("CORD_iter5 failed");
-    
+
     count = 0;
     CORD_set_pos(p, x, 64*1024-1);
     while(CORD_pos_valid(p)) {
@@ -79,28 +79,28 @@ void test_basics()
 	CORD_next(p);
     }
     if (count != 64*1024 + 2) ABORT("Position based iteration failed");
-    
+
     y = CORD_substr(x, 1023, 5);
     if (!CORD_IS_STRING(y)) ABORT("short cord should usually be a string");
     if (strcmp(y, "babab") != 0) ABORT("bad CORD_substr result");
-    
+
     y = CORD_substr(x, 1024, 8);
     if (!CORD_IS_STRING(y)) ABORT("short cord should usually be a string");
     if (strcmp(y, "abababab") != 0) ABORT("bad CORD_substr result");
-    
+
     y = CORD_substr(x, 128*1024-1, 8);
     if (!CORD_IS_STRING(y)) ABORT("short cord should usually be a string");
     if (strcmp(y, "bc") != 0) ABORT("bad CORD_substr result");
-    
+
     x = CORD_balance(x);
     if (CORD_len(x) != 128*1024+1) ABORT("bad length");
-    
+
     count = 0;
     if (CORD_iter5(x, 64*1024-1, test_fn, CORD_NO_FN, (void *)13) == 0) {
         ABORT("CORD_iter5 failed");
     }
     if (count != 64*1024 + 2) ABORT("CORD_iter5 failed");
-    
+
     y = CORD_substr(x, 1023, 5);
     if (!CORD_IS_STRING(y)) ABORT("short cord should usually be a string");
     if (strcmp(y, "babab") != 0) ABORT("bad CORD_substr result");
@@ -133,7 +133,7 @@ void test_extras()
     CORD w, z;
     FILE *f;
     FILE *f1a, *f1b, *f2;
-    
+
     w = CORD_cat(CORD_cat(y,y),y);
     z = CORD_catn(3,y,y,y);
     if (CORD_cmp(w,z) != 0) ABORT("CORD_catn comparison wrong");
@@ -202,7 +202,7 @@ void test_printf()
     long l;
     short s;
     CORD x;
-    
+
     if (CORD_sprintf(&result, "%7.2f%ln", 3.14159F, &l) != 7)
     	ABORT("CORD_sprintf failed 1");
     if (CORD_cmp(result, "   3.14") != 0)ABORT("CORD_sprintf goofed 1");

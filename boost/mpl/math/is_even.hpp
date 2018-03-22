@@ -4,8 +4,8 @@
 
 // Copyright Aleksey Gurtovoy 2000-2004
 //
-// Distributed under the Boost Software License, Version 1.0. 
-// (See accompanying file LICENSE_1_0.txt or copy at 
+// Distributed under the Boost Software License, Version 1.0.
+// (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 //
 // See http://www.boost.org/libs/mpl for documentation.
@@ -32,7 +32,7 @@ namespace aux
       typedef bool_<value> type;
   };
 }
-#endif 
+#endif
 
 template<
       typename BOOST_MPL_AUX_NA_PARAM(N)
@@ -42,7 +42,7 @@ struct is_even
   : aux::is_even_base<N>::type
 #else
   : bool_<((N::value % 2) == 0)>
-#endif 
+#endif
 {
     BOOST_MPL_AUX_LAMBDA_SUPPORT(1,is_even,(N))
 };

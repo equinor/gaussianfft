@@ -41,7 +41,7 @@ GLOBAL_MACRO = $(SYM_PREFIX)_GLOBAL
 	done
 
 # This rule creates the export object file (`foo.exp') which contains the
-# jump table array; this export object file becomes part of the DLL. 
+# jump table array; this export object file becomes part of the DLL.
 # This rule also creates the import library (`foo_dll.a') which contains small
 # stubs for all the functions exported by the DLL which jump to them via the
 # jump table.  Executables that will use the DLL must be linked against this

@@ -23,10 +23,10 @@
 
 #include <boost/config.hpp>
 #if defined(BOOST_NO_STDC_NAMESPACE)
-namespace std{ 
-    using ::strlen; 
+namespace std{
+    using ::strlen;
     #if ! defined(BOOST_NO_INTRINSIC_WCHAR_T)
-        using ::mbtowc; 
+        using ::mbtowc;
         using ::wcslen;
     #endif
 } // namespace std
@@ -159,7 +159,7 @@ xml_woarchive_impl<Archive>::save_binary(
     #else
     this->basic_text_oprimitive::save_binary(
     #endif
-        address, 
+        address,
         count
     );
     this->indent_next = true;

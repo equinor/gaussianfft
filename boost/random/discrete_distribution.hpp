@@ -308,7 +308,7 @@ public:
             detail::print_vector(os, parm._probabilities);
             return os;
         }
-        
+
         /** Reads the parameters from a @c std::istream. */
         BOOST_RANDOM_DETAIL_ISTREAM_OPERATOR(is, param_type, parm)
         {
@@ -440,7 +440,7 @@ public:
             return(_impl._alias_table[static_cast<std::size_t>(result)].second);
         }
     }
-    
+
     /**
      * Returns a value distributed according to the parameters
      * specified by param.
@@ -472,7 +472,7 @@ public:
             return discrete_distribution(parm)(urng);
         }
     }
-    
+
     /** Returns the smallest value that the distribution can produce. */
     result_type min BOOST_PREVENT_MACRO_SUBSTITUTION () const { return 0; }
     /** Returns the largest value that the distribution can produce. */
@@ -520,7 +520,7 @@ public:
     {
         init(parm._probabilities.begin(), parm._probabilities.end());
     }
-    
+
     /**
      * Effects: Subsequent uses of the distribution do not depend
      * on values produced by any engine prior to invoking reset.

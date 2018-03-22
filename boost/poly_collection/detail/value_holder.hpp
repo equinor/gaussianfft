@@ -146,7 +146,7 @@ public:
   value_holder(value_holder&& x)
     noexcept(is_nothrow_move_constructible::value)
     {::new ((void*)data()) T(std::move(x.value()));}
- 
+
   value_holder& operator=(const value_holder& x)=delete;
   value_holder& operator=(value_holder&& x)
     noexcept(is_nothrow_move_assignable::value||!is_move_assignable::value)
@@ -196,7 +196,7 @@ private:
 
   void move_assign(T&& x,std::true_type)
   {
-    value()=std::move(x);    
+    value()=std::move(x);
   }
 
   void move_assign(T&& x,std::false_type)

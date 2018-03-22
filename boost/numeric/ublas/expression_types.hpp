@@ -25,7 +25,7 @@ namespace boost { namespace numeric { namespace ublas {
      *
      * This is a NonAssignable class
      * Directly implement nonassignable - simplifes debugging call trace!
-     * 
+     *
      * \tparam E an expression type
      */
     template<class E>
@@ -36,7 +36,7 @@ namespace boost { namespace numeric { namespace ublas {
         typedef typename E::type_category type_category;
         typedef typename E::value_type value_type;
         */
-        
+
     protected:
         ublas_expression () {}
         ~ublas_expression () {}
@@ -48,7 +48,7 @@ namespace boost { namespace numeric { namespace ublas {
     /** \brief Base class for Scalar Expression models
      *
      * It does not model the Scalar Expression concept but all derived types should.
-     * The class defines a common base type and some common interface for all statically 
+     * The class defines a common base type and some common interface for all statically
      * derived Scalar Expression classes.
      *
      * We implement the casts to the statically derived type.
@@ -188,7 +188,7 @@ namespace boost { namespace numeric { namespace ublas {
         /* E can be an incomplete type - to define the following we would need more template arguments
         typedef typename E::size_type size_type;
         */
- 
+
         BOOST_UBLAS_INLINE
         const expression_type &operator () () const {
             return *static_cast<const expression_type *> (this);
@@ -205,7 +205,7 @@ namespace boost { namespace numeric { namespace ublas {
         typedef vector_range<const E> const_vector_range_type;
         typedef vector_slice<E> vector_slice_type;
         typedef vector_slice<const E> const_vector_slice_type;
-        // vector_indirect_type will depend on the A template parameter 
+        // vector_indirect_type will depend on the A template parameter
         typedef basic_range<> default_range;    // required to avoid range/slice name confusion
         typedef basic_slice<> default_slice;
    public:
@@ -279,7 +279,7 @@ namespace boost { namespace numeric { namespace ublas {
         static const unsigned complexity = 0;
         typedef C container_type;
         typedef vector_tag type_category;
- 
+
         BOOST_UBLAS_INLINE
         const container_type &operator () () const {
             return *static_cast<const container_type *> (this);
@@ -339,7 +339,7 @@ namespace boost { namespace numeric { namespace ublas {
         typedef const matrix_range<const E> const_matrix_range_type;
         typedef matrix_slice<E> matrix_slice_type;
         typedef const matrix_slice<const E> const_matrix_slice_type;
-        // matrix_indirect_type will depend on the A template parameter 
+        // matrix_indirect_type will depend on the A template parameter
         typedef basic_range<> default_range;    // required to avoid range/slice name confusion
         typedef basic_slice<> default_slice;
 

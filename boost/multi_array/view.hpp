@@ -1,6 +1,6 @@
 // Copyright 2002 The Trustees of Indiana University.
 
-// Use, modification and distribution is subject to the Boost Software 
+// Use, modification and distribution is subject to the Boost Software
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
@@ -42,7 +42,7 @@ class const_multi_array_view :
     public boost::detail::multi_array::multi_array_impl_base<T,NumDims>
 {
   typedef boost::detail::multi_array::multi_array_impl_base<T,NumDims> super_type;
-public: 
+public:
   typedef typename super_type::value_type value_type;
   typedef typename super_type::const_reference const_reference;
   typedef typename super_type::const_iterator const_iterator;
@@ -65,7 +65,7 @@ public:
   };
 
   template <typename OPtr>
-  const_multi_array_view(const 
+  const_multi_array_view(const
                          const_multi_array_view<T,NumDims,OPtr>& other) :
     base_(other.base_), origin_offset_(other.origin_offset_),
     num_elements_(other.num_elements_), extent_list_(other.extent_list_),
@@ -136,7 +136,7 @@ public:
 
   // see generate_array_view in base.hpp
   template <int NDims>
-  typename const_array_view<NDims>::type 
+  typename const_array_view<NDims>::type
   operator[](const boost::detail::multi_array::
              index_gen<NumDims,NDims>& indices)
     const {
@@ -158,7 +158,7 @@ public:
     return const_iterator(*index_bases()+(index)*shape(),origin(),
                           shape(),strides(),index_bases());
   }
-  
+
   const_reverse_iterator rbegin() const {
     return const_reverse_iterator(end());
   }
@@ -224,11 +224,11 @@ public: // should be protected
 #endif
 
   // This constructor is used by multi_array_impl_base::generate_array_view
-  // to create strides  
+  // to create strides
   template <typename ExtentList, typename Index>
   explicit const_multi_array_view(TPtr base,
                            const ExtentList& extents,
-                           const boost::array<Index,NumDims>& strides): 
+                           const boost::array<Index,NumDims>& strides):
     base_(base), origin_offset_(0) {
 
     index_base_list_.assign(0);
@@ -265,7 +265,7 @@ class multi_array_view :
   public const_multi_array_view<T,NumDims,T*>
 {
   typedef const_multi_array_view<T,NumDims,T*> super_type;
-public: 
+public:
   typedef typename super_type::value_type value_type;
   typedef typename super_type::reference reference;
   typedef typename super_type::iterator iterator;
@@ -293,7 +293,7 @@ public:
   // Assignment from other ConstMultiArray types.
   template <typename ConstMultiArray>
   multi_array_view& operator=(const ConstMultiArray& other) {
-    function_requires< 
+    function_requires<
       boost::multi_array_concepts::
       ConstMultiArrayConcept<ConstMultiArray,NumDims> >();
 
@@ -343,7 +343,7 @@ public:
 
   // see generate_array_view in base.hpp
   template <int NDims>
-  typename array_view<NDims>::type 
+  typename array_view<NDims>::type
   operator[](const boost::detail::multi_array::
              index_gen<NumDims,NDims>& indices) {
     typedef typename array_view<NDims>::type return_type;
@@ -355,8 +355,8 @@ public:
                                       this->index_bases(),
                                       origin());
   }
-  
-  
+
+
   iterator begin() {
     return iterator(*this->index_bases(),origin(),
                     this->shape(),this->strides(),
@@ -395,13 +395,13 @@ public:
 
   // see generate_array_view in base.hpp
   template <int NDims>
-  typename const_array_view<NDims>::type 
+  typename const_array_view<NDims>::type
   operator[](const boost::detail::multi_array::
              index_gen<NumDims,NDims>& indices)
     const {
     return super_type::operator[](indices);
   }
-  
+
   const_iterator begin() const {
     return super_type::begin();
   }
@@ -452,7 +452,7 @@ template <typename Array, int N>
 class const_array_view_gen {
   typedef typename Array::element element;
 public:
-  typedef boost::detail::multi_array::const_multi_array_view<element,N> type;  
+  typedef boost::detail::multi_array::const_multi_array_view<element,N> type;
 };
 
 } // namespace boost

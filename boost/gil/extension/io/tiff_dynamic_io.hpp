@@ -1,6 +1,6 @@
 /*
     Copyright 2005-2007 Adobe Systems Incorporated
-   
+
     Use, modification and distribution are subject to the Boost Software License,
     Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
     http://www.boost.org/LICENSE_1_0.txt).
@@ -115,7 +115,7 @@ inline void tiff_read_image(const std::string& filename,any_image<Images>& im) {
 
 /// \ingroup TIFF_IO
 /// \brief Saves the currently instantiated view to a tiff file specified by the given tiff image file name.
-/// Throws std::ios_base::failure if the currently instantiated view type is not supported for writing by the I/O extension 
+/// Throws std::ios_base::failure if the currently instantiated view type is not supported for writing by the I/O extension
 /// or if it fails to create the file.
 template <typename Views>
 inline void tiff_write_view(const char* filename,const any_image_view<Views>& runtime_view) {

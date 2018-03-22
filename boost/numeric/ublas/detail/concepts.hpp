@@ -267,12 +267,12 @@ namespace boost { namespace numeric { namespace ublas {
      *
      * requirements
      * \li \c VE::value_type is the type of the elements
-     * \li \c VE::const_reference The return type when accessing an element of a constant vector 
+     * \li \c VE::const_reference The return type when accessing an element of a constant vector
      * expression. Must be convertable to a \c value_type.
      * \li \c VE::size_type is the (unsigned) type of the indices
      * \li \c VE::difference_type is the (signed) type of distances between indices
      * \li \c VE::category
-     * 
+     *
      * \li the constant \c SE::complexity must exist
      *
      * \param SE the type of the scalar expression
@@ -1330,7 +1330,7 @@ inline void concept_checks () {
             function_requires< IndexedRandomAccess2DIteratorConcept<container_model::const_reverse_iterator1, container_model::const_reverse_iterator2> >();
             function_requires< Mutable_IndexedRandomAccess2DIteratorConcept<container_model::reverse_iterator1, container_model::reverse_iterator2> >();
         }
-        
+
         {
             typedef hermitian_adaptor<matrix<T> > container_model;
 #ifndef SKIP_BAD

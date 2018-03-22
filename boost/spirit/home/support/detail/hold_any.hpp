@@ -101,13 +101,13 @@ namespace boost { namespace spirit
                     *reinterpret_cast<T*>(dest) =
                         *reinterpret_cast<T const*>(src);
                 }
-                static std::basic_istream<Char>& 
+                static std::basic_istream<Char>&
                 stream_in (std::basic_istream<Char>& i, void** obj)
                 {
                     i >> *reinterpret_cast<T*>(obj);
                     return i;
                 }
-                static std::basic_ostream<Char>& 
+                static std::basic_ostream<Char>&
                 stream_out(std::basic_ostream<Char>& o, void* const* obj)
                 {
                     o << *reinterpret_cast<T const*>(obj);
@@ -146,13 +146,13 @@ namespace boost { namespace spirit
                     **reinterpret_cast<T**>(dest) =
                         **reinterpret_cast<T* const*>(src);
                 }
-                static std::basic_istream<Char>& 
+                static std::basic_istream<Char>&
                 stream_in(std::basic_istream<Char>& i, void** obj)
                 {
                     i >> **reinterpret_cast<T**>(obj);
                     return i;
                 }
-                static std::basic_ostream<Char>& 
+                static std::basic_ostream<Char>&
                 stream_out(std::basic_ostream<Char>& o, void* const* obj)
                 {
                     o << **reinterpret_cast<T* const*>(obj);
@@ -198,7 +198,7 @@ namespace boost { namespace spirit
             // value of the required type to the hold_any instance you want to
             // stream to. This assignment has to be executed before the actual
             // call to the operator>>().
-            BOOST_ASSERT(false && 
+            BOOST_ASSERT(false &&
                 "Tried to insert from a std istream into an empty "
                 "hold_any instance");
             return i;
@@ -369,14 +369,14 @@ namespace boost { namespace spirit
     // because spirit::hold_any is used only in contexts where these operators
     // do exist
         template <typename Char_>
-        friend inline std::basic_istream<Char_>& 
+        friend inline std::basic_istream<Char_>&
         operator>> (std::basic_istream<Char_>& i, basic_hold_any<Char_>& obj)
         {
             return obj.table->stream_in(i, &obj.object);
         }
 
         template <typename Char_>
-        friend inline std::basic_ostream<Char_>& 
+        friend inline std::basic_ostream<Char_>&
         operator<< (std::basic_ostream<Char_>& o, basic_hold_any<Char_> const& obj)
         {
             return obj.table->stream_out(o, &obj.object);

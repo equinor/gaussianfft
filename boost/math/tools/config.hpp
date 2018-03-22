@@ -74,8 +74,8 @@
 //
 // Intel compiler prior to version 10 has sporadic problems
 // calling the long double overloads of the std lib math functions:
-// calling ::powl is OK, but std::pow(long double, long double) 
-// may segfault depending upon the value of the arguments passed 
+// calling ::powl is OK, but std::pow(long double, long double)
+// may segfault depending upon the value of the arguments passed
 // and the specific Linux distribution.
 //
 // We'll be conservative and disable long double support for this compiler.
@@ -240,21 +240,21 @@
 #endif
 
 //
-// The maximum order of polynomial that will be evaluated 
+// The maximum order of polynomial that will be evaluated
 // via an unrolled specialisation:
 //
 #ifndef BOOST_MATH_MAX_POLY_ORDER
 #  define BOOST_MATH_MAX_POLY_ORDER 20
-#endif 
+#endif
 //
 // Set the method used to evaluate polynomials and rationals:
 //
 #ifndef BOOST_MATH_POLY_METHOD
 #  define BOOST_MATH_POLY_METHOD 2
-#endif 
+#endif
 #ifndef BOOST_MATH_RATIONAL_METHOD
 #  define BOOST_MATH_RATIONAL_METHOD 1
-#endif 
+#endif
 //
 // decide whether to store constants as integers or reals:
 //
@@ -270,7 +270,7 @@
 #if defined(_GLIBCXX_USE_FLOAT128) && defined(BOOST_GCC) && !defined(__STRICT_ANSI__) \
    && !defined(BOOST_MATH_DISABLE_FLOAT128) || defined(BOOST_MATH_USE_FLOAT128)
 //
-// Only enable this when the compiler really is GCC as clang and probably 
+// Only enable this when the compiler really is GCC as clang and probably
 // intel too don't support __float128 yet :-(
 //
 #ifndef BOOST_MATH_USE_FLOAT128
@@ -411,7 +411,7 @@ namespace boost{ namespace math{
    }} // namespaces
 
 #    define BOOST_FPU_EXCEPTION_GUARD boost::math::detail::fpu_guard local_guard_object;
-#    define BOOST_MATH_INSTRUMENT_FPU do{ fexcept_t cpu_flags; fegetexceptflag(&cpu_flags, FE_ALL_EXCEPT); BOOST_MATH_INSTRUMENT_VARIABLE(cpu_flags); } while(0); 
+#    define BOOST_MATH_INSTRUMENT_FPU do{ fexcept_t cpu_flags; fegetexceptflag(&cpu_flags, FE_ALL_EXCEPT); BOOST_MATH_INSTRUMENT_VARIABLE(cpu_flags); } while(0);
 
 #  else
 

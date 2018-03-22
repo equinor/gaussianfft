@@ -67,7 +67,7 @@ class transform_iterator
    typedef typename Iterator::difference_type                                             difference_type;
    typedef operator_arrow_proxy<typename UnaryFunction::result_type>                      pointer;
    typedef typename UnaryFunction::result_type                                            reference;
-   
+
    explicit transform_iterator(const Iterator &it, const UnaryFunction &f = UnaryFunction())
       :  members_(it, f)
    {}

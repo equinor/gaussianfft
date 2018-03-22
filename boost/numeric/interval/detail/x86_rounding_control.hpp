@@ -60,16 +60,16 @@ struct x86_rounding_control: x86_rounding
 template<>
 struct rounding_control<float>: detail::x86_rounding_control
 {
-  static float force_rounding(const float& r) 
+  static float force_rounding(const float& r)
   { volatile float r_ = r; return r_; }
 };
 
 template<>
 struct rounding_control<double>: detail::x86_rounding_control
 {
-  /*static double force_rounding(double r) 
+  /*static double force_rounding(double r)
   { asm volatile ("" : "+m"(r) : ); return r; }*/
-  static double force_rounding(const double& r) 
+  static double force_rounding(const double& r)
   { volatile double r_ = r; return r_; }
 };
 

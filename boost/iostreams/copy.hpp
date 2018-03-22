@@ -5,8 +5,8 @@
 
 // See http://www.boost.org/libs/iostreams for documentation.
 
-// Contains: The function template copy, which reads data from a Source 
-// and writes it to a Sink until the end of the sequence is reached, returning 
+// Contains: The function template copy, which reads data from a Source
+// and writes it to a Sink until the end of the sequence is reached, returning
 // the number of characters transfered.
 
 // The implementation is complicated by the need to handle smart adapters
@@ -17,7 +17,7 @@
 
 #if defined(_MSC_VER)
 # pragma once
-#endif              
+#endif
 
 #include <boost/config.hpp>                 // Make sure ptrdiff_t is in std.
 #include <algorithm>                        // copy, min.
@@ -27,40 +27,40 @@
 #include <boost/detail/workaround.hpp>
 #include <boost/iostreams/chain.hpp>
 #include <boost/iostreams/constants.hpp>
-#include <boost/iostreams/detail/adapter/non_blocking_adapter.hpp>        
+#include <boost/iostreams/detail/adapter/non_blocking_adapter.hpp>
 #include <boost/iostreams/detail/buffer.hpp>
-#include <boost/iostreams/detail/enable_if_stream.hpp>  
+#include <boost/iostreams/detail/enable_if_stream.hpp>
 #include <boost/iostreams/detail/execute.hpp>
 #include <boost/iostreams/detail/functional.hpp>
-#include <boost/iostreams/detail/ios.hpp>   // failure, streamsize.                   
-#include <boost/iostreams/detail/resolve.hpp>                   
+#include <boost/iostreams/detail/ios.hpp>   // failure, streamsize.
+#include <boost/iostreams/detail/resolve.hpp>
 #include <boost/iostreams/detail/wrap_unwrap.hpp>
 #include <boost/iostreams/operations.hpp>  // read, write, close.
 #include <boost/iostreams/pipeline.hpp>
-#include <boost/static_assert.hpp>  
-#include <boost/type_traits/is_same.hpp> 
+#include <boost/static_assert.hpp>
+#include <boost/type_traits/is_same.hpp>
 
 namespace boost { namespace iostreams {
 
 namespace detail {
 
-    // The following four overloads of copy_impl() optimize 
+    // The following four overloads of copy_impl() optimize
     // copying in the case that one or both of the two devices
-    // models Direct (see 
+    // models Direct (see
     // http://www.boost.org/libs/iostreams/doc/index.html?path=4.1.1.4)
 
 // Copy from a direct source to a direct sink
 template<typename Source, typename Sink>
-std::streamsize copy_impl( Source& src, Sink& snk, 
+std::streamsize copy_impl( Source& src, Sink& snk,
                            std::streamsize /* buffer_size */,
                            mpl::true_, mpl::true_ )
-{   
+{
     using namespace std;
     typedef typename char_type_of<Source>::type  char_type;
     typedef std::pair<char_type*, char_type*>    pair_type;
     pair_type p1 = iostreams::input_sequence(src);
     pair_type p2 = iostreams::output_sequence(snk);
-    std::streamsize total = 
+    std::streamsize total =
         static_cast<std::streamsize>(
             (std::min)(p1.second - p1.first, p2.second - p2.first)
         );
@@ -70,7 +70,7 @@ std::streamsize copy_impl( Source& src, Sink& snk,
 
 // Copy from a direct source to an indirect sink
 template<typename Source, typename Sink>
-std::streamsize copy_impl( Source& src, Sink& snk, 
+std::streamsize copy_impl( Source& src, Sink& snk,
                            std::streamsize /* buffer_size */,
                            mpl::true_, mpl::false_ )
 {
@@ -82,8 +82,8 @@ std::streamsize copy_impl( Source& src, Sink& snk,
     for ( total = 0, size = static_cast<std::streamsize>(p.second - p.first);
           total < size; )
     {
-        std::streamsize amt = 
-            iostreams::write(snk, p.first + total, size - total); 
+        std::streamsize amt =
+            iostreams::write(snk, p.first + total, size - total);
         total += amt;
     }
     return total;
@@ -91,7 +91,7 @@ std::streamsize copy_impl( Source& src, Sink& snk,
 
 // Copy from an indirect source to a direct sink
 template<typename Source, typename Sink>
-std::streamsize copy_impl( Source& src, Sink& snk, 
+std::streamsize copy_impl( Source& src, Sink& snk,
                            std::streamsize buffer_size,
                            mpl::false_, mpl::true_ )
 {
@@ -102,9 +102,9 @@ std::streamsize copy_impl( Source& src, Sink& snk,
     std::streamsize                  total = 0;
     std::ptrdiff_t                   capacity = p.second - p.first;
     while (true) {
-        std::streamsize amt = 
+        std::streamsize amt =
             iostreams::read(
-                src, 
+                src,
                 buf.data(),
                 buffer_size < capacity - total ?
                     buffer_size :
@@ -120,10 +120,10 @@ std::streamsize copy_impl( Source& src, Sink& snk,
 
 // Copy from an indirect source to an indirect sink
 template<typename Source, typename Sink>
-std::streamsize copy_impl( Source& src, Sink& snk, 
+std::streamsize copy_impl( Source& src, Sink& snk,
                            std::streamsize buffer_size,
                            mpl::false_, mpl::false_ )
-{ 
+{
     typedef typename char_type_of<Source>::type char_type;
     detail::basic_buffer<char_type>  buf(buffer_size);
     non_blocking_adapter<Sink>       nb(snk);
@@ -140,11 +140,11 @@ std::streamsize copy_impl( Source& src, Sink& snk,
     return total;
 }
 
-    // The following function object is used with 
-    // boost::iostreams::detail::execute() in the primary 
+    // The following function object is used with
+    // boost::iostreams::detail::execute() in the primary
     // overload of copy_impl(), below
 
-// Function object that delegates to one of the above four 
+// Function object that delegates to one of the above four
 // overloads of compl_impl()
 template<typename Source, typename Sink>
 class copy_operation {
@@ -153,9 +153,9 @@ public:
     copy_operation(Source& src, Sink& snk, std::streamsize buffer_size)
         : src_(src), snk_(snk), buffer_size_(buffer_size)
         { }
-    std::streamsize operator()() 
+    std::streamsize operator()()
     {
-        return copy_impl( src_, snk_, buffer_size_, 
+        return copy_impl( src_, snk_, buffer_size_,
                           is_direct<Source>(), is_direct<Sink>() );
     }
 private:
@@ -165,9 +165,9 @@ private:
     std::streamsize  buffer_size_;
 };
 
-// Primary overload of copy_impl. Delegates to one of the above four 
-// overloads of compl_impl(), depending on which of the two given 
-// devices, if any, models Direct (see 
+// Primary overload of copy_impl. Delegates to one of the above four
+// overloads of compl_impl(), depending on which of the two given
+// devices, if any, models Direct (see
 // http://www.boost.org/libs/iostreams/doc/index.html?path=4.1.1.4)
 template<typename Source, typename Sink>
 std::streamsize copy_impl(Source src, Sink snk, std::streamsize buffer_size)
@@ -184,7 +184,7 @@ std::streamsize copy_impl(Source src, Sink snk, std::streamsize buffer_size)
 }
 
 } // End namespace detail.
-                    
+
 //------------------Definition of copy----------------------------------------//
 
 // Overload of copy() for the case where neither the source nor the sink is
@@ -195,11 +195,11 @@ copy( const Source& src, const Sink& snk,
       std::streamsize buffer_size = default_device_buffer_size
       BOOST_IOSTREAMS_DISABLE_IF_STREAM(Source)
       BOOST_IOSTREAMS_DISABLE_IF_STREAM(Sink) )
-{ 
+{
     typedef typename char_type_of<Source>::type char_type;
-    return detail::copy_impl( detail::resolve<input, char_type>(src), 
-                              detail::resolve<output, char_type>(snk), 
-                              buffer_size ); 
+    return detail::copy_impl( detail::resolve<input, char_type>(src),
+                              detail::resolve<output, char_type>(snk),
+                              buffer_size );
 }
 
 // Overload of copy() for the case where the source, but not the sink, is
@@ -209,11 +209,11 @@ std::streamsize
 copy( Source& src, const Sink& snk,
       std::streamsize buffer_size = default_device_buffer_size
       BOOST_IOSTREAMS_ENABLE_IF_STREAM(Source)
-      BOOST_IOSTREAMS_DISABLE_IF_STREAM(Sink) ) 
-{ 
+      BOOST_IOSTREAMS_DISABLE_IF_STREAM(Sink) )
+{
     typedef typename char_type_of<Source>::type char_type;
-    return detail::copy_impl( detail::wrap(src), 
-                              detail::resolve<output, char_type>(snk), 
+    return detail::copy_impl( detail::wrap(src),
+                              detail::resolve<output, char_type>(snk),
                               buffer_size );
 }
 
@@ -224,10 +224,10 @@ std::streamsize
 copy( const Source& src, Sink& snk,
       std::streamsize buffer_size = default_device_buffer_size
       BOOST_IOSTREAMS_DISABLE_IF_STREAM(Source)
-      BOOST_IOSTREAMS_ENABLE_IF_STREAM(Sink) ) 
-{ 
+      BOOST_IOSTREAMS_ENABLE_IF_STREAM(Sink) )
+{
     typedef typename char_type_of<Source>::type char_type;
-    return detail::copy_impl( detail::resolve<input, char_type>(src), 
+    return detail::copy_impl( detail::resolve<input, char_type>(src),
                               detail::wrap(snk), buffer_size );
 }
 
@@ -238,8 +238,8 @@ std::streamsize
 copy( Source& src, Sink& snk,
       std::streamsize buffer_size = default_device_buffer_size
       BOOST_IOSTREAMS_ENABLE_IF_STREAM(Source)
-      BOOST_IOSTREAMS_ENABLE_IF_STREAM(Sink) ) 
-{ 
+      BOOST_IOSTREAMS_ENABLE_IF_STREAM(Sink) )
+{
     return detail::copy_impl(detail::wrap(src), detail::wrap(snk), buffer_size);
 }
 

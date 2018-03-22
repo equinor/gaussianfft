@@ -30,7 +30,7 @@ namespace boost { namespace xpressive { namespace detail
       : assert_line_base<Traits>
     {
         typedef typename Traits::char_type char_type;
-        
+
         assert_eol_matcher(Traits const &tr)
           : assert_line_base<Traits>(tr)
         {

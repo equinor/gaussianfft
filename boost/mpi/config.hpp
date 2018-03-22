@@ -22,10 +22,10 @@
 
 /** @brief Comment this macro is you are running in an heterogeneous environment.
  *
- * When this flag is enabled, we assume some simple, POD-like, type can be 
- * transmitted without paying the cost of portable serialization. 
+ * When this flag is enabled, we assume some simple, POD-like, type can be
+ * transmitted without paying the cost of portable serialization.
  *
- * Comment this if your platform is not homogeneous and that portable 
+ * Comment this if your platform is not homogeneous and that portable
  * serialization/deserialization must be performed.
  *
  * It you do so, check that your MPI implementation supports thats kind of environment.
@@ -46,13 +46,13 @@
  */
 #  define BOOST_MPI_HAS_MEMORY_ALLOCATION
 
-/** @brief Determine if the MPI implementation has supports initialization 
+/** @brief Determine if the MPI implementation has supports initialization
  *  without command-line arguments.
  *
  *  This macro will be defined when the underlying implementation
  *  supports initialization of MPI without passing along command-line
  *  arguments, e.g., @c MPI_Init(NULL, NULL). When defined, the @c
- *  environment class will provide a default constructor. This macro is 
+ *  environment class will provide a default constructor. This macro is
  *  always defined for MPI-2 implementations. */
 #  define BOOST_MPI_HAS_NOARG_INITIALIZATION
 #else
@@ -66,7 +66,7 @@
 #  define BOOST_MPI_CALLING_CONVENTION MPIAPI
 #else
 /** @brief Specifies the calling convention that will be used for callbacks
- *  from the underlying C MPI. 
+ *  from the underlying C MPI.
  *
  *  This is a Windows-specific macro, which will be used internally to state
  *  the calling convention of any function that is to be used as a callback
@@ -82,7 +82,7 @@
  *
  * Some implementations have a broken MPI_Bcast wrt to MPI_BOTTOM.
  * BullX MPI and LAM seems to be among them, at least for some versions.
- * The `broacast_test.cpp` test `test_skeleton_and_content` can be used to 
+ * The `broacast_test.cpp` test `test_skeleton_and_content` can be used to
  * detect that.
  */
 #define BOOST_MPI_BCAST_BOTTOM_WORKS_FINE
@@ -98,7 +98,7 @@
 
 /*****************************************************************************
  *                                                                           *
- *  DLL import/export options                                                *  
+ *  DLL import/export options                                                *
  *                                                                           *
  *****************************************************************************/
 

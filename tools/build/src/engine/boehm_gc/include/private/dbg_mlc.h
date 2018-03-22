@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 1988, 1989 Hans-J. Boehm, Alan J. Demers
  * Copyright (c) 1991-1995 by Xerox Corporation.  All rights reserved.
  * Copyright (c) 1997 by Silicon Graphics.  All rights reserved.
@@ -155,7 +155,7 @@ typedef struct {
 # endif
 
 
-/* Check whether object with base pointer p has debugging info	*/ 
+/* Check whether object with base pointer p has debugging info	*/
 /* p is assumed to point to a legitimate object in our part	*/
 /* of the heap.							*/
 #ifdef SHORT_DBG_HDRS

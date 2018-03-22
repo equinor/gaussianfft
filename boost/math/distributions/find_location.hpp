@@ -35,14 +35,14 @@ namespace boost
       // For example, a nominal minimum acceptable z, so that p * 100 % are > z
       typename Dist::value_type p, // probability value desired at x, say 0.95 for 95% > z.
       typename Dist::value_type scale, // scale parameter, for example, normal standard deviation.
-      const Policy& pol 
+      const Policy& pol
       )
     {
 #if !defined(BOOST_NO_SFINAE) && !BOOST_WORKAROUND(__SUNPRO_CC, BOOST_TESTED_AT(0x590))
       // Will fail to compile here if try to use with a distribution without scale & location,
       // for example pareto, and many others.  These tests are disabled by the pp-logic
       // above if the compiler doesn't support the SFINAE tricks used in the traits class.
-      BOOST_STATIC_ASSERT(::boost::math::tools::is_distribution<Dist>::value); 
+      BOOST_STATIC_ASSERT(::boost::math::tools::is_distribution<Dist>::value);
       BOOST_STATIC_ASSERT(::boost::math::tools::is_scaled_distribution<Dist>::value);
 #endif
       static const char* function = "boost::math::find_location<Dist, Policy>&, %1%)";
@@ -62,7 +62,7 @@ namespace boost
        return policies::raise_domain_error<typename Dist::value_type>(
            function, "scale parameter was %1%, but must be finite!", scale, pol);
       }
-        
+
       //cout << "z " << z << ", p " << p << ",  quantile(Dist(), p) "
       //  << quantile(Dist(), p) << ", quan * scale " << quantile(Dist(), p) * scale << endl;
       return z - (quantile(Dist(), p) * scale);

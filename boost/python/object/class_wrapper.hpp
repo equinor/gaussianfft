@@ -11,7 +11,7 @@
 #endif
 # include <boost/ref.hpp>
 
-namespace boost { namespace python { namespace objects { 
+namespace boost { namespace python { namespace objects {
 
 //
 // These two classes adapt the static execute function of a class

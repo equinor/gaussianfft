@@ -42,7 +42,7 @@ public:
 
     stack_context allocate() {
         // calculate how many pages are required
-        const std::size_t pages(        
+        const std::size_t pages(
             static_cast< std::size_t >(
                 std::ceil(
                     static_cast< float >( size_) / traits_type::page_size() ) ) );

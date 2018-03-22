@@ -20,7 +20,7 @@
 namespace boost { namespace mpi {
 
 /**
- *  @brief Wrapper type to explicitly indicate that a input data 
+ *  @brief Wrapper type to explicitly indicate that a input data
  * can be overriden with an output value.
  */
 template <typename T>
@@ -37,16 +37,16 @@ struct inplace_t<T*> {
 
 
 /**
- *  @brief Wrapp a input data to indicate that it can be overriden 
+ *  @brief Wrapp a input data to indicate that it can be overriden
  *  with an ouput value.
- *  @param inout the contributing input value, it will be overriden 
- *  with the output value where one is expected. If it is a pointer, 
+ *  @param inout the contributing input value, it will be overriden
+ *  with the output value where one is expected. If it is a pointer,
  *  the number of elements will be provided separatly.
  *  @returns The wrapped value or pointer.
  */
 template<typename T>
 inplace_t<T>
-inplace(T& inout) { 
+inplace(T& inout) {
   return inplace_t<T>(inout);
 }
 /**
@@ -54,7 +54,7 @@ inplace(T& inout) {
  */
 template<typename T>
 inplace_t<T*>
-inplace(T* inout) { 
+inplace(T* inout) {
   return inplace_t<T*>(inout);
 }
 } }  // end namespace boost::mpi

@@ -14,10 +14,10 @@
  *  2000-02-21  shuffle_output, inversive_congruential_schrage,
  *              generator_iterator, uniform_smallint
  *  2000-02-23  generic modulus arithmetic helper, removed *_schrage classes,
- *              implemented Streamable and EqualityComparable concepts for 
+ *              implemented Streamable and EqualityComparable concepts for
  *              generators, added Bernoulli distribution and Box-Muller
  *              transform
- *  2000-03-01  cauchy, lognormal, triangle distributions; fixed 
+ *  2000-03-01  cauchy, lognormal, triangle distributions; fixed
  *              uniform_smallint; renamed gaussian to normal distribution
  *  2000-03-05  implemented iterator syntax for distribution functions
  *  2000-04-21  removed some optimizations for better BCC/MSVC compatibility

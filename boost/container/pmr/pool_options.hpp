@@ -12,7 +12,7 @@
 #define BOOST_CONTAINER_PMR_POOL_OPTIONS_HPP
 
 #if defined (_MSC_VER)
-#  pragma once 
+#  pragma once
 #endif
 
 #include <cstddef>

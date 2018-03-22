@@ -20,7 +20,7 @@
 #include <boost/iostreams/categories.hpp>
 #include <boost/iostreams/checked_operations.hpp>
 #include <boost/iostreams/detail/ios.hpp>          // openmode, streamsize.
-#include <boost/iostreams/read.hpp>                // check_eof 
+#include <boost/iostreams/read.hpp>                // check_eof
 #include <boost/iostreams/pipeline.hpp>
 #include <boost/iostreams/write.hpp>
 
@@ -56,9 +56,9 @@ public:
           closable_tag
         { };
 protected:
-    basic_line_filter(bool suppress_newlines = false) 
-        : pos_(string_type::npos), 
-          flags_(suppress_newlines ? f_suppress : 0) 
+    basic_line_filter(bool suppress_newlines = false)
+        : pos_(string_type::npos),
+          flags_(suppress_newlines ? f_suppress : 0)
         { }
 public:
     virtual ~basic_line_filter() { }

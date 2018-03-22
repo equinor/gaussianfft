@@ -110,7 +110,7 @@ class allocators<Allocator, Value, Parameters, Box, node_weak_dynamic_tag>
 
 public:
     typedef Allocator allocator_type;
-    
+
     typedef Value value_type;
     typedef typename value_allocator_type::reference reference;
     typedef typename value_allocator_type::const_reference const_reference;

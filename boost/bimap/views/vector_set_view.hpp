@@ -101,14 +101,14 @@ class vector_set_view
                 this->base().at(n)
         ));
     }
-    
+
     BOOST_BIMAP_VIEW_ASSIGN_IMPLEMENTATION(base_)
 
     BOOST_BIMAP_VIEW_FRONT_BACK_IMPLEMENTATION(base_)
 
     // List operations
 
-    void splice(BOOST_DEDUCED_TYPENAME base_::iterator position, 
+    void splice(BOOST_DEDUCED_TYPENAME base_::iterator position,
                 vector_set_view & x)
     {
         this->base().splice(
@@ -131,9 +131,9 @@ class vector_set_view
         );
     }
 
-    void splice(BOOST_DEDUCED_TYPENAME base_::iterator position, 
+    void splice(BOOST_DEDUCED_TYPENAME base_::iterator position,
                 vector_set_view & x,
-                BOOST_DEDUCED_TYPENAME base_::iterator first, 
+                BOOST_DEDUCED_TYPENAME base_::iterator first,
                 BOOST_DEDUCED_TYPENAME base_::iterator last)
     {
         this->base().splice(
@@ -200,7 +200,7 @@ class vector_set_view
 
             >( binary_pred,
                this->template functor<
-                    BOOST_DEDUCED_TYPENAME base_::value_from_base>() 
+                    BOOST_DEDUCED_TYPENAME base_::value_from_base>()
             )
         );
     }
@@ -276,7 +276,7 @@ class vector_set_view
 
     // Rearrange Operations
 
-    void relocate(BOOST_DEDUCED_TYPENAME base_::iterator position, 
+    void relocate(BOOST_DEDUCED_TYPENAME base_::iterator position,
                   BOOST_DEDUCED_TYPENAME base_::iterator i)
     {
         this->base().relocate(
@@ -288,7 +288,7 @@ class vector_set_view
     }
 
     void relocate(BOOST_DEDUCED_TYPENAME base_::iterator position,
-                  BOOST_DEDUCED_TYPENAME base_::iterator first, 
+                  BOOST_DEDUCED_TYPENAME base_::iterator first,
                   BOOST_DEDUCED_TYPENAME base_::iterator last)
     {
         this->base().relocate(

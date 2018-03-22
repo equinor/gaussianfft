@@ -7,7 +7,7 @@
 
 //  Library home page is www.boost.org/libs/system
 
-//--------------------------------------------------------------------------------------// 
+//--------------------------------------------------------------------------------------//
 
 //  Dynamic link libraries (DLL's), also know as dynamic shared objects (DSO's),
 //  can cause symbol visability problems unless carefully configured. One of the
@@ -16,7 +16,7 @@
 //
 //  The purpose of this program is to test for that error.
 
-//--------------------------------------------------------------------------------------// 
+//--------------------------------------------------------------------------------------//
 
 #include <boost/system/system_error.hpp>
 

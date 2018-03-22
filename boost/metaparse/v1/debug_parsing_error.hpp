@@ -32,19 +32,19 @@ namespace boost
           using std::cout;
           using std::endl;
           using boost::mpl::c_str;
-        
+
           typedef display<typename P::template apply<S, start>::type> runner;
-            
+
           cout << "Compile-time parsing results" << endl;
           cout << "----------------------------" << endl;
           cout << "Input text:" << endl;
           cout << c_str<S>::type::value << endl;
           cout << endl;
           runner::run();
-          
+
           std::exit(0);
         }
-      
+
         typedef debug_parsing_error type;
       private:
         template <class Result>
@@ -62,7 +62,7 @@ namespace boost
               << R::message::type::get_value() << std::endl;
           }
         };
-        
+
         template <class Result>
         struct display_no_error
         {
@@ -71,9 +71,9 @@ namespace boost
             using std::cout;
             using std::endl;
             using boost::mpl::c_str;
-            
+
             typedef typename get_remaining<Result>::type remaining_string;
-            
+
             cout
               << "Parsing was successful. Remaining string is:" << endl
               << c_str<remaining_string>::type::value << endl;

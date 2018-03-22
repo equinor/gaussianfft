@@ -25,7 +25,7 @@ from __future__ import print_function
 
    Range2 wraps a transform_iterator which doubles the elements it
    traverses. This proves we can wrap input iterators
-   
+
 >>> z2 = range2(x)
 >>> for y in z2:
 ...     print(y)
@@ -69,7 +69,7 @@ def run(args = None):
     if args is not None:
         sys.argv = args
     return doctest.testmod(sys.modules.get(__name__))
-    
+
 if __name__ == '__main__':
     print("running...")
     import sys

@@ -15,7 +15,7 @@
 
 namespace boost{ namespace math{
 
-template<class T> 
+template<class T>
 inline std::complex<T> acosh(const std::complex<T>& z)
 {
    //

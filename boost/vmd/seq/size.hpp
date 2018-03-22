@@ -27,10 +27,10 @@
 
 /** \def BOOST_VMD_SEQ_SIZE(seq)
 
-    \brief  expands to the size of the seq passed to it. 
+    \brief  expands to the size of the seq passed to it.
 
-    seq = seq whose size is to be extracted. 
-    
+    seq = seq whose size is to be extracted.
+
     If the seq is an empty seq its size is 0.
     Otherwise the result is the number of elements in the seq.
 */

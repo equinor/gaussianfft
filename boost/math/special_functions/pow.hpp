@@ -127,9 +127,9 @@ struct select_power_if_positive
 
 template <int N, typename T, class Policy>
 inline typename tools::promote_args<T>::type pow(T base, const Policy& policy)
-{ 
+{
    typedef typename tools::promote_args<T>::type result_type;
-   return detail::select_power_if_positive<N>::type::result(static_cast<result_type>(base), policy); 
+   return detail::select_power_if_positive<N>::type::result(static_cast<result_type>(base), policy);
 }
 
 

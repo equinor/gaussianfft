@@ -80,7 +80,7 @@ template <class RealType, class Policy>
 inline const std::pair<RealType, RealType> range(const normal_distribution<RealType, Policy>& /*dist*/)
 { // Range of permissible values for random variable x.
   if (std::numeric_limits<RealType>::has_infinity)
-  { 
+  {
      return std::pair<RealType, RealType>(-std::numeric_limits<RealType>::infinity(), std::numeric_limits<RealType>::infinity()); // - to + infinity.
   }
   else
@@ -94,7 +94,7 @@ template <class RealType, class Policy>
 inline const std::pair<RealType, RealType> support(const normal_distribution<RealType, Policy>& /*dist*/)
 { // This is range values for random variable x where cdf rises from 0 to 1, and outside it, the pdf is zero.
   if (std::numeric_limits<RealType>::has_infinity)
-  { 
+  {
      return std::pair<RealType, RealType>(-std::numeric_limits<RealType>::infinity(), std::numeric_limits<RealType>::infinity()); // - to + infinity.
   }
   else

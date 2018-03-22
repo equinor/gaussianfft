@@ -75,7 +75,7 @@ class vector_map_view
         this->base() = v.base();
         return *this;
     }
-    
+
     BOOST_DEDUCED_TYPENAME base_::const_reference
         operator[](BOOST_DEDUCED_TYPENAME base_::size_type n) const
     {
@@ -109,7 +109,7 @@ class vector_map_view
                 this->base().at(n)
         ));
     }
-    
+
     BOOST_BIMAP_VIEW_ASSIGN_IMPLEMENTATION(base_)
 
     BOOST_BIMAP_VIEW_FRONT_BACK_IMPLEMENTATION(base_)
@@ -154,7 +154,7 @@ class vector_map_view
         );
     }
 
-    void remove(BOOST_DEDUCED_TYPENAME ::boost::call_traits< 
+    void remove(BOOST_DEDUCED_TYPENAME ::boost::call_traits<
                     BOOST_DEDUCED_TYPENAME base_::value_type >::param_type value)
     {
         this->base().remove(
@@ -214,7 +214,7 @@ class vector_map_view
                 BOOST_DEDUCED_TYPENAME base_::base_type::value_type,
                 key_from_base_value
 
-            >( std::less<BOOST_DEDUCED_TYPENAME base_::key_type>(), 
+            >( std::less<BOOST_DEDUCED_TYPENAME base_::key_type>(),
                     key_from_base_value() )
         );
     }
@@ -268,7 +268,7 @@ class vector_map_view
 
     // Rearrange Operations
 
-    void relocate(BOOST_DEDUCED_TYPENAME base_::iterator position, 
+    void relocate(BOOST_DEDUCED_TYPENAME base_::iterator position,
                   BOOST_DEDUCED_TYPENAME base_::iterator i)
     {
         this->base().relocate(
@@ -280,7 +280,7 @@ class vector_map_view
     }
 
     void relocate(BOOST_DEDUCED_TYPENAME base_::iterator position,
-                  BOOST_DEDUCED_TYPENAME base_::iterator first, 
+                  BOOST_DEDUCED_TYPENAME base_::iterator first,
                   BOOST_DEDUCED_TYPENAME base_::iterator last)
     {
         this->base().relocate(

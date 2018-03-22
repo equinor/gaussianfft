@@ -30,12 +30,12 @@
 # include <boost/parameter/aux_/maybe.hpp>
 # include <boost/parameter/aux_/python/invoker.hpp>
 
-namespace boost { namespace parameter { namespace python 
+namespace boost { namespace parameter { namespace python
 {
   namespace python_ = boost::python;
 }}}
 
-namespace boost { namespace parameter { namespace python { namespace aux 
+namespace boost { namespace parameter { namespace python { namespace aux
 {
 
   inline PyObject* unspecified_type()
@@ -86,7 +86,7 @@ namespace boost { namespace parameter { namespace python { namespace aux
 
 }}}} // namespace boost::parameter::python::aux
 
-namespace boost { namespace python 
+namespace boost { namespace python
 {
 
   // Converts a Python value to a maybe<T>
@@ -143,7 +143,7 @@ namespace aux
       typedef T type;
       typedef Optimized optimized_default;
   };
-  
+
   template <class K, class T, class Optimized = mpl::false_>
   struct make_arg_spec_impl
   {
@@ -252,7 +252,7 @@ namespace aux
           typename spec::optimized_default
         , mpl::not_<typename spec::required>
       >::type optimized_default;
-      
+
       def_combination_aux0(
           def, f, Iter(), End(), keywords, optimized_default()
       );
@@ -263,7 +263,7 @@ namespace aux
       Def def, F f, End, End, Keywords const& keywords)
   {
       def(f, keywords);
-  } 
+  }
 
   template <class Def, class F, class End>
   void def_combination_aux(
@@ -367,7 +367,7 @@ namespace aux
       {
           cl.def(name, f, options.doc(), options.policies());
       }
-      
+
       template <class F>
       void operator()(F f) const
       {
@@ -432,7 +432,7 @@ namespace aux
       def_function(char const* name)
         : name(name)
       {}
-      
+
       template <class F>
       void operator()(F f) const
       {
@@ -471,7 +471,7 @@ void def(char const* name, Signature)
         arg_specs
       , aux::is_optional<mpl::_1>
     >::type optional_arity;
-    
+
     typedef typename mpl::front<Signature>::type result_type;
     typedef typename mpl::shift_left<mpl::long_<1>, optional_arity>::type upper;
 
@@ -505,7 +505,7 @@ void def(Class& cl, char const* name, Signature)
         arg_specs
       , aux::is_optional<mpl::_1>
     >::type optional_arity;
-    
+
     typedef typename mpl::front<Signature>::type result_type;
     typedef typename mpl::shift_left<mpl::long_<1>, optional_arity>::type upper;
 
@@ -580,7 +580,7 @@ namespace aux
 } // namespace aux
 
 template <class ParameterSpecs, class CallPolicies = boost::python::default_call_policies>
-struct init 
+struct init
   : boost::python::def_visitor<init<ParameterSpecs, CallPolicies> >
 {
     init(CallPolicies call_policies = CallPolicies())
@@ -588,7 +588,7 @@ struct init
     {}
 
     template <class CallPolicies1>
-    init<ParameterSpecs, CallPolicies1> 
+    init<ParameterSpecs, CallPolicies1>
     operator[](CallPolicies1 const& call_policies) const
     {
         return init<ParameterSpecs, CallPolicies1>(call_policies);
@@ -635,7 +635,7 @@ struct init
 };
 
 template <class ParameterSpecs, class CallPolicies = boost::python::default_call_policies>
-struct call 
+struct call
   : boost::python::def_visitor<call<ParameterSpecs, CallPolicies> >
 {
     call(CallPolicies const& call_policies = CallPolicies())
@@ -689,7 +689,7 @@ struct call
 };
 
 template <class Fwd, class ParameterSpecs>
-struct function 
+struct function
   : boost::python::def_visitor<function<Fwd, ParameterSpecs> >
 {
     template <class Class, class Options>

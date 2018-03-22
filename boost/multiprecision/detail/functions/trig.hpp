@@ -10,7 +10,7 @@
 // in ACM TOMS, {VOL 37, ISSUE 4, (February 2011)} (C) ACM, 2011. http://doi.acm.org/10.1145/1916461.1916469
 //
 // This file has no include guards or namespaces - it's expanded inline inside default_ops.hpp
-// 
+//
 
 #ifdef BOOST_MSVC
 #pragma warning(push)
@@ -44,7 +44,7 @@ void hyp0F1(T& result, const T& b, const T& x)
       tol.negate();
    T term;
 
-   const int series_limit = 
+   const int series_limit =
       boost::multiprecision::detail::digits2<number<T, et_on> >::value() < 100
       ? 100 : boost::multiprecision::detail::digits2<number<T, et_on> >::value();
    // Series expansion of hyperg_0f1(; b; x).
@@ -398,7 +398,7 @@ void hyp2F1(T& result, const T& a, const T& b, const T& c, const T& x)
    ui_type n;
    T term;
 
-   const unsigned series_limit = 
+   const unsigned series_limit =
       boost::multiprecision::detail::digits2<number<T, et_on> >::value() < 100
       ? 100 : boost::multiprecision::detail::digits2<number<T, et_on> >::value();
    // Series expansion of hyperg_2f1(a, b; c; x).
@@ -528,9 +528,9 @@ void eval_asin(T& result, const T& x)
 
    result = (guess_type)(std::asin(dd));
 
-   // Newton-Raphson iteration, we should double our precision with each iteration, 
+   // Newton-Raphson iteration, we should double our precision with each iteration,
    // in practice this seems to not quite work in all cases... so terminate when we
-   // have at least 2/3 of the digits correct on the assumption that the correction 
+   // have at least 2/3 of the digits correct on the assumption that the correction
    // we've just added will finish the job...
 
    boost::intmax_t current_precision = eval_ilogb(result);
@@ -680,9 +680,9 @@ void eval_atan(T& result, const T& x)
    eval_convert_to(&d, xx);
    result = fp_type(std::atan(d));
 
-   // Newton-Raphson iteration, we should double our precision with each iteration, 
+   // Newton-Raphson iteration, we should double our precision with each iteration,
    // in practice this seems to not quite work in all cases... so terminate when we
-   // have at least 2/3 of the digits correct on the assumption that the correction 
+   // have at least 2/3 of the digits correct on the assumption that the correction
    // we've just added will finish the job...
 
    boost::intmax_t current_precision = eval_ilogb(result);
@@ -819,7 +819,7 @@ void eval_atan2(T& result, const T& y, const T& x)
          eval_add(result, get_constant_pi<T>());
    }
 }
-template<class T, class A> 
+template<class T, class A>
 inline typename enable_if<is_arithmetic<A>, void>::type eval_atan2(T& result, const T& x, const A& a)
 {
    typedef typename boost::multiprecision::detail::canonical<A, T>::type canonical_type;
@@ -829,7 +829,7 @@ inline typename enable_if<is_arithmetic<A>, void>::type eval_atan2(T& result, co
    eval_atan2(result, x, c);
 }
 
-template<class T, class A> 
+template<class T, class A>
 inline typename enable_if<is_arithmetic<A>, void>::type eval_atan2(T& result, const A& x, const T& a)
 {
    typedef typename boost::multiprecision::detail::canonical<A, T>::type canonical_type;

@@ -1,4 +1,4 @@
-/*-----------------------------------------------------------------------------+    
+/*-----------------------------------------------------------------------------+
 Copyright (c) 2008-2009: Joachim Faulhaber
 +------------------------------------------------------------------------------+
    Distributed under the Boost Software License, Version 1.0.
@@ -13,8 +13,8 @@ Copyright (c) 2008-2009: Joachim Faulhaber
 namespace boost{ namespace icl
 {
     template <class Type> struct identity_element
-    { 
-        static Type value(); 
+    {
+        static Type value();
         Type operator()()const { return value(); }
     };
 

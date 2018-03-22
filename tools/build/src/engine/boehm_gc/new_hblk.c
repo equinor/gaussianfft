@@ -32,7 +32,7 @@ ptr_t GC_build_fl_clear2(struct hblk *h, ptr_t ofl)
 {
     word * p = (word *)(h -> hb_body);
     word * lim = (word *)(h + 1);
-    
+
     p[0] = (word)ofl;
     p[1] = 0;
     p[2] = (word)p;
@@ -52,7 +52,7 @@ ptr_t GC_build_fl_clear4(struct hblk *h, ptr_t ofl)
 {
     word * p = (word *)(h -> hb_body);
     word * lim = (word *)(h + 1);
-    
+
     p[0] = (word)ofl;
     p[1] = 0;
     p[2] = 0;
@@ -72,7 +72,7 @@ ptr_t GC_build_fl2(struct hblk *h, ptr_t ofl)
 {
     word * p = (word *)(h -> hb_body);
     word * lim = (word *)(h + 1);
-    
+
     p[0] = (word)ofl;
     p[2] = (word)p;
     p += 4;
@@ -88,7 +88,7 @@ ptr_t GC_build_fl4(struct hblk *h, ptr_t ofl)
 {
     word * p = (word *)(h -> hb_body);
     word * lim = (word *)(h + 1);
-    
+
     p[0] = (word)ofl;
     p[4] = (word)p;
     p += 8;
@@ -140,10 +140,10 @@ ptr_t GC_build_fl(struct hblk *h, size_t sz, GC_bool clear, ptr_t list)
         	break;
     }
 #  endif /* !SMALL_CONFIG */
-    
+
   /* Clear the page if necessary. */
     if (clear) BZERO(h, HBLKSIZE);
-    
+
   /* Add objects to free list */
     p = (word *)(h -> hb_body) + sz;	/* second object in *h	*/
     prev = (word *)(h -> hb_body);       	/* One object behind p	*/
@@ -183,7 +183,7 @@ void GC_new_hblk(size_t gran, int kind)
 
   /* Ignore gcc "no effect" warning on the following: */
   GC_STATIC_ASSERT((sizeof (struct hblk)) == HBLKSIZE);
-  
+
   if (GC_debugging_started) clear = TRUE;
 
   /* Allocate a new heap block */

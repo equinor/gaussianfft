@@ -6,7 +6,7 @@
 # define AS_TO_PYTHON_FUNCTION_DWA2002121_HPP
 # include <boost/python/converter/to_python_function_type.hpp>
 
-namespace boost { namespace python { namespace converter { 
+namespace boost { namespace python { namespace converter {
 
 // Given a typesafe to_python conversion function, produces a
 // to_python_function_t which can be registered in the usual way.
@@ -21,11 +21,11 @@ struct as_to_python_function
     static void convert_function_must_take_value_or_const_reference(U(*)(T), int, T* = 0) {}
     template <class U>
     static void convert_function_must_take_value_or_const_reference(U(*)(T const&), long ...) {}
-        
+
     static PyObject* convert(void const* x)
     {
         convert_function_must_take_value_or_const_reference(&ToPython::convert, 1L);
-        
+
         // Yes, the const_cast below opens a hole in const-correctness,
         // but it's needed to convert auto_ptr<U> to python.
         //

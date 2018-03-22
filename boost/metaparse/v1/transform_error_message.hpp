@@ -38,7 +38,7 @@ namespace boost
             typename P::template apply<S, Pos>
           >
         {};
-        
+
         typedef transform_error_message type;
       };
     }

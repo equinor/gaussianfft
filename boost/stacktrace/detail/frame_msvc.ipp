@@ -54,7 +54,7 @@ public:
         : ok_(false)
     {
         // COINIT_MULTITHREADED means that we must serialize access to the objects manually.
-        // This is the fastest way to work. If user calls CoInitializeEx before us - we 
+        // This is the fastest way to work. If user calls CoInitializeEx before us - we
         // can end up with other mode (which is OK for us).
         //
         // If we call CoInitializeEx befire user - user may end up with different mode, which is a problem.

@@ -106,7 +106,7 @@ mse * GC_mark_stack;
 mse * GC_mark_stack_limit;
 
 size_t GC_mark_stack_size = 0;
- 
+
 #ifdef PARALLEL_MARK
 # include "atomic_ops.h"
 
@@ -183,7 +183,7 @@ void GC_set_hdr_marks(hdr *hhdr)
 static void clear_marks_for_block(struct hblk *h, word dummy)
 {
     register hdr * hhdr = HDR(h);
-    
+
     if (IS_UNCOLLECTABLE(hhdr -> hb_obj_kind)) return;
         /* Mark bit for these is cleared only once the object is 	*/
         /* explicitly deallocated.  This either frees the block, or	*/
@@ -197,7 +197,7 @@ void GC_set_mark_bit(ptr_t p)
     struct hblk *h = HBLKPTR(p);
     hdr * hhdr = HDR(h);
     word bit_no = MARK_BIT_NO(p - (ptr_t)h, hhdr -> hb_sz);
-    
+
     if (!mark_bit_from_hdr(hhdr, bit_no)) {
       set_mark_bit_from_hdr(hhdr, bit_no);
       ++hhdr -> hb_n_marks;
@@ -209,19 +209,19 @@ void GC_clear_mark_bit(ptr_t p)
     struct hblk *h = HBLKPTR(p);
     hdr * hhdr = HDR(h);
     word bit_no = MARK_BIT_NO(p - (ptr_t)h, hhdr -> hb_sz);
-    
+
     if (mark_bit_from_hdr(hhdr, bit_no)) {
       size_t n_marks;
       clear_mark_bit_from_hdr(hhdr, bit_no);
       n_marks = hhdr -> hb_n_marks - 1;
 #     ifdef PARALLEL_MARK
         if (n_marks != 0)
-          hhdr -> hb_n_marks = n_marks; 
+          hhdr -> hb_n_marks = n_marks;
         /* Don't decrement to zero.  The counts are approximate due to	*/
         /* concurrency issues, but we need to ensure that a count of 	*/
         /* zero implies an empty block.					*/
 #     else
-          hhdr -> hb_n_marks = n_marks; 
+          hhdr -> hb_n_marks = n_marks;
 #     endif
     }
 }
@@ -231,7 +231,7 @@ GC_bool GC_is_marked(ptr_t p)
     struct hblk *h = HBLKPTR(p);
     hdr * hhdr = HDR(h);
     word bit_no = MARK_BIT_NO(p - (ptr_t)h, hhdr -> hb_sz);
-    
+
     return((GC_bool)mark_bit_from_hdr(hhdr, bit_no));
 }
 
@@ -261,7 +261,7 @@ void GC_initiate_gc(void)
 #   ifdef CHECKSUMS
 	{
 	    extern void GC_check_dirty();
-	    
+
 	    if (GC_dirty_maintained) GC_check_dirty();
 	}
 #   endif
@@ -307,7 +307,7 @@ static void alloc_mark_stack(size_t);
     switch(GC_mark_state) {
     	case MS_NONE:
     	    return(FALSE);
-    	    
+
     	case MS_PUSH_RESCUERS:
     	    if (GC_mark_stack_top
     	        >= GC_mark_stack_limit - INITIAL_MARK_STACK_SIZE/2) {
@@ -390,7 +390,7 @@ static void alloc_mark_stack(size_t);
     	        }
     	        return(TRUE);
     	    }
-    	    
+
     	case MS_INVALID:
     	case MS_PARTIALLY_INVALID:
 	    if (!GC_objects_are_marked) {
@@ -434,7 +434,7 @@ static void alloc_mark_stack(size_t);
 
 
     static EXCEPTION_DISPOSITION mark_ex_handler(
-        struct _EXCEPTION_RECORD *ex_rec, 
+        struct _EXCEPTION_RECORD *ex_rec,
         void *est_frame,
         struct _CONTEXT *context,
         void *disp_ctxt)
@@ -543,7 +543,7 @@ static void alloc_mark_stack(size_t);
     rm_handler:
       GC_reset_fault_handler();
       return ret_val;
-      
+
 #   endif /* !MSWIN32 */
 
 handle_ex:
@@ -598,7 +598,7 @@ mse * GC_signal_mark_stack_overflow(mse *msp)
  * things up.  In particular, we avoid procedure calls on the common
  * path, we take advantage of peculiarities of the mark descriptor
  * encoding, we optionally maintain a cache for the block address to
- * header mapping, we prefetch when an object is "grayed", etc. 
+ * header mapping, we prefetch when an object is "grayed", etc.
  */
 mse * GC_mark_from(mse *mark_stack_top, mse *mark_stack, mse *mark_stack_limit)
 {
@@ -632,7 +632,7 @@ mse * GC_mark_from(mse *mark_stack_top, mse *mark_stack, mse *mark_stack_limit)
     /* case, so we try to detect it quickly.				*/
     if (descr & ((~(WORDS_TO_BYTES(SPLIT_RANGE_WORDS) - 1)) | GC_DS_TAGS)) {
       word tag = descr & GC_DS_TAGS;
-      
+
       switch(tag) {
         case GC_DS_LENGTH:
           /* Large length.					        */
@@ -893,7 +893,7 @@ mse * GC_steal_mark_stack(mse * low, mse * high, mse * local,
 	    ++top;
 	    top -> mse_descr = descr;
 	    top -> mse_start = p -> mse_start;
-	    GC_ASSERT((top -> mse_descr & GC_DS_TAGS) != GC_DS_LENGTH || 
+	    GC_ASSERT((top -> mse_descr & GC_DS_TAGS) != GC_DS_LENGTH ||
 		      top -> mse_descr < (ptr_t)GC_greatest_plausible_heap_addr
 			                 - (ptr_t)GC_least_plausible_heap_addr);
 	    /* If this is a big object, count it as			*/
@@ -1001,7 +1001,7 @@ void GC_mark_local(mse *local_mark_stack, int id)
     GC_acquire_mark_lock();
     GC_active_count++;
     my_first_nonempty = (mse *)AO_load(&GC_first_nonempty);
-    GC_ASSERT((mse *)AO_load(&GC_first_nonempty) >= GC_mark_stack && 
+    GC_ASSERT((mse *)AO_load(&GC_first_nonempty) >= GC_mark_stack &&
 	      (mse *)AO_load(&GC_first_nonempty) <=
 	      (mse *)AO_load((volatile AO_t *)(&GC_mark_stack_top)) + 1);
     if (GC_print_stats == VERBOSE)
@@ -1014,16 +1014,16 @@ void GC_mark_local(mse *local_mark_stack, int id)
 	mse * local_top;
         mse * global_first_nonempty = (mse *)AO_load(&GC_first_nonempty);
 
-    	GC_ASSERT(my_first_nonempty >= GC_mark_stack && 
+    	GC_ASSERT(my_first_nonempty >= GC_mark_stack &&
 		  my_first_nonempty <=
 		  (mse *)AO_load((volatile AO_t *)(&GC_mark_stack_top))  + 1);
-    	GC_ASSERT(global_first_nonempty >= GC_mark_stack && 
-		  global_first_nonempty <= 
+    	GC_ASSERT(global_first_nonempty >= GC_mark_stack &&
+		  global_first_nonempty <=
 		  (mse *)AO_load((volatile AO_t *)(&GC_mark_stack_top))  + 1);
 	if (my_first_nonempty < global_first_nonempty) {
 	    my_first_nonempty = global_first_nonempty;
         } else if (global_first_nonempty < my_first_nonempty) {
-	    AO_compare_and_swap(&GC_first_nonempty, 
+	    AO_compare_and_swap(&GC_first_nonempty,
 				(AO_t) global_first_nonempty,
 				(AO_t) my_first_nonempty);
 	    /* If this fails, we just go ahead, without updating	*/
@@ -1054,7 +1054,7 @@ void GC_mark_local(mse *local_mark_stack, int id)
 		    GC_wait_marker();
 		}
 		if (GC_active_count == 0 &&
-		    (mse *)AO_load(&GC_first_nonempty) > GC_mark_stack_top) { 
+		    (mse *)AO_load(&GC_first_nonempty) > GC_mark_stack_top) {
 		    GC_bool need_to_notify = FALSE;
 		    /* The above conditions can't be falsified while we	*/
 		    /* hold the mark lock, since neither 		*/
@@ -1086,7 +1086,7 @@ void GC_mark_local(mse *local_mark_stack, int id)
 	local_top = GC_steal_mark_stack(my_first_nonempty, my_top,
 					local_mark_stack, n_to_get,
 				        &my_first_nonempty);
-        GC_ASSERT(my_first_nonempty >= GC_mark_stack && 
+        GC_ASSERT(my_first_nonempty >= GC_mark_stack &&
 	          my_first_nonempty <=
 		    (mse *)AO_load((volatile AO_t *)(&GC_mark_stack_top)) + 1);
 	GC_do_local_mark(local_mark_stack, local_top);
@@ -1176,7 +1176,7 @@ static void alloc_mark_stack(size_t n)
 #   else
 #     define recycle_old 1
 #   endif
-    
+
     GC_mark_stack_too_small = FALSE;
     if (GC_mark_stack_size != 0) {
         if (new_stack != 0) {
@@ -1185,7 +1185,7 @@ static void alloc_mark_stack(size_t n)
               size_t page_offset = (word)GC_mark_stack & (GC_page_size - 1);
               size_t size = GC_mark_stack_size * sizeof(struct GC_ms_entry);
 	      size_t displ = 0;
-          
+
 	      if (0 != page_offset) displ = GC_page_size - page_offset;
 	      size = (size - displ) & ~(GC_page_size - 1);
 	      if (size > 0) {
@@ -1233,7 +1233,7 @@ void GC_mark_init()
 void GC_push_all(ptr_t bottom, ptr_t top)
 {
     register word length;
-    
+
     bottom = (ptr_t)(((word) bottom + ALIGNMENT-1) & ~(ALIGNMENT-1));
     top = (ptr_t)(((word) top) & ~(ALIGNMENT-1));
     if (top == 0 || bottom == top) return;
@@ -1389,9 +1389,9 @@ struct GC_ms_entry *GC_mark_and_push(void *obj,
 #   define source 0
 # endif
 {
-    hdr * hhdr; 
+    hdr * hhdr;
     ptr_t r = p;
-  
+
     PREFETCH(p);
     GET_HDR(p, hhdr);
     if (EXPECT(IS_FORWARDING_ADDR_OR_NIL(hhdr),FALSE)) {
@@ -1451,7 +1451,7 @@ void GC_print_trace(word gc_no, GC_bool lock)
 {
     int i;
     struct trace_entry *p;
-    
+
     if (lock) LOCK();
     for (i = GC_trace_buf_ptr-1; i != GC_trace_buf_ptr; i--) {
     	if (i < 0) i = TRACE_ENTRIES-1;
@@ -1599,7 +1599,7 @@ void GC_push_marked1(struct hblk *h, hdr *hhdr)
 #   define GC_mark_stack_limit mark_stack_limit
 #   define GC_greatest_plausible_heap_addr greatest_ha
 #   define GC_least_plausible_heap_addr least_ha
-    
+
     p = (word *)(h->hb_body);
     plim = (word *)(((word)h) + HBLKSIZE);
 
@@ -1618,7 +1618,7 @@ void GC_push_marked1(struct hblk *h, hdr *hhdr)
 	}
 
 #   undef GC_greatest_plausible_heap_addr
-#   undef GC_least_plausible_heap_addr        
+#   undef GC_least_plausible_heap_addr
 #   undef GC_mark_stack_top
 #   undef GC_mark_stack_limit
 
@@ -1647,7 +1647,7 @@ void GC_push_marked2(struct hblk *h, hdr *hhdr)
 #   define GC_mark_stack_limit mark_stack_limit
 #   define GC_greatest_plausible_heap_addr greatest_ha
 #   define GC_least_plausible_heap_addr least_ha
-    
+
     p = (word *)(h->hb_body);
     plim = (word *)(((word)h) + HBLKSIZE);
 
@@ -1667,7 +1667,7 @@ void GC_push_marked2(struct hblk *h, hdr *hhdr)
 	}
 
 #   undef GC_greatest_plausible_heap_addr
-#   undef GC_least_plausible_heap_addr        
+#   undef GC_least_plausible_heap_addr
 #   undef GC_mark_stack_top
 #   undef GC_mark_stack_limit
 
@@ -1695,7 +1695,7 @@ void GC_push_marked4(struct hblk *h, hdr *hhdr)
 #   define GC_mark_stack_limit mark_stack_limit
 #   define GC_greatest_plausible_heap_addr greatest_ha
 #   define GC_least_plausible_heap_addr least_ha
-    
+
     p = (word *)(h->hb_body);
     plim = (word *)(((word)h) + HBLKSIZE);
 
@@ -1716,7 +1716,7 @@ void GC_push_marked4(struct hblk *h, hdr *hhdr)
 	    p += WORDSZ*GC_GRANULE_WORDS;
 	}
 #   undef GC_greatest_plausible_heap_addr
-#   undef GC_least_plausible_heap_addr        
+#   undef GC_least_plausible_heap_addr
 #   undef GC_mark_stack_top
 #   undef GC_mark_stack_limit
     GC_mark_stack_top = mark_stack_top;
@@ -1738,7 +1738,7 @@ void GC_push_marked(struct hblk *h, hdr *hhdr)
     ptr_t lim;
     mse * GC_mark_stack_top_reg;
     mse * mark_stack_limit = GC_mark_stack_limit;
-    
+
     /* Some quick shortcuts: */
 	if ((0 | GC_DS_LENGTH) == descr) return;
         if (GC_block_empty(hhdr)/* nothing marked */) return;
@@ -1749,7 +1749,7 @@ void GC_push_marked(struct hblk *h, hdr *hhdr)
     } else {
         lim = (h + 1)->hb_body - sz;
     }
-    
+
     switch(BYTES_TO_GRANULES(sz)) {
 #   if defined(USE_PUSH_MARKED_ACCELERATORS)
      case 1:
@@ -1765,7 +1765,7 @@ void GC_push_marked(struct hblk *h, hdr *hhdr)
          break;
 #     endif
 #    endif
-#   endif       
+#   endif
      default:
       GC_mark_stack_top_reg = GC_mark_stack_top;
       for (p = h -> hb_body, bit_no = 0; p <= lim;
@@ -1784,7 +1784,7 @@ void GC_push_marked(struct hblk *h, hdr *hhdr)
 GC_bool GC_block_was_dirty(struct hblk *h, hdr *hhdr)
 {
     size_t sz = hhdr -> hb_sz;
-    
+
     if (sz <= MAXOBJBYTES) {
          return(GC_page_was_dirty(h));
     } else {
@@ -1802,7 +1802,7 @@ GC_bool GC_block_was_dirty(struct hblk *h, hdr *hhdr)
 struct hblk * GC_push_next_marked(struct hblk *h)
 {
     hdr * hhdr = HDR(h);
-    
+
     if (EXPECT(IS_FORWARDING_ADDR_OR_NIL(hhdr), FALSE)) {
       h = GC_next_used_block(h);
       if (h == 0) return(0);
@@ -1817,7 +1817,7 @@ struct hblk * GC_push_next_marked(struct hblk *h)
 struct hblk * GC_push_next_marked_dirty(struct hblk *h)
 {
     hdr * hhdr = HDR(h);
-    
+
     if (!GC_dirty_maintained) { ABORT("dirty bits not set up"); }
     for (;;) {
 	if (EXPECT(IS_FORWARDING_ADDR_OR_NIL(hhdr), FALSE)) {
@@ -1849,7 +1849,7 @@ struct hblk * GC_push_next_marked_dirty(struct hblk *h)
 struct hblk * GC_push_next_marked_uncollectable(struct hblk *h)
 {
     hdr * hhdr = HDR(h);
-    
+
     for (;;) {
 	if (EXPECT(IS_FORWARDING_ADDR_OR_NIL(hhdr), FALSE)) {
           h = GC_next_used_block(h);

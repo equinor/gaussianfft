@@ -38,9 +38,9 @@ inline void wait(const group_handle &p, std::error_code &ec) noexcept
     do
     {
         ret = ::waitpid(-p.grp, &status, 0);
-    } 
+    }
     while (((ret == -1) && (errno == EINTR)) || (ret != -1 && !WIFEXITED(status)));
-    
+
     if (ret == -1)
         ec = boost::process::detail::get_last_error();
     else
@@ -69,14 +69,14 @@ inline bool wait_for(
             time_out_occured = true;
             break;
         }
-    } 
-    while (((ret == -1) && errno == EINTR)       || 
+    }
+    while (((ret == -1) && errno == EINTR)       ||
            ((ret != -1) && !WIFEXITED(status)));
 
 
     if (ret == -1)
         boost::process::detail::throw_last_error("waitpid(2) failed");
-     
+
 
     return !time_out_occured;
 }
@@ -104,8 +104,8 @@ inline bool wait_for(
             time_out_occured = true;
             break;
         }
-    } 
-    while (((ret == -1) && errno == EINTR)       || 
+    }
+    while (((ret == -1) && errno == EINTR)       ||
            ((ret != -1) && !WIFEXITED(status)));
 
 
@@ -139,8 +139,8 @@ inline bool wait_until(
             time_out_occured = true;
             break;
         }
-    } 
-    while (((ret == -1) && errno == EINTR)       || 
+    }
+    while (((ret == -1) && errno == EINTR)       ||
            ((ret != -1) && !WIFEXITED(status)));
 
 
@@ -173,8 +173,8 @@ inline bool wait_until(
             time_out_occured = true;
             break;
         }
-    } 
-    while (((ret == -1) && errno == EINTR)       || 
+    }
+    while (((ret == -1) && errno == EINTR)       ||
            ((ret != -1) && !WIFEXITED(status)));
 
 

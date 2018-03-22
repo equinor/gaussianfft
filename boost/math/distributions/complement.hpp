@@ -20,9 +20,9 @@ template <class Dist, class RealType>
 struct complemented2_type
 {
    complemented2_type(
-      const Dist& d, 
+      const Dist& d,
       const RealType& p1)
-      : dist(d), 
+      : dist(d),
         param(p1) {}
 
    const Dist& dist;
@@ -36,11 +36,11 @@ template <class Dist, class RealType1, class RealType2>
 struct complemented3_type
 {
    complemented3_type(
-      const Dist& d, 
+      const Dist& d,
       const RealType1& p1,
       const RealType2& p2)
-      : dist(d), 
-        param1(p1), 
+      : dist(d),
+        param1(p1),
         param2(p2) {}
 
    const Dist& dist;
@@ -54,13 +54,13 @@ template <class Dist, class RealType1, class RealType2, class RealType3>
 struct complemented4_type
 {
    complemented4_type(
-      const Dist& d, 
+      const Dist& d,
       const RealType1& p1,
       const RealType2& p2,
       const RealType3& p3)
-      : dist(d), 
-        param1(p1), 
-        param2(p2), 
+      : dist(d),
+        param1(p1),
+        param2(p2),
         param3(p3) {}
 
    const Dist& dist;
@@ -75,15 +75,15 @@ template <class Dist, class RealType1, class RealType2, class RealType3, class R
 struct complemented5_type
 {
    complemented5_type(
-      const Dist& d, 
+      const Dist& d,
       const RealType1& p1,
       const RealType2& p2,
       const RealType3& p3,
       const RealType4& p4)
-      : dist(d), 
-        param1(p1), 
-        param2(p2), 
-        param3(p3), 
+      : dist(d),
+        param1(p1),
+        param2(p2),
+        param3(p3),
         param4(p4) {}
 
    const Dist& dist;
@@ -99,17 +99,17 @@ template <class Dist, class RealType1, class RealType2, class RealType3, class R
 struct complemented6_type
 {
    complemented6_type(
-      const Dist& d, 
+      const Dist& d,
       const RealType1& p1,
       const RealType2& p2,
       const RealType3& p3,
       const RealType4& p4,
       const RealType5& p5)
-      : dist(d), 
-        param1(p1), 
-        param2(p2), 
-        param3(p3), 
-        param4(p4), 
+      : dist(d),
+        param1(p1),
+        param2(p2),
+        param3(p3),
+        param4(p4),
         param5(p5) {}
 
    const Dist& dist;
@@ -126,19 +126,19 @@ template <class Dist, class RealType1, class RealType2, class RealType3, class R
 struct complemented7_type
 {
    complemented7_type(
-      const Dist& d, 
+      const Dist& d,
       const RealType1& p1,
       const RealType2& p2,
       const RealType3& p3,
       const RealType4& p4,
       const RealType5& p5,
       const RealType6& p6)
-      : dist(d), 
-        param1(p1), 
-        param2(p2), 
-        param3(p3), 
-        param4(p4), 
-        param5(p5), 
+      : dist(d),
+        param1(p1),
+        param2(p2),
+        param3(p3),
+        param4(p4),
+        param5(p5),
         param6(p6) {}
 
    const Dist& dist;

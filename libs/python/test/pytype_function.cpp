@@ -23,7 +23,7 @@ struct B
 // Converter from A to python int
 struct BToPython
 #ifndef BOOST_PYTHON_NO_PY_SIGNATURES
- : converter::to_python_target_type<A>  //inherits get_pytype 
+ : converter::to_python_target_type<A>  //inherits get_pytype
 #endif
 {
   static PyObject* convert(const B& b)
@@ -33,7 +33,7 @@ struct BToPython
 };
 
 // Conversion from python int to A
-struct BFromPython 
+struct BFromPython
 {
   BFromPython()
   {

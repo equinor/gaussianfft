@@ -29,7 +29,7 @@ rule compile.fortran
 
 actions compile.fortran
 {
-  f77 +DD64 $(OPTIONS) -D$(DEFINES) -I$(INCLUDES) -c -o "$(<)" "$(>)" 
+  f77 +DD64 $(OPTIONS) -D$(DEFINES) -I$(INCLUDES) -c -o "$(<)" "$(>)"
 }
 
-generators.register-fortran-compiler hpfortran.compile.fortran : FORTRAN : OBJ ; 
+generators.register-fortran-compiler hpfortran.compile.fortran : FORTRAN : OBJ ;

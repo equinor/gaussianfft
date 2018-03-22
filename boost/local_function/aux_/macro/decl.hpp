@@ -25,7 +25,7 @@
 #define BOOST_LOCAL_FUNCTION_AUX_DECL_OK_(id, typename01, decl_traits) \
     BOOST_LOCAL_FUNCTION_AUX_CODE_RESULT(id, typename01, decl_traits) \
     BOOST_LOCAL_FUNCTION_AUX_CODE_BIND(id, typename01, decl_traits) \
-    BOOST_LOCAL_FUNCTION_AUX_CODE_FUNCTOR(id, typename01, decl_traits) 
+    BOOST_LOCAL_FUNCTION_AUX_CODE_FUNCTOR(id, typename01, decl_traits)
 
 #define BOOST_LOCAL_FUNCTION_AUX_DECL_ERROR_(id, typename01, decl_traits) \
     BOOST_PP_IIF(BOOST_PP_LIST_IS_CONS( \

@@ -12,8 +12,8 @@
 
 #include <boost/config.hpp>
 #if defined(BOOST_NO_STDC_NAMESPACE)
-namespace std{ 
-    using ::size_t; 
+namespace std{
+    using ::size_t;
 } // namespace std
 #endif
 
@@ -22,7 +22,7 @@ namespace std{
 #ifndef BOOST_NO_STD_WSTREAMBUF
 #include <boost/archive/basic_text_iprimitive.hpp>
 
-namespace boost { 
+namespace boost {
 namespace archive {
 
 //////////////////////////////////////////////////////////////////////
@@ -97,13 +97,13 @@ text_wiarchive_impl<Archive>::load(std::wstring &ws)
 #endif
 
 template<class Archive>
-BOOST_WARCHIVE_DECL 
+BOOST_WARCHIVE_DECL
 text_wiarchive_impl<Archive>::text_wiarchive_impl(
-    std::wistream & is, 
+    std::wistream & is,
     unsigned int flags
 ) :
     basic_text_iprimitive<std::wistream>(
-        is, 
+        is,
         0 != (flags & no_codecvt)
     ),
     basic_text_iarchive<Archive>(flags)

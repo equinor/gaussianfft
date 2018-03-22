@@ -23,12 +23,12 @@ namespace ll {
 // accumulate ---------------------------------
 
 struct accumulate {
-  
+
   template <class Args>
-  struct sig { 
+  struct sig {
     typedef typename boost::remove_const<
-        typename boost::tuples::element<3, Args>::type 
-     >::type type; 
+        typename boost::tuples::element<3, Args>::type
+     >::type type;
   };
 
   template <class A, class B, class C>
@@ -45,12 +45,12 @@ struct accumulate {
 // inner_product ---------------------------------
 
 struct inner_product {
-  
+
   template <class Args>
-  struct sig { 
+  struct sig {
     typedef typename boost::remove_const<
-        typename boost::tuples::element<4, Args>::type 
-     >::type type; 
+        typename boost::tuples::element<4, Args>::type
+     >::type type;
   };
 
   template <class A, class B, class C, class D>
@@ -68,12 +68,12 @@ struct inner_product {
 // partial_sum ---------------------------------
 
 struct partial_sum {
-  
+
   template <class Args>
-  struct sig { 
+  struct sig {
     typedef typename boost::remove_const<
-        typename boost::tuples::element<3, Args>::type 
-     >::type type; 
+        typename boost::tuples::element<3, Args>::type
+     >::type type;
   };
 
   template <class A, class B, class C>
@@ -90,12 +90,12 @@ struct partial_sum {
 // adjacent_difference ---------------------------------
 
 struct adjacent_difference {
-  
+
   template <class Args>
-  struct sig { 
+  struct sig {
     typedef typename boost::remove_const<
-        typename boost::tuples::element<3, Args>::type 
-     >::type type; 
+        typename boost::tuples::element<3, Args>::type
+     >::type type;
   };
 
   template <class A, class B, class C>

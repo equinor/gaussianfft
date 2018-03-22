@@ -1,7 +1,7 @@
 /*=============================================================================
     Copyright (c) 2006-2007 Tobias Schwinger
-  
-    Use modification and distribution are subject to the Boost Software 
+
+    Use modification and distribution are subject to the Boost Software
     License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
     http://www.boost.org/LICENSE_1_0.txt).
 ==============================================================================*/
@@ -23,17 +23,17 @@ namespace boost { namespace fusion { namespace detail
 
         typedef typename remove_reference<Wanted>::type pointee;
 
-        template <typename T> 
+        template <typename T>
         BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
-        static inline pointee * do_get_pointer(T &, pointee * x) 
+        static inline pointee * do_get_pointer(T &, pointee * x)
         {
             return x;
         }
-        template <typename T> 
+        template <typename T>
         BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
-        static inline pointee * do_get_pointer(T & x, void const *) 
+        static inline pointee * do_get_pointer(T & x, void const *)
         {
-            return get_pointer(x); 
+            return get_pointer(x);
         }
 
       public:
@@ -41,20 +41,20 @@ namespace boost { namespace fusion { namespace detail
         BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
         static inline pointee * get(pointee * x)
         {
-            return x; 
+            return x;
         }
 
         BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
         static inline pointee * get(pointee & x)
         {
-            return boost::addressof(x); 
+            return boost::addressof(x);
         }
 
         template <typename T>
         BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
         static inline pointee * get(T & x)
         {
-            return do_get_pointer(x, boost::addressof(x)); 
+            return do_get_pointer(x, boost::addressof(x));
         }
     };
 
@@ -70,7 +70,7 @@ namespace adl_barrier
     {
         using boost::get_pointer;
         void const * BOOST_FUSION_TRAIT_DECL get_pointer(...); // fallback
-  
+
         template< typename T> char const_tester(T *);
         template< typename T> long const_tester(T const *);
 
@@ -85,7 +85,7 @@ namespace adl_barrier
     }
 
     template <typename PtrOrSmartPtr> struct non_const_pointee
-        : adl_barrier::non_const_pointee_impl< 
+        : adl_barrier::non_const_pointee_impl<
               typename remove_cv<
                   typename remove_reference<PtrOrSmartPtr>::type >::type >
     {

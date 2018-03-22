@@ -45,7 +45,7 @@ public:
 
     typedef typename col_type::const_iterator iterator;
 
-    //! Constructor consumed a temporary collection or stores a reference 
+    //! Constructor consumed a temporary collection or stores a reference
     explicit        collection( C&& col ) : m_col( std::forward<C>(col) ) {}
 
     //! Move constructor

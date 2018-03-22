@@ -58,7 +58,7 @@ struct member_invoker<N, M, R, T, Args>
     T*
 #else
     R
-#endif 
+#endif
     execute(
 #if BOOST_PP_ITERATION_FLAGS() == 2 || BOOST_PP_ITERATION_FLAGS() == 4
         T& self

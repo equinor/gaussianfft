@@ -17,7 +17,7 @@ Welcome to version 2 of Boost.Python, a C++ library which enables seamless inter
     * Exporting C++ Iterators as Python Iterators
     * Documentation Strings
 
-The development of these features was funded in part by grants to Boost Consulting from the Lawrence Livermore National Laboratories and by the Computational Crystallography Initiative at Lawrence Berkeley National Laboratories. 
+The development of these features was funded in part by grants to Boost Consulting from the Lawrence Livermore National Laboratories and by the Computational Crystallography Initiative at Lawrence Berkeley National Laboratories.
 
 [endsect]
 [section Articles]

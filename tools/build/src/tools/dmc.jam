@@ -21,20 +21,20 @@ feature.extend toolset : dmc ;
 rule init ( version ? : command * : options * )
 {
     local condition = [ common.check-init-parameters dmc : version $(version) ] ;
-    
+
     local command = [ common.get-invocation-command dmc : dmc : $(command) ] ;
     command ?= dmc ;
 
-    common.handle-options dmc : $(condition) : $(command) : $(options) ;   
-    
+    common.handle-options dmc : $(condition) : $(command) : $(options) ;
+
     if $(command)
     {
         command = [ common.get-absolute-tool-path $(command[-1]) ] ;
-    }   
-    root = $(command:D) ;    
-    
+    }
+    root = $(command:D) ;
+
     if $(root)
-    {        
+    {
         # DMC linker is sensitive the the direction of slashes, and
         # won't link if forward slashes are used in command.
         root = [ sequence.join [ regex.split $(root) "/" ] : "\\" ] ;
@@ -43,7 +43,7 @@ rule init ( version ? : command * : options * )
     else
     {
         flags dmc .root $(condition) : "" ;
-    }    
+    }
 }
 
 

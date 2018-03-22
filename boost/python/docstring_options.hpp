@@ -58,41 +58,41 @@ class BOOST_PYTHON_DECL docstring_options : boost::noncopyable
       enable_user_defined() { show_user_defined_ = true; }
 
       void
-      disable_py_signatures() 
+      disable_py_signatures()
       {
-        show_py_signatures_ = false; 
+        show_py_signatures_ = false;
       }
 
       void
-      enable_py_signatures() 
+      enable_py_signatures()
       {
-        show_py_signatures_ = true; 
+        show_py_signatures_ = true;
       }
 
       void
-      disable_cpp_signatures() 
+      disable_cpp_signatures()
       {
-        show_cpp_signatures_ = false; 
+        show_cpp_signatures_ = false;
       }
 
       void
-      enable_cpp_signatures() 
+      enable_cpp_signatures()
       {
-        show_cpp_signatures_ = true; 
+        show_cpp_signatures_ = true;
       }
 
       void
-      disable_signatures() 
+      disable_signatures()
       {
-        show_cpp_signatures_ = false; 
-        show_py_signatures_ = false; 
+        show_cpp_signatures_ = false;
+        show_py_signatures_ = false;
       }
 
       void
-      enable_signatures() 
+      enable_signatures()
       {
-        show_cpp_signatures_ = true; 
-        show_py_signatures_ = true; 
+        show_cpp_signatures_ = true;
+        show_py_signatures_ = true;
       }
 
       void

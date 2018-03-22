@@ -1,6 +1,6 @@
 /*
     Copyright 2005-2007 Adobe Systems Incorporated
-   
+
     Use, modification and distribution are subject to the Boost Software License,
     Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
     http://www.boost.org/LICENSE_1_0.txt).
@@ -114,7 +114,7 @@ public:
         }
         jpeg_finish_decompress(&_cinfo);
     }
-    
+
     template <typename Image>
     void read_image(Image& im) {
         im.recreate(get_dimensions());
@@ -176,7 +176,7 @@ public:
             io_error("jpeg_reader_color_covert::apply(): unknown color type");
         }
         jpeg_finish_decompress(&_cinfo);
-    }    
+    }
     template <typename Image>
     void read_image(Image& im) {
         im.recreate(get_dimensions());
@@ -197,7 +197,7 @@ public:
     jpeg_writer(FILE* file)           : file_mgr(file)           { init(); }
     jpeg_writer(const char* filename) : file_mgr(filename, "wb") { init(); }
     ~jpeg_writer() { jpeg_destroy_compress(&_cinfo); }
-    
+
     template <typename View>
     void apply(const View& view,int quality=100) {
         _cinfo.image_width  = (JDIMENSION)view.width();

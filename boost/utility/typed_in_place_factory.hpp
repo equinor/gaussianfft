@@ -28,19 +28,19 @@ class typed_in_place_factory_base {} ;
 #include <boost/utility/detail/in_place_factory_suffix.hpp>
 
 #define BOOST_UTILITY_TYPED_INPLACE_FACTORY_04APR2007_HPP
-#else 
+#else
 #define N BOOST_PP_ITERATION()
 
 template< class T BOOST_PP_ENUM_TRAILING_PARAMS(N,class A) >
-class BOOST_PP_CAT(typed_in_place_factory,N) 
-  : 
+class BOOST_PP_CAT(typed_in_place_factory,N)
+  :
   public typed_in_place_factory_base
 {
 public:
 
   typedef T value_type;
 
-  explicit BOOST_PP_CAT(typed_in_place_factory,N) 
+  explicit BOOST_PP_CAT(typed_in_place_factory,N)
       ( BOOST_PP_ENUM_BINARY_PARAMS(N, A, const& a) )
 #if N > 0
     : BOOST_PP_ENUM(N, BOOST_DEFINE_INPLACE_FACTORY_CLASS_MEMBER_INIT, _)
@@ -56,7 +56,7 @@ public:
   {
     for(void* next = address = this->apply(address); !! --n;)
       this->apply(next = static_cast<char *>(next) + sizeof(T));
-    return address; 
+    return address;
   }
 
   BOOST_PP_REPEAT(N, BOOST_DEFINE_INPLACE_FACTORY_CLASS_MEMBER_DECL, _)
@@ -67,7 +67,7 @@ inline BOOST_PP_CAT(typed_in_place_factory,N)<
     T BOOST_PP_ENUM_TRAILING_PARAMS(N, A) >
 in_place( BOOST_PP_ENUM_BINARY_PARAMS(N, A, const& a) )
 {
-  return BOOST_PP_CAT(typed_in_place_factory,N)< 
+  return BOOST_PP_CAT(typed_in_place_factory,N)<
       T BOOST_PP_ENUM_TRAILING_PARAMS(N, A) >( BOOST_PP_ENUM_PARAMS(N, a) );
 }
 

@@ -1,4 +1,4 @@
-/* 
+/*
    Copyright (c) Marshall Clow 2010-2012.
 
    Distributed under the Boost Software License, Version 1.0. (See accompanying
@@ -30,10 +30,10 @@ namespace boost { namespace algorithm {
 
 /*
     A templated version of the boyer-moore-horspool searching algorithm.
-    
+
     Requirements:
         * Random access iterators
-        * The two iterator types (patIter and corpusIter) must 
+        * The two iterator types (patIter and corpusIter) must
             "point to" the same underlying type.
         * Additional requirements may be imposed buy the skip table, such as:
         ** Numeric type (array-based skip table)
@@ -47,11 +47,11 @@ http://www-igm.univ-mlv.fr/%7Elecroq/string/node18.html
     class boyer_moore_horspool {
         typedef typename std::iterator_traits<patIter>::difference_type difference_type;
     public:
-        boyer_moore_horspool ( patIter first, patIter last ) 
+        boyer_moore_horspool ( patIter first, patIter last )
                 : pat_first ( first ), pat_last ( last ),
                   k_pattern_length ( std::distance ( pat_first, pat_last )),
                   skip_ ( k_pattern_length, k_pattern_length ) {
-                  
+
         //  Build the skip table
             std::size_t i = 0;
             if ( first != last )    // empty pattern?
@@ -61,12 +61,12 @@ http://www-igm.univ-mlv.fr/%7Elecroq/string/node18.html
             skip_.PrintSkipTable ();
 #endif
             }
-            
+
         ~boyer_moore_horspool () {}
-        
+
         /// \fn operator ( corpusIter corpus_first, corpusIter corpus_last)
         /// \brief Searches the corpus for the pattern that was passed into the constructor
-        /// 
+        ///
         /// \param corpus_first The start of the data to search (Random Access Iterator)
         /// \param corpus_last  One past the end of the data to search
         ///
@@ -74,7 +74,7 @@ http://www-igm.univ-mlv.fr/%7Elecroq/string/node18.html
         std::pair<corpusIter, corpusIter>
         operator () ( corpusIter corpus_first, corpusIter corpus_last ) const {
             BOOST_STATIC_ASSERT (( boost::is_same<
-                typename std::iterator_traits<patIter>::value_type, 
+                typename std::iterator_traits<patIter>::value_type,
                 typename std::iterator_traits<corpusIter>::value_type>::value ));
 
             if ( corpus_first == corpus_last ) return std::make_pair(corpus_last, corpus_last);   // if nothing to search, we didn't find it!
@@ -84,11 +84,11 @@ http://www-igm.univ-mlv.fr/%7Elecroq/string/node18.html
         //  If the pattern is larger than the corpus, we can't find it!
             if ( k_corpus_length < k_pattern_length )
                 return std::make_pair(corpus_last, corpus_last);
-    
-        //  Do the search 
+
+        //  Do the search
             return this->do_search ( corpus_first, corpus_last );
             }
-            
+
         template <typename Range>
         std::pair<typename boost::range_iterator<Range>::type, typename boost::range_iterator<Range>::type>
         operator () ( Range &r ) const {
@@ -103,7 +103,7 @@ http://www-igm.univ-mlv.fr/%7Elecroq/string/node18.html
 
         /// \fn do_search ( corpusIter corpus_first, corpusIter corpus_last )
         /// \brief Searches the corpus for the pattern that was passed into the constructor
-        /// 
+        ///
         /// \param corpus_first The start of the data to search (Random Access Iterator)
         /// \param corpus_last  One past the end of the data to search
         /// \param k_corpus_length The length of the corpus to search
@@ -122,10 +122,10 @@ http://www-igm.univ-mlv.fr/%7Elecroq/string/node18.html
                         return std::make_pair(curPos, curPos + k_pattern_length);
                     j--;
                     }
-        
+
                 curPos += skip_ [ curPos [ k_pattern_length - 1 ]];
                 }
-            
+
             return std::make_pair(corpus_last, corpus_last);
             }
 // \endcond
@@ -134,18 +134,18 @@ http://www-igm.univ-mlv.fr/%7Elecroq/string/node18.html
 /*  Two ranges as inputs gives us four possibilities; with 2,3,3,4 parameters
     Use a bit of TMP to disambiguate the 3-argument templates */
 
-/// \fn boyer_moore_horspool_search ( corpusIter corpus_first, corpusIter corpus_last, 
+/// \fn boyer_moore_horspool_search ( corpusIter corpus_first, corpusIter corpus_last,
 ///       patIter pat_first, patIter pat_last )
 /// \brief Searches the corpus for the pattern.
-/// 
+///
 /// \param corpus_first The start of the data to search (Random Access Iterator)
 /// \param corpus_last  One past the end of the data to search
 /// \param pat_first    The start of the pattern to search for (Random Access Iterator)
 /// \param pat_last     One past the end of the data to search for
 ///
     template <typename patIter, typename corpusIter>
-    std::pair<corpusIter, corpusIter> boyer_moore_horspool_search ( 
-                  corpusIter corpus_first, corpusIter corpus_last, 
+    std::pair<corpusIter, corpusIter> boyer_moore_horspool_search (
+                  corpusIter corpus_first, corpusIter corpus_last,
                   patIter pat_first, patIter pat_last )
     {
         boyer_moore_horspool<patIter> bmh ( pat_first, pat_last );
@@ -153,17 +153,17 @@ http://www-igm.univ-mlv.fr/%7Elecroq/string/node18.html
     }
 
     template <typename PatternRange, typename corpusIter>
-    std::pair<corpusIter, corpusIter> boyer_moore_horspool_search ( 
+    std::pair<corpusIter, corpusIter> boyer_moore_horspool_search (
         corpusIter corpus_first, corpusIter corpus_last, const PatternRange &pattern )
     {
         typedef typename boost::range_iterator<const PatternRange>::type pattern_iterator;
         boyer_moore_horspool<pattern_iterator> bmh ( boost::begin(pattern), boost::end (pattern));
         return bmh ( corpus_first, corpus_last );
     }
-    
+
     template <typename patIter, typename CorpusRange>
     typename boost::disable_if_c<
-        boost::is_same<CorpusRange, patIter>::value, 
+        boost::is_same<CorpusRange, patIter>::value,
         std::pair<typename boost::range_iterator<CorpusRange>::type, typename boost::range_iterator<CorpusRange>::type> >
     ::type
     boyer_moore_horspool_search ( CorpusRange &corpus, patIter pat_first, patIter pat_last )
@@ -171,7 +171,7 @@ http://www-igm.univ-mlv.fr/%7Elecroq/string/node18.html
         boyer_moore_horspool<patIter> bmh ( pat_first, pat_last );
         return bm (boost::begin (corpus), boost::end (corpus));
     }
-    
+
     template <typename PatternRange, typename CorpusRange>
     std::pair<typename boost::range_iterator<CorpusRange>::type, typename boost::range_iterator<CorpusRange>::type>
     boyer_moore_horspool_search ( CorpusRange &corpus, const PatternRange &pattern )
@@ -189,7 +189,7 @@ http://www-igm.univ-mlv.fr/%7Elecroq/string/node18.html
         return boost::algorithm::boyer_moore_horspool
             <typename boost::range_iterator<const Range>::type> (boost::begin(r), boost::end(r));
         }
-    
+
     template <typename Range>
     boost::algorithm::boyer_moore_horspool<typename boost::range_iterator<Range>::type>
     make_boyer_moore_horspool ( Range &r ) {

@@ -1,7 +1,7 @@
 //  Copyright (c) 2001-2011 Hartmut Kaiser
 //  Copyright (c)      2011 Thomas Heller
-// 
-//  Distributed under the Boost Software License, Version 1.0. (See accompanying 
+//
+//  Distributed under the Boost Software License, Version 1.0. (See accompanying
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #if !defined(SPIRIT_LEX_SUPPORT_FUNCTIONS_EXPRESSION_MAR_22_2011_0711PM)
@@ -43,10 +43,10 @@ namespace boost { namespace phoenix
           : mpl::false_
         {};
     }
-    
+
     template <typename Dummy>
     struct is_custom_terminal<boost::spirit::lex::more_type, Dummy> : mpl::true_ {};
-    
+
     template <typename Dummy>
     struct custom_terminal<boost::spirit::lex::more_type, Dummy>
         : proto::call<

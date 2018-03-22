@@ -77,7 +77,7 @@ public:
 
     static result_type min BOOST_PREVENT_MACRO_SUBSTITUTION () { return b == 0 ? 1 : 0; }
     static result_type max BOOST_PREVENT_MACRO_SUBSTITUTION () { return p-1; }
-    
+
     /**
      * Constructs an @c inversive_congruential_engine, seeding it with
      * the default seed.
@@ -90,7 +90,7 @@ public:
     BOOST_RANDOM_DETAIL_ARITHMETIC_CONSTRUCTOR(inversive_congruential_engine,
                                                IntType, x0)
     { seed(x0); }
-    
+
     /**
      * Constructs an @c inversive_congruential_engine, seeding it with values
      * produced by a call to @c seq.generate().
@@ -98,7 +98,7 @@ public:
     BOOST_RANDOM_DETAIL_SEED_SEQ_CONSTRUCTOR(inversive_congruential_engine,
                                              SeedSeq, seq)
     { seed(seq); }
-    
+
     /**
      * Constructs an @c inversive_congruential_engine, seeds it
      * with values taken from the itrator range [first, last),
@@ -114,7 +114,7 @@ public:
      * Calls seed(default_seed)
      */
     void seed() { seed(default_seed); }
-  
+
     /**
      * If c mod m is zero and x0 mod m is zero, changes the current value of
      * the generator to 1. Otherwise, changes it to x0 mod m. If c is zero,
@@ -146,7 +146,7 @@ public:
      */
     BOOST_RANDOM_DETAIL_SEED_SEQ_SEED(inversive_congruential_engine, SeedSeq, seq)
     { seed(detail::seed_one_int<IntType, modulus>(seq)); }
-    
+
     /**
      * seeds an @c inversive_congruential_engine with values taken
      * from the itrator range [first, last) and adjusts @c first to
@@ -165,7 +165,7 @@ public:
         _value = do_mod::mult_add(a, do_mod::invert(_value), b);
         return _value;
     }
-  
+
     /** Fills a range with random values */
     template<class Iter>
     void generate(Iter first, Iter last)

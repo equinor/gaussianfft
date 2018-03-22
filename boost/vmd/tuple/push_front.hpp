@@ -27,7 +27,7 @@
 
 /** \def BOOST_VMD_TUPLE_PUSH_FRONT(tuple,elem)
 
-    \brief inserts an element at the beginning of a tuple. 
+    \brief inserts an element at the beginning of a tuple.
 
     tuple = tuple to insert an element at.
     elem  = element to insert.

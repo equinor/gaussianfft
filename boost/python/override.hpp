@@ -28,7 +28,7 @@ class override;
 namespace detail
 {
   class wrapper_base;
-  
+
   // The result of calling a method.
   class method_result
   {
@@ -53,19 +53,19 @@ namespace detail
           converter::return_from_python<T*> converter;
           return converter(m_obj.release());
       }
-#  endif 
-      
+#  endif
+
 #  if BOOST_WORKAROUND(BOOST_MSVC, BOOST_TESTED_AT(1400)) || BOOST_WORKAROUND(BOOST_INTEL_WIN, >= 900)
       // No operator T&
 #  else
-      
+
       template <class T>
       operator T&() const
       {
           converter::return_from_python<T&> converter;
           return converter(const_cast<handle<>&>(m_obj).release());
       }
-#  endif 
+#  endif
 
       template <class T>
       T as(type<T>* = 0)
@@ -91,7 +91,7 @@ class override : public object
     override(handle<> x)
       : object(x)
     {}
-    
+
  public:
     detail::method_result
     operator()() const
@@ -121,7 +121,7 @@ class override : public object
 # if !(BOOST_WORKAROUND(__MWERKS__, > 0x3100)                      \
         && BOOST_WORKAROUND(__MWERKS__, BOOST_TESTED_AT(0x3201)))
 #  line BOOST_PP_LINE(__LINE__, override.hpp)
-# endif 
+# endif
 
 # define N BOOST_PP_ITERATION()
 
@@ -141,4 +141,4 @@ operator()( BOOST_PP_ENUM_BINARY_PARAMS_Z(1, N, A, const& a) ) const
 }
 
 # undef N
-#endif 
+#endif

@@ -70,7 +70,7 @@ class hashed_factory_class:public factory_marker
 
 public:
   typedef const Entry* handle_type;
-  
+
   handle_type insert(const Entry& x)
   {
     return &*cont.insert(x).first;
@@ -90,7 +90,7 @@ public:
 
   static const Entry& entry(handle_type h){return *h;}
 
-private:  
+private:
   container_type cont;
 
 public:

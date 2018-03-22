@@ -12,7 +12,7 @@
 
 #if defined(_MSC_VER)
 # pragma once
-#endif              
+#endif
 
 #ifndef BOOST_IOSTREAMS_DEFAULT_DEVICE_BUFFER_SIZE
 # define BOOST_IOSTREAMS_DEFAULT_DEVICE_BUFFER_SIZE 4096
@@ -30,11 +30,11 @@
 
 namespace boost { namespace iostreams {
 
-const std::streamsize default_device_buffer_size = 
-    BOOST_IOSTREAMS_DEFAULT_DEVICE_BUFFER_SIZE; 
-const std::streamsize default_filter_buffer_size = 
+const std::streamsize default_device_buffer_size =
+    BOOST_IOSTREAMS_DEFAULT_DEVICE_BUFFER_SIZE;
+const std::streamsize default_filter_buffer_size =
     BOOST_IOSTREAMS_DEFAULT_FILTER_BUFFER_SIZE;
-const std::streamsize default_pback_buffer_size = 
+const std::streamsize default_pback_buffer_size =
     BOOST_IOSTREAMS_DEFAULT_PBACK_BUFFER_SIZE;
 
 } } // End namespaces iostreams, boost.

@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 1993-1994 by Xerox Corporation.  All rights reserved.
  *
  * THIS MATERIAL IS PROVIDED AS IS, WITH ABSOLUTELY NO WARRANTY EXPRESSED
@@ -62,7 +62,7 @@ static int extract_conv_spec(CORD_pos source, char *buf,
     register int saw_number = 0;
     register int chars_so_far = 0;
     register char current;
-    
+
     *width = NONE;
     buf[chars_so_far++] = '%';
     while(CORD_pos_valid(source)) {
@@ -136,7 +136,7 @@ static int extract_conv_spec(CORD_pos source, char *buf,
 	  case 'p':
 	  case 'n':
 	  case 'r':
-	    goto done;          
+	    goto done;
           default:
             return(-1);
         }
@@ -165,7 +165,7 @@ int CORD_vsprintf(CORD * out, CORD format, va_list args)
     register char current;
     CORD_pos pos;
     char conv_spec[CONV_SPEC_LEN + 1];
-    
+
     CORD_ec_init(result);
     for (CORD_set_pos(pos, format, 0); CORD_pos_valid(pos); CORD_next(pos)) {
        	current = CORD_pos_fetch(pos);
@@ -181,7 +181,7 @@ int CORD_vsprintf(CORD * out, CORD format, va_list args)
              	int long_arg = 0;
 		CORD arg;
 		size_t len;
-               
+
               	if (extract_conv_spec(pos, conv_spec,
               			      &width, &prec,
               			      &left_adj, &long_arg) < 0) {
@@ -342,7 +342,7 @@ int CORD_sprintf(CORD * out, CORD format, ...)
 {
     va_list args;
     int result;
-    
+
     va_start(args, format);
     result = CORD_vsprintf(out, format, args);
     va_end(args);
@@ -354,7 +354,7 @@ int CORD_fprintf(FILE * f, CORD format, ...)
     va_list args;
     int result;
     CORD out;
-    
+
     va_start(args, format);
     result = CORD_vsprintf(&out, format, args);
     va_end(args);
@@ -366,7 +366,7 @@ int CORD_vfprintf(FILE * f, CORD format, va_list args)
 {
     int result;
     CORD out;
-    
+
     result = CORD_vsprintf(&out, format, args);
     if (result > 0) CORD_put(out, f);
     return(result);
@@ -377,7 +377,7 @@ int CORD_printf(CORD format, ...)
     va_list args;
     int result;
     CORD out;
-    
+
     va_start(args, format);
     result = CORD_vsprintf(&out, format, args);
     va_end(args);
@@ -389,7 +389,7 @@ int CORD_vprintf(CORD format, va_list args)
 {
     int result;
     CORD out;
-    
+
     result = CORD_vsprintf(&out, format, args);
     if (result > 0) CORD_put(out, stdout);
     return(result);

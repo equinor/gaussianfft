@@ -190,7 +190,7 @@ T lgamma_small_imp(T z, T zm1, T zm2, const mpl::int_<64>&, const Policy& /* l *
          static const float Y = 0.452017307281494140625f;
 
          static const T P[] = {
-            static_cast<T>(BOOST_MATH_BIG_CONSTANT(T, 64, -0.292329721830270012337e-1)), 
+            static_cast<T>(BOOST_MATH_BIG_CONSTANT(T, 64, -0.292329721830270012337e-1)),
             static_cast<T>(BOOST_MATH_BIG_CONSTANT(T, 64, 0.144216267757192309184e0)),
             static_cast<T>(BOOST_MATH_BIG_CONSTANT(T, 64, -0.142440390738631274135e0)),
             static_cast<T>(BOOST_MATH_BIG_CONSTANT(T, 64, 0.542809694055053558157e-1)),

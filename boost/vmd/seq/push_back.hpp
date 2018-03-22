@@ -27,7 +27,7 @@
 
 /** \def BOOST_VMD_SEQ_PUSH_BACK(seq,elem)
 
-    \brief appends an element to the end of a seq. 
+    \brief appends an element to the end of a seq.
 
     seq = seq to to append an element to.
     elem  = element to append.

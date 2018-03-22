@@ -50,7 +50,7 @@ public:
 
 private:
     // Data members
-    std::initializer_list<T> m_data;    
+    std::initializer_list<T> m_data;
 };
 
 //____________________________________________________________________________//

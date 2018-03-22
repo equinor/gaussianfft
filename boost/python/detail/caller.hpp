@@ -40,7 +40,7 @@
 #  include <boost/mpl/int.hpp>
 #  include <boost/mpl/next.hpp>
 
-namespace boost { namespace python { namespace detail { 
+namespace boost { namespace python { namespace detail {
 
 template <int N>
 inline PyObject* get(mpl::int_<N>, PyObject* const& args_)
@@ -80,7 +80,7 @@ inline ResultConverter create_result_converter(
 {
     return ResultConverter(args_);
 }
-    
+
 template <class ArgPackage, class ResultConverter>
 inline ResultConverter create_result_converter(
     ArgPackage const&
@@ -93,7 +93,7 @@ inline ResultConverter create_result_converter(
 
 #ifndef BOOST_PYTHON_NO_PY_SIGNATURES
 template <class ResultConverter>
-struct converter_target_type 
+struct converter_target_type
 {
     static PyTypeObject const *get_pytype()
     {
@@ -111,7 +111,7 @@ struct converter_target_type <void_result_to_python >
 };
 #endif
 
-    
+
 template <unsigned> struct caller_arity;
 
 template <class F, class CallPolicies, class Sig>
@@ -170,7 +170,7 @@ struct caller
         >::type base;
 
     typedef PyObject* result_type;
-    
+
     caller(F f, CallPolicies p) : base(f,p) {}
 
 };
@@ -200,14 +200,14 @@ struct caller_arity<N>
             typedef typename first::type result_t;
             typedef typename select_result_converter<Policies, result_t>::type result_converter;
             typedef typename Policies::argument_package argument_package;
-            
+
             argument_package inner_args(args_);
 
 # if N
 #  define BOOST_PP_LOCAL_MACRO(i) BOOST_PYTHON_ARG_CONVERTER(i)
 #  define BOOST_PP_LOCAL_LIMITS (0, N-1)
 #  include BOOST_PP_LOCAL_ITERATE()
-# endif 
+# endif
             // all converters have been checked. Now we can do the
             // precall part of the policy
             if (!m_data.second().precall(inner_args))
@@ -219,12 +219,12 @@ struct caller_arity<N>
               , m_data.first()
                 BOOST_PP_ENUM_TRAILING_PARAMS(N, c)
             );
-            
+
             return m_data.second().postcall(inner_args, result);
         }
 
         static unsigned min_arity() { return N; }
-        
+
         static py_func_sig_info  signature()
         {
             const signature_element * sig = detail::signature<Sig>::elements();
@@ -236,7 +236,7 @@ struct caller_arity<N>
             static const signature_element ret = {
                 (is_void<rtype>::value ? "void" : type_id<rtype>().name())
                 , &detail::converter_target_type<result_converter>::get_pytype
-                , boost::detail::indirect_traits::is_reference_to_non_const<rtype>::value 
+                , boost::detail::indirect_traits::is_reference_to_non_const<rtype>::value
             };
             py_func_sig_info res = {sig, &ret };
 #else
@@ -252,6 +252,6 @@ struct caller_arity<N>
 
 
 
-#endif // BOOST_PP_IS_ITERATING 
+#endif // BOOST_PP_IS_ITERATING
 
 

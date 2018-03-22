@@ -29,7 +29,7 @@ class two_bit_color_map<local_property_map<ProcessGroup,GlobalMap,StorageMap> >
 {
   typedef two_bit_color_map<StorageMap> local_map;
 
-  typedef parallel::distributed_property_map<ProcessGroup, GlobalMap, 
+  typedef parallel::distributed_property_map<ProcessGroup, GlobalMap,
                                              local_map >
     inherited;
 
@@ -37,7 +37,7 @@ class two_bit_color_map<local_property_map<ProcessGroup,GlobalMap,StorageMap> >
     index_map_type;
 
 public:
-  two_bit_color_map(std::size_t inital_size, 
+  two_bit_color_map(std::size_t inital_size,
                     const index_map_type& index = index_map_type())
     : inherited(index.process_group(),  index.global(),
                 local_map(inital_size, index.base())) { }
@@ -58,7 +58,7 @@ get(two_bit_color_map<local_property_map<ProcessGroup,GlobalMap,StorageMap> >
 template<typename ProcessGroup, typename GlobalMap, typename StorageMap>
 inline void
 put(two_bit_color_map<local_property_map<ProcessGroup,GlobalMap,StorageMap> >
-      const& pm, 
+      const& pm,
     typename property_traits<GlobalMap>::key_type key,
     two_bit_color_type value)
 {
@@ -67,7 +67,7 @@ put(two_bit_color_map<local_property_map<ProcessGroup,GlobalMap,StorageMap> >
 
 template<typename ProcessGroup, typename GlobalMap, typename StorageMap>
 class two_bit_color_map<parallel::distributed_property_map<
-                          ProcessGroup, GlobalMap, StorageMap> > 
+                          ProcessGroup, GlobalMap, StorageMap> >
   : public parallel::distributed_property_map<
              ProcessGroup, GlobalMap, two_bit_color_map<StorageMap> >
 {
@@ -76,12 +76,12 @@ class two_bit_color_map<parallel::distributed_property_map<
   typedef parallel::distributed_property_map<ProcessGroup,GlobalMap,local_map>
     inherited;
 
-  typedef parallel::distributed_property_map<ProcessGroup, GlobalMap,  
+  typedef parallel::distributed_property_map<ProcessGroup, GlobalMap,
                                              StorageMap>
     index_map_type;
 
 public:
-  two_bit_color_map(std::size_t inital_size, 
+  two_bit_color_map(std::size_t inital_size,
                     const index_map_type& index = index_map_type())
     : inherited(index.process_group(),  index.global(),
                 local_map(inital_size, index.base())) { }
@@ -104,7 +104,7 @@ template<typename ProcessGroup, typename GlobalMap, typename StorageMap>
 inline void
 put(two_bit_color_map<
       parallel::distributed_property_map<
-        ProcessGroup, GlobalMap, two_bit_color_map<StorageMap> > > const& pm, 
+        ProcessGroup, GlobalMap, two_bit_color_map<StorageMap> > > const& pm,
     typename property_traits<GlobalMap>::key_type key,
     two_bit_color_type value)
 {

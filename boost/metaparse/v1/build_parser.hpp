@@ -48,7 +48,7 @@ namespace boost
       struct build_parser
       {
         typedef build_parser type;
-        
+
         template <class S>
         struct apply :
           boost::mpl::eval_if<

@@ -7,7 +7,7 @@
 
 # include <boost/python/detail/not_specified.hpp>
 
-namespace boost { namespace python { namespace detail { 
+namespace boost { namespace python { namespace detail {
 
 template <class T1, class T2 = not_specified, class T3 = not_specified, class T4 = not_specified>
 struct def_helper;

@@ -5,7 +5,7 @@
 #ifndef CONSTRUCT_REFERENCE_DWA2002716_HPP
 # define CONSTRUCT_REFERENCE_DWA2002716_HPP
 
-namespace boost { namespace python { namespace detail { 
+namespace boost { namespace python { namespace detail {
 
 template <class T, class Arg>
 void construct_pointee(void* storage, Arg& x, T const volatile*)

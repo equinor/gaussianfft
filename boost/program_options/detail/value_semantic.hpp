@@ -11,10 +11,10 @@
 // forward declaration
 namespace boost { template<class T> class optional; }
 
-namespace boost { namespace program_options { 
+namespace boost { namespace program_options {
 
     extern BOOST_PROGRAM_OPTIONS_DECL std::string arg;
-    
+
     template<class T, class charT>
     std::string
     typed_value<T, charT>::name() const
@@ -34,7 +34,7 @@ namespace boost { namespace program_options {
     }
 
     template<class T, class charT>
-    void 
+    void
     typed_value<T, charT>::notify(const boost::any& value_store) const
     {
         const T* value = boost::any_cast<T>(&value_store);
@@ -47,14 +47,14 @@ namespace boost { namespace program_options {
     }
 
     namespace validators {
-        /* If v.size() > 1, throw validation_error. 
+        /* If v.size() > 1, throw validation_error.
            If v.size() == 1, return v.front()
            Otherwise, returns a reference to a statically allocated
            empty string if 'allow_empty' and throws validation_error
            otherwise. */
         template<class charT>
         const std::basic_string<charT>& get_single_string(
-            const std::vector<std::basic_string<charT> >& v, 
+            const std::vector<std::basic_string<charT> >& v,
             bool allow_empty = false)
         {
             static std::basic_string<charT> empty;
@@ -68,7 +68,7 @@ namespace boost { namespace program_options {
         }
 
         /* Throws multiple_occurrences if 'value' is not empty. */
-        BOOST_PROGRAM_OPTIONS_DECL void 
+        BOOST_PROGRAM_OPTIONS_DECL void
         check_first_occurrence(const boost::any& value);
     }
 
@@ -77,13 +77,13 @@ namespace boost { namespace program_options {
     /** Validates 's' and updates 'v'.
         @pre 'v' is either empty or in the state assigned by the previous
         invocation of 'validate'.
-        The target type is specified via a parameter which has the type of 
+        The target type is specified via a parameter which has the type of
         pointer to the desired type. This is workaround for compilers without
         partial template ordering, just like the last 'long/int' parameter.
     */
     template<class T, class charT>
-    void validate(boost::any& v, 
-                  const std::vector< std::basic_string<charT> >& xs, 
+    void validate(boost::any& v,
+                  const std::vector< std::basic_string<charT> >& xs,
                   T*, long)
     {
         validators::check_first_occurrence(v);
@@ -96,14 +96,14 @@ namespace boost { namespace program_options {
         }
     }
 
-    BOOST_PROGRAM_OPTIONS_DECL void validate(boost::any& v, 
-                       const std::vector<std::string>& xs, 
+    BOOST_PROGRAM_OPTIONS_DECL void validate(boost::any& v,
+                       const std::vector<std::string>& xs,
                        bool*,
                        int);
 
 #if !defined(BOOST_NO_STD_WSTRING)
-    BOOST_PROGRAM_OPTIONS_DECL void validate(boost::any& v, 
-                       const std::vector<std::wstring>& xs, 
+    BOOST_PROGRAM_OPTIONS_DECL void validate(boost::any& v,
+                       const std::vector<std::wstring>& xs,
                        bool*,
                        int);
 #endif
@@ -111,13 +111,13 @@ namespace boost { namespace program_options {
     // cause msvc 7.1 to not generate code to specialization defined in
     // value_semantic.cpp
 #if ! ( BOOST_WORKAROUND(BOOST_MSVC, == 1310) )
-    BOOST_PROGRAM_OPTIONS_DECL void validate(boost::any& v, 
+    BOOST_PROGRAM_OPTIONS_DECL void validate(boost::any& v,
                        const std::vector<std::string>& xs,
                        std::string*,
                        int);
 
 #if !defined(BOOST_NO_STD_WSTRING)
-    BOOST_PROGRAM_OPTIONS_DECL void validate(boost::any& v, 
+    BOOST_PROGRAM_OPTIONS_DECL void validate(boost::any& v,
                        const std::vector<std::wstring>& xs,
                        std::string*,
                        int);
@@ -127,8 +127,8 @@ namespace boost { namespace program_options {
     /** Validates sequences. Allows multiple values per option occurrence
        and multiple occurrences. */
     template<class T, class charT>
-    void validate(boost::any& v, 
-                  const std::vector<std::basic_string<charT> >& s, 
+    void validate(boost::any& v,
+                  const std::vector<std::basic_string<charT> >& s,
                   std::vector<T>*,
                   int)
     {
@@ -146,7 +146,7 @@ namespace boost { namespace program_options {
                 boost::any a;
                 std::vector<std::basic_string<charT> > cv;
                 cv.push_back(s[i]);
-                validate(a, cv, (T*)0, 0);                
+                validate(a, cv, (T*)0, 0);
                 tv->push_back(boost::any_cast<T>(a));
             }
             catch(const bad_lexical_cast& /*e*/) {
@@ -170,9 +170,9 @@ namespace boost { namespace program_options {
     }
 
     template<class T, class charT>
-    void 
+    void
     typed_value<T, charT>::
-    xparse(boost::any& value_store, 
+    xparse(boost::any& value_store,
            const std::vector<std::basic_string<charT> >& new_tokens) const
     {
         // If no tokens were given, and the option accepts an implicit
@@ -198,7 +198,7 @@ namespace boost { namespace program_options {
     {
         typed_value<T>* r = new typed_value<T>(v);
 
-        return r;        
+        return r;
     }
 
     template<class T>
@@ -214,7 +214,7 @@ namespace boost { namespace program_options {
     {
         typed_value<T, wchar_t>* r = new typed_value<T, wchar_t>(v);
 
-        return r;        
+        return r;
     }
 
 

@@ -72,7 +72,7 @@ pull_coroutine< T >::pull_coroutine( pull_coroutine && other) noexcept :
 }
 
 template< typename T >
-pull_coroutine< T > & 
+pull_coroutine< T > &
 pull_coroutine< T >::operator()() {
     cb_->resume();
     return * this;

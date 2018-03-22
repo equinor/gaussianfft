@@ -73,13 +73,13 @@ class map_view
 
     BOOST_BIMAP_MAP_VIEW_RANGE_IMPLEMENTATION(base_)
 
-    map_view & operator=(const map_view & v) 
+    map_view & operator=(const map_view & v)
     {
         this->base() = v.base();
         return *this;
     }
 
-    // It can be used enable_if here but the error message when there 
+    // It can be used enable_if here but the error message when there
     // is no info is very clear like this
 
     template< class CompatibleKey >

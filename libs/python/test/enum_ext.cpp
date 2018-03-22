@@ -9,7 +9,7 @@
 #if BOOST_WORKAROUND(__MWERKS__, <= 0x2407)
 #include <boost/python/detail/type_traits.hpp>
 # include <boost/mpl/bool.hpp>
-#endif 
+#endif
 using namespace boost::python;
 
 enum color { red = 1, green = 2, blue = 4, blood = 1 };
@@ -19,7 +19,7 @@ namespace boost  // Pro7 has a hard time detecting enums
 {
   template <> struct boost::python::detail::is_enum<color> : boost::mpl::true_ {};
 }
-#endif 
+#endif
 
 color identity_(color x) { return x; }
 
@@ -37,7 +37,7 @@ BOOST_PYTHON_MODULE(enum_ext)
         .value("blood", blood)
         .export_values()
         ;
-    
+
     def("identity", identity_);
 
 #if BOOST_WORKAROUND(__MWERKS__, <=0x2407)
@@ -45,11 +45,11 @@ BOOST_PYTHON_MODULE(enum_ext)
     class_<colorized>("colorized")
         .def_readwrite("x", px)
         ;
-#else 
+#else
     class_<colorized>("colorized")
         .def_readwrite("x", &colorized::x)
         ;
-#endif 
+#endif
 }
 
 #include "module_tail.cpp"

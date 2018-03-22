@@ -432,7 +432,7 @@ class abstract-file-target : virtual-target
         {
             ps = [ property-set.empty ] ;
         }
-        
+
         # Add this target object for use in getting additional information
         # when tagging.
         ps = [ property-set.create [ $(ps).raw ] <target>$(__name__) ] ;

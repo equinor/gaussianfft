@@ -12,14 +12,14 @@
 
 # include <boost/python/detail/nullary_function_adaptor.hpp>
 
-namespace boost { namespace python { 
+namespace boost { namespace python {
 
 namespace detail
 {
   //
   // @group Helpers for pure_virtual_visitor. {
   //
-  
+
   // Raises a Python RuntimeError reporting that a pure virtual
   // function was called.
   void BOOST_PYTHON_DECL pure_virtual_called();
@@ -28,7 +28,7 @@ namespace detail
   template <class S, class T1, class T2>
   struct replace_front2
   {
-      // Metafunction forwarding seemed to confound vc6 
+      // Metafunction forwarding seemed to confound vc6
       typedef typename mpl::push_front<
           typename mpl::push_front<
               typename mpl::pop_front<
@@ -54,7 +54,7 @@ namespace detail
   }
 
   //
-  // } 
+  // }
   //
 
   //
@@ -69,10 +69,10 @@ namespace detail
       pure_virtual_visitor(PointerToMemberFunction pmf)
         : m_pmf(pmf)
       {}
-      
+
    private:
       friend class python::def_visitor_access;
-      
+
       template <class C_, class Options>
       void visit(C_& c, char const* name, Options& options) const
       {
@@ -89,7 +89,7 @@ namespace detail
           );
 
           typedef BOOST_DEDUCED_TYPENAME C_::metadata::held_type held_type;
-          
+
           // Add the default implementation which raises the exception
           c.def(
               name
@@ -100,7 +100,7 @@ namespace detail
               )
           );
       }
-      
+
    private: // data members
       PointerToMemberFunction m_pmf;
   };

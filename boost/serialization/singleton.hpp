@@ -32,7 +32,7 @@
 // MS compatible compilers support #pragma once
 #if defined(_MSC_VER)
 # pragma once
-#endif 
+#endif
 
 #include <boost/assert.hpp>
 #include <boost/config.hpp>
@@ -48,8 +48,8 @@
 #  pragma warning(disable : 4511 4512)
 #endif
 
-namespace boost { 
-namespace serialization { 
+namespace boost {
+namespace serialization {
 
 //////////////////////////////////////////////////////////////////////
 // Provides a dynamically-initialized (singleton) instance of T in a

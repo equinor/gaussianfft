@@ -196,7 +196,7 @@ inline RealType quantile(const laplace_distribution<RealType, Policy>& dist, con
         "probability parameter is 0, but must be > 0!", Policy());
       return -result; // -std::numeric_limits<RealType>::infinity();
    }
-  
+
    if(p == 1)
    {
       result = policies::raise_overflow_error<RealType>(function,
@@ -270,7 +270,7 @@ inline RealType quantile(const complemented2_type<laplace_distribution<RealType,
    // Checking function argument.
    const char* function = "quantile(const complemented2_type<laplace_distribution<%1%>, %1%>&)";
    if (false == c.dist.check_parameters(function, &result)) return result;
-   
+
    // Extreme values.
    if(q == 0)
    {

@@ -10,7 +10,7 @@
 
 namespace boost { namespace python { namespace numpy
 {
-namespace detail 
+namespace detail
 {
 inline object get_matrix_type()
 {
@@ -20,7 +20,7 @@ inline object get_matrix_type()
 } // namespace boost::python::numpy::detail
 } // namespace boost::python::numpy
 
-namespace converter 
+namespace converter
 {
 
 PyTypeObject const * object_manager_traits<numpy::matrix>::get_pytype()
@@ -30,7 +30,7 @@ PyTypeObject const * object_manager_traits<numpy::matrix>::get_pytype()
 
 } // namespace boost::python::converter
 
-namespace numpy 
+namespace numpy
 {
 
 object matrix::construct(object const & obj, dtype const & dt, bool copy)
@@ -43,19 +43,19 @@ object matrix::construct(object const & obj, bool copy)
   return numpy::detail::get_matrix_type()(obj, object(), copy);
 }
 
-matrix matrix::view(dtype const & dt) const 
+matrix matrix::view(dtype const & dt) const
 {
   return matrix(python::detail::new_reference
     (PyObject_CallMethod(this->ptr(), const_cast<char*>("view"), const_cast<char*>("O"), dt.ptr())));
 }
 
-matrix matrix::copy() const 
+matrix matrix::copy() const
 {
   return matrix(python::detail::new_reference
     (PyObject_CallMethod(this->ptr(), const_cast<char*>("copy"), const_cast<char*>(""))));
 }
 
-matrix matrix::transpose() const 
+matrix matrix::transpose() const
 {
   return matrix(extract<matrix>(ndarray::transpose()));
 }

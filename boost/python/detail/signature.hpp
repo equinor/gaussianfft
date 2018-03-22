@@ -20,7 +20,7 @@
 #  include <boost/mpl/at.hpp>
 #  include <boost/mpl/size.hpp>
 
-namespace boost { namespace python { namespace detail { 
+namespace boost { namespace python { namespace detail {
 
 struct signature_element
 {
@@ -75,7 +75,7 @@ struct signature_arity<N>
         static signature_element const* elements()
         {
             static signature_element const result[N+2] = {
-                
+
 #ifndef BOOST_PYTHON_NO_PY_SIGNATURES
 # define BOOST_PP_LOCAL_MACRO(i)                                                            \
                 {                                                                           \
@@ -91,7 +91,7 @@ struct signature_arity<N>
                   , indirect_traits::is_reference_to_non_const<BOOST_DEDUCED_TYPENAME mpl::at_c<Sig,i>::type>::value \
                 },
 #endif
-                
+
 # define BOOST_PP_LOCAL_LIMITS (0, N)
 # include BOOST_PP_LOCAL_ITERATE()
                 {0,0,0}
@@ -101,6 +101,6 @@ struct signature_arity<N>
     };
 };
 
-#endif // BOOST_PP_IS_ITERATING 
+#endif // BOOST_PP_IS_ITERATING
 
 

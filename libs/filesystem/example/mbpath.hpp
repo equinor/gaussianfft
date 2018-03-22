@@ -17,7 +17,7 @@
 namespace user
 {
   struct mbpath_traits;
-  
+
   typedef boost::filesystem::basic_path<std::wstring, mbpath_traits> mbpath;
 
   struct mbpath_traits

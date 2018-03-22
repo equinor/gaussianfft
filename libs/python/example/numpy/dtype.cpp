@@ -9,7 +9,7 @@
  *
  *  @todo Add an example to show type conversion.
  *        Add an example to show use of user-defined types
- *        
+ *
  */
 
 #include <boost/python/numpy.hpp>

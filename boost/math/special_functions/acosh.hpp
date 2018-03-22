@@ -35,7 +35,7 @@ namespace boost
         inline T    acosh_imp(const T x, const Policy& pol)
         {
             BOOST_MATH_STD_USING
-            
+
             if((x < 1) || (boost::math::isnan)(x))
             {
                return policies::raise_domain_error<T>(
@@ -67,7 +67,7 @@ namespace boost
             {
                 // see http://functions.wolfram.com/ElementaryFunctions/ArcCosh/06/01/04/01/0001/
                 T y = x - 1;
-                
+
                 // approximation by taylor series in y at 0 up to order 2
                 T result = sqrt(2 * y) * (1 - y /12 + 3 * y * y / 160);
                 return result;
@@ -81,9 +81,9 @@ namespace boost
             typedef typename tools::promote_args<T>::type result_type;
             typedef typename policies::evaluation<result_type, Policy>::type value_type;
             typedef typename policies::normalise<
-               Policy, 
-               policies::promote_float<false>, 
-               policies::promote_double<false>, 
+               Policy,
+               policies::promote_float<false>,
+               policies::promote_double<false>,
                policies::discrete_quantile<>,
                policies::assert_undefined<> >::type forwarding_policy;
            return policies::checked_narrowing_cast<result_type, forwarding_policy>(

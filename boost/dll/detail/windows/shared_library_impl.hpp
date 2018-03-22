@@ -40,7 +40,7 @@ public:
     ~shared_library_impl() BOOST_NOEXCEPT {
         unload();
     }
-    
+
     shared_library_impl(BOOST_RV_REF(shared_library_impl) sl) BOOST_NOEXCEPT
         : handle_(sl.handle_)
     {

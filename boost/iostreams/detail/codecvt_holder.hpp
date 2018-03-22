@@ -21,7 +21,7 @@
 
 namespace boost { namespace iostreams { namespace detail {
 
-struct default_codecvt { 
+struct default_codecvt {
     typedef wchar_t         intern_type, from_type;
     typedef char            extern_type, to_type;
     typedef std::mbstate_t  state_type;
@@ -40,8 +40,8 @@ struct codecvt_holder<default_codecvt> {
     typedef std::codecvt<wchar_t, char, std::mbstate_t> codecvt_type;
     codecvt_holder() { reset_codecvt(); }
     const codecvt_type& get() const { return *codecvt_; }
-    void imbue(const std::locale& loc) 
-    { 
+    void imbue(const std::locale& loc)
+    {
         loc_ = loc;
         reset_codecvt();
     }

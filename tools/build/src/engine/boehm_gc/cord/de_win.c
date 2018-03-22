@@ -13,7 +13,7 @@
 /* Boehm, February 6, 1995 12:29 pm PST */
 
 /*
- * The MS Windows specific part of de.  
+ * The MS Windows specific part of de.
  * This started as the generic Windows application template
  * made available by Rob Haack (rhaack@polaris.unm.edu), but
  * significant parts didn't survive to the final version.
@@ -77,20 +77,20 @@ int APIENTRY WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance,
    	  return(0);
       }
    }
-   
+
    /* Empirically, the command line does not include the command name ...
    if (command_line != 0) {
        while (isspace(*command_line)) command_line++;
        while (*command_line != 0 && !isspace(*command_line)) command_line++;
        while (isspace(*command_line)) command_line++;
    } */
-   
+
    if (command_line == 0 || *command_line == 0) {
         de_error("File name argument required");
         return( 0 );
    } else {
         char *p = command_line;
-        
+
         while (*p != 0 && !isspace(*p)) p++;
    	arg_file_name = CORD_to_char_star(
    			    CORD_substr(command_line, 0, p - command_line));
@@ -115,7 +115,7 @@ int APIENTRY WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance,
    ShowWindow (hwnd, nCmdShow);
 
    hAccel = LoadAccelerators( hInstance, szAppName );
-   
+
    while (GetMessage (&msg, NULL, 0, 0))
    {
       if( !TranslateAccelerator( hwnd, hAccel, &msg ) )
@@ -132,7 +132,7 @@ char * plain_chars(char * text, size_t len)
 {
     char * result = GC_MALLOC_ATOMIC(len + 1);
     register size_t i;
-    
+
     for (i = 0; i < len; i++) {
        if (iscntrl(text[i])) {
            result[i] = ' ';
@@ -150,7 +150,7 @@ char * control_chars(char * text, size_t len)
 {
     char * result = GC_MALLOC_ATOMIC(len + 1);
     register size_t i;
-    
+
     for (i = 0; i < len; i++) {
        if (iscntrl(text[i])) {
            result[i] = text[i] + 0x40;
@@ -241,29 +241,29 @@ LRESULT CALLBACK WndProc (HWND hwnd, UINT message,
       	       do_command((int)wParam);
       	   }
       	   return(0);
-      
+
       case WM_SETFOCUS:
       	   CreateCaret(hwnd, NULL, char_width, char_height);
       	   ShowCaret(hwnd);
       	   caret_visible = 1;
       	   update_cursor();
       	   return(0);
-      	   
+
       case WM_KILLFOCUS:
       	   HideCaret(hwnd);
       	   DestroyCaret();
       	   caret_visible = 0;
       	   return(0);
-      	   
+
       case WM_LBUTTONUP:
       	   {
       	       unsigned xpos = LOWORD(lParam);	/* From left	*/
       	       unsigned ypos = HIWORD(lParam);	/* from top */
-      	       
+
       	       set_position( xpos/char_width, ypos/char_height );
       	       return(0);
       	   }
-      	   
+
       case WM_COMMAND:
       	   id = LOWORD(wParam);
       	   if (id & EDIT_CMD_FLAG) {
@@ -299,7 +299,7 @@ LRESULT CALLBACK WndProc (HWND hwnd, UINT message,
            PostQuitMessage (0);
 	   GC_win32_free_heap();
            return 0;
-      
+
       case WM_PAINT:
       	   dc = BeginPaint(hwnd, &ps);
       	   GetClientRect(hwnd, &client_area);
@@ -318,10 +318,10 @@ LRESULT CALLBACK WndProc (HWND hwnd, UINT message,
       	           				                COLS - len));
       	           char * control = control_chars(text, len);
 #		   define RED RGB(255,0,0)
-      	           
+
       	           SetBkMode(dc, OPAQUE);
       	           SetTextColor(dc, GetSysColor(COLOR_WINDOWTEXT));
-      	           
+
       	           TextOut(dc, this_line.left, this_line.top,
       	           	   plain, (int)len);
       	           TextOut(dc, this_line.left + (int)len * char_width,
@@ -347,7 +347,7 @@ void move_cursor(int c, int l)
 {
     last_col = c;
     last_line = l;
-    
+
     if (caret_visible) update_cursor();
 }
 
@@ -360,7 +360,7 @@ void update_cursor(void)
 void invalidate_line(int i)
 {
     RECT line;
-    
+
     if (!screen_was_painted) return;
     	/* Invalidating a rectangle before painting seems result in a	*/
     	/* major performance problem.					*/

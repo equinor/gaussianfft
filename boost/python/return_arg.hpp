@@ -22,7 +22,7 @@
 
 # include <cstddef>
 
-namespace boost { namespace python { 
+namespace boost { namespace python {
 
 namespace detail
 {
@@ -43,7 +43,7 @@ namespace detail
               {
                   return true;
               }
-              
+
               PyObject *operator()( typename value_arg<T>::type ) const
               {
                   return none();
@@ -55,11 +55,11 @@ namespace detail
       };
   };
 }
-    
+
 template <
     std::size_t arg_pos=1
   , class Base = default_call_policies
-> 
+>
 struct return_arg : Base
 {
  private:
@@ -90,7 +90,7 @@ struct return_arg : Base
         return incref( detail::get(mpl::int_<arg_pos-1>(),args) );
     }
 
-    template <class Sig> 
+    template <class Sig>
     struct extract_return_type : mpl::at_c<Sig, arg_pos>
     {
     };
@@ -100,7 +100,7 @@ struct return_arg : Base
 template <
     class Base = default_call_policies
     >
-struct return_self 
+struct return_self
   : return_arg<1,Base>
 {};
 

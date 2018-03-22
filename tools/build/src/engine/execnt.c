@@ -1308,7 +1308,7 @@ static void reportWindowsError( char const * const apiName, int slot )
         (LPSTR)&errorMessage,             /* __out     LPTSTR lpBuffer     */
         0,                                /* __in      DWORD nSize         */
         0 );                              /* __in_opt  va_list * Arguments */
-    
+
     /* Build a message as if the process had written to stderr. */
     if ( globs.pipe_action )
         err_buf = cmdtab[ slot ].buffer_err;
@@ -1341,7 +1341,7 @@ static void reportWindowsError( char const * const apiName, int slot )
     (*cmdtab[ slot ].func)( cmdtab[ slot ].closure, EXEC_CMD_FAIL, &time,
         cmdtab[ slot ].buffer_out->value, cmdtab[ slot ].buffer_err->value,
         EXIT_OK );
-    
+
     /* Clean up any handles that were opened. */
     closeWinHandle( &cmdtab[ slot ].pi.hProcess );
     closeWinHandle( &cmdtab[ slot ].pi.hThread );

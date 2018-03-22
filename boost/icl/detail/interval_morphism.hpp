@@ -39,9 +39,9 @@ namespace boost{namespace icl
             typedef typename IntervalContainerT::key_type key_type;
             ICL_const_FORALL(typename ElementContainerT, element_, src)
             {
-                const typename ElementContainerT::key_type&  key  
+                const typename ElementContainerT::key_type&  key
                     = key_value<ElementContainerT>(element_);
-                const typename codomain_type_of<ElementContainerT>::type& coval 
+                const typename codomain_type_of<ElementContainerT>::type& coval
                     = co_value<ElementContainerT>(element_);
 
                 result += icl::make_value<IntervalContainerT>(key_type(key), coval);
@@ -91,13 +91,13 @@ namespace boost{namespace icl
     } // namespace Interval
 
 
-    template<> 
+    template<>
     inline std::string binary_template_to_string<segmental::atomizer>::apply() { return "@"; }
-    template<> 
+    template<>
     inline std::string binary_template_to_string<segmental::clusterer>::apply() { return "&"; }
-    template<> 
+    template<>
     inline std::string binary_template_to_string<segmental::joiner>::apply() { return "j"; }
-    template<> 
+    template<>
     inline std::string binary_template_to_string<segmental::identity_absorber>::apply() { return "a0"; }
 }} // namespace boost icl
 

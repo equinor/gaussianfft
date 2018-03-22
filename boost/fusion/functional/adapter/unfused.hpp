@@ -1,7 +1,7 @@
 /*=============================================================================
     Copyright (c) 2006-2007 Tobias Schwinger
-  
-    Use modification and distribution are subject to the Boost Software 
+
+    Use modification and distribution are subject to the Boost Software
     License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
     http://www.boost.org/LICENSE_1_0.txt).
 ==============================================================================*/
@@ -36,7 +36,7 @@ namespace boost { namespace fusion
 
     //----- ---- --- -- - -  -   -
 
-    template <class Function> 
+    template <class Function>
     class unfused<Function,true>
       : public unfused<Function,false>
     {
@@ -62,7 +62,7 @@ namespace boost { namespace fusion
             return this->fnc_transformed(arg);
         }
 
-        typedef typename boost::result_of< 
+        typedef typename boost::result_of<
             function(fusion::vector0<> &) >::type call_0_result;
 
         BOOST_CXX14_CONSTEXPR BOOST_FUSION_GPU_ENABLED
@@ -102,7 +102,7 @@ namespace boost { namespace fusion
 #  pragma warning(pop)
 #endif
 
-namespace boost 
+namespace boost
 {
 #if !defined(BOOST_RESULT_OF_USE_DECLTYPE) || defined(BOOST_NO_CXX11_DECLTYPE)
     template<class F>
@@ -167,7 +167,7 @@ namespace boost
         BOOST_CXX14_CONSTEXPR BOOST_FUSION_GPU_ENABLED
         inline typename boost::result_of<function(BOOST_PP_CAT(fusion::vector,N)
             <BOOST_PP_ENUM_BINARY_PARAMS(N,T,& BOOST_PP_INTERCEPT)> & )>::type
-        operator()(BOOST_PP_ENUM_BINARY_PARAMS(N,T,& a)) 
+        operator()(BOOST_PP_ENUM_BINARY_PARAMS(N,T,& a))
         {
             BOOST_PP_CAT(fusion::vector,N)<
                   BOOST_PP_ENUM_BINARY_PARAMS(N,T,& BOOST_PP_INTERCEPT) >

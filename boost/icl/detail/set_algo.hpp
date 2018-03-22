@@ -29,13 +29,13 @@ bool common_range(IteratorT& lwb, IteratorT& upb, ObjectT& x1, const ConstObject
     // lwb and upb are iterators of x1 marking the lower and upper bound of
     // the common range of x1 and x2.
     typedef typename ConstObjectT::const_iterator ConstObject_iterator;
-    // ObjectT may be const or non const. 
+    // ObjectT may be const or non const.
     typedef typename remove_const<ObjectT>::type  PureObjectT;
 
     lwb = x1.end();
     upb = x1.end();
 
-    if(icl::is_empty(x1) || icl::is_empty(x2)) 
+    if(icl::is_empty(x1) || icl::is_empty(x2))
         return false;
 
     IteratorT x1_fst_ = x1.begin();
@@ -45,11 +45,11 @@ bool common_range(IteratorT& lwb, IteratorT& upb, ObjectT& x1, const ConstObject
     ConstObject_iterator x2_lst_ = x2.end(); x2_lst_--;
 
     typename ObjectT::key_compare key_less;
-    if(key_less(icl::key_value< PureObjectT>(x1_lst_), 
+    if(key_less(icl::key_value< PureObjectT>(x1_lst_),
                 icl::key_value<ConstObjectT>(x2_fst_))) // {x1}   {x2}
         return false;
-    if(key_less(icl::key_value<ConstObjectT>(x2_lst_), 
-                icl::key_value< PureObjectT>(x1_fst_))) // {x2}   {x1} 
+    if(key_less(icl::key_value<ConstObjectT>(x2_lst_),
+                icl::key_value< PureObjectT>(x1_fst_))) // {x2}   {x1}
         return false;
 
     // We do have a common range
@@ -60,7 +60,7 @@ bool common_range(IteratorT& lwb, IteratorT& upb, ObjectT& x1, const ConstObject
 }
 
 
-/** Function template <tt>contained_in</tt> implements the subset relation. 
+/** Function template <tt>contained_in</tt> implements the subset relation.
 <tt>contained_in(sub, super)</tt> is true if <tt>sub</tt> is contained in <tt>super</tt> */
 template<class SetType>
 inline bool within(const SetType& sub, const SetType& super)
@@ -77,7 +77,7 @@ inline bool within(const SetType& sub, const SetType& super)
     while(sub_ != common_upb_)
     {
         super_ = super.find(*sub_++);
-        if(super_ == super.end()) 
+        if(super_ == super.end())
             return false;
     }
     return true;
@@ -94,20 +94,20 @@ bool intersects(const SetType& left, const SetType& right)
     while(right_ != common_upb_right_)
     {
         found_ = left.find(*right_++);
-        if(found_ != left.end()) 
+        if(found_ != left.end())
             return true; // found a common element
     }
     // found no common element
-    return false;    
+    return false;
 }
 
 
-#ifdef BOOST_MSVC 
+#ifdef BOOST_MSVC
 #pragma warning(push)
 #pragma warning(disable:4996) //'std::equal': Function call with parameters that may be unsafe - this call relies on the caller to check that the passed values are correct. To disable this warning, use -D_SCL_SECURE_NO_WARNINGS. See documentation on how to use Visual C++ 'Checked Iterators'
 #endif                        // I do guarantee here that I am using the parameters correctly :)
 
-/** Function template <tt>lexicographical_equal</tt> implements 
+/** Function template <tt>lexicographical_equal</tt> implements
     lexicographical equality. */
 template<class SetType>
 inline bool lexicographical_equal(const SetType& left, const SetType& right)
@@ -115,7 +115,7 @@ inline bool lexicographical_equal(const SetType& left, const SetType& right)
     if(&left == &right)
         return true;
     else return left.iterative_size() == right.iterative_size()
-             && std::equal(left.begin(), left.end(), right.begin()); 
+             && std::equal(left.begin(), left.end(), right.begin());
 }
 
 #ifdef BOOST_MSVC

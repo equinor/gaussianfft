@@ -127,7 +127,7 @@ struct direction_code_impl<Point, spherical_equatorial_tag>
         calc_t const pi = constants::half_period();
         calc_t const pi_half = constants::max_latitude();
         calc_t const c0 = 0;
-        
+
         if ( (math::equals(b0, a0) && math::equals(b1, a1))
           || (math::equals(b0, p0) && math::equals(b1, p1)) )
         {

@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 1988, 1989 Hans-J. Boehm, Alan J. Demers
  * Copyright (c) 1991-1994 by Xerox Corporation.  All rights reserved.
  * Copyright (c) 1999-2001 by Hewlett-Packard Company. All rights reserved.
@@ -139,7 +139,7 @@ void * GC_project2(void *arg1, void *arg2)
 /* but not too much bigger						*/
 /* and so that size_map contains relatively few distinct entries 	*/
 /* This was originally stolen from Russ Atkinson's Cedar		*/
-/* quantization alogrithm (but we precompute it).			*/ 
+/* quantization alogrithm (but we precompute it).			*/
 void GC_init_size_map(void)
 {
     int i;
@@ -171,7 +171,7 @@ void GC_extend_size_map(size_t i)
     size_t low_limit;	/* The lowest indexed entry we 	*/
     			/* initialize.			*/
     size_t j;
-    
+
     if (GC_size_map[smaller_than_i] == 0) {
         low_limit = much_smaller_than_i;
         while (GC_size_map[low_limit] != 0) low_limit++;
@@ -191,7 +191,7 @@ void GC_extend_size_map(size_t i)
         granule_sz = MAXOBJGRANULES;
     }
     /* If we can fit the same number of larger objects in a block,	*/
-    /* do so.							*/ 
+    /* do so.							*/
     {
         size_t number_of_objs = HBLK_GRANULES/granule_sz;
         granule_sz = HBLK_GRANULES/number_of_objs;
@@ -202,7 +202,7 @@ void GC_extend_size_map(size_t i)
     /* don't always fill in GC_size_map[byte_sz]	*/
     byte_sz -= EXTRA_BYTES;
 
-    for (j = low_limit; j <= byte_sz; j++) GC_size_map[j] = granule_sz;  
+    for (j = low_limit; j <= byte_sz; j++) GC_size_map[j] = granule_sz;
 }
 
 
@@ -233,13 +233,13 @@ word GC_bytes_allocd_at_reset;
 
 #if defined(ASM_CLEAR_CODE)
   extern void *GC_clear_stack_inner(void *, ptr_t);
-#else  
+#else
 /* Clear the stack up to about limit.  Return arg. */
 /*ARGSUSED*/
 void * GC_clear_stack_inner(void *arg, ptr_t limit)
 {
     word dummy[CLEAR_SIZE];
-    
+
     BZERO(dummy, CLEAR_SIZE*sizeof(word));
     if ((ptr_t)(dummy) COOLER_THAN limit) {
         (void) GC_clear_stack_inner(arg, limit);
@@ -265,7 +265,7 @@ void * GC_clear_stack(void *arg)
 				 /* chunk.				 */
 #   endif
     ptr_t limit;
-    
+
 #   define SLOP 400
 	/* Extra bytes we clear every time.  This clears our own	*/
 	/* activation record, and should cause more frequent		*/
@@ -321,7 +321,7 @@ void * GC_clear_stack(void *arg)
     	MAKE_HOTTER(GC_min_sp, CLEAR_THRESHOLD/4);
     	if (GC_min_sp HOTTER_THAN GC_high_water) GC_min_sp = GC_high_water;
     	GC_bytes_allocd_at_reset = GC_bytes_allocd;
-    }  
+    }
     return(arg);
 # endif
 }
@@ -336,7 +336,7 @@ void * GC_base(void * p)
     bottom_index *bi;
     hdr *candidate_hdr;
     ptr_t limit;
-    
+
     r = p;
     if (!GC_is_initialized) return 0;
     h = HBLKPTR(r);
@@ -375,7 +375,7 @@ void * GC_base(void * p)
 size_t GC_size(void * p)
 {
     hdr * hhdr = HDR(p);
-    
+
     return hhdr -> hb_sz;
 }
 
@@ -408,7 +408,7 @@ GC_bool GC_is_initialized = FALSE;
 void GC_init(void)
 {
     DCL_LOCK_STATE;
-    
+
 #if defined(GC_WIN32_THREADS) && !defined(GC_PTHREADS)
     if (!GC_is_initialized) {
       BOOL (WINAPI *pfn) (LPCRITICAL_SECTION, DWORD) = NULL;
@@ -508,7 +508,7 @@ void GC_init_inner()
         word dummy;
 #   endif
     word initial_heap_sz = (word)MINHINCR;
-    
+
     if (GC_is_initialized) return;
 #   if defined(MSWIN32) || defined(MSWINCE)
       InitializeCriticalSection(&GC_write_cs);
@@ -516,10 +516,10 @@ void GC_init_inner()
 #   if (!defined(SMALL_CONFIG))
       if (0 != GETENV("GC_PRINT_STATS")) {
         GC_print_stats = 1;
-      } 
+      }
       if (0 != GETENV("GC_PRINT_VERBOSE_STATS")) {
         GC_print_stats = VERBOSE;
-      } 
+      }
 #     if defined(UNIX_LIKE)
         {
 	  char * file_name = GETENV("GC_LOG_FILE");
@@ -680,7 +680,7 @@ void GC_init_inner()
     	GC_incremental = TRUE;
       }
 #   endif /* !SMALL_CONFIG */
-    
+
     /* Add initial guess of root sets.  Do this first, since sbrk(0)	*/
     /* might be used.							*/
       if (GC_REGISTER_MAIN_STATIC_DATA()) GC_register_data_segments();
@@ -694,7 +694,7 @@ void GC_init_inner()
 	  if (initial_heap_sz <= MINHINCR * HBLKSIZE) {
 	    WARN("Bad initial heap size %s - ignoring it.\n",
 		 sz_str);
-	  } 
+	  }
 	  initial_heap_sz = divHBLKSZ(initial_heap_sz);
 	}
     }
@@ -705,7 +705,7 @@ void GC_init_inner()
 	  if (max_heap_sz < initial_heap_sz * HBLKSIZE) {
 	    WARN("Bad maximum heap size %s - ignoring it.\n",
 		 sz_str);
-	  } 
+	  }
 	  if (0 == GC_max_retries) GC_max_retries = 2;
 	  GC_set_max_heap_size(max_heap_sz);
 	}
@@ -755,7 +755,7 @@ void GC_init_inner()
           extern char * GC_copyright[];
           extern int GC_read();
           extern void GC_register_finalizer_no_order();
-          
+
           GC_noop(GC_copyright, GC_find_header,
                   GC_push_one, GC_call_with_alloc_lock, GC_read,
                   GC_dont_expand,
@@ -775,7 +775,7 @@ void GC_enable_incremental(void)
   /* incremental GC pointless.					*/
   if (!GC_find_leak) {
     DCL_LOCK_STATE;
-    
+
     LOCK();
     if (GC_incremental) goto out;
     GC_setpagesize();
@@ -857,7 +857,7 @@ out:
 	GC_stdout = CreateFile(logPath, GENERIC_WRITE,
         		       FILE_SHARE_READ,
         		       NULL, CREATE_ALWAYS, FILE_FLAG_WRITE_THROUGH,
-        		       NULL); 
+        		       NULL);
     	if (GC_stdout == INVALID_HANDLE_VALUE)
 	    ABORT("Open of log file failed");
       }
@@ -912,7 +912,7 @@ size_t len;
 {
      register int bytes_written = 0;
      register int result;
-     
+
      while (bytes_written < len) {
 #	ifdef GC_SOLARIS_THREADS
 	    result = syscall(SYS_write, fd, buf + bytes_written,
@@ -970,7 +970,7 @@ void GC_printf(const char *format, ...)
 {
     va_list args;
     char buf[BUFSZ+1];
-    
+
     va_start(args, format);
     if (GC_quiet) return;
     buf[BUFSZ] = 0x15;
@@ -984,7 +984,7 @@ void GC_err_printf(const char *format, ...)
 {
     va_list args;
     char buf[BUFSZ+1];
-    
+
     va_start(args, format);
     buf[BUFSZ] = 0x15;
     (void) vsnprintf(buf, BUFSZ, format, args);
@@ -997,7 +997,7 @@ void GC_log_printf(const char *format, ...)
 {
     va_list args;
     char buf[BUFSZ+1];
-    
+
     va_start(args, format);
     buf[BUFSZ] = 0x15;
     (void) vsnprintf(buf, BUFSZ, format, args);

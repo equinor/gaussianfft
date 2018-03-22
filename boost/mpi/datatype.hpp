@@ -30,7 +30,7 @@
 #include <boost/serialization/item_version_type.hpp>
 #include <utility> // for std::pair
 
-#if defined(__cplusplus) && (201103L <= __cplusplus) 
+#if defined(__cplusplus) && (201103L <= __cplusplus)
 #include <array>
 #endif
 
@@ -109,7 +109,7 @@ struct is_mpi_byte_datatype
  *  directly to the MPI type @c MPI_INT. When there is a direct
  *  mapping from the type @c T to an MPI type, @c
  *  is_mpi_builtin_datatype will derive from @c mpl::true_ and the MPI
- *  data type will be accessible via @c get_mpi_datatype. 
+ *  data type will be accessible via @c get_mpi_datatype.
  *
  *  In general, users should not need to specialize this
  *  trait. However, if you have an additional C++ type that can map
@@ -244,19 +244,19 @@ BOOST_MPI_DATATYPE(unsigned long, MPI_UNSIGNED_LONG, integer);
 /// INTERNAL ONLY
 #define BOOST_MPI_LIST2(A, B) A, B
 /// INTERNAL ONLY
-BOOST_MPI_DATATYPE(std::pair<BOOST_MPI_LIST2(float, int)>, MPI_FLOAT_INT, 
+BOOST_MPI_DATATYPE(std::pair<BOOST_MPI_LIST2(float, int)>, MPI_FLOAT_INT,
                    builtin);
 /// INTERNAL ONLY
-BOOST_MPI_DATATYPE(std::pair<BOOST_MPI_LIST2(double, int)>, MPI_DOUBLE_INT, 
+BOOST_MPI_DATATYPE(std::pair<BOOST_MPI_LIST2(double, int)>, MPI_DOUBLE_INT,
                    builtin);
 /// INTERNAL ONLY
 BOOST_MPI_DATATYPE(std::pair<BOOST_MPI_LIST2(long double, int)>,
                    MPI_LONG_DOUBLE_INT, builtin);
 /// INTERNAL ONLY
-BOOST_MPI_DATATYPE(std::pair<BOOST_MPI_LIST2(long, int>), MPI_LONG_INT, 
+BOOST_MPI_DATATYPE(std::pair<BOOST_MPI_LIST2(long, int>), MPI_LONG_INT,
                    builtin);
 /// INTERNAL ONLY
-BOOST_MPI_DATATYPE(std::pair<BOOST_MPI_LIST2(short, int>), MPI_SHORT_INT, 
+BOOST_MPI_DATATYPE(std::pair<BOOST_MPI_LIST2(short, int>), MPI_SHORT_INT,
                    builtin);
 /// INTERNAL ONLY
 BOOST_MPI_DATATYPE(std::pair<BOOST_MPI_LIST2(int, int>), MPI_2INT, builtin);
@@ -290,7 +290,7 @@ BOOST_MPI_DATATYPE(wchar_t, MPI_WCHAR, builtin);
 BOOST_MPI_DATATYPE(long long, MPI_LONG_LONG_INT, builtin);
 #elif defined(BOOST_HAS_MS_INT64) && \
   (defined(MPI_LONG_LONG_INT) || (defined(MPI_VERSION) && MPI_VERSION >= 2))
-BOOST_MPI_DATATYPE(__int64, MPI_LONG_LONG_INT, builtin); 
+BOOST_MPI_DATATYPE(__int64, MPI_LONG_LONG_INT, builtin);
 #endif
 
 // Define unsigned long long or unsigned __int64 specialization of
@@ -305,7 +305,7 @@ BOOST_MPI_DATATYPE(unsigned long long, MPI_UNSIGNED_LONG_LONG, builtin);
 #elif defined(BOOST_HAS_MS_INT64) && \
   (defined(MPI_UNSIGNED_LONG_LONG) \
    || (defined(MPI_VERSION) && MPI_VERSION >= 2))
-BOOST_MPI_DATATYPE(unsigned __int64, MPI_UNSIGNED_LONG_LONG, builtin); 
+BOOST_MPI_DATATYPE(unsigned __int64, MPI_UNSIGNED_LONG_LONG, builtin);
 #endif
 
 // Define signed char specialization of is_mpi_datatype, if possible.

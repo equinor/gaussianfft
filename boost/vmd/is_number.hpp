@@ -28,12 +28,12 @@
 
     The macro checks to see if a sequence is a Boost PP number.
     A Boost PP number is a value from 0 to 256.
-    
+
     sequence = a possible number
 
-    returns = 1 if the sequence is a Boost PP number, 
+    returns = 1 if the sequence is a Boost PP number,
               0 if it is not.
-              
+
     If the input is not a VMD data type this macro could lead to
     a preprocessor error. This is because the macro
     uses preprocessor concatenation to determine if the input
@@ -41,7 +41,7 @@
     start with parenthesis. If the data being concatenated would
     lead to an invalid preprocessor token the compiler can issue
     a preprocessor error.
-              
+
 */
 
 #define BOOST_VMD_IS_NUMBER(sequence) \

@@ -13,20 +13,20 @@
 
 #if defined(_MSC_VER)
 # pragma once
-#endif              
+#endif
 
 #include <boost/config.hpp>
 #include <boost/detail/workaround.hpp>
 
-//------------------Enable dynamic linking on windows-------------------------// 
+//------------------Enable dynamic linking on windows-------------------------//
 
-#ifdef BOOST_HAS_DECLSPEC 
+#ifdef BOOST_HAS_DECLSPEC
 # if defined(BOOST_ALL_DYN_LINK) || defined(BOOST_IOSTREAMS_DYN_LINK)
 #  ifdef BOOST_IOSTREAMS_SOURCE
 #   define BOOST_IOSTREAMS_DECL __declspec(dllexport)
 #  else
 #   define BOOST_IOSTREAMS_DECL __declspec(dllimport)
-#  endif  
+#  endif
 # endif
 //--------------Enable dynamic linking for non-windows---------------------//
 #else // BOOST_HAS_DECLSPEC
@@ -37,7 +37,7 @@
 #   define BOOST_IOSTREAMS_DECL BOOST_SYMBOL_IMPORT
 #  endif
 # endif
-#endif 
+#endif
 
 #ifndef BOOST_IOSTREAMS_DECL
 # define BOOST_IOSTREAMS_DECL

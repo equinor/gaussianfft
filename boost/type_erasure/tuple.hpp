@@ -512,7 +512,7 @@ typename detail::get_impl<
         >
     >::call(arg);
 }
-    
+
 /** INTERNAL ONLY */
 #define BOOST_PP_FILENAME_1 <boost/type_erasure/tuple.hpp>
 /** INTERNAL ONLY */
@@ -551,7 +551,7 @@ typename detail::get_impl<
 #endif
 
 namespace detail {
-    
+
 template<class Concept BOOST_PP_ENUM_TRAILING_PARAMS(N, class T)>
 struct tuple_storage
 #if N != BOOST_TYPE_ERASURE_MAX_TUPLE_SIZE
@@ -602,7 +602,7 @@ struct get_impl<N, const Tuple>
 }
 
 template<class Concept BOOST_PP_ENUM_TRAILING_PARAMS(N, class T)>
-class tuple 
+class tuple
 #if N != BOOST_TYPE_ERASURE_MAX_TUPLE_SIZE
     <Concept BOOST_PP_ENUM_TRAILING_PARAMS(N, T)>
 #endif
@@ -628,7 +628,7 @@ public:
     {}
 #if N
     template<BOOST_PP_ENUM_PARAMS(N, class U)>
-    BOOST_TYPE_ERASURE_EXPLICIT 
+    BOOST_TYPE_ERASURE_EXPLICIT
     tuple(BOOST_PP_ENUM_BINARY_PARAMS(N, const U, &u)) :
         impl(
             ::boost::type_erasure::make_binding<

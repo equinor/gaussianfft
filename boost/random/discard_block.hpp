@@ -74,21 +74,21 @@ public:
     BOOST_RANDOM_DETAIL_ARITHMETIC_CONSTRUCTOR(discard_block_engine,
                                                seed_type, value)
     { _rng.seed(value); _n = 0; }
-    
+
     /**
      * Creates a new \discard_block_engine and seeds the underlying
      * generator with @c seq
      */
     BOOST_RANDOM_DETAIL_SEED_SEQ_CONSTRUCTOR(discard_block_engine, SeedSeq, seq)
     { _rng.seed(seq); _n = 0; }
-    
+
     /**
      * Creates a new \discard_block_engine and seeds the underlying
      * generator with first and last.
      */
     template<class It> discard_block_engine(It& first, It last)
       : _rng(first, last), _n(0) { }
-    
+
     /** default seeds the underlying generator. */
     void seed() { _rng.seed(); _n = 0; }
     /** Seeds the underlying generator with s. */
@@ -221,7 +221,7 @@ namespace detail {
 
     template<class Engine>
     struct generator_bits;
-    
+
     template<class URNG, std::size_t p, std::size_t r>
     struct generator_bits<discard_block_engine<URNG, p, r> > {
         static std::size_t value() { return generator_bits<URNG>::value(); }

@@ -27,7 +27,7 @@
 namespace boost {
 namespace random {
 
-// Cauchy distribution: 
+// Cauchy distribution:
 
 /**
  * The cauchy distribution is a continuous distribution with two
@@ -97,10 +97,10 @@ public:
      * Constructs a \cauchy_distribution with the paramters @c median
      * and @c sigma.
      */
-    explicit cauchy_distribution(RealType median_arg = RealType(0.0), 
+    explicit cauchy_distribution(RealType median_arg = RealType(0.0),
                                  RealType sigma_arg = RealType(1.0))
       : _median(median_arg), _sigma(sigma_arg) { }
-    
+
     /**
      * Constructs a \cauchy_distribution from it's parameters.
      */
@@ -115,7 +115,7 @@ public:
     RealType median() const { return _median; }
     /** Returns: the "sigma" parameter of the distribution */
     RealType sigma() const { return _sigma; }
-    
+
     // The new names in C++0x
 
     /** Returns: the "median" parameter of the distribution */

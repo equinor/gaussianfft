@@ -298,7 +298,7 @@ struct union_
 
 namespace resolve_variant
 {
-    
+
 template <typename Geometry1, typename Geometry2>
 struct union_
 {
@@ -321,7 +321,7 @@ struct union_
         rescale_policy_type robust_policy
                 = geometry::get_rescale_policy<rescale_policy_type>(geometry1,
                                                                     geometry2);
-        
+
         resolve_strategy::union_::apply(geometry1, geometry2,
                                         robust_policy,
                                         output_collection,
@@ -339,7 +339,7 @@ struct union_<variant<BOOST_VARIANT_ENUM_PARAMS(T)>, Geometry2>
         Geometry2 const& m_geometry2;
         Collection& m_output_collection;
         Strategy const& m_strategy;
-        
+
         visitor(Geometry2 const& geometry2,
                 Collection& output_collection,
                 Strategy const& strategy)
@@ -347,7 +347,7 @@ struct union_<variant<BOOST_VARIANT_ENUM_PARAMS(T)>, Geometry2>
             , m_output_collection(output_collection)
             , m_strategy(strategy)
         {}
-        
+
         template <typename Geometry1>
         void operator()(Geometry1 const& geometry1) const
         {
@@ -358,7 +358,7 @@ struct union_<variant<BOOST_VARIANT_ENUM_PARAMS(T)>, Geometry2>
                 >::apply(geometry1, m_geometry2, m_output_collection, m_strategy);
         }
     };
-    
+
     template <typename Collection, typename Strategy>
     static inline void
     apply(variant<BOOST_VARIANT_ENUM_PARAMS(T)> const& geometry1,
@@ -383,7 +383,7 @@ struct union_<Geometry1, variant<BOOST_VARIANT_ENUM_PARAMS(T)> >
         Geometry1 const& m_geometry1;
         Collection& m_output_collection;
         Strategy const& m_strategy;
-        
+
         visitor(Geometry1 const& geometry1,
                 Collection& output_collection,
                 Strategy const& strategy)
@@ -391,7 +391,7 @@ struct union_<Geometry1, variant<BOOST_VARIANT_ENUM_PARAMS(T)> >
             , m_output_collection(output_collection)
             , m_strategy(strategy)
         {}
-        
+
         template <typename Geometry2>
         void operator()(Geometry2 const& geometry2) const
         {
@@ -402,7 +402,7 @@ struct union_<Geometry1, variant<BOOST_VARIANT_ENUM_PARAMS(T)> >
                 >::apply(m_geometry1, geometry2, m_output_collection, m_strategy);
         }
     };
-    
+
     template <typename Collection, typename Strategy>
     static inline void
     apply(Geometry1 const& geometry1,
@@ -426,12 +426,12 @@ struct union_<variant<BOOST_VARIANT_ENUM_PARAMS(T1)>, variant<BOOST_VARIANT_ENUM
     {
         Collection& m_output_collection;
         Strategy const& m_strategy;
-        
+
         visitor(Collection& output_collection, Strategy const& strategy)
             : m_output_collection(output_collection)
             , m_strategy(strategy)
         {}
-        
+
         template <typename Geometry1, typename Geometry2>
         void operator()(Geometry1 const& geometry1,
                         Geometry2 const& geometry2) const
@@ -443,7 +443,7 @@ struct union_<variant<BOOST_VARIANT_ENUM_PARAMS(T1)>, variant<BOOST_VARIANT_ENUM
                 >::apply(geometry1, geometry2, m_output_collection, m_strategy);
         }
     };
-    
+
     template <typename Collection, typename Strategy>
     static inline void
     apply(variant<BOOST_VARIANT_ENUM_PARAMS(T1)> const& geometry1,
@@ -456,7 +456,7 @@ struct union_<variant<BOOST_VARIANT_ENUM_PARAMS(T1)>, variant<BOOST_VARIANT_ENUM
                              geometry1, geometry2);
     }
 };
-    
+
 } // namespace resolve_variant
 
 

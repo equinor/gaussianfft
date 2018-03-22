@@ -1,6 +1,6 @@
 /*
     Copyright 2005-2007 Adobe Systems Incorporated
-   
+
     Use, modification and distribution are subject to the Boost Software License,
     Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
     http://www.boost.org/LICENSE_1_0.txt).
@@ -14,7 +14,7 @@
 #define GIL_TYPEDEFS_H
 
 ////////////////////////////////////////////////////////////////////////////////////////
-/// \file               
+/// \file
 /// \brief Useful typedefs
 /// \author Lubomir Bourdev and Hailin Jin \n
 ///         Adobe Systems Incorporated
@@ -76,7 +76,7 @@
     typedef image_view<CS##T##c_planar_loc_t>                                      CS##T##c_planar_view_t;        \
     typedef image_view<CS##T##_planar_step_loc_t>                                  CS##T##_planar_step_view_t;    \
     typedef image_view<CS##T##c_planar_step_loc_t>                                  CS##T##c_planar_step_view_t;\
-    typedef image<CS##T##_pixel_t,true,std::allocator<unsigned char> >              CS##T##_planar_image_t;    
+    typedef image<CS##T##_pixel_t,true,std::allocator<unsigned char> >              CS##T##_planar_image_t;
 
 #define GIL_DEFINE_BASE_TYPEDEFS(T,CS)        \
     GIL_DEFINE_BASE_TYPEDEFS_INTERNAL(T,CS,CS##_layout_t)

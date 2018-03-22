@@ -46,10 +46,10 @@ public:
 
         *this <<
             "const uint i = get_global_id(0);\n" <<
-            "uint i1 = " << map[expr<uint_>("i")] << 
+            "uint i1 = " << map[expr<uint_>("i")] <<
                 " + output_offset;\n" <<
             "uint i2 = i + input_offset;\n" <<
-            result[expr<uint_>("i1")] << "=" << 
+            result[expr<uint_>("i1")] << "=" <<
                 first[expr<uint_>("i2")] << ";\n";
     }
 
@@ -67,10 +67,10 @@ public:
 
 private:
     size_t m_count;
-    size_t m_input_offset;    
-    size_t m_input_offset_arg;    
-    size_t m_output_offset;    
-    size_t m_output_offset_arg;    
+    size_t m_input_offset;
+    size_t m_input_offset_arg;
+    size_t m_output_offset;
+    size_t m_output_offset_arg;
 };
 
 } // end detail namespace
@@ -90,7 +90,7 @@ inline void scatter(InputIterator first,
                     command_queue &queue = system::default_queue())
 {
     detail::scatter_kernel<InputIterator, MapIterator, OutputIterator> kernel;
-    
+
     kernel.set_range(first, last, map, result);
     kernel.exec(queue);
 }

@@ -2,7 +2,7 @@
     Copyright (c) 2001-2011 Joel de Guzman
     Copyright (c) 2005 Eric Niebler
 
-    Distributed under the Boost Software License, Version 1.0. (See accompanying 
+    Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================*/
 #if !defined(FUSION_CONS_ITERATOR_07172005_0849)
@@ -33,7 +33,7 @@ namespace boost { namespace fusion
         typedef forward_traversal_tag category;
         typedef Cons cons_type;
         typedef cons_iterator_identity<
-            typename add_const<Cons>::type> 
+            typename add_const<Cons>::type>
         identity;
 
         BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
@@ -53,7 +53,7 @@ namespace boost { namespace fusion
         typedef cons_iterator_tag fusion_tag;
         typedef nil_ cons_type;
         typedef cons_iterator_identity<
-            add_const<nil_>::type> 
+            add_const<nil_>::type>
         identity;
 
         BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
@@ -63,7 +63,7 @@ namespace boost { namespace fusion
     };
 
     template <>
-    struct cons_iterator<nil_> : nil_iterator 
+    struct cons_iterator<nil_> : nil_iterator
     {
         BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
         cons_iterator() BOOST_NOEXCEPT {}
@@ -72,7 +72,7 @@ namespace boost { namespace fusion
     };
 
     template <>
-    struct cons_iterator<nil_ const> : nil_iterator 
+    struct cons_iterator<nil_ const> : nil_iterator
     {
         BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
         cons_iterator() BOOST_NOEXCEPT {}
@@ -81,7 +81,7 @@ namespace boost { namespace fusion
     };
 
     template <>
-    struct cons_iterator<list<> > : nil_iterator 
+    struct cons_iterator<list<> > : nil_iterator
     {
         BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
         cons_iterator() BOOST_NOEXCEPT {}
@@ -90,7 +90,7 @@ namespace boost { namespace fusion
     };
 
     template <>
-    struct cons_iterator<list<> const> : nil_iterator 
+    struct cons_iterator<list<> const> : nil_iterator
     {
         BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
         cons_iterator() BOOST_NOEXCEPT {}

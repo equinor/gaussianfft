@@ -28,16 +28,16 @@
 
     The macro checks that the sequence is a Boost PP seq.
     It returns 1 if it is a seq, else if returns 0.
-    
+
     sequence = a possible Boost PP seq
 
     returns = 1 if it a seq, else returns 0.
-    
-    A single set of parentheses, with a single element, 
+
+    A single set of parentheses, with a single element,
     is parsed as a tuple and not a seq. To be parsed as
     a seq the input needs to be more than one consecutive
     sets of parentheses, each with a single element of data.
-    
+
 */
 
 #define BOOST_VMD_IS_SEQ(sequence) \
@@ -50,17 +50,17 @@
 
     The macro checks that the sequence is a Boost PP seq.
     It returns 1 if it is a seq, else if returns 0.
-    
-    d        = The next available BOOST_PP_WHILE iteration. 
+
+    d        = The next available BOOST_PP_WHILE iteration.
     sequence = a possible Boost PP seq
 
     returns = 1 if it a seq, else returns 0.
-    
-    A single set of parentheses, with a single element, 
+
+    A single set of parentheses, with a single element,
     is parsed as a tuple and not a seq. To be parsed as
     a seq the input needs to be more than one consecutive
     sets of parentheses, each with a single element of data.
-    
+
 */
 
 #define BOOST_VMD_IS_SEQ_D(d,sequence) \

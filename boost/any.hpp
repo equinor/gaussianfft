@@ -10,7 +10,7 @@
 // what:  variant type boost::any
 // who:   contributed by Kevlin Henney,
 //        with features contributed and bugs found by
-//        Antony Polukhin, Ed Brey, Mark Rodgers, 
+//        Antony Polukhin, Ed Brey, Mark Rodgers,
 //        Peter Dimov, and James Curran
 // when:  July 2001, April 2013 - May 2013
 
@@ -102,7 +102,7 @@ namespace boost
             return *this;
         }
 
-#else 
+#else
         any & operator=(const any& rhs)
         {
             any(rhs).swap(*this);
@@ -220,7 +220,7 @@ namespace boost
         placeholder * content;
 
     };
- 
+
     inline void swap(any & lhs, any & rhs) BOOST_NOEXCEPT
     {
         lhs.swap(rhs);
@@ -267,9 +267,9 @@ namespace boost
         if(!result)
             boost::throw_exception(bad_any_cast());
 
-        // Attempt to avoid construction of a temporary object in cases when 
+        // Attempt to avoid construction of a temporary object in cases when
         // `ValueType` is not a reference. Example:
-        // `static_cast<std::string>(*result);` 
+        // `static_cast<std::string>(*result);`
         // which is equal to `std::string(*result);`
         typedef BOOST_DEDUCED_TYPENAME boost::mpl::if_<
             boost::is_reference<ValueType>,
@@ -301,7 +301,7 @@ namespace boost
         BOOST_STATIC_ASSERT_MSG(
             boost::is_rvalue_reference<ValueType&&>::value /*true if ValueType is rvalue or just a value*/
             || boost::is_const< typename boost::remove_reference<ValueType>::type >::value,
-            "boost::any_cast shall not be used for getting nonconst references to temporary objects" 
+            "boost::any_cast shall not be used for getting nonconst references to temporary objects"
         );
         return any_cast<ValueType>(operand);
     }

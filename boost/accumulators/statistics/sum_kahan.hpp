@@ -49,7 +49,7 @@ struct sum_kahan_impl
     }
 
     template<typename Args>
-    void 
+    void
 #if BOOST_ACCUMULATORS_GCC_VERSION > 40305
     __attribute__((__optimize__("no-associative-math")))
 #endif

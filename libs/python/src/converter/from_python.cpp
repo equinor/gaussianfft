@@ -16,7 +16,7 @@
 #include <vector>
 #include <algorithm>
 
-namespace boost { namespace python { namespace converter { 
+namespace boost { namespace python { namespace converter {
 
 // rvalue_from_python_stage1 -- do the first stage of a conversion
 // from a Python object to a C++ rvalue.
@@ -103,7 +103,7 @@ BOOST_PYTHON_DECL void* rvalue_from_python_stage2(
                 , converters.target_type.name()
                 , source->ob_type->tp_name
                 ));
-              
+
         PyErr_SetObject(PyExc_TypeError, msg.get());
         throw_error_already_set();
     }
@@ -157,7 +157,7 @@ namespace
   {
       unvisit(rvalue_from_python_chain const* chain)
           : chain(chain) {}
-      
+
       ~unvisit()
       {
           visited_t::iterator const p = std::lower_bound(visited.begin(), visited.end(), chain);
@@ -173,17 +173,17 @@ namespace
 BOOST_PYTHON_DECL bool implicit_rvalue_convertible_from_python(
     PyObject* source
     , registration const& converters)
-{    
+{
     if (objects::find_instance_impl(source, converters.target_type))
         return true;
-    
+
     rvalue_from_python_chain const* chain = converters.rvalue_chain;
-    
+
     if (!visit(chain))
         return false;
 
     unvisit protect(chain);
-    
+
     for (;chain != 0; chain = chain->next)
     {
         if (chain->convertible(source))
@@ -210,7 +210,7 @@ namespace
               , converters.target_type.name()
               , source->ob_type->tp_name
               ));
-              
+
       PyErr_SetObject(PyExc_TypeError, msg.get());
 
       throw_error_already_set();
@@ -234,18 +234,18 @@ namespace
                   "Attempt to return dangling %s to object of type: %s"
                   , ref_type
                   , converters.target_type.name()));
-          
+
           PyErr_SetObject(PyExc_ReferenceError, msg.get());
 
           throw_error_already_set();
       }
-      
+
       void* result = get_lvalue_from_python(source, converters);
       if (!result)
           (throw_no_lvalue_from_python)(source, converters, ref_type);
       return result;
   }
-  
+
 }
 
 BOOST_PYTHON_DECL void throw_no_pointer_from_python(PyObject* source, registration const& converters)
@@ -264,7 +264,7 @@ BOOST_PYTHON_DECL void* reference_result_from_python(
 {
     return (lvalue_result_from_python)(source, converters, "reference");
 }
-  
+
 BOOST_PYTHON_DECL void* pointer_result_from_python(
     PyObject* source
     , registration const& converters)
@@ -276,7 +276,7 @@ BOOST_PYTHON_DECL void* pointer_result_from_python(
     }
     return (lvalue_result_from_python)(source, converters, "pointer");
 }
-  
+
 BOOST_PYTHON_DECL void void_result_from_python(PyObject* o)
 {
     Py_DECREF(expect_non_null(o));

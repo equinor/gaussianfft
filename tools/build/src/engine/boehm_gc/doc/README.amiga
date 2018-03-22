@@ -45,7 +45,7 @@ WHATS NEW:
                        no effect if this flag is set.
 
    GC_AMIGA_GC - If gc returns NULL, do a GC_gcollect, and try again. This
-                 usually is a success with the standard GC configuration. 
+                 usually is a success with the standard GC configuration.
                  It is allso the most important flag to set to prevent
                  GC from returning chip-mem. Beware that it slows down a lot
                  when a program is rapidly allocating/deallocating when
@@ -187,7 +187,7 @@ CONTACT
 
 Please, contact me at <martintauchmann@bigfoot.com>, when you change the
 Amiga port. <http://martintauchmann.home.pages.de>
- 
+
 ===========================================================================
 			   Michel Schinz's notes
 ===========================================================================

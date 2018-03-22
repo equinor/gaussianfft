@@ -70,7 +70,7 @@ template< class SinglePassRange, class UnaryFunction >
 inline UnaryFunction for_each(SinglePassRange & rng, UnaryFunction fun)
 {
     BOOST_RANGE_CONCEPT_ASSERT(( SinglePassRangeConcept<SinglePassRange> ));
-    
+
 #if BOOST_WORKAROUND(BOOST_MSVC, == 1600)
         return for_each_detail::for_each_impl<
                 typename range_iterator<SinglePassRange>::type,
@@ -81,7 +81,7 @@ inline UnaryFunction for_each(SinglePassRange & rng, UnaryFunction fun)
         BOOST_DEDUCED_TYPENAME range_iterator<SinglePassRange>::type,
         UnaryFunction
     >(boost::begin(rng),boost::end(rng),fun);
-#endif    
+#endif
 }
 
 /// \overload
@@ -89,18 +89,18 @@ template< class SinglePassRange, class UnaryFunction >
 inline UnaryFunction for_each(const SinglePassRange& rng, UnaryFunction fun)
 {
     BOOST_RANGE_CONCEPT_ASSERT(( SinglePassRangeConcept<const SinglePassRange> ));
-    
+
 #if BOOST_WORKAROUND(BOOST_MSVC, == 1600)
         return for_each_detail::for_each_impl<
                 typename range_iterator<const SinglePassRange>::type,
                 UnaryFunction
         >(boost::begin(rng), boost::end(rng), fun);
-#else    
+#else
     return std::for_each<
         BOOST_DEDUCED_TYPENAME range_iterator<const SinglePassRange>::type,
         UnaryFunction
     >(boost::begin(rng), boost::end(rng), fun);
-#endif    
+#endif
 }
 
     } // namespace range

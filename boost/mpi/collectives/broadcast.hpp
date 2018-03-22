@@ -89,8 +89,8 @@ namespace detail {
   // We're sending a type that has an associated MPI datatype, so
   // we'll use MPI_Bcast to do all of the work.
   template<typename T>
-  void 
-  broadcast_impl(const communicator& comm, T* values, int n, int root, 
+  void
+  broadcast_impl(const communicator& comm, T* values, int n, int root,
                  mpl::true_)
   {
     BOOST_MPI_CHECK_RESULT(MPI_Bcast,
@@ -105,7 +105,7 @@ namespace detail {
   // root to everyone else.
   template<typename T>
   void
-  broadcast_impl(const communicator& comm, T* values, int n, int root, 
+  broadcast_impl(const communicator& comm, T* values, int n, int root,
                  mpl::false_)
   {
     if (comm.rank() == root) {

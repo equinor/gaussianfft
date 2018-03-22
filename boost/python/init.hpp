@@ -86,7 +86,7 @@ namespace detail
     struct is_optional<optional<BOOST_PYTHON_OVERLOAD_ARGS> >
       : mpl::true_
     {};
-  
+
 
   template <int NDefaults>
   struct define_class_init_helper;
@@ -99,7 +99,7 @@ struct init_base : def_visitor<DerivedT>
     init_base(char const* doc_, detail::keyword_range const& keywords_)
         : m_doc(doc_), m_keywords(keywords_)
     {}
-        
+
     init_base(char const* doc_)
         : m_doc(doc_)
     {}
@@ -108,7 +108,7 @@ struct init_base : def_visitor<DerivedT>
     {
         return *static_cast<DerivedT const*>(this);
     }
-    
+
     char const* doc_string() const
     {
         return m_doc;
@@ -145,7 +145,7 @@ struct init_base : def_visitor<DerivedT>
         typedef typename DerivedT::signature signature;
         typedef typename DerivedT::n_arguments n_arguments;
         typedef typename DerivedT::n_defaults n_defaults;
-    
+
         detail::define_class_init_helper<n_defaults::value>::apply(
             cl
           , derived().call_policies()
@@ -154,9 +154,9 @@ struct init_base : def_visitor<DerivedT>
           , derived().doc_string()
           , derived().keywords());
     }
-    
+
     friend class python::def_visitor_access;
-    
+
  private: // data members
     char const* m_doc;
     detail::keyword_range m_keywords;
@@ -185,7 +185,7 @@ class init_with_call_policies
     {
         return this->m_policies;
     }
-    
+
  private: // data members
     CallPoliciesT m_policies;
 };
@@ -253,7 +253,7 @@ class init : public init_base<init<BOOST_PYTHON_OVERLOAD_ARGS> >
           , mpl::back<signature_>
         >::type
     > back_is_optional;
-    
+
     typedef typename mpl::eval_if<
         back_is_optional
       , mpl::back<signature_>

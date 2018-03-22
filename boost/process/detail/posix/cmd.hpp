@@ -58,7 +58,7 @@ struct cmd_setter_ : handler_base_ext
     cmd_setter_(string_type && cmd_line)      : _cmd_line(api::build_cmd(std::move(cmd_line))) {}
     cmd_setter_(const string_type & cmd_line) : _cmd_line(api::build_cmd(cmd_line)) {}
     template <class Executor>
-    void on_setup(Executor& exec) 
+    void on_setup(Executor& exec)
     {
         exec.exe = _cmd_impl.front();
         exec.cmd_line = &_cmd_impl.front();

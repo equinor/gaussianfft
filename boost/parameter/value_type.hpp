@@ -12,7 +12,7 @@
 # include <boost/parameter/aux_/void.hpp>
 # include <boost/type_traits/is_same.hpp>
 
-namespace boost { namespace parameter { 
+namespace boost { namespace parameter {
 
 // A metafunction that, given an argument pack, returns the type of
 // the parameter identified by the given keyword.  If no such

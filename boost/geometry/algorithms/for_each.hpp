@@ -125,7 +125,7 @@ struct fe_range_per_segment_with_closure<open>
 {
     template <typename Range, typename Functor>
     static inline void apply(Range& range, Functor& f)
-    {    
+    {
         fe_range_per_segment_with_closure<closed>::apply(range, f);
 
         model::referring_segment

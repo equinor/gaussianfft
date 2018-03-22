@@ -12,7 +12,7 @@
 #define BOOST_CONTAINER_PMR_SMALL_VECTOR_HPP
 
 #if defined (_MSC_VER)
-#  pragma once 
+#  pragma once
 #endif
 
 #include <boost/container/small_vector.hpp>

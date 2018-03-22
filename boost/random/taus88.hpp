@@ -21,7 +21,7 @@
 namespace boost {
 namespace random {
 
-/** 
+/**
  * The specialization taus88 was suggested in
  *
  *  @blockquote

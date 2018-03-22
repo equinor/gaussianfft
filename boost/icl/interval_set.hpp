@@ -17,14 +17,14 @@ namespace boost{namespace icl
 {
 
 /** \brief Implements a set as a set of intervals - merging adjoining intervals */
-template 
+template
 <
-    typename    DomainT, 
+    typename    DomainT,
     ICL_COMPARE Compare  = ICL_COMPARE_INSTANCE(ICL_COMPARE_DEFAULT, DomainT),
     ICL_INTERVAL(ICL_COMPARE) Interval = ICL_INTERVAL_INSTANCE(ICL_INTERVAL_DEFAULT, DomainT, Compare),
     ICL_ALLOC   Alloc    = std::allocator
-> 
-class interval_set: 
+>
+class interval_set:
     public interval_base_set<interval_set<DomainT,Compare,Interval,Alloc>,
                              DomainT,Compare,Interval,Alloc>
 {
@@ -70,7 +70,7 @@ public:
     /// The corresponding atomized type representing this interval container of elements
     typedef typename base_type::atomized_type atomized_type;
 
-    /// Container type for the implementation 
+    /// Container type for the implementation
     typedef typename base_type::ImplSetT ImplSetT;
 
     /// key type of the implementing container
@@ -101,18 +101,18 @@ public:
     template<class SubType>
     explicit interval_set
         (const interval_base_set<SubType,DomainT,Compare,Interval,Alloc>& src)
-    { 
-        this->assign(src); 
+    {
+        this->assign(src);
     }
 
     /// Constructor for a single element
-    explicit interval_set(const domain_type& value): base_type() 
+    explicit interval_set(const domain_type& value): base_type()
     { this->add(interval_type(value)); }
 
     /// Constructor for a single interval
-    explicit interval_set(const interval_type& itv): base_type() 
-    { 
-        this->add(itv); 
+    explicit interval_set(const interval_type& itv): base_type()
+    {
+        this->add(itv);
     }
 
     /// Assignment from a base interval_set.
@@ -123,7 +123,7 @@ public:
         this->clear();
         // Has to be implemented via add. there might be touching borders to be joined
         iterator prior_ = this->_set.end();
-        ICL_const_FORALL(typename base_set_type, it_, src) 
+        ICL_const_FORALL(typename base_set_type, it_, src)
             prior_ = this->add(prior_, *it_);
     }
 
@@ -131,9 +131,9 @@ public:
     template<class SubType>
     interval_set& operator =
         (const interval_base_set<SubType,DomainT,Compare,Interval,Alloc>& src)
-    { 
-        this->assign(src); 
-        return *this; 
+    {
+        this->assign(src);
+        return *this;
     }
 
 #   ifndef BOOST_ICL_NO_CXX11_RVALUE_REFERENCES
@@ -148,7 +148,7 @@ public:
 
     /// Move assignment operator
     interval_set& operator = (interval_set src)
-    { 
+    {
         base_type::operator=(boost::move(src));
         return *this;
     }
@@ -157,7 +157,7 @@ public:
 #   else
     /// Assignment operator
     interval_set& operator = (const interval_set& src)
-    { 
+    {
         base_type::operator=(src);
         return *this;
     }
@@ -167,12 +167,12 @@ public:
 private:
     // Private functions that shall be accessible by the baseclass:
     friend class
-        interval_base_set <interval_set<DomainT,Compare,Interval,Alloc>, 
+        interval_base_set <interval_set<DomainT,Compare,Interval,Alloc>,
                                         DomainT,Compare,Interval,Alloc>;
 
     iterator handle_inserted(iterator it_)
     {
-        return segmental::join_neighbours(*this, it_); 
+        return segmental::join_neighbours(*this, it_);
     }
 
     iterator add_over(const interval_type& addend, iterator last_)
@@ -195,23 +195,23 @@ private:
 //-----------------------------------------------------------------------------
 template <class DomainT, ICL_COMPARE Compare, ICL_INTERVAL(ICL_COMPARE)  Interval, ICL_ALLOC Alloc>
 struct is_set<icl::interval_set<DomainT,Compare,Interval,Alloc> >
-{ 
+{
     typedef is_set<icl::interval_set<DomainT,Compare,Interval,Alloc> > type;
-    BOOST_STATIC_CONSTANT(bool, value = true); 
+    BOOST_STATIC_CONSTANT(bool, value = true);
 };
 
 template <class DomainT, ICL_COMPARE Compare, ICL_INTERVAL(ICL_COMPARE)  Interval, ICL_ALLOC Alloc>
 struct is_interval_container<icl::interval_set<DomainT,Compare,Interval,Alloc> >
-{ 
+{
     typedef is_interval_container<icl::interval_set<DomainT,Compare,Interval,Alloc> > type;
-    BOOST_STATIC_CONSTANT(bool, value = true); 
+    BOOST_STATIC_CONSTANT(bool, value = true);
 };
 
 template <class DomainT, ICL_COMPARE Compare, ICL_INTERVAL(ICL_COMPARE)  Interval, ICL_ALLOC Alloc>
 struct is_interval_joiner<icl::interval_set<DomainT,Compare,Interval,Alloc> >
-{ 
+{
     typedef is_interval_joiner<icl::interval_set<DomainT,Compare,Interval,Alloc> > type;
-    BOOST_STATIC_CONSTANT(bool, value = true); 
+    BOOST_STATIC_CONSTANT(bool, value = true);
 };
 
 

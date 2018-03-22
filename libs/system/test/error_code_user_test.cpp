@@ -31,7 +31,7 @@
 //  ------------------------------------------------------------------------  //
 
 //  Library 1: User function passes through an error code from the
-//  operating system. 
+//  operating system.
 
 
 boost::system::error_code my_mkdir( const std::string & path )
@@ -47,7 +47,7 @@ boost::system::error_code my_mkdir( const std::string & path )
 
 //  ------------------------------------------------------------------------  //
 
-//  Library 2: User function passes through errno from the C-runtime. 
+//  Library 2: User function passes through errno from the C-runtime.
 
 #include <cstdio>
 
@@ -77,7 +77,7 @@ namespace boost
     // lib3 has its own error_category:
     const boost::system::error_category & get_lib3_error_category() BOOST_SYSTEM_NOEXCEPT;
     const boost::system::error_category & lib3_error_category = get_lib3_error_category();
-    
+
     enum error
     {
       boo_boo=123,
@@ -125,7 +125,7 @@ namespace boost
           : boost::system::error_condition( ev,
               boost::lib3::lib3_error_category );
       }
-      
+
       std::string message( int ev ) const
       {
         if ( ev == boo_boo ) return std::string("boo boo");
@@ -146,7 +146,7 @@ namespace boost
 //  ------------------------------------------------------------------------  //
 
 //  Library 4: Library uses const error_code's to identify library specific
-//  errors. 
+//  errors.
 
 //  This particular example is for a library not within the parent namespace.
 //  For an example of a library within the parent namespace, see library 3.
@@ -158,7 +158,7 @@ namespace lib4
   // lib4 has its own error_category:
   const boost::system::error_category & get_lib4_error_category() BOOST_SYSTEM_NOEXCEPT;
   const boost::system::error_category & lib4_error_category = get_lib4_error_category();
-  
+
   extern const boost::system::error_code boo_boo;
   extern const boost::system::error_code big_boo_boo;
 }
@@ -186,7 +186,7 @@ namespace lib4
             boost::system::generic_category() )
         : boost::system::error_condition( ev, lib4::lib4_error_category );
     }
-    
+
     std::string message( int ev ) const
     {
       if ( ev == boo_boo.value() ) return std::string("boo boo");
@@ -249,7 +249,7 @@ namespace lib4
 //      }
 //      return boost::system::error_code(boost::system::errc::no_posix_equivalent, boost::system::generic_category());
 //    }
-//    
+//
 //  };
 //
 //  const user_error_category_imp user_error_category_const;
@@ -344,7 +344,7 @@ int main( int, char *[] )
   boost::system::error_code ec;
 
   // Library 1 tests:
-  
+
   ec = my_mkdir( "/no-such-file-or-directory/will-not-succeed" );
   std::cout << "ec.value() is " << ec.value() << '\n';
 

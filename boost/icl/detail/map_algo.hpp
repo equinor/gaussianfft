@@ -14,14 +14,14 @@ Copyright (c) 2007-2010: Joachim Faulhaber
 #include <boost/icl/detail/notate.hpp>
 #include <boost/icl/detail/set_algo.hpp>
 
-#ifdef BOOST_MSVC 
+#ifdef BOOST_MSVC
 #pragma warning(push)
 #pragma warning(disable:4127) // conditional expression is constant
-#endif                        
+#endif
 
 namespace boost{namespace icl
 {
-namespace Map 
+namespace Map
 {
 
 template <class ObjectT, class CoObjectT>
@@ -44,19 +44,19 @@ bool intersects(const ObjectT& left, const CoObjectT& right)
 template<class MapT>
 typename MapT::const_iterator next_proton(typename MapT::const_iterator& iter_, const MapT& object)
 {
-    while(   iter_ != object.end() 
+    while(   iter_ != object.end()
           && (*iter_).second == identity_element<typename MapT::codomain_type>::value())
         ++iter_;
 
     return iter_;
 }
 
-/** Function template <tt>lexicographical_equal</tt> implements 
+/** Function template <tt>lexicographical_equal</tt> implements
 lexicographical equality except for identity_elementic content values. */
 template<class MapT>
 bool lexicographical_distinct_equal(const MapT& left, const MapT& right)
 {
-    if(&left == &right)        
+    if(&left == &right)
         return true;
 
     typename MapT::const_iterator left_  = left.begin();

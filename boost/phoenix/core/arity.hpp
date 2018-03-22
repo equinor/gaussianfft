@@ -25,7 +25,7 @@ namespace boost { namespace phoenix
     //  Calculate the arity of an expression using proto transforms
     //
     /////////////////////////////////////////////////////////////////////////////
-    
+
     struct arity;
 
     namespace result_of
@@ -71,12 +71,12 @@ namespace boost { namespace phoenix
     struct arity::when<rule::argument, Dummy>
         : proto::make<is_placeholder<proto::_value>()>
     {};
-    
+
     template <typename Dummy>
     struct arity::when<rule::custom_terminal, Dummy>
         : proto::make<mpl::int_<0>()>
     {};
-    
+
     template <typename Dummy>
     struct arity::when<rule::terminal, Dummy>
         : proto::make<mpl::int_<0>()>

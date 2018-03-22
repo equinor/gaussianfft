@@ -50,7 +50,7 @@ BOOST_TYPE_ERASURE_DECL value_type lookup_function_impl(const key_type& key);
 
 template<class Map>
 struct append_to_key_static {
-    append_to_key_static(key_type* k) : key(k) {} 
+    append_to_key_static(key_type* k) : key(k) {}
     template<class P>
     void operator()(P) {
         key->push_back(&typeid(typename ::boost::mpl::at<Map, P>::type));

@@ -7,7 +7,7 @@
 
 # include <boost/python/cast.hpp>
 
-namespace boost { namespace python { namespace converter { 
+namespace boost { namespace python { namespace converter {
 
 BOOST_PYTHON_DECL inline
 PyObject* checked_downcast_impl(PyObject *obj, PyTypeObject *type)
@@ -17,7 +17,7 @@ PyObject* checked_downcast_impl(PyObject *obj, PyTypeObject *type)
 // Used as a base class for specializations which need to provide
 // Python type checking capability.
 template <class Object, PyTypeObject* pytype>
-struct pyobject_type 
+struct pyobject_type
 {
     static bool check(PyObject* x)
     {

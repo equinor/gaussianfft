@@ -24,7 +24,7 @@
 
 // Iterators based on ideas of Jeremy Siek
 
-namespace boost { namespace numeric { 
+namespace boost { namespace numeric {
 	
 	/** \brief main namespace of uBLAS.
 	 *
@@ -34,8 +34,8 @@ namespace boost { namespace numeric {
 	 * A common practice is to bring this namespace into the current scope with
 	 * \code using namespace boost::numeric::ublas; \endcode.
 	 *
-	 * However, be warned that using the ublas namespace and the std::vector at the same time can lead to the compiler to confusion. 
-	 * The solution is simply to prefix each ublas vector like \c boost::numeric::ublas::vector<T>. If you think it's too long to 
+	 * However, be warned that using the ublas namespace and the std::vector at the same time can lead to the compiler to confusion.
+	 * The solution is simply to prefix each ublas vector like \c boost::numeric::ublas::vector<T>. If you think it's too long to
 	 * write, you can define a new namespace like \c namespace ublas = boost::numeric::ublas and then just declare your vectors
 	 * with \c ublas::vector<T>. STL vectors will be declared as vector<T>. No need to prefix with \c std::
 	 */
@@ -76,12 +76,12 @@ namespace boost { namespace numeric {
 
     /** \brief A dense matrix of values of type \c T.
      *
-     * For a \f$(m \times n)\f$-dimensional matrix and \f$ 0 \leq i < m, 0 \leq j < n\f$, every element \f$ m_{i,j} \f$ is mapped to 
-     * the \f$(i.n + j)\f$-th element of the container for row major orientation or the \f$ (i + j.m) \f$-th element of 
-     * the container for column major orientation. In a dense matrix all elements are represented in memory in a 
+     * For a \f$(m \times n)\f$-dimensional matrix and \f$ 0 \leq i < m, 0 \leq j < n\f$, every element \f$ m_{i,j} \f$ is mapped to
+     * the \f$(i.n + j)\f$-th element of the container for row major orientation or the \f$ (i + j.m) \f$-th element of
+     * the container for column major orientation. In a dense matrix all elements are represented in memory in a
      * contiguous chunk of memory by definition.
-     * 
-     * Orientation and storage can also be specified, otherwise a \c row_major and \c unbounded_array are used. It is \b not 
+     *
+     * Orientation and storage can also be specified, otherwise a \c row_major and \c unbounded_array are used. It is \b not
      * required by the storage to initialize elements of the matrix.
      *
      * \tparam T the type of object stored in the matrix (like double, float, complex, etc...)
@@ -116,7 +116,7 @@ namespace boost { namespace numeric {
         typedef typename L::orientation_category orientation_category;
 
         // Construction and destruction
-	  
+
 	  /// Default dense matrix constructor. Make a dense matrix of size (0,0)
 	    BOOST_UBLAS_INLINE
 	    matrix ():
@@ -227,7 +227,7 @@ namespace boost { namespace numeric {
         }
 
         // Element access
-    
+
     /** Access a matrix element. Here we return a const reference
      * \param i the first coordinate of the element. By default it's the row
      * \param j the second coordinate of the element. By default it's the column
@@ -271,7 +271,7 @@ namespace boost { namespace numeric {
             return (at_element (i, j) = t);
         }
 
-    /** Erase the element 
+    /** Erase the element
      * For most types (int, double, etc...) it means setting 0 (zero) the element at zero in fact.
      * For user-defined types, it could be another value if you decided it. Your type in that case must
      * contain a default null value.
@@ -1159,12 +1159,12 @@ namespace boost { namespace numeric {
         // Serialization
         template<class Archive>
         void serialize(Archive & ar, const unsigned int /* file_version */){
-        
+
             // we need to copy to a collection_size_type to get a portable
             // and efficient serialization
             serialization::collection_size_type s1 (size1_);
             serialization::collection_size_type s2 (size2_);
-          
+
             // serialize the sizes
             ar & serialization::make_nvp("size1",s1)
                & serialization::make_nvp("size2",s2);
@@ -2250,15 +2250,15 @@ namespace boost { namespace numeric {
 
 #endif // BOOST_UBLAS_CPP_GE_2011
 
-    /** \brief A dense matrix of values of type \c T with a variable size bounded to a maximum of \f$M\f$ by \f$N\f$. 
+    /** \brief A dense matrix of values of type \c T with a variable size bounded to a maximum of \f$M\f$ by \f$N\f$.
      *
      * For a \f$(m \times n)\f$-dimensional matrix and \f$ 0 \leq i < m, 0 \leq j < n\f$, every element \f$m_{i,j}\f$ is mapped
      * to the \f$(i.n + j)\f$-th element of the container for row major orientation or the \f$(i + j.m)\f$-th element
-     * of the container for column major orientation. Finally in a dense matrix all elements are represented in memory 
+     * of the container for column major orientation. Finally in a dense matrix all elements are represented in memory
      * in a contiguous chunk of memory.
      *
      * Orientation can be specified. Default is \c row_major
-     * The default constructor creates the matrix with size \f$M\f$ by \f$N\f$. Elements are constructed by the storage 
+     * The default constructor creates the matrix with size \f$M\f$ by \f$N\f$. Elements are constructed by the storage
      * type \c bounded_array, which need not initialise their value.
      *
      * \tparam T the type of object stored in the matrix (like double, float, complex, etc...)
@@ -2336,13 +2336,13 @@ namespace boost { namespace numeric {
 
     /** \brief A dense matrix of values of type \c T stored as a vector of vectors.
     *
-    * Rows or columns are not stored into contiguous chunks of memory but data inside rows (or columns) are. 
+    * Rows or columns are not stored into contiguous chunks of memory but data inside rows (or columns) are.
     * Orientation and storage can also be specified, otherwise a row major and unbounded arrays are used.
     * The data is stored as a vector of vectors, meaning that rows or columns might not be stored into contiguous chunks
-    * of memory. Orientation and storage can also be specified, otherwise a row major and unbounded arrays are used. 
-    * The storage type defaults to \c unbounded_array<unbounded_array<T>> and orientation is \c row_major. It is \b not 
-    * required by the storage to initialize elements of the matrix. For a \f$(m \times n)\f$-dimensional matrix and 
-    * \f$ 0 \leq i < m, 0 \leq j < n\f$, every element \f$m_{i,j}\f$ is mapped to the \f$(i.n + j)\f$-th element of the 
+    * of memory. Orientation and storage can also be specified, otherwise a row major and unbounded arrays are used.
+    * The storage type defaults to \c unbounded_array<unbounded_array<T>> and orientation is \c row_major. It is \b not
+    * required by the storage to initialize elements of the matrix. For a \f$(m \times n)\f$-dimensional matrix and
+    * \f$ 0 \leq i < m, 0 \leq j < n\f$, every element \f$m_{i,j}\f$ is mapped to the \f$(i.n + j)\f$-th element of the
     * container for row major orientation or the \f$(i + j.m)\f$-th element of the container for column major orientation.
     *
     * \tparam T the type of object stored in the matrix (like double, float, complex, etc...)
@@ -2407,7 +2407,7 @@ namespace boost { namespace numeric {
             return size1_;
         }
         BOOST_UBLAS_INLINE
-        size_type size2 () const { 
+        size_type size2 () const {
             return size2_;
         }
 
@@ -2449,19 +2449,19 @@ namespace boost { namespace numeric {
         }
         BOOST_UBLAS_INLINE
         reference operator () (size_type i, size_type j) {
-            return at_element (i, j); 
+            return at_element (i, j);
         }
 
         // Element assignment
         BOOST_UBLAS_INLINE
         reference insert_element (size_type i, size_type j, const_reference t) {
-            return (at_element (i, j) = t); 
+            return (at_element (i, j) = t);
         }
         BOOST_UBLAS_INLINE
         void erase_element (size_type i, size_type j) {
-            at_element (i, j) = value_type/*zero*/(); 
+            at_element (i, j) = value_type/*zero*/();
         }
-        
+
         // Zeroing
         BOOST_UBLAS_INLINE
         void clear () {
@@ -2478,13 +2478,13 @@ namespace boost { namespace numeric {
             return *this;
         }
         BOOST_UBLAS_INLINE
-        vector_of_vector &assign_temporary (vector_of_vector &m) { 
+        vector_of_vector &assign_temporary (vector_of_vector &m) {
             swap (m);
             return *this;
         }
         template<class AE>
         BOOST_UBLAS_INLINE
-        vector_of_vector &operator = (const matrix_expression<AE> &ae) { 
+        vector_of_vector &operator = (const matrix_expression<AE> &ae) {
             self_type temporary (ae);
             return assign_temporary (temporary);
         }
@@ -2497,8 +2497,8 @@ namespace boost { namespace numeric {
         }
         template<class AE>
         BOOST_UBLAS_INLINE
-        vector_of_vector &assign (const matrix_expression<AE> &ae) { 
-            matrix_assign<scalar_assign> (*this, ae); 
+        vector_of_vector &assign (const matrix_expression<AE> &ae) {
+            matrix_assign<scalar_assign> (*this, ae);
             return *this;
         }
         template<class AE>
@@ -2515,8 +2515,8 @@ namespace boost { namespace numeric {
         }
         template<class AE>
         BOOST_UBLAS_INLINE
-        vector_of_vector &plus_assign (const matrix_expression<AE> &ae) { 
-            matrix_assign<scalar_plus_assign> (*this, ae); 
+        vector_of_vector &plus_assign (const matrix_expression<AE> &ae) {
+            matrix_assign<scalar_plus_assign> (*this, ae);
             return *this;
         }
         template<class AE>
@@ -2534,7 +2534,7 @@ namespace boost { namespace numeric {
         template<class AE>
         BOOST_UBLAS_INLINE
         vector_of_vector &minus_assign (const matrix_expression<AE> &ae) {
-            matrix_assign<scalar_minus_assign> (*this, ae); 
+            matrix_assign<scalar_minus_assign> (*this, ae);
             return *this;
         }
         template<class AT>
@@ -2653,7 +2653,7 @@ namespace boost { namespace numeric {
                 const self_type &m = (*this) ();
                 if (layout_type::fast_i ())
                     ++ it_;
-                else 
+                else
                     it_ = m.find1 (1, i_, j_).it_;
                 return *this;
             }
@@ -3392,12 +3392,12 @@ namespace boost { namespace numeric {
         // Serialization
         template<class Archive>
         void serialize(Archive & ar, const unsigned int /* file_version */){
-        
+
             // we need to copy to a collection_size_type to get a portable
             // and efficient serialization
             serialization::collection_size_type s1 (size1_);
             serialization::collection_size_type s2 (size2_);
-          
+
             // serialize the sizes
             ar & serialization::make_nvp("size1",s1)
                & serialization::make_nvp("size2",s2);
@@ -3419,7 +3419,7 @@ namespace boost { namespace numeric {
 
     /** \brief A matrix with all values of type \c T equal to zero
      *
-     * Changing values does not affect the matrix, however assigning it to a normal matrix will put zero 
+     * Changing values does not affect the matrix, however assigning it to a normal matrix will put zero
      * everywhere in the target matrix. All accesses are constant time, due to the trivial value.
      *
      * \tparam T the type of object stored in the matrix (like double, float, complex, etc...)
@@ -3865,12 +3865,12 @@ namespace boost { namespace numeric {
          // Serialization
         template<class Archive>
         void serialize(Archive & ar, const unsigned int /* file_version */){
-        
+
             // we need to copy to a collection_size_type to get a portable
             // and efficient serialization
             serialization::collection_size_type s1 (size1_);
             serialization::collection_size_type s2 (size2_);
-          
+
             // serialize the sizes
             ar & serialization::make_nvp("size1",s1)
                & serialization::make_nvp("size2",s2);
@@ -3893,13 +3893,13 @@ namespace boost { namespace numeric {
 
     /** \brief An identity matrix with values of type \c T
      *
-     * Elements or cordinates \f$(i,i)\f$ are equal to 1 (one) and all others to 0 (zero). 
+     * Elements or cordinates \f$(i,i)\f$ are equal to 1 (one) and all others to 0 (zero).
      * Changing values does not affect the matrix, however assigning it to a normal matrix will
      * make the matrix equal to an identity matrix. All accesses are constant du to the trivial values.
      *
      * \tparam T the type of object stored in the matrix (like double, float, complex, etc...)
      * \tparam ALLOC an allocator for storing the zeros and one elements. By default, a standar allocator is used.
-     */ 
+     */
     template<class T, class ALLOC>
     class identity_matrix:
         public matrix_container<identity_matrix<T, ALLOC> > {
@@ -3980,7 +3980,7 @@ namespace boost { namespace numeric {
             return *this;
         }
         BOOST_UBLAS_INLINE
-        identity_matrix &assign_temporary (identity_matrix &m) { 
+        identity_matrix &assign_temporary (identity_matrix &m) {
             swap (m);
             return *this;
         }
@@ -4076,7 +4076,7 @@ namespace boost { namespace numeric {
             typename self_type::
 #endif
             const_iterator2 begin () const {
-                return const_iterator2 ((*this) (), it_); 
+                return const_iterator2 ((*this) (), it_);
             }
             BOOST_UBLAS_INLINE
 #ifdef BOOST_UBLAS_MSVC_NESTED_CLASS_RELATION
@@ -4090,7 +4090,7 @@ namespace boost { namespace numeric {
             typename self_type::
 #endif
             const_iterator2 end () const {
-                return const_iterator2 ((*this) (), it_ + 1); 
+                return const_iterator2 ((*this) (), it_ + 1);
             }
             BOOST_UBLAS_INLINE
 #ifdef BOOST_UBLAS_MSVC_NESTED_CLASS_RELATION
@@ -4224,7 +4224,7 @@ namespace boost { namespace numeric {
             typename self_type::
 #endif
             const_iterator1 begin () const {
-                return const_iterator1 ((*this) (), it_); 
+                return const_iterator1 ((*this) (), it_);
             }
             BOOST_UBLAS_INLINE
 #ifdef BOOST_UBLAS_MSVC_NESTED_CLASS_RELATION
@@ -4238,7 +4238,7 @@ namespace boost { namespace numeric {
             typename self_type::
 #endif
             const_iterator1 end () const {
-                return const_iterator1 ((*this) (), it_ + 1); 
+                return const_iterator1 ((*this) (), it_ + 1);
             }
             BOOST_UBLAS_INLINE
 #ifdef BOOST_UBLAS_MSVC_NESTED_CLASS_RELATION
@@ -4364,12 +4364,12 @@ namespace boost { namespace numeric {
          // Serialization
         template<class Archive>
         void serialize(Archive & ar, const unsigned int /* file_version */){
-        
+
             // we need to copy to a collection_size_type to get a portable
             // and efficient serialization
             serialization::collection_size_type s1 (size1_);
             serialization::collection_size_type s2 (size2_);
-          
+
             // serialize the sizes
             ar & serialization::make_nvp("size1",s1)
                & serialization::make_nvp("size2",s2);
@@ -4458,7 +4458,7 @@ namespace boost { namespace numeric {
         // Element access
         BOOST_UBLAS_INLINE
         const_reference operator () (size_type /*i*/, size_type /*j*/) const {
-            return value_; 
+            return value_;
         }
 
         // Assignment
@@ -4470,7 +4470,7 @@ namespace boost { namespace numeric {
             return *this;
         }
         BOOST_UBLAS_INLINE
-        scalar_matrix &assign_temporary (scalar_matrix &m) { 
+        scalar_matrix &assign_temporary (scalar_matrix &m) {
             swap (m);
             return *this;
         }
@@ -4515,7 +4515,7 @@ namespace boost { namespace numeric {
         BOOST_UBLAS_INLINE
         const_iterator2 find2 (int /*rank*/, size_type i, size_type j) const {
             return const_iterator2 (*this, i, j);
-        }   
+        }
 
 
 #ifndef BOOST_UBLAS_USE_INDEXED_ITERATOR
@@ -4919,12 +4919,12 @@ namespace boost { namespace numeric {
          // Serialization
         template<class Archive>
         void serialize(Archive & ar, const unsigned int /* file_version */){
-        
+
             // we need to copy to a collection_size_type to get a portable
             // and efficient serialization
             serialization::collection_size_type s1 (size1_);
             serialization::collection_size_type s2 (size2_);
-          
+
             // serialize the sizes
             ar & serialization::make_nvp("size1",s1)
                & serialization::make_nvp("size2",s2);
@@ -4948,14 +4948,14 @@ namespace boost { namespace numeric {
     /** \brief An array based matrix class which size is defined at type specification or object instanciation
      *
      * This matrix is directly based on a predefined C-style arry of data, thus providing the fastest
-     * implementation possible. The constraint is that dimensions of the matrix must be specified at 
-     * the instanciation or the type specification. 
+     * implementation possible. The constraint is that dimensions of the matrix must be specified at
+     * the instanciation or the type specification.
      *
-     * For instance, \code typedef c_matrix<double,4,4> my_4by4_matrix \endcode 
-     * defines a 4 by 4 double-precision matrix.  You can also instantiate it directly with 
-     * \code c_matrix<int,8,5> my_fast_matrix \endcode. This will make a 8 by 5 integer matrix. The 
-     * price to pay for this speed is that you cannot resize it to a size larger than the one defined 
-     * in the template parameters. In the previous example, a size of 4 by 5 or 3 by 2 is acceptable, 
+     * For instance, \code typedef c_matrix<double,4,4> my_4by4_matrix \endcode
+     * defines a 4 by 4 double-precision matrix.  You can also instantiate it directly with
+     * \code c_matrix<int,8,5> my_fast_matrix \endcode. This will make a 8 by 5 integer matrix. The
+     * price to pay for this speed is that you cannot resize it to a size larger than the one defined
+     * in the template parameters. In the previous example, a size of 4 by 5 or 3 by 2 is acceptable,
      * but a new size of 9 by 5 or even 10 by 10 will raise a bad_size() exception.
      *
      * \tparam T the type of object stored in the matrix (like double, float, complex, etc...)
@@ -5079,7 +5079,7 @@ namespace boost { namespace numeric {
         reference insert_element (size_type i, size_type j, const_reference t) {
             return (at_element (i, j) = t);
         }
-        
+
         // Zeroing
         BOOST_UBLAS_INLINE
         void clear () {
@@ -5120,14 +5120,14 @@ namespace boost { namespace numeric {
         }
         template<class AE>
         BOOST_UBLAS_INLINE
-        c_matrix &operator = (const matrix_expression<AE> &ae) { 
+        c_matrix &operator = (const matrix_expression<AE> &ae) {
             self_type temporary (ae);
             return assign_temporary (temporary);
         }
         template<class AE>
         BOOST_UBLAS_INLINE
-        c_matrix &assign (const matrix_expression<AE> &ae) { 
-            matrix_assign<scalar_assign> (*this, ae); 
+        c_matrix &assign (const matrix_expression<AE> &ae) {
+            matrix_assign<scalar_assign> (*this, ae);
             return *this;
         }
         template<class AE>
@@ -5144,8 +5144,8 @@ namespace boost { namespace numeric {
         }
         template<class AE>
         BOOST_UBLAS_INLINE
-        c_matrix &plus_assign (const matrix_expression<AE> &ae) { 
-            matrix_assign<scalar_plus_assign> (*this, ae); 
+        c_matrix &plus_assign (const matrix_expression<AE> &ae) {
+            matrix_assign<scalar_plus_assign> (*this, ae);
             return *this;
         }
         template<class AE>
@@ -5162,8 +5162,8 @@ namespace boost { namespace numeric {
         }
         template<class AE>
         BOOST_UBLAS_INLINE
-        c_matrix &minus_assign (const matrix_expression<AE> &ae) { 
-            matrix_assign<scalar_minus_assign> (*this, ae); 
+        c_matrix &minus_assign (const matrix_expression<AE> &ae) {
+            matrix_assign<scalar_minus_assign> (*this, ae);
             return *this;
         }
         template<class AT>
@@ -5958,12 +5958,12 @@ namespace boost { namespace numeric {
          // Serialization
         template<class Archive>
         void serialize(Archive & ar, const unsigned int /* file_version */){
-        
+
             // we need to copy to a collection_size_type to get a portable
             // and efficient serialization
             serialization::collection_size_type s1 (size1_);
             serialization::collection_size_type s2 (size2_);
-          
+
             // serialize the sizes
             ar & serialization::make_nvp("size1",s1)
                & serialization::make_nvp("size2",s2);
@@ -5973,7 +5973,7 @@ namespace boost { namespace numeric {
                 size1_ = s1;
                 size2_ = s2;
             }
-            // could probably use make_array( &(data[0][0]), N*M ) 
+            // could probably use make_array( &(data[0][0]), N*M )
             ar & serialization::make_array(data_, N);
         }
 

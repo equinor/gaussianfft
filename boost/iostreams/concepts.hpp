@@ -104,7 +104,7 @@ typedef filter<seekable>   seekable_filter;
 typedef wfilter<seekable>  seekable_wfilter;
 typedef filter<dual_use>   dual_use_filter;
 typedef wfilter<dual_use>  dual_use_wfilter;
-        
+
 //------Definitions of helper templates for multi-character filter cncepts----//
 
 template<typename Mode, typename Ch = char>

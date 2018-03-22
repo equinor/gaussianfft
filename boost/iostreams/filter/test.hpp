@@ -47,13 +47,13 @@
 #undef strlen
 
 #if defined(BOOST_NO_STDC_NAMESPACE) && !defined(__LIBCOMO__)
-namespace std { 
-    using ::memcpy; 
-    using ::strlen; 
+namespace std {
+    using ::memcpy;
+    using ::strlen;
     #if BOOST_WORKAROUND(__BORLANDC__, BOOST_TESTED_AT(0x564)) || \
         BOOST_WORKAROUND(__MWERKS__, <= 0x3003) \
         /**/
-        using ::rand; 
+        using ::rand;
     #endif
 }
 #endif
@@ -74,9 +74,9 @@ const std::streamsize default_increment = 5;
         return random_dist(random_gen);
     }
 #else
-    std::streamsize rand(std::streamsize inc) 
-    { 
-        return (std::rand() * inc + 1) / RAND_MAX; 
+    std::streamsize rand(std::streamsize inc)
+    {
+        return (std::rand() * inc + 1) / RAND_MAX;
     }
 #endif
 
@@ -87,8 +87,8 @@ public:
         : source_tag,
           peekable_tag
         { };
-    explicit non_blocking_source( const std::string& data, 
-                                  std::streamsize inc = default_increment ) 
+    explicit non_blocking_source( const std::string& data,
+                                  std::streamsize inc = default_increment )
         : data_(data), inc_(inc), pos_(0)
         { }
     std::streamsize read(char* s, std::streamsize n)
@@ -96,7 +96,7 @@ public:
         using namespace std;
         if (pos_ == static_cast<streamsize>(data_.size()))
             return -1;
-        streamsize avail = 
+        streamsize avail =
             (std::min) (n, static_cast<streamsize>(data_.size() - pos_));
         streamsize amt = (std::min) (rand(inc_), avail);
         if (amt)
@@ -121,8 +121,8 @@ private:
 class non_blocking_sink : public sink {
 public:
     non_blocking_sink( std::string& dest,
-                       std::streamsize inc = default_increment ) 
-        : dest_(dest), inc_(inc) 
+                       std::streamsize inc = default_increment )
+        : dest_(dest), inc_(inc)
         { }
     std::streamsize write(const char* s, std::streamsize n)
     {
@@ -135,17 +135,17 @@ private:
     std::string&     dest_;
     std::streamsize  inc_;
 };
-                
+
 //--------------Definition of test_input_filter-------------------------------//
 
 template<typename Filter>
-bool test_input_filter( Filter filter, 
-                        const std::string& input, 
-                        const std::string& output, 
+bool test_input_filter( Filter filter,
+                        const std::string& input,
+                        const std::string& output,
                         mpl::true_ )
 {
-    for ( int inc = default_increment; 
-          inc < default_increment * 40; 
+    for ( int inc = default_increment;
+          inc < default_increment * 40;
           inc += default_increment )
     {
         non_blocking_source  src(input, inc);
@@ -158,9 +158,9 @@ bool test_input_filter( Filter filter,
 }
 
 template<typename Filter, typename Source1, typename Source2>
-bool test_input_filter( Filter filter, 
-                        const Source1& input, 
-                        const Source2& output, 
+bool test_input_filter( Filter filter,
+                        const Source1& input,
+                        const Source2& output,
                         mpl::false_ )
 {
     std::string in;
@@ -171,25 +171,25 @@ bool test_input_filter( Filter filter,
 }
 
 template<typename Filter, typename Source1, typename Source2>
-bool test_input_filter( Filter filter, 
-                        const Source1& input, 
+bool test_input_filter( Filter filter,
+                        const Source1& input,
                         const Source2& output )
 {
     // Use tag dispatch to compensate for bad overload resolution.
-    return test_input_filter( filter, input, output,    
+    return test_input_filter( filter, input, output,
                               is_string<Source1>() );
 }
 
 //--------------Definition of test_output_filter------------------------------//
 
 template<typename Filter>
-bool test_output_filter( Filter filter, 
-                         const std::string& input, 
-                         const std::string& output, 
+bool test_output_filter( Filter filter,
+                         const std::string& input,
+                         const std::string& output,
                          mpl::true_ )
 {
-    for ( int inc = default_increment; 
-          inc < default_increment * 40; 
+    for ( int inc = default_increment;
+          inc < default_increment * 40;
           inc += default_increment )
     {
         array_source  src(input.data(), input.data() + input.size());
@@ -202,9 +202,9 @@ bool test_output_filter( Filter filter,
 }
 
 template<typename Filter, typename Source1, typename Source2>
-bool test_output_filter( Filter filter, 
-                         const Source1& input, 
-                         const Source2& output, 
+bool test_output_filter( Filter filter,
+                         const Source1& input,
+                         const Source2& output,
                          mpl::false_ )
 {
     std::string in;
@@ -215,25 +215,25 @@ bool test_output_filter( Filter filter,
 }
 
 template<typename Filter, typename Source1, typename Source2>
-bool test_output_filter( Filter filter, 
-                         const Source1& input, 
+bool test_output_filter( Filter filter,
+                         const Source1& input,
                          const Source2& output )
 {
     // Use tag dispatch to compensate for bad overload resolution.
-    return test_output_filter( filter, input, output,    
+    return test_output_filter( filter, input, output,
                                is_string<Source1>() );
 }
 
 //--------------Definition of test_filter_pair--------------------------------//
 
 template<typename OutputFilter, typename InputFilter>
-bool test_filter_pair( OutputFilter out, 
-                       InputFilter in, 
-                       const std::string& data, 
+bool test_filter_pair( OutputFilter out,
+                       InputFilter in,
+                       const std::string& data,
                        mpl::true_ )
 {
-    for ( int inc = default_increment; 
-          inc <= default_increment * 40; 
+    for ( int inc = default_increment;
+          inc <= default_increment * 40;
           inc += default_increment )
     {
         {
@@ -241,7 +241,7 @@ bool test_filter_pair( OutputFilter out,
             std::string   temp;
             std::string   dest;
             iostreams::copy(src, compose(out, non_blocking_sink(temp, inc)));
-            iostreams::copy( 
+            iostreams::copy(
                 compose(in, non_blocking_source(temp, inc)),
                 iostreams::back_inserter(dest)
             );
@@ -257,7 +257,7 @@ bool test_filter_pair( OutputFilter out,
             // std::ios_base::failure, which we swallow.
             try {
                 temp.resize(temp.size() / 2);
-                iostreams::copy( 
+                iostreams::copy(
                     compose(in, non_blocking_source(temp, inc)),
                     iostreams::back_inserter(dest)
                 );
@@ -268,7 +268,7 @@ bool test_filter_pair( OutputFilter out,
             std::string   temp;
             std::string   dest;
             iostreams::copy(compose(out, src), non_blocking_sink(temp, inc));
-            iostreams::copy( 
+            iostreams::copy(
                 non_blocking_source(temp, inc),
                 compose(in, iostreams::back_inserter(dest))
             );
@@ -284,7 +284,7 @@ bool test_filter_pair( OutputFilter out,
             // std::ios_base::failure, which we swallow.
             try {
                 temp.resize(temp.size() / 2);
-                iostreams::copy( 
+                iostreams::copy(
                     non_blocking_source(temp, inc),
                     compose(in, iostreams::back_inserter(dest))
                 );
@@ -295,9 +295,9 @@ bool test_filter_pair( OutputFilter out,
 }
 
 template<typename OutputFilter, typename InputFilter, typename Source>
-bool test_filter_pair( OutputFilter out, 
-                       InputFilter in, 
-                       const Source& data, 
+bool test_filter_pair( OutputFilter out,
+                       InputFilter in,
+                       const Source& data,
                        mpl::false_ )
 {
     std::string str;
@@ -306,8 +306,8 @@ bool test_filter_pair( OutputFilter out,
 }
 
 template<typename OutputFilter, typename InputFilter, typename Source>
-bool test_filter_pair( OutputFilter out, 
-                       InputFilter in, 
+bool test_filter_pair( OutputFilter out,
+                       InputFilter in,
                        const Source& data )
 {
     // Use tag dispatch to compensate for bad overload resolution.

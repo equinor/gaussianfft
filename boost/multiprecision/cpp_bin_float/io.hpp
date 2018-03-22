@@ -15,7 +15,7 @@ namespace boost{ namespace multiprecision{ namespace cpp_bf_io_detail{
 
 
 //
-// Multiplies a by b and shifts the result so it fits inside max_bits bits, 
+// Multiplies a by b and shifts the result so it fits inside max_bits bits,
 // returns by how much the result was shifted.
 //
 template <class I>
@@ -29,7 +29,7 @@ inline I restricted_multiply(cpp_int& result, const cpp_int& a, const cpp_int& b
       rshift = gb - max_bits;
       I lb = lsb(result);
       int roundup = 0;
-      // The error rate increases by the error of both a and b, 
+      // The error rate increases by the error of both a and b,
       // this may be overly pessimistic in many case as we're assuming
       // that a and b have the same level of uncertainty...
       if(lb < rshift)

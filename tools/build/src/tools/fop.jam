@@ -26,10 +26,10 @@ rule init ( fop-command ? : java-home ? : java ? )
 
     if $(fop-command) || ! $(has-command)
     {
-        fop-command = [ common.get-invocation-command fop : fop : $(fop-command) 
+        fop-command = [ common.get-invocation-command fop : fop : $(fop-command)
           : [ modules.peek : FOP_DIR ] ] ;
     }
-    
+
     if $(fop-command)
     {
         .FOP_COMMAND = $(fop-command) ;
@@ -39,9 +39,9 @@ rule init ( fop-command ? : java-home ? : java ? )
     {
         .FOP_SETUP = ;
 
-    
+
         # JAVA_HOME is the location that java was installed to.
-    
+
         if $(java-home)
         {
             .FOP_SETUP += [ common.variable-setting-command JAVA_HOME : $(java-home) ] ;
@@ -50,7 +50,7 @@ rule init ( fop-command ? : java-home ? : java ? )
         # JAVACMD is the location that of the java executable, useful for a
         # non-standard java installation, where the executable isn't at
         # $JAVA_HOME/bin/java.
-    
+
         if $(java)
         {
             .FOP_SETUP += [ common.variable-setting-command JAVACMD : $(java) ] ;

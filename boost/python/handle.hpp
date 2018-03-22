@@ -15,7 +15,7 @@
 # include <boost/python/tag.hpp>
 # include <boost/python/detail/raw_pyobject.hpp>
 
-namespace boost { namespace python { 
+namespace boost { namespace python {
 
 template <class T> struct null_ok;
 
@@ -32,25 +32,25 @@ namespace detail
   {
       return python::xincref((T*)p);
   }
-  
+
   template <class T>
   inline T* manage_ptr(null_ok<detail::borrowed<T> >* p, int)
   {
       return python::xincref((T*)p);
   }
-  
+
   template <class T>
   inline T* manage_ptr(detail::borrowed<T>* p, long)
   {
       return python::incref(expect_non_null((T*)p));
   }
-  
+
   template <class T>
   inline T* manage_ptr(null_ok<T>* p, long)
   {
       return (T*)p;
   }
-  
+
   template <class T>
   inline T* manage_ptr(T* p, ...)
   {
@@ -65,7 +65,7 @@ class handle
 
  public: // types
     typedef T element_type;
-    
+
  public: // member functions
     handle();
     ~handle();
@@ -100,18 +100,18 @@ class handle
         : m_p(python::xincref(python::upcast<T>(r.get())))
     {
     }
-    
+
     handle(handle const& r)
         : m_p(python::xincref(r.m_p))
     {
     }
-    
+
     T* operator-> () const;
     T& operator* () const;
     T* get() const;
     T* release();
     void reset();
-    
+
     operator bool_type() const // never throws
     {
         return m_p ? &handle<T>::get : 0;
@@ -127,7 +127,7 @@ class handle
                 ))
     {
     }
-    
+
  private: // data members
     T* m_p;
 };
@@ -159,7 +159,7 @@ template<typename T>
 class is_handle
 {
  public:
-    BOOST_STATIC_CONSTANT(bool, value = false); 
+    BOOST_STATIC_CONSTANT(bool, value = false);
 };
 
 template<typename T>
@@ -201,7 +201,7 @@ inline T* handle<T>::get() const
 {
     return m_p;
 }
-    
+
 template <class T>
 inline bool handle<T>::operator!() const
 {

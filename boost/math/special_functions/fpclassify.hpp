@@ -129,7 +129,7 @@ inline bool is_nan_helper(T, const boost::false_type&)
 {
    return false;
 }
-#if defined(BOOST_MATH_USE_FLOAT128) 
+#if defined(BOOST_MATH_USE_FLOAT128)
 #if defined(BOOST_MATH_HAS_QUADMATH_H)
 inline bool is_nan_helper(__float128 f, const boost::true_type&) { return ::isnanq(f); }
 inline bool is_nan_helper(__float128 f, const boost::false_type&) { return ::isnanq(f); }

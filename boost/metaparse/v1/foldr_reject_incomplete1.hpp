@@ -20,7 +20,7 @@ namespace boost
       struct foldr_reject_incomplete1
       {
         typedef foldr_reject_incomplete1 type;
-        
+
         template <class S, class Pos>
         struct apply :
           boost::mpl::if_<

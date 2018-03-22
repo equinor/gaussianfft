@@ -129,7 +129,7 @@ public:
         typename normal_type::param_type normal_param(parm.m(), parm.s());
         _normal.param(normal_param);
     }
-    
+
     /**
      * Effects: Subsequent uses of the distribution do not depend
      * on values produced by any engine prior to invoking reset.

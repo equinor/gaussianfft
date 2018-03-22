@@ -53,7 +53,7 @@ int main()
 #   if defined(GC_OSF1_THREADS)
 	printf("-pthread -lrt"); /* DOB: must be -pthread, not -lpthread */
 #   endif
-    /* You need GCC 3.0.3 to build this one!           */  
+    /* You need GCC 3.0.3 to build this one!           */
     /* DG/UX native gcc doesnt know what "-pthread" is */
 #   if defined(GC_DGUX386_THREADS)
         printf("-ldl -pthread\n");

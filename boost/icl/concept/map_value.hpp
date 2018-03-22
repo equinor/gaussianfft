@@ -1,4 +1,4 @@
-/*-----------------------------------------------------------------------------+    
+/*-----------------------------------------------------------------------------+
 Copyright (c) 2010-2010: Joachim Faulhaber
 +------------------------------------------------------------------------------+
    Distributed under the Boost Software License, Version 1.0.
@@ -34,7 +34,7 @@ co_value(Iterator it_)
 
 template<class Type>
 inline typename enable_if<is_map<Type>, typename Type::value_type>::type
-make_value(const typename Type::     key_type& key_val, 
+make_value(const typename Type::     key_type& key_val,
            const typename Type::codomain_type&  co_val)
 {
     return typename Type::value_type(key_val, co_val);
@@ -45,10 +45,10 @@ template <class Type>
 class content_is_identity_element: public property<Type>
 {
 public:
-    bool operator() (const Type& value_pair)const 
-    { 
-        return value_pair.second 
-            == identity_element<typename Type::second_type>::value(); 
+    bool operator() (const Type& value_pair)const
+    {
+        return value_pair.second
+            == identity_element<typename Type::second_type>::value();
     }
 } ;
 

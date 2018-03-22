@@ -69,12 +69,12 @@ void exercise(list x, object y, object print)
     x.append(y);
     x.append(5);
     x.append(X(3));
-    
+
     print("after append:");
     print(x);
-    
+
     print("number of", y, "instances:", x.count(y));
-    
+
     print("number of 5s:", x.count(5));
 
     x.extend("xyz");
@@ -82,14 +82,14 @@ void exercise(list x, object y, object print)
     print(x);
     print("index of", y, "is:", x.index(y));
     print("index of 'l' is:", x.index("l"));
-    
+
     x.insert(4, 666);
     print("after inserting 666:");
     print(x);
     print("inserting with object as index:");
     x.insert(x[x.index(5)], "---");
     print(x);
-    
+
     print("popping...");
     x.pop();
     print(x);
@@ -140,12 +140,12 @@ BOOST_PYTHON_MODULE(list_ext)
     def("listify_string", listify_string);
     def("apply_object_list", apply_object_list);
     def("apply_list_list", apply_list_list);
-        
+
     def("append_object", append_object);
     def("append_list", append_list);
 
     def("exercise", exercise);
-    
+
     class_<X>("X", init<int>())
         .def( "__repr__", x_rep)
         ;

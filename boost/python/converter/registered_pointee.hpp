@@ -9,7 +9,7 @@
 # include <boost/python/converter/registry.hpp>
 # include <boost/python/detail/type_traits.hpp>
 
-namespace boost { namespace python { namespace converter { 
+namespace boost { namespace python { namespace converter {
 
 struct registration;
 

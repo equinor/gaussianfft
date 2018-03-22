@@ -382,7 +382,7 @@ class offset_ptr
 
    //!Assignment from related offset_ptr. If pointers of pointee types
    //!   are assignable, offset_ptrs will be assignable. Never throws.
-   template<class T2> BOOST_INTERPROCESS_FORCEINLINE 
+   template<class T2> BOOST_INTERPROCESS_FORCEINLINE
    #ifndef BOOST_INTERPROCESS_DOXYGEN_INVOKED
    typename ipcdetail::enable_if_c
       < ::boost::is_convertible<T2*, PointedType*>::value, offset_ptr&>::type
@@ -444,7 +444,7 @@ class offset_ptr
    explicit operator bool() const BOOST_NOEXCEPT
    {  return this->internal.m_offset != 1;  }
    #endif
-   
+
    //!Not operator. Not needed in theory, but improves portability.
    //!Never throws
    BOOST_INTERPROCESS_FORCEINLINE bool operator! () const BOOST_NOEXCEPT

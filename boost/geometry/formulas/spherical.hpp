@@ -25,7 +25,7 @@
 #include <boost/geometry/util/select_coordinate_type.hpp>
 
 namespace boost { namespace geometry {
-    
+
 namespace formula {
 
 template <typename T>

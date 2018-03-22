@@ -2,8 +2,8 @@
 // Copyright (C) 2002-2006 Marcin Kalicinski
 // Copyright (C) 2009 Sebastian Redl
 //
-// Distributed under the Boost Software License, Version 1.0. 
-// (See accompanying file LICENSE_1_0.txt or copy at 
+// Distributed under the Boost Software License, Version 1.0.
+// (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 //
 // For more information, see www.boost.org
@@ -30,8 +30,8 @@ namespace boost { namespace property_tree
     ///////////////////////////////////////////////////////////////////////////
     // ptree_error
 
-    inline ptree_error::ptree_error(const std::string &w): 
-        std::runtime_error(w) 
+    inline ptree_error::ptree_error(const std::string &w):
+        std::runtime_error(w)
     {
     }
 

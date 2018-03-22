@@ -156,7 +156,7 @@ namespace comparable
   The distance d1 needed when the projection of the point D is within the
   segment must be the true distance. However, comparable::haversine<>
   returns a comparable distance instead of the one needed.
-  To remedy this, we implicitly compute what is needed. 
+  To remedy this, we implicitly compute what is needed.
   More precisely, we need to compute sin(true_d1):
 
   sin(true_d1) = sin(2 * asin(sqrt(d1)))
@@ -426,11 +426,11 @@ public :
             return_type sin_d_crs1 = sin(d_crs1);
             /*
               This is the straightforward obvious way to continue:
-              
+
               return_type discriminant
                   = 1.0 - 4.0 * (d1 - d1 * d1) * sin_d_crs1 * sin_d_crs1;
               return 0.5 - 0.5 * math::sqrt(discriminant);
-            
+
               Below we optimize the number of arithmetic operations
               and account for numerical robustness:
             */

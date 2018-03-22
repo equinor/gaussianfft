@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 1988, 1989 Hans-J. Boehm, Alan J. Demers
  * Copyright (c) 1991-1994 by Xerox Corporation.  All rights reserved.
  * Copyright (c) 1996-1999 by Silicon Graphics.  All rights reserved.
@@ -25,7 +25,7 @@
  *
  * Note that I_HOLD_LOCK and I_DONT_HOLD_LOCK are used only positively
  * in assertions, and may return TRUE in the "dont know" case.
- */  
+ */
 # ifdef THREADS
 #  include <atomic_ops.h>
 
@@ -72,7 +72,7 @@
 			   || GC_lock_holder != GetCurrentThreadId())
 #  elif defined(GC_PTHREADS)
 #    include <pthread.h>
-     
+
      /* Posix allows pthread_t to be a struct, though it rarely is.	*/
      /* Unfortunately, we need to use a pthread_t to index a data 	*/
      /* structure.  It also helps if comparisons don't involve a	*/
@@ -191,7 +191,7 @@
        		/* either case.						*/
 # endif /* !THREADS */
 
-#if defined(UNCOND_LOCK) && !defined(LOCK) 
+#if defined(UNCOND_LOCK) && !defined(LOCK)
      GC_API GC_bool GC_need_to_lock;
      		/* At least two thread running; need to lock.	*/
 #    define LOCK() if (GC_need_to_lock) { UNCOND_LOCK(); }

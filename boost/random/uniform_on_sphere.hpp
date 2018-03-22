@@ -34,7 +34,7 @@ namespace random {
  * numbers uniformly distributed on the unit sphere of arbitrary
  * dimension @c dim. The @c Cont template parameter must be a STL-like
  * container type with begin and end operations returning non-const
- * ForwardIterators of type @c Cont::iterator. 
+ * ForwardIterators of type @c Cont::iterator.
  */
 template<class RealType = double, class Cont = std::vector<RealType> >
 class uniform_on_sphere

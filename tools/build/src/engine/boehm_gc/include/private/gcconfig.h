@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 1988, 1989 Hans-J. Boehm, Alan J. Demers
  * Copyright (c) 1991-1994 by Xerox Corporation.  All rights reserved.
  * Copyright (c) 1996 by Silicon Graphics.  All rights reserved.
@@ -21,7 +21,7 @@
  * case, a few declarations relying on types declared in gc_priv.h will be
  * omitted.
  */
- 
+
 #ifndef GCCONFIG_H
 
 # define GCCONFIG_H
@@ -280,7 +280,7 @@
 # if defined(_AMIGA) && !defined(AMIGA)
 #   define AMIGA
 # endif
-# ifdef AMIGA 
+# ifdef AMIGA
 #   define M68K
 #   define mach_type_known
 # endif
@@ -451,11 +451,11 @@
 # endif
 # if defined(__GNU__)
 #   if defined(__i386__)
-/* The Debian Hurd running on generic PC */  
+/* The Debian Hurd running on generic PC */
 #     define  HURD
 #     define  I386
 #     define  mach_type_known
-#    endif 
+#    endif
 # endif
 # if defined(__TANDEM)
     /* Nonstop S-series */
@@ -1009,7 +1009,7 @@
 #	define OS_TYPE "SEQUENT"
 	extern int etext[];
 #       define DATASTART ((ptr_t)((((word) (etext)) + 0xfff) & ~0xfff))
-#       define STACKBOTTOM ((ptr_t) 0x3ffff000) 
+#       define STACKBOTTOM ((ptr_t) 0x3ffff000)
 #   endif
 #   ifdef BEOS
 #     define OS_TYPE "BEOS"
@@ -1153,7 +1153,7 @@
 	    /* cache miss stalls for the targetted load instructions.  But it	*/
 	    /* seems to interfere enough with other cache traffic that the net	*/
 	    /* result is worse than prefetchnta.				*/
-#         if 0 
+#         if 0
 	    /* Using prefetches for write seems to have a slight negative	*/
 	    /* impact on performance, at least for a PIII/500.			*/
 #	    define PREFETCH_FOR_WRITE(x) \
@@ -1819,7 +1819,7 @@
 #      define DYNAMIC_LOADING
 #   endif
 # endif
- 
+
 # ifdef SH4
 #   define MACH_TYPE "SH4"
 #   define OS_TYPE "MSWINCE"
@@ -2221,7 +2221,7 @@
 
 # if defined(SAVE_CALL_COUNT) && !defined(GC_ADD_CALLER) \
 	     && defined(GC_CAN_SAVE_CALL_STACKS)
-#   define SAVE_CALL_CHAIN 
+#   define SAVE_CALL_CHAIN
 # endif
 # ifdef SAVE_CALL_CHAIN
 #   if defined(SAVE_CALL_NARGS) && defined(CAN_SAVE_CALL_ARGS)

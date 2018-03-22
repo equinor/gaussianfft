@@ -22,7 +22,7 @@ namespace boost {
 namespace bimaps {
 namespace relation {
 
-/// \brief member_at::side idiom to access relation values and types using metaprogramming. 
+/// \brief member_at::side idiom to access relation values and types using metaprogramming.
 /**
 
 This tags are used to specify which member you want to acces when using a metafunction over

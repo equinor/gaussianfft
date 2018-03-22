@@ -263,7 +263,7 @@ call(const Op&, U&&... args);
 #else
 
 namespace detail {
-    
+
 template<class Sig, class Args, class Concept = void,
     bool Check = ::boost::type_erasure::detail::check_call<Sig, Args>::type::value>
 struct call_impl {};

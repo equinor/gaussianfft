@@ -1,5 +1,5 @@
 // Copyright (C) 2004-2006 The Trustees of Indiana University.
-// Copyright (C) 2007 Douglas Gregor 
+// Copyright (C) 2007 Douglas Gregor
 
 // Use, modification and distribution is subject to the Boost Software
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
@@ -120,7 +120,7 @@ namespace boost {
   }
 
   namespace detail { namespace parallel {
-  
+
     /**
      * A distributed vertex descriptor. These descriptors contain both
      * the ID of the processor that owns the vertex and a local vertex
@@ -567,13 +567,13 @@ namespace boost {
      */
     template<typename OutEdgeListS, typename ProcessGroup,
              typename InVertexListS, typename InDistribution,
-             typename DirectedS, typename VertexProperty, 
-             typename EdgeProperty, typename GraphProperty, 
+             typename DirectedS, typename VertexProperty,
+             typename EdgeProperty, typename GraphProperty,
              typename EdgeListS>
     struct adjacency_list_config
     {
-      typedef typename mpl::if_<is_same<InVertexListS, defaultS>, 
-                                vecS, InVertexListS>::type 
+      typedef typename mpl::if_<is_same<InVertexListS, defaultS>,
+                                vecS, InVertexListS>::type
         VertexListS;
 
       /// Introduce the target processor ID property for each edge
@@ -606,16 +606,16 @@ namespace boost {
       typedef typename boost::mpl::if_<is_same<DirectedS, bidirectionalS>,
                                        property<vertex_in_edges_t, in_edge_list_type,
                                                 VertexProperty>,
-                                       VertexProperty>::type 
+                                       VertexProperty>::type
         base_vertex_property_type;
 
       // The type of the distributed adjacency list
       typedef adjacency_list<OutEdgeListS,
-                             distributedS<ProcessGroup, 
-                                          VertexListS, 
+                             distributedS<ProcessGroup,
+                                          VertexListS,
                                           InDistribution>,
                              DirectedS, VertexProperty, EdgeProperty,
-                             GraphProperty, EdgeListS> 
+                             GraphProperty, EdgeListS>
         graph_type;
 
       // The type of the underlying adjacency list implementation
@@ -623,15 +623,15 @@ namespace boost {
                              base_vertex_property_type,
                              base_edge_property_type,
                              GraphProperty,
-                             EdgeListS> 
+                             EdgeListS>
         inherited;
-      
+
       typedef InDistribution in_distribution_type;
       typedef typename inherited::vertices_size_type vertices_size_type;
 
           typedef typename ::boost::graph::distributed::select_distribution<
-              in_distribution_type, VertexProperty, vertices_size_type, 
-              ProcessGroup>::type 
+              in_distribution_type, VertexProperty, vertices_size_type,
+              ProcessGroup>::type
         base_distribution_type;
 
           typedef ::boost::graph::distributed::shuffled_distribution<
@@ -701,10 +701,10 @@ namespace boost {
       /// The source of the edge; the processor will be the
       /// receiving processor.
       LocalVertex source;
-        
+
       /// The target of the edge.
       Vertex target;
-        
+
       template<typename Archiver>
       void serialize(Archiver& ar, const unsigned int /*version*/)
       {
@@ -718,7 +718,7 @@ namespace boost {
      */
     template<typename Vertex, typename LocalVertex, typename EdgeProperty>
     struct msg_add_edge_with_property_data
-      : msg_add_edge_data<Vertex, LocalVertex>, 
+      : msg_add_edge_data<Vertex, LocalVertex>,
         maybe_store_property<EdgeProperty>
     {
     private:
@@ -728,16 +728,16 @@ namespace boost {
     public:
       msg_add_edge_with_property_data() { }
 
-      msg_add_edge_with_property_data(Vertex source, 
+      msg_add_edge_with_property_data(Vertex source,
                                       Vertex target,
                                       const EdgeProperty& property)
         : inherited_data(source, target),
           inherited_property(property) { }
-      
+
       template<typename Archiver>
       void serialize(Archiver& ar, const unsigned int /*version*/)
       {
-        ar & boost::serialization::base_object<inherited_data>(*this) 
+        ar & boost::serialization::base_object<inherited_data>(*this)
            & boost::serialization::base_object<inherited_property>(*this);
       }
     };
@@ -1038,7 +1038,7 @@ namespace boost {
     {
       typedef EdgeProperty edge_property_type;
       typedef EdgeDescriptor local_edge_descriptor;
-      typedef detail::parallel::maybe_store_property<edge_property_type> 
+      typedef detail::parallel::maybe_store_property<edge_property_type>
         inherited;
 
       msg_nonlocal_edge_data() {}
@@ -1081,7 +1081,7 @@ namespace boost {
   template<typename OutEdgeListS, typename ProcessGroup,
            typename InVertexListS, typename InDistribution, typename DirectedS>
   struct adjacency_list_traits<OutEdgeListS,
-                               distributedS<ProcessGroup, 
+                               distributedS<ProcessGroup,
                                             InVertexListS,
                                             InDistribution>,
                                DirectedS>
@@ -1130,13 +1130,13 @@ namespace boost {
   typename OutEdgeListS, typename ProcessGroup, typename InVertexListS,        \
   typename InDistribution, typename VertexProperty,                            \
   typename EdgeProperty,  typename GraphProperty, typename EdgeListS
-  
+
 #define PBGL_DISTRIB_ADJLIST_TYPE_CONFIG(directed)                             \
   adjacency_list<OutEdgeListS,                                                 \
                  distributedS<ProcessGroup, InVertexListS, InDistribution>,    \
                  directed, VertexProperty, EdgeProperty, GraphProperty,        \
                  EdgeListS>
-                 
+
   /** A distributed adjacency list.
    *
    * This class template partial specialization defines a distributed
@@ -1258,50 +1258,50 @@ namespace boost {
    */
   template<typename OutEdgeListS, typename ProcessGroup,
            typename InVertexListS, typename InDistribution, typename DirectedS,
-           typename VertexProperty, typename EdgeProperty, 
+           typename VertexProperty, typename EdgeProperty,
            typename GraphProperty, typename EdgeListS>
   class adjacency_list<OutEdgeListS,
-                       distributedS<ProcessGroup, 
-                                    InVertexListS, 
+                       distributedS<ProcessGroup,
+                                    InVertexListS,
                                     InDistribution>,
                        DirectedS, VertexProperty,
                        EdgeProperty, GraphProperty, EdgeListS>
     : // Support for named vertices
-      public graph::distributed::maybe_named_graph<   
+      public graph::distributed::maybe_named_graph<
         adjacency_list<OutEdgeListS,
                        distributedS<ProcessGroup,
                                     InVertexListS,
                                     InDistribution>,
                        DirectedS, VertexProperty,
                        EdgeProperty, GraphProperty, EdgeListS>,
-        typename adjacency_list_traits<OutEdgeListS, 
+        typename adjacency_list_traits<OutEdgeListS,
                                        distributedS<ProcessGroup,
                                                     InVertexListS,
                                                     InDistribution>,
                                        DirectedS>::vertex_descriptor,
-        typename adjacency_list_traits<OutEdgeListS, 
+        typename adjacency_list_traits<OutEdgeListS,
                                        distributedS<ProcessGroup,
                                                     InVertexListS,
                                                     InDistribution>,
                                        DirectedS>::edge_descriptor,
-        detail::parallel::adjacency_list_config<OutEdgeListS, ProcessGroup, 
+        detail::parallel::adjacency_list_config<OutEdgeListS, ProcessGroup,
                                                 InVertexListS, InDistribution,
-                                                DirectedS, VertexProperty, 
-                                                EdgeProperty, GraphProperty, 
+                                                DirectedS, VertexProperty,
+                                                EdgeProperty, GraphProperty,
                                                 EdgeListS> >
   {
-    typedef detail::parallel::adjacency_list_config<OutEdgeListS, ProcessGroup, 
+    typedef detail::parallel::adjacency_list_config<OutEdgeListS, ProcessGroup,
                                                 InVertexListS, InDistribution,
-                                                DirectedS, VertexProperty, 
-                                                EdgeProperty, GraphProperty, 
+                                                DirectedS, VertexProperty,
+                                                EdgeProperty, GraphProperty,
                                                 EdgeListS>
       config_type;
-      
+
     typedef adjacency_list_traits<OutEdgeListS,
-                                  distributedS<ProcessGroup, 
-                                               InVertexListS, 
+                                  distributedS<ProcessGroup,
+                                               InVertexListS,
                                                InDistribution>,
-                                  DirectedS> 
+                                  DirectedS>
       traits_type;
 
     typedef typename DirectedS::is_directed_t is_directed;
@@ -1430,17 +1430,17 @@ namespace boost {
                                      undirected_edge_iterator,
                                      transform_iterator<out_edge_generator,
                                                         base_edge_iterator>
-                                     >::type 
+                                     >::type
       edge_iterator;
 
   public:
     /// The type of the mixin for named vertices
-    typedef graph::distributed::maybe_named_graph<graph_type, 
-                                                  vertex_descriptor, 
-                                                  edge_descriptor, 
-                                                  config_type> 
+    typedef graph::distributed::maybe_named_graph<graph_type,
+                                                  vertex_descriptor,
+                                                  edge_descriptor,
+                                                  config_type>
       named_graph_mixin;
-        
+
     /// Process group used for communication
     typedef ProcessGroup process_group_type;
 
@@ -1465,15 +1465,15 @@ namespace boost {
     /// default_distribution_type is the type of the distribution used if the
     /// user didn't specify an explicit one
     typedef typename graph::distributed::select_distribution<
-              InDistribution, VertexProperty, vertices_size_type, 
-              ProcessGroup>::default_type 
+              InDistribution, VertexProperty, vertices_size_type,
+              ProcessGroup>::default_type
       default_distribution_type;
-    
+
     /// distribution_type is the type of the distribution instance stored in
     /// the maybe_named_graph base class
     typedef typename graph::distributed::select_distribution<
               InDistribution, VertexProperty, vertices_size_type,
-              ProcessGroup>::type 
+              ProcessGroup>::type
       base_distribution_type;
 
       typedef graph::distributed::shuffled_distribution<
@@ -1489,16 +1489,16 @@ namespace boost {
   public:
     adjacency_list(const ProcessGroup& pg = ProcessGroup())
       : named_graph_mixin(pg, default_distribution_type(pg, 0)),
-        m_local_graph(GraphProperty()), 
+        m_local_graph(GraphProperty()),
         process_group_(pg, boost::parallel::attach_distributed_object())
     {
       setup_triggers();
     }
 
-    adjacency_list(const ProcessGroup& pg, 
+    adjacency_list(const ProcessGroup& pg,
                    const base_distribution_type& distribution)
       : named_graph_mixin(pg, distribution),
-        m_local_graph(GraphProperty()), 
+        m_local_graph(GraphProperty()),
         process_group_(pg, boost::parallel::attach_distributed_object())
     {
       setup_triggers();
@@ -1507,7 +1507,7 @@ namespace boost {
     adjacency_list(const GraphProperty& g,
                    const ProcessGroup& pg = ProcessGroup())
       : named_graph_mixin(pg, default_distribution_type(pg, 0)),
-        m_local_graph(g), 
+        m_local_graph(g),
         process_group_(pg, boost::parallel::attach_distributed_object())
     {
       setup_triggers();
@@ -1532,7 +1532,7 @@ namespace boost {
                    const base_distribution_type& distribution)
       : named_graph_mixin(pg, distribution),
         m_local_graph(distribution.block_size(process_id(pg), n), GraphProperty()),
-        process_group_(pg, boost::parallel::attach_distributed_object()) 
+        process_group_(pg, boost::parallel::attach_distributed_object())
     {
       setup_triggers();
 
@@ -1556,7 +1556,7 @@ namespace boost {
     adjacency_list(vertices_size_type n,
                    const ProcessGroup& pg = ProcessGroup())
       : named_graph_mixin(pg, default_distribution_type(pg, n)),
-        m_local_graph(this->distribution().block_size(process_id(pg), n), 
+        m_local_graph(this->distribution().block_size(process_id(pg), n),
                       GraphProperty()),
         process_group_(pg, boost::parallel::attach_distributed_object())
     {
@@ -1696,19 +1696,19 @@ namespace boost {
       BOOST_ASSERT(v.owner == processor());
       return base()[v.local];
     }
-    
+
     const vertex_bundled& operator[](vertex_descriptor v) const
     {
       BOOST_ASSERT(v.owner == processor());
       return base()[v.local];
     }
-    
+
     edge_bundled& operator[](edge_descriptor e)
     {
       BOOST_ASSERT(e.owner() == processor());
       return base()[e.local];
     }
-    
+
     const edge_bundled& operator[](edge_descriptor e) const
     {
       BOOST_ASSERT(e.owner() == processor());
@@ -1790,7 +1790,7 @@ namespace boost {
     template<typename EdgeIterator>
     void
     initialize(EdgeIterator first, EdgeIterator last,
-               vertices_size_type, const base_distribution_type& distribution, 
+               vertices_size_type, const base_distribution_type& distribution,
                vecS);
 
     // Initialize the graph with the given edge list, edge
@@ -1801,7 +1801,7 @@ namespace boost {
     void
     initialize(EdgeIterator first, EdgeIterator last,
                EdgePropertyIterator ep_iter,
-               vertices_size_type, const base_distribution_type& distribution, 
+               vertices_size_type, const base_distribution_type& distribution,
                vecS);
 
     // Initialize the graph with the given edge list, edge
@@ -1811,7 +1811,7 @@ namespace boost {
     void
     initialize(EdgeIterator first, EdgeIterator last,
                EdgePropertyIterator ep_iter,
-               vertices_size_type n, 
+               vertices_size_type n,
                const base_distribution_type& distribution,
                VertexListS);
 
@@ -1823,7 +1823,7 @@ namespace boost {
     template<typename EdgeIterator, typename VertexListS>
     void
     initialize(EdgeIterator first, EdgeIterator last,
-               vertices_size_type n, 
+               vertices_size_type n,
                const base_distribution_type& distribution,
                VertexListS);
 
@@ -1832,7 +1832,7 @@ namespace boost {
     // Build a vertex property instance for the underlying adjacency
     // list from the given property instance of the type exposed to
     // the user.
-    base_vertex_property_type 
+    base_vertex_property_type
     build_vertex_property(const vertex_property_type& p)
     { return build_vertex_property(p, directed_selector()); }
 
@@ -1935,20 +1935,20 @@ namespace boost {
 
       /**
        * Request to add an edge remotely. The data will be a
-       * msg_add_edge_data structure. 
+       * msg_add_edge_data structure.
        */
       msg_add_edge,
 
       /**
        * Request to add an edge remotely. The data will be a
-       * msg_add_edge_with_property_data structure. 
+       * msg_add_edge_with_property_data structure.
        */
       msg_add_edge_with_property,
 
       /**
        * Request to add an edge remotely and reply back with the
        * edge descriptor. The data will be a
-       * msg_add_edge_data structure. 
+       * msg_add_edge_data structure.
        */
       msg_add_edge_with_reply,
 
@@ -1995,7 +1995,7 @@ namespace boost {
       msg_add_edge_data;
 
     typedef detail::parallel::msg_add_edge_with_property_data
-              <vertex_descriptor, local_vertex_descriptor, 
+              <vertex_descriptor, local_vertex_descriptor,
                edge_property_type> msg_add_edge_with_property_data;
 
     typedef  boost::detail::parallel::msg_nonlocal_edge_data<
@@ -2015,7 +2015,7 @@ namespace boost {
     /// Process incoming messages.
     void setup_triggers();
 
-    void 
+    void
     handle_add_vertex_with_property(int source, int tag,
                                     const vertex_property_type&,
                                     trigger_receive_context);
@@ -2025,35 +2025,35 @@ namespace boost {
                                         const vertex_property_type&,
                                         trigger_receive_context);
 
-    void 
+    void
     handle_add_edge(int source, int tag, const msg_add_edge_data& data,
                     trigger_receive_context);
 
     boost::parallel::detail::untracked_pair<edge_descriptor, bool>
-    handle_add_edge_with_reply(int source, int tag, 
+    handle_add_edge_with_reply(int source, int tag,
                          const msg_add_edge_data& data,
                          trigger_receive_context);
 
-    void 
+    void
     handle_add_edge_with_property(int source, int tag,
                                   const msg_add_edge_with_property_data&,
                                   trigger_receive_context);
-              
+
     boost::parallel::detail::untracked_pair<edge_descriptor, bool>
     handle_add_edge_with_property_and_reply
       (int source, int tag, const msg_add_edge_with_property_data&,
        trigger_receive_context);
 
-    void 
-    handle_nonlocal_edge(int source, int tag, 
+    void
+    handle_nonlocal_edge(int source, int tag,
                          const msg_nonlocal_edge_data& data,
                          trigger_receive_context);
 
-    void 
-    handle_remove_edge(int source, int tag, 
+    void
+    handle_remove_edge(int source, int tag,
                        const msg_remove_edge_data& data,
                        trigger_receive_context);
-         
+
   protected:
     /** Add an edge (locally) that was received from another
      * processor. This operation is a no-op for directed graphs,
@@ -2100,14 +2100,14 @@ namespace boost {
                     processor_id_type other_proc, undirectedS)
     {
       std::pair<local_edge_descriptor, bool> edge =
-        detail::parallel::add_local_edge(target(data.e, base()), 
+        detail::parallel::add_local_edge(target(data.e, base()),
                        source(data.e, base()),
                        build_edge_property(data.get_property()), base());
       BOOST_ASSERT(edge.second);
       put(edge_target_processor_id, base(), edge.first, other_proc);
 
       if (edge.second && on_add_edge)
-        on_add_edge(edge_descriptor(processor(), other_proc, false, 
+        on_add_edge(edge_descriptor(processor(), other_proc, false,
                                     edge.first),
                     *this);
     }
@@ -2243,7 +2243,7 @@ namespace boost {
   struct PBGL_DISTRIB_ADJLIST_TYPE::lazy_add_vertex_with_property
   {
     /// Construct a lazy request to add a vertex
-    lazy_add_vertex_with_property(adjacency_list& self, 
+    lazy_add_vertex_with_property(adjacency_list& self,
                                   const vertex_property_type& property)
       : self(self), property(property), committed(false) { }
 
@@ -2290,12 +2290,12 @@ namespace boost {
 
     committed = true;
 
-    process_id_type owner 
+    process_id_type owner
       = static_cast<graph_type&>(self).owner_by_property(property);
     if (owner == self.processor()) {
       /// Add the vertex locally.
-      vertex_descriptor v(owner, 
-                          add_vertex(self.build_vertex_property(property), 
+      vertex_descriptor v(owner,
+                          add_vertex(self.build_vertex_property(property),
                                      self.base()));
       if (self.on_add_vertex)
         self.on_add_vertex(v, self);
@@ -2308,19 +2308,19 @@ namespace boost {
   }
 
   template<PBGL_DISTRIB_ADJLIST_TEMPLATE_PARMS>
-  typename PBGL_DISTRIB_ADJLIST_TYPE::vertex_descriptor 
+  typename PBGL_DISTRIB_ADJLIST_TYPE::vertex_descriptor
   PBGL_DISTRIB_ADJLIST_TYPE::lazy_add_vertex_with_property::
   commit() const
   {
     BOOST_ASSERT(!this->committed);
     this->committed = true;
 
-    process_id_type owner 
+    process_id_type owner
       = static_cast<graph_type&>(self).owner_by_property(property);
     local_vertex_descriptor local_v;
     if (owner == self.processor())
       /// Add the vertex locally.
-      local_v = add_vertex(self.build_vertex_property(property), 
+      local_v = add_vertex(self.build_vertex_property(property),
                            self.base());
     else {
       // Request that the remote process add the vertex immediately
@@ -2336,9 +2336,9 @@ namespace boost {
     // Build the full vertex descriptor to return
     return v;
   }
-  
 
-  /** 
+
+  /**
    * Data structure returned from add_edge that will "lazily" add
    * the edge, either when it is converted to a
    * @c pair<edge_descriptor, bool> or when the most recent copy has
@@ -2348,14 +2348,14 @@ namespace boost {
   struct PBGL_DISTRIB_ADJLIST_TYPE::lazy_add_edge
   {
     /// Construct a lazy request to add an edge
-    lazy_add_edge(adjacency_list& self, 
+    lazy_add_edge(adjacency_list& self,
                   vertex_descriptor source, vertex_descriptor target)
       : self(self), source(source), target(target), committed(false) { }
 
     /// Copying a lazy_add_edge transfers the responsibility for
     /// adding the edge to the newly-constructed object.
     lazy_add_edge(const lazy_add_edge& other)
-      : self(other.self), source(other.source), target(other.target), 
+      : self(other.self), source(other.source), target(other.target),
         committed(other.committed)
     {
       other.committed = true;
@@ -2373,13 +2373,13 @@ namespace boost {
     std::pair<edge_descriptor, bool> commit() const;
 
   protected:
-    std::pair<edge_descriptor, bool> 
+    std::pair<edge_descriptor, bool>
     add_local_edge(const edge_property_type& property, directedS) const;
 
-    std::pair<edge_descriptor, bool> 
+    std::pair<edge_descriptor, bool>
     add_local_edge(const edge_property_type& property, bidirectionalS) const;
 
-    std::pair<edge_descriptor, bool> 
+    std::pair<edge_descriptor, bool>
     add_local_edge(const edge_property_type& property, undirectedS) const;
 
     adjacency_list& self;
@@ -2424,7 +2424,7 @@ namespace boost {
     else {
       // Request that the remote processor add an edge
       boost::parallel::detail::untracked_pair<edge_descriptor, bool> result;
-      send_oob_with_reply(self.process_group_, source.owner, 
+      send_oob_with_reply(self.process_group_, source.owner,
                           msg_add_edge_with_reply,
                           msg_add_edge_data(source, target), result);
       return result;
@@ -2440,12 +2440,12 @@ namespace boost {
     // Add the edge to the local part of the graph
     std::pair<local_edge_descriptor, bool> inserted =
       detail::parallel::add_local_edge(source.local, target.local,
-                                       self.build_edge_property(property), 
+                                       self.build_edge_property(property),
                                        self.base());
 
     if (inserted.second)
       // Keep track of the owner of the target
-      put(edge_target_processor_id, self.base(), inserted.first, 
+      put(edge_target_processor_id, self.base(), inserted.first,
           target.owner);
 
     // Compose the edge descriptor and return the result
@@ -2464,7 +2464,7 @@ namespace boost {
   add_local_edge(const edge_property_type& property, bidirectionalS) const
   {
     // Add the directed edge.
-    std::pair<edge_descriptor, bool> result 
+    std::pair<edge_descriptor, bool> result
       = this->add_local_edge(property, directedS());
 
     if (result.second) {
@@ -2474,9 +2474,9 @@ namespace boost {
           stored_edge;
 
         stored_edge e(self.processor(), result.first.local);
-        boost::graph_detail::push(get(vertex_in_edges, 
+        boost::graph_detail::push(get(vertex_in_edges,
                                       self.base())[target.local], e);
-      } 
+      }
       else {
         // Edge is remote, so notify the target's owner that an edge
         // has been added.
@@ -2513,7 +2513,7 @@ namespace boost {
                                            self.build_edge_property(property),
                                            self.base()).first;
 
-        put(edge_target_processor_id, self.base(), return_edge, 
+        put(edge_target_processor_id, self.base(), return_edge,
             source.owner);
       }
       else {
@@ -2525,7 +2525,7 @@ namespace boost {
         else
           send(self.process_group_, target.owner, msg_nonlocal_edge,
                msg_nonlocal_edge_data(result.first.local, property));
-          
+
       }
 
       // Add this edge to the list of local edges
@@ -2536,7 +2536,7 @@ namespace boost {
   }
 
 
-  /** 
+  /**
    * Data structure returned from add_edge that will "lazily" add
    * the edge with its property, either when it is converted to a
    * pair<edge_descriptor, bool> or when the most recent copy has
@@ -2547,8 +2547,8 @@ namespace boost {
     : lazy_add_edge
   {
     /// Construct a lazy request to add an edge
-    lazy_add_edge_with_property(adjacency_list& self, 
-                                vertex_descriptor source, 
+    lazy_add_edge_with_property(adjacency_list& self,
+                                vertex_descriptor source,
                                 vertex_descriptor target,
                                 const edge_property_type& property)
       : lazy_add_edge(self, source, target), property(property) { }
@@ -2594,9 +2594,9 @@ namespace boost {
     else
       // Request that the remote processor add an edge and, but
       // don't wait for a reply.
-      send(this->self.process_group_, this->source.owner, 
+      send(this->self.process_group_, this->source.owner,
            msg_add_edge_with_property,
-           msg_add_edge_with_property_data(this->source, this->target, 
+           msg_add_edge_with_property_data(this->source, this->target,
                                            property));
   }
 
@@ -2614,10 +2614,10 @@ namespace boost {
     else {
       // Request that the remote processor add an edge
       boost::parallel::detail::untracked_pair<edge_descriptor, bool> result;
-      send_oob_with_reply(this->self.process_group_, this->source.owner, 
+      send_oob_with_reply(this->self.process_group_, this->source.owner,
                           msg_add_edge_with_property_and_reply,
-                          msg_add_edge_with_property_data(this->source, 
-                                                          this->target, 
+                          msg_add_edge_with_property_data(this->source,
+                                                          this->target,
                                                           property),
                           result);
       return result;
@@ -2893,7 +2893,7 @@ namespace boost {
   vertex(typename PBGL_DISTRIB_ADJLIST_TYPE::vertices_size_type n,
          const PBGL_DISTRIB_ADJLIST_TYPE& g)
   {
-    typedef typename PBGL_DISTRIB_ADJLIST_TYPE::vertex_descriptor 
+    typedef typename PBGL_DISTRIB_ADJLIST_TYPE::vertex_descriptor
       vertex_descriptor;
 
     return vertex_descriptor(g.distribution()(n), g.distribution().local(n));
@@ -3243,7 +3243,7 @@ namespace boost {
 
   template<PBGL_DISTRIB_ADJLIST_TEMPLATE_PARMS_CONFIG, typename Predicate>
   inline void
-  remove_edge_if(Predicate predicate, 
+  remove_edge_if(Predicate predicate,
                  PBGL_DISTRIB_ADJLIST_TYPE_CONFIG(directedS)& g)
   {
     typedef PBGL_DISTRIB_ADJLIST_TYPE_CONFIG(directedS) Graph;
@@ -3807,7 +3807,7 @@ namespace boost {
 
     template<typename Vertex, typename LocalVertex, typename EdgeProperty>
     struct is_mpi_datatype<boost::detail::parallel::
-                             msg_add_edge_with_property_data<Vertex, 
+                             msg_add_edge_with_property_data<Vertex,
                                                              LocalVertex,
                                                              EdgeProperty> >
       : mpl::and_<is_mpi_datatype<Vertex>, is_mpi_datatype<EdgeProperty> > { };
@@ -3821,7 +3821,7 @@ namespace boost {
                            EdgeProperty> >,
            is_mpi_datatype<EdgeDescriptor> >
   {};
-   
+
    template<typename EdgeDescriptor>
    struct is_mpi_datatype<
             boost::detail::parallel::msg_remove_edge_data<EdgeDescriptor> >
@@ -3855,10 +3855,10 @@ namespace boost {
 
     template<typename Vertex, typename LocalVertex, typename EdgeProperty>
     struct is_bitwise_serializable<boost::detail::parallel::
-                             msg_add_edge_with_property_data<Vertex, 
+                             msg_add_edge_with_property_data<Vertex,
                                                              LocalVertex,
                                                              EdgeProperty> >
-      : mpl::and_<is_bitwise_serializable<Vertex>, 
+      : mpl::and_<is_bitwise_serializable<Vertex>,
                   is_bitwise_serializable<EdgeProperty> > { };
 
    template<typename EdgeProperty, typename EdgeDescriptor>
@@ -3869,12 +3869,12 @@ namespace boost {
                 boost::detail::parallel::maybe_store_property<EdgeProperty> >,
            is_bitwise_serializable<EdgeDescriptor> >
   {};
-   
+
    template<typename EdgeDescriptor>
    struct is_bitwise_serializable<
             boost::detail::parallel::msg_remove_edge_data<EdgeDescriptor> >
            : is_bitwise_serializable<EdgeDescriptor> {};
-   
+
     template<typename Directed, typename Vertex>
     struct implementation_level<boost::detail::edge_base<Directed, Vertex> >
       : mpl::int_<object_serializable> {};
@@ -3898,7 +3898,7 @@ namespace boost {
 
     template<typename Vertex, typename LocalVertex, typename EdgeProperty>
     struct implementation_level<boost::detail::parallel::
-                             msg_add_edge_with_property_data<Vertex, 
+                             msg_add_edge_with_property_data<Vertex,
                                                              LocalVertex,
                                                              EdgeProperty> >
       : mpl::int_<object_serializable> {};
@@ -3907,12 +3907,12 @@ namespace boost {
    struct implementation_level<boost::detail::parallel::msg_nonlocal_edge_data<
                                EdgeProperty,EdgeDescriptor> >
            : mpl::int_<object_serializable> {};
-   
+
    template<typename EdgeDescriptor>
    struct implementation_level<
             boost::detail::parallel::msg_remove_edge_data<EdgeDescriptor> >
           : mpl::int_<object_serializable> {};
-   
+
     template<typename Directed, typename Vertex>
     struct tracking_level<boost::detail::edge_base<Directed, Vertex> >
       : mpl::int_<track_never> {};
@@ -3936,7 +3936,7 @@ namespace boost {
 
     template<typename Vertex, typename LocalVertex, typename EdgeProperty>
     struct tracking_level<boost::detail::parallel::
-                             msg_add_edge_with_property_data<Vertex, 
+                             msg_add_edge_with_property_data<Vertex,
                                                              LocalVertex,
                                                              EdgeProperty> >
       : mpl::int_<track_never> {};
@@ -3945,7 +3945,7 @@ namespace boost {
    struct tracking_level<boost::detail::parallel::msg_nonlocal_edge_data<
                          EdgeProperty,EdgeDescriptor> >
            : mpl::int_<track_never> {};
-   
+
    template<typename EdgeDescriptor>
    struct tracking_level<
             boost::detail::parallel::msg_remove_edge_data<EdgeDescriptor> >

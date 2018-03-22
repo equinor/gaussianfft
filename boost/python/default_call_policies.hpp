@@ -13,7 +13,7 @@
 # include <boost/mpl/or.hpp>
 # include <boost/mpl/front.hpp>
 
-namespace boost { namespace python { 
+namespace boost { namespace python {
 
 template <class T> struct to_python_value;
 
@@ -23,7 +23,7 @@ namespace detail
   template <class T> struct specify_a_return_value_policy_to_wrap_functions_returning
 # if defined(__GNUC__) || defined(__EDG__)
   {}
-# endif 
+# endif
   ;
 }
 
@@ -49,7 +49,7 @@ struct default_call_policies
     typedef default_result_converter result_converter;
     typedef PyObject* argument_package;
 
-    template <class Sig> 
+    template <class Sig>
     struct extract_return_type : mpl::front<Sig>
     {
     };

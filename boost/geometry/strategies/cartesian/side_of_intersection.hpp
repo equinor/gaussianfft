@@ -82,7 +82,7 @@ struct multiplicable_integral
         m_ms = val_u >> half_bits; // val_u / base
         m_ls = val_u - m_ms * base;
     }
-    
+
     friend multiplicable_integral operator*(multiplicable_integral const& a,
                                             multiplicable_integral const& b)
     {
@@ -159,7 +159,7 @@ private :
                                      * multiplicable_integral<T>(b);
         multiplicable_integral<T> cd = multiplicable_integral<T>(c)
                                      * multiplicable_integral<T>(d);
-        
+
         int result = ab > cd ? 1
                    : ab < cd ? -1
                    : 0

@@ -272,7 +272,7 @@ int main( int argc, char * * argv, char * * arg_environ )
 #ifdef JAM_DEBUGGER
 
     is_debugger = 0;
-    
+
     if ( getoptions( argc - 1, argv + 1, "-:l:m:d:j:p:f:gs:t:ano:qv", optv ) < 0 )
         usage( progname );
 

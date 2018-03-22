@@ -38,7 +38,7 @@ namespace boost
         };
       public:
         typedef accept_when type;
-        
+
         template <class S, class Pos>
         struct apply :
           boost::mpl::if_<

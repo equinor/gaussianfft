@@ -21,7 +21,7 @@ namespace boost
   {
     template <void(*)()> struct instantiate {};
   }
-  
+
   template <class ModelFn> struct concept_check_;
 
   template <class Model>
@@ -38,7 +38,7 @@ namespace boost
   };
 
 # ifdef BOOST_OLD_CONCEPT_SUPPORT
-  
+
   template <class Model>
   void constraint_check_failed()
   {
@@ -51,7 +51,7 @@ namespace boost
       concept_checking::instantiate<constraint_check_failed<Model> > x;
       enum { instantiate = 1 };
   };
-  
+
   template <class Model>
   struct concept_check_<void(*)(Model)>
     : mpl::if_c<
@@ -60,16 +60,16 @@ namespace boost
         , concept_check<Model>
       >::type
   {};
-  
+
 # else
-  
+
   template <class Model>
   struct concept_check_<void(*)(Model)>
     : concept_check<Model>
   {};
-  
+
 # endif
-  
+
   // Usage, in class or function context:
   //
   //     BOOST_CONCEPT_ASSERT((UnaryFunctionConcept<F,bool,int>));

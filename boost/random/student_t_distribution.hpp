@@ -67,7 +67,7 @@ public:
         /** Returns true if the two sets of parameters are the same. */
         BOOST_RANDOM_DETAIL_EQUALITY_OPERATOR(param_type, lhs, rhs)
         { return lhs._n == rhs._n; }
-        
+
         /** Returns true if the two sets of parameters are the different. */
         BOOST_RANDOM_DETAIL_INEQUALITY_OPERATOR(param_type)
 
@@ -162,7 +162,7 @@ public:
      */
     BOOST_RANDOM_DETAIL_EQUALITY_OPERATOR(student_t_distribution, lhs, rhs)
     { return lhs._normal == rhs._normal && lhs._chi_squared == rhs._chi_squared; }
-    
+
     /**
      * Returns true if the two instances of @c student_t_distribution will
      * return different sequences of values given equal generators.

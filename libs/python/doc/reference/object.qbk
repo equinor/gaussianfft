@@ -253,10 +253,10 @@ namespace boost { namespace python { namespace api
       template <class A0, class A1,...class An>
       object operator()(A0 const&, A1 const&,...An const&) const;
 
-      detail::args_proxy operator* () const; 
-      object operator()(detail::args_proxy const &args) const; 
-      object operator()(detail::args_proxy const &args, 
-                        detail::kwds_proxy const &kwds) const; 
+      detail::args_proxy operator* () const;
+      object operator()(detail::args_proxy const &args) const;
+      object operator()(detail::args_proxy const &args,
+                        detail::kwds_proxy const &kwds) const;
 
       // truth value testing
       //
@@ -274,7 +274,7 @@ namespace boost { namespace python { namespace api
       //
       template <class T>
       proxy<const_object_item> operator[](T const& key) const;
-    
+
       template <class T>
       proxy<object_item> operator[](T const& key);
 
@@ -282,7 +282,7 @@ namespace boost { namespace python { namespace api
       //
       template <class T, class V>
       proxy<const_object_slice> slice(T const& start, V const& end) const
-    
+
       template <class T, class V>
       proxy<object_slice> slice(T const& start, V const& end);
   };
@@ -307,8 +307,8 @@ object operator()(A0 const& a1, A1 const& a2,...An const& aN) const;
 [variablelist
 [[Effects][`call object with arguments given by the tuple args`]]
 ]
-``object operator()(detail::args_proxy const &args, 
-                  detail::kwds_proxy const &kwds) const; 
+``object operator()(detail::args_proxy const &args,
+                  detail::kwds_proxy const &kwds) const;
 
 ``
 [variablelist
@@ -373,7 +373,7 @@ namespace boost { namespace python { namespace api
 
       ~object();
 
-      object& operator=(object const&); 
+      object& operator=(object const&);
       PyObject* ptr() const;
       bool is_none() const;
   };
@@ -426,7 +426,7 @@ namespace boost { namespace python { namespace api
       proxy const& operator=(proxy const&) const;
       template <class T>
       inline proxy const& operator=(T const& rhs) const;
-      
+
       void del() const;
 
       template <class R>

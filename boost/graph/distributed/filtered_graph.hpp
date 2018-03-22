@@ -39,10 +39,10 @@ namespace boost {
     return process_group(g.m_g);
   }
 
-  /// Forward vertex() to vertex() of the base graph 
+  /// Forward vertex() to vertex() of the base graph
   template <typename Graph, typename EdgePredicate, typename VertexPredicate>
   typename graph_traits<Graph>::vertex_descriptor
-  vertex(typename graph_traits<Graph>::vertices_size_type i, 
+  vertex(typename graph_traits<Graph>::vertices_size_type i,
          filtered_graph<Graph, EdgePredicate, VertexPredicate> const& g)
   { return vertex(i, g.m_g); }
 

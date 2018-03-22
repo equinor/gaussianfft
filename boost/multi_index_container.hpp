@@ -55,7 +55,7 @@
 #include <boost/serialization/nvp.hpp>
 #include <boost/serialization/split_member.hpp>
 #include <boost/serialization/version.hpp>
-#include <boost/throw_exception.hpp> 
+#include <boost/throw_exception.hpp>
 #endif
 
 #if defined(BOOST_MULTI_INDEX_ENABLE_INVARIANT_CHECKING)
@@ -138,7 +138,7 @@ public:
 
   typedef typename super::ctor_args_list           ctor_args_list;
   typedef IndexSpecifierList                       index_specifier_type_list;
- 
+
   typedef typename super::index_type_list          index_type_list;
 
   typedef typename super::iterator_type_list       iterator_type_list;
@@ -189,7 +189,7 @@ public:
   {
     BOOST_MULTI_INDEX_CHECK_INVARIANT;
   }
-  
+
   template<typename InputIterator>
   multi_index_container(
     InputIterator first,InputIterator last,
@@ -332,7 +332,7 @@ public:
     BOOST_MULTI_INDEX_CHECK_INVARIANT;
     typedef const Value* init_iterator;
 
-    multi_index_container x(*this,detail::do_not_copy_elements_tag());    
+    multi_index_container x(*this,detail::do_not_copy_elements_tag());
     iterator hint=x.end();
     for(init_iterator first=list.begin(),last=list.end();
         first!=last;++first){
@@ -899,7 +899,7 @@ BOOST_MULTI_INDEX_PROTECTED_IF_MEMBER_TEMPLATE_FRIENDS:
   {
     BOOST_MULTI_INDEX_CHECK_INVARIANT;
 
-    clear_(); 
+    clear_();
     serialization::collection_size_type       s;
     detail::serialization_version<value_type> value_version;
     if(version<1){

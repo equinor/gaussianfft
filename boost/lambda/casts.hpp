@@ -19,7 +19,7 @@
 
 #include <typeinfo>
 
-namespace boost { 
+namespace boost {
 namespace lambda {
 
 template<class Act, class Args>
@@ -37,7 +37,7 @@ class sizeof_action;
 
 // Cast actions
 
-template<class T> class cast_action<static_cast_action<T> > 
+template<class T> class cast_action<static_cast_action<T> >
 {
 public:
   template<class RET, class Arg1>
@@ -94,20 +94,20 @@ public:
 // return types of casting lambda_functors (all "T" type.)
 
 template<template <class> class cast_type, class T, class A>
-struct return_type_N<cast_action< cast_type<T> >, A> { 
+struct return_type_N<cast_action< cast_type<T> >, A> {
   typedef T type;
 };
 
 // return type of typeid_action
 template<class A>
-struct return_type_N<typeid_action, A> { 
+struct return_type_N<typeid_action, A> {
   typedef std::type_info const & type;
 };
 
 // return type of sizeof_action
 
 template<class A>
-struct return_type_N<sizeof_action, A> { 
+struct return_type_N<sizeof_action, A> {
   typedef std::size_t type;
 };
 
@@ -115,19 +115,19 @@ struct return_type_N<sizeof_action, A> {
 // the four cast & typeid overloads.
 // casts can take ordinary variables (not just lambda functors)
 
-// static_cast 
+// static_cast
 template <class T, class Arg1>
 inline const lambda_functor<
   lambda_functor_base<
-    action<1, cast_action<static_cast_action<T> > >, 
+    action<1, cast_action<static_cast_action<T> > >,
     tuple<typename const_copy_argument <const Arg1>::type>
-  > 
+  >
 >
-ll_static_cast(const Arg1& a1) { 
-  return 
+ll_static_cast(const Arg1& a1) {
+  return
     lambda_functor_base<
-      action<1, cast_action<static_cast_action<T> > >, 
-      tuple<typename const_copy_argument <const Arg1>::type> 
+      action<1, cast_action<static_cast_action<T> > >,
+      tuple<typename const_copy_argument <const Arg1>::type>
     >
   ( tuple<typename const_copy_argument <const Arg1>::type>(a1));
 }
@@ -136,16 +136,16 @@ ll_static_cast(const Arg1& a1) {
 template <class T, class Arg1>
 inline const lambda_functor<
   lambda_functor_base<
-    action<1, cast_action<dynamic_cast_action<T> > >, 
+    action<1, cast_action<dynamic_cast_action<T> > >,
     tuple<typename const_copy_argument <const Arg1>::type>
-  > 
+  >
 >
-ll_dynamic_cast(const Arg1& a1) { 
-  return 
+ll_dynamic_cast(const Arg1& a1) {
+  return
     lambda_functor_base<
-      action<1, cast_action<dynamic_cast_action<T> > >, 
+      action<1, cast_action<dynamic_cast_action<T> > >,
       tuple<typename const_copy_argument <const Arg1>::type>
-    > 
+    >
   ( tuple<typename const_copy_argument <const Arg1>::type>(a1));
 }
 
@@ -153,16 +153,16 @@ ll_dynamic_cast(const Arg1& a1) {
 template <class T, class Arg1>
 inline const lambda_functor<
   lambda_functor_base<
-    action<1, cast_action<const_cast_action<T> > >, 
+    action<1, cast_action<const_cast_action<T> > >,
     tuple<typename const_copy_argument <const Arg1>::type>
-  > 
+  >
 >
-ll_const_cast(const Arg1& a1) { 
-  return 
+ll_const_cast(const Arg1& a1) {
+  return
       lambda_functor_base<
-        action<1, cast_action<const_cast_action<T> > >, 
+        action<1, cast_action<const_cast_action<T> > >,
         tuple<typename const_copy_argument <const Arg1>::type>
-      > 
+      >
       ( tuple<typename const_copy_argument <const Arg1>::type>(a1));
 }
 
@@ -170,16 +170,16 @@ ll_const_cast(const Arg1& a1) {
 template <class T, class Arg1>
 inline const lambda_functor<
   lambda_functor_base<
-    action<1, cast_action<reinterpret_cast_action<T> > >, 
+    action<1, cast_action<reinterpret_cast_action<T> > >,
     tuple<typename const_copy_argument <const Arg1>::type>
-  > 
+  >
 >
-ll_reinterpret_cast(const Arg1& a1) { 
-  return 
+ll_reinterpret_cast(const Arg1& a1) {
+  return
       lambda_functor_base<
-        action<1, cast_action<reinterpret_cast_action<T> > >, 
-        tuple<typename const_copy_argument <const Arg1>::type> 
-      > 
+        action<1, cast_action<reinterpret_cast_action<T> > >,
+        tuple<typename const_copy_argument <const Arg1>::type>
+      >
       ( tuple<typename const_copy_argument <const Arg1>::type>(a1));
 }
 
@@ -189,16 +189,16 @@ ll_reinterpret_cast(const Arg1& a1) {
 template <class Arg1>
 inline const lambda_functor<
   lambda_functor_base<
-    action<1, typeid_action>, 
+    action<1, typeid_action>,
     tuple<typename const_copy_argument <const Arg1>::type>
-  > 
+  >
 >
-ll_typeid(const Arg1& a1) { 
-  return 
+ll_typeid(const Arg1& a1) {
+  return
       lambda_functor_base<
-        action<1, typeid_action>, 
+        action<1, typeid_action>,
         tuple<typename const_copy_argument <const Arg1>::type>
-      > 
+      >
       ( tuple<typename const_copy_argument <const Arg1>::type>(a1));
 }
 
@@ -207,20 +207,20 @@ ll_typeid(const Arg1& a1) {
 template <class Arg1>
 inline const lambda_functor<
   lambda_functor_base<
-    action<1, sizeof_action>, 
+    action<1, sizeof_action>,
     tuple<lambda_functor<Arg1> >
-  > 
+  >
 >
-ll_sizeof(const lambda_functor<Arg1>& a1) { 
-  return 
+ll_sizeof(const lambda_functor<Arg1>& a1) {
+  return
       lambda_functor_base<
-        action<1, sizeof_action>, 
+        action<1, sizeof_action>,
         tuple<lambda_functor<Arg1> >
-      > 
+      >
       ( tuple<lambda_functor<Arg1> >(a1));
 }
 
-} // namespace lambda 
+} // namespace lambda
 } // namespace boost
 
 #endif

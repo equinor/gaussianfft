@@ -155,7 +155,7 @@ namespace detail {
   class crauser_et_al_dijkstra_queue
     : public graph::detail::remote_update_set<
                crauser_et_al_dijkstra_queue<
-                 Graph, Combine, Compare, VertexIndexMap, DistanceMap, 
+                 Graph, Combine, Compare, VertexIndexMap, DistanceMap,
                  PredecessorMap, MinOutWeightMap, MinInWeightMap>,
                typename boost::graph::parallel::process_group_type<Graph>::type,
                typename dijkstra_msg_value<DistanceMap, PredecessorMap>::type,
@@ -182,7 +182,7 @@ namespace detail {
     typedef typename property_traits<DistanceMap>::value_type distance_type;
 
 #ifdef MUTABLE_QUEUE
-    typedef mutable_queue<vertex_descriptor, std::vector<vertex_descriptor>, 
+    typedef mutable_queue<vertex_descriptor, std::vector<vertex_descriptor>,
                           dist_queue_compare_type, VertexIndexMap> dist_queue_type;
 
 #else
@@ -196,7 +196,7 @@ namespace detail {
       out_queue_compare_type;
 
 #ifdef MUTABLE_QUEUE
-    typedef mutable_queue<vertex_descriptor, std::vector<vertex_descriptor>, 
+    typedef mutable_queue<vertex_descriptor, std::vector<vertex_descriptor>,
                           out_queue_compare_type, VertexIndexMap> out_queue_type;
 
 #else
@@ -210,7 +210,7 @@ namespace detail {
       in_queue_compare_type;
 
 #ifdef MUTABLE_QUEUE
-    typedef mutable_queue<vertex_descriptor, std::vector<vertex_descriptor>, 
+    typedef mutable_queue<vertex_descriptor, std::vector<vertex_descriptor>,
                           in_queue_compare_type, VertexIndexMap> in_queue_type;
 
 #else
@@ -581,7 +581,7 @@ crauser_et_al_shortest_paths
 
   // Dijkstra Queue
   typedef detail::crauser_et_al_dijkstra_queue
-            <DistributedGraph, Combine, Compare, IndexMap, DistanceMap, 
+            <DistributedGraph, Combine, Compare, IndexMap, DistanceMap,
              PredecessorMap, MinOutWeightMap, MinInWeightMap>
     Queue;
 

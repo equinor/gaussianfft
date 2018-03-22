@@ -1,6 +1,6 @@
 /*
     Copyright 2005-2007 Adobe Systems Incorporated
-   
+
     Use, modification and distribution are subject to the Boost Software License,
     Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
     http://www.boost.org/LICENSE_1_0.txt).
@@ -34,13 +34,13 @@ namespace boost { namespace gil {
 /// \{
 
 /// \brief Red
-struct red_t {};    
+struct red_t {};
 
 /// \brief Green
 struct green_t {};
 
 /// \brief Blue
-struct blue_t {}; 
+struct blue_t {};
 /// \}
 
 /// \ingroup ColorSpaceModel

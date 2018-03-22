@@ -108,7 +108,7 @@ private:
   template<typename Integral>
   void advance(Integral n)noexcept{p=value_ptr(char_ptr(p)+n*stride_);}
   std::ptrdiff_t distance_to(const stride_iterator& x)const noexcept
-    {return (char_ptr(x.p)-char_ptr(p))/stride_;}          
+    {return (char_ptr(x.p)-char_ptr(p))/stride_;}
 
   Value*      p;
   std::size_t stride_;

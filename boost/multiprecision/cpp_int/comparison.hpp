@@ -22,15 +22,15 @@ namespace boost{ namespace multiprecision{ namespace backends{
 //
 template <unsigned MinBits, unsigned MaxBits, cpp_integer_type SignType, cpp_int_check_type Checked, class Allocator>
 BOOST_MP_FORCEINLINE typename enable_if_c<
-      !is_trivial_cpp_int<cpp_int_backend<MinBits, MaxBits, SignType, Checked, Allocator> >::value, 
+      !is_trivial_cpp_int<cpp_int_backend<MinBits, MaxBits, SignType, Checked, Allocator> >::value,
       bool
-   >::type 
+   >::type
    eval_eq(const cpp_int_backend<MinBits, MaxBits, SignType, Checked, Allocator>& a, const cpp_int_backend<MinBits, MaxBits, SignType, Checked, Allocator>& b) BOOST_NOEXCEPT
 {
 #if BOOST_WORKAROUND(BOOST_MSVC, >= 1600)
    return (a.sign() == b.sign())
       && (a.size() == b.size())
-      && std::equal(a.limbs(), a.limbs() + a.size(), 
+      && std::equal(a.limbs(), a.limbs() + a.size(),
          stdext::checked_array_iterator<cpp_int_backend<MinBits, MaxBits, SignType, Checked, Allocator>::const_limb_pointer>(b.limbs(), b.size()));
 #else
    return (a.sign() == b.sign())
@@ -40,10 +40,10 @@ BOOST_MP_FORCEINLINE typename enable_if_c<
 }
 template <unsigned MinBits1, unsigned MaxBits1, cpp_integer_type SignType1, cpp_int_check_type Checked1, class Allocator1, unsigned MinBits2, unsigned MaxBits2, cpp_integer_type SignType2, cpp_int_check_type Checked2, class Allocator2>
 BOOST_MP_FORCEINLINE typename enable_if_c<
-      !is_trivial_cpp_int<cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1> >::value 
+      !is_trivial_cpp_int<cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1> >::value
       && !is_trivial_cpp_int<cpp_int_backend<MinBits2, MaxBits2, SignType2, Checked2, Allocator2> >::value,
       bool
-   >::type 
+   >::type
    eval_eq(const cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& a, const cpp_int_backend<MinBits2, MaxBits2, SignType2, Checked2, Allocator2>& b) BOOST_NOEXCEPT
 {
 #if BOOST_WORKAROUND(BOOST_MSVC, >= 1600)
@@ -206,7 +206,7 @@ BOOST_MP_FORCEINLINE typename enable_if_c<
 //
 template <unsigned MinBits, unsigned MaxBits, cpp_int_check_type Checked>
 BOOST_MP_FORCEINLINE typename enable_if_c<
-      is_trivial_cpp_int<cpp_int_backend<MinBits, MaxBits, signed_magnitude, Checked, void> >::value, 
+      is_trivial_cpp_int<cpp_int_backend<MinBits, MaxBits, signed_magnitude, Checked, void> >::value,
       bool
    >::value eval_eq(const cpp_int_backend<MinBits, MaxBits, signed_magnitude, Checked, void>& a, const cpp_int_backend<MinBits, MaxBits, signed_magnitude, Checked, void>& b) BOOST_NOEXCEPT
 {
@@ -214,7 +214,7 @@ BOOST_MP_FORCEINLINE typename enable_if_c<
 }
 template <unsigned MinBits, unsigned MaxBits, cpp_int_check_type Checked>
 BOOST_MP_FORCEINLINE typename enable_if_c<
-      is_trivial_cpp_int<cpp_int_backend<MinBits, MaxBits, unsigned_magnitude, Checked, void> >::value, 
+      is_trivial_cpp_int<cpp_int_backend<MinBits, MaxBits, unsigned_magnitude, Checked, void> >::value,
       bool
    >::value eval_eq(const cpp_int_backend<MinBits, MaxBits, unsigned_magnitude, Checked, void>& a, const cpp_int_backend<MinBits, MaxBits, unsigned_magnitude, Checked, void>& b) BOOST_NOEXCEPT
 {
@@ -222,7 +222,7 @@ BOOST_MP_FORCEINLINE typename enable_if_c<
 }
 template <unsigned MinBits, unsigned MaxBits, cpp_int_check_type Checked, class U>
 BOOST_MP_FORCEINLINE typename enable_if_c<
-      is_unsigned<U>::value && is_trivial_cpp_int<cpp_int_backend<MinBits, MaxBits, signed_magnitude, Checked, void> >::value, 
+      is_unsigned<U>::value && is_trivial_cpp_int<cpp_int_backend<MinBits, MaxBits, signed_magnitude, Checked, void> >::value,
       bool
    >::type eval_eq(const cpp_int_backend<MinBits, MaxBits, signed_magnitude, Checked, void>& a, U b) BOOST_NOEXCEPT
 {
@@ -230,7 +230,7 @@ BOOST_MP_FORCEINLINE typename enable_if_c<
 }
 template <unsigned MinBits, unsigned MaxBits, cpp_int_check_type Checked, class S>
 BOOST_MP_FORCEINLINE typename enable_if_c<
-      is_signed<S>::value && is_trivial_cpp_int<cpp_int_backend<MinBits, MaxBits, signed_magnitude, Checked, void> >::value, 
+      is_signed<S>::value && is_trivial_cpp_int<cpp_int_backend<MinBits, MaxBits, signed_magnitude, Checked, void> >::value,
       bool
    >::type eval_eq(const cpp_int_backend<MinBits, MaxBits, signed_magnitude, Checked, void>& a, S b) BOOST_NOEXCEPT
 {
@@ -238,7 +238,7 @@ BOOST_MP_FORCEINLINE typename enable_if_c<
 }
 template <unsigned MinBits, unsigned MaxBits, cpp_int_check_type Checked, class U>
 BOOST_MP_FORCEINLINE typename enable_if_c<
-      is_unsigned<U>::value && is_trivial_cpp_int<cpp_int_backend<MinBits, MaxBits, unsigned_magnitude, Checked, void> >::value, 
+      is_unsigned<U>::value && is_trivial_cpp_int<cpp_int_backend<MinBits, MaxBits, unsigned_magnitude, Checked, void> >::value,
       bool
    >::type eval_eq(const cpp_int_backend<MinBits, MaxBits, unsigned_magnitude, Checked, void>& a, U b) BOOST_NOEXCEPT
 {
@@ -246,7 +246,7 @@ BOOST_MP_FORCEINLINE typename enable_if_c<
 }
 template <unsigned MinBits, unsigned MaxBits, cpp_int_check_type Checked, class S>
 BOOST_MP_FORCEINLINE typename enable_if_c<
-      is_signed<S>::value && is_trivial_cpp_int<cpp_int_backend<MinBits, MaxBits, unsigned_magnitude, Checked, void> >::value, 
+      is_signed<S>::value && is_trivial_cpp_int<cpp_int_backend<MinBits, MaxBits, unsigned_magnitude, Checked, void> >::value,
       bool
    >::type eval_eq(const cpp_int_backend<MinBits, MaxBits, unsigned_magnitude, Checked, void>& a, S b) BOOST_NOEXCEPT
 {
@@ -282,7 +282,7 @@ BOOST_MP_FORCEINLINE typename enable_if_c<
 }
 template <unsigned MinBits, unsigned MaxBits, cpp_int_check_type Checked, class U>
 BOOST_MP_FORCEINLINE typename enable_if_c<
-      is_unsigned<U>::value && is_trivial_cpp_int<cpp_int_backend<MinBits, MaxBits, signed_magnitude, Checked, void> >::value, 
+      is_unsigned<U>::value && is_trivial_cpp_int<cpp_int_backend<MinBits, MaxBits, signed_magnitude, Checked, void> >::value,
       bool
    >::type eval_lt(const cpp_int_backend<MinBits, MaxBits, signed_magnitude, Checked, void>& a, U b) BOOST_NOEXCEPT
 {
@@ -292,7 +292,7 @@ BOOST_MP_FORCEINLINE typename enable_if_c<
 }
 template <unsigned MinBits, unsigned MaxBits, cpp_int_check_type Checked, class S>
 BOOST_MP_FORCEINLINE typename enable_if_c<
-      is_signed<S>::value && is_trivial_cpp_int<cpp_int_backend<MinBits, MaxBits, signed_magnitude, Checked, void> >::value, 
+      is_signed<S>::value && is_trivial_cpp_int<cpp_int_backend<MinBits, MaxBits, signed_magnitude, Checked, void> >::value,
       bool
    >::type eval_lt(const cpp_int_backend<MinBits, MaxBits, signed_magnitude, Checked, void>& a, S b) BOOST_NOEXCEPT
 {
@@ -302,7 +302,7 @@ BOOST_MP_FORCEINLINE typename enable_if_c<
 }
 template <unsigned MinBits, unsigned MaxBits, cpp_int_check_type Checked, class U>
 BOOST_MP_FORCEINLINE typename enable_if_c<
-      is_unsigned<U>::value && is_trivial_cpp_int<cpp_int_backend<MinBits, MaxBits, unsigned_magnitude, Checked, void> >::value, 
+      is_unsigned<U>::value && is_trivial_cpp_int<cpp_int_backend<MinBits, MaxBits, unsigned_magnitude, Checked, void> >::value,
       bool
    >::type eval_lt(const cpp_int_backend<MinBits, MaxBits, unsigned_magnitude, Checked, void>& a, U b) BOOST_NOEXCEPT
 {
@@ -310,7 +310,7 @@ BOOST_MP_FORCEINLINE typename enable_if_c<
 }
 template <unsigned MinBits, unsigned MaxBits, cpp_int_check_type Checked, class S>
 BOOST_MP_FORCEINLINE typename enable_if_c<
-      is_signed<S>::value && is_trivial_cpp_int<cpp_int_backend<MinBits, MaxBits, unsigned_magnitude, Checked, void> >::value, 
+      is_signed<S>::value && is_trivial_cpp_int<cpp_int_backend<MinBits, MaxBits, unsigned_magnitude, Checked, void> >::value,
       bool
    >::type eval_lt(const cpp_int_backend<MinBits, MaxBits, unsigned_magnitude, Checked, void>& a, S b) BOOST_NOEXCEPT
 {
@@ -346,7 +346,7 @@ BOOST_MP_FORCEINLINE typename enable_if_c<
 }
 template <unsigned MinBits, unsigned MaxBits, cpp_int_check_type Checked, class U>
 BOOST_MP_FORCEINLINE typename enable_if_c<
-      is_unsigned<U>::value && is_trivial_cpp_int<cpp_int_backend<MinBits, MaxBits, signed_magnitude, Checked, void> >::value, 
+      is_unsigned<U>::value && is_trivial_cpp_int<cpp_int_backend<MinBits, MaxBits, signed_magnitude, Checked, void> >::value,
       bool
    >::type eval_gt(const cpp_int_backend<MinBits, MaxBits, signed_magnitude, Checked, void>& a, U b) BOOST_NOEXCEPT
 {
@@ -356,7 +356,7 @@ BOOST_MP_FORCEINLINE typename enable_if_c<
 }
 template <unsigned MinBits, unsigned MaxBits, cpp_int_check_type Checked, class S>
 BOOST_MP_FORCEINLINE typename enable_if_c<
-      is_signed<S>::value && is_trivial_cpp_int<cpp_int_backend<MinBits, MaxBits, signed_magnitude, Checked, void> >::value, 
+      is_signed<S>::value && is_trivial_cpp_int<cpp_int_backend<MinBits, MaxBits, signed_magnitude, Checked, void> >::value,
       bool
    >::type eval_gt(const cpp_int_backend<MinBits, MaxBits, signed_magnitude, Checked, void>& a, S b) BOOST_NOEXCEPT
 {
@@ -366,7 +366,7 @@ BOOST_MP_FORCEINLINE typename enable_if_c<
 }
 template <unsigned MinBits, unsigned MaxBits, cpp_int_check_type Checked, class U>
 BOOST_MP_FORCEINLINE typename enable_if_c<
-      is_unsigned<U>::value && is_trivial_cpp_int<cpp_int_backend<MinBits, MaxBits, unsigned_magnitude, Checked, void> >::value, 
+      is_unsigned<U>::value && is_trivial_cpp_int<cpp_int_backend<MinBits, MaxBits, unsigned_magnitude, Checked, void> >::value,
       bool
    >::type eval_gt(const cpp_int_backend<MinBits, MaxBits, unsigned_magnitude, Checked, void>& a, U b) BOOST_NOEXCEPT
 {
@@ -374,7 +374,7 @@ BOOST_MP_FORCEINLINE typename enable_if_c<
 }
 template <unsigned MinBits, unsigned MaxBits, cpp_int_check_type Checked, class S>
 BOOST_MP_FORCEINLINE typename enable_if_c<
-      is_signed<S>::value && is_trivial_cpp_int<cpp_int_backend<MinBits, MaxBits, unsigned_magnitude, Checked, void> >::value, 
+      is_signed<S>::value && is_trivial_cpp_int<cpp_int_backend<MinBits, MaxBits, unsigned_magnitude, Checked, void> >::value,
       bool
    >::type eval_gt(const cpp_int_backend<MinBits, MaxBits, unsigned_magnitude, Checked, void>& a, S b) BOOST_NOEXCEPT
 {

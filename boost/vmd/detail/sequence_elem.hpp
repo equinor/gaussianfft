@@ -36,9 +36,9 @@
 
 /*
 
-    Given modifications and the requested type, 
+    Given modifications and the requested type,
     determine whether or not we should be checking for specific identifiers
-    
+
     1 = check for specific identifiers
     0 = do no check for specific identifiers
 
@@ -78,7 +78,7 @@
 /*
 
     Given modifications, determine whether or not an index should be part of the result
-    
+
     1 = index should be part of the result
     0 = index should not be part of the result
 
@@ -258,7 +258,7 @@
 /*
 
     Determines whether the result from the element access has failed or not
-    
+
     returns 1 if it has failed, otherwise 0.
 
 */

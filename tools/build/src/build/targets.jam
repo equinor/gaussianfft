@@ -341,7 +341,7 @@ class project-target : abstract-target
             self.alternative-names += [ $(target-instance).name ] ;
         }
     }
-    
+
     # Checks if an alternative was declared for the target.
     # Unlike checking for a main target this does not require
     # building the main targets. And hence can be used in/directly

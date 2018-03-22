@@ -18,7 +18,7 @@ struct const_item_policies
     typedef object key_type;
     static object get(object const& target, object const& key);
 };
-  
+
 struct item_policies : const_item_policies
 {
     static object const& set(object const& target, object const& key, object const& value);

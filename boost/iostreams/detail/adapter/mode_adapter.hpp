@@ -10,7 +10,7 @@
 
 #if defined(_MSC_VER)
 # pragma once
-#endif              
+#endif
 
 // Contains the definition of the class template mode_adapter, which allows
 // a filter or device to function as if it has a different i/o mode than that
@@ -19,10 +19,10 @@
 #include <boost/config.hpp>                // BOOST_MSVC.
 #include <boost/detail/workaround.hpp>
 #include <boost/iostreams/categories.hpp>
-#include <boost/iostreams/detail/ios.hpp>  // openmode, seekdir, int types. 
+#include <boost/iostreams/detail/ios.hpp>  // openmode, seekdir, int types.
 #include <boost/iostreams/traits.hpp>
-#include <boost/iostreams/operations.hpp> 
-#include <boost/mpl/if.hpp> 
+#include <boost/iostreams/operations.hpp>
+#include <boost/mpl/if.hpp>
 
 namespace boost { namespace iostreams { namespace detail {
 
@@ -33,8 +33,8 @@ private:
 public:
     typedef typename wrapped_type<T>::type  component_type;
     typedef typename char_type_of<T>::type  char_type;
-    struct category 
-        : Mode, 
+    struct category
+        : Mode,
           device_tag,
           mpl::if_<is_filter<T>, filter_tag, device_tag>,
           mpl::if_<is_filter<T>, multichar_tag, empty_base>,
@@ -48,7 +48,7 @@ public:
     std::streamsize read(char_type* s, std::streamsize n);
     std::streamsize write(const char_type* s, std::streamsize n);
     std::streampos seek( stream_offset off, BOOST_IOS::seekdir way,
-                         BOOST_IOS::openmode which = 
+                         BOOST_IOS::openmode which =
                              BOOST_IOS::in | BOOST_IOS::out );
     void close();
     void close(BOOST_IOS::openmode which);
@@ -68,7 +68,7 @@ public:
     { return iostreams::seek(t_, dev, off, way); }
 
     template<typename Device>
-    std::streampos seek( Device& dev, stream_offset off, 
+    std::streampos seek( Device& dev, stream_offset off,
                          BOOST_IOS::seekdir way, BOOST_IOS::openmode which  )
     { return iostreams::seek(t_, dev, off, way, which); }
 
@@ -86,7 +86,7 @@ public:
 private:
     component_type t_;
 };
-                    
+
 //------------------Implementation of mode_adapter----------------------------//
 
 template<typename Mode, typename T>

@@ -60,7 +60,7 @@ void work_with_dict(dict data1, dict data2)
 void test_templates(object print)
 {
     std::string key = "key";
-    
+
     dict tmp;
     tmp[1] = "a test string";
     print(tmp.get(1));
@@ -75,7 +75,7 @@ void test_templates(object print)
     BOOST_ASSERT(!tmp.has_key(key));
     //print(tmp[3]);
 }
-    
+
 BOOST_PYTHON_MODULE(dict_ext)
 {
     def("new_dict", new_dict);

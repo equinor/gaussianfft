@@ -28,7 +28,7 @@ namespace detail
 
       // D.get(k[,d]) -> D[k] if D.has_key(k), else d.  d defaults to None.
       object get(object_cref k) const;
-    
+
       object get(object_cref k, object_cref d) const;
 
       // D.has_key(k) -> 1 if D has a key k, else 0
@@ -36,7 +36,7 @@ namespace detail
 
       // D.items() -> list of D's (key, value) pairs, as 2-tuples
       list items() const;
- 
+
       // D.iteritems() -> an iterator over the (key, value) items of D
       object iteritems() const;
 
@@ -45,10 +45,10 @@ namespace detail
 
       // D.itervalues() -> an iterator over the values of D
       object itervalues() const;
- 
+
       // D.keys() -> list of D's keys
       list keys() const;
- 
+
       // D.popitem() -> (k, v), remove and return some (key, value) pair as a
       // 2-tuple; but raise KeyError if D is empty
       tuple popitem();
@@ -95,29 +95,29 @@ class dict : public detail::dict_base
     }
 
     template<class T>
-    object get(T const& k) const 
+    object get(T const& k) const
     {
         return base::get(object(k));
     }
-    
+
     template<class T1, class T2>
-    object get(T1 const& k, T2 const& d) const 
+    object get(T1 const& k, T2 const& d) const
     {
         return base::get(object(k),object(d));
     }
-    
+
     template<class T>
     bool has_key(T const& k) const
     {
         return base::has_key(object(k));
     }
-    
+
     template<class T>
     object setdefault(T const& k)
     {
         return base::setdefault(object(k));
     }
-    
+
     template<class T1, class T2>
     object setdefault(T1 const& k, T2 const& d)
     {

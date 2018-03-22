@@ -31,10 +31,10 @@ namespace boost { namespace iostreams {
 
 namespace detail {
 
-template<typename T> 
+template<typename T>
 struct write_device_impl;
 
-template<typename T> 
+template<typename T>
 struct write_filter_impl;
 
 } // End namespace detail.
@@ -50,7 +50,7 @@ inline std::streamsize write
 
 template<typename T, typename Sink>
 inline std::streamsize
-write( T& t, Sink& snk, const typename char_type_of<T>::type* s, 
+write( T& t, Sink& snk, const typename char_type_of<T>::type* s,
        std::streamsize n )
 { return detail::write_filter_impl<T>::write(detail::unwrap(t), snk, s, n); }
 

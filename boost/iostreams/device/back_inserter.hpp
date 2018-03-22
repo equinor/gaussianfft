@@ -24,8 +24,8 @@ public:
     typedef sink_tag                        category;
     back_insert_device(Container& cnt) : container(&cnt) { }
     std::streamsize write(const char_type* s, std::streamsize n)
-    { 
-        container->insert(container->end(), s, s + n); 
+    {
+        container->insert(container->end(), s, s + n);
         return n;
     }
 protected:

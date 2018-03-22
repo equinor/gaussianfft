@@ -34,7 +34,7 @@ namespace boost {
   BOOST_MPL_HAS_XXX_TRAIT_DEF(value_type)
   BOOST_MPL_HAS_XXX_TRAIT_DEF(reference)
   BOOST_MPL_HAS_XXX_TRAIT_DEF(category)
- 
+
   template<class PA>
   struct is_property_map :
     boost::mpl::and_<
@@ -44,7 +44,7 @@ namespace boost {
       has_category<PA>
     >
   {};
- 
+
   template <typename PA>
   struct default_property_traits {
     typedef typename PA::key_type key_type;
@@ -52,9 +52,9 @@ namespace boost {
     typedef typename PA::reference reference;
     typedef typename PA::category   category;
   };
- 
+
   struct null_property_traits {};
- 
+
   template <typename PA>
   struct property_traits :
     boost::mpl::if_<is_property_map<PA>,
@@ -66,7 +66,7 @@ namespace boost {
   template <typename PA>
   struct property_traits {
     typedef typename PA::key_type key_type;
-    typedef typename PA::value_type value_type; 
+    typedef typename PA::value_type value_type;
     typedef typename PA::reference reference;
     typedef typename PA::category   category;
   };
@@ -76,8 +76,8 @@ namespace boost {
   // property_traits category tags
 
   namespace detail {
-    enum ePropertyMapID { READABLE_PA, WRITABLE_PA, 
-                          READ_WRITE_PA, LVALUE_PA, OP_BRACKET_PA, 
+    enum ePropertyMapID { READABLE_PA, WRITABLE_PA,
+                          READ_WRITE_PA, LVALUE_PA, OP_BRACKET_PA,
                           RAND_ACCESS_ITER_PA, LAST_PA };
   }
   struct readable_property_map_tag { enum { id = detail::READABLE_PA }; };
@@ -161,7 +161,7 @@ namespace boost {
   };
   template <typename K, typename V>
   const typename readable_property_map_archetype<K,V>::reference&
-  get(const readable_property_map_archetype<K,V>&, 
+  get(const readable_property_map_archetype<K,V>&,
       const typename readable_property_map_archetype<K,V>::key_type&)
   {
     typedef typename readable_property_map_archetype<K,V>::reference R;
@@ -191,8 +191,8 @@ namespace boost {
     typedef writable_property_map_tag category;
   };
   template <typename K, typename V>
-  void put(const writable_property_map_archetype<K,V>&, 
-           const typename writable_property_map_archetype<K,V>::key_type&, 
+  void put(const writable_property_map_archetype<K,V>&,
+           const typename writable_property_map_archetype<K,V>::key_type&,
            const typename writable_property_map_archetype<K,V>::value_type&) { }
 
 
@@ -282,7 +282,7 @@ namespace boost {
     typedef ValueArchetype value_type;
     typedef ValueArchetype& reference;
     typedef lvalue_property_map_tag category;
-    value_type& operator[](const key_type&) const { 
+    value_type& operator[](const key_type&) const {
       return static_object<value_type>::get();
     }
   };
@@ -313,7 +313,7 @@ namespace boost {
   //=========================================================================
   // Adapter to turn a RandomAccessIterator into a property map
 
-  template <class RandomAccessIterator, 
+  template <class RandomAccessIterator,
     class IndexMap
 #ifdef BOOST_NO_STD_ITERATOR_TRAITS
     , class T, class R
@@ -323,7 +323,7 @@ namespace boost {
 #endif
      >
   class iterator_property_map
-    : public boost::put_get_helper< R, 
+    : public boost::put_get_helper< R,
         iterator_property_map<RandomAccessIterator, IndexMap,
         T, R> >
   {
@@ -334,8 +334,8 @@ namespace boost {
     typedef boost::lvalue_property_map_tag category;
 
     inline iterator_property_map(
-      RandomAccessIterator cc = RandomAccessIterator(), 
-      const IndexMap& _id = IndexMap() ) 
+      RandomAccessIterator cc = RandomAccessIterator(),
+      const IndexMap& _id = IndexMap() )
       : iter(cc), index(_id) { }
     inline R operator[](key_type v) const { return *(iter + get(index, v)) ; }
   protected:
@@ -366,7 +366,7 @@ namespace boost {
     return PMap(iter, id);
   }
 
-  template <class RandomAccessIterator, 
+  template <class RandomAccessIterator,
     class IndexMap
 #ifdef BOOST_NO_STD_ITERATOR_TRAITS
     , class T, class R
@@ -376,20 +376,20 @@ namespace boost {
 #endif
      >
   class safe_iterator_property_map
-    : public boost::put_get_helper< R, 
+    : public boost::put_get_helper< R,
         safe_iterator_property_map<RandomAccessIterator, IndexMap,
         T, R> >
   {
   public:
-    typedef typename property_traits<IndexMap>::key_type key_type; 
+    typedef typename property_traits<IndexMap>::key_type key_type;
     typedef T value_type;
     typedef R reference;
     typedef boost::lvalue_property_map_tag category;
 
     inline safe_iterator_property_map(
-      RandomAccessIterator first, 
-      std::size_t n_ = 0, 
-      const IndexMap& _id = IndexMap() ) 
+      RandomAccessIterator first,
+      std::size_t n_ = 0,
+      const IndexMap& _id = IndexMap() )
       : iter(first), n(n_), index(_id) { }
     inline safe_iterator_property_map() { }
     inline R operator[](key_type v) const {
@@ -476,7 +476,7 @@ namespace boost {
   private:
     C const* m_c;
   };
-  
+
   template <class UniquePairAssociativeContainer>
   const_associative_property_map<UniquePairAssociativeContainer>
   make_assoc_property_map(const UniquePairAssociativeContainer& c)
@@ -491,7 +491,7 @@ namespace boost {
   class static_property_map :
       public
   boost::put_get_helper<ValueType,static_property_map<ValueType> >
-  { 
+  {
     ValueType value;
   public:
     typedef KeyType key_type;
@@ -499,7 +499,7 @@ namespace boost {
     typedef ValueType reference;
     typedef readable_property_map_tag category;
     static_property_map(ValueType v) : value(v) {}
-    
+
     template<typename T>
     inline reference operator[](T) const { return value; }
   };
@@ -517,7 +517,7 @@ namespace boost {
   class ref_property_map :
     public
       boost::put_get_helper<ValueType&,ref_property_map<KeyType,ValueType> >
-  { 
+  {
     ValueType* value;
   public:
     typedef KeyType key_type;
@@ -556,12 +556,12 @@ namespace boost {
       operator int() { return 0; }
     };
   }
-  class dummy_property_map 
+  class dummy_property_map
     : public boost::put_get_helper<detail::dummy_pmap_reference,
-        dummy_property_map  > 
+        dummy_property_map  >
   {
   public:
-    typedef void key_type; 
+    typedef void key_type;
     typedef int value_type;
     typedef detail::dummy_pmap_reference reference;
     typedef boost::read_write_property_map_tag category;

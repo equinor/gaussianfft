@@ -13,7 +13,7 @@
 # include <boost/python/detail/translate_exception.hpp>
 # include <boost/python/detail/exception_handler.hpp>
 
-namespace boost { namespace python { 
+namespace boost { namespace python {
 
 template <class ExceptionType, class Translate>
 void register_exception_translator(Translate translate, boost::type<ExceptionType>* = 0)

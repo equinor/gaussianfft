@@ -44,7 +44,7 @@ private:
     class array {
     private:
         typedef std::atomic< context * >                atomic_type;
-        typedef atomic_type                             storage_type; 
+        typedef atomic_type                             storage_type;
 
         std::size_t         capacity_;
         storage_type    *   storage_;

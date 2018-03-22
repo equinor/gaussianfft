@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 1991-1994 by Xerox Corporation.  All rights reserved.
  *
  * THIS MATERIAL IS PROVIDED AS IS, WITH ABSOLUTELY NO WARRANTY EXPRESSED
@@ -42,7 +42,7 @@ void * GC_same_obj(void *p, void *q)
     hdr *hhdr;
     ptr_t base, limit;
     word sz;
-    
+
     if (!GC_is_initialized) GC_init();
     hhdr = HDR((word)p);
     if (hhdr == 0) {
@@ -77,7 +77,7 @@ void * GC_same_obj(void *p, void *q)
     } else {
       size_t offset;
       size_t pdispl = HBLKDISPL(p);
-      
+
       offset = pdispl % sz;
       if (HBLKPTR(p) != HBLKPTR(q)) goto fail;
 	 	/* W/o this check, we might miss an error if 	*/
@@ -105,7 +105,7 @@ void GC_default_is_valid_displacement_print_proc (void *p)
     ABORT("GC_is_valid_displacement test failed");
 }
 
-void (*GC_is_valid_displacement_print_proc)(void *) = 
+void (*GC_is_valid_displacement_print_proc)(void *) =
 	GC_default_is_valid_displacement_print_proc;
 
 /* Check that if p is a pointer to a heap page, then it points to	*/
@@ -121,7 +121,7 @@ void * GC_is_valid_displacement(void *p)
     word offset;
     struct hblk *h;
     word sz;
-    
+
     if (!GC_is_initialized) GC_init();
     hhdr = HDR((word)p);
     if (hhdr == 0) return(p);
@@ -188,7 +188,7 @@ GC_bool GC_on_stack(ptr_t p)
 void * GC_is_visible(void *p)
 {
     hdr *hhdr;
-    
+
     if ((word)p & (ALIGNMENT - 1)) goto fail;
     if (!GC_is_initialized) GC_init();
 #   ifdef THREADS
@@ -205,7 +205,7 @@ void * GC_is_visible(void *p)
 	hhdr = HDR((word)p);
     	if (hhdr == 0) {
     	    GC_bool result;
-    	    
+
     	    if (GC_is_static_root(p)) return(p);
     	    /* Else do it again correctly:	*/
 #           if (defined(DYNAMIC_LOADING) || defined(MSWIN32) || \
@@ -219,7 +219,7 @@ void * GC_is_visible(void *p)
     	    /* p points to the heap. */
     	    word descr;
     	    ptr_t base = GC_base(p);	/* Should be manually inlined? */
-    	    
+
     	    if (base == 0) goto fail;
     	    if (HBLKPTR(base) != HBLKPTR(p)) hhdr = HDR((word)p);
     	    descr = hhdr -> hb_descr;
@@ -263,7 +263,7 @@ void * GC_pre_incr (void **p, size_t how_much)
 {
     void * initial = *p;
     void * result = GC_same_obj((void *)((word)initial + how_much), initial);
-    
+
     if (!GC_all_interior_pointers) {
     	(void) GC_is_valid_displacement(result);
     }
@@ -274,7 +274,7 @@ void * GC_post_incr (void **p, size_t how_much)
 {
     void * initial = *p;
     void * result = GC_same_obj((void *)((word)initial + how_much), initial);
- 
+
     if (!GC_all_interior_pointers) {
     	(void) GC_is_valid_displacement(result);
     }

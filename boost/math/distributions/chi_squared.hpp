@@ -64,7 +64,7 @@ template <class RealType, class Policy>
 inline const std::pair<RealType, RealType> range(const chi_squared_distribution<RealType, Policy>& /*dist*/)
 { // Range of permissible values for random variable x.
   if (std::numeric_limits<RealType>::has_infinity)
-  { 
+  {
     return std::pair<RealType, RealType>(static_cast<RealType>(0), std::numeric_limits<RealType>::infinity()); // 0 to + infinity.
   }
   else

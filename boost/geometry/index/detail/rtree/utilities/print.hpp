@@ -14,7 +14,7 @@
 #include <iostream>
 
 namespace boost { namespace geometry { namespace index { namespace detail {
-    
+
 namespace utilities {
 
 namespace dispatch {
@@ -145,7 +145,7 @@ struct print : public rtree::visitor<Value, typename Options::parameters_type, B
         elements_type const& elements = rtree::elements(n);
 
         spaces(level) << "INTERNAL NODE - L:" << level << " Ch:" << elements.size() << " @:" << &n << '\n';
-        
+
         for (typename elements_type::const_iterator it = elements.begin();
             it != elements.end(); ++it)
         {

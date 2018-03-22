@@ -13,7 +13,7 @@
 #include <boost/ratio/mpl/numeric_cast.hpp>
 #include <boost/mpl/times.hpp>
 
-namespace boost { 
+namespace boost {
 namespace mpl {
 
 template<>
@@ -23,7 +23,7 @@ struct times_impl< rational_c_tag,rational_c_tag >
         : ratio_multiply<R1, R2>
     {
     };
-};    
+};
 }
 }
 

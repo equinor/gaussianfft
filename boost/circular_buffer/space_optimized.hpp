@@ -22,7 +22,7 @@ namespace boost {
 
 /*!
     \class circular_buffer_space_optimized
-    \brief Space optimized circular buffer container adaptor. 
+    \brief Space optimized circular buffer container adaptor.
            <code>T</code> must be a copyable class or must have an noexcept move constructor
            and move assignment operator.
 */
@@ -434,7 +434,7 @@ public:
 
 #ifndef BOOST_NO_CXX11_RVALUE_REFERENCES
     //! The move constructor.
-    /*! \brief Move constructs a <code>circular_buffer_space_optimized</code> from <code>cb</code>, 
+    /*! \brief Move constructs a <code>circular_buffer_space_optimized</code> from <code>cb</code>,
                 leaving <code>cb</code> empty.
         \pre C++ compiler with rvalue references support.
         \post <code>cb.empty()</code>
@@ -463,7 +463,7 @@ public:
         \param alloc The allocator.
         \throws "An allocation error" if memory is exhausted (<code>std::bad_alloc</code> if the standard allocator is
                 used).
-                Whatever <code>T::T(const T&)</code> throws or nothing if <code>T::T(T&&)</code> is noexcept 
+                Whatever <code>T::T(const T&)</code> throws or nothing if <code>T::T(T&&)</code> is noexcept
                 and <code>InputIterator</code> is a move iterator.
         \par Complexity
              Linear (in the <code>std::distance(first, last)</code>).
@@ -664,7 +664,7 @@ public:
         \param last The end of the range to be copied.
         \throws "An allocation error" if memory is exhausted (<code>std::bad_alloc</code> if the standard allocator is
                 used).
-                Whatever <code>T::T(const T&)</code> throws or nothing if <code>T::T(T&&)</code> is noexcept and 
+                Whatever <code>T::T(const T&)</code> throws or nothing if <code>T::T(T&&)</code> is noexcept and
                 <code>InputIterator</code> is a move iterator.
         \par Exception Safety
              Basic.
@@ -705,7 +705,7 @@ public:
         \param last The end of the range to be copied.
         \throws "An allocation error" if memory is exhausted (<code>std::bad_alloc</code> if the standard allocator is
                 used).
-                Whatever <code>T::T(const T&)</code> throws or nothing if <code>T::T(T&&)</code> is noexcept and 
+                Whatever <code>T::T(const T&)</code> throws or nothing if <code>T::T(T&&)</code> is noexcept and
                 <code>InputIterator</code> is a move iterator.
         \par Exception Safety
              Basic.
@@ -744,7 +744,7 @@ public:
              otherwise an assertion will report an error if such invalidated iterator is used.)
         \par Complexity
              Constant (in the size of the <code>circular_buffer_space_optimized</code>).
-        \sa <code>swap(circular_buffer<T, Alloc>&, circular_buffer<T, Alloc>&)</code>, 
+        \sa <code>swap(circular_buffer<T, Alloc>&, circular_buffer<T, Alloc>&)</code>,
             <code>swap(circular_buffer_space_optimized<T, Alloc>&, circular_buffer_space_optimized<T, Alloc>&)</code>
 
 
@@ -813,7 +813,7 @@ public:
               The amount of allocated memory in the internal buffer may be predictively increased.
         \throws "An allocation error" if memory is exhausted (<code>std::bad_alloc</code> if the standard allocator is
                 used).
-                Whatever <code>T::T()</code> throws. 
+                Whatever <code>T::T()</code> throws.
                 Whatever <code>T::T(const T&)</code> throws or nothing if <code>T::T(T&&)</code> is noexcept.
         \par Exception Safety
              Basic.
@@ -1384,7 +1384,7 @@ public:
                 element exists.
         \throws "An allocation error" if memory is exhausted (<code>std::bad_alloc</code> if the standard allocator is
                 used).
-                Whatever <code>T::operator = (const T&)</code> throws or 
+                Whatever <code>T::operator = (const T&)</code> throws or
                 nothing if <code>T::operator = (T&&)</code> is noexcept.
         \par Exception Safety
              Basic.
@@ -1415,7 +1415,7 @@ public:
                 element exists.
         \throws "An allocation error" if memory is exhausted (<code>std::bad_alloc</code> if the standard allocator is
                 used).
-                Whatever <code>T::operator = (const T&)</code> throws or 
+                Whatever <code>T::operator = (const T&)</code> throws or
                 nothing if <code>T::operator = (T&&)</code> is noexcept.
         \par Exception Safety
              Basic.
@@ -1445,7 +1445,7 @@ public:
                 such element exists.
         \throws "An allocation error" if memory is exhausted (<code>std::bad_alloc</code> if the standard allocator is
                 used).
-                Whatever <code>T::operator = (const T&)</code> throws or 
+                Whatever <code>T::operator = (const T&)</code> throws or
                 nothing if <code>T::operator = (T&&)</code> is noexcept.
         \par Exception Safety
              Basic.
@@ -1478,7 +1478,7 @@ public:
                 such element exists.
         \throws "An allocation error" if memory is exhausted (<code>std::bad_alloc</code> if the standard allocator is
                 used).
-                Whatever <code>T::operator = (const T&)</code> throws or 
+                Whatever <code>T::operator = (const T&)</code> throws or
                 nothing if <code>T::operator = (T&&)</code> is noexcept.
         \par Exception Safety
              Basic.

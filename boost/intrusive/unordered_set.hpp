@@ -77,7 +77,7 @@ class unordered_set_impl
    static std::pair<Iterator,Iterator> priv_equal_range(MaybeConstThis &c, const KeyType& key, KeyHasher hash_func, KeyEqual equal_func)
    {
       Iterator const it = c.find(key, hash_func, equal_func);
-      std::pair<Iterator,Iterator> ret(it, it);      
+      std::pair<Iterator,Iterator> ret(it, it);
       if(it != c.end())
          ++ret.second;
       return ret;

@@ -10,12 +10,12 @@
 # include <boost/type_traits/is_convertible.hpp>
 # include <boost/type_traits/is_reference.hpp>
 
-namespace boost { namespace parameter { 
+namespace boost { namespace parameter {
 
-namespace aux 
+namespace aux
 {
 
-  struct template_keyword_tag {}; 
+  struct template_keyword_tag {};
 
   template <class T, class U>
   struct is_pointer_convertible

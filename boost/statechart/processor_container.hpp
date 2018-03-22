@@ -426,8 +426,8 @@ class processor_container : noncopyable
       }
     }
 
-    typedef std::set< 
-      processor_holder_ptr_type, 
+    typedef std::set<
+      processor_holder_ptr_type,
       std::less< processor_holder_ptr_type >,
       typename boost::detail::allocator::rebind_to<
         Allocator, processor_holder_ptr_type >::type

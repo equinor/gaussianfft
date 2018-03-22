@@ -719,7 +719,7 @@ struct bucket_plus_vtraits
             node_disposer((it++).pointed_node());
             ++n;
          }
-         b.erase_after(sbefore_first, slast); 
+         b.erase_after(sbefore_first, slast);
       }
       return n;
    }
@@ -733,7 +733,7 @@ struct bucket_plus_vtraits
          node_disposer((it++).pointed_node());
          ++n;
       }
-      b.erase_after(sbefore_first, slast); 
+      b.erase_after(sbefore_first, slast);
       return n;
    }
 
@@ -745,7 +745,7 @@ struct bucket_plus_vtraits
       node_ptr pos = node_traits::get_next(group_traits::get_next(n));
       node_ptr bn;
       node_ptr nn(node_traits::get_next(n));
-      
+
       if(pos != n) {
          //Node is the first of the group
          bn = group_functions_t::get_prev_to_first_in_group(ne, n);
@@ -2396,7 +2396,7 @@ class hashtable_impl
             do{
                ++cnt;
                ++it;
-            }while(it != end_sit && 
+            }while(it != end_sit &&
                    this->priv_is_value_equal_to_key
                      (this->priv_value_from_slist_node(it.pointed_node()), h, key, equal_func));
             bucket_type::s_erase_after_and_dispose(prev, it, make_node_disposer(disposer));
@@ -2876,7 +2876,7 @@ class hashtable_impl
    BOOST_INTRUSIVE_FORCEINLINE void rehash(const bucket_traits &new_bucket_traits)
    {  this->rehash_impl(new_bucket_traits, false); }
 
-   //! <b>Note</b>: This function is used when keys from inserted elements are changed 
+   //! <b>Note</b>: This function is used when keys from inserted elements are changed
    //!  (e.g. a language change when key is a string) but uniqueness and hash properties are
    //!  preserved so a fast full rehash recovers invariants for *this without extracting and
    //!  reinserting all elements again.
@@ -3365,7 +3365,7 @@ class hashtable_impl
    {
       cnt = 0;
       //Let's see if the element is present
-      
+
       siterator prev;
       size_type n_bucket;
       std::size_t h;

@@ -21,7 +21,7 @@
 namespace boost { namespace msm { namespace front
 {
 // default base: non-polymorphic, not visitable
-struct default_base_state 
+struct default_base_state
 {
     ~default_base_state(){}
 };

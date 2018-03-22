@@ -19,7 +19,7 @@ namespace boost { namespace parallel { namespace detail {
  * This structure is like std::pair, with the only difference
  * that tracking in the serialization library is turned off.
  */
- 
+
 template<typename T, typename U>
 struct untracked_pair : public std::pair<T,U>
 {
@@ -30,7 +30,7 @@ struct untracked_pair : public std::pair<T,U>
 
   template<class T1, class U1>
   untracked_pair(std::pair<T1,U1> const& p)
-  : std::pair<T,U>(p) {}  
+  : std::pair<T,U>(p) {}
 };
 
 template<typename T, typename U>

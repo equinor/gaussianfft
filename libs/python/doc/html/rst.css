@@ -17,7 +17,7 @@ pre.literal-block span.concept {
   font-style: italic;
 }
 
-.nav { 
+.nav {
 display: inline;
 list-style-type: none;
 }
@@ -37,23 +37,23 @@ float: right;
 div.small {
    font-size: smaller }
 
-h2 a { 
-   font-size: 90%; 
+h2 a {
+   font-size: 90%;
 }
-h3 a { 
-   font-size: 80%; 
+h3 a {
+   font-size: 80%;
 }
-h4 a { 
-   font-size: 70%; 
+h4 a {
+   font-size: 70%;
 }
-h5 a { 
-   font-size: 60%; 
+h5 a {
+   font-size: 60%;
 }
 
 dl,table
 {
    text-align: left;
-   font-size: 10pt; 
+   font-size: 10pt;
    line-height: 1.15;
 }
 
@@ -75,12 +75,12 @@ dl,table
         margin-left: 4%;
         margin-right: 4%;
     }
-    
+
     table[border="1"]
     {
         padding: 4px;
     }
-    
+
     /* Table Cells */
     table[border="1"] tr td
     {
@@ -98,39 +98,39 @@ dl,table
 
     @media screen
     {
-    
+
     /* Tables */
         table[border="1"] tr td
         {
             border: 1px solid #DCDCDC;
         }
-    
+
         table[border="1"] tr th
         {
             background-color: #F0F0F0;
             border: 1px solid #DCDCDC;
         }
 
-        pre, 
+        pre,
         .screen
         {
             border: 1px solid #DCDCDC;
         }
-    
+
         td pre
         td .screen
         {
             border: 0px
         }
-    
+
         .sidebar pre
         {
             border: 0px
         }
-    
+
     }
 
-    pre, 
+    pre,
     .screen
     {
         font-size: 9pt;
@@ -140,7 +140,7 @@ dl,table
     }
 
     /* Program listings in tables don't get borders */
-    td pre, 
+    td pre,
     td .screen
     {
         margin: 0pc 0pc 0pc 0pc;

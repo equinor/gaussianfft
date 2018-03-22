@@ -1,7 +1,7 @@
 /*
- * Distributed under the Boost Software License, Version 1.0.(See accompanying 
+ * Distributed under the Boost Software License, Version 1.0.(See accompanying
  * file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt.)
- * 
+ *
  * See http://www.boost.org/libs/iostreams for documentation.
 
  * File:        boost/iostreams/detail/functional.hpp
@@ -10,7 +10,7 @@
  * Author:      Jonathan Turkanis
  * Contact:     turkanis at coderage dot com
 
- * Defines several function objects and object generators for use with 
+ * Defines several function objects and object generators for use with
  * execute_all()
  */
 
@@ -33,8 +33,8 @@ template<typename T>
 class device_close_operation {
 public:
     typedef void result_type;
-    device_close_operation(T& t, BOOST_IOS::openmode which) 
-        : t_(t), which_(which) 
+    device_close_operation(T& t, BOOST_IOS::openmode which)
+        : t_(t), which_(which)
         { }
     void operator()() const { boost::iostreams::close(t_, which_); }
 private:
@@ -59,13 +59,13 @@ private:
 };
 
 template<typename T>
-device_close_operation<T> 
-call_close(T& t, BOOST_IOS::openmode which) 
+device_close_operation<T>
+call_close(T& t, BOOST_IOS::openmode which)
 { return device_close_operation<T>(t, which); }
 
 template<typename T, typename Sink>
-filter_close_operation<T, Sink> 
-call_close(T& t, Sink& snk, BOOST_IOS::openmode which) 
+filter_close_operation<T, Sink>
+call_close(T& t, Sink& snk, BOOST_IOS::openmode which)
 { return filter_close_operation<T, Sink>(t, snk, which); }
 
     // Function objects and object generators for invoking
@@ -95,12 +95,12 @@ private:
 };
 
 template<typename T>
-device_close_all_operation<T> call_close_all(T& t) 
+device_close_all_operation<T> call_close_all(T& t)
 { return device_close_all_operation<T>(t); }
 
 template<typename T, typename Sink>
-filter_close_all_operation<T, Sink> 
-call_close_all(T& t, Sink& snk) 
+filter_close_all_operation<T, Sink>
+call_close_all(T& t, Sink& snk)
 { return filter_close_all_operation<T, Sink>(t, snk); }
 
     // Function object and object generator for invoking a
@@ -110,8 +110,8 @@ template<typename T>
 class member_close_operation {
 public:
     typedef void result_type;
-    member_close_operation(T& t, BOOST_IOS::openmode which) 
-        : t_(t), which_(which) 
+    member_close_operation(T& t, BOOST_IOS::openmode which)
+        : t_(t), which_(which)
         { }
     void operator()() const { t_.close(which_); }
 private:
@@ -121,7 +121,7 @@ private:
 };
 
 template<typename T>
-member_close_operation<T> call_member_close(T& t, BOOST_IOS::openmode which) 
+member_close_operation<T> call_member_close(T& t, BOOST_IOS::openmode which)
 { return member_close_operation<T>(t, which); }
 
     // Function object and object generator for invoking a
@@ -154,7 +154,7 @@ private:
 };
 
 template<typename T>
-clear_flags_operation<T> clear_flags(T& t) 
+clear_flags_operation<T> clear_flags(T& t)
 { return clear_flags_operation<T>(t); }
 
     // Function object and generator for flushing a buffer
@@ -169,7 +169,7 @@ public:
         { }
     void operator()() const
     {
-        if (flush_) 
+        if (flush_)
             buf_.flush(dev_);
     }
 private:
@@ -180,7 +180,7 @@ private:
 };
 
 template<typename Buffer, typename Device>
-flush_buffer_operation<Buffer, Device> 
+flush_buffer_operation<Buffer, Device>
 flush_buffer(Buffer& buf, Device& dev, bool flush)
 { return flush_buffer_operation<Buffer, Device>(buf, dev, flush); }
 

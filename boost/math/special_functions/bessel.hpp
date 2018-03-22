@@ -109,7 +109,7 @@ T cyl_bessel_j_imp(T v, T x, const bessel_no_int_tag& t, const Policy& pol)
             function,
             "Got x = %1%, but we need x >= 0", x, pol);
    }
-   
+
    T j, y;
    bessel_jy(v, x, &j, &y, need_j, pol);
    return j;
@@ -163,7 +163,7 @@ inline T sph_bessel_j_imp(unsigned n, T x, const Policy& pol)
    //
    // Default case is just a naive evaluation of the definition:
    //
-   return sqrt(constants::pi<T>() / (2 * x)) 
+   return sqrt(constants::pi<T>() / (2 * x))
       * cyl_bessel_j_imp(T(T(n)+T(0.5f)), x, bessel_no_int_tag(), pol);
 }
 
@@ -282,7 +282,7 @@ inline T cyl_neumann_imp(T v, T x, const bessel_no_int_tag&, const Policy& pol)
    }
    T j, y;
    bessel_jy(v, x, &j, &y, need_y, pol);
-   // 
+   //
    // Post evaluation check for internal overflow during evaluation,
    // can occur when x is small and v is large, in which case the result
    // is -INF:
@@ -511,9 +511,9 @@ inline typename detail::bessel_traits<T1, T2, Policy>::result_type cyl_bessel_j(
    typedef typename detail::bessel_traits<T1, T2, Policy>::optimisation_tag tag_type;
    typedef typename policies::evaluation<result_type, Policy>::type value_type;
    typedef typename policies::normalise<
-      Policy, 
-      policies::promote_float<false>, 
-      policies::promote_double<false>, 
+      Policy,
+      policies::promote_float<false>,
+      policies::promote_double<false>,
       policies::discrete_quantile<>,
       policies::assert_undefined<> >::type forwarding_policy;
    return policies::checked_narrowing_cast<result_type, Policy>(detail::cyl_bessel_j_imp<value_type>(v, static_cast<value_type>(x), tag_type(), forwarding_policy()), "boost::math::cyl_bessel_j<%1%>(%1%,%1%)");
@@ -532,9 +532,9 @@ inline typename detail::bessel_traits<T, T, Policy>::result_type sph_bessel(unsi
    typedef typename detail::bessel_traits<T, T, Policy>::result_type result_type;
    typedef typename policies::evaluation<result_type, Policy>::type value_type;
    typedef typename policies::normalise<
-      Policy, 
-      policies::promote_float<false>, 
-      policies::promote_double<false>, 
+      Policy,
+      policies::promote_float<false>,
+      policies::promote_double<false>,
       policies::discrete_quantile<>,
       policies::assert_undefined<> >::type forwarding_policy;
    return policies::checked_narrowing_cast<result_type, Policy>(detail::sph_bessel_j_imp<value_type>(v, static_cast<value_type>(x), forwarding_policy()), "boost::math::sph_bessel<%1%>(%1%,%1%)");
@@ -553,9 +553,9 @@ inline typename detail::bessel_traits<T1, T2, Policy>::result_type cyl_bessel_i(
    typedef typename detail::bessel_traits<T1, T2, Policy>::result_type result_type;
    typedef typename policies::evaluation<result_type, Policy>::type value_type;
    typedef typename policies::normalise<
-      Policy, 
-      policies::promote_float<false>, 
-      policies::promote_double<false>, 
+      Policy,
+      policies::promote_float<false>,
+      policies::promote_double<false>,
       policies::discrete_quantile<>,
       policies::assert_undefined<> >::type forwarding_policy;
    return policies::checked_narrowing_cast<result_type, Policy>(detail::cyl_bessel_i_imp<value_type>(static_cast<value_type>(v), static_cast<value_type>(x), forwarding_policy()), "boost::math::cyl_bessel_i<%1%>(%1%,%1%)");
@@ -575,9 +575,9 @@ inline typename detail::bessel_traits<T1, T2, Policy>::result_type cyl_bessel_k(
    typedef typename detail::bessel_traits<T1, T2, Policy>::optimisation_tag128 tag_type;
    typedef typename policies::evaluation<result_type, Policy>::type value_type;
    typedef typename policies::normalise<
-      Policy, 
-      policies::promote_float<false>, 
-      policies::promote_double<false>, 
+      Policy,
+      policies::promote_float<false>,
+      policies::promote_double<false>,
       policies::discrete_quantile<>,
       policies::assert_undefined<> >::type forwarding_policy;
    return policies::checked_narrowing_cast<result_type, Policy>(detail::cyl_bessel_k_imp<value_type>(v, static_cast<value_type>(x), tag_type(), forwarding_policy()), "boost::math::cyl_bessel_k<%1%>(%1%,%1%)");
@@ -597,9 +597,9 @@ inline typename detail::bessel_traits<T1, T2, Policy>::result_type cyl_neumann(T
    typedef typename detail::bessel_traits<T1, T2, Policy>::optimisation_tag tag_type;
    typedef typename policies::evaluation<result_type, Policy>::type value_type;
    typedef typename policies::normalise<
-      Policy, 
-      policies::promote_float<false>, 
-      policies::promote_double<false>, 
+      Policy,
+      policies::promote_float<false>,
+      policies::promote_double<false>,
       policies::discrete_quantile<>,
       policies::assert_undefined<> >::type forwarding_policy;
    return policies::checked_narrowing_cast<result_type, Policy>(detail::cyl_neumann_imp<value_type>(v, static_cast<value_type>(x), tag_type(), forwarding_policy()), "boost::math::cyl_neumann<%1%>(%1%,%1%)");
@@ -618,9 +618,9 @@ inline typename detail::bessel_traits<T, T, Policy>::result_type sph_neumann(uns
    typedef typename detail::bessel_traits<T, T, Policy>::result_type result_type;
    typedef typename policies::evaluation<result_type, Policy>::type value_type;
    typedef typename policies::normalise<
-      Policy, 
-      policies::promote_float<false>, 
-      policies::promote_double<false>, 
+      Policy,
+      policies::promote_float<false>,
+      policies::promote_double<false>,
       policies::discrete_quantile<>,
       policies::assert_undefined<> >::type forwarding_policy;
    return policies::checked_narrowing_cast<result_type, Policy>(detail::sph_neumann_imp<value_type>(v, static_cast<value_type>(x), forwarding_policy()), "boost::math::sph_neumann<%1%>(%1%,%1%)");
@@ -639,9 +639,9 @@ inline typename detail::bessel_traits<T, T, Policy>::result_type cyl_bessel_j_ze
    typedef typename detail::bessel_traits<T, T, Policy>::result_type result_type;
    typedef typename policies::evaluation<result_type, Policy>::type value_type;
    typedef typename policies::normalise<
-      Policy, 
-      policies::promote_float<false>, 
-      policies::promote_double<false>, 
+      Policy,
+      policies::promote_float<false>,
+      policies::promote_double<false>,
       policies::discrete_quantile<>,
       policies::assert_undefined<> >::type forwarding_policy;
 
@@ -700,9 +700,9 @@ inline typename detail::bessel_traits<T, T, Policy>::result_type cyl_neumann_zer
    typedef typename detail::bessel_traits<T, T, Policy>::result_type result_type;
    typedef typename policies::evaluation<result_type, Policy>::type value_type;
    typedef typename policies::normalise<
-      Policy, 
-      policies::promote_float<false>, 
-      policies::promote_double<false>, 
+      Policy,
+      policies::promote_float<false>,
+      policies::promote_double<false>,
       policies::discrete_quantile<>,
       policies::assert_undefined<> >::type forwarding_policy;
 

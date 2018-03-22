@@ -1,6 +1,6 @@
 /*
     Copyright 2005-2007 Adobe Systems Incorporated
-   
+
     Use, modification and distribution are subject to the Boost Software License,
     Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
     http://www.boost.org/LICENSE_1_0.txt).
@@ -13,7 +13,7 @@
 #define GIL_DYNAMICIMAGE_ANY_IMAGE_HPP
 
 ////////////////////////////////////////////////////////////////////////////////////////
-/// \file               
+/// \file
 /// \brief Support for run-time instantiated images and image views
 /// \author Lubomir Bourdev and Hailin Jin \n
 ///         Adobe Systems Incorporated
@@ -63,7 +63,7 @@ namespace detail {
 ////////////////////////////////////////////////////////////////////////////////////////
 /// \ingroup ImageModel
 /// \brief Represents a run-time specified image. Note it does NOT model ImageConcept
-///  
+///
 /// Represents an image whose type (color space, layout, planar/interleaved organization, etc) can be specified at run time.
 /// It is the runtime equivalent of \p image.
 /// Some of the requirements of ImageConcept, such as the \p value_type typedef cannot be fulfilled, since the language does not allow runtime type specification.
@@ -105,13 +105,13 @@ public:
 
 /// \brief Returns the non-constant-pixel view of any image. The returned view is any view.
 template <typename Types>  GIL_FORCEINLINE // Models ImageVectorConcept
-typename any_image<Types>::view_t view(any_image<Types>& anyImage) { 
+typename any_image<Types>::view_t view(any_image<Types>& anyImage) {
     return apply_operation(anyImage, detail::any_image_get_view<typename any_image<Types>::view_t>());
 }
 
 /// \brief Returns the constant-pixel view of any image. The returned view is any view.
 template <typename Types> GIL_FORCEINLINE // Models ImageVectorConcept
-typename any_image<Types>::const_view_t const_view(const any_image<Types>& anyImage) { 
+typename any_image<Types>::const_view_t const_view(const any_image<Types>& anyImage) {
     return apply_operation(anyImage, detail::any_image_get_const_view<typename any_image<Types>::const_view_t>());
 }
 ///@}

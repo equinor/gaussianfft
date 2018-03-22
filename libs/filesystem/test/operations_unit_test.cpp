@@ -17,10 +17,10 @@
 #include <boost/config/warning_disable.hpp>
 
 //  See deprecated_test for tests of deprecated features
-#ifndef BOOST_FILESYSTEM_NO_DEPRECATED 
+#ifndef BOOST_FILESYSTEM_NO_DEPRECATED
 #  define BOOST_FILESYSTEM_NO_DEPRECATED
 #endif
-#ifndef BOOST_SYSTEM_NO_DEPRECATED 
+#ifndef BOOST_SYSTEM_NO_DEPRECATED
 #  define BOOST_SYSTEM_NO_DEPRECATED
 #endif
 
@@ -68,13 +68,13 @@ namespace
     file_status s = status(".");
     int v = s.permissions();
     cout << "  status(\".\") permissions are "
-      << std::oct << (v & 0777) << std::dec << endl; 
+      << std::oct << (v & 0777) << std::dec << endl;
     CHECK((v & 0400) == 0400);
 
     s = symlink_status(".");
     v = s.permissions();
     cout << "  symlink_status(\".\") permissions are "
-      << std::oct << (v & 0777) << std::dec << endl; 
+      << std::oct << (v & 0777) << std::dec << endl;
     CHECK((v & 0400) == 0400);
   }
 
@@ -295,7 +295,7 @@ namespace
 
     bool threw(false);
     try
-    { 
+    {
       file_size("no-such-file");
     }
     catch (const boost::filesystem::filesystem_error & ex)
@@ -349,7 +349,7 @@ int cpp_main(int, char*[])
 #endif
   cout << "BOOST_FILESYSTEM_DECL" << BOOST_STRINGIZE(=BOOST_FILESYSTEM_DECL) << "\n";
   cout << "BOOST_SYMBOL_VISIBLE" << BOOST_STRINGIZE(=BOOST_SYMBOL_VISIBLE) << "\n";
-  
+
   cout << "current_path() is " << current_path().string() << endl;
 
   create_directory(temp_dir);
@@ -368,7 +368,7 @@ int cpp_main(int, char*[])
   cout << unique_path("foo-%%%%%-%%%%%-bar") << endl;
   cout << unique_path("foo-%%%%%-%%%%%-%%%%%-%%%%%-%%%%%-%%%%%-%%%%%-%%%%-bar") << endl;
   cout << unique_path("foo-%%%%%-%%%%%-%%%%%-%%%%%-%%%%%-%%%%%-%%%%%-%%%%%-bar") << endl;
-  
+
   cout << "testing complete" << endl;
 
   // post-test cleanup
@@ -377,7 +377,7 @@ int cpp_main(int, char*[])
     cout << "post-test removal of " << temp_dir << endl;
     BOOST_TEST(remove_all(temp_dir) != 0);
     // above was added just to simplify testing, but it ended up detecting
-    // a bug (failure to close an internal search handle). 
+    // a bug (failure to close an internal search handle).
     cout << "post-test removal complete" << endl;
 //    BOOST_TEST(!fs::exists(dir));  // nice test, but doesn't play well with TortoiseGit cache
   }

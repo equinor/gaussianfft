@@ -7,7 +7,7 @@
  *  A simple example showing how to wrap a couple of C++ functions that
  *  operate on 2-d arrays into Python functions that take NumPy arrays
  *  as arguments.
- *        
+ *
  *  If you find have a lot of such functions to wrap, you may want to
  *  create a C++ array type (or use one of the many existing C++ array
  *  libraries) that maps well to NumPy arrays and create Boost.Python
@@ -75,7 +75,7 @@ void fill2(double ** array, int rows, int cols) {
         for (int j = 0; j < cols; ++j) {
             array[i][j] = ++n;
         }
-    }    
+    }
 }
 // Here's the wrapper for fill2; it's a little more complicated because we need
 // to check the flags and create the array of pointers.

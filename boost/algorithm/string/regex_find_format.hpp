@@ -27,20 +27,20 @@ namespace boost {
 
 //  regex_finder  -----------------------------------------------//
 
-        //! "Regex" finder 
+        //! "Regex" finder
         /*!
             Construct the \c regex_finder. Finder uses the regex engine to search
             for a match.
             Result is given in \c regex_search_result. This is an extension
-            of the iterator_range. In addition it contains match results 
+            of the iterator_range. In addition it contains match results
             from the \c regex_search algorithm.
 
             \param Rx A regular expression
             \param MatchFlags Regex search options
             \return An instance of the \c regex_finder object
         */
-        template< 
-            typename CharT, 
+        template<
+            typename CharT,
             typename RegexTraitsT>
         inline detail::find_regexF< basic_regex<CharT, RegexTraitsT> >
         regex_finder(
@@ -48,7 +48,7 @@ namespace boost {
             match_flag_type MatchFlags=match_default )
         {
             return detail::
-                find_regexF< 
+                find_regexF<
                     basic_regex<CharT, RegexTraitsT> >( Rx, MatchFlags );
         }
 
@@ -57,22 +57,22 @@ namespace boost {
         //! Regex formatter
         /*!
             Construct the \c regex_formatter. Regex formatter uses the regex engine to
-            format a match found by the \c regex_finder. 
+            format a match found by the \c regex_finder.
             This formatted it designed to closely cooperate with \c regex_finder.
 
             \param Format Regex format definition
             \param Flags Format flags
             \return An instance of the \c regex_formatter functor
         */
-       template< 
-            typename CharT, 
+       template<
+            typename CharT,
             typename TraitsT, typename AllocT >
         inline detail::regex_formatF< std::basic_string< CharT, TraitsT, AllocT > >
-        regex_formatter( 
+        regex_formatter(
             const std::basic_string<CharT, TraitsT, AllocT>& Format,
             match_flag_type Flags=format_default )
         {
-            return 
+            return
                 detail::regex_formatF< std::basic_string<CharT, TraitsT, AllocT> >(
                     Format,
                     Flags );

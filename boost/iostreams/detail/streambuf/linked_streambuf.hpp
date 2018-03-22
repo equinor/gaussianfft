@@ -41,9 +41,9 @@ template<typename Ch, typename Tr = BOOST_IOSTREAMS_CHAR_TRAITS(Ch) >
 class linked_streambuf : public BOOST_IOSTREAMS_BASIC_STREAMBUF(Ch, Tr) {
 protected:
     linked_streambuf() : flags_(0) { }
-    void set_true_eof(bool eof) 
-    { 
-        flags_ = (flags_ & ~f_true_eof) | (eof ? f_true_eof : 0); 
+    void set_true_eof(bool eof)
+    {
+        flags_ = (flags_ & ~f_true_eof) | (eof ? f_true_eof : 0);
     }
 public:
 
@@ -61,7 +61,7 @@ protected:
     template<typename Chain, typename Mode, typename Access>
     friend class chainbuf;
     template<typename U>
-    friend class member_close_operation; 
+    friend class member_close_operation;
 #else
     public:
         typedef BOOST_IOSTREAMS_BASIC_STREAMBUF(Ch, Tr) base;
@@ -69,13 +69,13 @@ protected:
 #endif
     void close(BOOST_IOS::openmode which)
     {
-        if ( which == BOOST_IOS::in && 
+        if ( which == BOOST_IOS::in &&
             (flags_ & f_input_closed) == 0 )
         {
             flags_ |= f_input_closed;
             close_impl(which);
         }
-        if ( which == BOOST_IOS::out && 
+        if ( which == BOOST_IOS::out &&
             (flags_ & f_output_closed) == 0 )
         {
             flags_ |= f_output_closed;

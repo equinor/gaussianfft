@@ -45,22 +45,22 @@ BOOST_PYTHON_MODULE(map_indexing_suite_ext)
         .def(map_indexing_suite<std::map<std::string, X> >())
     ;
 
-    void int_map_indexing_suite(); // moved to int_map_indexing_suite.cpp to 
+    void int_map_indexing_suite(); // moved to int_map_indexing_suite.cpp to
     int_map_indexing_suite();      // avoid MSVC 6/7 internal structure overflow
-    
+
 #if 0
     // Compile check only...
     class_<std::map<int, int> >("IntMap")
         .def(map_indexing_suite<std::map<int, int> >())
     ;
-#endif 
+#endif
 
     // Some more..
     class_<std::map<std::string, boost::shared_ptr<X> > >("TestMap")
         .def(map_indexing_suite<std::map<std::string, boost::shared_ptr<X> >, true>())
     ;
 
-    void a_map_indexing_suite(); // moved to a_map_indexing_suite.cpp to 
+    void a_map_indexing_suite(); // moved to a_map_indexing_suite.cpp to
     a_map_indexing_suite();      // avoid MSVC 6/7 internal structure overflow
 
 }

@@ -214,7 +214,7 @@ private:
       int exp = 0;
       NTL::RR t;
       bool neg = a < V(0) ? true : false;
-      if(neg) 
+      if(neg)
          a = -a;
       while(a)
       {
@@ -475,7 +475,7 @@ struct ntl_lanczos
          return lanczos61UDT::lanczos_sum_near_2(z);
    }
    static ntl::RR g()
-   { 
+   {
       unsigned long p = ntl::RR::precision();
       if(p <= 72)
          return lanczos13UDT::g();
@@ -699,8 +699,8 @@ namespace ntl{
       double r;
       conv(r, z.value());
       return boost::math::tools::halley_iterate(
-         asin_root(z), 
-         RR(std::asin(r)), 
+         asin_root(z),
+         RR(std::asin(r)),
          RR(-boost::math::constants::pi<RR>()/2),
          RR(boost::math::constants::pi<RR>()/2),
          NTL::RR::precision());
@@ -727,8 +727,8 @@ namespace ntl{
       double r;
       conv(r, z.value());
       return boost::math::tools::halley_iterate(
-         acos_root(z), 
-         RR(std::acos(r)), 
+         acos_root(z),
+         RR(std::acos(r)),
          RR(-boost::math::constants::pi<RR>()/2),
          RR(boost::math::constants::pi<RR>()/2),
          NTL::RR::precision());
@@ -756,8 +756,8 @@ namespace ntl{
       double r;
       conv(r, z.value());
       return boost::math::tools::halley_iterate(
-         atan_root(z), 
-         RR(std::atan(r)), 
+         atan_root(z),
+         RR(std::atan(r)),
          -boost::math::constants::pi<RR>()/2,
          boost::math::constants::pi<RR>()/2,
          NTL::RR::precision());

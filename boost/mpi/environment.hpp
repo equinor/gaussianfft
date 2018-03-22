@@ -22,30 +22,30 @@
 namespace boost { namespace mpi {
 namespace threading {
 /** @brief specify the supported threading level.
- * 
+ *
  * Based on MPI 2 standard/8.7.3
  */
 enum level {
-  /** Only one thread will execute. 
+  /** Only one thread will execute.
    */
   single     = MPI_THREAD_SINGLE,
   /** Only main thread will do MPI calls.
-   * 
-   * The process may be multi-threaded, but only the main 
+   *
+   * The process may be multi-threaded, but only the main
    * thread will make MPI calls (all MPI calls are ``funneled''
    * to the main thread).
    */
   funneled   = MPI_THREAD_FUNNELED,
   /** Only one thread at the time do MPI calls.
-   * 
-   * The process may be multi-threaded, and multiple 
+   *
+   * The process may be multi-threaded, and multiple
    * threads may make MPI calls, but only one at a time:
-   * MPI calls are not made concurrently from two distinct 
+   * MPI calls are not made concurrently from two distinct
    * threads (all MPI calls are ``serialized'').
    */
   serialized = MPI_THREAD_SERIALIZED,
   /** Multiple thread may do MPI calls.
-   * 
+   *
    * Multiple threads may call MPI, with no restrictions.
    */
   multiple   = MPI_THREAD_MULTIPLE
@@ -85,7 +85,7 @@ std::istream& operator>>(std::istream& in, level& l);
 class BOOST_MPI_DECL environment : noncopyable {
 public:
 #ifdef BOOST_MPI_HAS_NOARG_INITIALIZATION
-  /** Initialize the MPI environment. 
+  /** Initialize the MPI environment.
    *
    *  If the MPI environment has not already been initialized,
    *  initializes MPI with a call to @c MPI_Init. Since this
@@ -99,7 +99,7 @@ public:
    *  program if it is destructed due to an uncaught exception.
    */
   explicit environment(bool abort_on_exception = true);
-  /** Initialize the MPI environment. 
+  /** Initialize the MPI environment.
    *
    *  If the MPI environment has not already been initialized,
    *  initializes MPI with a call to @c MPI_Init_thread. Since this
@@ -264,14 +264,14 @@ public:
   /** Are we in the main thread?
    */
   static bool is_main_thread();
-  
+
 private:
   /// Whether this environment object called MPI_Init
   bool i_initialized;
 
   /// Whether we should abort if the destructor is
   bool abort_on_exception;
-  
+
   /// The number of reserved tags.
   static const int num_reserved_tags = 1;
 };

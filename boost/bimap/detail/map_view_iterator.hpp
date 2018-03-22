@@ -108,15 +108,15 @@ struct map_view_iterator_adaptor {
     typedef iterator_adaptor<
         map_view_iterator<Tag,BimapCore>,
         BOOST_DEDUCED_TYPENAME core_iterator_type_by<Tag,BimapCore>::type,
-        BOOST_DEDUCED_TYPENAME 
+        BOOST_DEDUCED_TYPENAME
             ::boost::bimaps::support::value_type_by<Tag,BimapCore>::type
     > type;
 };
 template< class Tag, class BimapCore >
-struct map_view_iterator : 
+struct map_view_iterator :
     public map_view_iterator_adaptor<Tag,BimapCore>::type
 {
-    typedef BOOST_DEDUCED_TYPENAME 
+    typedef BOOST_DEDUCED_TYPENAME
         map_view_iterator_adaptor<Tag,BimapCore>::type base_;
     public:
 
@@ -145,15 +145,15 @@ struct const_map_view_iterator_adaptor {
     typedef iterator_adaptor<
         const_map_view_iterator<Tag,BimapCore>,
         BOOST_DEDUCED_TYPENAME core_iterator_type_by<Tag,BimapCore>::type,
-        const BOOST_DEDUCED_TYPENAME 
+        const BOOST_DEDUCED_TYPENAME
             ::boost::bimaps::support::value_type_by<Tag,BimapCore>::type
     > type;
 };
 template< class Tag, class BimapCore >
-struct const_map_view_iterator : 
+struct const_map_view_iterator :
     public const_map_view_iterator_adaptor<Tag,BimapCore>::type
 {
-    typedef BOOST_DEDUCED_TYPENAME 
+    typedef BOOST_DEDUCED_TYPENAME
         const_map_view_iterator_adaptor<Tag,BimapCore>::type base_;
     public:
 
@@ -182,9 +182,9 @@ template< class Tag, class BimapCore >
 struct reverse_map_view_iterator_adaptor {
     typedef iterator_adaptor<
         reverse_map_view_iterator<Tag,BimapCore>,
-        BOOST_DEDUCED_TYPENAME 
+        BOOST_DEDUCED_TYPENAME
             reverse_core_iterator_type_by<Tag,BimapCore>::type,
-        BOOST_DEDUCED_TYPENAME 
+        BOOST_DEDUCED_TYPENAME
             ::boost::bimaps::support::value_type_by<Tag,BimapCore>::type
     > type;
 };
@@ -192,7 +192,7 @@ template< class Tag, class BimapCore >
 struct reverse_map_view_iterator :
     public reverse_map_view_iterator_adaptor<Tag,BimapCore>::type
 {
-    typedef BOOST_DEDUCED_TYPENAME 
+    typedef BOOST_DEDUCED_TYPENAME
         reverse_map_view_iterator_adaptor<Tag,BimapCore>::type base_;
     public:
 
@@ -220,9 +220,9 @@ template< class Tag, class BimapCore >
 struct const_reverse_map_view_iterator_adaptor {
     typedef iterator_adaptor<
         const_reverse_map_view_iterator<Tag,BimapCore>,
-        BOOST_DEDUCED_TYPENAME 
+        BOOST_DEDUCED_TYPENAME
             reverse_core_iterator_type_by<Tag,BimapCore>::type,
-        const BOOST_DEDUCED_TYPENAME 
+        const BOOST_DEDUCED_TYPENAME
             ::boost::bimaps::support::value_type_by<Tag,BimapCore>::type
     > type;
 };
@@ -230,9 +230,9 @@ template< class Tag, class BimapCore >
 struct const_reverse_map_view_iterator :
     public const_reverse_map_view_iterator_adaptor<Tag,BimapCore>::type
 {
-    typedef BOOST_DEDUCED_TYPENAME 
+    typedef BOOST_DEDUCED_TYPENAME
         const_reverse_map_view_iterator_adaptor<Tag,BimapCore>::type base_;
-    
+
     public:
 
     const_reverse_map_view_iterator() {}
@@ -260,9 +260,9 @@ template< class Tag, class BimapCore >
 struct local_map_view_iterator_adaptor {
     typedef iterator_adaptor<
         local_map_view_iterator<Tag,BimapCore>,
-        BOOST_DEDUCED_TYPENAME 
+        BOOST_DEDUCED_TYPENAME
             local_core_iterator_type_by<Tag,BimapCore>::type,
-        BOOST_DEDUCED_TYPENAME 
+        BOOST_DEDUCED_TYPENAME
             ::boost::bimaps::support::value_type_by<Tag,BimapCore>::type
     > type;
 };
@@ -270,7 +270,7 @@ template< class Tag, class BimapCore >
 struct local_map_view_iterator :
     public local_map_view_iterator_adaptor<Tag,BimapCore>::type
 {
-    typedef BOOST_DEDUCED_TYPENAME 
+    typedef BOOST_DEDUCED_TYPENAME
         local_map_view_iterator_adaptor<Tag,BimapCore>::type base_;
     public:
 
@@ -298,9 +298,9 @@ template< class Tag, class BimapCore >
 struct const_local_map_view_iterator_adaptor {
     typedef iterator_adaptor<
         const_local_map_view_iterator<Tag,BimapCore>,
-        BOOST_DEDUCED_TYPENAME 
+        BOOST_DEDUCED_TYPENAME
             local_core_iterator_type_by<Tag,BimapCore>::type,
-        const BOOST_DEDUCED_TYPENAME 
+        const BOOST_DEDUCED_TYPENAME
             ::boost::bimaps::support::value_type_by<Tag,BimapCore>::type
     > type;
 };
@@ -308,7 +308,7 @@ template< class Tag, class BimapCore >
 struct const_local_map_view_iterator :
     public const_local_map_view_iterator_adaptor<Tag,BimapCore>::type
 {
-    typedef BOOST_DEDUCED_TYPENAME 
+    typedef BOOST_DEDUCED_TYPENAME
         const_local_map_view_iterator_adaptor<Tag,BimapCore>::type base_;
     public:
 

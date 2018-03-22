@@ -13,7 +13,7 @@
 namespace boost { namespace python {
 
 namespace objects
-{ 
+{
   BOOST_PYTHON_DECL api::object function_object(
       py_function const& f
       , python::detail::keyword_range const&);

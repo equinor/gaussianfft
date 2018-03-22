@@ -29,18 +29,18 @@ namespace
 detail::new_reference dict_base::call(object const& arg_)
 {
     return (detail::new_reference)PyObject_CallFunction(
-        (PyObject*)&PyDict_Type, const_cast<char*>("(O)"), 
+        (PyObject*)&PyDict_Type, const_cast<char*>("(O)"),
         arg_.ptr());
 }
 
 dict_base::dict_base()
     : object(detail::new_reference(PyDict_New()))
 {}
-    
+
 dict_base::dict_base(object_cref data)
     : object(call(data))
 {}
-    
+
 void dict_base::clear()
 {
     if (check_exact(this))
@@ -84,7 +84,7 @@ object dict_base::get(object_cref k, object_cref d) const
 
 bool dict_base::has_key(object_cref k) const
 {
-    return extract<bool>(this->contains(k)); 
+    return extract<bool>(this->contains(k));
 }
 
 list dict_base::items() const

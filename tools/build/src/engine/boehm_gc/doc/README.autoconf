@@ -37,7 +37,7 @@ some, please let me know.)
 
 Note that the distribution comes with a "Makefile" which will be overwritten
 by "configure" with one that is not at all equiavelent to the original.  The
-distribution contains a copy of the original "Makefile" in "Makefile.direct". 
+distribution contains a copy of the original "Makefile" in "Makefile.direct".
 
 Important options to configure:
 

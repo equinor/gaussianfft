@@ -22,7 +22,7 @@ namespace boost { namespace spirit
 {
     // enables lazy lit(...) for karma
     template <>
-    struct use_lazy_terminal<karma::domain, tag::lit, 1> 
+    struct use_lazy_terminal<karma::domain, tag::lit, 1>
       : mpl::true_ {};
 }}
 

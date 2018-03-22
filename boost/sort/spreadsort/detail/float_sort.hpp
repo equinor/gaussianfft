@@ -76,7 +76,7 @@ namespace spreadsort {
               class Compare>
     inline bool
     is_sorted_or_find_extremes(RandomAccessIter current, RandomAccessIter last,
-                               Div_type & max, Div_type & min, 
+                               Div_type & max, Div_type & min,
                                Right_shift rshift, Compare comp)
     {
       min = max = rshift(*current, 0);
@@ -169,7 +169,7 @@ namespace spreadsort {
               , size_t *bin_sizes)
     {
       Div_type max, min;
-      if (is_sorted_or_find_extremes<RandomAccessIter, Div_type>(first, last, 
+      if (is_sorted_or_find_extremes<RandomAccessIter, Div_type>(first, last,
                                                                 max, min))
         return;
       unsigned log_divisor = get_log_divisor<float_log_mean_bin_size>(
@@ -228,7 +228,7 @@ namespace spreadsort {
                         unsigned cache_offset, size_t *bin_sizes)
     {
       Div_type max, min;
-      if (is_sorted_or_find_extremes<RandomAccessIter, Div_type>(first, last, 
+      if (is_sorted_or_find_extremes<RandomAccessIter, Div_type>(first, last,
                                                                  max, min))
         return;
 
@@ -407,7 +407,7 @@ namespace spreadsort {
                 , size_t *bin_sizes)
     {
       Div_type max, min;
-      if (is_sorted_or_find_extremes<RandomAccessIter, Div_type>(first, last, 
+      if (is_sorted_or_find_extremes<RandomAccessIter, Div_type>(first, last,
                                                                 max, min))
         return;
       unsigned log_divisor = get_log_divisor<float_log_mean_bin_size>(
@@ -468,7 +468,7 @@ namespace spreadsort {
                                        float_log_min_split_count,
                                        float_log_finishing_count>(log_divisor);
       RandomAccessIter lastPos = first;
-      for (int ii = cache_offset + first_positive - 1; 
+      for (int ii = cache_offset + first_positive - 1;
            ii >= static_cast<int>(cache_offset);
            lastPos = bin_cache[ii--]) {
         size_t count = bin_cache[ii] - lastPos;
@@ -564,7 +564,7 @@ namespace spreadsort {
                                        float_log_min_split_count,
                                        float_log_finishing_count>(log_divisor);
       RandomAccessIter lastPos = first;
-      for (int ii = cache_offset + first_positive - 1; 
+      for (int ii = cache_offset + first_positive - 1;
            ii >= static_cast<int>(cache_offset);
            lastPos = bin_cache[ii--]) {
         size_t count = bin_cache[ii] - lastPos;
@@ -618,7 +618,7 @@ namespace spreadsort {
       for (RandomAccessIter current = first; current != last;)
         bin_sizes[unsigned(rshift(*(current++), log_divisor) - div_min)]++;
       //The index of the first positive bin
-      unsigned first_positive = 
+      unsigned first_positive =
         (div_min < 0) ? static_cast<unsigned>(-div_min) : 0;
       //Resetting if all bins are negative
       if (cache_offset + first_positive > cache_end)
@@ -663,7 +663,7 @@ namespace spreadsort {
                                        float_log_min_split_count,
                                        float_log_finishing_count>(log_divisor);
       RandomAccessIter lastPos = first;
-      for (int ii = cache_offset + first_positive - 1; 
+      for (int ii = cache_offset + first_positive - 1;
            ii >= static_cast<int>(cache_offset);
            lastPos = bin_cache[ii--]) {
         size_t count = bin_cache[ii] - lastPos;

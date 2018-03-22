@@ -19,7 +19,7 @@ namespace self_ns
 {
 # ifndef BOOST_PYTHON_SELF_IS_CLASS
   enum self_t { self };
-# else 
+# else
   struct self_t {};
   extern BOOST_PYTHON_DECL self_t self;
 # endif

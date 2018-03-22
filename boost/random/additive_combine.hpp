@@ -44,7 +44,7 @@ namespace random {
  * \linear_congruential_engine number generators, each with c = 0. Each
  * invocation returns a random number
  * X(n) := (MLCG1(n) - MLCG2(n)) mod (m1 - 1),
- * where m1 denotes the modulus of MLCG1. 
+ * where m1 denotes the modulus of MLCG1.
  */
 template<class MLCG1, class MLCG2>
 class additive_combine_engine
@@ -105,7 +105,7 @@ public:
      * @c seed1 and @c seed2 as the constructor argument to
      * the first and second base generators, respectively.
      */
-    additive_combine_engine(typename MLCG1::result_type seed1, 
+    additive_combine_engine(typename MLCG1::result_type seed1,
                             typename MLCG2::result_type seed2)
       : _mlcg1(seed1), _mlcg2(seed2) { }
     /**
@@ -189,7 +189,7 @@ public:
         if(val2 < val1) return val1 - val2;
         else return val1 - val2 + MLCG1::modulus - 1;
     }
-  
+
     /** Fills a range with random values */
     template<class Iter>
     void generate(Iter first, Iter last)

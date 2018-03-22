@@ -47,7 +47,7 @@ succeed<wink>:
 >>> x.value()
 43
 
->>> apply_void_X_cref(increment, x) 
+>>> apply_void_X_cref(increment, x)
 >>> x.value()  # const-ness is not respected, sorry!
 44
 
@@ -138,7 +138,7 @@ def run(args = None):
     if args is not None:
         sys.argv = args
     return doctest.testmod(sys.modules.get(__name__))
-    
+
 if __name__ == '__main__':
     print("running...")
     import sys

@@ -163,7 +163,7 @@ PyObject* new_simple()
 
 //
 // Declare some wrappers/unwrappers to test the low-level conversion
-// mechanism. 
+// mechanism.
 //
 using boost::python::to_python_converter;
 
@@ -273,7 +273,7 @@ BOOST_PYTHON_MODULE(m1)
 {
     using namespace boost::python;
     using boost::shared_ptr;
-    
+
     simple_to_python();
 
     lvalue_from_pytype<int_from_noddy,&NoddyType>();
@@ -281,14 +281,14 @@ BOOST_PYTHON_MODULE(m1)
     lvalue_from_pytype<
 #if !defined(BOOST_MSVC) || BOOST_MSVC > 1300 // doesn't support non-type member pointer parameters
         extract_member<SimpleObject, simple, &SimpleObject::x>
-#else 
+#else
         extract_simple_object
-#endif 
+#endif
         , &SimpleType
         >();
 
     lvalue_from_pytype<extract_identity<SimpleObject>,&SimpleType>();
-    
+
     def("new_noddy", new_noddy);
     def("new_simple", new_simple);
 
@@ -302,7 +302,7 @@ BOOST_PYTHON_MODULE(m1)
     def("f_const_ptr", f_const_ptr);
 
     def("f2", f2);
-        
+
       // Expose g()
     def("g", g , return_value_policy<copy_const_reference>()
         );
@@ -325,7 +325,7 @@ BOOST_PYTHON_MODULE(m1)
     class_<B,bases<A> >("B")
         .def("name", &B::name)
         ;
-        
+
     class_<C,bases<A> >("C")
         .def("name", &C::name)
         ;

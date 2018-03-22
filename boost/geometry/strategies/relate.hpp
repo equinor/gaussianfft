@@ -28,7 +28,7 @@ namespace boost { namespace geometry
 
 namespace strategy
 {
-    
+
 namespace point_in_geometry
 {
 

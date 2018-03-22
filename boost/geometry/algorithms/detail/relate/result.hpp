@@ -63,7 +63,7 @@ public:
     static const std::size_t static_width = Width;
     static const std::size_t static_height = Height;
     static const std::size_t static_size = Width * Height;
-    
+
     inline matrix()
     {
         ::memset(m_array, 'F', static_size);
@@ -107,7 +107,7 @@ public:
     {
         return static_size;
     }
-    
+
     inline const char * data() const
     {
         return m_array;
@@ -378,7 +378,7 @@ struct may_update_dispatch
         BOOST_STATIC_ASSERT('0' <= D && D <= '9');
 
         char const m = mask.template get<F1, F2>();
-        
+
         if ( m == 'F' )
         {
             return true;
@@ -697,7 +697,7 @@ struct static_mask
 
     BOOST_STATIC_ASSERT(
         std::size_t(boost::mpl::size<Seq>::type::value) == static_size);
-    
+
     template <detail::relate::field F1, detail::relate::field F2>
     struct static_get
     {
@@ -788,7 +788,7 @@ struct static_interrupt_dispatch<StaticMask, V, F1, F2, true, IsSequence>
     static const char mask_el = StaticMask::template static_get<F1, F2>::value;
 
     static const bool value
-        = ( V >= '0' && V <= '9' ) ? 
+        = ( V >= '0' && V <= '9' ) ?
           ( mask_el == 'F' || ( mask_el < V && mask_el >= '0' && mask_el <= '9' ) ) :
           ( ( V == 'T' ) ? mask_el == 'F' : false );
 };
@@ -972,7 +972,7 @@ struct static_check_dispatch
             && per_one<exterior, boundary>::apply(matrix)
             && per_one<exterior, exterior>::apply(matrix);
     }
-    
+
     template <field F1, field F2>
     struct per_one
     {

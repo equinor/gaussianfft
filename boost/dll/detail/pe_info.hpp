@@ -211,7 +211,7 @@ private:
 
         return h;
     }
-    
+
     inline exports_t exports(const header_t& h) {
         exports_t exports;
 
@@ -229,7 +229,7 @@ private:
 
     std::size_t get_file_offset(std::size_t virtual_address, const header_t& h) {
         section_t image_section_header;
-        
+
         {   // f_.seekg to the beginning on section headers
             dos_t dos;
             f_.seekg(0);
@@ -239,8 +239,8 @@ private:
 
         for (std::size_t i = 0;i < h.FileHeader.NumberOfSections;++i) {
             read_raw(image_section_header);
-            if (virtual_address >= image_section_header.VirtualAddress 
-                && virtual_address < image_section_header.VirtualAddress + image_section_header.SizeOfRawData) 
+            if (virtual_address >= image_section_header.VirtualAddress
+                && virtual_address < image_section_header.VirtualAddress + image_section_header.SizeOfRawData)
             {
                 return image_section_header.PointerToRawData + virtual_address - image_section_header.VirtualAddress;
             }
@@ -264,7 +264,7 @@ public:
             // There is no terminating null character if the string is exactly eight characters long
             read_raw(image_section_header);
             std::memcpy(name_helper, image_section_header.Name, section_t::IMAGE_SIZEOF_SHORT_NAME_);
-            
+
             if (name_helper[0] != '/') {
                 ret.push_back(name_helper);
             } else {
@@ -304,10 +304,10 @@ public:
         std::vector<std::string> ret;
 
         const header_t h = header();
-        
+
         std::size_t section_begin_addr = 0;
         std::size_t section_end_addr = 0;
-        
+
         {   // getting address range for the section
             section_t image_section_header;
             char name_helper[section_t::IMAGE_SIZEOF_SHORT_NAME_ + 1];
@@ -321,7 +321,7 @@ public:
                     section_end_addr = section_begin_addr + image_section_header.SizeOfRawData;
                 }
             }
-            
+
             // returning empty result if section was not found
             if(section_begin_addr == 0 || section_end_addr == 0)
                 return ret;
@@ -360,7 +360,7 @@ public:
 
         return ret;
     }
-    
+
     // a test method to get dependents modules,
     // who my plugin imports (1st level only)
     /*
@@ -376,7 +376,7 @@ public:
 
         IMAGE_DOS_HEADER* image_dos_header = (IMAGE_DOS_HEADER*)native();
         if(!image_dos_header) {
-            // ERROR_BAD_EXE_FORMAT 
+            // ERROR_BAD_EXE_FORMAT
             ec = boost::system::error_code(
                  boost::system::errc::executable_format_error,
                  boost::system::generic_category()
@@ -387,7 +387,7 @@ public:
 
         IMAGE_OPTIONAL_HEADER* image_optional_header = (IMAGE_OPTIONAL_HEADER*)((boost::dll::detail::BYTE_*)native() + image_dos_header->e_lfanew + 24);
         if(!image_optional_header) {
-            // ERROR_BAD_EXE_FORMAT 
+            // ERROR_BAD_EXE_FORMAT
             ec = boost::system::error_code(
                  boost::system::errc::executable_format_error,
                  boost::system::generic_category()
@@ -398,7 +398,7 @@ public:
 
         IMAGE_IMPORT_DESCRIPTOR* image_import_descriptor =  (IMAGE_IMPORT_DESCRIPTOR*)((boost::dll::detail::BYTE_*)native() + image_optional_header->DataDirectory[IMAGE_DIRECTORY_ENTRY_IMPORT].VirtualAddress);
         if(!image_import_descriptor) {
-            // ERROR_BAD_EXE_FORMAT 
+            // ERROR_BAD_EXE_FORMAT
             ec = boost::system::error_code(
                  boost::system::errc::executable_format_error,
                  boost::system::generic_category()
@@ -413,7 +413,7 @@ public:
            if(module_name.size()) {
               ret.push_back(module_name);
            }
-                
+
            image_import_descriptor++;
         }
 

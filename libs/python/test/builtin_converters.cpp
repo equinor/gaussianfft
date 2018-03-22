@@ -62,7 +62,7 @@ char const* rewrap_value_mutable_cstring(char* x) { return x; }
 object identity_(object x) { return x; }
 
 BOOST_PYTHON_MODULE(builtin_converters_ext)
-{    
+{
     def("get_type", get_type);
     def("return_null_handle", return_null_handle);
 
@@ -91,7 +91,7 @@ BOOST_PYTHON_MODULE(builtin_converters_ext)
 #ifdef HAVE_LONG_LONG
     def("rewrap_value_long_long", by_value<BOOST_PYTHON_LONG_LONG>::rewrap);
     def("rewrap_value_unsigned_long_long", by_value<unsigned BOOST_PYTHON_LONG_LONG>::rewrap);
-# endif 
+# endif
     def("rewrap_value_float", by_value<float>::rewrap);
     def("rewrap_value_double", by_value<double>::rewrap);
     def("rewrap_value_long_double", by_value<long double>::rewrap);
@@ -101,16 +101,16 @@ BOOST_PYTHON_MODULE(builtin_converters_ext)
     def("rewrap_value_wstring",
 # if defined(BOOST_NO_STD_WSTRING) || !defined(Py_USING_UNICODE)
         identity_
-# else 
+# else
         by_value<std::wstring>::rewrap
-# endif 
+# endif
     );
     def("rewrap_value_string",
 # if defined(BOOST_NO_STD_WSTRING) || !defined(Py_USING_UNICODE)
         identity_
-# else 
+# else
         by_value<std::wstring>::rewrap
-# endif 
+# endif
     );
     def("rewrap_value_string", by_value<std::string>::rewrap);
     def("rewrap_value_cstring", by_value<char const*>::rewrap);

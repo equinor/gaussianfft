@@ -12,7 +12,7 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/get_pointer.hpp>
 
-namespace boost { namespace python { namespace converter { 
+namespace boost { namespace python { namespace converter {
 
 template <class T>
 PyObject* shared_ptr_to_python(shared_ptr<T> const& x)

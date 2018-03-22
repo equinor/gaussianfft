@@ -104,19 +104,19 @@ namespace boost { namespace dll {
 // Alias - is just a variable that pointers to original data
 //
 // A few attempts were made to avoid additional indirection:
-// 1) 
+// 1)
 //          // Does not work on Windows, work on Linux
 //          extern "C" BOOST_SYMBOL_EXPORT void AliasName() {
 //              reinterpret_cast<void (*)()>(Function)();
 //          }
 //
-// 2) 
+// 2)
 //          // Does not work on Linux (changes permissions of .text section and produces incorrect DSO)
-//          extern "C" BOOST_SYMBOL_EXPORT void* __attribute__ ((section(".text#"))) 
+//          extern "C" BOOST_SYMBOL_EXPORT void* __attribute__ ((section(".text#")))
 //                  func_ptr = *reinterpret_cast<std::ptrdiff_t**>(&foo::bar);
 //
-// 3)       // requires mangled name of `Function` 
-//          //  AliasName() __attribute__ ((weak, alias ("Function")))  
+// 3)       // requires mangled name of `Function`
+//          //  AliasName() __attribute__ ((weak, alias ("Function")))
 //
 //          // hard to use
 //          `#pragma comment(linker, "/alternatename:_pWeakValue=_pDefaultWeakValue")`
@@ -178,10 +178,10 @@ namespace boost { namespace dll {
         extern "C" BOOST_SYMBOL_EXPORT const void *FunctionOrVar;                               \
     } /* namespace _autoaliases */                                                              \
     /**/
-#else    
+#else
 // Note: we can not use `aggressive_ptr_cast` here, because in that case GCC applies
 // different permissions to the section and it causes Segmentation fault.
-// Note: we can not use `boost::addressof()` here, because in that case GCC 
+// Note: we can not use `boost::addressof()` here, because in that case GCC
 // may optimize away the FunctionOrVar instance and we'll get a pointer to unexisting symbol.
 /*!
 * \brief Same as \forcedmacrolink{BOOST_DLL_ALIAS} but puts alias name into the user specified section.

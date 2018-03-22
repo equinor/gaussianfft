@@ -31,7 +31,7 @@ namespace boost { namespace graph { namespace distributed {
 namespace detail {
 #ifdef WANT_MPI_ONESIDED
   template<typename Graph, typename RankMap, typename owner_map_t>
-  void page_rank_step(const Graph& g, RankMap from_rank, MPI_Win to_win, 
+  void page_rank_step(const Graph& g, RankMap from_rank, MPI_Win to_win,
                       typename property_traits<RankMap>::value_type damping,
                       owner_map_t owner)
   {
@@ -52,7 +52,7 @@ namespace detail {
       BGL_FORALL_ADJ_T(u, v, g, Graph) {
         ret = MPI_Accumulate(&(from_rank[u]),
                              1, MPI_DOUBLE,
-                             get(owner, v), local(v), 
+                             get(owner, v), local(v),
                              1, MPI_DOUBLE, MPI_SUM, to_win);
         BOOST_ASSERT(MPI_SUCCESS == ret);
       }
@@ -79,7 +79,7 @@ namespace detail {
 
 template<typename Graph, typename RankMap, typename Done, typename RankMap2>
 void
-page_rank_impl(const Graph& g, RankMap rank_map, Done done, 
+page_rank_impl(const Graph& g, RankMap rank_map, Done done,
                typename property_traits<RankMap>::value_type damping,
                typename graph_traits<Graph>::vertices_size_type n,
                RankMap2 rank_map2)
@@ -112,14 +112,14 @@ page_rank_impl(const Graph& g, RankMap rank_map, Done done,
   bool to_map_2 = true;
   MPI_Win win, win2;
 
-  MPI_Win_create(&(rank_map[*(vertices(g).first)]), 
+  MPI_Win_create(&(rank_map[*(vertices(g).first)]),
                  sizeof(double) * num_vertices(g),
-                 sizeof(double), 
+                 sizeof(double),
                  MPI_INFO_NULL, MPI_COMM_WORLD, &win);
   MPI_Win_set_name(win, "rank_map_win");
-  MPI_Win_create(&(rank_map2[*(vertices(g).first)]), 
+  MPI_Win_create(&(rank_map2[*(vertices(g).first)]),
                  sizeof(double) * num_vertices(g),
-                 sizeof(double), 
+                 sizeof(double),
                  MPI_INFO_NULL, MPI_COMM_WORLD, &win2);
   MPI_Win_set_name(win, "rank_map2_win");
 
@@ -144,7 +144,7 @@ page_rank_impl(const Graph& g, RankMap rank_map, Done done,
   MPI_Win_free(&win);
   MPI_Win_free(&win2);
 
-#else  
+#else
   // The ranks accumulate after each step.
   rank_map.set_reduce(detail::rank_accumulate_reducer<rank_type>());
   rank_map2.set_reduce(detail::rank_accumulate_reducer<rank_type>());
@@ -178,18 +178,18 @@ page_rank_impl(const Graph& g, RankMap rank_map, Done done,
 
   rank_map.reset();
 #endif
-      
+
   if (!to_map_2)
     BGL_FORALL_VERTICES_T(v, g, Graph) put(rank_map, v, get(rank_map2, v));
 }
 
 template<typename Graph, typename RankMap, typename Done, typename RankMap2>
 void
-page_rank(const Graph& g, RankMap rank_map, Done done, 
+page_rank(const Graph& g, RankMap rank_map, Done done,
           typename property_traits<RankMap>::value_type damping,
           typename graph_traits<Graph>::vertices_size_type n,
           RankMap2 rank_map2
-          BOOST_GRAPH_ENABLE_IF_MODELS_PARM(Graph, distributed_graph_tag)) 
+          BOOST_GRAPH_ENABLE_IF_MODELS_PARM(Graph, distributed_graph_tag))
 {
   (page_rank_impl)(g, rank_map, done, damping, n, rank_map2);
 }
@@ -197,7 +197,7 @@ page_rank(const Graph& g, RankMap rank_map, Done done,
 template<typename MutableGraph>
 void
 remove_dangling_links(MutableGraph& g
-                      BOOST_GRAPH_ENABLE_IF_MODELS_PARM(MutableGraph, 
+                      BOOST_GRAPH_ENABLE_IF_MODELS_PARM(MutableGraph,
                                                         distributed_graph_tag))
 {
   typename graph_traits<MutableGraph>::vertices_size_type old_n;

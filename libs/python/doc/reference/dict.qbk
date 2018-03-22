@@ -28,13 +28,13 @@ namespace boost { namespace python
       object setdefault(T1 const & k, T2 const & d);
 
       void update(object_cref E);
- 
+
       template< class T >
       void update(T const & E);
 
       // observers
       list values() const;
-    
+
       object get(object_cref k) const;
 
       template<class T>

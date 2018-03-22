@@ -60,7 +60,7 @@ struct sequence_container_adaptor_base
             // {
                     detail::iterator_from_base_identity
                     <
-                        BOOST_DEDUCED_TYPENAME Base::reverse_iterator, 
+                        BOOST_DEDUCED_TYPENAME Base::reverse_iterator,
                         ReverseIterator,
                         BOOST_DEDUCED_TYPENAME Base::const_reverse_iterator,
                         ConstReverseIterator
@@ -270,7 +270,7 @@ class sequence_container_adaptor :
     }
 
     void push_back(
-        BOOST_DEDUCED_TYPENAME ::boost::call_traits< 
+        BOOST_DEDUCED_TYPENAME ::boost::call_traits<
             BOOST_DEDUCED_TYPENAME base_::value_type >::param_type x)
     {
         this->base().push_back(
@@ -284,7 +284,7 @@ class sequence_container_adaptor :
 
     std::pair<BOOST_DEDUCED_TYPENAME base_::iterator,bool>
     insert(BOOST_DEDUCED_TYPENAME base_::iterator position,
-           BOOST_DEDUCED_TYPENAME ::boost::call_traits< 
+           BOOST_DEDUCED_TYPENAME ::boost::call_traits<
                 BOOST_DEDUCED_TYPENAME base_::value_type >::param_type x)
     {
         std::pair< BOOST_DEDUCED_TYPENAME Base::iterator, bool > r(
@@ -320,7 +320,7 @@ class sequence_container_adaptor :
     void insert(BOOST_DEDUCED_TYPENAME base_::iterator position,
                 InputIterator first, InputIterator last)
     {
-        // This is the same problem found in the insert function 
+        // This is the same problem found in the insert function
         // of container_adaptor
         // For now, do the simple thing. This can be optimized
 

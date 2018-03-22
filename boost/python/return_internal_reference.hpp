@@ -12,7 +12,7 @@
 # include <boost/python/with_custodian_and_ward.hpp>
 # include <boost/mpl/if.hpp>
 
-namespace boost { namespace python { 
+namespace boost { namespace python {
 
 namespace detail
 {

@@ -1,4 +1,4 @@
-/*-----------------------------------------------------------------------------+    
+/*-----------------------------------------------------------------------------+
 Copyright (c) 2008-2009: Joachim Faulhaber
 +------------------------------------------------------------------------------+
    Distributed under the Boost Software License, Version 1.0.
@@ -17,15 +17,15 @@ Copyright (c) 2008-2009: Joachim Faulhaber
 namespace boost{ namespace icl
 {
     template <class Type> struct has_set_semantics
-    { 
+    {
         typedef has_set_semantics<Type> type;
-        BOOST_STATIC_CONSTANT(bool, 
+        BOOST_STATIC_CONSTANT(bool,
             value = (mpl::or_< is_set<Type>
                              , mpl::and_< is_map<Type>
                                         , has_set_semantics
-                                          <typename codomain_type_of<Type>::type > 
-                                        > 
-                             >::value)); 
+                                          <typename codomain_type_of<Type>::type >
+                                        >
+                             >::value));
     };
 
 }} // namespace boost icl

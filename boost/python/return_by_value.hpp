@@ -12,7 +12,7 @@
 
 # include <boost/python/detail/value_arg.hpp>
 
-namespace boost { namespace python { 
+namespace boost { namespace python {
 
 struct return_by_value
 {

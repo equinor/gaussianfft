@@ -1,7 +1,7 @@
 /*
- * Distributed under the Boost Software License, Version 1.0.(See accompanying 
+ * Distributed under the Boost Software License, Version 1.0.(See accompanying
  * file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt.)
- * 
+ *
  * See http://www.boost.org/libs/iostreams for documentation.
 
  * File:        boost/iostreams/detail/execute.hpp
@@ -10,16 +10,16 @@
  * Author:      Jonathan Turkanis
  * Contact:     turkanis at coderage dot com
 
- * Defines the overloaded function template 
- * boost::iostreams::detail::execute_all() and the function template 
+ * Defines the overloaded function template
+ * boost::iostreams::detail::execute_all() and the function template
  * boost::iostreams::detail::execute_foreach().
  *
- * execute_all() invokes a primary operation and performs a sequence of cleanup 
+ * execute_all() invokes a primary operation and performs a sequence of cleanup
  * operations, returning the result of the primary operation if no exceptions
  * are thrown. If one of the operations throws an exception, performs the
  * remaining operations and rethrows the initial exception.
  *
- * execute_foreach() is a variant of std::foreach which invokes a function 
+ * execute_foreach() is a variant of std::foreach which invokes a function
  * object for each item in a sequence, catching all execptions and rethrowing
  * the first caught exception after the function object has been invoked on each
  * item.
@@ -53,7 +53,7 @@ struct execute_traits_impl {
     static Result execute(Op op) { return op(); }
 };
 
-// Specialization for void return. For simplicity, execute() returns int 
+// Specialization for void return. For simplicity, execute() returns int
 // for operations returning void. This could be avoided with additional work.
 template<>
 struct execute_traits_impl<void> {
@@ -62,9 +62,9 @@ struct execute_traits_impl<void> {
     static int execute(Op op) { op(); return 0; }
 };
 
-// Deduces the result type of Op and allows uniform treatment of operations 
+// Deduces the result type of Op and allows uniform treatment of operations
 // returning void and non-void.
-template< typename Op, 
+template< typename Op,
           typename Result = // VC6.5 workaround.
               #if !defined(BOOST_NO_RESULT_OF) && \
                   !BOOST_WORKAROUND(__BORLANDC__, BOOST_TESTED_AT(0x592))
@@ -73,15 +73,15 @@ template< typename Op,
                   BOOST_DEDUCED_TYPENAME Op::result_type
               #endif
           >
-struct execute_traits 
+struct execute_traits
     : execute_traits_impl<Result>
     { };
 
 // Implementation with no cleanup operations.
 template<typename Op>
-typename execute_traits<Op>::result_type 
-execute_all(Op op) 
-{ 
+typename execute_traits<Op>::result_type
+execute_all(Op op)
+{
     return execute_traits<Op>::execute(op);
 }
 

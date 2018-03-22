@@ -95,7 +95,7 @@ BOOST_PYTHON_MODULE(docstring_ext)
       }
       def("fact_usr_off_sig_off_2", fact, "usr off sig off 2", args("n"));
     }
-    
+
     {
       docstring_options doc_options(true);
       doc_options.disable_cpp_signatures();
@@ -110,7 +110,7 @@ BOOST_PYTHON_MODULE(docstring_ext)
       doc_options.enable_cpp_signatures();
       doc_options.disable_py_signatures();
         def("fact_usr_off_psig_off_csig_on_1", fact, "usr off psig off csig on 1", args("n"));
-    } 
+    }
 }
 
 #include "module_tail.cpp"

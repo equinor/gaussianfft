@@ -58,7 +58,7 @@ typedef void (* oom_fn)(void);
 CORD CORD_cat_char(CORD x, char c)
 {
     register char * string;
-    
+
     if (c == '\0') return(CORD_cat(x, CORD_nul(1)));
     string = GC_MALLOC_ATOMIC(2);
     if (string == 0) OUT_OF_MEMORY;
@@ -92,7 +92,7 @@ int CORD_fill_proc(char c, void * client_data)
 {
     register CORD_fill_data * d = (CORD_fill_data *)client_data;
     register size_t count = d -> count;
-    
+
     (d -> buf)[count] = c;
     d -> count = ++count;
     if (count >= d -> len) {
@@ -109,7 +109,7 @@ int CORD_batched_fill_proc(const char * s, void * client_data)
     register size_t max = d -> len;
     register char * buf = d -> buf;
     register const char * t = s;
-    
+
     while((buf[count] = *t++) != '\0') {
         count++;
         if (count >= max) {
@@ -122,11 +122,11 @@ int CORD_batched_fill_proc(const char * s, void * client_data)
 }
 
 /* Fill buf with len characters starting at i.  			*/
-/* Assumes len characters are available.				*/ 
+/* Assumes len characters are available.				*/
 void CORD_fill_buf(CORD x, size_t i, size_t len, char * buf)
 {
     CORD_fill_data fd;
-    
+
     fd.len = len;
     fd.buf = buf;
     fd.count = 0;
@@ -138,7 +138,7 @@ int CORD_cmp(CORD x, CORD y)
     CORD_pos xpos;
     CORD_pos ypos;
     register size_t avail, yavail;
-    
+
     if (y == CORD_EMPTY) return(x != CORD_EMPTY);
     if (x == CORD_EMPTY) return(-1);
     if (CORD_IS_STRING(y) && CORD_IS_STRING(x)) return(strcmp(x,y));
@@ -165,7 +165,7 @@ int CORD_cmp(CORD x, CORD y)
         } else {
             /* process as many characters as we can	*/
             register int result;
-            
+
             if (avail > yavail) avail = yavail;
             result = strncmp(CORD_pos_cur_char_addr(xpos),
             		     CORD_pos_cur_char_addr(ypos), avail);
@@ -182,7 +182,7 @@ int CORD_ncmp(CORD x, size_t x_start, CORD y, size_t y_start, size_t len)
     CORD_pos ypos;
     register size_t count;
     register long avail, yavail;
-    
+
     CORD_set_pos(xpos, x, x_start);
     CORD_set_pos(ypos, y, y_start);
     for(count = 0; count < len;) {
@@ -207,7 +207,7 @@ int CORD_ncmp(CORD x, size_t x_start, CORD y, size_t y_start, size_t len)
         } else {
             /* process as many characters as we can	*/
             register int result;
-            
+
             if (avail > yavail) avail = yavail;
             count += avail;
             if (count > len) avail -= (count - len);
@@ -225,7 +225,7 @@ char * CORD_to_char_star(CORD x)
 {
     register size_t len = CORD_len(x);
     char * result = GC_MALLOC_ATOMIC(len + 1);
-    
+
     if (result == 0) OUT_OF_MEMORY;
     CORD_fill_buf(x, 0, len, result);
     result[len] = '\0';
@@ -254,7 +254,7 @@ const char * CORD_to_const_char_star(CORD x)
 char CORD_fetch(CORD x, size_t i)
 {
     CORD_pos xpos;
-    
+
     CORD_set_pos(xpos, x, i);
     if (!CORD_pos_valid(xpos)) ABORT("bad index?");
     return(CORD_pos_fetch(xpos));
@@ -264,17 +264,17 @@ char CORD_fetch(CORD x, size_t i)
 int CORD_put_proc(char c, void * client_data)
 {
     register FILE * f = (FILE *)client_data;
-    
+
     return(putc(c, f) == EOF);
 }
 
 int CORD_batched_put_proc(const char * s, void * client_data)
 {
     register FILE * f = (FILE *)client_data;
-    
+
     return(fputs(s, f) == EOF);
 }
-    
+
 
 int CORD_put(CORD x, FILE * f)
 {
@@ -293,7 +293,7 @@ typedef struct {
 int CORD_chr_proc(char c, void * client_data)
 {
     register chr_data * d = (chr_data *)client_data;
-    
+
     if (c == d -> target) return(1);
     (d -> pos) ++;
     return(0);
@@ -302,7 +302,7 @@ int CORD_chr_proc(char c, void * client_data)
 int CORD_rchr_proc(char c, void * client_data)
 {
     register chr_data * d = (chr_data *)client_data;
-    
+
     if (c == d -> target) return(1);
     (d -> pos) --;
     return(0);
@@ -312,7 +312,7 @@ int CORD_batched_chr_proc(const char *s, void * client_data)
 {
     register chr_data * d = (chr_data *)client_data;
     register char * occ = strchr(s, d -> target);
-    
+
     if (occ == 0) {
       	d -> pos += strlen(s);
       	return(0);
@@ -325,7 +325,7 @@ int CORD_batched_chr_proc(const char *s, void * client_data)
 size_t CORD_chr(CORD x, size_t i, int c)
 {
     chr_data d;
-    
+
     d.pos = i;
     d.target = c;
     if (CORD_iter5(x, i, CORD_chr_proc, CORD_batched_chr_proc, &d)) {
@@ -338,7 +338,7 @@ size_t CORD_chr(CORD x, size_t i, int c)
 size_t CORD_rchr(CORD x, size_t i, int c)
 {
     chr_data d;
-    
+
     d.pos = i;
     d.target = c;
     if (CORD_riter4(x, i, CORD_rchr_proc, &d)) {
@@ -368,7 +368,7 @@ size_t CORD_str(CORD x, size_t start, CORD s)
     unsigned long mask = 0;
     register size_t i;
     register size_t match_pos;
-    
+
     if (s == CORD_EMPTY) return(start);
     if (CORD_IS_STRING(s)) {
         s_start = s;
@@ -442,7 +442,7 @@ CORD CORD_from_file_eager(FILE * f)
 {
     register int c;
     CORD_ec ecord;
-    
+
     CORD_ec_init(ecord);
     for(;;) {
         c = getc(f);
@@ -451,7 +451,7 @@ CORD CORD_from_file_eager(FILE * f)
           /* Note that any string of NULs is rpresented in 4 words,	*/
           /* independent of its length.					*/
             register size_t count = 1;
-            
+
             CORD_ec_flush_buf(ecord);
             while ((c = getc(f)) == 0) count++;
             ecord[0].ec_cord = CORD_cat(ecord[0].ec_cord, CORD_nul(count));
@@ -515,7 +515,7 @@ refill_data * client_data;
     size_t line_start = LINE_START(file_pos);
     size_t line_no = DIV_LINE_SZ(MOD_CACHE_SZ(file_pos));
     cache_line * new_cache = client_data -> new_cache;
-    
+
     if (line_start != state -> lf_current
         && fseek(f, line_start, SEEK_SET) != 0) {
     	    ABORT("fseek failed");
@@ -537,7 +537,7 @@ char CORD_lf_func(size_t i, void * client_data)
     register cache_line * volatile * cl_addr =
 		&(state -> lf_cache[DIV_LINE_SZ(MOD_CACHE_SZ(i))]);
     register cache_line * cl = (cache_line *)ATOMIC_READ(cl_addr);
-    
+
     if (cl == 0 || cl -> tag != DIV_LINE_SZ(i)) {
     	/* Cache miss */
     	refill_data rd;
@@ -550,10 +550,10 @@ char CORD_lf_func(size_t i, void * client_data)
         	  GC_call_with_alloc_lock((GC_fn_type) refill_cache, &rd));
     }
     return(cl -> data[MOD_LINE_SZ(i)]);
-}    
+}
 
 /*ARGSUSED*/
-void CORD_lf_close_proc(void * obj, void * client_data)  
+void CORD_lf_close_proc(void * obj, void * client_data)
 {
     if (fclose(((lf_state *)obj) -> lf_file) != 0) {
     	ABORT("CORD_lf_close_proc: fclose failed");
@@ -564,7 +564,7 @@ CORD CORD_from_file_lazy_inner(FILE * f, size_t len)
 {
     register lf_state * state = GC_NEW(lf_state);
     register int i;
-    
+
     if (state == 0) OUT_OF_MEMORY;
     if (len != 0) {
 	/* Dummy read to force buffer allocation.  	*/
@@ -574,7 +574,7 @@ CORD CORD_from_file_lazy_inner(FILE * f, size_t len)
 	/* world is multithreaded.			*/
 	char buf[1];
 
-	(void) fread(buf, 1, 1, f); 
+	(void) fread(buf, 1, 1, f);
 	rewind(f);
     }
     state -> lf_file = f;
@@ -589,7 +589,7 @@ CORD CORD_from_file_lazy_inner(FILE * f, size_t len)
 CORD CORD_from_file_lazy(FILE * f)
 {
     register long len;
-    
+
     if (fseek(f, 0l, SEEK_END) != 0) {
         ABORT("Bad fd argument - fseek failed");
     }
@@ -605,7 +605,7 @@ CORD CORD_from_file_lazy(FILE * f)
 CORD CORD_from_file(FILE * f)
 {
     register long len;
-    
+
     if (fseek(f, 0l, SEEK_END) != 0) {
         ABORT("Bad fd argument - fseek failed");
     }

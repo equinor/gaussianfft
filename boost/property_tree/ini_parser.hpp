@@ -2,8 +2,8 @@
 // Copyright (C) 2002-2006 Marcin Kalicinski
 // Copyright (C) 2009 Sebastian Redl
 //
-// Distributed under the Boost Software License, Version 1.0. 
-// (See accompanying file LICENSE_1_0.txt or copy at 
+// Distributed under the Boost Software License, Version 1.0.
+// (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 //
 // For more information, see www.boost.org
@@ -155,7 +155,7 @@ namespace boost { namespace property_tree { namespace ini_parser
      * @param loc The locale to use when reading in the file contents.
      */
     template<class Ptree>
-    void read_ini(const std::string &filename, 
+    void read_ini(const std::string &filename,
                   Ptree &pt,
                   const std::locale &loc = std::locale())
     {
@@ -258,7 +258,7 @@ namespace boost { namespace property_tree { namespace ini_parser
      * @pre There cannot be duplicate keys on any given level of @e pt.
      * @throw ini_parser_error In case of error translating the property tree to
      *                         INI or writing to the output stream.
-     * @param stream The stream to which to write the INI representation of the 
+     * @param stream The stream to which to write the INI representation of the
      *               property tree.
      * @param pt The property tree to tranlsate to INI and output.
      * @param flags The flags to use when writing the INI file.

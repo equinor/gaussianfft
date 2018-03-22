@@ -119,7 +119,7 @@ public:
             boost::throw_exception(
                 invalid_result() );
 
-        return * result_; 
+        return * result_;
     }
 };
 
@@ -214,7 +214,7 @@ public:
             boost::throw_exception(
                 invalid_result() );
 
-        return * result_; 
+        return * result_;
     }
 };
 

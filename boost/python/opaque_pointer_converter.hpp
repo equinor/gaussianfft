@@ -53,10 +53,10 @@ struct opaque
             this->register_self();
         }
     }
-    
+
     static opaque instance;
 private:
-    
+
     static void* extract(PyObject* op)
     {
         return PyObject_TypeCheck(op, &type_object)
@@ -68,7 +68,7 @@ private:
     static PyObject* wrap(void const* px)
     {
         Pointee* x = *static_cast<Pointee*const*>(px);
-        
+
         if (x == 0)
             return detail::none();
 
@@ -105,7 +105,7 @@ private:
         PyObject_HEAD
         Pointee* x;
     };
-    
+
     static PyTypeObject type_object;
 #ifndef BOOST_PYTHON_NO_PY_SIGNATURES
     static PyTypeObject const *get_pytype(){return  &type_object; }

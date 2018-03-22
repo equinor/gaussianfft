@@ -90,12 +90,12 @@
 /*
 
   Determines the type of an identifier.
-  
+
   The type may be that of an identifier or else
   it may be a subtype.
-  
+
   Assumes the 'id' is a valid identifier id
-  
+
   Expands to the appropriate type
 
 */

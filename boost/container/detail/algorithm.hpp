@@ -51,7 +51,7 @@ class binder1st
 	typename Func::first_argument_type value;
 };
 
-template<class Func, class T> 
+template<class Func, class T>
 inline binder1st<Func> bind1st(const Func& func, const T& arg)
 {	return boost::container::binder1st<Func>(func, arg);  }
 

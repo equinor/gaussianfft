@@ -6,8 +6,8 @@
 // Copyright John R. Bandela 2000-2002
 // Copyright David Abrahams 2003-2004
 //
-// Distributed under the Boost Software License, Version 1.0. 
-// (See accompanying file LICENSE_1_0.txt or copy at 
+// Distributed under the Boost Software License, Version 1.0.
+// (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 //
 // See http://www.boost.org/libs/mpl for documentation.
@@ -28,7 +28,7 @@ template<
       typename Sequence
     , typename OldType
     , typename NewType
-    , typename Inserter 
+    , typename Inserter
     >
 struct replace_impl
     : replace_if_impl< Sequence, same_as<OldType>, NewType, Inserter >
@@ -39,7 +39,7 @@ template<
       typename Sequence
     , typename OldType
     , typename NewType
-    , typename Inserter 
+    , typename Inserter
     >
 struct reverse_replace_impl
     : reverse_replace_if_impl< Sequence, same_as<OldType>, NewType, Inserter >

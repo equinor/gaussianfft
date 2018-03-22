@@ -17,7 +17,7 @@
 #include <type_traits>
 
 /* technique explained at
- * http://bannalia.blogspot.com/2016/09/compile-time-checking-existence-of.html 
+ * http://bannalia.blogspot.com/2016/09/compile-time-checking-existence-of.html
  */
 
 namespace boost{
@@ -50,7 +50,7 @@ namespace std{
 template<>
 struct is_void< ::boost::poly_collection::detail::is_invocable_fallback::hook>:
   std::false_type
-{      
+{
   template<typename F,typename... Args>
   static constexpr bool is_invocable_f()
   {

@@ -24,7 +24,7 @@
 /** \struct boost::bimaps::support::iterator_type_by
 
 \brief Metafunction to obtain the iterator type of the map view by one of the sides.
-These metafunctions can be used outside the bimap framework for other bimap 
+These metafunctions can be used outside the bimap framework for other bimap
 signature compatible classes.
 \code
 

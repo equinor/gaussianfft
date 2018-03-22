@@ -14,7 +14,7 @@
 #endif
 # include <boost/python/type_id.hpp>
 
-namespace boost { namespace python { 
+namespace boost { namespace python {
 
 #if 0 //get_pytype member detection
 namespace detail
@@ -31,13 +31,13 @@ namespace detail
     template<class T> no_type tester(...);
 
     template<class T>
-    struct test_get_pytype_base  
+    struct test_get_pytype_base
     {
         BOOST_STATIC_CONSTANT(bool, value= (sizeof(detail::tester<T>(0)) == sizeof(yes_type)));
     };
 
     template<class T>
-    struct test_get_pytype : boost::mpl::bool_<test_get_pytype_base<T>::value> 
+    struct test_get_pytype : boost::mpl::bool_<test_get_pytype_base<T>::value>
     {
     };
 
@@ -45,7 +45,7 @@ namespace detail
 #endif
 
 template < class T, class Conversion, bool has_get_pytype=false >
-struct to_python_converter 
+struct to_python_converter
 {
 #ifndef BOOST_PYTHON_NO_PY_SIGNATURES
     typedef boost::mpl::bool_<has_get_pytype> HasGetPytype;
@@ -64,7 +64,7 @@ struct to_python_converter
         return get_pytype_1((HasGetPytype*)0);
     }
 #endif
-    
+
     to_python_converter();
 };
 
@@ -78,7 +78,7 @@ to_python_converter<T,Conversion, has_get_pytype>::to_python_converter()
     typedef converter::as_to_python_function<
         T, Conversion
         > normalized;
-            
+
     converter::registry::insert(
         &normalized::convert
         , type_id<T>()

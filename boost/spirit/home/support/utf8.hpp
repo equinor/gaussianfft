@@ -52,7 +52,7 @@ namespace boost { namespace spirit
     }
 
     template <typename Char, typename Traits, typename Allocator>
-    inline utf8_string 
+    inline utf8_string
     to_utf8(std::basic_string<Char, Traits, Allocator> const& str)
     {
         // always store as UTF8

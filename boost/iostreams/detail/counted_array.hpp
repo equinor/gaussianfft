@@ -22,7 +22,7 @@ class counted_array_source {
 public:
     typedef Ch          char_type;
     typedef source_tag  category;
-    counted_array_source(const Ch* buf, std::streamsize size) 
+    counted_array_source(const Ch* buf, std::streamsize size)
         : buf_(buf), ptr_(0), end_(size)
         { }
     std::streamsize read(Ch* s, std::streamsize n)
@@ -48,7 +48,7 @@ struct counted_array_sink {
 public:
     typedef Ch        char_type;
     typedef sink_tag  category;
-    counted_array_sink(Ch* buf, std::streamsize size) 
+    counted_array_sink(Ch* buf, std::streamsize size)
         : buf_(buf), ptr_(0), end_(size)
         { }
         std::streamsize write(const Ch* s, std::streamsize n)

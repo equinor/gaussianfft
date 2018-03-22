@@ -89,7 +89,7 @@ struct BOOST_CONTEXT_DECL activation_record {
         if ( BOOST_UNLIKELY( nullptr == fiber) ) {
             DWORD err = ::GetLastError();
             BOOST_ASSERT( ERROR_ALREADY_FIBER == err);
-            fiber = ::GetCurrentFiber(); 
+            fiber = ::GetCurrentFiber();
             BOOST_ASSERT( nullptr != fiber);
             BOOST_ASSERT( reinterpret_cast< LPVOID >( 0x1E00) != fiber);
         }
@@ -99,7 +99,7 @@ struct BOOST_CONTEXT_DECL activation_record {
     activation_record( stack_context sctx_) noexcept :
         sctx{ sctx_ },
         main_ctx{ false } {
-    } 
+    }
 
     virtual ~activation_record() {
         if ( BOOST_UNLIKELY( main_ctx) ) {
@@ -229,7 +229,7 @@ public:
             c = invoke( fn_, std::move( c) );
 #else
             c = std::invoke( fn_, std::move( c) );
-#endif  
+#endif
         } catch ( forced_unwind const& ex) {
             c = Ctx{ ex.from };
         }
@@ -263,7 +263,7 @@ static activation_record * create_context1( StackAlloc salloc, Fn && fn) {
 
 template< typename Ctx, typename StackAlloc, typename Fn >
 static activation_record * create_context2( preallocated palloc, StackAlloc salloc, Fn && fn) {
-    typedef capture_record< Ctx, StackAlloc, Fn >  capture_t; 
+    typedef capture_record< Ctx, StackAlloc, Fn >  capture_t;
 
     BOOST_ASSERT( ( sizeof( capture_t) ) < palloc.size);
     // reserve space for control structure

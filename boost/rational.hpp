@@ -193,7 +193,7 @@ public:
        return *this = rational<IntType>(static_cast<IntType>(n), static_cast<IntType>(d));
     }
     //
-    // The following overloads should probably *not* be provided - 
+    // The following overloads should probably *not* be provided -
     // but are provided for backwards compatibity reasons only.
     // These allow for construction/assignment from types that
     // are wider than IntType only if there is an implicit
@@ -328,7 +328,7 @@ public:
     bool operator!() const { return !num; }
 
     // Boolean conversion
-    
+
 #if BOOST_WORKAROUND(__MWERKS__,<=0x3003)
     // The "ISO C++ Template Parser" option in CW 8.3 chokes on the
     // following, hence we selectively disable that option for the

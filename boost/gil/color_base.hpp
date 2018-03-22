@@ -1,6 +1,6 @@
 /*
     Copyright 2005-2007 Adobe Systems Incorporated
-   
+
     Use, modification and distribution are subject to the Boost Software License,
     Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
     http://www.boost.org/LICENSE_1_0.txt).
@@ -14,7 +14,7 @@
 #define GIL_COLOR_BASE_HPP
 
 ////////////////////////////////////////////////////////////////////////////////////////
-/// \file               
+/// \file
 /// \brief pixel class and related utilities
 /// \author Lubomir Bourdev and Hailin Jin \n
 ///         Adobe Systems Incorporated
@@ -57,12 +57,12 @@ template <typename ColorBase, int K> struct kth_element_const_reference_type<con
 namespace detail {
 
 template <typename DstLayout, typename SrcLayout, int K>
-struct mapping_transform 
-    : public mpl::at<typename SrcLayout::channel_mapping_t, 
+struct mapping_transform
+    : public mpl::at<typename SrcLayout::channel_mapping_t,
                      typename detail::type_to_index<typename DstLayout::channel_mapping_t,mpl::integral_c<int,K> >::type
                            >::type {};
 
-/// \defgroup ColorBaseModelHomogeneous detail::homogeneous_color_base 
+/// \defgroup ColorBaseModelHomogeneous detail::homogeneous_color_base
 /// \ingroup ColorBaseModel
 /// \brief A homogeneous color base holding one color element. Models HomogeneousColorBaseConcept or HomogeneousColorBaseValueConcept
 /// If the element type models Regular, this class models HomogeneousColorBaseValueConcept.
@@ -81,7 +81,7 @@ public:
 
     homogeneous_color_base() {}
     homogeneous_color_base(Element v) : _v0(v) {}
- 
+
     // grayscale pixel values are convertible to channel type
     operator Element () const { return _v0; }
 
@@ -106,25 +106,25 @@ public:
     explicit homogeneous_color_base(Element v) : _v0(v), _v1(v) {}
     homogeneous_color_base(Element v0, Element v1) : _v0(v0), _v1(v1) {}
 
-    template <typename E2, typename L2> homogeneous_color_base(const homogeneous_color_base<E2,L2,2>& c) : 
-        _v0(at_c<mapping_transform<Layout,L2,0>::value>(c)), 
+    template <typename E2, typename L2> homogeneous_color_base(const homogeneous_color_base<E2,L2,2>& c) :
+        _v0(at_c<mapping_transform<Layout,L2,0>::value>(c)),
         _v1(at_c<mapping_transform<Layout,L2,1>::value>(c)) {}
 
     // Support for l-value reference proxy copy construction
-    template <typename E2, typename L2> homogeneous_color_base(      homogeneous_color_base<E2,L2,2>& c) : 
-        _v0(at_c<mapping_transform<Layout,L2,0>::value>(c)), 
+    template <typename E2, typename L2> homogeneous_color_base(      homogeneous_color_base<E2,L2,2>& c) :
+        _v0(at_c<mapping_transform<Layout,L2,0>::value>(c)),
         _v1(at_c<mapping_transform<Layout,L2,1>::value>(c)) {}
 
     // Support for planar_pixel_iterator construction and dereferencing
-    template <typename P> homogeneous_color_base(P* p,bool) : 
-        _v0(&semantic_at_c<0>(*p)), 
+    template <typename P> homogeneous_color_base(P* p,bool) :
+        _v0(&semantic_at_c<0>(*p)),
         _v1(&semantic_at_c<1>(*p)) {}
-    template <typename Ref> Ref deref() const { 
-        return Ref(*semantic_at_c<0>(*this), 
+    template <typename Ref> Ref deref() const {
+        return Ref(*semantic_at_c<0>(*this),
                    *semantic_at_c<1>(*this)); }
 
     // Support for planar_pixel_reference offset constructor
-    template <typename Ptr> homogeneous_color_base(const Ptr& ptr, std::ptrdiff_t diff) 
+    template <typename Ptr> homogeneous_color_base(const Ptr& ptr, std::ptrdiff_t diff)
         : _v0(*memunit_advanced(semantic_at_c<0>(ptr),diff)),
           _v1(*memunit_advanced(semantic_at_c<1>(ptr),diff)) {}
 
@@ -154,29 +154,29 @@ public:
     explicit homogeneous_color_base(Element v) : _v0(v), _v1(v), _v2(v) {}
     homogeneous_color_base(Element v0, Element v1, Element v2) : _v0(v0), _v1(v1), _v2(v2) {}
 
-    template <typename E2, typename L2> homogeneous_color_base(const homogeneous_color_base<E2,L2,3>& c) : 
-        _v0(gil::at_c<mapping_transform<Layout,L2,0>::value>(c)), 
-        _v1(gil::at_c<mapping_transform<Layout,L2,1>::value>(c)), 
+    template <typename E2, typename L2> homogeneous_color_base(const homogeneous_color_base<E2,L2,3>& c) :
+        _v0(gil::at_c<mapping_transform<Layout,L2,0>::value>(c)),
+        _v1(gil::at_c<mapping_transform<Layout,L2,1>::value>(c)),
         _v2(gil::at_c<mapping_transform<Layout,L2,2>::value>(c)) {}
 
     // Support for l-value reference proxy copy construction
-    template <typename E2, typename L2> homogeneous_color_base(      homogeneous_color_base<E2,L2,3>& c) : 
-        _v0(gil::at_c<mapping_transform<Layout,L2,0>::value>(c)), 
-        _v1(gil::at_c<mapping_transform<Layout,L2,1>::value>(c)), 
+    template <typename E2, typename L2> homogeneous_color_base(      homogeneous_color_base<E2,L2,3>& c) :
+        _v0(gil::at_c<mapping_transform<Layout,L2,0>::value>(c)),
+        _v1(gil::at_c<mapping_transform<Layout,L2,1>::value>(c)),
         _v2(gil::at_c<mapping_transform<Layout,L2,2>::value>(c)) {}
 
     // Support for planar_pixel_iterator construction and dereferencing
-    template <typename P> homogeneous_color_base(P* p,bool) : 
-        _v0(&semantic_at_c<0>(*p)), 
-        _v1(&semantic_at_c<1>(*p)), 
+    template <typename P> homogeneous_color_base(P* p,bool) :
+        _v0(&semantic_at_c<0>(*p)),
+        _v1(&semantic_at_c<1>(*p)),
         _v2(&semantic_at_c<2>(*p)) {}
-    template <typename Ref> Ref deref() const { 
-        return Ref(*semantic_at_c<0>(*this), 
-                   *semantic_at_c<1>(*this), 
+    template <typename Ref> Ref deref() const {
+        return Ref(*semantic_at_c<0>(*this),
+                   *semantic_at_c<1>(*this),
                    *semantic_at_c<2>(*this)); }
 
     // Support for planar_pixel_reference offset constructor
-    template <typename Ptr> homogeneous_color_base(const Ptr& ptr, std::ptrdiff_t diff) 
+    template <typename Ptr> homogeneous_color_base(const Ptr& ptr, std::ptrdiff_t diff)
         : _v0(*memunit_advanced(semantic_at_c<0>(ptr),diff)),
           _v1(*memunit_advanced(semantic_at_c<1>(ptr),diff)),
           _v2(*memunit_advanced(semantic_at_c<2>(ptr),diff)) {}
@@ -212,33 +212,33 @@ public:
     homogeneous_color_base(Element v0, Element v1, Element v2, Element v3) : _v0(v0), _v1(v1), _v2(v2), _v3(v3) {}
 
     template <typename E2, typename L2> homogeneous_color_base(const homogeneous_color_base<E2,L2,4>& c) :
-        _v0(at_c<mapping_transform<Layout,L2,0>::value>(c)), 
-        _v1(at_c<mapping_transform<Layout,L2,1>::value>(c)), 
+        _v0(at_c<mapping_transform<Layout,L2,0>::value>(c)),
+        _v1(at_c<mapping_transform<Layout,L2,1>::value>(c)),
         _v2(at_c<mapping_transform<Layout,L2,2>::value>(c)),
         _v3(at_c<mapping_transform<Layout,L2,3>::value>(c)) {}
 
     // Support for l-value reference proxy copy construction
-    template <typename E2, typename L2> homogeneous_color_base(      homogeneous_color_base<E2,L2,4>& c) : 
-        _v0(at_c<mapping_transform<Layout,L2,0>::value>(c)), 
-        _v1(at_c<mapping_transform<Layout,L2,1>::value>(c)), 
+    template <typename E2, typename L2> homogeneous_color_base(      homogeneous_color_base<E2,L2,4>& c) :
+        _v0(at_c<mapping_transform<Layout,L2,0>::value>(c)),
+        _v1(at_c<mapping_transform<Layout,L2,1>::value>(c)),
         _v2(at_c<mapping_transform<Layout,L2,2>::value>(c)),
         _v3(at_c<mapping_transform<Layout,L2,3>::value>(c)) {}
 
     // Support for planar_pixel_iterator construction and dereferencing
-    template <typename P> homogeneous_color_base(P* p,bool) : 
-        _v0(&semantic_at_c<0>(*p)), 
-        _v1(&semantic_at_c<1>(*p)), 
-        _v2(&semantic_at_c<2>(*p)), 
+    template <typename P> homogeneous_color_base(P* p,bool) :
+        _v0(&semantic_at_c<0>(*p)),
+        _v1(&semantic_at_c<1>(*p)),
+        _v2(&semantic_at_c<2>(*p)),
         _v3(&semantic_at_c<3>(*p)) {}
 
-    template <typename Ref> Ref deref() const { 
-        return Ref(*semantic_at_c<0>(*this), 
-                   *semantic_at_c<1>(*this), 
-                   *semantic_at_c<2>(*this), 
+    template <typename Ref> Ref deref() const {
+        return Ref(*semantic_at_c<0>(*this),
+                   *semantic_at_c<1>(*this),
+                   *semantic_at_c<2>(*this),
                    *semantic_at_c<3>(*this)); }
 
     // Support for planar_pixel_reference offset constructor
-    template <typename Ptr> homogeneous_color_base(const Ptr& ptr, std::ptrdiff_t diff) 
+    template <typename Ptr> homogeneous_color_base(const Ptr& ptr, std::ptrdiff_t diff)
         : _v0(*memunit_advanced(semantic_at_c<0>(ptr),diff)),
           _v1(*memunit_advanced(semantic_at_c<1>(ptr),diff)),
           _v2(*memunit_advanced(semantic_at_c<2>(ptr),diff)),
@@ -278,37 +278,37 @@ public:
     homogeneous_color_base(Element v0, Element v1, Element v2, Element v3, Element v4) : _v0(v0), _v1(v1), _v2(v2), _v3(v3), _v4(v4) {}
 
     template <typename E2, typename L2> homogeneous_color_base(const homogeneous_color_base<E2,L2,5>& c) :
-        _v0(at_c<mapping_transform<Layout,L2,0>::value>(c)), 
-        _v1(at_c<mapping_transform<Layout,L2,1>::value>(c)), 
+        _v0(at_c<mapping_transform<Layout,L2,0>::value>(c)),
+        _v1(at_c<mapping_transform<Layout,L2,1>::value>(c)),
         _v2(at_c<mapping_transform<Layout,L2,2>::value>(c)),
         _v3(at_c<mapping_transform<Layout,L2,3>::value>(c)),
         _v4(at_c<mapping_transform<Layout,L2,4>::value>(c)) {}
 
     // Support for l-value reference proxy copy construction
-    template <typename E2, typename L2> homogeneous_color_base(      homogeneous_color_base<E2,L2,5>& c) : 
-        _v0(at_c<mapping_transform<Layout,L2,0>::value>(c)), 
-        _v1(at_c<mapping_transform<Layout,L2,1>::value>(c)), 
+    template <typename E2, typename L2> homogeneous_color_base(      homogeneous_color_base<E2,L2,5>& c) :
+        _v0(at_c<mapping_transform<Layout,L2,0>::value>(c)),
+        _v1(at_c<mapping_transform<Layout,L2,1>::value>(c)),
         _v2(at_c<mapping_transform<Layout,L2,2>::value>(c)),
         _v3(at_c<mapping_transform<Layout,L2,3>::value>(c)),
         _v4(at_c<mapping_transform<Layout,L2,4>::value>(c)) {}
 
     // Support for planar_pixel_iterator construction and dereferencing
-    template <typename P> homogeneous_color_base(P* p,bool) : 
-        _v0(&semantic_at_c<0>(*p)), 
-        _v1(&semantic_at_c<1>(*p)), 
-        _v2(&semantic_at_c<2>(*p)), 
+    template <typename P> homogeneous_color_base(P* p,bool) :
+        _v0(&semantic_at_c<0>(*p)),
+        _v1(&semantic_at_c<1>(*p)),
+        _v2(&semantic_at_c<2>(*p)),
         _v3(&semantic_at_c<3>(*p)),
         _v4(&semantic_at_c<4>(*p)) {}
 
-    template <typename Ref> Ref deref() const { 
-        return Ref(*semantic_at_c<0>(*this), 
-                   *semantic_at_c<1>(*this), 
-                   *semantic_at_c<2>(*this), 
+    template <typename Ref> Ref deref() const {
+        return Ref(*semantic_at_c<0>(*this),
+                   *semantic_at_c<1>(*this),
+                   *semantic_at_c<2>(*this),
                    *semantic_at_c<3>(*this),
                    *semantic_at_c<4>(*this)); }
 
     // Support for planar_pixel_reference offset constructor
-    template <typename Ptr> homogeneous_color_base(const Ptr& ptr, std::ptrdiff_t diff) 
+    template <typename Ptr> homogeneous_color_base(const Ptr& ptr, std::ptrdiff_t diff)
         : _v0(*memunit_advanced(semantic_at_c<0>(ptr),diff)),
           _v1(*memunit_advanced(semantic_at_c<1>(ptr),diff)),
           _v2(*memunit_advanced(semantic_at_c<2>(ptr),diff)),
@@ -338,28 +338,28 @@ public:
 // However, the client must nevertheless ensure that proper compiler settings are used for their compiler and their channel types.
 
 template <typename Element, typename Layout, int K>
-typename element_reference_type<homogeneous_color_base<Element,Layout,K> >::type       
+typename element_reference_type<homogeneous_color_base<Element,Layout,K> >::type
 dynamic_at_c(homogeneous_color_base<Element,Layout,K>& cb, std::size_t i) {
     assert(i<K);
     return (gil_reinterpret_cast<Element*>(&cb))[i];
 }
 
 template <typename Element, typename Layout, int K>
-typename element_const_reference_type<homogeneous_color_base<Element,Layout,K> >::type 
+typename element_const_reference_type<homogeneous_color_base<Element,Layout,K> >::type
 dynamic_at_c(const homogeneous_color_base<Element,Layout,K>& cb, std::size_t i) {
     assert(i<K);
     return (gil_reinterpret_cast_c<const Element*>(&cb))[i];
 }
 
 template <typename Element, typename Layout, int K>
-typename element_reference_type<homogeneous_color_base<Element&,Layout,K> >::type       
+typename element_reference_type<homogeneous_color_base<Element&,Layout,K> >::type
 dynamic_at_c(const homogeneous_color_base<Element&,Layout,K>& cb, std::size_t i) {
     assert(i<K);
     return cb.at_c_dynamic(i);
 }
 
 template <typename Element, typename Layout, int K>
-typename element_const_reference_type<homogeneous_color_base<const Element&,Layout,K> >::type 
+typename element_const_reference_type<homogeneous_color_base<const Element&,Layout,K> >::type
 dynamic_at_c(const homogeneous_color_base<const Element&,Layout,K>& cb, std::size_t i) {
     assert(i<K);
     return cb.at_c_dynamic(i);
@@ -368,15 +368,15 @@ dynamic_at_c(const homogeneous_color_base<const Element&,Layout,K>& cb, std::siz
 
 } // namespace detail
 
-template <typename Element, typename Layout, int K1, int K>  
+template <typename Element, typename Layout, int K1, int K>
 struct kth_element_type<detail::homogeneous_color_base<Element,Layout,K1>, K> {
     typedef Element type;
 };
 
-template <typename Element, typename Layout, int K1, int K> 
+template <typename Element, typename Layout, int K1, int K>
 struct kth_element_reference_type<detail::homogeneous_color_base<Element,Layout,K1>, K> : public add_reference<Element> {};
 
-template <typename Element, typename Layout, int K1, int K> 
+template <typename Element, typename Layout, int K1, int K>
 struct kth_element_const_reference_type<detail::homogeneous_color_base<Element,Layout,K1>, K> : public add_reference<typename add_const<Element>::type> {};
 
 /// \brief Provides mutable access to the K-th element, in physical order
@@ -400,7 +400,7 @@ namespace detail {
     };
 }
 template <typename E, typename L, int N> inline
-void swap(detail::homogeneous_color_base<E,L,N>& x, detail::homogeneous_color_base<E,L,N>& y) { 
+void swap(detail::homogeneous_color_base<E,L,N>& x, detail::homogeneous_color_base<E,L,N>& y) {
     static_for_each(x,y,detail::swap_fn());
 }
 

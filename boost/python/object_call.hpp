@@ -20,4 +20,4 @@
     }
 
 #  undef N
-# endif // BOOST_PYTHON_SYNOPSIS 
+# endif // BOOST_PYTHON_SYNOPSIS

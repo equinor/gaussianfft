@@ -21,7 +21,7 @@ namespace boost
         typedef fail_tag tag;
 
         typedef reject<Msg, typename Pos::type> type;
-        
+
         typedef Pos source_position;
         typedef Msg message;
       };

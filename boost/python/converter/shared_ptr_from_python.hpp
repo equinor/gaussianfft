@@ -18,7 +18,7 @@
 #include <boost/shared_ptr.hpp>
 #include <memory>
 
-namespace boost { namespace python { namespace converter { 
+namespace boost { namespace python { namespace converter {
 
 template <class T, template <typename> class SP>
 struct shared_ptr_from_python
@@ -37,10 +37,10 @@ struct shared_ptr_from_python
   {
     if (p == Py_None)
       return p;
-        
+
     return converter::get_lvalue_from_python(p, registered<T>::converters);
   }
-    
+
   static void construct(PyObject* source, rvalue_from_python_stage1_data* data)
   {
     void* const storage = ((converter::rvalue_from_python_storage<SP<T> >*)data)->storage.bytes;

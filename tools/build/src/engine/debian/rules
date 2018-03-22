@@ -59,7 +59,7 @@ binary-arch: build install
 	dh_installdocs README RELNOTES Jambase *.html
 #	dh_installemacsen
 #	dh_undocumented
-	dh_installchangelogs 
+	dh_installchangelogs
 	dh_strip
 	dh_compress
 	dh_fixperms

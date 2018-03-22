@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2000 by Hewlett-Packard Company.  All rights reserved.
  *
  * THIS MATERIAL IS PROVIDED AS IS, WITH ABSOLUTELY NO WARRANTY EXPRESSED
@@ -50,7 +50,7 @@ int PREFIXED(setspecific) (tsd * key, void * value) {
     pthread_t self = pthread_self();
     int hash_val = HASH(self);
     volatile tse * entry = (volatile tse *)MALLOC_CLEAR(sizeof (tse));
-    
+
     GC_ASSERT(self != INVALID_THREADID);
     if (0 == entry) return ENOMEM;
     pthread_mutex_lock(&(key -> lock));
@@ -60,7 +60,7 @@ int PREFIXED(setspecific) (tsd * key, void * value) {
     entry -> value = value;
     GC_ASSERT(entry -> qtid == INVALID_QTID);
     /* There can only be one writer at a time, but this needs to be	*/
-    /* atomic with respect to concurrent readers.			*/ 
+    /* atomic with respect to concurrent readers.			*/
     AO_store_release((volatile AO_t *)(key -> hash + hash_val), (AO_t)entry);
     pthread_mutex_unlock(&(key -> lock));
     return 0;
@@ -115,7 +115,7 @@ void *  PREFIXED(slow_getspecific) (tsd * key, unsigned long qtid,
     GC_ASSERT(qtid != INVALID_QTID);
     while (entry != NULL && entry -> thread != self) {
 	entry = entry -> next;
-    } 
+    }
     if (entry == NULL) return NULL;
     /* Set cache_entry.		*/
         entry -> qtid = qtid;

@@ -7,15 +7,15 @@
 
 //  Library home page is www.boost.org/libs/system
 
-//--------------------------------------------------------------------------------------// 
+//--------------------------------------------------------------------------------------//
 
 //  See dynamic_link_test.cpp comments for use case.
 
-//--------------------------------------------------------------------------------------// 
+//--------------------------------------------------------------------------------------//
 
 // define BOOST_SYSTEM_SOURCE so that <boost/system/config.hpp> knows
 // the library is being built (possibly exporting rather than importing code)
-#define BOOST_SYSTEM_SOURCE 
+#define BOOST_SYSTEM_SOURCE
 
 #include <boost/system/system_error.hpp>
 

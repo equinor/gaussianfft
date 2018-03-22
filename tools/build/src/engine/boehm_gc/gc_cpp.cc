@@ -1,9 +1,9 @@
 /*************************************************************************
 Copyright (c) 1994 by Xerox Corporation.  All rights reserved.
- 
+
 THIS MATERIAL IS PROVIDED AS IS, WITH ABSOLUTELY NO WARRANTY EXPRESSED
 OR IMPLIED.  ANY USE IS AT YOUR OWN RISK.
- 
+
     Last modified on Sat Nov 19 19:31:14 PST 1994 by ellis
                   on Sat Jun  8 15:10:00 PST 1994 by boehm
 
@@ -28,15 +28,15 @@ Authors: John R. Ellis and Jesse Hull
 
 void* operator new( size_t size ) {
     return GC_MALLOC_UNCOLLECTABLE( size );}
-  
+
 void operator delete( void* obj ) {
     GC_FREE( obj );}
-  
+
 #ifdef GC_OPERATOR_NEW_ARRAY
 
 void* operator new[]( size_t size ) {
     return GC_MALLOC_UNCOLLECTABLE( size );}
-  
+
 void operator delete[]( void* obj ) {
     GC_FREE( obj );}
 

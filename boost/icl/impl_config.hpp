@@ -42,7 +42,7 @@ Copyright (c) 2009-2011: Joachim Faulhaber
 #endif
 
 /*-----------------------------------------------------------------------------+
-| MEMO 2012-12-30: Due to problems with new c++11 compilers and their          | 
+| MEMO 2012-12-30: Due to problems with new c++11 compilers and their          |
 | implementation of rvalue references, ICL's move implementation will be       |
 | disabled for some new compilers for version 1.53.                            |
 +-----------------------------------------------------------------------------*/

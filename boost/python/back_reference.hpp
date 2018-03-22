@@ -11,7 +11,7 @@
 # include <boost/python/detail/dependent.hpp>
 # include <boost/python/detail/raw_pyobject.hpp>
 
-namespace boost { namespace python { 
+namespace boost { namespace python {
 
 template <class T>
 struct back_reference
@@ -20,7 +20,7 @@ struct back_reference
     typedef typename detail::dependent<object,T>::type source_t;
  public:
     typedef T type;
-    
+
     back_reference(PyObject*, T);
     source_t const& source() const;
     T get() const;
@@ -33,7 +33,7 @@ template<typename T>
 class is_back_reference
 {
  public:
-    BOOST_STATIC_CONSTANT(bool, value = false); 
+    BOOST_STATIC_CONSTANT(bool, value = false);
 };
 
 template<typename T>

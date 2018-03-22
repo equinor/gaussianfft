@@ -37,11 +37,11 @@ namespace boost { namespace iostreams {
 
 namespace detail {
 
-template< typename First, 
+template< typename First,
           typename Second,
-          typename FirstMode = 
+          typename FirstMode =
               BOOST_DEDUCED_TYPENAME mode_of<First>::type,
-          typename SecondMode = 
+          typename SecondMode =
               BOOST_DEDUCED_TYPENAME mode_of<Second>::type >
 struct composite_mode
     : select<
@@ -119,7 +119,7 @@ private:
 //      Filter - A model of Filter.
 //      Device - An indirect model of Device.
 //
-template< typename Filter1, 
+template< typename Filter1,
           typename Filter2,
           typename Mode =
               BOOST_DEDUCED_TYPENAME composite_mode<Filter1, Filter2>::type >
@@ -191,7 +191,7 @@ public:
         // Create a new device by composing the second filter2_ with dev.
         composite_device<filter_ref, Device> cmp(boost::ref(filter2_), dev);
 
-        // Close input sequences in reverse order and output sequences in 
+        // Close input sequences in reverse order and output sequences in
         // forward order
         if (!is_convertible<first_mode, dual_use>::value) {
             detail::execute_all(
@@ -426,7 +426,7 @@ void composite_device<Filter, Device, Mode>::close()
         !(is_convertible<device_mode, output>::value)
     );
 
-    // Close input sequences in reverse order and output sequences 
+    // Close input sequences in reverse order and output sequences
     // in forward order
     if (!is_convertible<filter_mode, dual_use>::value) {
         detail::execute_all(
@@ -458,7 +458,7 @@ void composite_device<Filter, Device, Mode>::close(BOOST_IOS::openmode which)
     if (which == BOOST_IOS::in) {
         detail::execute_all(
             detail::call_close(device_, BOOST_IOS::in),
-            detail::call_close(filter_, device_, BOOST_IOS::in) 
+            detail::call_close(filter_, device_, BOOST_IOS::in)
         );
     }
 

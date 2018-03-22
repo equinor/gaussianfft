@@ -12,9 +12,9 @@ namespace boost{ namespace multiprecision{ namespace backends{
 
 template <class CppInt1, class CppInt2, class CppInt3>
 void divide_unsigned_helper(
-   CppInt1* result, 
-   const CppInt2& x, 
-   const CppInt3& y, 
+   CppInt1* result,
+   const CppInt2& x,
+   const CppInt3& y,
    CppInt1& r)
 {
    if(((void*)result == (void*)&x) || ((void*)&r == (void*)&x))
@@ -124,8 +124,8 @@ void divide_unsigned_helper(
    {
       double_limb_type a, b;
       a = (static_cast<double_limb_type>(px[1]) << CppInt1::limb_bits) | px[0];
-      b = y_order ? 
-         (static_cast<double_limb_type>(py[1]) << CppInt1::limb_bits) | py[0] 
+      b = y_order ?
+         (static_cast<double_limb_type>(py[1]) << CppInt1::limb_bits) | py[0]
          : py[0];
       if(result)
       {
@@ -141,7 +141,7 @@ void divide_unsigned_helper(
       result->resize(1 + r_order - y_order, 1 + r_order - y_order);
    typename CppInt1::const_limb_pointer prem = r.limbs();
    // This is initialised just to keep the compiler from emitting useless warnings later on:
-   typename CppInt1::limb_pointer pr 
+   typename CppInt1::limb_pointer pr
       = typename CppInt1::limb_pointer();
    if(result)
    {
@@ -318,9 +318,9 @@ void divide_unsigned_helper(
 
 template <class CppInt1, class CppInt2>
 void divide_unsigned_helper(
-   CppInt1* result, 
-   const CppInt2& x, 
-   limb_type y, 
+   CppInt1* result,
+   const CppInt2& x,
+   limb_type y,
    CppInt1& r)
 {
    if(((void*)result == (void*)&x) || ((void*)&r == (void*)&x))
@@ -359,7 +359,7 @@ void divide_unsigned_helper(
    typename CppInt1::limb_pointer pr = r.limbs();
 
    //
-   // check for x < y, try to do this without actually having to 
+   // check for x < y, try to do this without actually having to
    // do a full comparison:
    //
    if((r_order == 0) && (*pr < y))
@@ -460,10 +460,10 @@ void divide_unsigned_helper(
 }
 
 template <unsigned MinBits1, unsigned MaxBits1, cpp_integer_type SignType1, cpp_int_check_type Checked1, class Allocator1, unsigned MinBits2, unsigned MaxBits2, cpp_integer_type SignType2, cpp_int_check_type Checked2, class Allocator2, unsigned MinBits3, unsigned MaxBits3, cpp_integer_type SignType3, cpp_int_check_type Checked3, class Allocator3>
-BOOST_MP_FORCEINLINE typename enable_if_c<!is_trivial_cpp_int<cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1> >::value && !is_trivial_cpp_int<cpp_int_backend<MinBits2, MaxBits2, SignType2, Checked2, Allocator2> >::value && !is_trivial_cpp_int<cpp_int_backend<MinBits3, MaxBits3, SignType3, Checked3, Allocator3> >::value >::type 
+BOOST_MP_FORCEINLINE typename enable_if_c<!is_trivial_cpp_int<cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1> >::value && !is_trivial_cpp_int<cpp_int_backend<MinBits2, MaxBits2, SignType2, Checked2, Allocator2> >::value && !is_trivial_cpp_int<cpp_int_backend<MinBits3, MaxBits3, SignType3, Checked3, Allocator3> >::value >::type
    eval_divide(
-      cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& result, 
-      const cpp_int_backend<MinBits2, MaxBits2, SignType2, Checked2, Allocator2>& a, 
+      cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& result,
+      const cpp_int_backend<MinBits2, MaxBits2, SignType2, Checked2, Allocator2>& a,
       const cpp_int_backend<MinBits3, MaxBits3, SignType3, Checked3, Allocator3>& b)
 {
    cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1> r;
@@ -473,10 +473,10 @@ BOOST_MP_FORCEINLINE typename enable_if_c<!is_trivial_cpp_int<cpp_int_backend<Mi
 }
 
 template <unsigned MinBits1, unsigned MaxBits1, cpp_integer_type SignType1, cpp_int_check_type Checked1, class Allocator1, unsigned MinBits2, unsigned MaxBits2, cpp_integer_type SignType2, cpp_int_check_type Checked2, class Allocator2>
-BOOST_MP_FORCEINLINE typename enable_if_c<!is_trivial_cpp_int<cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1> >::value && !is_trivial_cpp_int<cpp_int_backend<MinBits2, MaxBits2, SignType2, Checked2, Allocator2> >::value >::type 
+BOOST_MP_FORCEINLINE typename enable_if_c<!is_trivial_cpp_int<cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1> >::value && !is_trivial_cpp_int<cpp_int_backend<MinBits2, MaxBits2, SignType2, Checked2, Allocator2> >::value >::type
    eval_divide(
-      cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& result, 
-      const cpp_int_backend<MinBits2, MaxBits2, SignType2, Checked2, Allocator2>& a, 
+      cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& result,
+      const cpp_int_backend<MinBits2, MaxBits2, SignType2, Checked2, Allocator2>& a,
       limb_type& b)
 {
    cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1> r;
@@ -486,10 +486,10 @@ BOOST_MP_FORCEINLINE typename enable_if_c<!is_trivial_cpp_int<cpp_int_backend<Mi
 }
 
 template <unsigned MinBits1, unsigned MaxBits1, cpp_integer_type SignType1, cpp_int_check_type Checked1, class Allocator1, unsigned MinBits2, unsigned MaxBits2, cpp_integer_type SignType2, cpp_int_check_type Checked2, class Allocator2>
-BOOST_MP_FORCEINLINE typename enable_if_c<!is_trivial_cpp_int<cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1> >::value && !is_trivial_cpp_int<cpp_int_backend<MinBits2, MaxBits2, SignType2, Checked2, Allocator2> >::value >::type 
+BOOST_MP_FORCEINLINE typename enable_if_c<!is_trivial_cpp_int<cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1> >::value && !is_trivial_cpp_int<cpp_int_backend<MinBits2, MaxBits2, SignType2, Checked2, Allocator2> >::value >::type
    eval_divide(
-      cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& result, 
-      const cpp_int_backend<MinBits2, MaxBits2, SignType2, Checked2, Allocator2>& a, 
+      cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& result,
+      const cpp_int_backend<MinBits2, MaxBits2, SignType2, Checked2, Allocator2>& a,
       signed_limb_type& b)
 {
    cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1> r;
@@ -499,9 +499,9 @@ BOOST_MP_FORCEINLINE typename enable_if_c<!is_trivial_cpp_int<cpp_int_backend<Mi
 }
 
 template <unsigned MinBits1, unsigned MaxBits1, cpp_integer_type SignType1, cpp_int_check_type Checked1, class Allocator1, unsigned MinBits2, unsigned MaxBits2, cpp_integer_type SignType2, cpp_int_check_type Checked2, class Allocator2>
-BOOST_MP_FORCEINLINE typename enable_if_c<!is_trivial_cpp_int<cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1> >::value && !is_trivial_cpp_int<cpp_int_backend<MinBits2, MaxBits2, SignType2, Checked2, Allocator2> >::value >::type 
+BOOST_MP_FORCEINLINE typename enable_if_c<!is_trivial_cpp_int<cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1> >::value && !is_trivial_cpp_int<cpp_int_backend<MinBits2, MaxBits2, SignType2, Checked2, Allocator2> >::value >::type
    eval_divide(
-      cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& result, 
+      cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& result,
       const cpp_int_backend<MinBits2, MaxBits2, SignType2, Checked2, Allocator2>& b)
 {
    // There is no in place divide:
@@ -510,9 +510,9 @@ BOOST_MP_FORCEINLINE typename enable_if_c<!is_trivial_cpp_int<cpp_int_backend<Mi
 }
 
 template <unsigned MinBits1, unsigned MaxBits1, cpp_integer_type SignType1, cpp_int_check_type Checked1, class Allocator1>
-BOOST_MP_FORCEINLINE typename enable_if_c<!is_trivial_cpp_int<cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1> >::value>::type 
+BOOST_MP_FORCEINLINE typename enable_if_c<!is_trivial_cpp_int<cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1> >::value>::type
    eval_divide(
-      cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& result, 
+      cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& result,
       limb_type b)
 {
    // There is no in place divide:
@@ -521,9 +521,9 @@ BOOST_MP_FORCEINLINE typename enable_if_c<!is_trivial_cpp_int<cpp_int_backend<Mi
 }
 
 template <unsigned MinBits1, unsigned MaxBits1, cpp_integer_type SignType1, cpp_int_check_type Checked1, class Allocator1>
-BOOST_MP_FORCEINLINE typename enable_if_c<!is_trivial_cpp_int<cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1> >::value>::type 
+BOOST_MP_FORCEINLINE typename enable_if_c<!is_trivial_cpp_int<cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1> >::value>::type
    eval_divide(
-      cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& result, 
+      cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& result,
       signed_limb_type b)
 {
    // There is no in place divide:
@@ -534,8 +534,8 @@ BOOST_MP_FORCEINLINE typename enable_if_c<!is_trivial_cpp_int<cpp_int_backend<Mi
 template <unsigned MinBits1, unsigned MaxBits1, cpp_integer_type SignType1, cpp_int_check_type Checked1, class Allocator1, unsigned MinBits2, unsigned MaxBits2, cpp_integer_type SignType2, cpp_int_check_type Checked2, class Allocator2, unsigned MinBits3, unsigned MaxBits3, cpp_integer_type SignType3, cpp_int_check_type Checked3, class Allocator3>
 BOOST_MP_FORCEINLINE typename enable_if_c<!is_trivial_cpp_int<cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1> >::value && !is_trivial_cpp_int<cpp_int_backend<MinBits2, MaxBits2, SignType2, Checked2, Allocator2> >::value && !is_trivial_cpp_int<cpp_int_backend<MinBits3, MaxBits3, SignType3, Checked3, Allocator3> >::value >::type
    eval_modulus(
-      cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& result, 
-      const cpp_int_backend<MinBits2, MaxBits2, SignType2, Checked2, Allocator2>& a, 
+      cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& result,
+      const cpp_int_backend<MinBits2, MaxBits2, SignType2, Checked2, Allocator2>& a,
       const cpp_int_backend<MinBits3, MaxBits3, SignType3, Checked3, Allocator3>& b)
 {
    bool s = a.sign();
@@ -544,9 +544,9 @@ BOOST_MP_FORCEINLINE typename enable_if_c<!is_trivial_cpp_int<cpp_int_backend<Mi
 }
 
 template <unsigned MinBits1, unsigned MaxBits1, cpp_integer_type SignType1, cpp_int_check_type Checked1, class Allocator1, unsigned MinBits2, unsigned MaxBits2, cpp_integer_type SignType2, cpp_int_check_type Checked2, class Allocator2>
-BOOST_MP_FORCEINLINE typename enable_if_c<!is_trivial_cpp_int<cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1> >::value && !is_trivial_cpp_int<cpp_int_backend<MinBits2, MaxBits2, SignType2, Checked2, Allocator2> >::value >::type 
+BOOST_MP_FORCEINLINE typename enable_if_c<!is_trivial_cpp_int<cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1> >::value && !is_trivial_cpp_int<cpp_int_backend<MinBits2, MaxBits2, SignType2, Checked2, Allocator2> >::value >::type
    eval_modulus(
-      cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& result, 
+      cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& result,
       const cpp_int_backend<MinBits2, MaxBits2, SignType2, Checked2, Allocator2>& a, limb_type b)
 {
    bool s = a.sign();
@@ -555,10 +555,10 @@ BOOST_MP_FORCEINLINE typename enable_if_c<!is_trivial_cpp_int<cpp_int_backend<Mi
 }
 
 template <unsigned MinBits1, unsigned MaxBits1, cpp_integer_type SignType1, cpp_int_check_type Checked1, class Allocator1, unsigned MinBits2, unsigned MaxBits2, cpp_integer_type SignType2, cpp_int_check_type Checked2, class Allocator2>
-BOOST_MP_FORCEINLINE typename enable_if_c<!is_trivial_cpp_int<cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1> >::value && !is_trivial_cpp_int<cpp_int_backend<MinBits2, MaxBits2, SignType2, Checked2, Allocator2> >::value >::type 
+BOOST_MP_FORCEINLINE typename enable_if_c<!is_trivial_cpp_int<cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1> >::value && !is_trivial_cpp_int<cpp_int_backend<MinBits2, MaxBits2, SignType2, Checked2, Allocator2> >::value >::type
    eval_modulus(
-      cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& result, 
-      const cpp_int_backend<MinBits2, MaxBits2, SignType2, Checked2, Allocator2>& a, 
+      cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& result,
+      const cpp_int_backend<MinBits2, MaxBits2, SignType2, Checked2, Allocator2>& a,
       signed_limb_type b)
 {
    bool s = a.sign();
@@ -567,9 +567,9 @@ BOOST_MP_FORCEINLINE typename enable_if_c<!is_trivial_cpp_int<cpp_int_backend<Mi
 }
 
 template <unsigned MinBits1, unsigned MaxBits1, cpp_integer_type SignType1, cpp_int_check_type Checked1, class Allocator1, unsigned MinBits2, unsigned MaxBits2, cpp_integer_type SignType2, cpp_int_check_type Checked2, class Allocator2>
-BOOST_MP_FORCEINLINE typename enable_if_c<!is_trivial_cpp_int<cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1> >::value && !is_trivial_cpp_int<cpp_int_backend<MinBits2, MaxBits2, SignType2, Checked2, Allocator2> >::value >::type 
+BOOST_MP_FORCEINLINE typename enable_if_c<!is_trivial_cpp_int<cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1> >::value && !is_trivial_cpp_int<cpp_int_backend<MinBits2, MaxBits2, SignType2, Checked2, Allocator2> >::value >::type
    eval_modulus(
-      cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& result, 
+      cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& result,
       const cpp_int_backend<MinBits2, MaxBits2, SignType2, Checked2, Allocator2>& b)
 {
    // There is no in place divide:
@@ -578,9 +578,9 @@ BOOST_MP_FORCEINLINE typename enable_if_c<!is_trivial_cpp_int<cpp_int_backend<Mi
 }
 
 template <unsigned MinBits1, unsigned MaxBits1, cpp_integer_type SignType1, cpp_int_check_type Checked1, class Allocator1>
-BOOST_MP_FORCEINLINE typename enable_if_c<!is_trivial_cpp_int<cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1> >::value>::type 
+BOOST_MP_FORCEINLINE typename enable_if_c<!is_trivial_cpp_int<cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1> >::value>::type
    eval_modulus(
-      cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& result, 
+      cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& result,
       limb_type b)
 {
    // There is no in place divide:
@@ -589,9 +589,9 @@ BOOST_MP_FORCEINLINE typename enable_if_c<!is_trivial_cpp_int<cpp_int_backend<Mi
 }
 
 template <unsigned MinBits1, unsigned MaxBits1, cpp_integer_type SignType1, cpp_int_check_type Checked1, class Allocator1>
-BOOST_MP_FORCEINLINE typename enable_if_c<!is_trivial_cpp_int<cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1> >::value>::type 
+BOOST_MP_FORCEINLINE typename enable_if_c<!is_trivial_cpp_int<cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1> >::value>::type
    eval_modulus(
-      cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& result, 
+      cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& result,
       signed_limb_type b)
 {
    // There is no in place divide:
@@ -604,13 +604,13 @@ BOOST_MP_FORCEINLINE typename enable_if_c<!is_trivial_cpp_int<cpp_int_backend<Mi
 //
 template <unsigned MinBits1, unsigned MaxBits1, cpp_integer_type SignType1, cpp_int_check_type Checked1, class Allocator1>
 BOOST_MP_FORCEINLINE typename enable_if_c<
-         is_trivial_cpp_int<cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1> >::value 
+         is_trivial_cpp_int<cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1> >::value
          && is_trivial_cpp_int<cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1> >::value
-         && (is_signed_number<cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1> >::value 
+         && (is_signed_number<cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1> >::value
             || is_signed_number<cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1> >::value)
-         >::type 
+         >::type
    eval_divide(
-      cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& result, 
+      cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& result,
       const cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& o)
 {
    if(!*o.limbs())
@@ -621,13 +621,13 @@ BOOST_MP_FORCEINLINE typename enable_if_c<
 
 template <unsigned MinBits1, unsigned MaxBits1, cpp_integer_type SignType1, cpp_int_check_type Checked1, class Allocator1>
 BOOST_MP_FORCEINLINE typename enable_if_c<
-         is_trivial_cpp_int<cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1> >::value 
+         is_trivial_cpp_int<cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1> >::value
          && is_trivial_cpp_int<cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1> >::value
-         && is_unsigned_number<cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1> >::value 
          && is_unsigned_number<cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1> >::value
-      >::type 
+         && is_unsigned_number<cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1> >::value
+      >::type
    eval_divide(
-      cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& result, 
+      cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& result,
       const cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& o)
 {
    if(!*o.limbs())
@@ -637,11 +637,11 @@ BOOST_MP_FORCEINLINE typename enable_if_c<
 
 template <unsigned MinBits1, unsigned MaxBits1, cpp_integer_type SignType1, cpp_int_check_type Checked1, class Allocator1>
 BOOST_MP_FORCEINLINE typename enable_if_c<
-         is_trivial_cpp_int<cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1> >::value 
+         is_trivial_cpp_int<cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1> >::value
          && is_trivial_cpp_int<cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1> >::value
-      >::type 
+      >::type
    eval_modulus(
-      cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& result, 
+      cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& result,
       const cpp_int_backend<MinBits1, MaxBits1, SignType1, Checked1, Allocator1>& o)
 {
    if(!*o.limbs())

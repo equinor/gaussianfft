@@ -108,7 +108,7 @@ class block_slist_base
          n = slist_algo::node_traits::get_next(n);
          std::size_t size = d.block_slist_header::size;
          d.~DerivedFromBlockSlistHeader();
-         mr.deallocate(reinterpret_cast<char*>(&d), size, memory_resource::max_align);         
+         mr.deallocate(reinterpret_cast<char*>(&d), size, memory_resource::max_align);
       }
       slist_algo::init_header(&m_slist);
    }

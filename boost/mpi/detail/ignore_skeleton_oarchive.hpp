@@ -1,4 +1,4 @@
-// (C) Copyright 2005 Matthias Troyer 
+// (C) Copyright 2005 Matthias Troyer
 
 // Use, modification and distribution is subject to the Boost Software
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
@@ -20,7 +20,7 @@
 namespace boost { namespace mpi { namespace detail {
 
 template<class Archive>
-class ignore_skeleton_oarchive 
+class ignore_skeleton_oarchive
   : public archive::detail::common_oarchive<Archive>
 {
 public:
@@ -58,7 +58,7 @@ BOOST_ARCHIVE_IGNORE_IMPLEMENTATION(archive::class_name_type)
 BOOST_ARCHIVE_IGNORE_IMPLEMENTATION(serialization::collection_size_type)
 BOOST_ARCHIVE_IGNORE_IMPLEMENTATION(serialization::item_version_type)
 
-    void save_override(std::string const & s)       
+    void save_override(std::string const & s)
     {
       if (s.size())
         save_override(serialization::make_array(s.data(),s.size()));

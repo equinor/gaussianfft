@@ -656,44 +656,44 @@
 /*
 
   Returns a six-element tuple:
-  
+
   First tuple element  = 0 No type return
                          1 Exact type return
                          2 General tuple type return
                          3 Array return
                          4 List return
-                         
+
   Second tuple element = 0 No after return
                          1 After return
-                         
+
   Third tuple element  = 0 No identifier index
                          1 Identifier Index
-                         
+
   Fourth tuple element = Tuple of other identifiers
-  
+
   Fifth tuple element  = 0 No after only return
                          1 After only return
-                         
+
   Sixth tuple element  = Type identifier
-                         
+
   Input                = allow, either
                          BOOST_VMD_ALLOW_ALL
                          BOOST_VMD_ALLOW_RETURN
                          BOOST_VMD_ALLOW_AFTER
                          BOOST_VMD_ALLOW_INDEX
-                         
+
                            ..., modifiers, first variadic is discarded
                          Possible modifiers are:
-                         
+
                          BOOST_VMD_RETURN_NO_TYPE = (0,0)
                          BOOST_VMD_RETURN_TYPE = (1,0)
                          BOOST_VMD_RETURN_TYPE_TUPLE = (2,0)
                          BOOST_VMD_RETURN_TYPE_ARRAY = (3,0)
                          BOOST_VMD_RETURN_TYPE_LIST = (4,0)
-                         
+
                          BOOST_VMD_RETURN_NO_AFTER = (0,0)
                          BOOST_VMD_RETURN_AFTER = (0,1)
-  
+
 */
 
 #define BOOST_VMD_DETAIL_NEW_MODS(allow,...) \

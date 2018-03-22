@@ -23,12 +23,12 @@
 // Must come last.
 #include <boost/iostreams/detail/config/disable_warnings.hpp>
 
-namespace boost { namespace iostreams { 
+namespace boost { namespace iostreams {
 
 namespace detail {
 
 // Implementation templates for simulated tag dispatch.
-template<typename T> 
+template<typename T>
 struct imbue_impl;
 
 } // End namespace detail.

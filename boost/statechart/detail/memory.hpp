@@ -40,7 +40,7 @@ void * allocate( std::size_t size )
   // struct B : sc::simple_state< A, /* ... */ >
   // // Above, the first template parameter must be equal to the most-
   // // derived type
-  // 
+  //
   // // Example 2
   // struct A : sc::event< A >
   // struct B : A { /* ... */ };

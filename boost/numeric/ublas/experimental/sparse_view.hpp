@@ -181,10 +181,10 @@ namespace boost { namespace numeric { namespace ublas {
                                 , const index_array_type & jptr
                                 , const value_array_type & values):
             matrix_expression<self_type> (),
-            size1_ (n_rows), size2_ (n_cols), 
+            size1_ (n_rows), size2_ (n_cols),
             nnz_ (nnz),
-            index1_data_ (iptr), 
-            index2_data_ (jptr), 
+            index1_data_ (iptr),
+            index2_data_ (jptr),
             value_data_ (values) {
             storage_invariants ();
         }
@@ -210,9 +210,9 @@ namespace boost { namespace numeric { namespace ublas {
 
         //
         // implement all read only methods for the matrix expression concept
-        // 
+        //
 
-        //! return the number of rows 
+        //! return the number of rows
         index_type size1() const {
             return size1_;
         }
@@ -231,7 +231,7 @@ namespace boost { namespace numeric { namespace ublas {
                 return *p;
             }
         }
-        
+
 
     private:
         //
@@ -248,7 +248,7 @@ namespace boost { namespace numeric { namespace ublas {
             const_subiterator_type it_start = boost::next(vector_view_traits<index_array_type>::begin(index2_data_),itv);
             const_subiterator_type it_end = boost::next(vector_view_traits<index_array_type>::begin(index2_data_),itv_next);
             const_subiterator_type it = find_index_in_row(it_start, it_end, element2) ;
-            
+
             if (it == it_end || *it != k_based (element2))
                 return 0;
             return &value_data_ [it - vector_view_traits<index_array_type>::begin(index2_data_)];
@@ -267,7 +267,7 @@ namespace boost { namespace numeric { namespace ublas {
         void storage_invariants () const {
             BOOST_UBLAS_CHECK (index1_data_ [layout_type::size_M (size1_, size2_)] == k_based (nnz_), external_logic ());
         }
-        
+
         index_type size1_;
         index_type size2_;
 
@@ -295,7 +295,7 @@ namespace boost { namespace numeric { namespace ublas {
     };
 
     template<class L, std::size_t IB, class IA, class JA, class TA  >
-    const typename compressed_matrix_view<L,IB,IA,JA,TA>::value_type 
+    const typename compressed_matrix_view<L,IB,IA,JA,TA>::value_type
     compressed_matrix_view<L,IB,IA,JA,TA>::zero_ = value_type/*zero*/();
 
 

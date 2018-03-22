@@ -1,4 +1,4 @@
-/*-----------------------------------------------------------------------------+    
+/*-----------------------------------------------------------------------------+
 Copyright (c) 2008-2009: Joachim Faulhaber
 +------------------------------------------------------------------------------+
    Distributed under the Boost Software License, Version 1.0.
@@ -20,11 +20,11 @@ namespace boost{ namespace icl
     }
 
     template <class Type>
-    struct has_segment_type 
+    struct has_segment_type
       : mpl::bool_<detail::has_segment_type<Type>::value>
     {};
 
-    template <class Type, bool has_segment_type> 
+    template <class Type, bool has_segment_type>
     struct get_segment_type;
 
     template <class Type>
@@ -42,7 +42,7 @@ namespace boost{ namespace icl
     template <class Type>
     struct segment_type_of
     {
-        typedef typename 
+        typedef typename
             get_segment_type<Type, has_segment_type<Type>::value>::type type;
     };
 

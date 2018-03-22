@@ -525,8 +525,8 @@ inline bool initialize(tokenizer const& tokens,
 
 // Silence warning C4127: conditional expression is constant
 #if defined(_MSC_VER)
-#pragma warning(push)  
-#pragma warning(disable : 4127)  
+#pragma warning(push)
+#pragma warning(disable : 4127)
 #endif
 
         if (has_z && dimension<Geometry>::type::value < 3)

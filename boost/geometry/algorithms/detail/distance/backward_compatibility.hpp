@@ -228,7 +228,7 @@ struct distance
                 typename point_type<MultiGeometry>::type,
                 Strategy
             >::type ps_strategy_type;
-    
+
         return distance
             <
                 Point, MultiGeometry, ps_strategy_type,
@@ -270,7 +270,7 @@ struct distance
                 typename point_type<Geometry>::type,
                 Strategy
             >::type ps_strategy_type;
-    
+
         return distance
             <
                 Geometry, MultiPoint, ps_strategy_type,
@@ -298,7 +298,7 @@ struct distance
     typedef typename strategy::distance::services::return_type
         <
             Strategy,
-            typename point_type<MultiPoint>::type, 
+            typename point_type<MultiPoint>::type,
             typename point_type<MultiGeometry>::type
         >::type return_type;
 
@@ -312,7 +312,7 @@ struct distance
                 typename point_type<MultiGeometry>::type,
                 Strategy
             >::type ps_strategy_type;
-    
+
         return distance
             <
                 MultiPoint, MultiGeometry, ps_strategy_type,

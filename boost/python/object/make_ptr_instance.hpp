@@ -12,7 +12,7 @@
 # include <boost/detail/workaround.hpp>
 # include <typeinfo>
 
-namespace boost { namespace python { namespace objects { 
+namespace boost { namespace python { namespace objects {
 
 template <class T, class Holder>
 struct make_ptr_instance
@@ -27,7 +27,7 @@ struct make_ptr_instance
       return new (storage) Holder(std::move(x));
 #endif
     }
-    
+
     template <class Ptr>
     static inline PyTypeObject* get_class_object(Ptr const& x)
     {
@@ -48,12 +48,12 @@ struct make_ptr_instance
 
         PyTypeObject* derived = get_derived_class_object(
             BOOST_DEDUCED_TYPENAME boost::python::detail::is_polymorphic<U>::type(), p);
-        
+
         if (derived)
             return derived;
         return converter::registered<T>::converters.get_class_object();
     }
-    
+
     template <class U>
     static inline PyTypeObject* get_derived_class_object(boost::python::detail::true_, U const volatile* x)
     {
@@ -62,14 +62,14 @@ struct make_ptr_instance
         );
         return r ? r->m_class_object : 0;
     }
-    
+
     template <class U>
     static inline PyTypeObject* get_derived_class_object(boost::python::detail::false_, U*)
     {
         return 0;
     }
 };
-  
+
 
 }}} // namespace boost::python::object
 

@@ -99,7 +99,7 @@ bool are_counts_ok(Rtree const& tree)
         typename RTV::box_type,
         typename RTV::allocators_type
     > v(tree.parameters());
-    
+
     rtv.apply_visitor(v);
 
     return v.result;

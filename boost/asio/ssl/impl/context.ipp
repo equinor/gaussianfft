@@ -753,7 +753,7 @@ boost::system::error_code context::use_certificate_chain(
         return ec;
       }
     }
-  
+
     result = ::ERR_peek_last_error();
     if ((ERR_GET_LIB(result) == ERR_LIB_PEM)
         && (ERR_GET_REASON(result) == PEM_R_NO_START_LINE))

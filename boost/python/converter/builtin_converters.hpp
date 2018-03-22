@@ -82,7 +82,7 @@ namespace detail
           arg_to_python(T const& x)                     \
             : python::handle<>(expr) {}                 \
       };                                                \
-    } 
+    }
 
 // Specialize argument and return value converters for T using expr
 # define BOOST_PYTHON_TO_PYTHON_BY_VALUE(T, expr, pytype)  \
@@ -114,7 +114,7 @@ BOOST_PYTHON_TO_PYTHON_BY_VALUE(bool, ::PyBool_FromLong(x), &PyBool_Type)
 #else
 BOOST_PYTHON_TO_PYTHON_BY_VALUE(bool, ::PyInt_FromLong(x), &PyInt_Type)
 #endif
-  
+
 // note: handles signed char and unsigned char, but not char (see below)
 BOOST_PYTHON_TO_INT(char)
 
@@ -149,7 +149,7 @@ BOOST_PYTHON_TO_PYTHON_BY_VALUE(
 BOOST_PYTHON_TO_PYTHON_BY_VALUE(signed BOOST_PYTHON_LONG_LONG, ::PyLong_FromLongLong(x), &PyLong_Type)
 BOOST_PYTHON_TO_PYTHON_BY_VALUE(unsigned BOOST_PYTHON_LONG_LONG, ::PyLong_FromUnsignedLongLong(x), &PyLong_Type)
 # endif
-    
+
 # undef BOOST_TO_PYTHON_INT
 
 #if PY_VERSION_HEX >= 0x03000000
@@ -164,7 +164,7 @@ BOOST_PYTHON_TO_PYTHON_BY_VALUE(std::string, ::PyString_FromStringAndSize(x.data
 
 #if defined(Py_USING_UNICODE) && !defined(BOOST_NO_STD_WSTRING)
 BOOST_PYTHON_TO_PYTHON_BY_VALUE(std::wstring, ::PyUnicode_FromWideChar(x.data(),implicit_cast<ssize_t>(x.size())), &PyUnicode_Type)
-# endif 
+# endif
 BOOST_PYTHON_TO_PYTHON_BY_VALUE(float, ::PyFloat_FromDouble(x), &PyFloat_Type)
 BOOST_PYTHON_TO_PYTHON_BY_VALUE(double, ::PyFloat_FromDouble(x), &PyFloat_Type)
 BOOST_PYTHON_TO_PYTHON_BY_VALUE(long double, ::PyFloat_FromDouble(x), &PyFloat_Type)
@@ -177,9 +177,9 @@ BOOST_PYTHON_TO_PYTHON_BY_VALUE(std::complex<long double>, ::PyComplex_FromDoubl
 # undef BOOST_PYTHON_ARG_TO_PYTHON_BY_VALUE
 # undef BOOST_PYTHON_TO_PYTHON_BY_VALUE
 # undef BOOST_PYTHON_TO_INT
-    
+
 namespace converter
-{ 
+{
 
   void initialize_builtin_converters();
 

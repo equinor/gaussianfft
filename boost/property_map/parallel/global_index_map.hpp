@@ -25,7 +25,7 @@ public:
   typedef readable_property_map_tag category;
 
   template<typename ProcessGroup>
-  global_index_map(ProcessGroup pg, value_type num_local_indices, 
+  global_index_map(ProcessGroup pg, value_type num_local_indices,
                    IndexMap index_map, GlobalMap global)
     : index_map(index_map), global(global)
   {
@@ -33,7 +33,7 @@ public:
     starting_index.reset(new std::vector<value_type>(num_processes(pg) + 1));
     send(pg, 0, 0, num_local_indices);
     synchronize(pg);
-    
+
     // Populate starting_index in all processes
     if (process_id(pg) == 0) {
       (*starting_index)[0] = 0;
@@ -51,7 +51,7 @@ public:
     }
   }
 
-  friend inline value_type 
+  friend inline value_type
   get(const global_index_map& gim, const key_type& x)
   {
     using boost::get;

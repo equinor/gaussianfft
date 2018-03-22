@@ -1,6 +1,6 @@
 /*
     Copyright 2005-2007 Adobe Systems Incorporated
-   
+
     Use, modification and distribution are subject to the Boost Software License,
     Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
     http://www.boost.org/LICENSE_1_0.txt).
@@ -14,7 +14,7 @@
 #define GIL_POSITION_ITERATOR_HPP
 
 ////////////////////////////////////////////////////////////////////////////////////////
-/// \file               
+/// \file
 /// \brief Locator for virtual image views
 /// \author Lubomir Bourdev and Hailin Jin \n
 ///         Adobe Systems Incorporated
@@ -29,7 +29,7 @@ namespace boost { namespace gil {
 
 /// \defgroup PixelIteratorModelVirtual position_iterator
 /// \ingroup PixelIteratorModel
-/// \brief An iterator that remembers its current X,Y position and invokes a function object with it upon dereferencing. Models PixelIteratorConcept, PixelBasedConcept, HasDynamicXStepTypeConcept. Used to create virtual image views. 
+/// \brief An iterator that remembers its current X,Y position and invokes a function object with it upon dereferencing. Models PixelIteratorConcept, PixelBasedConcept, HasDynamicXStepTypeConcept. Used to create virtual image views.
 
 
 /// \brief An iterator that remembers its current X,Y position and invokes a function object with it upon dereferencing. Models PixelIteratorConcept. Used to create virtual image views.
@@ -82,12 +82,12 @@ private:
     bool equal(const position_iterator& it) const { return _p==it._p; }
 };
 
-template <typename Deref,int Dim> 
+template <typename Deref,int Dim>
 struct const_iterator_type<position_iterator<Deref,Dim> > {
     typedef position_iterator<typename Deref::const_t,Dim> type;
 };
 
-template <typename Deref,int Dim> 
+template <typename Deref,int Dim>
 struct iterator_is_mutable<position_iterator<Deref,Dim> > : public mpl::bool_<Deref::is_mutable> {
 };
 
@@ -95,23 +95,23 @@ struct iterator_is_mutable<position_iterator<Deref,Dim> > : public mpl::bool_<De
 //  PixelBasedConcept
 /////////////////////////////
 
-template <typename Deref,int Dim> 
+template <typename Deref,int Dim>
 struct color_space_type<position_iterator<Deref,Dim> > : public color_space_type<typename Deref::value_type> {};
 
-template <typename Deref,int Dim> 
+template <typename Deref,int Dim>
 struct channel_mapping_type<position_iterator<Deref,Dim> > : public channel_mapping_type<typename Deref::value_type> {};
 
-template <typename Deref,int Dim> 
+template <typename Deref,int Dim>
 struct is_planar<position_iterator<Deref,Dim> > : public mpl::false_ {};
 
-template <typename Deref,int Dim> 
+template <typename Deref,int Dim>
 struct channel_type<position_iterator<Deref,Dim> > : public channel_type<typename Deref::value_type> {};
 
 /////////////////////////////
 //  HasDynamicXStepTypeConcept
 /////////////////////////////
 
-template <typename Deref,int Dim> 
+template <typename Deref,int Dim>
 struct dynamic_x_step_type<position_iterator<Deref,Dim> > {
     typedef position_iterator<Deref,Dim> type;
 };

@@ -40,7 +40,7 @@ public:
     template< typename Fn,
               typename = detail::disable_overload< packaged_task, Fn >
     >
-    explicit packaged_task( Fn && fn) : 
+    explicit packaged_task( Fn && fn) :
         packaged_task{ std::allocator_arg,
                        std::allocator< packaged_task >{},
                        std::forward< Fn >( fn)  } {

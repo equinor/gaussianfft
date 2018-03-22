@@ -35,7 +35,7 @@ namespace boost { namespace math {
       // for use in A&S 9.2.5 and 9.2.6.
       // This series is quick to evaluate, but divergent unless
       // x is very large, in fact it's pretty hard to figure out
-      // with any degree of precision when this series actually 
+      // with any degree of precision when this series actually
       // *will* converge!!  Consequently, we may just have to
       // try it and see...
       //
@@ -126,9 +126,9 @@ namespace boost { namespace math {
             coef *= coef_mult / k;
             sum += coef * g;
             sum1 += coef * h;
-            if (abs(coef * g) < abs(sum) * tolerance) 
-            { 
-               break; 
+            if (abs(coef * g) < abs(sum) * tolerance)
+            {
+               break;
             }
          }
          policies::check_series_iterations<T>("boost::math::bessel_jy<%1%>(%1%,%1%) in temme_jy", k, pol);
@@ -170,7 +170,7 @@ namespace boost { namespace math {
             delta = C * D;
             f *= delta;
             if (D < 0) { s = -s; }
-            if (abs(delta - 1) < tolerance) 
+            if (abs(delta - 1) < tolerance)
             { break; }
          }
          policies::check_series_iterations<T>("boost::math::bessel_jy<%1%>(%1%,%1%) in CF1_jy", k / 100, pol);
@@ -346,7 +346,7 @@ namespace boost { namespace math {
                Jv = bessel_j_small_z_series(v, x, pol);
             else
                Jv = std::numeric_limits<T>::quiet_NaN();
-            if((org_kind&need_y && (!reflect || (cp != 0))) 
+            if((org_kind&need_y && (!reflect || (cp != 0)))
                || (org_kind & need_j && (reflect && (sp != 0))))
             {
                // Only calculate if we need it, and if the reflection formula will actually use it:
@@ -363,7 +363,7 @@ namespace boost { namespace math {
                Jv = bessel_j_small_z_series(v, x, pol);
             else
                Jv = std::numeric_limits<T>::quiet_NaN();
-            if((org_kind&need_y && (!reflect || (cp != 0))) 
+            if((org_kind&need_y && (!reflect || (cp != 0)))
                || (org_kind & need_j && (reflect && (sp != 0))))
             {
                // Only calculate if we need it, and if the reflection formula will actually use it:
@@ -390,7 +390,7 @@ namespace boost { namespace math {
          else if((x > 8) && hankel_PQ(v, x, &p, &q, pol))
          {
             //
-            // Hankel approximation: note that this method works best when x 
+            // Hankel approximation: note that this method works best when x
             // is large, but in that case we end up calculating sines and cosines
             // of large values, with horrendous resulting accuracy.  It is fast though
             // when it works....

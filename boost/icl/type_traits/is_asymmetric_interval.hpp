@@ -1,4 +1,4 @@
-/*-----------------------------------------------------------------------------+    
+/*-----------------------------------------------------------------------------+
 Copyright (c) 2010-2010: Joachim Faulhaber
 +------------------------------------------------------------------------------+
    Distributed under the Boost Software License, Version 1.0.
@@ -14,7 +14,7 @@ namespace boost{ namespace icl
 {
 
 template <class Type> struct is_asymmetric_interval
-{ 
+{
     typedef is_asymmetric_interval<Type> type;
     BOOST_STATIC_CONSTANT(bool,
             value = (mpl::and_<
@@ -26,7 +26,7 @@ template <class Type> struct is_asymmetric_interval
 };
 
 template <class Type> struct is_continuous_asymmetric
-{ 
+{
     typedef is_continuous_asymmetric<Type> type;
     BOOST_STATIC_CONSTANT(bool,
             value = (mpl::and_<
@@ -37,7 +37,7 @@ template <class Type> struct is_continuous_asymmetric
 };
 
 template <class Type> struct is_discrete_asymmetric
-{ 
+{
     typedef is_discrete_asymmetric<Type> type;
     BOOST_STATIC_CONSTANT(bool,
             value = (mpl::and_<

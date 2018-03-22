@@ -27,7 +27,7 @@
 
 /** \def BOOST_VMD_TUPLE_PUSH_BACK(tuple,elem)
 
-    \brief appends an element to the end of a tuple. 
+    \brief appends an element to the end of a tuple.
 
     tuple = tuple to to append an element to.
     elem  = element to append.

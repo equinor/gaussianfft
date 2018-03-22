@@ -29,7 +29,7 @@ namespace boost { namespace dll { namespace detail {
         uint32_t size = sizeof(path);
         if (_NSGetExecutablePath(path, &size) == 0)
             return boost::filesystem::path(path);
-        
+
         char *p = new char[size];
         if (_NSGetExecutablePath(p, &size) != 0) {
             ec = boost::system::error_code(

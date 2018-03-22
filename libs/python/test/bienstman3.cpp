@@ -5,15 +5,15 @@
 #include <boost/python/def.hpp>
 #include <boost/python/class.hpp>
 
-struct V 
+struct V
 {
  virtual ~V() {}; // silence compiler warningsa
  virtual void f() = 0;
 };
 
-struct B 
+struct B
 {
-    B(const V&) {}    
+    B(const V&) {}
 };
 
 BOOST_PYTHON_MODULE(bienstman3_ext)

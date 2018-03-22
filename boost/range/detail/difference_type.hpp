@@ -18,10 +18,10 @@
 // missing partial specialization  workaround.
 //////////////////////////////////////////////////////////////////////////////
 
-namespace boost 
+namespace boost
 {
-    namespace range_detail 
-    {        
+    namespace range_detail
+    {
         template< typename T >
         struct range_difference_type_;
 
@@ -41,7 +41,7 @@ namespace boost
             template< typename P >
             struct pts
             {
-                typedef BOOST_RANGE_DEDUCED_TYPENAME boost::iterator_difference< BOOST_DEDUCED_TYPENAME P::first_type>::type type;                
+                typedef BOOST_RANGE_DEDUCED_TYPENAME boost::iterator_difference< BOOST_DEDUCED_TYPENAME P::first_type>::type type;
             };
         };
 
@@ -57,7 +57,7 @@ namespace boost
 
         template<>
         struct range_difference_type_<char_array_>
-        { 
+        {
             template< typename A >
             struct pts
             {
@@ -72,9 +72,9 @@ namespace boost
             struct pts
             {
                 typedef std::ptrdiff_t type;
-            };         
+            };
         };
-        
+
         template<>
         struct range_difference_type_<const_char_ptr_>
         {
@@ -82,9 +82,9 @@ namespace boost
             struct pts
             {
                 typedef std::ptrdiff_t type;
-            };         
+            };
         };
-        
+
         template<>
         struct range_difference_type_<wchar_t_ptr_>
         {
@@ -92,9 +92,9 @@ namespace boost
             struct pts
             {
                 typedef std::ptrdiff_t type;
-            };         
+            };
         };
-        
+
         template<>
         struct range_difference_type_<const_wchar_t_ptr_>
         {
@@ -102,17 +102,17 @@ namespace boost
             struct pts
             {
                 typedef std::ptrdiff_t type;
-            };         
+            };
         };
-        
-    } 
-    
+
+    }
+
     template< typename C >
     class range_difference
     {
         typedef BOOST_RANGE_DEDUCED_TYPENAME range_detail::range<C>::type c_type;
     public:
-        typedef BOOST_RANGE_DEDUCED_TYPENAME range_detail::range_difference_type_<c_type>::BOOST_NESTED_TEMPLATE pts<C>::type type; 
+        typedef BOOST_RANGE_DEDUCED_TYPENAME range_detail::range_difference_type_<c_type>::BOOST_NESTED_TEMPLATE pts<C>::type type;
     };
 
 }

@@ -15,10 +15,10 @@
 @SET_MAKE@
 
 # Copyright (c) 1999-2001 by Red Hat, Inc. All rights reserved.
-# 
+#
 # THIS MATERIAL IS PROVIDED AS IS, WITH ABSOLUTELY NO WARRANTY EXPRESSED
 # OR IMPLIED.  ANY USE IS AT YOUR OWN RISK.
-# 
+#
 # Permission is hereby granted to use or copy this program
 # for any purpose,  provided the above notices are retained on all copies.
 # Permission to modify the code and to distribute modified code is granted,
@@ -30,11 +30,11 @@
 # Modified by: Grzegorz Jakacki <jakacki at acm dot org>
 # Modified by: Petter Urkedal <petter.urkedal@nordita.dk> (2005-04)
 
-# 
-# 
+#
+#
 # THIS MATERIAL IS PROVIDED AS IS, WITH ABSOLUTELY NO WARRANTY EXPRESSED
 # OR IMPLIED.  ANY USE IS AT YOUR OWN RISK.
-# 
+#
 # Permission is hereby granted to use or copy this program
 # for any purpose,  provided the above notices are retained on all copies.
 # Permission to modify the code and to distribute modified code is granted,
@@ -55,11 +55,11 @@
 # provided the above notices are retained, and a notice that the code was
 # modified is included with the above copyright notice.
 
-# 
-# 
+#
+#
 # THIS MATERIAL IS PROVIDED AS IS, WITH ABSOLUTELY NO WARRANTY EXPRESSED
 # OR IMPLIED.  ANY USE IS AT YOUR OWN RISK.
-# 
+#
 # Permission is hereby granted to use or copy this program
 # for any purpose,  provided the above notices are retained on all copies.
 # Permission to modify the code and to distribute modified code is granted,
@@ -202,7 +202,7 @@ am__threadleaktest_SOURCES_DIST = tests/thread_leak_test.c
 threadleaktest_OBJECTS = $(am_threadleaktest_OBJECTS)
 @THREADS_TRUE@threadleaktest_DEPENDENCIES = $(am__DEPENDENCIES_2)
 SCRIPTS = $(dist_noinst_SCRIPTS)
-DEFAULT_INCLUDES = 
+DEFAULT_INCLUDES =
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
 CCASCOMPILE = $(CCAS) $(AM_CCASFLAGS) $(CCASFLAGS)
@@ -422,7 +422,7 @@ target_vendor = @target_vendor@
 # else
 # SUBDIRS =
 # endif
-SUBDIRS = 
+SUBDIRS =
 
 # Initialize variables so that we can declare files locally.
 
@@ -462,7 +462,7 @@ EXTRA_DIST = gc_cpp.cpp README.QUICK BCC_MAKEFILE NT_MAKEFILE \
 # C Library
 # ---------
 lib_LTLIBRARIES = libgc.la $(am__append_4) libcord.la
-include_HEADERS = 
+include_HEADERS =
 
 # installed headers
 #
@@ -531,7 +531,7 @@ AM_CFLAGS = @GC_CFLAGS@
 #include/private/thread_local_alloc.h include/private_support.h \
 #include/private/pthread_stop_world.h \
 #include/gc_mark.h @addincludes@
-@COMPILER_XLC_TRUE@ASM_CPP_OPTIONS = 
+@COMPILER_XLC_TRUE@ASM_CPP_OPTIONS =
 dist_noinst_SCRIPTS = callprocs configure.host
 
 # this is an auxiliary shell file used by Makefile and Makefile.direct
@@ -675,11 +675,11 @@ cord/cordbscs.lo: cord/$(am__dirstamp) cord/$(DEPDIR)/$(am__dirstamp)
 cord/cordprnt.lo: cord/$(am__dirstamp) cord/$(DEPDIR)/$(am__dirstamp)
 cord/cordtest.lo: cord/$(am__dirstamp) cord/$(DEPDIR)/$(am__dirstamp)
 cord/cordxtra.lo: cord/$(am__dirstamp) cord/$(DEPDIR)/$(am__dirstamp)
-libcord.la: $(libcord_la_OBJECTS) $(libcord_la_DEPENDENCIES) 
+libcord.la: $(libcord_la_OBJECTS) $(libcord_la_DEPENDENCIES)
 	$(LINK) -rpath $(libdir) $(libcord_la_LDFLAGS) $(libcord_la_OBJECTS) $(libcord_la_LIBADD) $(LIBS)
-libgc.la: $(libgc_la_OBJECTS) $(libgc_la_DEPENDENCIES) 
+libgc.la: $(libgc_la_OBJECTS) $(libgc_la_DEPENDENCIES)
 	$(LINK) -rpath $(libdir) $(libgc_la_LDFLAGS) $(libgc_la_OBJECTS) $(libgc_la_LIBADD) $(LIBS)
-libgccpp.la: $(libgccpp_la_OBJECTS) $(libgccpp_la_DEPENDENCIES) 
+libgccpp.la: $(libgccpp_la_OBJECTS) $(libgccpp_la_DEPENDENCIES)
 	$(CXXLINK) $(am_libgccpp_la_rpath) $(libgccpp_la_LDFLAGS) $(libgccpp_la_OBJECTS) $(libgccpp_la_LIBADD) $(LIBS)
 
 clean-checkPROGRAMS:
@@ -696,27 +696,27 @@ tests/$(DEPDIR)/$(am__dirstamp):
 	@: > tests/$(DEPDIR)/$(am__dirstamp)
 tests/test.$(OBJEXT): tests/$(am__dirstamp) \
 	tests/$(DEPDIR)/$(am__dirstamp)
-gctest$(EXEEXT): $(gctest_OBJECTS) $(gctest_DEPENDENCIES) 
+gctest$(EXEEXT): $(gctest_OBJECTS) $(gctest_DEPENDENCIES)
 	@rm -f gctest$(EXEEXT)
 	$(LINK) $(gctest_LDFLAGS) $(gctest_OBJECTS) $(gctest_LDADD) $(LIBS)
 tests/leak_test.$(OBJEXT): tests/$(am__dirstamp) \
 	tests/$(DEPDIR)/$(am__dirstamp)
-leaktest$(EXEEXT): $(leaktest_OBJECTS) $(leaktest_DEPENDENCIES) 
+leaktest$(EXEEXT): $(leaktest_OBJECTS) $(leaktest_DEPENDENCIES)
 	@rm -f leaktest$(EXEEXT)
 	$(LINK) $(leaktest_LDFLAGS) $(leaktest_OBJECTS) $(leaktest_LDADD) $(LIBS)
 tests/middle.$(OBJEXT): tests/$(am__dirstamp) \
 	tests/$(DEPDIR)/$(am__dirstamp)
-middletest$(EXEEXT): $(middletest_OBJECTS) $(middletest_DEPENDENCIES) 
+middletest$(EXEEXT): $(middletest_OBJECTS) $(middletest_DEPENDENCIES)
 	@rm -f middletest$(EXEEXT)
 	$(LINK) $(middletest_LDFLAGS) $(middletest_OBJECTS) $(middletest_LDADD) $(LIBS)
 tests/test_cpp.$(OBJEXT): tests/$(am__dirstamp) \
 	tests/$(DEPDIR)/$(am__dirstamp)
-test_cpp$(EXEEXT): $(test_cpp_OBJECTS) $(test_cpp_DEPENDENCIES) 
+test_cpp$(EXEEXT): $(test_cpp_OBJECTS) $(test_cpp_DEPENDENCIES)
 	@rm -f test_cpp$(EXEEXT)
 	$(CXXLINK) $(test_cpp_LDFLAGS) $(test_cpp_OBJECTS) $(test_cpp_LDADD) $(LIBS)
 tests/thread_leak_test.$(OBJEXT): tests/$(am__dirstamp) \
 	tests/$(DEPDIR)/$(am__dirstamp)
-threadleaktest$(EXEEXT): $(threadleaktest_OBJECTS) $(threadleaktest_DEPENDENCIES) 
+threadleaktest$(EXEEXT): $(threadleaktest_OBJECTS) $(threadleaktest_DEPENDENCIES)
 	@rm -f threadleaktest$(EXEEXT)
 	$(LINK) $(threadleaktest_LDFLAGS) $(threadleaktest_OBJECTS) $(threadleaktest_LDADD) $(LIBS)
 
@@ -1393,7 +1393,7 @@ uninstall-info: uninstall-info-recursive
 	$(LTCOMPILE) $(ASM_CPP_OPTIONS) -c $<
 
 #
-# :GOTCHA: GNU make rule for making .s out of .S is flawed, 
+# :GOTCHA: GNU make rule for making .s out of .S is flawed,
 # it will not remove dest if building fails
 .S.s:
 	if $(CPP) $< >$@ ; then :; else rm -f $@; fi

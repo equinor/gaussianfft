@@ -1,9 +1,9 @@
 /*=============================================================================
     Copyright (c) 2007-2008 Tobias Schwinger
-  
-    Use modification and distribution are subject to the Boost Software 
+
+    Use modification and distribution are subject to the Boost Software
     License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
-    http://www.boost.org/LICENSE_1_0.txt).  
+    http://www.boost.org/LICENSE_1_0.txt).
 ==============================================================================*/
 
 #ifndef BOOST_FUNCTIONAL_FORWARD_ADAPTER_HPP_INCLUDED
@@ -28,7 +28,7 @@
 #   endif
 
 
-namespace boost 
+namespace boost
 {
     template< typename Function, int Arity_Or_MinArity = -1, int MaxArity = -1 >
     class forward_adapter;
@@ -37,7 +37,7 @@ namespace boost
 
     namespace detail
     {
-        template< class MostDerived, typename Function, typename FunctionConst, 
+        template< class MostDerived, typename Function, typename FunctionConst,
             int Arity, int MinArity >
         struct forward_adapter_impl;
 
@@ -75,8 +75,8 @@ namespace boost
         , private Function
     {
       public:
-        forward_adapter(Function const& f = Function()) 
-          : Function(f) 
+        forward_adapter(Function const& f = Function())
+          : Function(f)
         { }
 
         typedef Function        target_function_t;
@@ -98,7 +98,7 @@ namespace boost
     {
       public:
         forward_adapter(Function const& f = Function())
-          : Function(f) 
+          : Function(f)
         { }
 
         typedef Function const target_function_t;
@@ -120,7 +120,7 @@ namespace boost
         Function& ref_function;
       public:
         forward_adapter(Function& f)
-          : ref_function(f) 
+          : ref_function(f)
         { }
 
         typedef Function target_function_t;
@@ -133,7 +133,7 @@ namespace boost
         { };
 
         using BOOST_TMP_MACRO(Function&, Function, Function)::operator();
-    }; 
+    };
 
     #undef BOOST_TMP_MACRO
 
@@ -289,7 +289,7 @@ namespace boost
 #     if I < count
 
 #       // Done for this arity? Increment N
-#       if (I+2 >> N+1) 
+#       if (I+2 >> N+1)
 #         if N == 0
 #           undef N
 #           define N 1
@@ -344,8 +344,8 @@ namespace boost
 
         template< class Self, BOOST_PP_ENUM_PARAMS(N,typename T) >
         struct forward_adapter_result::apply< Self(BOOST_PP_ENUM_PARAMS(N,T)) >
-            : boost::result_of< 
-                BOOST_DEDUCED_TYPENAME c<Self>::t(BOOST_PP_ENUM_BINARY_PARAMS(N, 
+            : boost::result_of<
+                BOOST_DEDUCED_TYPENAME c<Self>::t(BOOST_PP_ENUM_BINARY_PARAMS(N,
                       typename q<T,>::t& BOOST_PP_INTERCEPT)) >
         { };
 
@@ -451,9 +451,9 @@ namespace boost
 #         define PT15 T15 const &
 #       endif
 
-#       if BOOST_WORKAROUND(BOOST_MSVC,BOOST_TESTED_AT(1400)) 
+#       if BOOST_WORKAROUND(BOOST_MSVC,BOOST_TESTED_AT(1400))
             template< BOOST_PP_ENUM_PARAMS(N,typename T) >
-            inline typename boost::result_of<  FC(BOOST_PP_ENUM_PARAMS(N,PT)) 
+            inline typename boost::result_of<  FC(BOOST_PP_ENUM_PARAMS(N,PT))
                 >::type
             operator()(BOOST_PP_ENUM_BINARY_PARAMS(N,PT,a)) const
             {

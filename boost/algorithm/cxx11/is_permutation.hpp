@@ -36,7 +36,7 @@ namespace detail {
         Predicate p_;
         Iterator it_;
         };
-        
+
 //  Preconditions:
 //  1. The sequences are the same length
 //  2. Any common elements on the front have been removed (not necessary for correctness, just for performance)
@@ -58,11 +58,11 @@ namespace detail {
                 }
 
         return true;
-        }                      
+        }
 
     template< class ForwardIterator1, class ForwardIterator2, class BinaryPredicate>
-    bool is_permutation_tag ( ForwardIterator1 first1, ForwardIterator1 last1, 
-                          ForwardIterator2 first2, ForwardIterator2 last2, 
+    bool is_permutation_tag ( ForwardIterator1 first1, ForwardIterator1 last1,
+                          ForwardIterator2 first2, ForwardIterator2 last2,
                           BinaryPredicate p,
                           std::forward_iterator_tag, std::forward_iterator_tag ) {
 
@@ -78,8 +78,8 @@ namespace detail {
         }
 
     template <class RandomAccessIterator1, class RandomAccessIterator2, class BinaryPredicate>
-    bool is_permutation_tag ( RandomAccessIterator1 first1, RandomAccessIterator1 last1, 
-                          RandomAccessIterator2 first2, RandomAccessIterator2 last2, 
+    bool is_permutation_tag ( RandomAccessIterator1 first1, RandomAccessIterator1 last1,
+                          RandomAccessIterator2 first2, RandomAccessIterator2 last2,
                           BinaryPredicate p,
                           std::random_access_iterator_tag, std::random_access_iterator_tag ) {
     //  Cheap check

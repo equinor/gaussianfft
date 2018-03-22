@@ -14,22 +14,22 @@
 #include <boost/config.hpp> // BOOST_MSVC
 #include <boost/range/iterator.hpp>
 
-namespace boost 
+namespace boost
 {
-    
+
     namespace range_detail
     {
         //
         // iterator
         //
-        
+
         template<>
         struct range_iterator_<char_array_>
-        { 
+        {
             template< typename T >
             struct pts
             {
-                 typedef BOOST_RANGE_DEDUCED_TYPENAME 
+                 typedef BOOST_RANGE_DEDUCED_TYPENAME
                     remove_extent<T>::type* type;
             };
         };
@@ -40,8 +40,8 @@ namespace boost
             template< typename S >
             struct pts
             {
-                typedef char* type; 
-            };         
+                typedef char* type;
+            };
         };
 
         template<>
@@ -51,7 +51,7 @@ namespace boost
             struct pts
             {
                 typedef const char* type;
-            };         
+            };
         };
 
         template<>
@@ -60,8 +60,8 @@ namespace boost
             template< typename S >
             struct pts
             {
-                typedef wchar_t* type; 
-            };         
+                typedef wchar_t* type;
+            };
         };
 
         template<>
@@ -70,8 +70,8 @@ namespace boost
              template< typename S >
              struct pts
              {
-                 typedef const wchar_t* type; 
-             };         
+                 typedef const wchar_t* type;
+             };
         };
 
 
@@ -81,11 +81,11 @@ namespace boost
 
         template<>
         struct range_const_iterator_<char_array_>
-        { 
+        {
             template< typename T >
             struct pts
             {
-                typedef const BOOST_RANGE_DEDUCED_TYPENAME 
+                typedef const BOOST_RANGE_DEDUCED_TYPENAME
                     remove_extent<T>::type* type;
             };
         };
@@ -96,8 +96,8 @@ namespace boost
             template< typename S >
             struct pts
             {
-                typedef const char* type; 
-            };         
+                typedef const char* type;
+            };
         };
 
         template<>
@@ -106,8 +106,8 @@ namespace boost
             template< typename S >
             struct pts
             {
-                typedef const char* type; 
-            };         
+                typedef const char* type;
+            };
         };
 
         template<>
@@ -116,8 +116,8 @@ namespace boost
             template< typename S >
             struct pts
             {
-                typedef const wchar_t* type; 
-            };         
+                typedef const wchar_t* type;
+            };
         };
 
         template<>
@@ -126,8 +126,8 @@ namespace boost
              template< typename S >
              struct pts
              {
-                 typedef const wchar_t* type; 
-             };         
+                 typedef const wchar_t* type;
+             };
         };
     }
 }
@@ -138,9 +138,9 @@ namespace boost
 #include <boost/range/detail/value_type.hpp>
 #include <boost/range/detail/common.hpp>
 
-namespace boost 
+namespace boost
 {
-    
+
     namespace range_detail
     {
         //
@@ -163,11 +163,11 @@ namespace boost
                 return s;
             }
         };
-        
+
         template<>
         struct range_begin<wchar_t_ptr_>
         {
-            
+
             static wchar_t* fun( wchar_t* s )
             {
                 return s;
@@ -182,12 +182,12 @@ namespace boost
                 return s;
             }
         };
-        
+
         template< typename C >
-        inline BOOST_RANGE_DEDUCED_TYPENAME range_iterator<C>::type 
+        inline BOOST_RANGE_DEDUCED_TYPENAME range_iterator<C>::type
         str_begin( C& c )
         {
-            return range_detail::range_begin< BOOST_RANGE_DEDUCED_TYPENAME 
+            return range_detail::range_begin< BOOST_RANGE_DEDUCED_TYPENAME
                 range_detail::range<C>::type >::fun( c );
         }
 
@@ -204,7 +204,7 @@ namespace boost
                 return boost::range_detail::array_end( boost_range_array );
             }
         };
-        
+
         template<>
         struct range_end<wchar_t_array_>
         {
@@ -214,7 +214,7 @@ namespace boost
                 return boost::range_detail::array_end( boost_range_array );
             }
         };
-        
+
         template<>
         struct range_end<char_ptr_>
         {
@@ -253,10 +253,10 @@ namespace boost
         };
 
         template< typename C >
-        inline BOOST_RANGE_DEDUCED_TYPENAME range_iterator<C>::type 
+        inline BOOST_RANGE_DEDUCED_TYPENAME range_iterator<C>::type
         str_end( C& c )
         {
-            return range_detail::range_end< BOOST_RANGE_DEDUCED_TYPENAME 
+            return range_detail::range_end< BOOST_RANGE_DEDUCED_TYPENAME
                 range_detail::range<C>::type >::fun( c );
         }
 
@@ -266,7 +266,7 @@ namespace boost
 
         template<>
         struct range_size_type_<char_array_>
-        { 
+        {
             template< typename A >
             struct pts
             {
@@ -281,9 +281,9 @@ namespace boost
             struct pts
             {
                 typedef std::size_t type;
-            };         
+            };
         };
-        
+
         template<>
         struct range_size_type_<const_char_ptr_>
         {
@@ -291,9 +291,9 @@ namespace boost
             struct pts
             {
                 typedef std::size_t type;
-            };         
+            };
         };
-        
+
         template<>
         struct range_size_type_<wchar_t_ptr_>
         {
@@ -301,9 +301,9 @@ namespace boost
             struct pts
             {
                 typedef std::size_t type;
-            };         
+            };
         };
-        
+
         template<>
         struct range_size_type_<const_wchar_t_ptr_>
         {
@@ -311,16 +311,16 @@ namespace boost
             struct pts
             {
                 typedef std::size_t type;
-            };         
-        };  
+            };
+        };
 
         //
         // value_type
         //
-        
+
         template<>
         struct range_value_type_<char_array_>
-        { 
+        {
             template< typename T >
             struct pts
             {
@@ -334,10 +334,10 @@ namespace boost
              template< typename S >
              struct pts
              {
-                 typedef char type; 
-             };         
+                 typedef char type;
+             };
         };
-        
+
         template<>
         struct range_value_type_<const_char_ptr_>
         {
@@ -345,9 +345,9 @@ namespace boost
              struct pts
              {
                  typedef const char type;
-             };         
+             };
         };
-        
+
         template<>
         struct range_value_type_<wchar_t_ptr_>
         {
@@ -355,9 +355,9 @@ namespace boost
              struct pts
              {
                  typedef wchar_t type;
-             };         
+             };
         };
-        
+
         template<>
         struct range_value_type_<const_wchar_t_ptr_>
         {
@@ -365,7 +365,7 @@ namespace boost
             struct pts
             {
                 typedef const wchar_t type;
-            };         
+            };
         };
 
     } // namespace 'range_detail'

@@ -114,9 +114,9 @@ See also unordered_set_of_relation.
 template
 <
     class KeyType,
-    class HashFunctor   = hash< BOOST_DEDUCED_TYPENAME 
+    class HashFunctor   = hash< BOOST_DEDUCED_TYPENAME
         ::boost::bimaps::tags::support::value_type_of<KeyType>::type >,
-    class EqualKey      = std::equal_to< BOOST_DEDUCED_TYPENAME 
+    class EqualKey      = std::equal_to< BOOST_DEDUCED_TYPENAME
         ::boost::bimaps::tags::support::value_type_of<KeyType>::type >
 >
 struct unordered_set_of : public ::boost::bimaps::detail::set_type_of_tag
@@ -145,7 +145,7 @@ struct unordered_set_of : public ::boost::bimaps::detail::set_type_of_tag
         BOOST_CLASS_REQUIRE4( key_equal, bool, value_type, value_type,
                               boost, BinaryFunctionConcept );
 
-        typedef unordered_set_of type; 
+        typedef unordered_set_of type;
     };
 
     BOOST_BIMAP_GENERATE_INDEX_BINDER_2CP(

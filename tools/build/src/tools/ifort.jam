@@ -38,7 +38,7 @@ rule compile.fortran
 
 actions compile.fortran
 {
-  ifort $(FFLAGS) $(OPTIONS) /names:lowercase /D$(DEFINES) /I"$(INCLUDES)" /c /object:"$(<)" "$(>)" 
+  ifort $(FFLAGS) $(OPTIONS) /names:lowercase /D$(DEFINES) /I"$(INCLUDES)" /c /object:"$(<)" "$(>)"
 }
 
-generators.register-fortran-compiler ifort.compile.fortran : FORTRAN : OBJ ; 
+generators.register-fortran-compiler ifort.compile.fortran : FORTRAN : OBJ ;

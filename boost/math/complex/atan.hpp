@@ -15,7 +15,7 @@
 
 namespace boost{ namespace math{
 
-template<class T> 
+template<class T>
 std::complex<T> atan(const std::complex<T>& x)
 {
    //

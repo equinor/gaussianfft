@@ -252,7 +252,7 @@ void require_match(
 }
 
 #endif
-    
+
 #undef RREF
 #undef BOOST_TYPE_ERASURE_FORWARD_ARGS
 #undef BOOST_TYPE_ERASURE_FORWARD_ARGS_I

@@ -26,27 +26,27 @@ template <class Type> struct is_fixed_numeric
 template <class Type> struct is_std_numeric
 {
     typedef is_std_numeric type;
-    BOOST_STATIC_CONSTANT(bool, 
+    BOOST_STATIC_CONSTANT(bool,
         value = (std::numeric_limits<Type>::is_specialized));
 };
 
 template <class Type> struct is_std_integral
 {
     typedef is_std_integral type;
-    BOOST_STATIC_CONSTANT(bool, 
+    BOOST_STATIC_CONSTANT(bool,
         value = (std::numeric_limits<Type>::is_integer));
 };
 
 template <class Type> struct is_numeric
 {
     typedef is_numeric type;
-    BOOST_STATIC_CONSTANT(bool, value = 
+    BOOST_STATIC_CONSTANT(bool, value =
         (mpl::or_< is_std_numeric<Type>
-                 , boost::is_integral<Type> 
+                 , boost::is_integral<Type>
                  , is_std_integral<Type> >::value) );
 };
 
-template <class Type> 
+template <class Type>
 struct is_numeric<std::complex<Type> >
 {
     typedef is_numeric type;
@@ -61,7 +61,7 @@ struct numeric_minimum
     static bool is_less_than_or(Type, bool){ return true; }
 };
 
-template<class Type> 
+template<class Type>
 struct numeric_minimum<Type, std::less<Type>, true>
 {
     static bool is_less_than(Type value)
@@ -71,7 +71,7 @@ struct numeric_minimum<Type, std::less<Type>, true>
     { return cond || is_less_than(value); }
 };
 
-template<class Type> 
+template<class Type>
 struct numeric_minimum<Type, std::greater<Type>, true>
 {
     static bool is_less_than(Type value)
@@ -82,11 +82,11 @@ struct numeric_minimum<Type, std::greater<Type>, true>
 };
 
 //--------------------------------------------------------------------------
-template<class Type> 
+template<class Type>
 struct is_non_floating_point
 {
     typedef is_non_floating_point type;
-    BOOST_STATIC_CONSTANT(bool, value = 
+    BOOST_STATIC_CONSTANT(bool, value =
         (mpl::not_< is_floating_point<Type> >::value));
 };
 

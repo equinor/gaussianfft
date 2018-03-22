@@ -46,7 +46,7 @@ namespace boost { namespace numeric { namespace ublas {
 
     // Expression types
     struct scalar_tag {};
-    
+
     struct vector_tag {};
     template<class E>
     class vector_expression;

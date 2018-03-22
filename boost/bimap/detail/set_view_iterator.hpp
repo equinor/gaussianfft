@@ -20,7 +20,7 @@
 
 // Boost
 
-#ifndef BOOST_BIMAP_DISABLE_SERIALIZATION 
+#ifndef BOOST_BIMAP_DISABLE_SERIALIZATION
   #include <boost/serialization/nvp.hpp>
 #endif // BOOST_BIMAP_DISABLE_SERIALIZATION
 

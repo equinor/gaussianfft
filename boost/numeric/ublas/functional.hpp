@@ -336,14 +336,14 @@ namespace boost { namespace numeric { namespace ublas {
     };
 
     template<class V>
-    struct vector_sum: 
+    struct vector_sum:
         public vector_scalar_unary_functor<V> {
         typedef typename vector_scalar_unary_functor<V>::value_type value_type;
         typedef typename vector_scalar_unary_functor<V>::result_type result_type;
 
         template<class E>
         static BOOST_UBLAS_INLINE
-        result_type apply (const vector_expression<E> &e) { 
+        result_type apply (const vector_expression<E> &e) {
             result_type t = result_type (0);
             typedef typename E::size_type vector_size_type;
             vector_size_type size (e ().size ());
@@ -354,24 +354,24 @@ namespace boost { namespace numeric { namespace ublas {
         // Dense case
         template<class D, class I>
         static BOOST_UBLAS_INLINE
-        result_type apply (D size, I it) { 
+        result_type apply (D size, I it) {
             result_type t = result_type (0);
             while (-- size >= 0)
                 t += *it, ++ it;
-            return t; 
+            return t;
         }
         // Sparse case
         template<class I>
         static BOOST_UBLAS_INLINE
         result_type apply (I it, const I &it_end) {
             result_type t = result_type (0);
-            while (it != it_end) 
+            while (it != it_end)
                 t += *it, ++ it;
-            return t; 
+            return t;
         }
     };
 
-    // Unary returning real scalar 
+    // Unary returning real scalar
     template<class V>
     struct vector_scalar_real_unary_functor {
         typedef typename V::value_type value_type;
@@ -558,15 +558,15 @@ namespace boost { namespace numeric { namespace ublas {
         // Sparse case
         template<class I>
         static BOOST_UBLAS_INLINE
-        result_type apply (I it, const I &it_end) { 
+        result_type apply (I it, const I &it_end) {
             real_type t = real_type ();
             while (it != it_end) {
                 real_type u (type_traits<value_type>::norm_inf (*it));
-                if (u > t) 
+                if (u > t)
                     t = u;
                 ++ it;
             }
-            return t; 
+            return t;
         }
     };
 
@@ -1291,7 +1291,7 @@ namespace boost { namespace numeric { namespace ublas {
                 if (u > t)
                     t = u;
             }
-            return t; 
+            return t;
         }
     };
 
@@ -1304,7 +1304,7 @@ namespace boost { namespace numeric { namespace ublas {
 
         template<class E>
         static BOOST_UBLAS_INLINE
-        result_type apply (const matrix_expression<E> &e) { 
+        result_type apply (const matrix_expression<E> &e) {
             real_type t = real_type ();
             typedef typename E::size_type matrix_size_type;
             matrix_size_type size1 (e ().size1 ());
@@ -1315,12 +1315,12 @@ namespace boost { namespace numeric { namespace ublas {
                     t +=  u * u;
                 }
             }
-            return type_traits<real_type>::type_sqrt (t); 
+            return type_traits<real_type>::type_sqrt (t);
         }
     };
 
     template<class M>
-    struct matrix_norm_inf: 
+    struct matrix_norm_inf:
         public matrix_scalar_real_unary_functor<M> {
         typedef typename matrix_scalar_real_unary_functor<M>::value_type value_type;
         typedef typename matrix_scalar_real_unary_functor<M>::real_type real_type;
@@ -1339,10 +1339,10 @@ namespace boost { namespace numeric { namespace ublas {
                     real_type v (type_traits<value_type>::norm_inf (e () (i, j)));
                     u += v;
                 }
-                if (u > t) 
-                    t = u;  
+                if (u > t)
+                    t = u;
             }
-            return t; 
+            return t;
         }
     };
 
@@ -2044,19 +2044,19 @@ namespace boost { namespace numeric { namespace ublas {
 
     template <class Z>
     struct basic_upper : public detail::transposed_structure<basic_lower<Z> >
-    { 
+    {
         typedef upper_tag triangular_type;
     };
 
     template <class Z>
     struct basic_unit_upper : public detail::transposed_structure<basic_unit_lower<Z> >
-    { 
+    {
         typedef unit_upper_tag triangular_type;
     };
 
     template <class Z>
     struct basic_strict_upper : public detail::transposed_structure<basic_strict_lower<Z> >
-    { 
+    {
         typedef strict_upper_tag triangular_type;
     };
 

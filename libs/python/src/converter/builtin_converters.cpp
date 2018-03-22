@@ -68,7 +68,7 @@ namespace
               , &SlotPolicy::get_pytype
               );
       }
-      
+
    private:
       static void* convertible(PyObject* obj)
       {
@@ -87,19 +87,19 @@ namespace
 # ifdef _MSC_VER
 #  pragma warning(push)
 #  pragma warning(disable:4244)
-# endif 
+# endif
           new (storage) T( SlotPolicy::extract(intermediate.get()) );
-          
+
 # ifdef _MSC_VER
 #  pragma warning(pop)
-# endif 
+# endif
           // record successful construction
           data->convertible = storage;
       }
   };
 
   // identity_unaryfunc/py_object_identity -- manufacture a unaryfunc
-  // "slot" which just returns its argument. 
+  // "slot" which just returns its argument.
   extern "C" PyObject* identity_unaryfunc(PyObject* x)
   {
       Py_INCREF(x);
@@ -175,7 +175,7 @@ namespace
           return numeric_cast<T>(x);
       }
   };
-  
+
   // A SlotPolicy for extracting unsigned integer types from Python objects
   struct unsigned_int_rvalue_from_python_base
   {
@@ -228,7 +228,7 @@ namespace
 // Checking Python's macro instead of Boost's - we don't seem to get
 // the config right all the time. Furthermore, Python's is defined
 // when long long is absent but __int64 is present.
-  
+
 #ifdef HAVE_LONG_LONG
   // A SlotPolicy for extracting long long types from Python objects
 
@@ -255,7 +255,7 @@ namespace
       }
       static PyTypeObject const* get_pytype() { return &PyLong_Type;}
   };
-  
+
   struct long_long_rvalue_from_python : long_long_rvalue_from_python_base
   {
       static BOOST_PYTHON_LONG_LONG extract(PyObject* intermediate)
@@ -269,7 +269,7 @@ namespace
 #endif
           {
               BOOST_PYTHON_LONG_LONG result = PyLong_AsLongLong(intermediate);
-              
+
               if (PyErr_Occurred())
                   throw_error_already_set();
 
@@ -291,7 +291,7 @@ namespace
 #endif
           {
               unsigned BOOST_PYTHON_LONG_LONG result = PyLong_AsUnsignedLongLong(intermediate);
-              
+
               if (PyErr_Occurred())
                   throw_error_already_set();
 
@@ -299,7 +299,7 @@ namespace
           }
       }
   };
-#endif 
+#endif
 
   // A SlotPolicy for extracting bool from a Python object
   struct bool_rvalue_from_python
@@ -314,7 +314,7 @@ namespace
           return obj == Py_None || PyInt_Check(obj) ? &py_object_identity : 0;
 #endif
       }
-      
+
       static bool extract(PyObject* intermediate)
       {
           return PyObject_IsTrue(intermediate);
@@ -349,7 +349,7 @@ namespace
           return (PyLong_Check(obj) || PyFloat_Check(obj))
               ? &number_methods->nb_float : 0;
       }
-      
+
       static double extract(PyObject* intermediate)
       {
 #if PY_VERSION_HEX < 0x03000000
@@ -377,7 +377,7 @@ namespace
       static unaryfunc* get_slot(PyObject* obj)
       {
 #if PY_VERSION_HEX >= 0x03000000
-          return (PyUnicode_Check(obj)) ? &py_unicode_as_string_unaryfunc : 
+          return (PyUnicode_Check(obj)) ? &py_unicode_as_string_unaryfunc :
                   PyBytes_Check(obj) ? &py_object_identity : 0;
 #else
           return (PyString_Check(obj)) ? &obj->ob_type->tp_str : 0;
@@ -385,7 +385,7 @@ namespace
 #endif
       };
 
-      // Remember that this will be used to construct the result object 
+      // Remember that this will be used to construct the result object
 #if PY_VERSION_HEX >= 0x03000000
       static std::string extract(PyObject* intermediate)
       {
@@ -427,7 +427,7 @@ namespace
             : 0;
       };
 
-      // Remember that this will be used to construct the result object 
+      // Remember that this will be used to construct the result object
       static std::wstring extract(PyObject* intermediate)
       {
           // On Windows, with Python >= 3.3, PyObject_Length cannot be used to get
@@ -465,7 +465,7 @@ namespace
       }
       static PyTypeObject const* get_pytype() { return &PyUnicode_Type;}
   };
-#endif 
+#endif
 
   struct complex_rvalue_from_python
   {
@@ -476,7 +476,7 @@ namespace
           else
               return float_rvalue_from_python::get_slot(obj);
       }
-      
+
       static std::complex<double> extract(PyObject* intermediate)
       {
           if (PyComplex_Check(intermediate))
@@ -498,7 +498,7 @@ namespace
       }
       static PyTypeObject const* get_pytype() { return &PyComplex_Type;}
   };
-} 
+}
 
 BOOST_PYTHON_DECL PyObject* do_return_to_python(char x)
 {
@@ -508,7 +508,7 @@ BOOST_PYTHON_DECL PyObject* do_return_to_python(char x)
     return PyString_FromStringAndSize(&x, 1);
 #endif
 }
-  
+
 BOOST_PYTHON_DECL PyObject* do_return_to_python(char const* x)
 {
 #if PY_VERSION_HEX >= 0x03000000
@@ -517,17 +517,17 @@ BOOST_PYTHON_DECL PyObject* do_return_to_python(char const* x)
     return x ? PyString_FromString(x) : boost::python::detail::none();
 #endif
 }
-  
+
 BOOST_PYTHON_DECL PyObject* do_return_to_python(PyObject* x)
 {
     return x ? x : boost::python::detail::none();
 }
-  
+
 BOOST_PYTHON_DECL PyObject* do_arg_to_python(PyObject* x)
 {
     if (x == 0)
         return boost::python::detail::none();
-      
+
     Py_INCREF(x);
     return x;
 }
@@ -540,7 +540,7 @@ BOOST_PYTHON_DECL PyObject* do_arg_to_python(PyObject* x)
 
 #define REGISTER_INT_CONVERTERS2(U)             \
         REGISTER_INT_CONVERTERS(signed, U);     \
-        REGISTER_INT_CONVERTERS(unsigned, U)  
+        REGISTER_INT_CONVERTERS(unsigned, U)
 
 void initialize_builtin_converters()
 {
@@ -552,23 +552,23 @@ void initialize_builtin_converters()
     REGISTER_INT_CONVERTERS2(short);
     REGISTER_INT_CONVERTERS2(int);
     REGISTER_INT_CONVERTERS2(long);
-    
+
 // using Python's macro instead of Boost's - we don't seem to get the
 // config right all the time.
 # ifdef HAVE_LONG_LONG
     slot_rvalue_from_python<signed BOOST_PYTHON_LONG_LONG,long_long_rvalue_from_python>();
     slot_rvalue_from_python<unsigned BOOST_PYTHON_LONG_LONG,unsigned_long_long_rvalue_from_python>();
 # endif
-        
+
     // floating types
     slot_rvalue_from_python<float,float_rvalue_from_python>();
     slot_rvalue_from_python<double,float_rvalue_from_python>();
     slot_rvalue_from_python<long double,float_rvalue_from_python>();
-    
+
     slot_rvalue_from_python<std::complex<float>,complex_rvalue_from_python>();
     slot_rvalue_from_python<std::complex<double>,complex_rvalue_from_python>();
     slot_rvalue_from_python<std::complex<long double>,complex_rvalue_from_python>();
-    
+
     // Add an lvalue converter for char which gets us char const*
 #if PY_VERSION_HEX < 0x03000000
     registry::insert(convert_to_cstring,type_id<char>(),&converter::wrap_pytype<&PyString_Type>::get_pytype);
@@ -579,7 +579,7 @@ void initialize_builtin_converters()
     // Register by-value converters to std::string, std::wstring
 #if defined(Py_USING_UNICODE) && !defined(BOOST_NO_STD_WSTRING)
     slot_rvalue_from_python<std::wstring, wstring_rvalue_from_python>();
-# endif 
+# endif
     slot_rvalue_from_python<std::string, string_rvalue_from_python>();
 
 }

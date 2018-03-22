@@ -13,7 +13,7 @@ Copyright (c) 2010-2010: Joachim Faulhaber
 
 namespace boost{namespace icl
 {
-    template <class Type> 
+    template <class Type>
     struct element_equal : public relation<Type,Type>
     {
         bool operator()(const Type& lhs, const Type& rhs)const
@@ -23,7 +23,7 @@ namespace boost{namespace icl
     };
 
     template<>
-    inline std::string unary_template_to_string<icl::element_equal>::apply()  
+    inline std::string unary_template_to_string<icl::element_equal>::apply()
     { return "="; }
 
 }} // namespace icl boost

@@ -13,7 +13,7 @@
 #ifndef BOOST_LAMBDA_SUPPRESS_UNUSED_HPP
 #define BOOST_LAMBDA_SUPPRESS_UNUSED_HPP
 
-namespace boost { 
+namespace boost {
 namespace lambda {
 namespace detail {
 

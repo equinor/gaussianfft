@@ -41,7 +41,7 @@ namespace detail{
  * the elements of the longest ordered subsequence are:
  *
  *   1 2 3 7 8 9
- * 
+ *
  * The algorithm for obtaining such a subsequence is called
  * Patience Sorting, described in ch. 1 of:
  *   Aldous, D., Diaconis, P.: "Longest increasing subsequences: from
@@ -144,10 +144,10 @@ protected:
         dummy,entry::less_by_pile_top());
 
     pile_ent->pile_top=n;                   /* stack the entry */
-    pile_ent->pile_top_entry=ent;        
+    pile_ent->pile_top_entry=ent;
 
     /* if not the first pile, link entry to top of the preceding pile */
-    if(pile_ent>&entries()[0]){ 
+    if(pile_ent>&entries()[0]){
       ent->previous=(pile_ent-1)->pile_top_entry;
     }
 

@@ -526,7 +526,7 @@ detail::set_initializer_type const set = {{}};
 /// is used. Then you can use it within static regexes to created sub-matches
 /// by assigning a sub-expression to it, or to refer back to already created
 /// sub-matches.
-/// 
+///
 /// \code
 /// mark_tag number(1); // "number" is now equivalent to "s1"
 /// // Match a number, followed by a space and the same number again

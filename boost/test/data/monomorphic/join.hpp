@@ -64,7 +64,7 @@ public:
         data::size_t        m_first_size;
     };
 
-    //! Constructor 
+    //! Constructor
     join( DataSet1&& ds1, DataSet2&& ds2 )
     : m_ds1( std::forward<DataSet1>( ds1 ) )
     , m_ds2( std::forward<DataSet2>( ds2 ) )

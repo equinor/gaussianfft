@@ -1,4 +1,4 @@
-// Boost.Units - A C++ library for zero-overhead dimensional analysis and 
+// Boost.Units - A C++ library for zero-overhead dimensional analysis and
 // unit/quantity manipulation and conversion
 //
 // Copyright (C) 2003-2008 Matthias Christian Schabel
@@ -59,7 +59,7 @@ template<>
 struct begin_impl<units::detail::dimension_list_tag>
 {
     template<class L>
-    struct apply 
+    struct apply
     {
         typedef L type;
     };
@@ -70,7 +70,7 @@ template<>
 struct end_impl<units::detail::dimension_list_tag>
 {
     template<class L>
-    struct apply 
+    struct apply
     {
         typedef units::dimensionless_type type;
     };
@@ -81,7 +81,7 @@ template<>
 struct push_front_impl<units::detail::dimension_list_tag>
 {
     template<class L, class T>
-    struct apply 
+    struct apply
     {
         typedef units::list<T, L> type;
     };
@@ -92,7 +92,7 @@ template<>
 struct pop_front_impl<units::detail::dimension_list_tag>
 {
     template<class L>
-    struct apply 
+    struct apply
     {
         typedef typename L::next type;
     };
@@ -103,7 +103,7 @@ template<>
 struct front_impl<units::detail::dimension_list_tag>
 {
     template<class L>
-    struct apply 
+    struct apply
     {
         typedef typename L::item type;
     };

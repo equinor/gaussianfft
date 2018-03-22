@@ -57,7 +57,7 @@
 
     \brief removes an element from a tuple. It reenters BOOST_PP_WHILE with maximum efficiency.
 
-    d     = The next available BOOST_PP_WHILE iteration. 
+    d     = The next available BOOST_PP_WHILE iteration.
     tuple = tuple from which an element is to be removed.
     index = The zero-based position in tuple of the element to be removed.
 

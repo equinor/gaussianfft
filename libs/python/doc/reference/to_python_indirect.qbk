@@ -9,7 +9,7 @@ Class template `to_python_indirect` converts objects of its first argument type 
  [[T][Either `U cv&` (where cv is any optional cv-qualification) or a [link concepts.dereferenceable Dereferenceable] type such that `*x` is convertible to `U const&`, where `U` is a class type. ][`A` type deferencing a C++ class exposed to Python using class template [link high_level_components.boost_python_class_hpp.class_template_class_t_bases_hel `class_`]. ]]
 [[MakeHolder][`h = MakeHolder::execute(p);` ][A class whose static `execute()` creates an `instance_holder`. ]]
  ]
-Instantiations of to_python_indirect are models of [link concepts.resultconverter `ResultConverter`]. 
+Instantiations of to_python_indirect are models of [link concepts.resultconverter `ResultConverter`].
 ``
 namespace boost { namespace python
 {
@@ -39,7 +39,7 @@ namespace boost { namespace python
 [endsect]
 [endsect]
 [section Example]
-This example replicates the functionality of [link function_invocation_and_creation.models_of_resultconvertergenerat.boost_python_reference_existing_.class_reference_existing_object `reference_existing_object`], but without some of the compile-time error checking. 
+This example replicates the functionality of [link function_invocation_and_creation.models_of_resultconvertergenerat.boost_python_reference_existing_.class_reference_existing_object `reference_existing_object`], but without some of the compile-time error checking.
 ``
 struct make_reference_holder
 {

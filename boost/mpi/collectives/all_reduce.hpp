@@ -73,7 +73,7 @@ namespace detail {
     if (in_values == MPI_IN_PLACE) {
       // if in_values matches the in place tag, then the output
       // buffer actually contains the input data.
-      // But we can just go back to the out of place 
+      // But we can just go back to the out of place
       // implementation in this case.
       // it's not clear how/if we can avoid the copy.
       std::vector<T> tmp_in( out_values, out_values + n);

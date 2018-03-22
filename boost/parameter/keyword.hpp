@@ -75,7 +75,7 @@ struct keyword
     }
 
  public: // Insurance against ODR violations
-    
+
     // People will need to define these keywords in header files.  To
     // prevent ODR violations, it's important that the keyword used in
     // every instantiation of a function template is the same object.

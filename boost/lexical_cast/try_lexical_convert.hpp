@@ -78,18 +78,18 @@ namespace boost {
                     boost::is_arithmetic<Source>::value &&
                     boost::is_arithmetic<Target>::value
                 > type;
-        
+
             BOOST_STATIC_CONSTANT(bool, value = (
                 type::value
             ));
         };
 
         /*
-         * is_xchar_to_xchar<Target, Source>::value is true, 
+         * is_xchar_to_xchar<Target, Source>::value is true,
          * Target and Souce are char types of the same size 1 (char, signed char, unsigned char).
          */
         template<typename Target, typename Source>
-        struct is_xchar_to_xchar 
+        struct is_xchar_to_xchar
         {
             typedef boost::mpl::bool_<
                      sizeof(Source) == sizeof(Target) &&
@@ -97,7 +97,7 @@ namespace boost {
                      boost::detail::is_character<Target>::value &&
                      boost::detail::is_character<Source>::value
                 > type;
-                
+
             BOOST_STATIC_CONSTANT(bool, value = (
                 type::value
             ));

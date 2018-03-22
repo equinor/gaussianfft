@@ -45,11 +45,11 @@ template <class T>
 struct pointer_cref_arg_from_python
 {
     typedef T result_type;
-    
+
     pointer_cref_arg_from_python(PyObject*);
     T operator()() const;
     bool convertible() const;
-    
+
  private: // storage for a U*
     // needed because not all compilers will let us declare U* as the
     // return type of operator() -- we return U*const& instead
@@ -62,20 +62,20 @@ struct arg_lvalue_from_python_base
  public: // member functions
     arg_lvalue_from_python_base(void* result);
     bool convertible() const;
-    
+
  protected: // member functions
     void*const& result() const;
-    
+
  private: // data members
     void* m_result;
 };
 
-// Used when T == U* 
+// Used when T == U*
 template <class T>
 struct pointer_arg_from_python : arg_lvalue_from_python_base
 {
     typedef T result_type;
-    
+
     pointer_arg_from_python(PyObject*);
     T operator()() const;
 };
@@ -85,7 +85,7 @@ template <class T>
 struct reference_arg_from_python : arg_lvalue_from_python_base
 {
     typedef T result_type;
-    
+
     reference_arg_from_python(PyObject*);
     T operator()() const;
 };
@@ -110,7 +110,7 @@ struct arg_rvalue_from_python
         // We can't add_const here, or it would be impossible to pass
         // auto_ptr<U> args from Python to C++
     >::type result_type;
-    
+
     arg_rvalue_from_python(PyObject*);
     bool convertible() const;
 
@@ -118,7 +118,7 @@ struct arg_rvalue_from_python
     typename arg_rvalue_from_python<T>::
 # endif
     result_type operator()();
-    
+
  private:
     rvalue_from_python_data<result_type> m_data;
     PyObject* m_source;
@@ -134,7 +134,7 @@ struct back_reference_arg_from_python
     : boost::python::arg_from_python<typename T::type>
 {
     typedef T result_type;
-    
+
     back_reference_arg_from_python(PyObject*);
     T operator()();
  private:
@@ -226,7 +226,7 @@ namespace detail
       static T value;
   };
   template <class T> T null_ptr_owner<T>::value = 0;
-  
+
   template <class U>
   inline U& null_ptr_reference(U&(*)())
   {
@@ -311,7 +311,7 @@ arg_rvalue_from_python<T>::operator()()
 {
     if (m_data.stage1.construct != 0)
         m_data.stage1.construct(m_source, &m_data.stage1);
-    
+
     return python::detail::void_ptr_to_reference(m_data.stage1.convertible, (result_type(*)())0);
 }
 

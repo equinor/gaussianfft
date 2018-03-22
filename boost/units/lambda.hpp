@@ -519,7 +519,7 @@ namespace lambda {
 } // namespace lambda
 
 namespace units {
-    
+
     template<typename System, typename Dim, typename Arg>
     struct multiply_typeof_helper<boost::lambda::lambda_functor<Arg>, boost::units::absolute<boost::units::unit<Dim, System> > > {
         typedef boost::lambda::lambda_functor<
@@ -561,7 +561,7 @@ namespace lambda {
 } // namespace lambda
 
 namespace units {
-    
+
     template<typename System, typename Dim, typename Arg>
     struct multiply_typeof_helper<boost::units::absolute<boost::units::unit<Dim, System> >, boost::lambda::lambda_functor<Arg> > {
         typedef boost::lambda::lambda_functor<

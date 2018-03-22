@@ -205,7 +205,7 @@ int make1( LIST * targets )
     int status = 0;
 
     memset( (char *)counts, 0, sizeof( *counts ) );
-    
+
     {
         LISTITER iter, end;
         stack temp_stack = { NULL };

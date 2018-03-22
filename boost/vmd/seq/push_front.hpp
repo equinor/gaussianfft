@@ -27,7 +27,7 @@
 
 /** \def BOOST_VMD_SEQ_PUSH_FRONT(seq,elem)
 
-    \brief inserts an element at the beginning of a seq. 
+    \brief inserts an element at the beginning of a seq.
 
     seq = seq to insert an element at.
     elem  = element to insert.

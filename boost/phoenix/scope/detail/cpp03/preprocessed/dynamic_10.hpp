@@ -5,13 +5,13 @@
     Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================*/
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
     template <typename A0>
     struct dynamic<A0> : noncopyable
     {
@@ -39,13 +39,13 @@
         typedef typename expression::dynamic_member< mpl::int_< 0> , self_type * >::type const member1;
         mutable dynamic_frame_type* frame;
     };
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
     template <typename A0 , typename A1>
     struct dynamic<A0 , A1> : noncopyable
     {
@@ -73,13 +73,13 @@
         typedef typename expression::dynamic_member< mpl::int_< 0> , self_type * >::type const member1; typedef typename expression::dynamic_member< mpl::int_< 1> , self_type * >::type const member2;
         mutable dynamic_frame_type* frame;
     };
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
     template <typename A0 , typename A1 , typename A2>
     struct dynamic<A0 , A1 , A2> : noncopyable
     {
@@ -107,13 +107,13 @@
         typedef typename expression::dynamic_member< mpl::int_< 0> , self_type * >::type const member1; typedef typename expression::dynamic_member< mpl::int_< 1> , self_type * >::type const member2; typedef typename expression::dynamic_member< mpl::int_< 2> , self_type * >::type const member3;
         mutable dynamic_frame_type* frame;
     };
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
     template <typename A0 , typename A1 , typename A2 , typename A3>
     struct dynamic<A0 , A1 , A2 , A3> : noncopyable
     {
@@ -141,13 +141,13 @@
         typedef typename expression::dynamic_member< mpl::int_< 0> , self_type * >::type const member1; typedef typename expression::dynamic_member< mpl::int_< 1> , self_type * >::type const member2; typedef typename expression::dynamic_member< mpl::int_< 2> , self_type * >::type const member3; typedef typename expression::dynamic_member< mpl::int_< 3> , self_type * >::type const member4;
         mutable dynamic_frame_type* frame;
     };
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
     template <typename A0 , typename A1 , typename A2 , typename A3 , typename A4>
     struct dynamic<A0 , A1 , A2 , A3 , A4> : noncopyable
     {
@@ -175,13 +175,13 @@
         typedef typename expression::dynamic_member< mpl::int_< 0> , self_type * >::type const member1; typedef typename expression::dynamic_member< mpl::int_< 1> , self_type * >::type const member2; typedef typename expression::dynamic_member< mpl::int_< 2> , self_type * >::type const member3; typedef typename expression::dynamic_member< mpl::int_< 3> , self_type * >::type const member4; typedef typename expression::dynamic_member< mpl::int_< 4> , self_type * >::type const member5;
         mutable dynamic_frame_type* frame;
     };
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
     template <typename A0 , typename A1 , typename A2 , typename A3 , typename A4 , typename A5>
     struct dynamic<A0 , A1 , A2 , A3 , A4 , A5> : noncopyable
     {
@@ -209,13 +209,13 @@
         typedef typename expression::dynamic_member< mpl::int_< 0> , self_type * >::type const member1; typedef typename expression::dynamic_member< mpl::int_< 1> , self_type * >::type const member2; typedef typename expression::dynamic_member< mpl::int_< 2> , self_type * >::type const member3; typedef typename expression::dynamic_member< mpl::int_< 3> , self_type * >::type const member4; typedef typename expression::dynamic_member< mpl::int_< 4> , self_type * >::type const member5; typedef typename expression::dynamic_member< mpl::int_< 5> , self_type * >::type const member6;
         mutable dynamic_frame_type* frame;
     };
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
     template <typename A0 , typename A1 , typename A2 , typename A3 , typename A4 , typename A5 , typename A6>
     struct dynamic<A0 , A1 , A2 , A3 , A4 , A5 , A6> : noncopyable
     {
@@ -243,13 +243,13 @@
         typedef typename expression::dynamic_member< mpl::int_< 0> , self_type * >::type const member1; typedef typename expression::dynamic_member< mpl::int_< 1> , self_type * >::type const member2; typedef typename expression::dynamic_member< mpl::int_< 2> , self_type * >::type const member3; typedef typename expression::dynamic_member< mpl::int_< 3> , self_type * >::type const member4; typedef typename expression::dynamic_member< mpl::int_< 4> , self_type * >::type const member5; typedef typename expression::dynamic_member< mpl::int_< 5> , self_type * >::type const member6; typedef typename expression::dynamic_member< mpl::int_< 6> , self_type * >::type const member7;
         mutable dynamic_frame_type* frame;
     };
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
     template <typename A0 , typename A1 , typename A2 , typename A3 , typename A4 , typename A5 , typename A6 , typename A7>
     struct dynamic<A0 , A1 , A2 , A3 , A4 , A5 , A6 , A7> : noncopyable
     {
@@ -277,13 +277,13 @@
         typedef typename expression::dynamic_member< mpl::int_< 0> , self_type * >::type const member1; typedef typename expression::dynamic_member< mpl::int_< 1> , self_type * >::type const member2; typedef typename expression::dynamic_member< mpl::int_< 2> , self_type * >::type const member3; typedef typename expression::dynamic_member< mpl::int_< 3> , self_type * >::type const member4; typedef typename expression::dynamic_member< mpl::int_< 4> , self_type * >::type const member5; typedef typename expression::dynamic_member< mpl::int_< 5> , self_type * >::type const member6; typedef typename expression::dynamic_member< mpl::int_< 6> , self_type * >::type const member7; typedef typename expression::dynamic_member< mpl::int_< 7> , self_type * >::type const member8;
         mutable dynamic_frame_type* frame;
     };
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
     template <typename A0 , typename A1 , typename A2 , typename A3 , typename A4 , typename A5 , typename A6 , typename A7 , typename A8>
     struct dynamic<A0 , A1 , A2 , A3 , A4 , A5 , A6 , A7 , A8> : noncopyable
     {
@@ -311,13 +311,13 @@
         typedef typename expression::dynamic_member< mpl::int_< 0> , self_type * >::type const member1; typedef typename expression::dynamic_member< mpl::int_< 1> , self_type * >::type const member2; typedef typename expression::dynamic_member< mpl::int_< 2> , self_type * >::type const member3; typedef typename expression::dynamic_member< mpl::int_< 3> , self_type * >::type const member4; typedef typename expression::dynamic_member< mpl::int_< 4> , self_type * >::type const member5; typedef typename expression::dynamic_member< mpl::int_< 5> , self_type * >::type const member6; typedef typename expression::dynamic_member< mpl::int_< 6> , self_type * >::type const member7; typedef typename expression::dynamic_member< mpl::int_< 7> , self_type * >::type const member8; typedef typename expression::dynamic_member< mpl::int_< 8> , self_type * >::type const member9;
         mutable dynamic_frame_type* frame;
     };
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
     template <typename A0 , typename A1 , typename A2 , typename A3 , typename A4 , typename A5 , typename A6 , typename A7 , typename A8 , typename A9>
     struct dynamic<A0 , A1 , A2 , A3 , A4 , A5 , A6 , A7 , A8 , A9> : noncopyable
     {

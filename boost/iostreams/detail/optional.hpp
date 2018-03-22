@@ -7,8 +7,8 @@
 
 // Recent changes to Boost.Optional involving assigment broke Boost.Iostreams,
 // in a way which could be remedied only by relying on the deprecated reset
-// functions; with VC6, even reset didn't work. Until this problem is 
-// understood, Iostreams will use a private version of optional with a smart 
+// functions; with VC6, even reset didn't work. Until this problem is
+// understood, Iostreams will use a private version of optional with a smart
 // pointer interface.
 
 #ifndef BOOST_IOSTREAMS_DETAIL_OPTIONAL_HPP_INCLUDED
@@ -50,39 +50,39 @@ public:
     optional() : initialized_(false) { }
     optional(const T& t) : initialized_(false) { reset(t); }
     ~optional() { reset(); }
-    T& operator*() 
-    { 
+    T& operator*()
+    {
         BOOST_ASSERT(initialized_);
-        return *static_cast<T*>(address()); 
+        return *static_cast<T*>(address());
     }
     const T& operator*() const
-    { 
+    {
         BOOST_ASSERT(initialized_);
-        return *static_cast<const T*>(address()); 
+        return *static_cast<const T*>(address());
     }
-    T* operator->() 
-    { 
+    T* operator->()
+    {
         BOOST_ASSERT(initialized_);
-        return static_cast<T*>(address()); 
+        return static_cast<T*>(address());
     }
     const T* operator->() const
-    { 
+    {
         BOOST_ASSERT(initialized_);
-        return static_cast<const T*>(address()); 
+        return static_cast<const T*>(address());
     }
-    T* get() 
-    { 
+    T* get()
+    {
         BOOST_ASSERT(initialized_);
-        return static_cast<T*>(address()); 
+        return static_cast<T*>(address());
     }
     const T* get() const
-    { 
-        BOOST_ASSERT(initialized_);
-        return static_cast<const T*>(address()); 
-    }
-    void reset() 
     {
-        if (initialized_) { 
+        BOOST_ASSERT(initialized_);
+        return static_cast<const T*>(address());
+    }
+    void reset()
+    {
+        if (initialized_) {
         #if BOOST_WORKAROUND(__BORLANDC__, BOOST_TESTED_AT(0x564)) || \
             BOOST_WORKAROUND(__IBMCPP__, BOOST_TESTED_AT(600)) \
             /**/
@@ -94,10 +94,10 @@ public:
             initialized_ = false;
         }
     }
-    void reset(const T& t) 
+    void reset(const T& t)
     {
         reset();
-        new (address()) T(t); 
+        new (address()) T(t);
         initialized_ = true;
     }
 private:

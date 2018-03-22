@@ -229,7 +229,7 @@ basic_environment_impl<Char>::basic_environment_impl(const native_environment_im
 template<typename Char>
 inline auto basic_environment_impl<Char>::get(const string_type &id) -> string_type
 {
-    auto itr = std::find_if(_data.begin(), _data.end(), 
+    auto itr = std::find_if(_data.begin(), _data.end(),
             [&](const string_type & st)
             {
                 if (st.size() <= id.size())
@@ -249,7 +249,7 @@ inline auto basic_environment_impl<Char>::get(const string_type &id) -> string_t
 template<typename Char>
 inline void basic_environment_impl<Char>::set(const string_type &id, const string_type &value)
 {
-    auto itr = std::find_if(_data.begin(), _data.end(), 
+    auto itr = std::find_if(_data.begin(), _data.end(),
         [&](const string_type & st)
         {
             if (st.size() <= id.size())
@@ -260,7 +260,7 @@ inline void basic_environment_impl<Char>::set(const string_type &id, const strin
 
     if (itr != _data.end())
         *itr = id + equal_sign<Char>() + value;
-    else 
+    else
         _data.push_back(id + equal_sign<Char>() + value);
 
     reload();
@@ -269,7 +269,7 @@ inline void basic_environment_impl<Char>::set(const string_type &id, const strin
 template<typename Char>
 inline void  basic_environment_impl<Char>::reset(const string_type &id)
 {
-    auto itr = std::find_if(_data.begin(), _data.end(), 
+    auto itr = std::find_if(_data.begin(), _data.end(),
         [&](const string_type & st)
         {
             if (st.size() <= id.size())
@@ -279,9 +279,9 @@ inline void  basic_environment_impl<Char>::reset(const string_type &id)
     );
     if (itr != _data.end())
     {
-        _data.erase(itr);//and remove it    
+        _data.erase(itr);//and remove it
     }
-    
+
     reload();
 
 

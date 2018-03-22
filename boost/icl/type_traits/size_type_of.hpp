@@ -1,4 +1,4 @@
-/*-----------------------------------------------------------------------------+    
+/*-----------------------------------------------------------------------------+
 Copyright (c) 2008-2009: Joachim Faulhaber
 +------------------------------------------------------------------------------+
    Distributed under the Boost Software License, Version 1.0.
@@ -21,47 +21,47 @@ namespace boost{ namespace icl
 
     //--------------------------------------------------------------------------
     template <class Type>
-    struct has_size_type 
+    struct has_size_type
       : mpl::bool_<detail::has_size_type<Type>::value>
     {};
 
     //--------------------------------------------------------------------------
-    template <class Type, bool has_size, bool has_diff, bool has_rep> 
+    template <class Type, bool has_size, bool has_diff, bool has_rep>
     struct get_size_type;
 
-    template <class Type> 
+    template <class Type>
     struct get_size_type<Type, false, false, false>
-    { 
-        typedef std::size_t type; 
+    {
+        typedef std::size_t type;
     };
 
-    template <class Type, bool has_diff, bool has_rep> 
+    template <class Type, bool has_diff, bool has_rep>
     struct get_size_type<Type, true, has_diff, has_rep>
-    { 
-        typedef typename Type::size_type type; 
+    {
+        typedef typename Type::size_type type;
     };
 
-    template <class Type, bool has_rep> 
+    template <class Type, bool has_rep>
     struct get_size_type<Type, false, true, has_rep>
-    { 
-        typedef typename Type::difference_type type; 
+    {
+        typedef typename Type::difference_type type;
     };
 
-    template <class Type> 
+    template <class Type>
     struct get_size_type<Type, false, false, true>
-    { 
-        typedef Type type; 
+    {
+        typedef Type type;
     };
 
     //--------------------------------------------------------------------------
-    template<class Type> 
+    template<class Type>
     struct size_type_of
-    { 
-        typedef typename 
+    {
+        typedef typename
             get_size_type< Type
                          , has_size_type<Type>::value
                          , has_difference_type<Type>::value
-                         , has_rep_type<Type>::value  
+                         , has_rep_type<Type>::value
                          >::type type;
     };
 

@@ -42,16 +42,16 @@ template<typename T>
 inline std::streampos
 seek( T& t, stream_offset off, BOOST_IOS::seekdir way,
       BOOST_IOS::openmode which = BOOST_IOS::in | BOOST_IOS::out )
-{ 
+{
     using namespace detail;
-    return seek_device_impl<T>::seek(detail::unwrap(t), off, way, which); 
+    return seek_device_impl<T>::seek(detail::unwrap(t), off, way, which);
 }
 
 template<typename T, typename Device>
 inline std::streampos
 seek( T& t, Device& dev, stream_offset off, BOOST_IOS::seekdir way,
       BOOST_IOS::openmode which = BOOST_IOS::in | BOOST_IOS::out )
-{ 
+{
     using namespace detail;
     return seek_filter_impl<T>::seek(detail::unwrap(t), dev, off, way, which);
 }

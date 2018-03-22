@@ -233,7 +233,7 @@ Iterator adjacent_find(
   const std::type_info* prev_info{&typeid(void)};
   local_base_iterator   prev;
   return generic_find<adjacent_find_alg<Ts...>,Ts...>(
-    first,last,pred,carry,prev_info,prev);  
+    first,last,pred,carry,prev_info,prev);
 }
 
 template<
@@ -609,7 +609,7 @@ struct search_n_alg
       for(;;){
         if(--remain==0||++first==last)return res;
         if(!pred(*first,x)){carry=false;remain=count;break;}
-      } 
+      }
     }
     return last;
   }
@@ -776,12 +776,12 @@ OutputIterator transform(
   const Iterator& first1,const Iterator& last1,InputIterator first2,
   OutputIterator res,BinaryOperation op)
 {
-  return generic_copy<transform2_alg,Ts...>(first1,last1,res,first2,op);  
+  return generic_copy<transform2_alg,Ts...>(first1,last1,res,first2,op);
 }
 
 struct replace_copy_alg
 {
-  /* std::replace_copy broken in VS2015, internal ticket VSO#279818 
+  /* std::replace_copy broken in VS2015, internal ticket VSO#279818
    * "<algorithm>: replace_copy() and replace_copy_if() shouldn't use the
    * conditional operator".
    */
@@ -812,7 +812,7 @@ OutputIterator replace_copy(
 
 struct replace_copy_if_alg
 {
-  /* std::replace_copy_if broken in VS2015, internal ticket VSO#279818 
+  /* std::replace_copy_if broken in VS2015, internal ticket VSO#279818
    * "<algorithm>: replace_copy() and replace_copy_if() shouldn't use the
    * conditional operator".
    */
@@ -842,7 +842,7 @@ OutputIterator replace_copy_if(
   const Iterator& first,const Iterator& last,OutputIterator res,
   Predicate pred,const T& new_x)
 {
-  return generic_copy<replace_copy_if_alg,Ts...>(first,last,res,pred,new_x);  
+  return generic_copy<replace_copy_if_alg,Ts...>(first,last,res,pred,new_x);
 }
 
 BOOST_POLY_COLLECTION_DEFINE_OVERLOAD_SET(std_remove_copy,std::remove_copy)
@@ -854,7 +854,7 @@ template<
 OutputIterator remove_copy(
   const Iterator& first,const Iterator& last,OutputIterator res,const T& x)
 {
-  return generic_copy<std_remove_copy,Ts...>(first,last,res,x);  
+  return generic_copy<std_remove_copy,Ts...>(first,last,res,x);
 }
 
 BOOST_POLY_COLLECTION_DEFINE_OVERLOAD_SET(
@@ -867,7 +867,7 @@ template<
 OutputIterator remove_copy_if(
   const Iterator& first,const Iterator& last,OutputIterator res,Predicate pred)
 {
-  return generic_copy<std_remove_copy_if,Ts...>(first,last,res,pred);  
+  return generic_copy<std_remove_copy_if,Ts...>(first,last,res,pred);
 }
 
 template<typename... Ts>
@@ -913,7 +913,7 @@ OutputIterator unique_copy(
   const std::type_info* prev_info{&typeid(void)};
   local_base_iterator   prev;
   return generic_copy<unique_copy_alg<Ts...>,Ts...>(
-    first,last,res,pred,carry,prev_info,prev);  
+    first,last,res,pred,carry,prev_info,prev);
 }
 
 template<

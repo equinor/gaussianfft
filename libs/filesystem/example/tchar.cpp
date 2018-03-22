@@ -24,7 +24,7 @@ void func( const fs::path & p )
 int main()
 {
   // get a path that is known to exist
-  fs::path cp = fs::current_path(); 
+  fs::path cp = fs::current_path();
 
   // demo: get tstring from the path
   tstring cp_as_tstring = cp.string<tstring>();

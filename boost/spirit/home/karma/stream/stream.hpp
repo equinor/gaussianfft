@@ -38,7 +38,7 @@ namespace boost { namespace spirit
     namespace tag
     {
         template <typename Char = char>
-        struct stream_tag 
+        struct stream_tag
         {
             BOOST_SPIRIT_IS_TAG()
         };
@@ -47,11 +47,11 @@ namespace boost { namespace spirit
     namespace karma
     {
         ///////////////////////////////////////////////////////////////////////
-        // This one is the class that the user can instantiate directly in 
+        // This one is the class that the user can instantiate directly in
         // order to create a customized int generator
         template <typename Char = char>
         struct stream_generator
-          : spirit::terminal<tag::stream_tag<Char> > 
+          : spirit::terminal<tag::stream_tag<Char> >
         {};
     }
 
@@ -124,7 +124,7 @@ namespace boost { namespace spirit { namespace karma
             typedef spirit::basic_hold_any<Char> type;
         };
 
-        // any_stream_generator has an attached attribute 
+        // any_stream_generator has an attached attribute
         template <
             typename OutputIterator, typename Context, typename Delimiter
           , typename Attribute
@@ -181,7 +181,7 @@ namespace boost { namespace spirit { namespace karma
             {
                 boost::iostreams::stream<sink_device> ostr(sink);
                 ostr.imbue(sink.get_ostream().getloc());
-                ostr << traits::extract_from<attribute_type>(attr, context) 
+                ostr << traits::extract_from<attribute_type>(attr, context)
                      << std::flush;
                 if (!ostr.good())
                     return false;
@@ -217,7 +217,7 @@ namespace boost { namespace spirit { namespace karma
       : primitive_generator<lit_stream_generator<T, Char, CharEncoding, Tag> >
     {
         template <typename Context, typename Unused>
-        struct attribute 
+        struct attribute
         {
             typedef unused_type type;
         };
@@ -243,7 +243,7 @@ namespace boost { namespace spirit { namespace karma
             boost::iostreams::stream<sink_device> ostr(sink);
             ostr << t_ << std::flush;             // use existing operator<<()
 
-            if (ostr.good()) 
+            if (ostr.good())
                 return karma::delimit_out(sink, d); // always do post-delimiting
             return false;
         }
@@ -317,17 +317,17 @@ namespace boost { namespace spirit { namespace karma
 
     // stream
     template <typename Modifiers>
-    struct make_primitive<tag::stream, Modifiers> 
+    struct make_primitive<tag::stream, Modifiers>
       : make_stream<char, Modifiers> {};
 
     // wstream
     template <typename Modifiers>
-    struct make_primitive<tag::wstream, Modifiers> 
+    struct make_primitive<tag::wstream, Modifiers>
       : make_stream<wchar_t, Modifiers> {};
 
     // any_stream_generator<char_type>
     template <typename Char, typename Modifiers>
-    struct make_primitive<tag::stream_tag<Char>, Modifiers> 
+    struct make_primitive<tag::stream_tag<Char>, Modifiers>
       : make_stream<Char, Modifiers> {};
 
     ///////////////////////////////////////////////////////////////////////////

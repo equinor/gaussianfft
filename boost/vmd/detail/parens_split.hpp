@@ -11,7 +11,7 @@
 #include <boost/preprocessor/punctuation/is_begin_parens.hpp>
 #include <boost/vmd/detail/empty_result.hpp>
 #include <boost/vmd/detail/parens_common.hpp>
-  
+
 #define BOOST_VMD_DETAIL_PARENS_SPLIT(vseq) \
     BOOST_PP_IIF \
       ( \

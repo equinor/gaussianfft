@@ -159,7 +159,7 @@ namespace detail {
     typedef typename EdgeList::iterator                    edge_iterator;
     typedef typename property_traits<WeightMap>::value_type
                                                            weight_type;
-    typedef boost::parallel::detail::untracked_pair<edge_descriptor, 
+    typedef boost::parallel::detail::untracked_pair<edge_descriptor,
                                        weight_type>        w_edge;
     typedef typename property_traits<SupervertexMap>::value_type
                                                            supervertex_index;

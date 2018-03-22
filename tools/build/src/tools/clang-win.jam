@@ -45,7 +45,7 @@ rule init ( version ? :     # the compiler version
       [ feature.get-values <compatibility> : $(options) ] ;
     local condition = [  common.check-init-parameters clang-win
         : version $(version) : compatibility $(compatibility) ] ;
-        
+
     if ! $(compatibility)
     {
         import errors ;
@@ -57,18 +57,18 @@ rule init ( version ? :     # the compiler version
         errors.user-error "Invalid value for compatibility option:"
             $(compatibility) ;
     }
-        
+
     local m = [ MATCH ([0-9]+).* : $(version) ] ;
     local major = $(m[1]) ;
-    
+
     command = [ common.get-invocation-command clang-win : clang-cl.exe :
         $(command) ] ;
-        
+
     common.handle-options clang-win : $(condition) : $(command) : $(options) ;
-    
+
     local setup ;
     setup = [ get-visual-studio-vcvars $(vc_version) ] ; # Get visual studio vcvars bat file path
-    
+
     local target_types ;
     if [ MATCH ^(AMD64) : [ os.environ PROCESSOR_ARCHITECTURE ] ]
     {
@@ -78,14 +78,14 @@ rule init ( version ? :     # the compiler version
     {
         target_types = x86 x86_amd64 ;
     }
-    
+
     for local c in $(target_types)
     {
         local cpu-conditions ;
         local setup-call ;
         setup-call = "call \""$(setup)"\" $(c) > nul " ;
         cpu-conditions = $(condition)/$(.cpu-arch-$(c)) ;
-        
+
         if [ os.name ] = NT
         {
             setup-call = $(setup-call)"
@@ -95,7 +95,7 @@ rule init ( version ? :     # the compiler version
         {
             setup-call = "cmd /S /C "$(setup-call)" \"&&\" " ;
         }
-        
+
         if $(.debug-configuration)
         {
             for local cpu-condition in $(cpu-conditions)
@@ -103,7 +103,7 @@ rule init ( version ? :     # the compiler version
                 ECHO "notice: [clang-cfg] condition: '$(cpu-condition)', setup: '$(setup-call)'" ;
             }
         }
-        
+
         local compiler ;
         compiler = [ path.native $(command) ] ;
         compiler = "\"$(compiler)\"" ;
@@ -118,7 +118,7 @@ rule init ( version ? :     # the compiler version
 
 
     local C++FLAGS ;
-    
+
     if $(vc_version) = 10
     {
         C++FLAGS += -fmsc-version=1600 ;
@@ -141,7 +141,7 @@ local rule get-visual-studio-vcvars ( version )
 {
     local env_variable_name ;
     env_variable_name = "VS"$(version:U)"0COMNTOOLS" ;
-    
+
     local vc-path = [ os.environ $(env_variable_name) ] ;
     vc-path = [ path.join $(vc-path) "../../VC/vcvarsall.bat" ] ;
     path.native $(vc-path) ;

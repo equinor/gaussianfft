@@ -21,8 +21,8 @@ PYTHON_VERSION=
 PYTHON_ROOT=
 ICU_ROOT=
 
-# Handle case where builtin shell version of echo command doesn't 
-# support -n.  Use the installed echo executable if there is one 
+# Handle case where builtin shell version of echo command doesn't
+# support -n.  Use the installed echo executable if there is one
 # rather than builtin version to ensure -n is supported.
 ECHO=`which echo`
 if test "x$ECHO" = x; then
@@ -134,7 +134,7 @@ do
       { echo "error: unrecognized option: $option
 Try \`$0 --help' for more information." >&2
       { (exit 1); exit 1; }; }
-      ;; 
+      ;;
 
     esac
 done
@@ -143,7 +143,7 @@ if test "x$want_help" = xyes; then
   cat <<EOF
 \`./bootstrap.sh' prepares Boost for building on a few kinds of systems.
 
-Usage: $0 [OPTION]... 
+Usage: $0 [OPTION]...
 
 Defaults for the options are specified in brackets.
 
@@ -162,7 +162,7 @@ Configuration:
                             library names or "all"
                             [all]
   --without-libraries=list  build all libraries except the ones listed []
-  --with-icu                enable Unicode/ICU support in Regex 
+  --with-icu                enable Unicode/ICU support in Regex
                             [automatically detected]
   --without-icu             disable Unicode/ICU support in Regex
   --with-icu=DIR            specify the root of the ICU library installation
@@ -198,19 +198,19 @@ if test "x$TOOLSET" = x; then
     acc | darwin | gcc | como | mipspro | pathscale | pgi | qcc | vacpp )
     TOOLSET=$guessed_toolset
     ;;
-    
+
     intel-* )
     TOOLSET=intel
     ;;
-    
+
     mingw )
     TOOLSET=gcc
     ;;
-    
+
     sun* )
     TOOLSET=sun
     ;;
-    
+
     * )
     # Not supported by Boost.Build
     ;;
@@ -226,7 +226,7 @@ if test "x$BJAM" = x; then
   (cd "$my_dir/tools/build/src/engine" && ./build.sh "$TOOLSET") > bootstrap.log 2>&1
   if [ $? -ne 0 ]; then
       echo
-      echo "Failed to build Boost.Build build engine" 
+      echo "Failed to build Boost.Build build engine"
       echo "Consult 'bootstrap.log' for more details"
       exit 1
   fi
@@ -241,7 +241,7 @@ fi
 
 # TBD: Turn BJAM into an absolute path
 
-# If there is a list of libraries 
+# If there is a list of libraries
 if test "x$flag_show_libraries" = xyes; then
   cat <<EOF
 
@@ -287,7 +287,7 @@ if test "x$flag_no_python" = x; then
         $ECHO -n "Detecting Python root... "
         PYTHON_ROOT=`$PYTHON -c "import sys; print(sys.prefix)"`
         echo $PYTHON_ROOT
-    fi    
+    fi
 fi
 
 # Configure ICU
@@ -300,10 +300,10 @@ if test "x$flag_icu" != xno; then
         ICU_ROOT=$p
       fi
     done
-  
+
     if test "x$ICU_ROOT" = x; then
       echo "not found."
-    else      
+    else
       BJAM_CONFIG="$BJAM_CONFIG -sICU_PATH=$ICU_ROOT"
       echo "$ICU_ROOT"
     fi
@@ -319,7 +319,7 @@ fi
 JAM_CONFIG_OUT="project-config.jam"
 if test -r "project-config.jam"; then
   counter=1
- 
+
   while test -r "project-config.jam.$counter"; do
     counter=`expr $counter + 1`
   done
@@ -342,7 +342,7 @@ import feature ;
 # file.
 if ! $TOOLSET in [ feature.values <toolset> ]
 {
-    using $TOOLSET ; 
+    using $TOOLSET ;
 }
 
 project : default-build <toolset>$TOOLSET ;
@@ -393,16 +393,16 @@ cat << EOF
 Bootstrapping is done. To build, run:
 
     ./b2
-    
+
 To adjust configuration, edit 'project-config.jam'.
 Further information:
 
    - Command line help:
      ./b2 --help
-     
-   - Getting started guide: 
+
+   - Getting started guide:
      http://www.boost.org/more/getting_started/unix-variants.html
-     
+
    - Boost.Build documentation:
      http://www.boost.org/build/doc/html/index.html
 

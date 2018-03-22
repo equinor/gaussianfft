@@ -231,7 +231,7 @@ public:
     pop_index_entry();
     return range_from(s.erase(iterator_from(p)));
   }
-    
+
   virtual range erase(const_base_iterator first,const_base_iterator last)
   {return nv_erase(const_iterator(first),const_iterator(last));}
 
@@ -433,7 +433,7 @@ private:
   {
     return {base_iterator{value_ptr(i.data()+(it-s.begin()))},sentinel()};
   }
-    
+
   range range_from(std::size_t n)const
   {
     return {base_iterator{value_ptr(i.data()+n)},sentinel()};

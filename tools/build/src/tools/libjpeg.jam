@@ -15,7 +15,7 @@ import project ;
 import ac ;
 import errors ;
 import "class" : new ;
-import targets ; 
+import targets ;
 import path ;
 import modules ;
 import errors ;

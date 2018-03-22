@@ -45,7 +45,7 @@ inline int execvpe(const char* filename, char * const arg_list[], char* env[])
 
         if (e != nullptr)
         {
-            std::vector<std::string> path; 
+            std::vector<std::string> path;
             boost::split(path, *e, boost::is_any_of(":"));
 
             for (const std::string & pp : path)
@@ -157,13 +157,13 @@ struct on_fork_success_t
 };
 
 template<typename Executor> on_setup_t  <Executor> call_on_setup  (Executor & exec) {return exec;}
-template<typename Executor> on_error_t  <Executor> call_on_error  (Executor & exec, const std::error_code & ec) 
+template<typename Executor> on_error_t  <Executor> call_on_error  (Executor & exec, const std::error_code & ec)
 {
     return on_error_t<Executor> (exec, ec);
 }
 template<typename Executor> on_success_t<Executor> call_on_success(Executor & exec) {return exec;}
 
-template<typename Executor> on_fork_error_t  <Executor> call_on_fork_error  (Executor & exec, const std::error_code & ec) 
+template<typename Executor> on_fork_error_t  <Executor> call_on_fork_error  (Executor & exec, const std::error_code & ec)
 {
     return on_fork_error_t<Executor> (exec, ec);
 }

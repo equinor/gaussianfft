@@ -28,8 +28,8 @@ namespace boost { namespace mpi {
 } } // end namespace boost::mpi
 
 namespace boost {
-  typedef mpl::if_c<(sizeof(int) == sizeof(void*)), 
-                    int, 
+  typedef mpl::if_c<(sizeof(int) == sizeof(void*)),
+                    int,
                     mpl::if_c<(sizeof(long) == sizeof(void*)),
                               long,
                               mpl::if_c<(sizeof(void*) <= sizeof(boost::intmax_t)),
@@ -39,7 +39,7 @@ namespace boost {
                     >::type ptr_serialize_type;
 
   BOOST_STATIC_ASSERT ((!boost::is_void<ptr_serialize_type>::value));
-    
+
   template<typename T> inline T& unsafe_serialize(T& x) { return x; }
 
   inline ptr_serialize_type& unsafe_serialize(void*& x)
@@ -72,8 +72,8 @@ namespace boost {
   template<typename T, typename U>
   bool operator<(unsafe_pair<T,U> const& x, unsafe_pair<T,U> const& y)
   {
-    return std::make_pair(x.first, x.second) < 
-      std::make_pair(y.first, y.second);  
+    return std::make_pair(x.first, x.second) <
+      std::make_pair(y.first, y.second);
   }
 
 } // end namespace boost

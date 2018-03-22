@@ -36,18 +36,18 @@ namespace boost { namespace program_options { namespace detail {
         - Extensible for custom syntaxes.
 
         First all options are registered. After that, elements of command line
-        are extracted using operator++. 
+        are extracted using operator++.
 
         For each element, user can find
         - if it's an option or an argument
         - name of the option
         - index of the option
         - option value(s), if any
-        
+
         Sometimes the registered option name is not equal to the encountered
         one, for example, because name abbreviation is supported.  Therefore
-        two option names can be obtained: 
-        - the registered one 
+        two option names can be obtained:
+        - the registered one
         - the one found at the command line
 
         There are lot of style options, which can be used to tune the command
@@ -61,17 +61,17 @@ namespace boost { namespace program_options { namespace detail {
 
         typedef ::boost::program_options::command_line_style::style_t style_t;
 
-        typedef function1<std::pair<std::string, std::string>, 
-                          const std::string&> 
+        typedef function1<std::pair<std::string, std::string>,
+                          const std::string&>
             additional_parser;
 
         typedef function1<std::vector<option>, std::vector<std::string>&>
             style_parser;
-        
+
         /** Constructs a command line parser for (argc, argv) pair. Uses
             style options passed in 'style', which should be binary or'ed values
             of style_t enum. It can also be zero, in which case a "default"
-            style will be used. If 'allow_unregistered' is true, then allows 
+            style will be used. If 'allow_unregistered' is true, then allows
             unregistered options. They will be assigned index 1 and are
             assumed to have optional parameter.
         */
@@ -88,9 +88,9 @@ namespace boost { namespace program_options { namespace detail {
          *      allow_long_disguise  : allow_long_disguise
          *      allow_dash_for_short : allow_short | allow_dash_for_short
          *      allow_slash_for_short: allow_short | allow_slash_for_short
-         *  
+         *
          *      This is mainly used for the diagnostic messages in exceptions
-        */ 
+        */
         int         get_canonical_option_prefix();
 
         void allow_unregistered();
@@ -117,7 +117,7 @@ namespace boost { namespace program_options { namespace detail {
             then the token is considered matched by this parser,
             and the first string will be considered an option name
             (which can be long or short), while the second will be
-            option's parameter (if not empty). 
+            option's parameter (if not empty).
             Note that additional parser can match only one token.
         */
         void set_additional_parser(additional_parser p);
@@ -125,7 +125,7 @@ namespace boost { namespace program_options { namespace detail {
         void extra_style_parser(style_parser s);
 
         void check_style(int style) const;
-        
+
         bool is_style_active(style_t style) const;
 
         void init(const std::vector<std::string>& args);
@@ -146,9 +146,9 @@ namespace boost { namespace program_options { namespace detail {
         additional_parser m_additional_parser;
         style_parser m_style_parser;
     };
-    
+
     void test_cmdline_detail();
-    
+
 }}}
 
 #if defined(BOOST_MSVC)

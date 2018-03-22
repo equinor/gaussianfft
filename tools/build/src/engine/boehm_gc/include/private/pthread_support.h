@@ -4,7 +4,7 @@
 # include "private/gc_priv.h"
 
 # if defined(GC_PTHREADS) && !defined(GC_WIN32_THREADS)
-     
+
 #if defined(GC_DARWIN_THREADS)
 # include "private/darwin_stop_world.h"
 #else
@@ -31,7 +31,7 @@ typedef struct GC_Thread_Rep {
     pthread_t id;
     /* Extra bookkeeping information the stopping code uses */
     struct thread_stop_info stop_info;
-    
+
     short flags;
 #	define FINISHED 1   	/* Thread has exited.	*/
 #	define DETACHED 2	/* Thread is treated as detached.	*/

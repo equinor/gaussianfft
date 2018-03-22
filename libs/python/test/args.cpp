@@ -16,7 +16,7 @@ using namespace boost::python;
 
 #if BOOST_WORKAROUND(__SUNPRO_CC, BOOST_TESTED_AT(0x580)) || BOOST_WORKAROUND(BOOST_MSVC, BOOST_TESTED_AT(1500))
 # define make_tuple boost::python::make_tuple
-#endif 
+#endif
 
 tuple f(int x = 1, double y = 4.25, char const* z = "wow")
 {
@@ -24,7 +24,7 @@ tuple f(int x = 1, double y = 4.25, char const* z = "wow")
 }
 
 BOOST_PYTHON_FUNCTION_OVERLOADS(f_overloads, f, 0, 3)
-    
+
 typedef test_class<> Y;
 
 struct X
@@ -36,7 +36,7 @@ struct X
     }
 
     Y const& inner(bool n) const { return n ? inner1 : inner0; }
-    
+
     Y inner0;
     Y inner1;
 };
@@ -56,22 +56,22 @@ BOOST_PYTHON_MODULE(args_ext)
         );
 
     def("raw", raw_function(raw_func));
-    
+
 #if defined(BOOST_MSVC) && BOOST_MSVC <= 1200
     // MSVC6 gives a fatal error LNK1179: invalid or corrupt file:
     // duplicate comdat error if we try to re-use the exact type of f
     // here, so substitute long for int.
     tuple (*f)(long,double,char const*) = 0;
-#endif 
+#endif
     def("f1", f, f_overloads("f1's docstring", args("x", "y", "z")));
     def("f2", f, f_overloads(args("x", "y", "z")));
     def("f3", f, f_overloads(args("x", "y", "z"), "f3's docstring"));
-    
+
     class_<Y>("Y", init<int>(args("value"), "Y's docstring"))
         .def("value", &Y::value)
         .def("raw", raw_function(raw_func))
         ;
-            
+
     class_<X>("X", "This is X's docstring", init<>(args("self")))
         .def(init<int, optional<int> >(args("self", "a0", "a1")))
         .def("f", &X::f

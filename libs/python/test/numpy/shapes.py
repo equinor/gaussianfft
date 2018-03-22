@@ -10,7 +10,7 @@ import unittest
 import numpy
 
 class TestShapes(unittest.TestCase):
-    
+
     def testShapes(self):
         a1 = numpy.array([(0,1),(2,3)])
         a1_shape = (1,4)

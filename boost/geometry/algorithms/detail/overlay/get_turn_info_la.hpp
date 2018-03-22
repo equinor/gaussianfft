@@ -136,11 +136,11 @@ struct get_turn_info_linear_areal
                     replace_method_and_operations_tm(tp.method,
                                                      tp.operations[0].operation,
                                                      tp.operations[1].operation);
-                    
+
                     // this function assumes that 'u' must be set for a spike
                     calculate_spike_operation(tp.operations[0].operation,
                                               inters, is_p_last);
-                    
+
                     AssignPolicy::apply(tp, pi, qi, inters);
 
                     *out++ = tp;
@@ -168,7 +168,7 @@ struct get_turn_info_linear_areal
                 {
                     // do nothing
                 }
-                else 
+                else
                 {
                     touch<TurnInfo>::apply(pi, pj, pk, qi, qj, qk,
                             tp, inters.i_info(), inters.d_info(), inters.sides());
@@ -196,7 +196,7 @@ struct get_turn_info_linear_areal
                             }
                             else
                             {
-                                tp.operations[0].operation = operation_union;                                
+                                tp.operations[0].operation = operation_union;
                             }
                         }
                     }
@@ -273,10 +273,10 @@ struct get_turn_info_linear_areal
 
                         turn_transformer_ec<false> transformer(method_touch);
                         transformer(tp);
-                    
+
 // TODO: move this into the append_xxx and call for each turn?
                         AssignPolicy::apply(tp, pi, qi, inters);
-                        
+
                         // conditionally handle spikes
                         if ( ! BOOST_GEOMETRY_CONDITION(handle_spikes)
                           || ! append_collinear_spikes(tp, inters, is_p_last, is_q_last,
@@ -339,7 +339,7 @@ struct get_turn_info_linear_areal
 
 // TODO: move this into the append_xxx and call for each turn?
                         AssignPolicy::apply(tp, pi, qi, inters);
-                        
+
                         // conditionally handle spikes
                         if ( ! BOOST_GEOMETRY_CONDITION(handle_spikes)
                           || ! append_collinear_spikes(tp, inters, is_p_last, is_q_last,
@@ -429,7 +429,7 @@ struct get_turn_info_linear_areal
         if ( is_p_spike )
         {
             int const pk_q1 = inters.sides().pk_wrt_q1();
-            
+
             bool going_in = pk_q1 < 0; // Pk on the right
             bool going_out = pk_q1 > 0; // Pk on the left
 
@@ -437,7 +437,7 @@ struct get_turn_info_linear_areal
 
             // special cases
             if ( qk_q1 < 0 ) // Q turning R
-            { 
+            {
                 // spike on the edge point
                 // if it's already known that the spike is going out this musn't be checked
                 if ( ! going_out
@@ -554,7 +554,7 @@ struct get_turn_info_linear_areal
                             true )
                        && ! is_p_last
                        && inters.is_spike_p();
-        
+
         // TODO: throw an exception for spike in Areal?
         /*bool is_q_spike = ( ( Version == append_touches
                            && tp.operations[1].operation == operation_continue )
@@ -703,7 +703,7 @@ struct get_turn_info_linear_areal
     //       possible to define a spike on an endpoint. Areal geometries must
     //       NOT have spikes at all. One thing that could be done is to throw
     //       an exception when spike is detected in Areal geometry.
-    
+
     template <bool EnableFirst,
               bool EnableLast,
               typename Point1,
@@ -831,7 +831,7 @@ struct get_turn_info_linear_areal
           && ( ip_count > 1 ? (ip1.is_pj && !ip1.is_qi) : (ip0.is_pj && !ip0.is_qi) ) ) // prevents duplication
         {
             TurnInfo tp = tp_model;
-            
+
             if ( inters.i_info().count > 1 )
             {
                 //BOOST_GEOMETRY_ASSERT( result.template get<1>().dir_a == 0 && result.template get<1>().dir_b == 0 );
@@ -867,7 +867,7 @@ struct get_turn_info_linear_areal
             tp.operations[0].operation = operation_blocked;
             tp.operations[0].position = position_back;
             tp.operations[1].position = position_middle;
-            
+
             // equals<> or collinear<> will assign the second point,
             // we'd like to assign the first one
             unsigned int ip_index = ip_count > 1 ? 1 : 0;

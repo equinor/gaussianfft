@@ -28,7 +28,7 @@
 
 /** \def BOOST_VMD_SEQ_POP_BACK(seq)
 
-    \brief pops an element from the end of a seq. 
+    \brief pops an element from the end of a seq.
 
     seq = seq to pop an element from.
 

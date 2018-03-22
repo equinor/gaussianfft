@@ -61,7 +61,7 @@ typedef struct back_edges_struct {
   signed_word height;
   		/* Longest path through unreachable nodes to this node	*/
   		/* that we found using depth first search.		*/
-  
+
 #   define HEIGHT_UNKNOWN ((signed_word)(-2))
 #   define HEIGHT_IN_PROGRESS ((signed_word)(-1))
   ptr_t edges[MAX_IN];
@@ -121,7 +121,7 @@ static size_t n_in_progress = 0;
 
 static void push_in_progress(ptr_t p)
 {
-  if (n_in_progress >= in_progress_size) 
+  if (n_in_progress >= in_progress_size)
     if (in_progress_size == 0) {
       in_progress_size = INITIAL_IN_PROGRESS;
       in_progress_space = (ptr_t *)GET_MEM(in_progress_size * sizeof(ptr_t));
@@ -284,7 +284,7 @@ static void reset_back_edge(ptr_t p, size_t n_bytes, word gc_descr)
       back_edges *be = (back_edges *)((word)old_back_ptr & ~FLAG_MANY);
       if (!(be -> flags & RETAIN)) {
 	deallocate_back_edges(be);
-        SET_OH_BG_PTR(p, 0); 
+        SET_OH_BG_PTR(p, 0);
       } else {
         word *currentp;
 
@@ -322,7 +322,7 @@ static void add_back_edges(ptr_t p, size_t n_bytes, word gc_descr)
   while (currentp < (word *)(p + gc_descr)) {
     word current = *currentp++;
     FIXUP_POINTER(current);
-    if (current >= (word)GC_least_plausible_heap_addr && 
+    if (current >= (word)GC_least_plausible_heap_addr &&
 	current <= (word)GC_greatest_plausible_heap_addr) {
        ptr_t target = GC_base((void *)current);
        if (0 != target) {

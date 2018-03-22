@@ -224,7 +224,7 @@ interval<T, Policies> operator*(const interval<T, Policies>& x,
 
 template<class T, class Policies> inline
 interval<T, Policies> operator*(const T& x, const interval<T, Policies>& y)
-{ 
+{
   typedef interval<T, Policies> I;
   if (interval_lib::detail::test_input(x, y))
     return I::empty();

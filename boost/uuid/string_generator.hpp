@@ -38,7 +38,7 @@ namespace uuids {
 // others?
 struct string_generator {
     typedef uuid result_type;
-    
+
     template <typename ch, typename char_traits, typename alloc>
     uuid operator()(std::basic_string<ch, char_traits, alloc> const& s) const {
         return operator()(s.begin(), s.end());
@@ -73,14 +73,14 @@ struct string_generator {
             if (it_byte != u.begin()) {
                 c = get_next_char(begin, end);
             }
-            
+
             if (i == 4) {
                 has_dashes = is_dash(c);
                 if (has_dashes) {
                     c = get_next_char(begin, end);
                 }
             }
-            
+
             if (has_dashes) {
                 if (i == 6 || i == 8 || i == 10) {
                     if (is_dash(c)) {
@@ -103,10 +103,10 @@ struct string_generator {
             c = get_next_char(begin, end);
             check_close_brace(c, open_brace_char);
         }
-        
+
         return u;
     }
-    
+
 private:
     template <typename CharIterator>
     typename std::iterator_traits<CharIterator>::value_type
@@ -132,7 +132,7 @@ private:
     unsigned char get_value(wchar_t c) const {
         static wchar_t const*const digits_begin = L"0123456789abcdefABCDEF";
         static wchar_t const*const digits_end = digits_begin + 22;
-        
+
         static unsigned char const values[] =
             { 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,10,11,12,13,14,15
             , static_cast<unsigned char>(-1) };
@@ -144,20 +144,20 @@ private:
     bool is_dash(char c) const {
         return c == '-';
     }
-    
+
     bool is_dash(wchar_t c) const {
         return c == L'-';
     }
-    
+
     // return closing brace
     bool is_open_brace(char c) const {
         return (c == '{');
     }
-    
+
     bool is_open_brace(wchar_t c) const {
         return (c == L'{');
     }
-    
+
     void check_close_brace(char c, char open_brace) const {
         if (open_brace == '{' && c == '}') {
             //great
@@ -165,7 +165,7 @@ private:
             throw_invalid();
         }
     }
-    
+
     void check_close_brace(wchar_t c, wchar_t open_brace) const {
         if (open_brace == L'{' && c == L'}') {
             // great
@@ -173,7 +173,7 @@ private:
             throw_invalid();
         }
     }
-    
+
     void throw_invalid() const {
         BOOST_THROW_EXCEPTION(std::runtime_error("invalid uuid string"));
     }

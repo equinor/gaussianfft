@@ -647,7 +647,7 @@ namespace std{ using ::type_info; }
 #    if __has_attribute(noreturn)
 #      define BOOST_NORETURN [[noreturn]]
 #    endif
-#  elif defined(__has_cpp_attribute) 
+#  elif defined(__has_cpp_attribute)
 #    if __has_cpp_attribute(noreturn)
 #      define BOOST_NORETURN [[noreturn]]
 #    endif

@@ -15,14 +15,14 @@ synopsis
 
 ::
 
-  namespace boost 
+  namespace boost
   {
   namespace python
   {
-  namespace numpy 
+  namespace numpy
   {
 
-  class dtype : public object 
+  class dtype : public object
   {
     static python::detail::new_reference convert(object::object_cref arg, bool align);
   public:
@@ -38,9 +38,9 @@ synopsis
     int get_itemsize() const;
   };
 
-  } 
-  } 
-  } 
+  }
+  }
+  }
 
 constructors
 ------------
@@ -55,7 +55,7 @@ constructors
                * a built-in C++ typename convertible to object
                * a valid python object or convertible to object
 
-:Effects: Constructs an object from the supplied python object / convertible 
+:Effects: Constructs an object from the supplied python object / convertible
           to object / builtin C++ data type
 
 :Throws: Nothing
@@ -63,7 +63,7 @@ constructors
 ::
 
   template <typename T> static dtype get_builtin();
-  
+
 :Requirements: The typename supplied, ``T`` must be a builtin C++ type also supported by numpy
 
 :Returns: Numpy dtype corresponding to builtin C++ type

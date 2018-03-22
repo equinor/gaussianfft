@@ -1,4 +1,4 @@
-/* 
+/*
    Copyright (c) Marshall Clow 2008-2012.
 
    Distributed under the Boost Software License, Version 1.0. (See accompanying
@@ -23,9 +23,9 @@ namespace detail {
     struct eq {
         bool operator () ( const T1& v1, const T2& v2 ) const { return v1 == v2 ;}
         };
-    
+
     template <class RandomAccessIterator1, class RandomAccessIterator2, class BinaryPredicate>
-    bool equal ( RandomAccessIterator1 first1, RandomAccessIterator1 last1, 
+    bool equal ( RandomAccessIterator1 first1, RandomAccessIterator1 last1,
                  RandomAccessIterator2 first2, RandomAccessIterator2 last2, BinaryPredicate pred,
                  std::random_access_iterator_tag, std::random_access_iterator_tag )
     {
@@ -37,7 +37,7 @@ namespace detail {
     }
 
     template <class InputIterator1, class InputIterator2, class BinaryPredicate>
-    bool equal ( InputIterator1 first1, InputIterator1 last1, 
+    bool equal ( InputIterator1 first1, InputIterator1 last1,
                  InputIterator2 first2, InputIterator2 last2, BinaryPredicate pred,
                  std::input_iterator_tag, std::input_iterator_tag )
     {
@@ -49,36 +49,36 @@ namespace detail {
     }
 }
 
-/// \fn equal ( InputIterator1 first1, InputIterator1 last1, 
+/// \fn equal ( InputIterator1 first1, InputIterator1 last1,
 ///             InputIterator2 first2, InputIterator2 last2,
 ///             BinaryPredicate pred )
 /// \return true if all elements in the two ranges are equal
-/// 
+///
 /// \param first1    The start of the first range.
 /// \param last1     One past the end of the first range.
 /// \param first2    The start of the second range.
 /// \param last2     One past the end of the second range.
 /// \param pred      A predicate for comparing the elements of the ranges
 template <class InputIterator1, class InputIterator2, class BinaryPredicate>
-bool equal ( InputIterator1 first1, InputIterator1 last1, 
+bool equal ( InputIterator1 first1, InputIterator1 last1,
              InputIterator2 first2, InputIterator2 last2, BinaryPredicate pred )
 {
-    return boost::algorithm::detail::equal ( 
+    return boost::algorithm::detail::equal (
         first1, last1, first2, last2, pred,
         typename std::iterator_traits<InputIterator1>::iterator_category (),
         typename std::iterator_traits<InputIterator2>::iterator_category ());
 }
 
-/// \fn equal ( InputIterator1 first1, InputIterator1 last1, 
+/// \fn equal ( InputIterator1 first1, InputIterator1 last1,
 ///             InputIterator2 first2, InputIterator2 last2 )
 /// \return true if all elements in the two ranges are equal
-/// 
+///
 /// \param first1    The start of the first range.
 /// \param last1     One past the end of the first range.
 /// \param first2    The start of the second range.
 /// \param last2     One past the end of the second range.
 template <class InputIterator1, class InputIterator2>
-bool equal ( InputIterator1 first1, InputIterator1 last1, 
+bool equal ( InputIterator1 first1, InputIterator1 last1,
              InputIterator2 first2, InputIterator2 last2 )
 {
     return boost::algorithm::detail::equal (

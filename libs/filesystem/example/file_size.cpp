@@ -37,7 +37,7 @@ int main( int argc, char* argv[] )
     std::cout << "not a regular file: " << argv[1] << std::endl;
     return 1;
   }
- 
+
   std::cout << "size of " << argv[1] << " is " << fs::file_size( p )
     << std::endl;
   return 0;

@@ -59,7 +59,7 @@ boost
         template <> BOOST_QVM_INLINE_TRIVIAL float floor<float>( float x ) { return ::floorf(x); }
         template <> BOOST_QVM_INLINE_TRIVIAL float ldexp<float>( float x, int y ) { return ::ldexpf(x,y); }
         template <> BOOST_QVM_INLINE_TRIVIAL float sign<float>( float x ) { return x<0 ? -1.f : +1.f; }
-                    
+
         template <> BOOST_QVM_INLINE_TRIVIAL double acos<double>( double x ) { return ::acos(x); }
         template <> BOOST_QVM_INLINE_TRIVIAL double asin<double>( double x ) { return ::asin(x); }
         template <> BOOST_QVM_INLINE_TRIVIAL double atan<double>( double x ) { return ::atan(x); }

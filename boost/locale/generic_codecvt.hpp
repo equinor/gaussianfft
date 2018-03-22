@@ -47,7 +47,7 @@ public:
 ///
 /// Implementations should dervide from this class defining itself as CodecvtImpl and provide following members
 ///
-/// - `state_type` - a type of special object that allows to store intermediate cached data, for example `iconv_t` descriptor 
+/// - `state_type` - a type of special object that allows to store intermediate cached data, for example `iconv_t` descriptor
 /// - `state_type initial_state(generic_codecvt_base::initial_convertion_state direction) const` - member function that creates initial state
 /// - `int max_encoding_length() const` - a maximal length that one Unicode code point is represented, for UTF-8 for example it is 4 from ISO-8859-1 it is 1
 /// - `utf::code_point to_unicode(state_type &state,char const *&begin,char const *end)` - extract first code point from the text in range [begin,end), in case of success begin would point to the next character sequence to be encoded to next code point, in case of incomplete sequence - utf::incomplete shell be returned, and in case of invalid input sequence utf::illegal shell be returned and begin would remain unmodified
@@ -59,12 +59,12 @@ public:
 /// \code
 ///
 /// template<typename CharType>
-/// class latin1_codecvt :boost::locale::generic_codecvt<CharType,latin1_codecvt<CharType> > 
+/// class latin1_codecvt :boost::locale::generic_codecvt<CharType,latin1_codecvt<CharType> >
 /// {
 /// public:
-///    
-///     /* Standard codecvt constructor */ 
-///     latin1_codecvt(size_t refs = 0) : boost::locale::generic_codecvt<CharType,latin1_codecvt<CharType> >(refs) 
+///
+///     /* Standard codecvt constructor */
+///     latin1_codecvt(size_t refs = 0) : boost::locale::generic_codecvt<CharType,latin1_codecvt<CharType> >(refs)
 ///     {
 ///     }
 ///
@@ -75,7 +75,7 @@ public:
 ///     {
 ///         return state_type();
 ///     }
-///     
+///
 ///     int max_encoding_length() const
 ///     {
 ///         return 1;
@@ -85,7 +85,7 @@ public:
 ///     {
 ///        if(begin == end)
 ///           return boost::locale::utf::incomplete;
-///        return *begin++; 
+///        return *begin++;
 ///     }
 ///
 ///     boost::locale::utf::code_point from_unicode(state_type &,boost::locale::utf::code_point u,char *begin,char const *end) const
@@ -95,23 +95,23 @@ public:
 ///        if(begin == end)
 ///           return boost::locale::utf::incomplete;
 ///        *begin = u;
-///        return 1; 
+///        return 1;
 ///     }
 /// };
-/// 
+///
 /// \endcode
-/// 
+///
 /// When external tools used for encoding conversion, the `state_type` is useful to save objects used for conversions. For example,
 /// icu::UConverter can be saved in such a state for an efficient use:
 ///
 /// \code
 /// template<typename CharType>
-/// class icu_codecvt :boost::locale::generic_codecvt<CharType,icu_codecvt<CharType> > 
+/// class icu_codecvt :boost::locale::generic_codecvt<CharType,icu_codecvt<CharType> >
 /// {
 /// public:
-///    
-///     /* Standard codecvt constructor */ 
-///     icu_codecvt(std::string const &name,refs = 0) : 
+///
+///     /* Standard codecvt constructor */
+///     icu_codecvt(std::string const &name,refs = 0) :
 ///         boost::locale::generic_codecvt<CharType,latin1_codecvt<CharType> >(refs)
 ///     { ... }
 ///
@@ -124,7 +124,7 @@ public:
 ///         state_type ptr(ucnv_safeClone(converter_,0,0,&err,ucnv_close);
 ///         return std::move(ptr);
 ///     }
-///     
+///
 ///     boost::locale::utf::code_point to_unicode(state_type &ptr,char const *&begin,char const *end) const
 ///     {
 ///         UErrorCode err = U_ZERO_ERROR;
@@ -154,7 +154,7 @@ public:
 
     typedef CharType uchar;
 
-    generic_codecvt(size_t refs = 0) : 
+    generic_codecvt(size_t refs = 0) :
         std::codecvt<CharType,char,std::mbstate_t>(refs)
     {
     }
@@ -169,9 +169,9 @@ protected:
     virtual std::codecvt_base::result do_unshift(std::mbstate_t &s,char *from,char * /*to*/,char *&next) const
     {
         boost::uint16_t &state = *reinterpret_cast<boost::uint16_t *>(&s);
-#ifdef DEBUG_CODECVT            
+#ifdef DEBUG_CODECVT
         std::cout << "Entering unshift " << std::hex << state << std::dec << std::endl;
-#endif            
+#endif
         if(state != 0)
             return std::codecvt_base::error;
         next=from;
@@ -191,9 +191,9 @@ protected:
     }
 
     virtual int
-    do_length(  std::mbstate_t 
+    do_length(  std::mbstate_t
     #ifdef BOOST_LOCALE_DO_LENGTH_MBSTATE_CONST
-            const   
+            const
     #endif
             &std_state,
             char const *from,
@@ -226,7 +226,7 @@ protected:
                 else {
                     state = 0;
                 }
-            }        
+            }
         }
         #ifndef BOOST_LOCALE_DO_LENGTH_MBSTATE_CONST
         return from - save_from;
@@ -235,8 +235,8 @@ protected:
         #endif
     }
 
-    
-    virtual std::codecvt_base::result 
+
+    virtual std::codecvt_base::result
     do_in(  std::mbstate_t &std_state,
             char const *from,
             char const *from_end,
@@ -246,7 +246,7 @@ protected:
             uchar *&to_next) const
     {
         std::codecvt_base::result r=std::codecvt_base::ok;
-        
+
         // mbstate_t is POD type and should be initialized to 0 (i.a. state = stateT())
         // according to standard. We use it to keep a flag 0/1 for surrogate pair writing
         //
@@ -257,15 +257,15 @@ protected:
         state_type cvt_state = implementation().initial_state(generic_codecvt_base::to_unicode_state);
         while(to < to_end && from < from_end)
         {
-#ifdef DEBUG_CODECVT            
+#ifdef DEBUG_CODECVT
             std::cout << "Entering IN--------------" << std::endl;
             std::cout << "State " << std::hex << state <<std::endl;
             std::cout << "Left in " << std::dec << from_end - from << " out " << to_end -to << std::endl;
-#endif           
+#endif
             char const *from_saved = from;
-            
+
             uint32_t ch=implementation().to_unicode(cvt_state,from,from_end);
-            
+
             if(ch==boost::locale::utf::illegal) {
                 from = from_saved;
                 r=std::codecvt_base::error;
@@ -310,7 +310,7 @@ protected:
         to_next=to;
         if(r == std::codecvt_base::ok && (from!=from_end || state!=0))
             r = std::codecvt_base::partial;
-#ifdef DEBUG_CODECVT            
+#ifdef DEBUG_CODECVT
         std::cout << "Returning ";
         switch(r) {
         case std::codecvt_base::ok:
@@ -328,11 +328,11 @@ protected:
         }
         std::cout << "State " << std::hex << state <<std::endl;
         std::cout << "Left in " << std::dec << from_end - from << " out " << to_end -to << std::endl;
-#endif            
+#endif
         return r;
     }
-    
-    virtual std::codecvt_base::result 
+
+    virtual std::codecvt_base::result
     do_out( std::mbstate_t &std_state,
             uchar const *from,
             uchar const *from_end,
@@ -354,18 +354,18 @@ protected:
         state_type cvt_state = implementation().initial_state(generic_codecvt_base::from_unicode_state);
         while(to < to_end && from < from_end)
         {
-#ifdef DEBUG_CODECVT            
+#ifdef DEBUG_CODECVT
         std::cout << "Entering OUT --------------" << std::endl;
         std::cout << "State " << std::hex << state <<std::endl;
         std::cout << "Left in " << std::dec << from_end - from << " out " << to_end -to << std::endl;
-#endif            
+#endif
             boost::uint32_t ch=0;
             if(state != 0) {
                 // if the state idecates that 1st surrogate pair was written
                 // we should make sure that the second one that comes is actually
                 // second surrogate
                 boost::uint16_t w1 = state;
-                boost::uint16_t w2 = *from; 
+                boost::uint16_t w2 = *from;
                 // we don't forward from as writing may fail to incomplete or
                 // partial conversion
                 if(0xDC00 <= w2 && w2<=0xDFFF) {
@@ -391,7 +391,7 @@ protected:
                     continue;
                 }
                 else if(0xDC00 <= ch && ch<=0xDFFF) {
-                    // if we observe second surrogate pair and 
+                    // if we observe second surrogate pair and
                     // first only may be expected we should break from the loop with error
                     // as it is illegal input
                     r=std::codecvt_base::error;
@@ -420,7 +420,7 @@ protected:
         to_next=to;
         if(r==std::codecvt_base::ok && from!=from_end)
             r = std::codecvt_base::partial;
-#ifdef DEBUG_CODECVT            
+#ifdef DEBUG_CODECVT
         std::cout << "Returning ";
         switch(r) {
         case std::codecvt_base::ok:
@@ -438,10 +438,10 @@ protected:
         }
         std::cout << "State " << std::hex << state <<std::endl;
         std::cout << "Left in " << std::dec << from_end - from << " out " << to_end -to << std::endl;
-#endif            
+#endif
         return r;
     }
-    
+
 };
 
 ///
@@ -456,16 +456,16 @@ class generic_codecvt<CharType,CodecvtImpl,4> : public std::codecvt<CharType,cha
 public:
     typedef CharType uchar;
 
-    generic_codecvt(size_t refs = 0) : 
+    generic_codecvt(size_t refs = 0) :
         std::codecvt<CharType,char,std::mbstate_t>(refs)
     {
     }
-    
+
     CodecvtImpl const &implementation() const
     {
         return *static_cast<CodecvtImpl const *>(this);
     }
-    
+
 protected:
 
     virtual std::codecvt_base::result do_unshift(std::mbstate_t &/*s*/,char *from,char * /*to*/,char *&next) const
@@ -487,16 +487,16 @@ protected:
     }
 
     virtual int
-    do_length(  std::mbstate_t 
+    do_length(  std::mbstate_t
     #ifdef BOOST_LOCALE_DO_LENGTH_MBSTATE_CONST
-            const   
-    #endif    
+            const
+    #endif
             &/*state*/,
             char const *from,
             char const *from_end,
             size_t max) const
     {
-        #ifndef BOOST_LOCALE_DO_LENGTH_MBSTATE_CONST 
+        #ifndef BOOST_LOCALE_DO_LENGTH_MBSTATE_CONST
         char const *start_from = from;
         #else
         size_t save_max = max;
@@ -512,15 +512,15 @@ protected:
             }
             max--;
         }
-        #ifndef BOOST_LOCALE_DO_LENGTH_MBSTATE_CONST 
+        #ifndef BOOST_LOCALE_DO_LENGTH_MBSTATE_CONST
         return from - start_from;
         #else
         return save_max - max;
         #endif
     }
 
-    
-    virtual std::codecvt_base::result 
+
+    virtual std::codecvt_base::result
     do_in(  std::mbstate_t &/*state*/,
             char const *from,
             char const *from_end,
@@ -530,7 +530,7 @@ protected:
             uchar *&to_next) const
     {
         std::codecvt_base::result r=std::codecvt_base::ok;
-        
+
         // mbstate_t is POD type and should be initialized to 0 (i.a. state = stateT())
         // according to standard. We use it to keep a flag 0/1 for surrogate pair writing
         //
@@ -540,15 +540,15 @@ protected:
         state_type cvt_state = implementation().initial_state(generic_codecvt_base::to_unicode_state);
         while(to < to_end && from < from_end)
         {
-#ifdef DEBUG_CODECVT            
+#ifdef DEBUG_CODECVT
             std::cout << "Entering IN--------------" << std::endl;
             std::cout << "State " << std::hex << state <<std::endl;
             std::cout << "Left in " << std::dec << from_end - from << " out " << to_end -to << std::endl;
-#endif           
+#endif
             char const *from_saved = from;
-            
+
             uint32_t ch=implementation().to_unicode(cvt_state,from,from_end);
-            
+
             if(ch==boost::locale::utf::illegal) {
                 r=std::codecvt_base::error;
                 from = from_saved;
@@ -565,7 +565,7 @@ protected:
         to_next=to;
         if(r == std::codecvt_base::ok && from!=from_end)
             r = std::codecvt_base::partial;
-#ifdef DEBUG_CODECVT            
+#ifdef DEBUG_CODECVT
         std::cout << "Returning ";
         switch(r) {
         case std::codecvt_base::ok:
@@ -583,11 +583,11 @@ protected:
         }
         std::cout << "State " << std::hex << state <<std::endl;
         std::cout << "Left in " << std::dec << from_end - from << " out " << to_end -to << std::endl;
-#endif            
+#endif
         return r;
     }
-    
-    virtual std::codecvt_base::result 
+
+    virtual std::codecvt_base::result
     do_out( std::mbstate_t &/*std_state*/,
             uchar const *from,
             uchar const *from_end,
@@ -601,11 +601,11 @@ protected:
         state_type cvt_state = implementation().initial_state(generic_codecvt_base::from_unicode_state);
         while(to < to_end && from < from_end)
         {
-#ifdef DEBUG_CODECVT            
+#ifdef DEBUG_CODECVT
         std::cout << "Entering OUT --------------" << std::endl;
         std::cout << "State " << std::hex << state <<std::endl;
         std::cout << "Left in " << std::dec << from_end - from << " out " << to_end -to << std::endl;
-#endif            
+#endif
             boost::uint32_t ch=0;
             ch = *from;
             if(!boost::locale::utf::is_valid_codepoint(ch)) {
@@ -628,7 +628,7 @@ protected:
         to_next=to;
         if(r==std::codecvt_base::ok && from!=from_end)
             r = std::codecvt_base::partial;
-#ifdef DEBUG_CODECVT            
+#ifdef DEBUG_CODECVT
         std::cout << "Returning ";
         switch(r) {
         case std::codecvt_base::ok:
@@ -646,7 +646,7 @@ protected:
         }
         std::cout << "State " << std::hex << state <<std::endl;
         std::cout << "Left in " << std::dec << from_end - from << " out " << to_end -to << std::endl;
-#endif            
+#endif
         return r;
     }
 };

@@ -26,7 +26,7 @@ namespace boost { namespace msm { namespace back
         static void check_orthogonality()
         {
             BOOST_MPL_ASSERT_RELATION( ::boost::msm::back::check_regions_orthogonality<Fsm>::states_in_regions_raw,
-                                       ==, 
+                                       ==,
                                        ::boost::msm::back::check_regions_orthogonality<Fsm>::cumulated_states_in_regions_raw );
 
         }
@@ -36,7 +36,7 @@ namespace boost { namespace msm { namespace back
         static void check_unreachable_states()
         {
             BOOST_MPL_ASSERT_RELATION( ::boost::msm::back::check_no_unreachable_state<Fsm>::states_in_fsm,
-                                       ==, 
+                                       ==,
                                        ::boost::msm::back::check_no_unreachable_state<Fsm>::cumulated_states_in_regions );
 
         }

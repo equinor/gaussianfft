@@ -23,7 +23,7 @@ namespace boost
     namespace v1
     {
       struct source_position_tag { typedef source_position_tag type; };
-      
+
       template <>
       struct get_col_impl<source_position_tag>
       {
@@ -38,15 +38,15 @@ namespace boost
         struct apply : P::line {};
       };
 
-      
+
       template <>
       struct get_prev_char_impl<source_position_tag>
       {
         template <class P>
         struct apply : P::prev_char {};
       };
-      
-      
+
+
       template <>
       struct next_char_impl<source_position_tag>
       {

@@ -9,7 +9,7 @@
 #ifndef BOOST_SPIRIT_EXCEPTIONS_IPP
 #define BOOST_SPIRIT_EXCEPTIONS_IPP
 
-namespace boost { namespace spirit { 
+namespace boost { namespace spirit {
 
 BOOST_SPIRIT_CLASSIC_NAMESPACE_BEGIN
 

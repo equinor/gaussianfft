@@ -16,7 +16,7 @@
 # pragma once
 #endif
 
-#include <boost/config.hpp> // STATIC_CONSTANT, STDC_NAMESPACE, 
+#include <boost/config.hpp> // STATIC_CONSTANT, STDC_NAMESPACE,
                             // DINKUMWARE_STDLIB, __STL_CONFIG_H.
 #include <algorithm>                      // min.
 #include <boost/assert.hpp>
@@ -37,7 +37,7 @@
 #include <boost/iostreams/operations.hpp>
 #include <boost/iostreams/device/back_inserter.hpp>
 #include <boost/iostreams/filter/zlib.hpp>
-#include <boost/iostreams/pipeline.hpp>     
+#include <boost/iostreams/pipeline.hpp>
 #include <boost/iostreams/putback.hpp>
 #include <boost/throw_exception.hpp>
 
@@ -54,7 +54,7 @@ namespace std { using ::time_t; }
 #endif
 
 namespace boost { namespace iostreams {
-                    
+
 //------------------Definitions of constants----------------------------------//
 
 namespace gzip {
@@ -236,7 +236,7 @@ public:
     std::streamsize write(Sink& snk, const char_type* s, std::streamsize n)
     {
         if (!(flags_ & f_header_done)) {
-            std::streamsize amt = 
+            std::streamsize amt =
                 static_cast<std::streamsize>(header_.size() - offset_);
             offset_ += boost::iostreams::write_if(snk, header_.data() + offset_, amt);
             if (offset_ == header_.size())
@@ -367,12 +367,12 @@ private:
 class BOOST_IOSTREAMS_DECL gzip_footer {
 public:
     gzip_footer() { reset(); }
-    
+
     // Members for processing footer data
     void process(char c);
     bool done() const { return state_ == s_done; }
     void reset();
-    
+
     // Members for accessing footer data
     zlib::ulong crc() const { return crc_; }
     zlib::ulong uncompressed_size() const { return isize_; }
@@ -385,7 +385,7 @@ private:
     zlib::ulong  crc_;
     zlib::ulong  isize_;
     int          state_;
-    int          offset_; 
+    int          offset_;
 };
 
 } // End namespace boost::iostreams::detail.
@@ -430,7 +430,7 @@ public:
                     state_ = s_body;
             } else if (state_ == s_body) {
                 try {
-                    std::streamsize amt = 
+                    std::streamsize amt =
                         base_type::write(snk, s + result, n - result);
                     result += amt;
                     if (!this->eof()) {
@@ -481,7 +481,7 @@ public:
                     state_ = s_body;
             } else if (state_ == s_body) {
                 try {
-                    std::streamsize amt = 
+                    std::streamsize amt =
                         base_type::read(peek, s + result, n - result);
                     if (amt != -1) {
                         result += amt;
@@ -567,7 +567,7 @@ private:
     struct peekable_source {
         typedef char char_type;
         struct category : source_tag, peekable_tag { };
-        explicit peekable_source(Source& src, const string_type& putback = "") 
+        explicit peekable_source(Source& src, const string_type& putback = "")
             : src_(src), putback_(putback), offset_(0)
             { }
         std::streamsize read(char* s, std::streamsize n)
@@ -575,7 +575,7 @@ private:
             std::streamsize result = 0;
 
             // Copy characters from putback buffer
-            std::streamsize pbsize = 
+            std::streamsize pbsize =
                 static_cast<std::streamsize>(putback_.size());
             if (offset_ < pbsize) {
                 result = (std::min)(n, pbsize - offset_);
@@ -587,10 +587,10 @@ private:
             }
 
             // Read characters from src_
-            std::streamsize amt = 
+            std::streamsize amt =
                 boost::iostreams::read(src_, s + result, n - result);
-            return amt != -1 ? 
-                result + amt : 
+            return amt != -1 ?
+                result + amt :
                 result ? result : -1;
         }
         bool putback(char c)
@@ -610,7 +610,7 @@ private:
         }
 
         // Returns true if some characters have been putback but not re-read.
-        bool has_unconsumed_input() const 
+        bool has_unconsumed_input() const
         {
             return offset_ < static_cast<std::streamsize>(putback_.size());
         }

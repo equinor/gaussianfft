@@ -15,7 +15,7 @@
 
 #if defined(_MSC_VER)
 # pragma once
-#endif       
+#endif
 
 //------------------Support for codecvt with user-defined state types---------//
 
@@ -56,7 +56,7 @@
 #if BOOST_WORKAROUND(_STLPORT_VERSION, < 0x461)
 # define BOOST_IOSTREAMS_NO_CODECVT_MAX_LENGTH
 #endif
-                    
+
 //------------------Put mbstate_t and codecvt in std--------------------------//
 
 #ifndef BOOST_IOSTREAMS_NO_LOCALE
@@ -64,7 +64,7 @@
 #endif
 
 // From Robert Ramey's version of utf8_codecvt_facet.
-namespace std { 
+namespace std {
 
 #if defined(__LIBCOMO__)
     using ::mbstate_t;

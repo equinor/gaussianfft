@@ -1,4 +1,4 @@
-// Boost.Units - A C++ library for zero-overhead dimensional analysis and 
+// Boost.Units - A C++ library for zero-overhead dimensional analysis and
 // unit/quantity manipulation and conversion
 //
 // Copyright (C) 2003-2008 Matthias Christian Schabel
@@ -8,7 +8,7 @@
 // accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef BOOST_UNITS_STATIC_RATIONAL_HPP 
+#ifndef BOOST_UNITS_STATIC_RATIONAL_HPP
 #define BOOST_UNITS_STATIC_RATIONAL_HPP
 
 #include <boost/integer/common_factor_ct.hpp>
@@ -24,12 +24,12 @@
 #include <boost/units/config.hpp>
 #include <boost/units/operators.hpp>
 
-/// \file 
+/// \file
 /// \brief Compile-time rational numbers and operators.
 
 namespace boost {
 
-namespace units { 
+namespace units {
 
 namespace detail {
 
@@ -47,13 +47,13 @@ struct static_abs
 };
 
 // Compile time rational number.
-/** 
+/**
 This is an implementation of a compile time rational number, where @c static_rational<N,D> represents
-a rational number with numerator @c N and denominator @c D. Because of the potential for ambiguity arising 
-from multiple equivalent values of @c static_rational (e.g. @c static_rational<6,2>==static_rational<3>), 
-static rationals should always be accessed through @c static_rational<N,D>::type. Template specialization 
-prevents instantiation of zero denominators (i.e. @c static_rational<N,0>). The following compile-time 
-arithmetic operators are provided for static_rational variables only (no operators are defined between 
+a rational number with numerator @c N and denominator @c D. Because of the potential for ambiguity arising
+from multiple equivalent values of @c static_rational (e.g. @c static_rational<6,2>==static_rational<3>),
+static rationals should always be accessed through @c static_rational<N,D>::type. Template specialization
+prevents instantiation of zero denominators (i.e. @c static_rational<N,0>). The following compile-time
+arithmetic operators are provided for static_rational variables only (no operators are defined between
 long and static_rational):
     - @c mpl::negate
     - @c mpl::plus
@@ -61,9 +61,9 @@ long and static_rational):
     - @c mpl::times
     - @c mpl::divides
 
-Neither @c static_power nor @c static_root are defined for @c static_rational. This is because template types 
-may not be floating point values, while powers and roots of rational numbers can produce floating point 
-values. 
+Neither @c static_power nor @c static_root are defined for @c static_rational. This is because template types
+may not be floating point values, while powers and roots of rational numbers can produce floating point
+values.
 */
 #ifdef __BORLANDC__
 
@@ -95,28 +95,28 @@ class static_rational
             boost::mpl::negate<gcd_type>,
             gcd_type
         >::type den_type;
-        
-    public: 
+
+    public:
         // for mpl arithmetic support
         typedef detail::static_rational_tag tag;
-        
+
         BOOST_STATIC_CONSTANT(integer_type, Numerator =
             (::boost::mpl::divides<N_type, den_type>::value));
         BOOST_STATIC_CONSTANT(integer_type, Denominator =
             (::boost::mpl::divides<D_type, den_type>::value));
-        
+
         /// INTERNAL ONLY
         typedef static_rational<N,D>    this_type;
-        
+
         /// static_rational<N,D> reduced by GCD
         typedef static_rational<
             (::boost::mpl::divides<N_type, den_type>::value),
             (::boost::mpl::divides<D_type, den_type>::value)
         >  type;
-                                 
+
         static integer_type numerator()      { return Numerator; }
         static integer_type denominator()    { return Denominator; }
-        
+
         // INTERNAL ONLY
         static_rational() { }
         //~static_rational() { }
@@ -129,31 +129,31 @@ class static_rational
 
         static const integer_type   nabs = static_abs<N>::value,
                                     dabs = static_abs<D>::value;
-        
+
         /// greatest common divisor of N and D
         // need cast to signed because static_gcd returns unsigned long
-        static const integer_type   den = 
+        static const integer_type   den =
             static_cast<integer_type>(boost::integer::static_gcd<nabs,dabs>::value) * ((D < 0) ? -1 : 1);
-        
-    public: 
+
+    public:
         // for mpl arithmetic support
         typedef detail::static_rational_tag tag;
-        
+
         static const integer_type   Numerator = N/den,
             Denominator = D/den;
-        
+
         /// INTERNAL ONLY
         typedef static_rational<N,D>    this_type;
-        
+
         /// static_rational<N,D> reduced by GCD
         typedef static_rational<Numerator,Denominator>  type;
-                                 
+
         static integer_type numerator()      { return Numerator; }
         static integer_type denominator()    { return Denominator; }
-        
+
         // INTERNAL ONLY
         static_rational() { }
-        //~static_rational() { }   
+        //~static_rational() { }
 };
 #endif
 
@@ -178,7 +178,7 @@ template<integer_type N> class static_rational<N,0>;
 
 /// get decimal value of @c static_rational
 template<class T,integer_type N,integer_type D>
-inline typename divide_typeof_helper<T,T>::type 
+inline typename divide_typeof_helper<T,T>::type
 value(const static_rational<N,D>&)
 {
     return T(N)/T(D);

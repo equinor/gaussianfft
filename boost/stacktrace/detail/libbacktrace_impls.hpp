@@ -58,7 +58,7 @@ extern inline ::backtrace_state* construct_state() BOOST_NOEXCEPT {
 
     // [dcl.inline]: A static local variable in an inline function with external linkage always refers to the same object.
 
-    /*  
+    /*
     static ::backtrace_state* state = ::backtrace_create_state(
         0, 1 , boost::stacktrace::detail::libbacktrace_error_callback, 0
     );

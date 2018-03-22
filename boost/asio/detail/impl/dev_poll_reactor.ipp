@@ -66,7 +66,7 @@ void dev_poll_reactor::shutdown_service()
   timer_queues_.get_all_timers(ops);
 
   io_service_.abandon_operations(ops);
-} 
+}
 
 void dev_poll_reactor::fork_service(boost::asio::io_service::fork_event fork_ev)
 {

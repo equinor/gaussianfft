@@ -1,4 +1,4 @@
-// Boost.Units - A C++ library for zero-overhead dimensional analysis and 
+// Boost.Units - A C++ library for zero-overhead dimensional analysis and
 // unit/quantity manipulation and conversion
 //
 // Copyright (C) 2003-2008 Matthias Christian Schabel
@@ -149,7 +149,7 @@ struct call_base_unit_converter_base_unit_impl<true, true>
 {
     template<class Source, class Dest>
     struct apply
-        : do_call_base_unit_converter<Source, typename Dest::unit_type> 
+        : do_call_base_unit_converter<Source, typename Dest::unit_type>
     {
     };
 };
@@ -159,7 +159,7 @@ struct call_base_unit_converter_base_unit_impl<true, false>
 {
     template<class Source, class Dest>
     struct apply
-        : do_call_base_unit_converter<Source, typename Dest::unit_type> 
+        : do_call_base_unit_converter<Source, typename Dest::unit_type>
     {
     };
 };
@@ -249,7 +249,7 @@ struct call_base_unit_converter_impl<true>
 {
     template<class Source, class Dest>
     struct apply
-        : do_call_base_unit_converter<Source, Dest> 
+        : do_call_base_unit_converter<Source, Dest>
     {
     };
 };

@@ -28,7 +28,7 @@ namespace detail {
     {
     typedef unsigned int rounding_mode;
 
-    static void set_rounding_mode(const rounding_mode& mode)  { 
+    static void set_rounding_mode(const rounding_mode& mode)  {
 fesetround(mode); }
     static void get_rounding_mode(rounding_mode& mode)  { mode = fegetround(); }
 

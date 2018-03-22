@@ -9,11 +9,11 @@
 
 
     Check for correct conversion
-    
+
 >>> use(get())
 
     Check that None is converted to a NULL opaque pointer
-    
+
 >>> useany(get())
 1
 >>> useany(None)
@@ -21,7 +21,7 @@
 
     Check that we don't lose type information by converting NULL
     opaque pointers to None
-    
+
 >>> assert getnull() is None
 >>> useany(getnull())
 0
@@ -32,19 +32,19 @@ Traceback (most recent call last):
 RuntimeError: success
 
    Check that there is no conversion from integers ...
-   
+
 >>> try: use(0)
 ... except TypeError: pass
 ... else: print('expected a TypeError')
 
    ... and from strings to opaque objects
-   
+
 >>> try: use("")
 ... except TypeError: pass
 ... else: print('expected a TypeError')
 
    Now check the same for another opaque pointer type
-   
+
 >>> use2(get2())
 >>> failuse2(get2())
 Traceback (most recent call last):
@@ -78,7 +78,7 @@ def run(args = None):
     if args is not None:
         sys.argv = args
     return doctest.testmod(sys.modules.get(__name__))
-    
+
 if __name__ == '__main__':
     print("running...")
     import sys

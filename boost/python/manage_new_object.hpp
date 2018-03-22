@@ -11,7 +11,7 @@
 # include <boost/mpl/if.hpp>
 # include <boost/python/to_python_indirect.hpp>
 
-namespace boost { namespace python { 
+namespace boost { namespace python {
 
 namespace detail
 {

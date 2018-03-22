@@ -110,7 +110,7 @@ namespace boost { namespace python
 
       str rstrip() const;
 
-      list split() const; 
+      list split() const;
       template <class T>
       list split(T const& sep) const;
       template <class T1, class T2>

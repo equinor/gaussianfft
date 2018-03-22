@@ -67,7 +67,7 @@ namespace boost { namespace numeric { namespace ublas {
      * This is used to feed in vectors with data stored as an ASCII representation
      * from a standard input stream.
      *
-     * From a file or any valid stream, the format is: 
+     * From a file or any valid stream, the format is:
      * \c [<vector size>](<data1>,<data2>,...<dataN>) like for example:
      * \code
      * [5](1,2.1,3.2,3.14,0.2)
@@ -124,7 +124,7 @@ namespace boost { namespace numeric { namespace ublas {
 
     /** \brief output stream operator for matrix expressions
      *
-     * it outpus the content of a \f$(M \times N)\f$ matrix to a standard output 
+     * it outpus the content of a \f$(M \times N)\f$ matrix to a standard output
      * stream using the following format:
      * \c[<rows>,<columns>]((<m00>,<m01>,...,<m0N>),...,(<mM0>,<mM1>,...,<mMN>))
      *
@@ -138,7 +138,7 @@ namespace boost { namespace numeric { namespace ublas {
      * [3,3]((0,1,1),(1,0,1),(1,1,0))
      * \endcode
      * This output is made for storing and retrieving matrices in a simple way but you can
-     * easily recognize the following: 
+     * easily recognize the following:
      * \f[ \left( \begin{array}{ccc} 1 & 1 & 1\\ 1 & 1 & 1\\ 1 & 1 & 1 \end{array} \right) - \left( \begin{array}{ccc} 1 & 0 & 0\\ 0 & 1 & 0\\ 0 & 0 & 1 \end{array} \right) = \left( \begin{array}{ccc} 0 & 1 & 1\\ 1 & 0 & 1\\ 1 & 1 & 0 \end{array} \right) \f]
      *
      * \param os is a standard basic output stream
@@ -259,10 +259,10 @@ namespace boost { namespace numeric { namespace ublas {
 
     /** \brief special input stream operator for symmetric matrices
      *
-     * This is used to feed in symmetric matrices with data stored as an ASCII 
+     * This is used to feed in symmetric matrices with data stored as an ASCII
      * representation from a standard input stream.
      *
-     * You can simply write your matrices in a file or any valid stream and read them again 
+     * You can simply write your matrices in a file or any valid stream and read them again
      * at a later time with this function. The format is the following:
      * \code [<rows>,<columns>]((<m00>,<m01>,...,<m0N>),...,(<mM0>,<mM1>,...,<mMN>)) \endcode
      *
@@ -315,7 +315,7 @@ namespace boost { namespace numeric { namespace ublas {
                                 break;
                             }
                         }
-                        if (i <= j) { 
+                        if (i <= j) {
                              // this is the first time we read this element - set the value
                             s(i,j) = value;
                         }
@@ -348,7 +348,7 @@ namespace boost { namespace numeric { namespace ublas {
         }
         return is;
     }
- 
+
 
 }}}
 

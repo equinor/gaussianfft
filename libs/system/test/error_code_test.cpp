@@ -278,7 +278,7 @@ int main( int, char ** )
 # endif
 
 #endif
-  
+
   return ::boost::report_errors();
 }
 

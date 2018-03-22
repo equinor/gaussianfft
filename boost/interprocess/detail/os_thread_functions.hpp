@@ -85,7 +85,7 @@ struct OS_thread_t
       : m_handle()
    {}
 
-   
+
    void* handle() const
    {  return m_handle;  }
 

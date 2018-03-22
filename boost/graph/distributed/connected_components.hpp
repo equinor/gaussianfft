@@ -48,7 +48,7 @@
 
 namespace boost { namespace graph { namespace distributed {
   namespace cc_detail {
-    enum connected_components_message { 
+    enum connected_components_message {
       edges_msg, req_parents_msg, parents_msg, root_adj_msg
     };
 
@@ -89,7 +89,7 @@ namespace boost { namespace graph { namespace distributed {
 
       process_group_type pg = process_group(g);
       process_id_type id = process_id(pg);
-      
+
       if (id != 0) {
 
         // Send component roots and their associated edges to P0
@@ -100,18 +100,18 @@ namespace boost { namespace graph { namespace distributed {
                iter != adj[*r].end(); ++iter)
             adjs.push_back(get(p, *iter)); // Adjacencies
 
-          send(pg, 0, root_adj_msg, adjs); 
+          send(pg, 0, root_adj_msg, adjs);
         }
       }
-      
+
       synchronize(pg);
 
       if (id == 0) {
         typedef metaVertex<vertex_descriptor> VertexProperties;
 
-        typedef boost::adjacency_list<vecS, vecS, undirectedS, 
+        typedef boost::adjacency_list<vecS, vecS, undirectedS,
           VertexProperties> metaGraph;
-        typedef typename graph_traits<metaGraph>::vertex_descriptor 
+        typedef typename graph_traits<metaGraph>::vertex_descriptor
           meta_vertex_descriptor;
 
         std::map<vertex_descriptor, meta_vertex_descriptor> vertex_map;
@@ -125,7 +125,7 @@ namespace boost { namespace graph { namespace distributed {
           receive(pg, m->first, m->second, adjs);
 
           vertex_map[adjs[0]] = graph_traits<metaGraph>::null_vertex();
-          for (typename std::vector<vertex_descriptor>::iterator iter 
+          for (typename std::vector<vertex_descriptor>::iterator iter
                  = ++adjs.begin(); iter != adjs.end(); ++iter)
             edges.push_back(std::make_pair(adjs[0], *iter));
         }
@@ -137,7 +137,7 @@ namespace boost { namespace graph { namespace distributed {
           for (typename std::vector<vertex_descriptor>::iterator iter = adj[*r].begin();
                iter != adj[*r].end(); ++iter)
             edges.push_back(std::make_pair(*r, get(p, *iter)));
-        } 
+        }
 
         // Build local meta-graph
         metaGraph mg;
@@ -145,22 +145,22 @@ namespace boost { namespace graph { namespace distributed {
         // Add vertices with property to map back to distributed graph vertex
         for (typename std::map<vertex_descriptor, meta_vertex_descriptor>::iterator
                iter = vertex_map.begin(); iter != vertex_map.end(); ++iter)
-          vertex_map[iter->first] 
+          vertex_map[iter->first]
             = add_vertex(metaVertex<vertex_descriptor>(iter->first), mg);
 
         // Build meta-vertex map
-        typename property_map<metaGraph, vertex_descriptor VertexProperties::*>::type 
+        typename property_map<metaGraph, vertex_descriptor VertexProperties::*>::type
           metaVertexMap = get(&VertexProperties::name, mg);
 
         typename std::vector<std::pair<vertex_descriptor, vertex_descriptor> >
           ::iterator edge_iter = edges.begin();
         for ( ; edge_iter != edges.end(); ++edge_iter)
           add_edge(vertex_map[edge_iter->first], vertex_map[edge_iter->second], mg);
-        
+
         edges.clear();
-  
+
         // Call connected_components on it
-        typedef typename property_map<metaGraph, vertex_index_t>::type 
+        typedef typename property_map<metaGraph, vertex_index_t>::type
           meta_index_map_type;
         meta_index_map_type meta_index = get(vertex_index, mg);
 
@@ -178,7 +178,7 @@ namespace boost { namespace graph { namespace distributed {
         BGL_FORALL_VERTICES_T(v, mg, metaGraph) {
           size_t component = get(mg_component, v);
           if (roots[component] == graph_traits<metaGraph>::null_vertex() ||
-              get(meta_index, v) < get(meta_index, roots[component])) 
+              get(meta_index, v) < get(meta_index, roots[component]))
             roots[component] = v;
         }
 
@@ -208,7 +208,7 @@ namespace boost { namespace graph { namespace distributed {
       const ParentMap p;
     };
 
-    /* Comparison operator used to choose targets for hooking s.t. vertices 
+    /* Comparison operator used to choose targets for hooking s.t. vertices
        that are hooked to are evenly distributed across processors */
     template <typename OwnerMap, typename LocalMap>
     class hashed_vertex_compare
@@ -218,8 +218,8 @@ namespace boost { namespace graph { namespace distributed {
         : owner(o), local(l) { }
 
       template <typename Vertex>
-      bool operator() (const Vertex x, const Vertex y) 
-      { 
+      bool operator() (const Vertex x, const Vertex y)
+      {
         if (get(local, x) < get(local, y))
           return true;
         else if (get(local, x) == get(local, y))
@@ -246,9 +246,9 @@ namespace boost { namespace graph { namespace distributed {
         vertex_descriptor;
 
       process_group_type pg = process_group(g);
-      
+
       /*
-        This should probably be send_oob_with_reply, especially when Dave 
+        This should probably be send_oob_with_reply, especially when Dave
         finishes prefetch-batching
       */
 
@@ -260,9 +260,9 @@ namespace boost { namespace graph { namespace distributed {
           send(pg, i, req_parents_msg, reqs);
         }
       }
-      
+
       synchronize(pg);
-      
+
       // Receive root requests and reply to them
       while (optional<std::pair<process_id_type, int> > m = probe(pg)) {
         std::vector<vertex_descriptor> requests;
@@ -271,9 +271,9 @@ namespace boost { namespace graph { namespace distributed {
           requests[i] = get(p, requests[i]);
         send(pg, m->first, parents_msg, requests);
       }
-      
+
       synchronize(pg);
-      
+
       // Receive requested parents
       std::vector<vertex_descriptor> responses;
       for (process_id_type i = 0; i < num_processes(pg); ++i) {
@@ -287,7 +287,7 @@ namespace boost { namespace graph { namespace distributed {
       }
     }
 #endif
-    
+
     template<typename DistributedGraph, typename ParentMap>
     void
     parallel_connected_components(DistributedGraph& g, ParentMap p)
@@ -343,13 +343,13 @@ namespace boost { namespace graph { namespace distributed {
                                           local_index);
       std::size_t num_comp = connected_components(ls, ls_component);
 
-      std::vector<vertex_descriptor> 
+      std::vector<vertex_descriptor>
         roots(num_comp, graph_traits<DistributedGraph>::null_vertex());
 
       BGL_FORALL_VERTICES_T(v, g, DistributedGraph) {
         size_t component = get(ls_component, v);
         if (roots[component] == graph_traits<DistributedGraph>::null_vertex() ||
-            get(local_index, v) < get(local_index, roots[component])) 
+            get(local_index, v) < get(local_index, roots[component]))
           roots[component] = v;
       }
 
@@ -387,7 +387,7 @@ namespace boost { namespace graph { namespace distributed {
 
           my_adj.erase
             (std::remove_if(my_adj.begin(), my_adj.end(),
-                       cull_adjacency_list<vertex_descriptor, 
+                       cull_adjacency_list<vertex_descriptor,
                                            ParentMap>(*liter, p) ),
              my_adj.end());
           // This sort needs to be here to make sure the initial
@@ -418,7 +418,7 @@ namespace boost { namespace graph { namespace distributed {
         }
 
 #ifdef PBGL_CONSTRUCT_METAGRAPH
-      /* TODO: If the number of roots is sufficiently small, we can 
+      /* TODO: If the number of roots is sufficiently small, we can
                use a 'problem folding' approach like we do in MST
                to gather all the roots and their adjacencies on one proc
                and solve for the connected components of the meta-graph */
@@ -426,15 +426,15 @@ namespace boost { namespace graph { namespace distributed {
       std::size_t num_roots = all_reduce(pg, roots.size(), std::plus<std::size_t>());
       if (num_roots < MAX_VERTICES_IN_METAGRAPH) {
         build_local_metagraph(g, p, roots.begin(), roots.end(), adj);
-        
+
         // For each vertex in g, p(v) = p(p(v)), assign parent of leaf
         // vertices from first step to final parent
         BGL_FORALL_VERTICES_T(v, g, DistributedGraph) {
           put(p, v, get(p, get(p, v)));
         }
-        
+
         synchronize(p);
-        
+
         return;
       }
 #endif
@@ -652,7 +652,7 @@ namespace boost { namespace graph { namespace distributed {
       BGL_FORALL_VERTICES_T(v, g, DistributedGraph) {
         put(p, v, get(p, get(p, v)));
       }
-      
+
       synchronize(p);
     }
 
@@ -715,7 +715,7 @@ namespace boost { namespace graph { namespace distributed {
 
   template<typename Graph, typename ParentMap>
   int
-  number_components_from_parents(const Graph& g, ParentMap p, 
+  number_components_from_parents(const Graph& g, ParentMap p,
                                  dummy_property_map)
   {
     using boost::parallel::all_reduce;

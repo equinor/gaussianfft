@@ -205,7 +205,7 @@ namespace detail {
 
     /*!
     * On success returns full path and name of the currently running program (the one which contains the `main()` function).
-    * 
+    *
     * Return value can be used as a parameter for shared_library. See Tutorial "Linking plugin into the executable"
     * for usage example. Flag '-rdynamic' must be used when linking the plugin into the executable
     * on Linux OS.

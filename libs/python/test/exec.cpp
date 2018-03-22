@@ -30,7 +30,7 @@ public:
 // Familiar Boost.Python wrapper class for Base
 struct BaseWrap : Base, python::wrapper<Base>
 {
-  virtual std::string hello() 
+  virtual std::string hello()
   {
 #if BOOST_WORKAROUND(BOOST_MSVC, <= 1300)
     // workaround for VC++ 6.x or 7.0, see
@@ -60,7 +60,7 @@ void exec_test()
 {
   // Retrieve the main module
   python::object main = python::import("__main__");
-  
+
   // Retrieve the main module's namespace
   python::object global(main.attr("__dict__"));
 
@@ -145,11 +145,11 @@ int main(int argc, char **argv)
 
   // Register the module with the interpreter
   if (PyImport_AppendInittab(const_cast<char*>("embedded_hello"),
-#if PY_VERSION_HEX >= 0x03000000 
-                             PyInit_embedded_hello 
-#else 
-                             initembedded_hello 
-#endif 
+#if PY_VERSION_HEX >= 0x03000000
+                             PyInit_embedded_hello
+#else
+                             initembedded_hello
+#endif
                              ) == -1)
   {
     BOOST_ERROR("Failed to add embedded_hello to the interpreter's "
@@ -168,7 +168,7 @@ int main(int argc, char **argv)
   else if (python::handle_exception(boost::bind(exec_file_test, script))) {
     check_pyerr();
   }
-  
+
   if (python::handle_exception(exec_test_error))
   {
     check_pyerr(/*pyerr_expected*/ true);

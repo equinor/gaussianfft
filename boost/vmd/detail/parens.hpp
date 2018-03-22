@@ -14,7 +14,7 @@
 #include <boost/vmd/detail/mods.hpp>
 #include <boost/vmd/detail/parens_split.hpp>
 #include <boost/vmd/detail/parens_common.hpp>
-  
+
 #define BOOST_VMD_DETAIL_PARENS_PROCESS(vseq) \
     BOOST_PP_IIF \
       ( \

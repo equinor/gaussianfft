@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 1988, 1989 Hans-J. Boehm, Alan J. Demers
  * Copyright (c) 1991-1994 by Xerox Corporation.  All rights reserved.
  *
@@ -23,10 +23,10 @@
  * from elsewhere, since the former can pin a large object that spans the
  * block, eventhough it does not start on the dangerous block.
  */
- 
+
 /*
  * Externally callable routines are:
- 
+
  * GC_add_to_black_list_normal
  * GC_add_to_black_list_stack
  * GC_promote_black_lists
@@ -115,12 +115,12 @@ void GC_copy_bl(word *old, word *new)
 static word total_stack_black_listed(void);
 
 /* Signal the completion of a collection.  Turn the incomplete black	*/
-/* lists into new black lists, etc.					*/			 
+/* lists into new black lists, etc.					*/
 void GC_promote_black_lists(void)
 {
     word * very_old_normal_bl = GC_old_normal_bl;
     word * very_old_stack_bl = GC_old_stack_bl;
-    
+
     GC_old_normal_bl = GC_incomplete_normal_bl;
     GC_old_stack_bl = GC_incomplete_stack_bl;
     if (!GC_all_interior_pointers) {
@@ -144,7 +144,7 @@ void GC_promote_black_lists(void)
 	GC_black_list_spacing = MAXHINCR * HBLKSIZE;
 	/* Makes it easier to allocate really huge blocks, which otherwise */
 	/* may have problems with nonuniform blacklist distributions.	   */
-	/* This way we should always succeed immediately after growing the */ 
+	/* This way we should always succeed immediately after growing the */
 	/* heap.							   */
     }
 }
@@ -169,7 +169,7 @@ void GC_unpromote_black_lists(void)
     if (!(GC_modws_valid_offsets[p & (sizeof(word)-1)])) return;
     {
         word index = PHT_HASH((word)p);
-        
+
         if (HDR(p) == 0 || get_pht_entry_from_index(GC_old_normal_bl, index)) {
 #   	    ifdef PRINT_BLACK_LIST
 		if (!get_pht_entry_from_index(GC_incomplete_normal_bl, index)) {
@@ -195,7 +195,7 @@ void GC_unpromote_black_lists(void)
 #endif
 {
     word index = PHT_HASH((word)p);
-        
+
     if (HDR(p) == 0 || get_pht_entry_from_index(GC_old_stack_bl, index)) {
 #   	ifdef PRINT_BLACK_LIST
 	    if (!get_pht_entry_from_index(GC_incomplete_stack_bl, index)) {
@@ -230,7 +230,7 @@ struct hblk * GC_is_black_listed(struct hblk *h, word len)
         return(h+1);
       }
     }
-    
+
     for (i = 0; ; ) {
         if (GC_old_stack_bl[divWORDSZ(index)] == 0
             && GC_incomplete_stack_bl[divWORDSZ(index)] == 0) {
@@ -257,10 +257,10 @@ word GC_number_stack_black_listed(struct hblk *start, struct hblk *endp1)
 {
     register struct hblk * h;
     word result = 0;
-    
+
     for (h = start; h < endp1; h++) {
         word index = PHT_HASH((word)h);
-        
+
         if (get_pht_entry_from_index(GC_old_stack_bl, index)) result++;
     }
     return(result);
@@ -272,7 +272,7 @@ static word total_stack_black_listed(void)
 {
     register unsigned i;
     word total = 0;
-    
+
     for (i = 0; i < GC_n_heap_sects; i++) {
     	struct hblk * start = (struct hblk *) GC_heap_sects[i].hs_start;
     	size_t len = (word) GC_heap_sects[i].hs_bytes;

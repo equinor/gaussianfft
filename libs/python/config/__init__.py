@@ -110,7 +110,7 @@ def prepare_build_dir(env):
         build_dir+="/msvc-%s"%env["MSVS_VERSION"]
     vars['BOOST_BUILD_DIR'] = build_dir
     vars['BOOST_SUFFIX'] = "${boost_suffix(__env__)}"
-    env.Replace(**vars)    
+    env.Replace(**vars)
     return build_dir
 
 

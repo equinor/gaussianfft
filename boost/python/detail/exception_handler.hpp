@@ -18,19 +18,19 @@ typedef function2<bool, exception_handler const&, function0<void> const&> handle
 struct BOOST_PYTHON_DECL exception_handler
 {
  private: // types
-    
+
  public:
     explicit exception_handler(handler_function const& impl);
 
     inline bool handle(function0<void> const& f) const;
-    
+
     bool operator()(function0<void> const& f) const;
- 
+
     static exception_handler* chain;
-    
+
  private:
     static exception_handler* tail;
-    
+
     handler_function m_impl;
     exception_handler* m_next;
 };

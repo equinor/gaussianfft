@@ -28,7 +28,7 @@ namespace boost
             typename P::template apply<S, Pos>
           >
         {};
-        
+
         typedef change_error_message type;
       };
     }

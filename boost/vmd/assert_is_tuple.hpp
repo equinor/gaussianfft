@@ -26,28 +26,28 @@
 
     The macro checks that the sequence is a Boost PP tuple.
     If it is not a Boost PP tuple, it forces a compiler error.
-    
-    The macro normally checks for a Boost PP tuple only in 
-    debug mode. However an end-user can force the macro 
-    to check or not check by defining the macro 
+
+    The macro normally checks for a Boost PP tuple only in
+    debug mode. However an end-user can force the macro
+    to check or not check by defining the macro
     BOOST_VMD_ASSERT_DATA to 1 or 0 respectively.
 
     sequence = a possible Boost PP tuple.
 
-    returns  = Normally the macro returns nothing. 
-    
-               If the sequence is a Boost PP tuple, nothing is 
+    returns  = Normally the macro returns nothing.
+
+               If the sequence is a Boost PP tuple, nothing is
                output.
-              
-               For VC++, because there is no sure way of forcing  
+
+               For VC++, because there is no sure way of forcing
                a compiler error from within a macro without producing
-               output, if the sequence is not a Boost PP tuple the 
-               macro forces a compiler error by outputting invalid C++. 
-              
-               For all other compilers a compiler error is forced 
-               without producing output if the sequence is not a 
+               output, if the sequence is not a Boost PP tuple the
+               macro forces a compiler error by outputting invalid C++.
+
+               For all other compilers a compiler error is forced
+               without producing output if the sequence is not a
                Boost PP tuple.
-              
+
 */
 
 #if !BOOST_VMD_ASSERT_DATA

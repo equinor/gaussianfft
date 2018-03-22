@@ -7,10 +7,10 @@
 
 # include <boost/python/detail/type_traits.hpp>
 # include <boost/detail/workaround.hpp>
-namespace boost { namespace python { namespace detail { 
+namespace boost { namespace python { namespace detail {
 
 template <bool array> struct value_destroyer;
-    
+
 template <>
 struct value_destroyer<false>
 {
@@ -34,7 +34,7 @@ struct value_destroyer<true>
             >::execute(p);
         }
     }
-    
+
     template <class T>
     static void execute(T const volatile* p)
     {

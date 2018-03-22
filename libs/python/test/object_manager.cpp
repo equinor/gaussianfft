@@ -17,7 +17,7 @@ int main()
     BOOST_STATIC_ASSERT(is_object_manager<handle<> >::value);
     BOOST_STATIC_ASSERT(!is_object_manager<int>::value);
     BOOST_STATIC_ASSERT(!is_object_manager<X>::value);
-    
+
     BOOST_STATIC_ASSERT(is_reference_to_object_manager<handle<>&>::value);
     BOOST_STATIC_ASSERT(is_reference_to_object_manager<handle<> const&>::value);
     BOOST_STATIC_ASSERT(is_reference_to_object_manager<handle<> volatile&>::value);
@@ -27,7 +27,7 @@ int main()
     BOOST_STATIC_ASSERT(!is_reference_to_object_manager<X>::value);
     BOOST_STATIC_ASSERT(!is_reference_to_object_manager<X&>::value);
     BOOST_STATIC_ASSERT(!is_reference_to_object_manager<X const&>::value);
-    
+
     return 0;
 }
 

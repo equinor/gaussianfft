@@ -213,12 +213,12 @@ class distributed_queue
   void setup_triggers();
 
   // Message handlers
-  void 
-  handle_push(int source, int tag, const value_type& value, 
+  void
+  handle_push(int source, int tag, const value_type& value,
               trigger_receive_context);
 
-  void 
-  handle_multipush(int source, int tag, const std::vector<value_type>& values, 
+  void
+  handle_multipush(int source, int tag, const std::vector<value_type>& values,
                    trigger_receive_context);
 
   mutable ProcessGroup process_group;

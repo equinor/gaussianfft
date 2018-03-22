@@ -10,7 +10,7 @@
 #include <cstddef>
 
 #include <boost/config.hpp>
-#include <boost/predef.h> 
+#include <boost/predef.h>
 #include <boost/detail/workaround.hpp>
 
 #ifdef BOOST_FIBERS_DECL

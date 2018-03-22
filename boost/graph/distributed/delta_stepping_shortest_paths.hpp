@@ -13,7 +13,7 @@
  *   Ulrich Meyer and Peter Sanders. Parallel Shortest Path for Arbitrary *
  *   Graphs. In Proceedings from the 6th International Euro-Par           *
  *   Conference on Parallel Processing, pages 461--470, 2000.             *
- *                                                                        * 
+ *                                                                        *
  *   Ulrich Meyer, Peter Sanders: [Delta]-stepping: A Parallelizable      *
  *   Shortest Path Algorithm. J. Algorithms 49(1): 114-152, 2003.         *
  *                                                                        *
@@ -66,13 +66,13 @@
 
 namespace boost { namespace graph { namespace distributed {
 
-template<typename Graph, typename PredecessorMap, typename DistanceMap, 
+template<typename Graph, typename PredecessorMap, typename DistanceMap,
          typename EdgeWeightMap>
 class delta_stepping_impl {
   typedef typename graph_traits<Graph>::vertex_descriptor Vertex;
   typedef typename graph_traits<Graph>::degree_size_type Degree;
   typedef typename property_traits<EdgeWeightMap>::value_type Dist;
-  typedef typename boost::graph::parallel::process_group_type<Graph>::type 
+  typedef typename boost::graph::parallel::process_group_type<Graph>::type
     ProcessGroup;
 
   typedef std::list<Vertex> Bucket;
@@ -81,25 +81,25 @@ class delta_stepping_impl {
 
   typedef detail::dijkstra_msg_value<DistanceMap, PredecessorMap> MessageValue;
 
-  enum { 
+  enum {
     // Relax a remote vertex. The message contains a pair<Vertex,
     // MessageValue>, the first part of which is the vertex whose
     // tentative distance is being relaxed and the second part
     // contains either the new distance (if there is no predecessor
     // map) or a pair with the distance and predecessor.
-    msg_relax 
+    msg_relax
   };
 
 public:
   delta_stepping_impl(const Graph& g,
-                      PredecessorMap predecessor, 
-                      DistanceMap distance, 
+                      PredecessorMap predecessor,
+                      DistanceMap distance,
                       EdgeWeightMap weight,
                       Dist delta);
 
   delta_stepping_impl(const Graph& g,
-                      PredecessorMap predecessor, 
-                      DistanceMap distance, 
+                      PredecessorMap predecessor,
+                      DistanceMap distance,
                       EdgeWeightMap weight);
 
   void run(Vertex s);
@@ -122,7 +122,7 @@ private:
   // the predecessor map is not a dummy_property_map.
   void handle_relax_message(Vertex v, const std::pair<Dist, Vertex>& p)
   { relax(p.second, v, p.first); }
-  
+
   // Setup triggers for msg_relax messages
   void setup_triggers();
 
@@ -146,7 +146,7 @@ private:
 
   // Bucket data structure. The ith bucket contains all local vertices
   // with (tentative) distance in the range [i*delta,
-  // (i+1)*delta). 
+  // (i+1)*delta).
   std::vector<Bucket*> buckets;
 
   // This "dummy" list is used only so that we can initialize the
@@ -161,12 +161,12 @@ private:
   std::vector<bool> vertex_was_deleted;
 };
 
-template<typename Graph, typename PredecessorMap, typename DistanceMap, 
+template<typename Graph, typename PredecessorMap, typename DistanceMap,
          typename EdgeWeightMap>
 delta_stepping_impl<Graph, PredecessorMap, DistanceMap, EdgeWeightMap>::
 delta_stepping_impl(const Graph& g,
-                    PredecessorMap predecessor, 
-                    DistanceMap distance, 
+                    PredecessorMap predecessor,
+                    DistanceMap distance,
                     EdgeWeightMap weight,
                     Dist delta)
     : g(g),
@@ -181,12 +181,12 @@ delta_stepping_impl(const Graph& g,
   setup_triggers();
 }
 
-template<typename Graph, typename PredecessorMap, typename DistanceMap, 
+template<typename Graph, typename PredecessorMap, typename DistanceMap,
          typename EdgeWeightMap>
 delta_stepping_impl<Graph, PredecessorMap, DistanceMap, EdgeWeightMap>::
 delta_stepping_impl(const Graph& g,
-                    PredecessorMap predecessor, 
-                    DistanceMap distance, 
+                    PredecessorMap predecessor,
+                    DistanceMap distance,
                     EdgeWeightMap weight)
     : g(g),
       predecessor(predecessor),
@@ -221,7 +221,7 @@ delta_stepping_impl(const Graph& g,
   setup_triggers();
 }
 
-template<typename Graph, typename PredecessorMap, typename DistanceMap, 
+template<typename Graph, typename PredecessorMap, typename DistanceMap,
          typename EdgeWeightMap>
 void
 delta_stepping_impl<Graph, PredecessorMap, DistanceMap, EdgeWeightMap>::
@@ -256,14 +256,14 @@ run(Vertex s)
     synchronize();
 
     // Find the next bucket that has something in it.
-    while (current_bucket < buckets.size() 
+    while (current_bucket < buckets.size()
            && (!buckets[current_bucket] || buckets[current_bucket]->empty()))
       ++current_bucket;
     if (current_bucket >= buckets.size())
       current_bucket = max_bucket;
 
 #ifdef PBGL_DELTA_STEPPING_DEBUG
-    std::cerr << "#" << process_id(pg) << ": lowest bucket is #" 
+    std::cerr << "#" << process_id(pg) << ": lowest bucket is #"
               << current_bucket << std::endl;
 #endif
     // Find the smallest bucket (over all processes) that has vertices
@@ -273,7 +273,7 @@ run(Vertex s)
     current_bucket = all_reduce(pg, current_bucket, minimum<BucketIndex>());
 
     if (current_bucket == max_bucket)
-      // There are no non-empty buckets in any process; exit. 
+      // There are no non-empty buckets in any process; exit.
       break;
 
 #ifdef PBGL_DELTA_STEPPING_DEBUG
@@ -299,15 +299,15 @@ run(Vertex s)
           Vertex u = bucket.front();
 
 #ifdef PBGL_DELTA_STEPPING_DEBUG
-          std::cerr << "#" << process_id(pg) << ": processing vertex " 
-                    << get(vertex_global, g, u).second << "@" 
+          std::cerr << "#" << process_id(pg) << ": processing vertex "
+                    << get(vertex_global, g, u).second << "@"
                     << get(vertex_global, g, u).first
                     << std::endl;
 #endif
 
           // Remove u from the front of the bucket
           bucket.pop_front();
-          
+
           // Insert u into the set of deleted vertices, if it hasn't
           // been done already.
           if (!vertex_was_deleted[get(local, u)]) {
@@ -315,7 +315,7 @@ run(Vertex s)
             deleted_vertices.push_back(u);
           }
 
-          // Relax each light edge. 
+          // Relax each light edge.
           Dist u_dist = get(distance, u);
           BGL_FORALL_OUTEDGES_T(u, e, g, Graph)
             if (get(weight, e) <= delta) // light edge
@@ -327,7 +327,7 @@ run(Vertex s)
       synchronize();
 
       // Is the bucket empty now?
-      nonempty_bucket = (current_bucket < buckets.size() 
+      nonempty_bucket = (current_bucket < buckets.size()
                          && buckets[current_bucket]
                          && !buckets[current_bucket]->empty());
      } while (all_reduce(pg, nonempty_bucket, std::logical_or<bool>()));
@@ -336,12 +336,12 @@ run(Vertex s)
     // deleted.
     for (typename std::vector<Vertex>::iterator iter = deleted_vertices.begin();
          iter != deleted_vertices.end(); ++iter) {
-      // Relax each heavy edge. 
+      // Relax each heavy edge.
       Vertex u = *iter;
       Dist u_dist = get(distance, u);
       BGL_FORALL_OUTEDGES_T(u, e, g, Graph)
         if (get(weight, e) > delta) // heavy edge
-          relax(u, target(e, g), u_dist + get(weight, e)); 
+          relax(u, target(e, g), u_dist + get(weight, e));
     }
 
     // Go to the next bucket: the current bucket must already be empty.
@@ -358,17 +358,17 @@ run(Vertex s)
   }
 }
 
-template<typename Graph, typename PredecessorMap, typename DistanceMap, 
+template<typename Graph, typename PredecessorMap, typename DistanceMap,
          typename EdgeWeightMap>
 void
 delta_stepping_impl<Graph, PredecessorMap, DistanceMap, EdgeWeightMap>::
-relax(Vertex u, Vertex v, Dist x) 
+relax(Vertex u, Vertex v, Dist x)
 {
 #ifdef PBGL_DELTA_STEPPING_DEBUG
-  std::cerr << "#" << process_id(pg) << ": relax(" 
-            << get(vertex_global, g, u).second << "@" 
-            << get(vertex_global, g, u).first << ", " 
-            << get(vertex_global, g, v).second << "@" 
+  std::cerr << "#" << process_id(pg) << ": relax("
+            << get(vertex_global, g, u).second << "@"
+            << get(vertex_global, g, u).first << ", "
+            << get(vertex_global, g, v).second << "@"
             << get(vertex_global, g, v).first << ", "
             << x << ")" << std::endl;
 #endif
@@ -378,7 +378,7 @@ relax(Vertex u, Vertex v, Dist x)
     if (get(owner, v) == process_id(pg)) {
       // Compute the new bucket index for v
       BucketIndex new_index = static_cast<BucketIndex>(x / delta);
-      
+
       // Make sure there is enough room in the buckets data structure.
       if (new_index >= buckets.size()) buckets.resize(new_index + 1, 0);
 
@@ -389,7 +389,7 @@ relax(Vertex u, Vertex v, Dist x)
           && !vertex_was_deleted[get(local, v)]) {
         // We're moving v from an old bucket into a new one. Compute
         // the old index, then splice it in.
-        BucketIndex old_index 
+        BucketIndex old_index
           = static_cast<BucketIndex>(get(distance, v) / delta);
         buckets[new_index]->splice(buckets[new_index]->end(),
                                    *buckets[old_index],
@@ -409,16 +409,16 @@ relax(Vertex u, Vertex v, Dist x)
       put(distance, v, x);
     } else {
 #ifdef PBGL_DELTA_STEPPING_DEBUG
-      std::cerr << "#" << process_id(pg) << ": sending relax(" 
-                << get(vertex_global, g, u).second << "@" 
-                << get(vertex_global, g, u).first << ", " 
-                << get(vertex_global, g, v).second << "@" 
+      std::cerr << "#" << process_id(pg) << ": sending relax("
+                << get(vertex_global, g, u).second << "@"
+                << get(vertex_global, g, u).first << ", "
+                << get(vertex_global, g, v).second << "@"
                 << get(vertex_global, g, v).first << ", "
             << x << ") to " << get(owner, v) << std::endl;
-      
+
 #endif
       // The vertex is remote: send a request to the vertex's owner
-      send(pg, get(owner, v), msg_relax, 
+      send(pg, get(owner, v), msg_relax,
            std::make_pair(v, MessageValue::create(x, u)));
 
       // Cache tentative distance information
@@ -427,7 +427,7 @@ relax(Vertex u, Vertex v, Dist x)
   }
 }
 
-template<typename Graph, typename PredecessorMap, typename DistanceMap, 
+template<typename Graph, typename PredecessorMap, typename DistanceMap,
          typename EdgeWeightMap>
 void
 delta_stepping_impl<Graph, PredecessorMap, DistanceMap, EdgeWeightMap>::
@@ -451,21 +451,21 @@ synchronize()
 //   }
 }
 
-template<typename Graph, typename PredecessorMap, typename DistanceMap, 
+template<typename Graph, typename PredecessorMap, typename DistanceMap,
          typename EdgeWeightMap>
-void 
+void
 delta_stepping_impl<Graph, PredecessorMap, DistanceMap, EdgeWeightMap>::
-setup_triggers() 
+setup_triggers()
 {
   using boost::graph::parallel::simple_trigger;
-        
-  simple_trigger(pg, msg_relax, this, 
+
+  simple_trigger(pg, msg_relax, this,
                  &delta_stepping_impl::handle_msg_relax);
 }
 
-template<typename Graph, typename PredecessorMap, typename DistanceMap, 
+template<typename Graph, typename PredecessorMap, typename DistanceMap,
          typename EdgeWeightMap>
-void 
+void
 delta_stepping_shortest_paths
   (const Graph& g,
    typename graph_traits<Graph>::vertex_descriptor s,
@@ -486,9 +486,9 @@ delta_stepping_shortest_paths
   impl.run(s);
 }
 
-template<typename Graph, typename PredecessorMap, typename DistanceMap, 
+template<typename Graph, typename PredecessorMap, typename DistanceMap,
          typename EdgeWeightMap>
-void 
+void
 delta_stepping_shortest_paths
   (const Graph& g,
    typename graph_traits<Graph>::vertex_descriptor s,
@@ -507,7 +507,7 @@ delta_stepping_shortest_paths
   // "predecessor" and "weight".
   impl.run(s);
 }
-   
+
 } } } // end namespace boost::graph::distributed
 
 #endif // BOOST_GRAPH_DELTA_STEPPING_SHORTEST_PATHS_HPP

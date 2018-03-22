@@ -1,10 +1,10 @@
-/* Copyright 2004 Jonathan Brandmeyer 
+/* Copyright 2004 Jonathan Brandmeyer
  * Use, modification and distribution are subject to the
  * Boost Software License, Version 1.0. (See accompanying file
  * LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  *
  * The purpose of this test is to determine if a function can be called from
- * Python with a const value type as an argument, and whether or not the 
+ * Python with a const value type as an argument, and whether or not the
  * presence of a prototype without the cv-qualifier will work around the
  * compiler's bug.
  */
@@ -18,7 +18,7 @@ bool accept_const_arg( object );
 
 bool accept_const_arg( const object )
 {
-    return true; 
+    return true;
 }
 
 

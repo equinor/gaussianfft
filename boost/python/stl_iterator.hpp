@@ -12,7 +12,7 @@
 # include <boost/iterator/iterator_facade.hpp>
 
 namespace boost { namespace python
-{ 
+{
 
 // An STL input iterator over a python sequence
 template<typename ValueT>

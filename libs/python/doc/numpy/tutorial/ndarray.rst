@@ -2,7 +2,7 @@ Creating ndarrays
 =================
 
 The Boost.Numpy library exposes quite a few methods to create ndarrays. ndarrays can be created in a variety of ways, include empty arrays and zero filled arrays.
-ndarrays can also be created from arbitrary python sequences as well as from data and dtypes. 
+ndarrays can also be created from arbitrary python sequences as well as from data and dtypes.
 
 This tutorial will introduce you to some of the ways in which you can create ndarrays. The methods covered here include creating ndarrays from arbitrary Python sequences, as well as from C++ containers, using both unit and non-unit strides
 
@@ -73,13 +73,13 @@ The strides will be 4x2 i.e. 4 bytes to go to the next desired row, and 2 bytes 
 
     shape = p::make_tuple(3,2);
     stride = p::make_tuple(sizeof(uint8_t)*2,sizeof(uint8_t));
- 
+
 Get the numpy dtype for the built-in 8-bit integer data type ::
 
     np::dtype dt1 = np::dtype::get_builtin<uint8_t>();
 
 Now lets first create and print out the ndarray as is.
-Notice how we can pass the shape and strides in the function directly, as well as the owner. The last part can be done because we don't have any use to 
+Notice how we can pass the shape and strides in the function directly, as well as the owner. The last part can be done because we don't have any use to
 manipulate the "owner" object ::
 
     np::ndarray mul_data_ex = np::from_data(mul_data, dt1,
@@ -93,7 +93,7 @@ Now create the new ndarray using the shape and strides and print out the array w
 
     mul_data_ex = np::from_data(mul_data, dt1, shape, stride, p::object());
     std::cout << "Selective multidimensional array :: "<<std::endl
-              << p::extract<char const *>(p::str(mul_data_ex)) << std::endl ; 
+              << p::extract<char const *>(p::str(mul_data_ex)) << std::endl ;
   }
 
 .. note:: The from_data method will throw ``error_already_set`` if the number of elements dictated by the shape and the corresponding strides don't match.

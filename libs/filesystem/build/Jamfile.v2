@@ -31,7 +31,7 @@ lib boost_filesystem
       <link>static:<define>BOOST_FILESYSTEM_STATIC_LINK=1
     :
     : # Boost.Filesystem uses some of Boost.System functions in inlined/templated
-      # functions, so clients that use Boost.Filesystem will have direct references 
+      # functions, so clients that use Boost.Filesystem will have direct references
       # to Boost.System symbols. On Windows, Darwin, and some other platforms, this
       # means those clients have to be directly linked to Boost.System. For static
       # linking this happens anyway, but for shared we need to make it happen. Since

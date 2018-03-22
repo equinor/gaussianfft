@@ -8,7 +8,7 @@
 #include <boost/bind.hpp>
 #include <boost/mpl/vector/vector10.hpp>
 
-namespace boost { namespace python { namespace objects { 
+namespace boost { namespace python { namespace objects {
 
 namespace
 {

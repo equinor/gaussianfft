@@ -52,13 +52,13 @@ public:
 
   /// @brief Return the number of dimensions of the broadcasted array expression.
   int get_nd() const;
-    
+
   /// @brief Return the shape of the broadcasted array expression as an array of integers.
   Py_intptr_t const * get_shape() const;
 
   /// @brief Return the shape of the broadcasted array expression in the nth dimension.
   Py_intptr_t shape(int n) const;
-    
+
 };
 
 /// @brief Construct a multi_iter over a single sequence or scalar object.
@@ -76,25 +76,25 @@ BOOST_NUMPY_DECL multi_iter make_multi_iter(object const & a1, object const & a2
  *
  *  Typical usage looks like this:
  *  @code
- *  struct TimesPI 
+ *  struct TimesPI
  *  {
  *    typedef double argument_type;
  *    typedef double result_type;
  *    double operator()(double input) const { return input * M_PI; }
  *  };
- *  
+ *
  *  BOOST_PYTHON_MODULE(example)
  *  {
  *    class_< TimesPI >("TimesPI")
  *      .def("__call__", unary_ufunc<TimesPI>::make());
  *  }
  *  @endcode
- *  
+ *
  */
-template <typename TUnaryFunctor, 
+template <typename TUnaryFunctor,
           typename TArgument=typename TUnaryFunctor::argument_type,
           typename TResult=typename TUnaryFunctor::result_type>
-struct unary_ufunc 
+struct unary_ufunc
 {
 
   /**
@@ -110,13 +110,13 @@ struct unary_ufunc
       from_object(output, out_dtype, ndarray::ALIGNED | ndarray::WRITEABLE)
       : zeros(in_array.get_nd(), in_array.get_shape(), out_dtype);
     multi_iter iter = make_multi_iter(in_array, out_array);
-    while (iter.not_done()) 
+    while (iter.not_done())
     {
       TArgument * argument = reinterpret_cast<TArgument*>(iter.get_data(0));
       TResult * result = reinterpret_cast<TResult*>(iter.get_data(1));
       *result = self(*argument);
       iter.next();
-    } 
+    }
     return out_array.scalarize();
   }
 
@@ -138,27 +138,27 @@ struct unary_ufunc
  *
  *  Typical usage looks like this:
  *  @code
- *  struct CosSum 
+ *  struct CosSum
  *  {
  *    typedef double first_argument_type;
  *    typedef double second_argument_type;
  *    typedef double result_type;
  *    double operator()(double input1, double input2) const { return std::cos(input1 + input2); }
  *  };
- *  
- *  BOOST_PYTHON_MODULE(example) 
+ *
+ *  BOOST_PYTHON_MODULE(example)
  *  {
  *    class_< CosSum >("CosSum")
  *      .def("__call__", binary_ufunc<CosSum>::make());
  *  }
  *  @endcode
- *  
+ *
  */
-template <typename TBinaryFunctor, 
+template <typename TBinaryFunctor,
           typename TArgument1=typename TBinaryFunctor::first_argument_type,
           typename TArgument2=typename TBinaryFunctor::second_argument_type,
           typename TResult=typename TBinaryFunctor::result_type>
-struct binary_ufunc 
+struct binary_ufunc
 {
 
   static object
@@ -175,14 +175,14 @@ struct binary_ufunc
       ? from_object(output, out_dtype, ndarray::ALIGNED | ndarray::WRITEABLE)
       : zeros(iter.get_nd(), iter.get_shape(), out_dtype);
     iter = make_multi_iter(in1_array, in2_array, out_array);
-    while (iter.not_done()) 
+    while (iter.not_done())
     {
       TArgument1 * argument1 = reinterpret_cast<TArgument1*>(iter.get_data(0));
       TArgument2 * argument2 = reinterpret_cast<TArgument2*>(iter.get_data(1));
       TResult * result = reinterpret_cast<TResult*>(iter.get_data(2));
       *result = self(*argument1, *argument2);
       iter.next();
-    } 
+    }
     return out_array.scalarize();
   }
 
@@ -196,7 +196,7 @@ struct binary_ufunc
 
 } // namespace boost::python::numpy
 
-namespace converter 
+namespace converter
 {
 
 NUMPY_OBJECT_MANAGER_TRAITS(numpy::multi_iter);

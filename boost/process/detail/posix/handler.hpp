@@ -11,7 +11,7 @@
 namespace boost { namespace process { namespace detail { namespace posix {
 
 //does not extend anything.
-struct handler_base_ext : handler_base 
+struct handler_base_ext : handler_base
 {
     template<typename Executor>
     void on_fork_error  (Executor &, const std::error_code&) const {}

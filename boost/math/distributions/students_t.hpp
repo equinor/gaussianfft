@@ -16,7 +16,7 @@
 #include <boost/math/special_functions/beta.hpp> // for ibeta(a, b, x).
 #include <boost/math/distributions/complement.hpp>
 #include <boost/math/distributions/detail/common_error_handling.hpp>
-#include <boost/math/distributions/normal.hpp> 
+#include <boost/math/distributions/normal.hpp>
 
 #include <utility>
 
@@ -95,23 +95,23 @@ inline RealType pdf(const students_t_distribution<RealType, Policy>& dist, const
    RealType result;
    if ((boost::math::isinf)(x))
    { // +infinity.
-     normal_distribution<RealType, Policy> n(0, 1); 
+     normal_distribution<RealType, Policy> n(0, 1);
      result = pdf(n, x);
      return result;
    }
    RealType limit = policies::get_epsilon<RealType, Policy>();
-   // Use policies so that if policy requests lower precision, 
+   // Use policies so that if policy requests lower precision,
    // then get the normal distribution approximation earlier.
    limit = static_cast<RealType>(1) / limit; // 1/eps
    // for 64-bit double 1/eps = 4503599627370496
    if (df > limit)
-   { // Special case for really big degrees_of_freedom > 1 / eps 
+   { // Special case for really big degrees_of_freedom > 1 / eps
      // - use normal distribution which is much faster and more accurate.
-     normal_distribution<RealType, Policy> n(0, 1); 
+     normal_distribution<RealType, Policy> n(0, 1);
      result = pdf(n, x);
    }
    else
-   { // 
+   { //
      RealType basem1 = x * x / df;
      if(basem1 < 0.125)
      {
@@ -146,19 +146,19 @@ inline RealType cdf(const students_t_distribution<RealType, Policy>& dist, const
    }
    if ((boost::math::isinf)(x))
    { // +infinity.
-     normal_distribution<RealType, Policy> n(0, 1); 
+     normal_distribution<RealType, Policy> n(0, 1);
      RealType result = cdf(n, x);
      return result;
    }
    RealType limit = policies::get_epsilon<RealType, Policy>();
-   // Use policies so that if policy requests lower precision, 
+   // Use policies so that if policy requests lower precision,
    // then get the normal distribution approximation earlier.
    limit = static_cast<RealType>(1) / limit; // 1/eps
    // for 64-bit double 1/eps = 4503599627370496
    if (df > limit)
    { // Special case for really big degrees_of_freedom > 1 / eps (perhaps infinite?)
      // - use normal distribution which is much faster and more accurate.
-     normal_distribution<RealType, Policy> n(0, 1); 
+     normal_distribution<RealType, Policy> n(0, 1);
      RealType result = cdf(n, x);
      return result;
    }
@@ -205,7 +205,7 @@ inline RealType quantile(const students_t_distribution<RealType, Policy>& dist, 
    //
    // Obtain parameters:
    RealType probability = p;
- 
+
    // Check for domain errors:
    RealType df = dist.degrees_of_freedom();
    static const char* function = "boost::math::quantile(const students_t_distribution<%1%>&, %1%)";
@@ -247,7 +247,7 @@ inline RealType quantile(const students_t_distribution<RealType, Policy>& dist, 
    // Depending on how many digits RealType has, this may forward
    // to the incomplete beta inverse as above.  Otherwise uses a
    // faster method that is accurate to ~15 digits everywhere
-   // and a couple of epsilon at double precision and in the central 
+   // and a couple of epsilon at double precision and in the central
    // region where most use cases will occur...
    //
    return boost::math::detail::fast_students_t_quantile(df, probability, Policy());
@@ -281,7 +281,7 @@ struct sample_size_func
    RealType operator()(const RealType& df)
    {
       if(df <= tools::min_value<RealType>())
-      { // 
+      { //
          return 1;
       }
       students_t_distribution<RealType, Policy> t(df);
@@ -353,7 +353,7 @@ template <class RealType, class Policy>
 inline RealType mean(const students_t_distribution<RealType, Policy>& dist)
 {  // Revised for https://svn.boost.org/trac/boost/ticket/7177
    RealType df = dist.degrees_of_freedom();
-   if(((boost::math::isnan)(df)) || (df <= 1) ) 
+   if(((boost::math::isnan)(df)) || (df <= 1) )
    { // mean is undefined for moment <= 1!
       return policies::raise_domain_error<RealType>(
       "boost::math::mean(students_t_distribution<%1%> const&, %1%)",
@@ -381,7 +381,7 @@ inline RealType variance(const students_t_distribution<RealType, Policy>& dist)
     return 1;
   }
   RealType limit = policies::get_epsilon<RealType, Policy>();
-  // Use policies so that if policy requests lower precision, 
+  // Use policies so that if policy requests lower precision,
   // then get the normal distribution approximation earlier.
   limit = static_cast<RealType>(1) / limit; // 1/eps
   // for 64-bit double 1/eps = 4503599627370496
@@ -427,7 +427,7 @@ inline RealType kurtosis(const students_t_distribution<RealType, Policy>& dist)
      return 3;
    }
    RealType limit = policies::get_epsilon<RealType, Policy>();
-   // Use policies so that if policy requests lower precision, 
+   // Use policies so that if policy requests lower precision,
    // then get the normal distribution approximation earlier.
    limit = static_cast<RealType>(1) / limit; // 1/eps
    // for 64-bit double 1/eps = 4503599627370496
@@ -461,7 +461,7 @@ inline RealType kurtosis_excess(const students_t_distribution<RealType, Policy>&
      return 0;
    }
    RealType limit = policies::get_epsilon<RealType, Policy>();
-   // Use policies so that if policy requests lower precision, 
+   // Use policies so that if policy requests lower precision,
    // then get the normal distribution approximation earlier.
    limit = static_cast<RealType>(1) / limit; // 1/eps
    // for 64-bit double 1/eps = 4503599627370496

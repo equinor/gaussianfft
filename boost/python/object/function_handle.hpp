@@ -10,7 +10,7 @@
 # include <boost/python/object/py_function.hpp>
 # include <boost/python/signature.hpp>
 
-namespace boost { namespace python { namespace objects { 
+namespace boost { namespace python { namespace objects {
 
 BOOST_PYTHON_DECL handle<> function_handle_impl(py_function const& f);
 

@@ -31,7 +31,7 @@ namespace boost
               typename get_position<ParsingResult>::type
             >
           {};
-        
+
           template <class Result, class P>
           struct apply_unchecked :
             boost::mpl::eval_if<
@@ -54,7 +54,7 @@ namespace boost
               >
             >
           {};
-          
+
         public:
           template <class Result, class P>
           struct apply :

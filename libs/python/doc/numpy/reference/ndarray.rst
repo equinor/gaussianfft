@@ -17,21 +17,21 @@ synopsis
 
 ::
 
-  namespace boost 
+  namespace boost
   {
   namespace python
   {
-  namespace numpy 
+  namespace numpy
   {
 
-  class ndarray : public object 
+  class ndarray : public object
   {
 
   public:
-  
-    enum bitflag 
+
+    enum bitflag
     {
-      NONE=0x0, C_CONTIGUOUS=0x1, F_CONTIGUOUS=0x2, V_CONTIGUOUS=0x1|0x2, 
+      NONE=0x0, C_CONTIGUOUS=0x1, F_CONTIGUOUS=0x2, V_CONTIGUOUS=0x1|0x2,
       ALIGNED=0x4, WRITEABLE=0x8, BEHAVED=0x4|0x8,
       CARRAY_RO=0x1|0x4, CARRAY=0x1|0x4|0x8, CARRAY_MIS=0x1|0x8,
       FARRAY_RO=0x2|0x4, FARRAY=0x2|0x4|0x8, FARRAY_MIS=0x2|0x8,
@@ -50,9 +50,9 @@ synopsis
     Py_intptr_t const * get_shape() const;
     Py_intptr_t const * get_strides() const;
     int const get_nd() const;
-   
+
     bitflag const get_flags() const;
-  
+
     ndarray transpose() const;
     ndarray squeeze() const;
     ndarray reshape(tuple const & shape) const;
@@ -80,7 +80,7 @@ synopsis
   ndarray from_object(object const & obj, int nd, ndarray::bitflag flags=ndarray::NONE);
   ndarray from_object(object const & obj, ndarray::bitflag flags=ndarray::NONE)
 
-  ndarray::bitflag operator|(ndarray::bitflag a, ndarray::bitflag b) ; 
+  ndarray::bitflag operator|(ndarray::bitflag a, ndarray::bitflag b) ;
   ndarray::bitflag operator&(ndarray::bitflag a, ndarray::bitflag b);
 
   }
@@ -104,28 +104,28 @@ constructors
 ::
 
   ndarray copy() const;
-  
+
 :Returns: Copy of calling ndarray object
 
-:: 
+::
 
   ndarray transpose() const;
 
 :Returns:  An ndarray with the rows and columns interchanged
- 
+
 ::
 
   ndarray squeeze() const;
 
 :Returns:  An ndarray with all unit-shaped dimensions removed
-  
+
 ::
 
   ndarray reshape(tuple const & shape) const;
 
 :Requirements: The new ``shape`` of the ndarray must be supplied as a tuple
 
-:Returns:  An ndarray with the same data but reshaped to the ``shape`` supplied 
+:Returns:  An ndarray with the same data but reshaped to the ``shape`` supplied
 
 
 ::
@@ -144,7 +144,7 @@ constructors
 		* the ``shape`` or the size of all dimensions, as a tuple
 		* the ``dtype`` of the data
 		* the ``nd`` size for a square shaped ndarray
-		* the ``shape`` Py_intptr_t 
+		* the ``shape`` Py_intptr_t
 
 :Returns:  A new ndarray with the given shape and data type, with data initialized to zero.
 
@@ -158,7 +158,7 @@ constructors
 
 		* the ``shape`` or the size of all dimensions, as a tuple
 		* the ``dtype`` of the data
-		* the ``shape`` Py_intptr_t 
+		* the ``shape`` Py_intptr_t
 
 :Returns:  A new ndarray with the given shape and data type, with data left uninitialized.
 
@@ -299,7 +299,7 @@ accessors
 
   object get_base() const;
 
-:Returns: Object that owns the array's data, or None if the array owns its own data.  
+:Returns: Object that owns the array's data, or None if the array owns its own data.
 
 
 ::
@@ -358,23 +358,23 @@ Example(s)
   namespace np = boost::python::numpy;
 
   p::object tu = p::make_tuple('a','b','c') ;
-  np::ndarray example_tuple = np::array (tu) ; 
+  np::ndarray example_tuple = np::array (tu) ;
 
   p::list l ;
-  np::ndarray example_list = np::array (l) ; 
+  np::ndarray example_list = np::array (l) ;
 
   np::dtype dt = np::dtype::get_builtin<int>();
   np::ndarray example_list1 = np::array (l,dt);
 
   int data[] = {1,2,3,4} ;
   p::tuple shape = p::make_tuple(4) ;
-  p::tuple stride = p::make_tuple(4) ; 
+  p::tuple stride = p::make_tuple(4) ;
   p::object own ;
   np::ndarray data_ex = np::from_data(data,dt,shape,stride,own);
 
   uint8_t mul_data[][4] = {{1,2,3,4},{5,6,7,8},{1,3,5,7}};
   shape = p::make_tuple(3,2) ;
-  stride = p::make_tuple(4,2) ; 
+  stride = p::make_tuple(4,2) ;
   np::dtype dt1 = np::dtype::get_builtin<uint8_t>();
 
   np::ndarray mul_data_ex = np::from_data(mul_data,dt1, p::make_tuple(3,4),p::make_tuple(4,1),p::object());

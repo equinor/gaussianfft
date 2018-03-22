@@ -1,4 +1,4 @@
-// Boost.Units - A C++ library for zero-overhead dimensional analysis and 
+// Boost.Units - A C++ library for zero-overhead dimensional analysis and
 // unit/quantity manipulation and conversion
 //
 // Copyright (C) 2003-2008 Matthias Christian Schabel
@@ -22,13 +22,13 @@
         ///INTERNAL ONLY
         #define BOOST_UNITS_HAS_BOOST_TYPEOF    0
     #endif
-#endif 
+#endif
 
 #if (BOOST_UNITS_HAS_BOOST_TYPEOF)
-    #include <boost/typeof/typeof.hpp> 
+    #include <boost/typeof/typeof.hpp>
     ///INTERNAL ONLY
     #define BOOST_UNITS_HAS_TYPEOF          1
-#else    
+#else
     #if (__GNUC__ && __cplusplus)
         ///INTERNAL ONLY
         #define BOOST_UNITS_HAS_TYPEOF          1

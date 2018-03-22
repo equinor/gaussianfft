@@ -27,11 +27,11 @@ namespace boost { namespace fusion
         template <>
         struct next_impl<repetitive_view_iterator_tag>
         {
-            template<typename Iterator, 
+            template<typename Iterator,
                 bool Last = result_of::equal_to<typename Iterator::end_type,
                     typename result_of::next<
                         typename Iterator::pos_type
-                    >::type>::value > 
+                    >::type>::value >
             struct apply_nonempty // <Iterator,false>
             {
                 // advanvce to next position
@@ -56,14 +56,14 @@ namespace boost { namespace fusion
                 typedef repetitive_view_iterator<
                     typename Iterator::sequence_type,
                     typename Iterator::first_type
-                    > 
+                    >
                 type;
 
                 BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
                 static type call(Iterator const& i)
                 {
                     return type(i.seq);
-                }    
+                }
             };
 
             template <typename Iterator,

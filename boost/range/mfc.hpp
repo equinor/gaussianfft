@@ -7,8 +7,8 @@
 // Boost.Range MFC Extension
 //
 // Copyright Shunsuke Sogame 2005-2006.
-// Distributed under the Boost Software License, Version 1.0. 
-// (See accompanying file LICENSE_1_0.txt or copy at 
+// Distributed under the Boost Software License, Version 1.0.
+// (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
 
@@ -510,7 +510,7 @@ namespace boost { namespace range_detail_microsoft {
             // Assertion fails if empty.
             // MFC document is wrong.
     #if !defined(NDEBUG)
-            if (x.GetCount() == 0) 
+            if (x.GetCount() == 0)
                 return Iterator(x, 0);
     #endif
 
@@ -713,7 +713,7 @@ namespace boost { namespace range_detail_microsoft {
 
             typedef mfc_map_iterator<X, key_t, mapped_t> mutable_iterator;
             typedef mutable_iterator const_iterator;
-    #endif            
+    #endif
         };
     };
 

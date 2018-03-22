@@ -3,8 +3,8 @@
  * Copyright (c) 2004
  * John Maddock
  *
- * Use, modification and distribution are subject to the 
- * Boost Software License, Version 1.0. (See accompanying file 
+ * Use, modification and distribution are subject to the
+ * Boost Software License, Version 1.0. (See accompanying file
  * LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  *
  */
@@ -39,7 +39,7 @@ typedef regex_token_iterator<TCHAR const*> tregex_token_iterator;
 // define regex creation functions:
 //
 template <class B, bool b>
-inline basic_regex<B> 
+inline basic_regex<B>
 make_regex(const ATL::CSimpleStringT<B, b>& s, ::boost::regex_constants::syntax_option_type f = boost::regex_constants::normal)
 {
    basic_regex<B> result(s.GetString(), s.GetString() + s.GetLength(), f);
@@ -101,7 +101,7 @@ inline bool regex_search(const ATL::CSimpleStringT<B, b>& s,
 // regex_iterator creation:
 //
 template <class B, bool b>
-inline regex_iterator<B const*> 
+inline regex_iterator<B const*>
 make_regex_iterator(const ATL::CSimpleStringT<B, b>& s, const basic_regex<B>& e, ::boost::regex_constants::match_flag_type f = boost::regex_constants::match_default)
 {
    regex_iterator<B const*> result(s.GetString(), s.GetString() + s.GetLength(), e, f);
@@ -109,7 +109,7 @@ make_regex_iterator(const ATL::CSimpleStringT<B, b>& s, const basic_regex<B>& e,
 }
 
 template <class B, bool b>
-inline regex_token_iterator<B const*> 
+inline regex_token_iterator<B const*>
    make_regex_token_iterator(const ATL::CSimpleStringT<B, b>& s, const basic_regex<B>& e, int sub = 0, ::boost::regex_constants::match_flag_type f = boost::regex_constants::match_default)
 {
    regex_token_iterator<B const*> result(s.GetString(), s.GetString() + s.GetLength(), e, sub, f);
@@ -117,7 +117,7 @@ inline regex_token_iterator<B const*>
 }
 
 template <class B, bool b>
-inline regex_token_iterator<B const*> 
+inline regex_token_iterator<B const*>
 make_regex_token_iterator(const ATL::CSimpleStringT<B, b>& s, const basic_regex<B>& e, const std::vector<int>& subs, ::boost::regex_constants::match_flag_type f = boost::regex_constants::match_default)
 {
    regex_token_iterator<B const*> result(s.GetString(), s.GetString() + s.GetLength(), e, subs, f);
@@ -125,7 +125,7 @@ make_regex_token_iterator(const ATL::CSimpleStringT<B, b>& s, const basic_regex<
 }
 
 template <class B, bool b, std::size_t N>
-inline regex_token_iterator<B const*> 
+inline regex_token_iterator<B const*>
 make_regex_token_iterator(const ATL::CSimpleStringT<B, b>& s, const basic_regex<B>& e, const int (& subs)[N], ::boost::regex_constants::match_flag_type f = boost::regex_constants::match_default)
 {
    regex_token_iterator<B const*> result(s.GetString(), s.GetString() + s.GetLength(), e, subs, f);
@@ -155,10 +155,10 @@ public:
    mfc_string_out_iterator& operator++() { return *this; }
    mfc_string_out_iterator& operator++(int) { return *this; }
    mfc_string_out_iterator& operator*() { return *this; }
-   mfc_string_out_iterator& operator=(B v) 
-   { 
-      out->AppendChar(v); 
-      return *this; 
+   mfc_string_out_iterator& operator=(B v)
+   {
+      out->AppendChar(v);
+      return *this;
    }
    typedef std::ptrdiff_t difference_type;
    typedef B value_type;

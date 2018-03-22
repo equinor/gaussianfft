@@ -19,15 +19,15 @@ namespace boost{ namespace icl
     template<> inline bool   unit_element<bool>::value()   { return true;}
     template<> inline float  unit_element<float>::value()  { return 1.0; }
     template<> inline double unit_element<double>::value() { return 1.0; }
-    template<> inline long double unit_element<long double>::value() 
+    template<> inline long double unit_element<long double>::value()
                                                            { return 1.0; }
-    
+
     // Smallest 'visible' string that is greater than the empty string.
-    template <>    
+    template <>
     inline std::string unit_element<std::string>::value()
     { return std::string(" "); }
 
-    template <class Type> 
+    template <class Type>
     inline Type unit_element<Type>::value()
     { return icl::succ(identity_element<Type>::value()); }
 

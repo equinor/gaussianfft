@@ -116,11 +116,11 @@ namespace boost { namespace spirit { namespace qi { namespace detail
             return spirit::char_encoding::ascii::tolower(ch) - 'a' + 10;
         }
     };
-    
+
     template <typename T, T Val>
     struct constexpr_int
     {
-        BOOST_STATIC_CONSTEXPR T value = Val; 
+        BOOST_STATIC_CONSTEXPR T value = Val;
     };
 
     ///////////////////////////////////////////////////////////////////////////

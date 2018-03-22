@@ -6,7 +6,7 @@
 // http://www.boost.org/LICENSE_1_0.txt)
 
 # ifndef POINTER_HOLDER_DWA20011215_HPP
-#  define POINTER_HOLDER_DWA20011215_HPP 
+#  define POINTER_HOLDER_DWA20011215_HPP
 
 # include <boost/get_pointer.hpp>
 #  include <boost/type.hpp>
@@ -51,7 +51,7 @@ template <class Pointer, class Value>
 struct pointer_holder : instance_holder
 {
     typedef Value value_type;
-    
+
     pointer_holder(Pointer);
 
     // Forward construction to the held object
@@ -60,16 +60,16 @@ struct pointer_holder : instance_holder
 #  include BOOST_PP_ITERATE()
 
  private: // types
-    
+
  private: // required holder implementation
     void* holds(type_info, bool null_ptr_only);
-    
+
     template <class T>
     inline void* holds_wrapped(type_info dst_t, wrapper<T>*,T* p)
     {
         return python::type_id<T>() == dst_t ? p : 0;
     }
-    
+
     inline void* holds_wrapped(type_info, ...)
     {
         return 0;
@@ -137,7 +137,7 @@ void* pointer_holder<Pointer, Value>::holds(type_info dst_t, bool null_ptr_only)
     Value* p0
 #  if BOOST_WORKAROUND(__SUNPRO_CC, BOOST_TESTED_AT(0x590))
         = static_cast<Value*>( get_pointer(this->m_p) )
-#  else 
+#  else
         = get_pointer(this->m_p)
 #  endif
         ;
@@ -145,10 +145,10 @@ void* pointer_holder<Pointer, Value>::holds(type_info dst_t, bool null_ptr_only)
 
     if (p == 0)
         return 0;
-    
+
     if (void* wrapped = holds_wrapped(dst_t, p, p))
         return wrapped;
-    
+
     type_info src_t = python::type_id<non_const_value>();
     return src_t == dst_t ? p : find_dynamic_type(p, src_t, dst_t);
 }
@@ -163,9 +163,9 @@ void* pointer_holder_back_reference<Pointer, Value>::holds(type_info dst_t, bool
 
     if (!get_pointer(this->m_p))
         return 0;
-    
+
     Value* p = get_pointer(m_p);
-    
+
     if (dst_t == python::type_id<held_type>())
         return p;
 
@@ -207,7 +207,7 @@ void* pointer_holder_back_reference<Pointer, Value>::holds(type_info dst_t, bool
 # if !(BOOST_WORKAROUND(__MWERKS__, > 0x3100)                      \
         && BOOST_WORKAROUND(__MWERKS__, BOOST_TESTED_AT(0x3201)))
 #  line BOOST_PP_LINE(__LINE__, pointer_holder.hpp(pointer_holder_back_reference))
-# endif 
+# endif
 
 # define N BOOST_PP_ITERATION()
 

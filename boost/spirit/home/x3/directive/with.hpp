@@ -25,7 +25,7 @@ namespace boost { namespace spirit { namespace x3
           : base_type(subject)
           , val(val) {}
     };
-    
+
     template <typename Subject, typename Derived, typename T>
     struct with_value_holder<Subject, Derived, T const>
       : unary_parser<Subject, Derived>
@@ -62,13 +62,13 @@ namespace boost { namespace spirit { namespace x3
               , attr);
         }
     };
-   
+
     template <typename ID, typename T, typename NextContext = unused_type>
     struct with_context
     {
         typedef context<ID, T, NextContext> type;
     };
-    
+
     template <typename ID, typename T>
     struct with_context<ID, T, unused_type>
     {
@@ -96,7 +96,7 @@ namespace boost { namespace spirit { namespace x3
     {
         return { val };
     }
-    
+
     template <typename ID, typename T>
     inline with_gen<ID, T const> with(T const& val)
     {

@@ -59,14 +59,14 @@ namespace boost { namespace numeric { namespace ublas {
 
     /** \brief A triangular matrix of values of type \c T.
      *
-     * For a \f$(n \times n )\f$-dimensional lower triangular matrix and if \f$0 \leq i < n\f$, \f$0 \leq j < n\f$ and \f$i>j\f$ holds, 
+     * For a \f$(n \times n )\f$-dimensional lower triangular matrix and if \f$0 \leq i < n\f$, \f$0 \leq j < n\f$ and \f$i>j\f$ holds,
      * \f$m_{i,j}=0\f$. Furthermore if \f$m_{i,i}=1\f$, the matrix is called unit lower triangular.
      *
-     * For a \f$(n \times n )\f$-dimensional upper triangular matrix and if \f$0 \leq i < n\f$, \f$0 \leq j < n\f$ and \f$i<j\f$ holds, 
+     * For a \f$(n \times n )\f$-dimensional upper triangular matrix and if \f$0 \leq i < n\f$, \f$0 \leq j < n\f$ and \f$i<j\f$ holds,
      * \f$m_{i,j}=0\f$. Furthermore if \f$m_{i,i}=1\f$, the matrix is called unit upper triangular.
      *
-     * The default storage for triangular matrices is packed. Orientation and storage can also be specified. 
-     * Default is \c row_major and and unbounded_array. It is \b not required by the storage to initialize 
+     * The default storage for triangular matrices is packed. Orientation and storage can also be specified.
+     * Default is \c row_major and and unbounded_array. It is \b not required by the storage to initialize
      * elements of the matrix.
      *
      * \tparam T the type of object stored in the matrix (like double, float, complex, etc...)
@@ -195,7 +195,7 @@ namespace boost { namespace numeric { namespace ublas {
             }
             return data () [triangular_type::element (layout_type (), i, size1_, j, size2_)];
         }
-        
+
         // Element assignment
         BOOST_UBLAS_INLINE
         reference insert_element (size_type i, size_type j, const_reference t) {
@@ -205,7 +205,7 @@ namespace boost { namespace numeric { namespace ublas {
         void erase_element (size_type i, size_type j) {
             operator () (i, j) = value_type/*zero*/();
         }
-        
+
         // Zeroing
         BOOST_UBLAS_INLINE
         void clear () {

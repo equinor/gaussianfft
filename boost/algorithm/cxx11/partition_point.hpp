@@ -1,4 +1,4 @@
-/* 
+/*
    Copyright (c) Marshall Clow 2011-2012.
 
    Distributed under the Boost Software License, Version 1.0. (See accompanying
@@ -20,9 +20,9 @@
 namespace boost { namespace algorithm {
 
 /// \fn partition_point ( ForwardIterator first, ForwardIterator last, Predicate p )
-/// \brief Given a partitioned range, returns the partition point, i.e, the first element 
+/// \brief Given a partitioned range, returns the partition point, i.e, the first element
 ///     that does not satisfy p
-/// 
+///
 /// \param first    The start of the input sequence
 /// \param last     One past the end of the input sequence
 /// \param p        The predicate to test the values with
@@ -49,7 +49,7 @@ ForwardIterator partition_point ( ForwardIterator first, ForwardIterator last, P
 
 /// \fn partition_point ( Range &r, Predicate p )
 /// \brief Given a partitioned range, returns the partition point
-/// 
+///
 /// \param r        The input range
 /// \param p        The predicate to test the values with
 ///

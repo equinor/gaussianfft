@@ -223,7 +223,7 @@ public:
      */
     BOOST_RANDOM_DETAIL_EQUALITY_OPERATOR(uniform_real_distribution, lhs, rhs)
     { return lhs._min == rhs._min && lhs._max == rhs._max; }
-    
+
     /**
      * Returns true if the two distributions may produce different sequences
      * of values given equal generators.

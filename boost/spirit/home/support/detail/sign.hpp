@@ -15,7 +15,7 @@
 
 #include <boost/config/no_tr1/cmath.hpp>
 #include <boost/version.hpp>
-#if BOOST_VERSION < 104000 
+#if BOOST_VERSION < 104000
 #include <boost/spirit/home/support/detail/math/fpclassify.hpp>
 #include <boost/spirit/home/support/detail/math/signbit.hpp>
 #else
@@ -27,29 +27,29 @@ namespace boost { namespace spirit { namespace detail
 {
 #if BOOST_VERSION < 104000
     // signbit(-NAN) is broken for versions of Boost earlier than 1.40.0
-    // This routine has been taken and adapted from Johan Rade's fp_traits 
+    // This routine has been taken and adapted from Johan Rade's fp_traits
     // library
-    template<typename T> 
+    template<typename T>
     inline bool (signbit)(T x)
     {
         return (boost::spirit::math::signbit)(x);
     }
 
-    template<typename T> 
+    template<typename T>
     inline T (changesign)(T x)
     {
         return (boost::spirit::math::changesign)(x);
     }
 #else
-    template<typename T> 
+    template<typename T>
     inline bool (signbit)(T x)
     {
         return (boost::math::signbit)(x) ? true : false;
     }
 
-    // This routine has been taken and adapted from Johan Rade's fp_traits 
+    // This routine has been taken and adapted from Johan Rade's fp_traits
     // library
-    template<typename T> 
+    template<typename T>
     inline T (changesign)(T x)
     {
 #if defined(BOOST_MATH_USE_STD_FPCLASSIFY) && !defined(BOOST_MATH_DISABLE_STD_FPCLASSIFY)

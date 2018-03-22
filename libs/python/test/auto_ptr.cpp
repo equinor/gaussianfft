@@ -57,7 +57,7 @@ std::auto_ptr<X> extract_(object o)
     return extract<std::auto_ptr<X>&>(o)
 #if BOOST_MSVC <= 1300
         ()
-#endif 
+#endif
         ;
 }
 
@@ -66,18 +66,18 @@ BOOST_PYTHON_MODULE(auto_ptr_ext)
     class_<X, std::auto_ptr<X>, boost::noncopyable>("X", init<int>())
         .def("value", &X::value)
         ;
-    
+
     class_<Y, std::auto_ptr<Y>, bases<X>, boost::noncopyable>("Y", init<int>())
         ;
 
-    // VC6 auto_ptrs do not have converting constructors    
+    // VC6 auto_ptrs do not have converting constructors
 #if BOOST_WORKAROUND(BOOST_DINKUMWARE_STDLIB, < 306)
     scope().attr("broken_auto_ptr") = 1;
 #else
     scope().attr("broken_auto_ptr") = 0;
     implicitly_convertible<std::auto_ptr<Y>, std::auto_ptr<X> >();
 #endif
-    
+
     def("look", look);
     def("steal", steal);
     def("maybe_steal", maybe_steal);

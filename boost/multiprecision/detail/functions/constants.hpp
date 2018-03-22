@@ -4,7 +4,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 //
 // This file has no include guards or namespaces - it's expanded inline inside default_ops.hpp
-// 
+//
 
 template <class T>
 void calc_log2(T& num, unsigned digits)
@@ -40,7 +40,7 @@ void calc_log2(T& num, unsigned digits)
    //
    // ln(2) = 3/4 SUM[n>=0] ((-1)^n * N!^2 / (2^n(2n+1)!))
    //
-   // Numerator and denominator are calculated separately and then 
+   // Numerator and denominator are calculated separately and then
    // divided at the end, we also precalculate the terms up to n = 5
    // since these fit in a 32-bit integer anyway.
    //

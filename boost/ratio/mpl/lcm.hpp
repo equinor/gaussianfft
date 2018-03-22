@@ -13,7 +13,7 @@
 #include <boost/ratio/mpl/numeric_cast.hpp>
 #include <boost/ratio/detail/mpl/lcm.hpp>
 
-namespace boost { 
+namespace boost {
 namespace mpl {
 
 template<>
@@ -23,7 +23,7 @@ struct lcm_impl< rational_c_tag,rational_c_tag >
         : ratio_lcm<R1, R2>
     {
     };
-};    
+};
 }
 }
 

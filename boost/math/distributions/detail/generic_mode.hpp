@@ -48,7 +48,7 @@ typename Dist::value_type generic_find_mode(const Dist& dist, typename Dist::val
       // direction we should move in, treat as an evaluation error:
       //
       return policies::raise_evaluation_error(
-         function, 
+         function,
          "Could not locate a starting location for the search for the mode, original guess was %1%", guess, policy_type());
    }
    do
@@ -75,15 +75,15 @@ typename Dist::value_type generic_find_mode(const Dist& dist, typename Dist::val
    boost::uintmax_t max_iter = policies::get_max_root_iterations<policy_type>();
 
    value_type result = tools::brent_find_minima(
-      pdf_minimizer<Dist>(dist), 
-      lower_bound, 
-      upper_bound, 
-      policies::digits<value_type, policy_type>(), 
+      pdf_minimizer<Dist>(dist),
+      lower_bound,
+      upper_bound,
+      policies::digits<value_type, policy_type>(),
       max_iter).first;
    if(max_iter >= policies::get_max_root_iterations<policy_type>())
    {
       return policies::raise_evaluation_error<value_type>(
-         function, 
+         function,
          "Unable to locate solution in a reasonable time:"
          " either there is no answer to the mode of the distribution"
          " or the answer is infinite.  Current best guess is %1%", result, policy_type());
@@ -128,15 +128,15 @@ typename Dist::value_type generic_find_mode_01(const Dist& dist, typename Dist::
    boost::uintmax_t max_iter = policies::get_max_root_iterations<policy_type>();
 
    value_type result = tools::brent_find_minima(
-      pdf_minimizer<Dist>(dist), 
-      lower_bound, 
-      upper_bound, 
-      policies::digits<value_type, policy_type>(), 
+      pdf_minimizer<Dist>(dist),
+      lower_bound,
+      upper_bound,
+      policies::digits<value_type, policy_type>(),
       max_iter).first;
    if(max_iter >= policies::get_max_root_iterations<policy_type>())
    {
       return policies::raise_evaluation_error<value_type>(
-         function, 
+         function,
          "Unable to locate solution in a reasonable time:"
          " either there is no answer to the mode of the distribution"
          " or the answer is infinite.  Current best guess is %1%", result, policy_type());

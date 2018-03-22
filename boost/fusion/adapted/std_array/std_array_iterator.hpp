@@ -3,7 +3,7 @@
     Copyright (c) 2001-2011 Joel de Guzman
     Copyright (c) 2005-2006 Dan Marsden
 
-    Distributed under the Boost Software License, Version 1.0. (See accompanying 
+    Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================*/
 #if !defined(BOOST_FUSION_STD_ARRAY_ARRAY_ITERATOR_01062013_1700)
@@ -49,12 +49,12 @@ namespace boost { namespace fusion
         struct deref
         {
             typedef typename Iterator::array_type array_type;
-            typedef typename 
+            typedef typename
                 mpl::if_<
                     is_const<array_type>
                   , typename array_type::const_reference
                   , typename array_type::reference
-                >::type 
+                >::type
             type;
 
             static type
@@ -90,7 +90,7 @@ namespace boost { namespace fusion
             typedef typename
                 mpl::minus<
                     typename I2::index, typename I1::index
-                >::type 
+                >::type
             type;
 
             static type

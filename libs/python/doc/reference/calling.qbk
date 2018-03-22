@@ -8,7 +8,7 @@ If you don't have an [link object_wrappers.boost_python_object_hpp.class_object 
 ``call<ResultType>(callable_object, a1, a2... aN);``
 Calling a method of a Python object is similarly easy:
 ``call_method<ResultType>(self_object, "method-name", a1, a2... aN);``
- This comparitively low-level interface is the one you'll use when implementing C++ virtual functions that can be overridden in Python. 
+ This comparitively low-level interface is the one you'll use when implementing C++ virtual functions that can be overridden in Python.
 [endsect]
 [section Argument Handling]
 Arguments are converted to Python according to their type. By default, the arguments `a1...aN` are copied into new Python objects, but this behavior can be overridden by the use of [link function_invocation_and_creation.boost_python_ptr_hpp.functions `ptr()`] and `ref()`:
@@ -36,7 +36,7 @@ void apply(PyObject* callable, X& x)
 ]
 [endsect]
 [section Result Handling]
-In general, `call<ResultType>()` and call_method<ResultType>() return ResultType by exploiting all lvalue and rvalue from_python converters registered for ResultType and returning a copy of the result. However, when ResultType is a pointer or reference type, Boost.Python searches only for lvalue converters. To prevent dangling pointers and references, an exception will be thrown if the Python result object has only a single reference count. 
+In general, `call<ResultType>()` and call_method<ResultType>() return ResultType by exploiting all lvalue and rvalue from_python converters registered for ResultType and returning a copy of the result. However, when ResultType is a pointer or reference type, Boost.Python searches only for lvalue converters. To prevent dangling pointers and references, an exception will be thrown if the Python result object has only a single reference count.
 [endsect]
 [section Rationale]
 In general, to get Python arguments corresponding to a1...aN, a new Python object must be created for each one; should the C++ object be copied into that Python object, or should the Python object simply hold a reference/pointer to the C++ object? In general, the latter approach is unsafe, since the called function may store a reference to the Python object somewhere. If the Python object is used after the C++ object is destroyed, we'll crash Python.
@@ -60,6 +60,6 @@ In Boost.Python this is dealt with by:
 # detecting the case when the reference count on the result Python object is 1 and throwing an
   exception inside of `call<U>(...)` when `U` is a pointer or reference type.
 
-This should be acceptably safe because users have to explicitly specify a pointer/reference for `U` in `call<U>`, and they will be protected against dangles at runtime, at least long enough to get out of the `call<U>(...)` invocation. 
+This should be acceptably safe because users have to explicitly specify a pointer/reference for `U` in `call<U>`, and they will be protected against dangles at runtime, at least long enough to get out of the `call<U>(...)` invocation.
 [endsect]
 [endsect]

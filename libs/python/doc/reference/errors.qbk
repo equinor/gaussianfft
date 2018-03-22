@@ -56,7 +56,7 @@ std::string get_name(boost::python::object obj)
       PyObject_GetAttrString(obj.ptr(), "__name__"));
 
    char const* s = PyString_AsString(p);
-   if (s != 0) 
+   if (s != 0)
         Py_DECREF(p);
 
    // throws if it's not a Python string
@@ -65,7 +65,7 @@ std::string get_name(boost::python::object obj)
          PyString_AsString(p)));
 
    Py_DECREF(p); // Done with p
-   
+
    return result;
 }
 
@@ -98,7 +98,7 @@ same_name(PyObject* args, PyObject* keywords)
 
    if (!PyArg_ParseTuple(args, const_cast<char*>("OO"), &a1, &a2))
       return 0;
-   
+
    // Use boost::bind to make an object compatible with
    // boost::Function0<void>
    if (boost::python::handle_exception(

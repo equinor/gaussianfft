@@ -44,8 +44,8 @@ using ::boost::make_tuple;
 using ::boost::tie;
 
 // [6.1.3.3] Tuple helper classes
-template <class T> 
-struct tuple_size 
+template <class T>
+struct tuple_size
    : public ::boost::integral_constant
    < ::std::size_t, ::boost::tuples::length<T>::value>
 {};

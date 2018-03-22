@@ -10,7 +10,7 @@
 # include <boost/python/object.hpp>
 # include <boost/python/converter/pytype_object_mgr_traits.hpp>
 
-namespace boost { namespace python { 
+namespace boost { namespace python {
 
 namespace detail
 {
@@ -20,9 +20,9 @@ namespace detail
       long_base(); // new long_
       explicit long_base(object_cref rhs);
       explicit long_base(object_cref rhs, object_cref base);
-      
+
       BOOST_PYTHON_FORWARD_OBJECT_CONSTRUCTORS(long_base, object)
-          
+
    private:
       static detail::new_non_null_reference call(object const&);
       static detail::new_non_null_reference call(object const&, object const&);
@@ -46,7 +46,7 @@ class long_ : public detail::long_base
         : detail::long_base(object(rhs), object(base))
     {
     }
-    
+
  public: // implementation detail -- for internal use only
     BOOST_PYTHON_FORWARD_OBJECT_CONSTRUCTORS(long_, base)
 };

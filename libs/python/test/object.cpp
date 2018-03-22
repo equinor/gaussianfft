@@ -174,28 +174,28 @@ bool check_string_slice()
 
     if (s.slice(_,-3) != "hello, wo")
         return false;
-    
+
     if (s.slice(-3,_) != "rld")
         return false;
-    
+
     if (s.slice(_,_) != s)
         return false;
-    
+
     if (", " != s.slice(5,7))
         return false;
 
     return s.slice(2,-1).slice(1,-1)  == "lo, wor";
 }
 
-object test_call(object c, object args, object kwds) 
-{ 
-    return c(*args, **kwds); 
-} 
+object test_call(object c, object args, object kwds)
+{
+    return c(*args, **kwds);
+}
 
 bool check_binary_operators()
 {
     int y;
-    
+
     object x(3);
 
 #define TEST_BINARY(op)                         \
@@ -263,7 +263,7 @@ bool check_inplace(object l, object o)
     TEST_INPLACE(&)
     TEST_INPLACE(^)
     TEST_INPLACE(|)
-        
+
     l += l;
     for (y = 0; y < 6; ++y)
     {
@@ -297,7 +297,7 @@ bool check_inplace(object l, object o)
     o.attr("x2") = 2;
     o.attr("x3") = 0;
     o.attr("x4") = 1;
-    
+
 #define TEST_ATTR_INPLACE(index, op, n, r1, r2) \
     o.attr("x" #index) op##= n;                 \
     if (o.attr("x" #index) != r1)               \
@@ -305,7 +305,7 @@ bool check_inplace(object l, object o)
     o.attr("x" #index) op##= object(n);         \
     if (o.attr("x" #index) != r2)               \
         return false;
-    
+
     TEST_ATTR_INPLACE(0,+,7,7,14)
     TEST_ATTR_INPLACE(1,-,2,-1,-3)
     TEST_ATTR_INPLACE(2,*,3,6,18)
@@ -337,7 +337,7 @@ bool check_inplace(object l, object o)
     // Check its value
     if (l[5][0] != 2)
         return false;
-    
+
     return true;
 }
 

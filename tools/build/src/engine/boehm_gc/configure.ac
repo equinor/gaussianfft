@@ -1,8 +1,8 @@
 # Copyright (c) 1999-2001 by Red Hat, Inc. All rights reserved.
-# 
+#
 # THIS MATERIAL IS PROVIDED AS IS, WITH ABSOLUTELY NO WARRANTY EXPRESSED
 # OR IMPLIED.  ANY USE IS AT YOUR OWN RISK.
-# 
+#
 # Permission is hereby granted to use or copy this program
 # for any purpose,  provided the above notices are retained on all copies.
 # Permission to modify the code and to distribute modified code is granted,
@@ -17,10 +17,10 @@ dnl Process this file with autoconf to produce configure.
 # Initialization
 # ==============
 
-AC_INIT(gc,7.0,Hans.Boehm@hp.com) 
+AC_INIT(gc,7.0,Hans.Boehm@hp.com)
     ## version must conform to [0-9]+[.][0-9]+(alpha[0-9]+)?
 AC_CONFIG_SRCDIR(gcj_mlc.c)
-AC_CANONICAL_TARGET 
+AC_CANONICAL_TARGET
 AC_PREREQ(2.53)
 AC_REVISION($Revision: 1.25 $)
 GC_SET_VERSION
@@ -223,7 +223,7 @@ AM_CONDITIONAL(PTHREADS, test x$THREADS = xposix)
 AM_CONDITIONAL(DARWIN_THREADS, test x$darwin_threads = xtrue)
 AM_CONDITIONAL(WIN32_THREADS, test x$win32_threads = xtrue)
 
-case "$host" in 
+case "$host" in
    powerpc-*-darwin*)
       powerpc_darwin=true
       ;;
@@ -359,7 +359,7 @@ esac
 
 # Configuration of machine-dependent code
 #
-AC_MSG_CHECKING(which machine-dependent code should be used) 
+AC_MSG_CHECKING(which machine-dependent code should be used)
 machdep=
 case "$host" in
  alpha-*-openbsd*)
@@ -384,8 +384,8 @@ case "$host" in
     ;;
  mips-nec-sysv*|mips-unknown-sysv*)
     ;;
- mips*-*-linux*) 
-    ;; 
+ mips*-*-linux*)
+    ;;
  mips-*-*)
     machdep="mach_dep.lo"
     dnl AC_DEFINE(NO_EXECUTE_PERMISSION)

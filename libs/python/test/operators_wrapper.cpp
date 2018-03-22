@@ -4,13 +4,13 @@
 struct vector
 {
     virtual ~vector() {}
-    
+
     vector operator+( const vector& ) const
     { return vector(); }
 
     vector& operator+=( const vector& )
     { return *this; }
-    
+
     vector operator-() const
     { return *this; }
 };
@@ -34,7 +34,7 @@ BOOST_PYTHON_MODULE( operators_wrapper_ext )
         .def( self += self )
         .def( -self )
         ;
-    
+
     scope().attr("v") = vector();
     std::auto_ptr<vector> dp(new dvector);
     register_ptr_to_python< std::auto_ptr<vector> >();

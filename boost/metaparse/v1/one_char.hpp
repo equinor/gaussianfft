@@ -53,7 +53,7 @@ namespace boost
         {};
       public:
         typedef one_char type;
-        
+
         template <class S, class Pos>
         struct apply :
           boost::mpl::eval_if<

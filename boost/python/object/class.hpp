@@ -12,18 +12,18 @@
 
 namespace boost { namespace python {
 
-namespace objects { 
+namespace objects {
 
 struct BOOST_PYTHON_DECL class_base : python::api::object
 {
     // constructor
     class_base(
         char const* name              // The name of the class
-        
+
         , std::size_t num_types         // A list of class_ids. The first is the type
         , type_info const*const types    // this is wrapping. The rest are the types of
                                         // any bases.
-        
+
         , char const* doc = 0           // Docstring, if any.
         );
 
@@ -35,12 +35,12 @@ struct BOOST_PYTHON_DECL class_base : python::api::object
  protected:
     void add_property(
         char const* name, object const& fget, char const* docstr);
-    void add_property(char const* name, 
+    void add_property(char const* name,
         object const& fget, object const& fset, char const* docstr);
 
     void add_static_property(char const* name, object const& fget);
     void add_static_property(char const* name, object const& fget, object const& fset);
-    
+
     // Retrieve the underlying object
     void setattr(char const* name, object const&);
 

@@ -18,9 +18,9 @@ namespace boost {
 namespace numeric {
 
 namespace interval_lib {
-    
+
 class comparison_error
-  : public std::runtime_error 
+  : public std::runtime_error
 {
 public:
   comparison_error()
@@ -61,7 +61,7 @@ public:
   interval &operator=(interval<T, Policies> const &r);
   template<class Policies1> interval &operator=(interval<T, Policies1> const &r);
   template<class T1, class Policies1> interval &operator=(interval<T1, Policies1> const &r);
- 
+
   void assign(const T& l, const T& u);
 
   static interval empty();
@@ -120,7 +120,7 @@ private:
       if (checking::is_nan(r))
         throw interval_lib::comparison_error();
     }
-    
+
     const T& val;
   };
 

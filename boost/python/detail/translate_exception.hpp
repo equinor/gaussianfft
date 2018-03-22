@@ -12,7 +12,7 @@
 
 # include <boost/function/function0.hpp>
 
-namespace boost { namespace python { namespace detail { 
+namespace boost { namespace python { namespace detail {
 
 // A ternary function object used to translate C++ exceptions of type
 // ExceptionType into Python exceptions by invoking an object of type
@@ -35,7 +35,7 @@ struct translate_exception
         typename add_const<ExceptionType>::type
     >::type exception_cref;
 # endif
-    
+
     inline bool operator()(
         exception_handler const& handler
       , function0<void> const& f

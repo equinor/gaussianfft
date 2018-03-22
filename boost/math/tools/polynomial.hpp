@@ -196,7 +196,7 @@ division(polynomial<T> u, const polynomial<T>& v)
     BOOST_ASSERT(u);
 
     typedef typename polynomial<T>::size_type N;
-    
+
     N const m = u.size() - 1, n = v.size() - 1;
     N k = m - n;
     polynomial<T> q;
@@ -302,12 +302,12 @@ public:
          m_data.push_back(boost::math::tools::real_cast<T>(p[i]));
       }
    }
-   
+
 #if !defined(BOOST_NO_CXX11_HDR_INITIALIZER_LIST) && !BOOST_WORKAROUND(BOOST_GCC_VERSION, < 40500)
     polynomial(std::initializer_list<T> l) : polynomial(std::begin(l), std::end(l))
     {
     }
-    
+
     polynomial&
     operator=(std::initializer_list<T> l)
     {
@@ -455,13 +455,13 @@ public:
        normalize();
        return *this;
    }
-   
+
    // Convenient and efficient query for zero.
    bool is_zero() const
    {
        return m_data.empty();
    }
-   
+
    // Conversion to bool.
 #ifdef BOOST_NO_CXX11_EXPLICIT_CONVERSION_OPERATORS
    typedef bool (polynomial::*unmentionable_type)() const;
@@ -482,7 +482,7 @@ public:
    {
        m_data.clear();
    }
-    
+
     /** Remove zero coefficients 'from the top', that is for which there are no
     *        non-zero coefficients of higher degree. */
    void normalize()

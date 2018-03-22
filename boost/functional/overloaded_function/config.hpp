@@ -23,7 +23,7 @@ When specified by the user, this macro must be a non-negative integer number.
 @See @RefSect{getting_started, Getting Started},
 @RefClass{boost::overloaded_function}.
 */
-#ifndef BOOST_FUNCTIONAL_OVERLOADED_FUNCTION_CONFIG_ARITY_MAX 
+#ifndef BOOST_FUNCTIONAL_OVERLOADED_FUNCTION_CONFIG_ARITY_MAX
 #   define BOOST_FUNCTIONAL_OVERLOADED_FUNCTION_CONFIG_ARITY_MAX 5
 #endif
 

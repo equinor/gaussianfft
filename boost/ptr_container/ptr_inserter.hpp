@@ -29,25 +29,25 @@ namespace ptr_container
 
     template< class PtrContainer >
     class ptr_front_insert_iterator;
-    
+
     template< class PtrContainer >
     class ptr_insert_iterator;
 
     template< class PtrContainer >
-    ptr_back_insert_iterator<PtrContainer> 
+    ptr_back_insert_iterator<PtrContainer>
     ptr_back_inserter( PtrContainer& cont );
 
     template< class PtrContainer >
-    ptr_front_insert_iterator<PtrContainer> 
+    ptr_front_insert_iterator<PtrContainer>
     ptr_front_inserter( PtrContainer& cont );
 
     template< class PtrContainer >
-    ptr_insert_iterator<PtrContainer> 
+    ptr_insert_iterator<PtrContainer>
     ptr_inserter( PtrContainer& cont, typename PtrContainer::iterator before );
 
     //////////////////////////////////////////////////////////////////////////
     // Implementation
-    ////////////////////////////////////////////////////////////////////////// 
+    //////////////////////////////////////////////////////////////////////////
 
 
     template< class PtrContainer >
@@ -62,7 +62,7 @@ namespace ptr_container
         : container(&cont)
         { }
 
-        ptr_back_insert_iterator& 
+        ptr_back_insert_iterator&
         operator=( typename PtrContainer::value_type r )
         {
             typename PtrContainer::value_type obj = 0;
@@ -74,14 +74,14 @@ namespace ptr_container
         }
 
         template< class T >
-        ptr_back_insert_iterator& 
+        ptr_back_insert_iterator&
         operator=( std::auto_ptr<T> r )
         {
             container->push_back( r );
             return *this;
         }
 
-        ptr_back_insert_iterator& 
+        ptr_back_insert_iterator&
         operator=( typename PtrContainer::const_reference r )
         {
             container->push_back( container_type::clone_allocator_type::
@@ -90,26 +90,26 @@ namespace ptr_container
         }
 
         ptr_back_insert_iterator& operator*()
-        { 
+        {
             return *this;
         }
 
         ptr_back_insert_iterator& operator++()
-        { 
+        {
             return *this;
         }
 
         ptr_back_insert_iterator operator++(int)
-        { 
+        {
             return *this;
         }
-        
+
     protected:
         PtrContainer* container;
     };
 
 
-    
+
     template< class PtrContainer >
     class ptr_front_insert_iterator :
         public std::iterator<std::output_iterator_tag,void,void,void,void>
@@ -122,7 +122,7 @@ namespace ptr_container
         : container(&cont)
         { }
 
-        ptr_front_insert_iterator& 
+        ptr_front_insert_iterator&
         operator=( typename PtrContainer::value_type r )
         {
             typename PtrContainer::value_type obj = 0;
@@ -134,14 +134,14 @@ namespace ptr_container
         }
 
         template< class T >
-        ptr_front_insert_iterator& 
+        ptr_front_insert_iterator&
         operator=( std::auto_ptr<T> r )
         {
             container->push_front( r );
             return *this;
         }
-        
-        ptr_front_insert_iterator& 
+
+        ptr_front_insert_iterator&
         operator=( typename PtrContainer::const_reference r )
         {
             container->push_front( container_type::clone_allocator_type::
@@ -150,26 +150,26 @@ namespace ptr_container
         }
 
         ptr_front_insert_iterator& operator*()
-        { 
+        {
             return *this;
         }
 
         ptr_front_insert_iterator& operator++()
-        { 
+        {
             return *this;
         }
 
         ptr_front_insert_iterator operator++(int)
-        { 
+        {
             return *this;
         }
-        
+
     protected:
         PtrContainer* container;
     };
 
 
-    
+
     template< class PtrContainer >
     class ptr_insert_iterator :
         public std::iterator<std::output_iterator_tag,void,void,void,void>
@@ -183,7 +183,7 @@ namespace ptr_container
         : container(&cont), iter(before)
         { }
 
-        ptr_insert_iterator& 
+        ptr_insert_iterator&
         operator=( typename PtrContainer::value_type r )
         {
             typename PtrContainer::value_type obj = 0;
@@ -195,14 +195,14 @@ namespace ptr_container
         }
 
         template< class T >
-        ptr_insert_iterator& 
+        ptr_insert_iterator&
         operator=( std::auto_ptr<T> r )
         {
             iter = container->insert( iter, r );
             return *this;
         }
-        
-        ptr_insert_iterator& 
+
+        ptr_insert_iterator&
         operator=( typename PtrContainer::const_reference r )
         {
             iter = container->insert( iter, container_type::clone_allocator_type::
@@ -211,47 +211,47 @@ namespace ptr_container
         }
 
         ptr_insert_iterator& operator*()
-        { 
+        {
             return *this;
         }
 
         ptr_insert_iterator& operator++()
-        { 
+        {
             return *this;
         }
 
         ptr_insert_iterator operator++(int)
-        { 
+        {
             return *this;
         }
-        
+
     protected:
         PtrContainer*                    container;
         typename PtrContainer::iterator  iter;
     };
 
     template< class PtrContainer >
-    inline ptr_back_insert_iterator<PtrContainer> 
+    inline ptr_back_insert_iterator<PtrContainer>
     ptr_back_inserter( PtrContainer& cont )
     {
         return ptr_back_insert_iterator<PtrContainer>( cont );
     }
 
     template< class PtrContainer >
-    inline ptr_front_insert_iterator<PtrContainer> 
+    inline ptr_front_insert_iterator<PtrContainer>
     ptr_front_inserter( PtrContainer& cont )
     {
         return ptr_front_insert_iterator<PtrContainer>( cont );
     }
 
     template< class PtrContainer >
-    inline ptr_insert_iterator<PtrContainer> 
-    ptr_inserter( PtrContainer& cont, 
+    inline ptr_insert_iterator<PtrContainer>
+    ptr_inserter( PtrContainer& cont,
                     typename PtrContainer::iterator before )
     {
         return ptr_insert_iterator<PtrContainer>( cont, before );
     }
-    
+
 } // namespace 'ptr_container'
 } // namespace 'boost'
 

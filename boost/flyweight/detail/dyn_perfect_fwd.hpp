@@ -57,7 +57,7 @@ BOOST_FLYWEIGHT_PERFECT_FWD_WITH_ARGS(name,body)
 #include <boost/preprocessor/repetition/repeat.hpp>
 #include <boost/preprocessor/repetition/repeat_from_to.hpp>
 #include <boost/preprocessor/seq/elem.hpp>
-#include <boost/preprocessor/seq/for_each_product.hpp> 
+#include <boost/preprocessor/seq/for_each_product.hpp>
 #include <boost/preprocessor/seq/seq.hpp>
 #include <boost/preprocessor/seq/size.hpp>
 
@@ -94,7 +94,7 @@ BOOST_FLYWEIGHT_PERFECT_FWD_MASK_AUX(                              \
 #define BOOST_FLYWEIGHT_01(z,n,_) ((0)(1))
 
 /* Perfect forwarding overloads accepting 1 to n args */
- 
+
 #define BOOST_FLYWEIGHT_PERFECT_FWD_N(z,n,data)                    \
 BOOST_PP_SEQ_FOR_EACH_PRODUCT(                                     \
   BOOST_FLYWEIGHT_PERFECT_FWD_MASK,                                \

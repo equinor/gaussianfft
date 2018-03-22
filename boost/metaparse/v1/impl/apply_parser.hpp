@@ -39,7 +39,7 @@ namespace boost
               typename Pos::type
             >
           {};
-          
+
         public:
           template <class State, class Parser>
           struct apply :

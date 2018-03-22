@@ -172,7 +172,7 @@ struct point_loop_on_spheroid
             && math::equals(math::abs(b_lat_min), constants::max_latitude()))
         {
             // the box degenerates to either the north or the south pole;
-            // the only important coordinate here is the pole's latitude, 
+            // the only important coordinate here is the pole's latitude,
             // as the longitude can be anything;
             // we thus take into account the box's latitude only and return
             geometry::set<min_corner, 0>(box, p_lon);

@@ -61,7 +61,7 @@ public:
         m_is_root = is_root_bckup;
 
         Box box_exp = rtree::elements_box<Box>(elements.begin(), elements.end(), m_tr);
-        
+
         if ( m_exact_match )
             result = m_is_root || geometry::equals(box_exp, m_box);
         else
@@ -81,7 +81,7 @@ public:
                 result = false;
                 return;
             }
-        
+
             Box box_exp = rtree::values_box<Box>(elements.begin(), elements.end(), m_tr);
 
             if ( m_exact_match )
@@ -117,7 +117,7 @@ bool are_boxes_ok(Rtree const& tree, bool exact_match = true)
         typename RTV::box_type,
         typename RTV::allocators_type
     > v(rtv.translator(), exact_match);
-    
+
     rtv.apply_visitor(v);
 
     return v.result;

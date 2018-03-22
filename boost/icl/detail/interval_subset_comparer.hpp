@@ -20,10 +20,10 @@ Copyright (c) 2008-2009: Joachim Faulhaber
 namespace boost{namespace icl
 {
 
-#ifdef BOOST_MSVC 
+#ifdef BOOST_MSVC
 #pragma warning(push)
 #pragma warning(disable:4127) // conditional expression is constant
-#endif                        
+#endif
 
 namespace Interval_Set
 {
@@ -34,7 +34,7 @@ struct settic_codomain_compare
 {
     static int apply(typename LeftT::const_iterator& left_, typename RightT::const_iterator& right_)
     {
-        return inclusion_compare( icl::co_value<LeftT>(left_), 
+        return inclusion_compare( icl::co_value<LeftT>(left_),
                                  icl::co_value<RightT>(right_));
     }
 };
@@ -91,8 +91,8 @@ public:
     typedef typename LeftT::const_iterator  LeftIterT;
     typedef typename RightT::const_iterator RightIterT;
 
-    BOOST_STATIC_CONSTANT(bool, 
-        _compare_codomain = (mpl::and_<is_map<LeftT>, is_map<RightT> >::value)); 
+    BOOST_STATIC_CONSTANT(bool,
+        _compare_codomain = (mpl::and_<is_map<LeftT>, is_map<RightT> >::value));
 
 
     subset_comparer(const LeftT&      left,
@@ -107,8 +107,8 @@ public:
 
     enum
     {
-        unrelated  = inclusion::unrelated, 
-        subset     = inclusion::subset,     // left is_subset_of   right 
+        unrelated  = inclusion::unrelated,
+        subset     = inclusion::subset,     // left is_subset_of   right
         superset   = inclusion::superset,   // left is_superset_of right
         equal      = inclusion::equal       // equal = subset | superset
     };
@@ -120,7 +120,7 @@ public:
     {
         using namespace boost::mpl;
 
-        return  
+        return
             if_<
                 bool_<is_concept_equivalent<is_interval_map,LeftT,RightT>::value>,
                 map_codomain_compare<LeftT,RightT>,
@@ -134,7 +134,7 @@ public:
     int proceed(LeftIterT& left, RightIterT& right)
     {
         if(upper_less(key_value<LeftT>(left), key_value<RightT>(right)))
-        {   // left  ..)  
+        {   // left  ..)
             // right .....)
             _prior_left = left;
             ++left;
@@ -150,8 +150,8 @@ public:
         else//key_value<LeftT>(left).upper_equal(key_value<RightT>(right))
         {   // left  ..)
             // right ..)
-            ++left; 
-            ++right;    
+            ++left;
+            ++right;
             return nextboth;
         }
     }
@@ -195,7 +195,7 @@ public:
         }
         else if(exclusive_less(key_value<RightT>(right), key_value<LeftT>(left)))
         {   // left:             [..  left could be subset
-            // right:....) . . .[---) if [---) exists 
+            // right:....) . . .[---) if [---) exists
             restrict_result(subset);
             if(unrelated == _result)
                 return stop;
@@ -247,7 +247,7 @@ public:
         {   // left: ..)end    left could be subset
             // right:......)
             restrict_result(subset);
-            return stop;            
+            return stop;
         }
         else if(!touches(key_value<LeftT>(_prior_left), key_value<LeftT>(left)))
         {   // left: ..)   [..
@@ -256,7 +256,7 @@ public:
             {   //   ..)   [..   left could be subset
                 //   ..........)
                 if(unrelated == restrict_result(subset))
-                    return stop;            
+                    return stop;
             }
             //else   ..)   [...
             //          [..
@@ -282,7 +282,7 @@ public:
         {   // left: ......)    left could be superset
             // right:..)end
             restrict_result(superset);
-            return stop;            
+            return stop;
         }
         else if(!touches(key_value<RightT>(_prior_right), key_value<RightT>(right)))
         {   // left: .........)
@@ -291,7 +291,7 @@ public:
             {   //       [....)  left could be superset
                 //   ..)   [..
                 if(unrelated == restrict_result(superset))
-                    return stop;            
+                    return stop;
             }
             //else       [....)
             //   ..)   [..
@@ -324,16 +324,16 @@ private:
 
 
 //------------------------------------------------------------------------------
-// Subset/superset comparison on ranges of two interval container 
+// Subset/superset comparison on ranges of two interval container
 //------------------------------------------------------------------------------
 template<class LeftT, class RightT>
 int subset_compare
 (
     const LeftT& left,   //sub
     const RightT& right, //super
-    typename LeftT::const_iterator  left_begin,   
+    typename LeftT::const_iterator  left_begin,
     typename LeftT::const_iterator  left_end,
-    typename RightT::const_iterator right_begin, 
+    typename RightT::const_iterator right_begin,
     typename RightT::const_iterator right_end
 )
 {
@@ -357,12 +357,12 @@ int subset_compare
 
 
 } // namespace Interval_Set
-    
+
 #ifdef BOOST_MSVC
 #pragma warning(pop)
 #endif
 
 }} // namespace icl boost
 
-#endif 
+#endif
 

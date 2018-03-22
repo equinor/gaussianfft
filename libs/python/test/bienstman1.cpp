@@ -9,7 +9,7 @@
 
 struct A {};
 
-struct V 
+struct V
 {
  virtual ~V() {}; // silence compiler warningsa
  virtual void f() = 0;
@@ -31,9 +31,9 @@ BOOST_PYTHON_MODULE(bienstman1_ext)
   class_<A>("A");
 
   class_<V, boost::noncopyable>("V", no_init)
-      .def("inside", &V::inside, 
+      .def("inside", &V::inside,
            return_value_policy<reference_existing_object>())
-      .def("outside", outside, 
+      .def("outside", outside,
            return_value_policy<reference_existing_object>())
       ;
 }

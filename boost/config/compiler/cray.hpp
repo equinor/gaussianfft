@@ -68,8 +68,8 @@
 #define BOOST_MATH_DISABLE_STD_FPCLASSIFY
 //#define BOOST_HAS_FPCLASSIFY
 
-#define BOOST_SP_USE_PTHREADS 
-#define BOOST_AC_USE_PTHREADS 
+#define BOOST_SP_USE_PTHREADS
+#define BOOST_AC_USE_PTHREADS
 
 /* everything that follows is working around what are thought to be
  * compiler shortcomings.  Revist all of these regularly.
@@ -78,7 +78,7 @@
 //#define BOOST_USE_ENUM_STATIC_ASSERT
 //#define BOOST_BUGGY_INTEGRAL_CONSTANT_EXPRESSIONS //(this may be implied by the previous #define
 
-// These constants should be provided by the 
+// These constants should be provided by the
 // compiler, at least when -hgnu is asserted on the command line.
 
 #ifndef __ATOMIC_RELAXED

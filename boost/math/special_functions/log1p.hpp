@@ -66,10 +66,10 @@ namespace detail
 // Algorithm log1p is part of C99, but is not yet provided by many compilers.
 //
 // This version uses a Taylor series expansion for 0.5 > x > epsilon, which may
-// require up to std::numeric_limits<T>::digits+1 terms to be calculated. 
+// require up to std::numeric_limits<T>::digits+1 terms to be calculated.
 // It would be much more efficient to use the equivalence:
 //   log(1+x) == (log(1+x) * x) / ((1-x) - 1)
-// Unfortunately many optimizing compilers make such a mess of this, that 
+// Unfortunately many optimizing compilers make such a mess of this, that
 // it performs no better than log(1+x): which is to say not very well at all.
 //
 template <class T, class Policy>
@@ -90,7 +90,7 @@ T log1p_imp(T const & x, const Policy& pol, const mpl::int_<0>&)
    result_type a = abs(result_type(x));
    if(a > result_type(0.5f))
       return log(1 + result_type(x));
-   // Note that without numeric_limits specialisation support, 
+   // Note that without numeric_limits specialisation support,
    // epsilon just returns zero, and our "optimisation" will always fail:
    if(a < tools::epsilon<result_type>())
       return x;
@@ -123,7 +123,7 @@ T log1p_imp(T const& x, const Policy& pol, const mpl::int_<53>&)
    T a = fabs(x);
    if(a > 0.5f)
       return log(1 + x);
-   // Note that without numeric_limits specialisation support, 
+   // Note that without numeric_limits specialisation support,
    // epsilon just returns zero, and our "optimisation" will always fail:
    if(a < tools::epsilon<T>())
       return x;
@@ -132,7 +132,7 @@ T log1p_imp(T const& x, const Policy& pol, const mpl::int_<53>&)
    // Expected Error Term:                         1.843e-017
    // Maximum Relative Change in Control Points:   8.138e-004
    // Max Error found at double precision =        3.250766e-016
-   static const T P[] = {    
+   static const T P[] = {
        0.15141069795941984e-16L,
        0.35495104378055055e-15L,
        0.33333333333332835L,
@@ -142,7 +142,7 @@ T log1p_imp(T const& x, const Policy& pol, const mpl::int_<53>&)
        0.13703234928513215L,
        0.011294864812099712L
      };
-   static const T Q[] = {    
+   static const T Q[] = {
        1L,
        3.7274719063011499L,
        5.5387948649720334L,
@@ -176,7 +176,7 @@ T log1p_imp(T const& x, const Policy& pol, const mpl::int_<64>&)
    T a = fabs(x);
    if(a > 0.5f)
       return log(1 + x);
-   // Note that without numeric_limits specialisation support, 
+   // Note that without numeric_limits specialisation support,
    // epsilon just returns zero, and our "optimisation" will always fail:
    if(a < tools::epsilon<T>())
       return x;
@@ -185,7 +185,7 @@ T log1p_imp(T const& x, const Policy& pol, const mpl::int_<64>&)
    // Expected Error Term:                         8.088e-20
    // Maximum Relative Change in Control Points:   9.648e-05
    // Max Error found at long double precision =   2.242324e-19
-   static const T P[] = {    
+   static const T P[] = {
       BOOST_MATH_BIG_CONSTANT(T, 64, -0.807533446680736736712e-19),
       BOOST_MATH_BIG_CONSTANT(T, 64, -0.490881544804798926426e-18),
       BOOST_MATH_BIG_CONSTANT(T, 64, 0.333333333333333373941),
@@ -196,7 +196,7 @@ T log1p_imp(T const& x, const Policy& pol, const mpl::int_<64>&)
       BOOST_MATH_BIG_CONSTANT(T, 64, 0.0706537026422828914622),
       BOOST_MATH_BIG_CONSTANT(T, 64, 0.00441709903782239229447)
    };
-   static const T Q[] = {    
+   static const T Q[] = {
       BOOST_MATH_BIG_CONSTANT(T, 64, 1.0),
       BOOST_MATH_BIG_CONSTANT(T, 64, 4.26423872346263928361),
       BOOST_MATH_BIG_CONSTANT(T, 64, 7.48189472704477708962),
@@ -231,7 +231,7 @@ T log1p_imp(T const& x, const Policy& pol, const mpl::int_<24>&)
    T a = fabs(x);
    if(a > 0.5f)
       return log(1 + x);
-   // Note that without numeric_limits specialisation support, 
+   // Note that without numeric_limits specialisation support,
    // epsilon just returns zero, and our "optimisation" will always fail:
    if(a < tools::epsilon<T>())
       return x;
@@ -241,13 +241,13 @@ T log1p_imp(T const& x, const Policy& pol, const mpl::int_<24>&)
    // Maximum Relative Change in Control Points:   2.509e-04
    // Max Error found at double precision =        6.910422e-08
    // Max Error found at float precision =         8.357242e-08
-   static const T P[] = {    
+   static const T P[] = {
       -0.671192866803148236519e-7L,
       0.119670999140731844725e-6L,
       0.333339469182083148598L,
       0.237827183019664122066L
    };
-   static const T Q[] = {    
+   static const T Q[] = {
       1L,
       1.46348272586988539733L,
       0.497859871350117338894L,
@@ -292,14 +292,14 @@ const typename log1p_initializer<T, Policy, tag>::init log1p_initializer<T, Poli
 
 template <class T, class Policy>
 inline typename tools::promote_args<T>::type log1p(T x, const Policy&)
-{ 
+{
    typedef typename tools::promote_args<T>::type result_type;
    typedef typename policies::evaluation<result_type, Policy>::type value_type;
    typedef typename policies::precision<result_type, Policy>::type precision_type;
    typedef typename policies::normalise<
-      Policy, 
-      policies::promote_float<false>, 
-      policies::promote_double<false>, 
+      Policy,
+      policies::promote_float<false>,
+      policies::promote_double<false>,
       policies::discrete_quantile<>,
       policies::assert_undefined<> >::type forwarding_policy;
 
@@ -352,51 +352,51 @@ inline long double log1p(long double z)
 #  ifdef BOOST_MATH_USE_C99
 template <class Policy>
 inline float log1p(float x, const Policy& pol)
-{ 
+{
    if(x < -1)
       return policies::raise_domain_error<float>(
          "log1p<%1%>(%1%)", "log1p(x) requires x > -1, but got x = %1%.", x, pol);
    if(x == -1)
       return -policies::raise_overflow_error<float>(
          "log1p<%1%>(%1%)", 0, pol);
-   return ::log1pf(x); 
+   return ::log1pf(x);
 }
 #ifndef BOOST_MATH_NO_LONG_DOUBLE_MATH_FUNCTIONS
 template <class Policy>
 inline long double log1p(long double x, const Policy& pol)
-{ 
+{
    if(x < -1)
       return policies::raise_domain_error<long double>(
          "log1p<%1%>(%1%)", "log1p(x) requires x > -1, but got x = %1%.", x, pol);
    if(x == -1)
       return -policies::raise_overflow_error<long double>(
          "log1p<%1%>(%1%)", 0, pol);
-   return ::log1pl(x); 
+   return ::log1pl(x);
 }
 #endif
 #else
 template <class Policy>
 inline float log1p(float x, const Policy& pol)
-{ 
+{
    if(x < -1)
       return policies::raise_domain_error<float>(
          "log1p<%1%>(%1%)", "log1p(x) requires x > -1, but got x = %1%.", x, pol);
    if(x == -1)
       return -policies::raise_overflow_error<float>(
          "log1p<%1%>(%1%)", 0, pol);
-   return ::log1p(x); 
+   return ::log1p(x);
 }
 #endif
 template <class Policy>
 inline double log1p(double x, const Policy& pol)
-{ 
+{
    if(x < -1)
       return policies::raise_domain_error<double>(
          "log1p<%1%>(%1%)", "log1p(x) requires x > -1, but got x = %1%.", x, pol);
    if(x == -1)
       return -policies::raise_overflow_error<double>(
          "log1p<%1%>(%1%)", 0, pol);
-   return ::log1p(x); 
+   return ::log1p(x);
 }
 #elif defined(_MSC_VER) && (BOOST_MSVC >= 1400)
 //
@@ -414,8 +414,8 @@ inline double log1p(double x, const Policy& pol)
       return -policies::raise_overflow_error<double>(
          "log1p<%1%>(%1%)", 0, pol);
    double u = 1+x;
-   if(u == 1.0) 
-      return x; 
+   if(u == 1.0)
+      return x;
    else
       return ::log(u)*(x/(u-1.0));
 }
@@ -439,8 +439,8 @@ inline long double log1p(long double x, const Policy& pol)
       return -policies::raise_overflow_error<long double>(
          "log1p<%1%>(%1%)", 0, pol);
    long double u = 1+x;
-   if(u == 1.0) 
-      return x; 
+   if(u == 1.0)
+      return x;
    else
       return ::logl(u)*(x/(u-1.0));
 }
@@ -456,7 +456,7 @@ inline typename tools::promote_args<T>::type log1p(T x)
 // Compute log(1+x)-x:
 //
 template <class T, class Policy>
-inline typename tools::promote_args<T>::type 
+inline typename tools::promote_args<T>::type
    log1pmx(T x, const Policy& pol)
 {
    typedef typename tools::promote_args<T>::type result_type;
@@ -473,7 +473,7 @@ inline typename tools::promote_args<T>::type
    result_type a = abs(result_type(x));
    if(a > result_type(0.95f))
       return log(1 + result_type(x)) - result_type(x);
-   // Note that without numeric_limits specialisation support, 
+   // Note that without numeric_limits specialisation support,
    // epsilon just returns zero, and our "optimisation" will always fail:
    if(a < tools::epsilon<result_type>())
       return -x * x / 2;

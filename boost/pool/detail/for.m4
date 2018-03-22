@@ -1,13 +1,13 @@
-m4_dnl 
+m4_dnl
 m4_dnl Copyright (C) 2000 Stephen Cleary
-m4_dnl 
+m4_dnl
 m4_dnl Distributed under the Boost Software License, Version 1.0. (See accompany-
 m4_dnl ing file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 m4_dnl
 m4_dnl See http://www.boost.org for updates, documentation, and revision history.
-m4_dnl 
 m4_dnl
-m4_dnl 
+m4_dnl
+m4_dnl
 m4_dnl BOOST_M4_FOR: repeat a given text for a range of values
 m4_dnl   $1 - variable to hold the current value.
 m4_dnl   $2 - the starting value.
@@ -37,9 +37,9 @@ m4_define(`BOOST_M4_FOR',
 m4_define(`BOOST_M4_FOR_HELPER',
           `m4_ifelse(m4_eval($1 >= $3), 1, ,
                      `$4`'m4_define(`$1', m4_incr($1))m4_ifelse(m4_eval($1 != $3), 1, `$5')`'BOOST_M4_FOR_HELPER($@)')')m4_dnl
-m4_dnl 
+m4_dnl
 m4_dnl Testing/Examples:
-m4_dnl 
+m4_dnl
 m4_dnl The following line will output:
 m4_dnl   "repeat.m4:42: Boost m4 script: BOOST_M4_FOR: Wrong number of arguments (3)"
 m4_dnl BOOST_M4_FOR(i, 1, 3)

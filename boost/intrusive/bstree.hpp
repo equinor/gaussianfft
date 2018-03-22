@@ -276,7 +276,7 @@ struct bstbase2
                < typename ValueTraits::pointer
                , VoidOrKeyOfValue
                , VoidOrKeyComp
-               
+
                >::value_compare
             >
    , public bstbase3<ValueTraits, AlgoType, HeaderHolder>
@@ -490,7 +490,7 @@ struct bstbase2
    template<class KeyType, class KeyTypeKeyCompare>
    BOOST_INTRUSIVE_DOC1ST(std::pair<iterator BOOST_INTRUSIVE_I bool>
       , typename detail::disable_if_convertible
-         <KeyType BOOST_INTRUSIVE_I const_iterator BOOST_INTRUSIVE_I 
+         <KeyType BOOST_INTRUSIVE_I const_iterator BOOST_INTRUSIVE_I
          std::pair<iterator BOOST_INTRUSIVE_I bool> >::type)
       insert_unique_check
       (const KeyType &key, KeyTypeKeyCompare comp, insert_commit_data &commit_data)
@@ -1812,7 +1812,7 @@ class bstree_impl
    template<class KeyType, class KeyTypeKeyCompare>
    std::pair<iterator,iterator> bounded_range
       (const KeyType &lower_key, const KeyType &upper_key, KeyTypeKeyCompare comp, bool left_closed, bool right_closed);
-   
+
    //! @copydoc ::boost::intrusive::bstree::bounded_range(const key_type &,const key_type &,bool,bool)
    std::pair<const_iterator,const_iterator> bounded_range
       (const key_type &lower_key, const key_type &upper_key, bool left_closed, bool right_closed) const;
@@ -1970,11 +1970,11 @@ class bstree_impl
 
    //! <b>Requires</b>: "source" container's Options can only can differ in the comparison
    //!   function from *this.
-   //! 
+   //!
    //! <b>Effects</b>: Attempts to extract each element in source and insert it into a using
    //!   the comparison object of *this. If there is an element in a with key equivalent to the
    //!   key of an element from source, then that element is not extracted from source.
-   //! 
+   //!
    //! <b>Postcondition</b>: Pointers and references to the transferred elements of source refer
    //!   to those same elements but as members of *this. Iterators referring to the transferred
    //!   elements will continue to refer to their elements, but they now behave as iterators into *this,
@@ -2007,10 +2007,10 @@ class bstree_impl
 
    //! <b>Requires</b>: "source" container's Options can only can differ in the comparison
    //!   function from *this.
-   //! 
+   //!
    //! <b>Effects</b>: Extracts each element in source and insert it into a using
    //!   the comparison object of *this.
-   //! 
+   //!
    //! <b>Postcondition</b>: Pointers and references to the transferred elements of source refer
    //!   to those same elements but as members of *this. Iterators referring to the transferred
    //!   elements will continue to refer to their elements, but they now behave as iterators into *this,

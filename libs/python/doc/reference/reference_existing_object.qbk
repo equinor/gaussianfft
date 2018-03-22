@@ -62,7 +62,7 @@ BOOST_PYTHON_MODULE(singleton)
 Python code:
 ``
 >>> import singleton
->>> s1 = singleton.get_it()  
+>>> s1 = singleton.get_it()
 >>> s2 = singleton.get_it()
 >>> id(s1) == id(s2)  # s1 and s2 are not the same object
 0

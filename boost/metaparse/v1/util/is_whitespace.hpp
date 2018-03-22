@@ -25,7 +25,7 @@ namespace boost
         struct is_whitespace<boost::mpl::na>
         {
           typedef is_whitespace type;
-          
+
           template <class C = boost::mpl::na>
           struct apply : is_whitespace<C> {};
         };

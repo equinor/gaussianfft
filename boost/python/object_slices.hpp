@@ -20,7 +20,7 @@ struct const_slice_policies
     typedef std::pair<handle<>, handle<> > key_type;
     static object get(object const& target, key_type const& key);
 };
-  
+
 struct slice_policies : const_slice_policies
 {
     static object const& set(object const& target, key_type const& key, object const& value);
@@ -32,7 +32,7 @@ inline slice_policies::key_type slice_key(T x, U y)
 {
     return slice_policies::key_type(handle<>(x), handle<>(y));
 }
-    
+
 //
 // implementation
 //

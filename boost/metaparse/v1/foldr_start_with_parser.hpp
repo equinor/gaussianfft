@@ -40,7 +40,7 @@ namespace boost
         struct apply_unchecked;
       public:
         typedef foldr_start_with_parser type;
-      
+
         template <class S, class Pos>
         struct apply :
           boost::mpl::eval_if<

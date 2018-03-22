@@ -30,17 +30,17 @@ namespace boost { namespace iostreams {
 
 namespace detail {
 
-template<typename T> 
+template<typename T>
 struct read_write_if_impl;
 
-template<typename T> 
+template<typename T>
 struct seek_if_impl;
 
 } // End namespace detail.
 
 template<typename T>
 typename int_type_of<T>::type get_if(T& t)
-{ 
+{
     typedef typename detail::dispatch<T, input, output>::type tag;
     return detail::read_write_if_impl<tag>::get(t);
 }
@@ -48,14 +48,14 @@ typename int_type_of<T>::type get_if(T& t)
 template<typename T>
 inline std::streamsize
 read_if(T& t, typename char_type_of<T>::type* s, std::streamsize n)
-{ 
+{
     typedef typename detail::dispatch<T, input, output>::type tag;
     return detail::read_write_if_impl<tag>::read(t, s, n);
 }
 
 template<typename T>
 bool put_if(T& t, typename char_type_of<T>::type c)
-{ 
+{
     typedef typename detail::dispatch<T, output, input>::type tag;
     return detail::read_write_if_impl<tag>::put(t, c);
 }
@@ -63,16 +63,16 @@ bool put_if(T& t, typename char_type_of<T>::type c)
 template<typename T>
 inline std::streamsize write_if
     (T& t, const typename char_type_of<T>::type* s, std::streamsize n)
-{ 
+{
     typedef typename detail::dispatch<T, output, input>::type tag;
     return detail::read_write_if_impl<tag>::write(t, s, n);
 }
 
 template<typename T>
 inline std::streampos
-seek_if( T& t, stream_offset off, BOOST_IOS::seekdir way, 
+seek_if( T& t, stream_offset off, BOOST_IOS::seekdir way,
          BOOST_IOS::openmode which = BOOST_IOS::in | BOOST_IOS::out )
-{ 
+{
     using namespace detail;
     typedef typename dispatch<T, random_access, any_tag>::type tag;
     return seek_if_impl<tag>::seek(t, off, way, which);
@@ -99,7 +99,7 @@ struct read_write_if_impl<input> {
       BOOST_IOSTREAMS_UNREACHABLE_RETURN(false) }
 
     template<typename T>
-    static std::streamsize 
+    static std::streamsize
     write(T&, const typename char_type_of<T>::type*, std::streamsize)
     { boost::throw_exception(cant_write());
       BOOST_IOSTREAMS_UNREACHABLE_RETURN(0) }
@@ -123,8 +123,8 @@ struct read_write_if_impl<output> {
     { return iostreams::put(t, c); }
 
     template<typename T>
-    static std::streamsize 
-    write( T& t, const typename char_type_of<T>::type* s, 
+    static std::streamsize
+    write( T& t, const typename char_type_of<T>::type* s,
            std::streamsize n )
     { return iostreams::write(t, s, n); }
 };
@@ -134,8 +134,8 @@ struct read_write_if_impl<output> {
 template<>
 struct seek_if_impl<random_access> {
     template<typename T>
-    static std::streampos 
-    seek( T& t, stream_offset off, BOOST_IOS::seekdir way, 
+    static std::streampos
+    seek( T& t, stream_offset off, BOOST_IOS::seekdir way,
           BOOST_IOS::openmode which )
     { return iostreams::seek(t, off, way, which); }
 };
@@ -143,7 +143,7 @@ struct seek_if_impl<random_access> {
 template<>
 struct seek_if_impl<any_tag> {
     template<typename T>
-    static std::streampos 
+    static std::streampos
     seek(T&, stream_offset, BOOST_IOS::seekdir, BOOST_IOS::openmode)
     { boost::throw_exception(cant_seek());
       BOOST_IOSTREAMS_UNREACHABLE_RETURN(std::streampos()) }

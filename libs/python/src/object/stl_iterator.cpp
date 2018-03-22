@@ -12,7 +12,7 @@
 #include <boost/python/object/stl_iterator_core.hpp>
 
 namespace boost { namespace python { namespace objects
-{ 
+{
 
 stl_input_iterator_impl::stl_input_iterator_impl()
   : it_()

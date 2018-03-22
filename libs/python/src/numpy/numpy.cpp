@@ -22,7 +22,7 @@ static void * wrap_import_array()
 }
 #endif
 
-void initialize(bool register_scalar_converters) 
+void initialize(bool register_scalar_converters)
 {
   wrap_import_array();
   import_ufunc();

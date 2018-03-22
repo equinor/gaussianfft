@@ -59,7 +59,7 @@ namespace boost { namespace python
    private:
       T* m_p;
   };
-  
+
   template <class T> struct null_ok;
   namespace detail { template <class T> struct borrowed; }
 }}

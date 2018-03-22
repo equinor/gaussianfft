@@ -15,7 +15,7 @@
 # define BOOST_SYMBOL_VISIBLE
 #endif
 
-#ifdef BOOST_HAS_DECLSPEC 
+#ifdef BOOST_HAS_DECLSPEC
 #   if defined(BOOST_ALL_DYN_LINK) || defined(BOOST_LOCALE_DYN_LINK)
 #       ifdef BOOST_LOCALE_SOURCE
 #           define BOOST_LOCALE_DECL BOOST_SYMBOL_EXPORT

@@ -1,4 +1,4 @@
-/* 
+/*
    Copyright (c) Marshall Clow 2008-2012.
 
    Distributed under the Boost Software License, Version 1.0. (See accompanying
@@ -19,7 +19,7 @@ namespace boost { namespace algorithm {
 
 /// \fn iota ( ForwardIterator first, ForwardIterator last, T value )
 /// \brief Generates an increasing sequence of values, and stores them in [first, last)
-/// 
+///
 /// \param first    The start of the input sequence
 /// \param last     One past the end of the input sequence
 /// \param value    The initial value of the sequence to be generated
@@ -33,7 +33,7 @@ void iota ( ForwardIterator first, ForwardIterator last, T value )
 
 /// \fn iota ( Range &r, T value )
 /// \brief Generates an increasing sequence of values, and stores them in the input Range.
-/// 
+///
 /// \param r        The input range
 /// \param value    The initial value of the sequence to be generated
 ///
@@ -46,7 +46,7 @@ void iota ( Range &r, T value )
 
 /// \fn iota_n ( OutputIterator out, T value, std::size_t n )
 /// \brief Generates an increasing sequence of values, and stores them in the input Range.
-/// 
+///
 /// \param out      An output iterator to write the results into
 /// \param value    The initial value of the sequence to be generated
 /// \param n        The number of items to write

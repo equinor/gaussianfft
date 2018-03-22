@@ -301,7 +301,7 @@ public:
         in.seekg(0, in.end);
         const std::size_t frames_count = frames_count_from_buffer_size(static_cast<std::size_t>(in.tellg()));
         in.seekg(pos);
-        
+
         if (!frames_count) {
             return ret;
         }

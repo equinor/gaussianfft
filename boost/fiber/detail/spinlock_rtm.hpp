@@ -75,7 +75,7 @@ public:
                         ++count;
                         cpu_relax();
                     } else if ( BOOST_FIBERS_SPIN_BEFORE_YIELD > count) {
-                        ++count; 
+                        ++count;
                         static constexpr std::chrono::microseconds us0{ 0 };
                         std::this_thread::sleep_for( us0);
 #if 0
@@ -87,7 +87,7 @@ public:
                     }
                 }
             } else {
-                // transaction aborted due: 
+                // transaction aborted due:
                 //  - internal buffer to track transactional state overflowed
                 //  - debug exception or breakpoint exception was hit
                 //  - abort during execution of nested transactions (max nesting limit exceeded)

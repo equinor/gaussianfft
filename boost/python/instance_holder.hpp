@@ -11,7 +11,7 @@
 # include <boost/python/type_id.hpp>
 # include <cstddef>
 
-namespace boost { namespace python { 
+namespace boost { namespace python {
 
 // Base class for all holders
 struct BOOST_PYTHON_DECL instance_holder : private noncopyable
@@ -19,7 +19,7 @@ struct BOOST_PYTHON_DECL instance_holder : private noncopyable
  public:
     instance_holder();
     virtual ~instance_holder();
-    
+
     // return the next holder in a chain
     instance_holder* next() const;
 
@@ -34,7 +34,7 @@ struct BOOST_PYTHON_DECL instance_holder : private noncopyable
     void install(PyObject* inst) throw();
 
     // These functions should probably be located elsewhere.
-    
+
     // Allocate storage for an object of the given size at the given
     // offset in the Python instance<> object if bytes are available
     // there. Otherwise allocate size bytes of heap memory.

@@ -4,8 +4,8 @@
 
 // Copyright Aleksey Gurtovoy 2003-2004
 //
-// Distributed under the Boost Software License, Version 1.0. 
-// (See accompanying file LICENSE_1_0.txt or copy at 
+// Distributed under the Boost Software License, Version 1.0.
+// (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 //
 // See http://www.boost.org/libs/mpl for documentation.
@@ -55,7 +55,7 @@ struct ms_item
     template< typename U > struct prior_ref_count
     {
         typedef U (* u_)();
-        enum { msvc70_wknd_ = sizeof(Base::ref_key_count(BOOST_MPL_AUX_STATIC_CAST(u_,0))) }; 
+        enum { msvc70_wknd_ = sizeof(Base::ref_key_count(BOOST_MPL_AUX_STATIC_CAST(u_,0))) };
         typedef int_< msvc70_wknd_ > count_;
         typedef typename eval_if< is_same<T,U>, next<count_>, count_ >::type c_;
 #if defined(BOOST_MPL_CFG_NO_DEPENDENT_ARRAY_TYPES)
@@ -78,7 +78,7 @@ namespace aux {
 template< typename U, typename Base >
 struct prior_key_count
 {
-    enum { msvc71_wknd_ = sizeof(Base::key_count(BOOST_MPL_AUX_STATIC_CAST(aux::type_wrapper<U>*,0))) }; 
+    enum { msvc71_wknd_ = sizeof(Base::key_count(BOOST_MPL_AUX_STATIC_CAST(aux::type_wrapper<U>*,0))) };
     typedef int_< msvc71_wknd_ > count_;
 #if defined(BOOST_MPL_CFG_NO_DEPENDENT_ARRAY_TYPES)
     typedef typename aux::weighted_tag< BOOST_MPL_AUX_VALUE_WKND(count_)::value >::type type;
@@ -96,7 +96,7 @@ struct ms_item
     enum { msvc71_wknd_ = sizeof(Base::key_count(BOOST_MPL_AUX_STATIC_CAST(aux::type_wrapper<T>*,0))) + 1 };
     typedef int_< msvc71_wknd_ > count_;
 #if defined(BOOST_MPL_CFG_NO_DEPENDENT_ARRAY_TYPES)
-    static 
+    static
     typename aux::weighted_tag< BOOST_MPL_AUX_VALUE_WKND(count_)::value >::type
         key_count(aux::type_wrapper<T>*);
 #else

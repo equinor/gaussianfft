@@ -12,7 +12,7 @@
 #define BOOST_CONTAINER_PMR_MONOTONIC_BUFFER_RESOURCE_HPP
 
 #if defined (_MSC_VER)
-#  pragma once 
+#  pragma once
 #endif
 
 #include <boost/container/detail/config_begin.hpp>
@@ -31,20 +31,20 @@ namespace pmr {
 //! very fast memory allocations in situations where memory is used to build up a
 //! few objects and then is released all at once when the memory resource object
 //! is destroyed. It has the following qualities:
-//! 
+//!
 //! - A call to deallocate has no effect, thus the amount of memory consumed
 //!   increases monotonically until the resource is destroyed.
-//! 
+//!
 //! - The program can supply an initial buffer, which the allocator uses to satisfy
 //!   memory requests.
-//! 
+//!
 //! - When the initial buffer (if any) is exhausted, it obtains additional buffers
 //!   from an upstream memory resource supplied at construction. Each additional
 //!   buffer is larger than the previous one, following a geometric progression.
-//! 
+//!
 //! - It is intended for access from one thread of control at a time. Specifically,
 //!   calls to allocate and deallocate do not synchronize with one another.
-//! 
+//!
 //! - It owns the allocated memory and frees it on destruction, even if deallocate has
 //!   not been called for some of the allocated blocks.
 class BOOST_CONTAINER_DECL monotonic_buffer_resource
@@ -123,7 +123,7 @@ class BOOST_CONTAINER_DECL monotonic_buffer_resource
    //!
    //! <b>Note</b>: Non-standard extension.
    std::size_t remaining_storage(std::size_t alignment, std::size_t &wasted_due_to_alignment) const BOOST_NOEXCEPT;
-   
+
    //! <b>Returns</b>:
    //!   The number of bytes of storage available for the specified alignment.
    //!

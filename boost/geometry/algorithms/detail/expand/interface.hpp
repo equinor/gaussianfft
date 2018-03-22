@@ -76,7 +76,7 @@ struct expand
 
 namespace resolve_variant
 {
-    
+
 template <typename Geometry>
 struct expand
 {
@@ -88,7 +88,7 @@ struct expand
         concepts::check<Box>();
         concepts::check<Geometry const>();
         concepts::check_concepts_and_equal_dimensions<Box, Geometry const>();
-        
+
         resolve_strategy::expand<Geometry>::apply(box, geometry, strategy);
     }
 };
@@ -101,19 +101,19 @@ struct expand<boost::variant<BOOST_VARIANT_ENUM_PARAMS(T)> >
     {
         Box& m_box;
         Strategy const& m_strategy;
-        
+
         visitor(Box& box, Strategy const& strategy)
             : m_box(box)
             , m_strategy(strategy)
         {}
-        
+
         template <typename Geometry>
         void operator()(Geometry const& geometry) const
         {
             return expand<Geometry>::apply(m_box, geometry, m_strategy);
         }
     };
-    
+
     template <class Box, typename Strategy>
     static inline void
     apply(Box& box,
@@ -124,10 +124,10 @@ struct expand<boost::variant<BOOST_VARIANT_ENUM_PARAMS(T)> >
                                     geometry);
     }
 };
-    
+
 } // namespace resolve_variant
-    
-    
+
+
 /***
 *!
 \brief Expands a box using the extend (envelope) of another geometry (box, point)

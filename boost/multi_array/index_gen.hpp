@@ -1,6 +1,6 @@
 // Copyright 2002 The Trustees of Indiana University.
 
-// Use, modification and distribution is subject to the Boost Software 
+// Use, modification and distribution is subject to the Boost Software
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
@@ -17,7 +17,7 @@
 #include "boost/multi_array/index_range.hpp"
 #include "boost/multi_array/range_list.hpp"
 #include "boost/multi_array/types.hpp"
-#include <algorithm> 
+#include <algorithm>
 #include <cstddef>
 
 namespace boost {
@@ -66,7 +66,7 @@ public:
     std::copy(ranges_.begin(),ranges_.end(),tmp.ranges_.begin());
     *tmp.ranges_.rbegin() = range(idx);
     return tmp;
-  }    
+  }
 
   static index_gen<0,0> indices() {
     return index_gen<0,0>();

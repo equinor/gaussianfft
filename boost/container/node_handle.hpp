@@ -80,11 +80,11 @@ class node_handle_friend
 //! map<K, T, C1, A> <-> map<K, T, C2, A>
 //!
 //! map<K, T, C1, A> <-> multimap<K, T, C2, A>
-//! 
+//!
 //! set<K, C1, A> <-> set<K, C2, A>
-//! 
+//!
 //! set<K, C1, A> <-> multiset<K, C2, A>
-//! 
+//!
 //! If a node handle is not empty, then it contains an allocator that is equal to the allocator of the container
 //! when the element was extracted. If a node handle is empty, it contains no allocator.
 template <class NodeAllocator, class KeyMapped = void>
@@ -215,7 +215,7 @@ class node_handle
    //! <b>Throws</b>: Nothing.
    node_handle & operator=(BOOST_RV_REF(node_handle) nh) BOOST_NOEXCEPT
    {
-      BOOST_ASSERT(this->empty() || nator_traits::propagate_on_container_move_assignment::value 
+      BOOST_ASSERT(this->empty() || nator_traits::propagate_on_container_move_assignment::value
                    || nator_traits::equal(node_alloc(), nh.node_alloc()));
 
       bool const was_this_non_null = !this->empty();
@@ -257,7 +257,7 @@ class node_handle
 
    //! <b>Requires</b>: empty() == false.
    //!
-   //! <b>Returns</b>: A non-const reference to the key_type member of the value_type subobject in the 
+   //! <b>Returns</b>: A non-const reference to the key_type member of the value_type subobject in the
    //!   container_node_type object pointed to by m_ptr.
    //!
    //! <b>Throws</b>: Nothing.

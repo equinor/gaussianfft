@@ -1,4 +1,4 @@
-/* 
+/*
    Copyright (c) Marshall Clow 2011-2012.
 
    Distributed under the Boost Software License, Version 1.0. (See accompanying
@@ -18,7 +18,7 @@ namespace boost { namespace algorithm {
 /// \brief Copies exactly n (n > 0) elements from the range starting at first to
 ///     the range starting at result.
 /// \return         The updated output iterator
-/// 
+///
 /// \param first    The start of the input sequence
 /// \param n        The number of elements to copy
 /// \param result   An output iterator to write the results into

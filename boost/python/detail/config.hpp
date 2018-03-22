@@ -98,7 +98,7 @@
 # define BOOST_PYTHON_OFFSETOF offsetof
 #endif
 
-//  enable automatic library variant selection  ------------------------------// 
+//  enable automatic library variant selection  ------------------------------//
 
 #if !defined(BOOST_PYTHON_SOURCE) && !defined(BOOST_ALL_NO_LIB) && !defined(BOOST_PYTHON_NO_LIB)
 //

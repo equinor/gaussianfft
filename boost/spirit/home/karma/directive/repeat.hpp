@@ -147,12 +147,12 @@ namespace boost { namespace spirit { namespace karma
         template <typename F, typename Attribute>
         bool generate_subject(F f, Attribute const&, mpl::false_) const
         {
-            // Failing subject generators are just skipped. This allows to 
+            // Failing subject generators are just skipped. This allows to
             // selectively generate items in the provided attribute.
             while (!f.is_at_end())
             {
                 bool r = !f(subject);
-                if (r) 
+                if (r)
                     return true;
                 if (!f.is_at_end())
                     f.next();
@@ -166,7 +166,7 @@ namespace boost { namespace spirit { namespace karma
             return !f(subject);
         }
 
-        // There is no way to distinguish a failed generator from a 
+        // There is no way to distinguish a failed generator from a
         // generator to be skipped. We assume the user takes responsibility
         // for ending the loop if no attribute is specified.
         template <typename F>
@@ -206,8 +206,8 @@ namespace boost { namespace spirit { namespace karma
                 typename add_const<Attribute>::type
             >::type iterator_type;
 
-            typedef 
-                typename traits::make_indirect_iterator<iterator_type>::type 
+            typedef
+                typename traits::make_indirect_iterator<iterator_type>::type
             indirect_iterator_type;
 
             typedef detail::pass_container<
@@ -217,7 +217,7 @@ namespace boost { namespace spirit { namespace karma
             iterator_type it = traits::begin(attr);
             iterator_type end = traits::end(attr);
 
-            pass_container pass(fail_function(sink, ctx, d), 
+            pass_container pass(fail_function(sink, ctx, d),
                 indirect_iterator_type(it), indirect_iterator_type(end));
 
             // generate the minimal required amount of output
@@ -255,7 +255,7 @@ namespace boost { namespace spirit { namespace karma
     };
 
     template <typename Subject, typename LoopIter>
-    struct repeat_generator 
+    struct repeat_generator
       : base_repeat_generator<
             Subject, LoopIter, mpl::false_
           , repeat_generator<Subject, LoopIter> >
@@ -269,7 +269,7 @@ namespace boost { namespace spirit { namespace karma
     };
 
     template <typename Subject, typename LoopIter>
-    struct strict_repeat_generator 
+    struct strict_repeat_generator
       : base_repeat_generator<
             Subject, LoopIter, mpl::true_
           , strict_repeat_generator<Subject, LoopIter> >
@@ -383,14 +383,14 @@ namespace boost { namespace spirit { namespace traits
       , typename Context, typename Iterator>
     struct handles_container<
             karma::repeat_generator<Subject, LoopIter>, Attribute
-          , Context, Iterator> 
+          , Context, Iterator>
       : mpl::true_ {};
 
     template <typename Subject, typename LoopIter, typename Attribute
       , typename Context, typename Iterator>
     struct handles_container<
             karma::strict_repeat_generator<Subject, LoopIter>, Attribute
-          , Context, Iterator> 
+          , Context, Iterator>
       : mpl::true_ {};
 }}}
 

@@ -211,7 +211,7 @@ namespace boost { namespace polygon{
   inline bool polygon_set_data<coordinate_type>::operator==(const polygon_set_data<coordinate_type>& p) const {
     typedef polygon_set_data<coordinate_type> value_type;
     value_type output_;
-    execute_boolean_op<value_type, value_type, value_type, 2>(output_, (*this), p);  
+    execute_boolean_op<value_type, value_type, value_type, 2>(output_, (*this), p);
     return output_.data_.empty();
   }
 

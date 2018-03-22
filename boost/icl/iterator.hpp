@@ -21,9 +21,9 @@ template<class ContainerT> class add_iterator
 public:
     /// The container's type.
     typedef ContainerT container_type;
-    typedef std::output_iterator_tag iterator_category; 
+    typedef std::output_iterator_tag iterator_category;
 
-    /** An add_iterator is constructed with a container and a position 
+    /** An add_iterator is constructed with a container and a position
         that has to be maintained. */
     add_iterator(ContainerT& cont, typename ContainerT::iterator iter)
     : _cont(&cont), _iter(iter) {}
@@ -62,9 +62,9 @@ template<class ContainerT> class insert_iterator
 public:
     /// The container's type.
     typedef ContainerT container_type;
-    typedef std::output_iterator_tag iterator_category; 
+    typedef std::output_iterator_tag iterator_category;
 
-    /** An insert_iterator is constructed with a container and a position 
+    /** An insert_iterator is constructed with a container and a position
         that has to be maintained. */
     insert_iterator(ContainerT& cont, typename ContainerT::iterator iter)
     : _cont(&cont), _iter(iter) {}

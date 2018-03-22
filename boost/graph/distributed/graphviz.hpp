@@ -95,18 +95,18 @@ inline paint_by_number_writer<NumberMap>
 paint_by_number(NumberMap number)
 { return paint_by_number_writer<NumberMap>(number); }
 
-template<typename Graph, typename VertexPropertiesWriter, 
+template<typename Graph, typename VertexPropertiesWriter,
          typename EdgePropertiesWriter, typename GraphPropertiesWriter>
-void 
+void
 write_graphviz(std::ostream& out,
-               const Graph& g, 
+               const Graph& g,
                VertexPropertiesWriter vpw,
                EdgePropertiesWriter epw,
                GraphPropertiesWriter gpw
                BOOST_GRAPH_ENABLE_IF_MODELS_PARM(Graph,distributed_graph_tag))
 {
   typedef typename graph_traits<Graph>::directed_category directed_category;
-  typedef typename boost::graph::parallel::process_group_type<Graph>::type 
+  typedef typename boost::graph::parallel::process_group_type<Graph>::type
     process_group_type;
   typedef typename property_map<Graph, vertex_index_t>::const_type
     VertexIndexMap;
@@ -122,7 +122,7 @@ write_graphviz(std::ostream& out,
   using boost::graph::parallel::process_group;
   process_group_type pg = process_group(g);
 
-  parallel::global_index_map<VertexIndexMap, VertexGlobalMap> 
+  parallel::global_index_map<VertexIndexMap, VertexGlobalMap>
     global_index(pg, num_vertices(g), get(vertex_index, g),
                  get(vertex_global, g));
 
@@ -141,12 +141,12 @@ write_graphviz(std::ostream& out,
   }
   local_graph_out << "  }\n\n";
 
-  
+
   typename graph_traits<Graph>::edge_iterator ei, ei_end;
   for (boost::tie(ei, ei_end) = edges(g); ei != ei_end; ++ei) {
     int source_idx = get(global_index, source(*ei, g));
     int target_idx = get(global_index, target(*ei, g));
-    local_graph_out << "  n" << source_idx << " " << edge_kind << " n" 
+    local_graph_out << "  n" << source_idx << " " << edge_kind << " n"
                     << target_idx;
     epw(local_graph_out, *ei);
     local_graph_out << ";\n";
@@ -181,11 +181,11 @@ write_graphviz(std::ostream& out,
   synchronize(pg);
 }
 
-template<typename Graph, typename VertexPropertiesWriter, 
+template<typename Graph, typename VertexPropertiesWriter,
          typename EdgePropertiesWriter>
-inline void 
+inline void
 write_graphviz(std::ostream& out,
-               const Graph& g, 
+               const Graph& g,
                VertexPropertiesWriter vpw,
                EdgePropertiesWriter epw
                BOOST_GRAPH_ENABLE_IF_MODELS_PARM(Graph,distributed_graph_tag))
@@ -194,9 +194,9 @@ write_graphviz(std::ostream& out,
 }
 
 template<typename Graph, typename VertexPropertiesWriter>
-inline void 
+inline void
 write_graphviz(std::ostream& out,
-               const Graph& g, 
+               const Graph& g,
                VertexPropertiesWriter vpw
                BOOST_GRAPH_ENABLE_IF_MODELS_PARM(Graph,distributed_graph_tag))
 {
@@ -204,18 +204,18 @@ write_graphviz(std::ostream& out,
 }
 
 template<typename Graph>
-inline void 
+inline void
 write_graphviz(std::ostream& out, const Graph& g
                BOOST_GRAPH_ENABLE_IF_MODELS_PARM(Graph,distributed_graph_tag))
 {
   write_graphviz(out, g, default_writer());
 }
 
-template<typename Graph, typename VertexPropertiesWriter, 
+template<typename Graph, typename VertexPropertiesWriter,
          typename EdgePropertiesWriter, typename GraphPropertiesWriter>
-void 
+void
 write_graphviz(const std::string& filename,
-               const Graph& g, 
+               const Graph& g,
                VertexPropertiesWriter vpw,
                EdgePropertiesWriter epw,
                GraphPropertiesWriter gpw
@@ -229,11 +229,11 @@ write_graphviz(const std::string& filename,
   }
 }
 
-template<typename Graph, typename VertexPropertiesWriter, 
+template<typename Graph, typename VertexPropertiesWriter,
          typename EdgePropertiesWriter>
-void 
+void
 write_graphviz(const std::string& filename,
-               const Graph& g, 
+               const Graph& g,
                VertexPropertiesWriter vpw,
                EdgePropertiesWriter epw
                BOOST_GRAPH_ENABLE_IF_MODELS_PARM(Graph,distributed_graph_tag))
@@ -247,9 +247,9 @@ write_graphviz(const std::string& filename,
 }
 
 template<typename Graph, typename VertexPropertiesWriter>
-void 
+void
 write_graphviz(const std::string& filename,
-               const Graph& g, 
+               const Graph& g,
                VertexPropertiesWriter vpw
                BOOST_GRAPH_ENABLE_IF_MODELS_PARM(Graph,distributed_graph_tag))
 {
@@ -262,7 +262,7 @@ write_graphviz(const std::string& filename,
 }
 
 template<typename Graph>
-void 
+void
 write_graphviz(const std::string& filename, const Graph& g
                BOOST_GRAPH_ENABLE_IF_MODELS_PARM(Graph,distributed_graph_tag))
 {
@@ -277,7 +277,7 @@ write_graphviz(const std::string& filename, const Graph& g
 template<typename Graph>
 void
 write_graphviz(std::ostream& out, const Graph& g,
-               const dynamic_properties& dp, 
+               const dynamic_properties& dp,
                const std::string& node_id = "node_id"
                BOOST_GRAPH_ENABLE_IF_MODELS_PARM(Graph,distributed_graph_tag))
 {

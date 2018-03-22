@@ -33,13 +33,13 @@
 # include <boost/python/detail/def_helper_fwd.hpp>
 # include <boost/python/detail/type_traits.hpp>
 
-namespace boost { namespace python { 
+namespace boost { namespace python {
 
 namespace detail
 {
-  class kwds_proxy; 
-  class args_proxy; 
-} 
+  class kwds_proxy;
+  class args_proxy;
+}
 
 namespace converter
 {
@@ -49,13 +49,13 @@ namespace converter
 // Put this in an inner namespace so that the generalized operators won't take over
 namespace api
 {
-  
+
 // This file contains the definition of the object class and enough to
 // construct/copy it, but not enough to do operations like
 // attribute/item access or addition.
 
   template <class Policies> class proxy;
-  
+
   struct const_attribute_policies;
   struct attribute_policies;
   struct const_objattribute_policies;
@@ -81,10 +81,10 @@ namespace api
   BOOST_PYTHON_IS_XXX_DEF(proxy, boost::python::api::proxy, 1)
 
   template <class T> struct object_initializer;
-  
+
   class object;
   typedef PyObject* (object::*bool_type)() const;
-  
+
   template <class U>
   class object_operators : public def_visitor<U>
   {
@@ -97,11 +97,11 @@ namespace api
 
 # define BOOST_PP_ITERATION_PARAMS_1 (3, (1, BOOST_PYTHON_MAX_ARITY, <boost/python/object_call.hpp>))
 # include BOOST_PP_ITERATE()
-    
-      detail::args_proxy operator* () const; 
-      object operator()(detail::args_proxy const &args) const; 
-      object operator()(detail::args_proxy const &args, 
-                        detail::kwds_proxy const &kwds) const; 
+
+      detail::args_proxy operator* () const;
+      object operator()(detail::args_proxy const &args) const;
+      object operator()(detail::args_proxy const &args,
+                        detail::kwds_proxy const &kwds) const;
 
       // truth value testing
       //
@@ -118,16 +118,16 @@ namespace api
       // Wrap 'in' operator (aka. __contains__)
       template <class T>
       object contains(T const& key) const;
-      
+
       // item access
       //
       const_object_item operator[](object_cref) const;
       object_item operator[](object_cref);
-    
+
       template <class T>
       const_object_item
       operator[](T const& key) const;
-    
+
       template <class T>
       object_item
       operator[](T const& key);
@@ -139,7 +139,7 @@ namespace api
 
       const_object_slice slice(slice_nil, object_cref) const;
       object_slice slice(slice_nil, object_cref);
-                             
+
       const_object_slice slice(object_cref, slice_nil) const;
       object_slice slice(object_cref, slice_nil);
 
@@ -149,13 +149,13 @@ namespace api
       template <class T, class V>
       const_object_slice
       slice(T const& start, V const& end) const;
-    
+
       template <class T, class V>
       object_slice
       slice(T const& start, V const& end);
-      
+
    private: // def visitation for adding callable objects as class methods
-      
+
       template <class ClassT, class DocStringT>
       void visit(ClassT& cl, char const* name, python::detail::def_helper<DocStringT> const& helper) const
       {
@@ -164,12 +164,12 @@ namespace api
           BOOST_STATIC_ASSERT(
               (detail::is_same<char const*,DocStringT>::value
                || detail::is_string_literal<DocStringT const>::value));
-        
+
           objects::add_to_namespace(cl, name, this->derived_visitor(), helper.doc());
       }
 
       friend class python::def_visitor_access;
-      
+
    private:
      // there is a confirmed CWPro8 codegen bug here. We prevent the
      // early destruction of a temporary by binding a named object
@@ -181,19 +181,19 @@ namespace api
 # endif
   };
 
-  
+
   // VC6 and VC7 require this base class in order to generate the
   // correct copy constructor for object. We can't define it there
   // explicitly or it will complain of ambiguity.
   struct object_base : object_operators<object>
   {
-      // copy constructor without NULL checking, for efficiency. 
+      // copy constructor without NULL checking, for efficiency.
       inline object_base(object_base const&);
       inline object_base(PyObject* ptr);
-      
+
       inline object_base& operator=(object_base const& rhs);
       inline ~object_base();
-        
+
       // Underlying object access -- returns a borrowed reference
       inline PyObject* ptr() const;
 
@@ -218,7 +218,7 @@ namespace api
   }
 
   class object;
-  
+
   template <class T>
   PyObject* object_base_initializer(T const& x)
   {
@@ -234,13 +234,13 @@ namespace api
           , is_obj()
       );
   }
-  
+
   class object : public object_base
   {
    public:
       // default constructor creates a None object
       object();
-      
+
       // explicit conversion from any C++ object to Python
       template <class T>
       explicit object(T const& x)
@@ -251,7 +251,7 @@ namespace api
       // Throw error_already_set() if the handle is null.
       BOOST_PYTHON_DECL explicit object(handle<> const&);
    private:
-      
+
    public: // implementation detail -- for internal use only
       explicit object(detail::borrowed_reference);
       explicit object(detail::new_reference);
@@ -281,7 +281,7 @@ namespace api
       {
           return python::incref(x.ptr());
       }
-      
+
       template <class T>
       static PyObject*
       get(T const& x, detail::false_)
@@ -289,12 +289,12 @@ namespace api
           return python::incref(converter::arg_to_python<T>(x).get());
       }
   };
-      
+
   template <>
   struct object_initializer_impl<true, false>
   {
       template <class Policies>
-      static PyObject* 
+      static PyObject*
       get(proxy<Policies> const& x, detail::false_)
       {
           return python::incref(x.operator object().ptr());
@@ -331,61 +331,61 @@ template <class T> struct extract;
 // implementation
 //
 
-namespace detail 
+namespace detail
 {
 
-class call_proxy 
-{ 
-public: 
-  call_proxy(object target) : m_target(target) {} 
-  operator object() const { return m_target;} 
- 
- private: 
-    object m_target; 
-}; 
- 
-class kwds_proxy : public call_proxy 
-{ 
-public: 
-  kwds_proxy(object o = object()) : call_proxy(o) {} 
-}; 
-class args_proxy : public call_proxy 
-{ 
-public: 
-  args_proxy(object o) : call_proxy(o) {} 
-  kwds_proxy operator* () const { return kwds_proxy(*this);} 
-}; 
-} 
- 
-template <typename U> 
-detail::args_proxy api::object_operators<U>::operator* () const 
-{ 
-  object_cref2 x = *static_cast<U const*>(this); 
-  return boost::python::detail::args_proxy(x); 
-} 
- 
-template <typename U> 
-object api::object_operators<U>::operator()(detail::args_proxy const &args) const 
-{ 
-  U const& self = *static_cast<U const*>(this); 
-  PyObject *result = PyObject_Call(get_managed_object(self, boost::python::tag), 
-                                   args.operator object().ptr(), 
-                                   0); 
-  return object(boost::python::detail::new_reference(result)); 
- 
-} 
- 
-template <typename U> 
-object api::object_operators<U>::operator()(detail::args_proxy const &args, 
-                                            detail::kwds_proxy const &kwds) const 
-{ 
-  U const& self = *static_cast<U const*>(this); 
-  PyObject *result = PyObject_Call(get_managed_object(self, boost::python::tag), 
-                                   args.operator object().ptr(), 
-                                   kwds.operator object().ptr()); 
-  return object(boost::python::detail::new_reference(result)); 
- 
-}  
+class call_proxy
+{
+public:
+  call_proxy(object target) : m_target(target) {}
+  operator object() const { return m_target;}
+
+ private:
+    object m_target;
+};
+
+class kwds_proxy : public call_proxy
+{
+public:
+  kwds_proxy(object o = object()) : call_proxy(o) {}
+};
+class args_proxy : public call_proxy
+{
+public:
+  args_proxy(object o) : call_proxy(o) {}
+  kwds_proxy operator* () const { return kwds_proxy(*this);}
+};
+}
+
+template <typename U>
+detail::args_proxy api::object_operators<U>::operator* () const
+{
+  object_cref2 x = *static_cast<U const*>(this);
+  return boost::python::detail::args_proxy(x);
+}
+
+template <typename U>
+object api::object_operators<U>::operator()(detail::args_proxy const &args) const
+{
+  U const& self = *static_cast<U const*>(this);
+  PyObject *result = PyObject_Call(get_managed_object(self, boost::python::tag),
+                                   args.operator object().ptr(),
+                                   0);
+  return object(boost::python::detail::new_reference(result));
+
+}
+
+template <typename U>
+object api::object_operators<U>::operator()(detail::args_proxy const &args,
+                                            detail::kwds_proxy const &kwds) const
+{
+  U const& self = *static_cast<U const*>(this);
+  PyObject *result = PyObject_Call(get_managed_object(self, boost::python::tag),
+                                   args.operator object().ptr(),
+                                   kwds.operator object().ptr());
+  return object(boost::python::detail::new_reference(result));
+
+}
 
 
 template <typename U>
@@ -451,13 +451,13 @@ inline bool api::object_base::is_none() const
 namespace converter
 {
   template <class T> struct object_manager_traits;
-  
+
   template <>
   struct object_manager_traits<object>
   {
       BOOST_STATIC_CONSTANT(bool, is_specialized = true);
       static bool check(PyObject*) { return true; }
-      
+
       static python::detail::new_non_null_reference adopt(PyObject* x)
       {
           return python::detail::new_non_null_reference(x);

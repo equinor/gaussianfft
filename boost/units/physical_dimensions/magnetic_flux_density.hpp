@@ -1,4 +1,4 @@
-// Boost.Units - A C++ library for zero-overhead dimensional analysis and 
+// Boost.Units - A C++ library for zero-overhead dimensional analysis and
 // unit/quantity manipulation and conversion
 //
 // Copyright (C) 2003-2008 Matthias Christian Schabel
@@ -23,7 +23,7 @@ namespace units {
 /// derived dimension for magnetic flux density : M T^-2 I^-1
 typedef derived_dimension<mass_base_dimension,1,
                           time_base_dimension,-2,
-                          current_base_dimension,-1>::type magnetic_flux_density_dimension;        
+                          current_base_dimension,-1>::type magnetic_flux_density_dimension;
 
 } // namespace units
 

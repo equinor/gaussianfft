@@ -141,7 +141,7 @@ template<typename PolyCollectionIterator,typename F>
 void for_each_segment(
   const PolyCollectionIterator& first,const PolyCollectionIterator& last,F&& f)
 {
-  for(auto i:segment_split(first,last))f(i);  
+  for(auto i:segment_split(first,last))f(i);
 }
 #endif
 

@@ -93,7 +93,7 @@ class multiset_view
     }
     */
 
-    multiset_view & operator=(const multiset_view & v) 
+    multiset_view & operator=(const multiset_view & v)
     {
         this->base() = v.base(); return *this;
     }

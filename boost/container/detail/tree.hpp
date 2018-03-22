@@ -1325,7 +1325,7 @@ struct has_trivial_destructor_after_move;
 //!specialization for optimizations
 template <class T, class KeyOfValue, class Compare, class Allocator, class Options>
 struct has_trivial_destructor_after_move
-   < 
+   <
       ::boost::container::container_detail::tree
          <T, KeyOfValue, Compare, Allocator, Options>
    >

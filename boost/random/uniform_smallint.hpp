@@ -128,7 +128,7 @@ public:
         IntType a() const { return _min; }
         /** Returns the maximum value. */
         IntType b() const { return _max; }
-        
+
 
         /** Writes the parameters to a @c std::ostream. */
         BOOST_RANDOM_DETAIL_OSTREAM_OPERATOR(os, param_type, parm)
@@ -136,7 +136,7 @@ public:
             os << parm._min << " " << parm._max;
             return os;
         }
-    
+
         /** Reads the parameters from a @c std::istream. */
         BOOST_RANDOM_DETAIL_ISTREAM_OPERATOR(is, param_type, parm)
         {
@@ -212,7 +212,7 @@ public:
         os << ud._min << " " << ud._max;
         return os;
     }
-    
+
     /** Reads the distribution from a @c std::istream. */
     BOOST_RANDOM_DETAIL_ISTREAM_OPERATOR(is, uniform_smallint, ud)
     {
@@ -226,7 +226,7 @@ public:
      */
     BOOST_RANDOM_DETAIL_EQUALITY_OPERATOR(uniform_smallint, lhs, rhs)
     { return lhs._min == rhs._min && lhs._max == rhs._max; }
-    
+
     /**
      * Returns true if the two distributions may produce different
      * sequences of values given equal generators.
@@ -234,7 +234,7 @@ public:
     BOOST_RANDOM_DETAIL_INEQUALITY_OPERATOR(uniform_smallint)
 
 private:
-    
+
     // \cond show_private
     template<class Engine>
     result_type generate(Engine& eng, boost::mpl::true_) const
@@ -272,7 +272,7 @@ private:
                 static_cast<mixed_range_type>(val) % modulus, _min);
         }
     }
-    
+
     template<class Engine>
     result_type generate(Engine& eng, boost::mpl::false_) const
     {

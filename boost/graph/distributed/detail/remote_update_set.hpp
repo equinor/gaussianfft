@@ -24,7 +24,7 @@ namespace boost { namespace graph { namespace detail {
 
 template<typename ProcessGroup>
 void do_synchronize(ProcessGroup& pg)
-{ 
+{
   using boost::parallel::synchronize;
   synchronize(pg);
 }
@@ -36,14 +36,14 @@ template<typename ProcessGroup>
 class remote_set_semantics
 {
   BOOST_STATIC_CONSTANT
-    (bool, 
+    (bool,
      queued = (is_convertible<
                  typename ProcessGroup::communication_category,
                  boost::parallel::bsp_process_group_tag>::value));
 
  public:
-  typedef typename mpl::if_c<queued, 
-                             remote_set_queued, 
+  typedef typename mpl::if_c<queued,
+                             remote_set_queued,
                              remote_set_immediate>::type type;
 };
 
@@ -75,7 +75,7 @@ private:
     /** Message containing the number of updates that will be sent in
      *  a msg_updates message that will immediately follow. This
      *  message will contain a single value of type
-     *  updates_size_type. 
+     *  updates_size_type.
      */
     msg_num_updates,
 
@@ -90,12 +90,12 @@ private:
 
   struct handle_messages
   {
-    explicit 
+    explicit
     handle_messages(remote_update_set* self, const ProcessGroup& pg)
       : self(self), update_sizes(num_processes(pg), 0) { }
 
-    void operator()(process_id_type source, int tag) 
-    { 
+    void operator()(process_id_type source, int tag)
+    {
       switch(tag) {
       case msg_num_updates:
         {
@@ -116,7 +116,7 @@ private:
           std::vector<updates_pair_type> updates(num_updates);
           receive(self->process_group, source, msg_updates, &updates[0],
                   num_updates);
-          
+
           // Send updates to derived "receive_update" member
           Derived* derived = static_cast<Derived*>(self);
           for (updates_size_type u = 0; u < num_updates; ++u)
@@ -137,12 +137,12 @@ private:
  protected:
   remote_update_set(const ProcessGroup& pg, const OwnerMap& owner)
     : process_group(pg, handle_messages(this, pg)),
-      updates(num_processes(pg)), owner(owner) { 
+      updates(num_processes(pg)), owner(owner) {
     }
 
 
   void update(const Key& key, const Value& value)
-  { 
+  {
     if (get(owner, key) == process_id(process_group)) {
       Derived* derived = static_cast<Derived*>(this);
       derived->receive_update(get(owner, key), key, value);
@@ -161,12 +161,12 @@ private:
     for (process_id_type p = 0; p < num_processes; ++p) {
       if (!updates[p].empty()) {
         send(process_group, p, msg_num_updates, updates[p].size());
-        send(process_group, p, msg_updates, 
+        send(process_group, p, msg_updates,
              &updates[p].front(), updates[p].size());
         updates[p].clear();
       }
     }
-    
+
     do_synchronize(process_group);
   }
 
@@ -200,17 +200,17 @@ private:
 
   struct handle_messages
   {
-    explicit handle_messages(remote_update_set* self, const ProcessGroup& pg) 
+    explicit handle_messages(remote_update_set* self, const ProcessGroup& pg)
       : self(self)
     { update_sizes.resize(num_processes(pg), 0); }
 
-    void operator()(process_id_type source, int tag) 
-    { 
+    void operator()(process_id_type source, int tag)
+    {
       // Receive the # of updates
       BOOST_ASSERT(tag == msg_update);
       update_pair_type update;
       receive(self->process_group, source, tag, update);
-      
+
       // Send update to derived "receive_update" member
       Derived* derived = static_cast<Derived*>(self);
       derived->receive_update(source, update.first, update.second);
@@ -227,18 +227,18 @@ private:
     : process_group(pg, handle_messages(this, pg)), owner(owner) { }
 
   void update(const Key& key, const Value& value)
-  { 
+  {
     if (get(owner, key) == process_id(process_group)) {
       Derived* derived = static_cast<Derived*>(this);
       derived->receive_update(get(owner, key), key, value);
     }
     else
-      send(process_group, get(owner, key), msg_update, 
+      send(process_group, get(owner, key), msg_update,
            update_pair_type(key, value));
   }
 
-  void collect() 
-  { 
+  void collect()
+  {
     typedef std::pair<process_id_type, int> probe_type;
     handle_messages handler(this, process_group);
     while (optional<probe_type> stp = probe(process_group))

@@ -1,7 +1,7 @@
 /*
  * This should never be included directly.  It is included only from gc.h.
  * We separate it only to make gc.h more suitable as documentation.
- * 
+ *
  * Some tests for old macros.  These violate our namespace rules and will
  * disappear shortly.  Use the GC_ names.
  */

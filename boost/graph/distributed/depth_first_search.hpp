@@ -51,7 +51,7 @@ namespace boost {
 
       // Message types
       enum { discover_msg = 10, return_msg = 50, visited_msg = 100 , done_msg = 150};
-        
+
 
     public:
       parallel_dfs(const DistributedGraph& g, ColorMap color,
@@ -67,18 +67,18 @@ namespace boost {
         vertex_iterator vi, vi_end;
         for (boost::tie(vi, vi_end) = vertices(g); vi != vi_end; ++vi) {
           put(color, *vi, Color::white());
-          put(parent, *vi, *vi); 
+          put(parent, *vi, *vi);
           put(explore, *vi, *vi);
           next_out_edge[get(index_map, *vi)] = out_edges(*vi, g).first;
           vis.initialize_vertex(*vi, g);
         }
 
         vis.start_vertex(s, g);
-        
+
         if (get(owner, s) == process_id(pg)) {
           send_oob(pg, get(owner, s), discover_msg, vertex_pair(s, s));
         }
-        
+
         bool done = false;
         while (!done) {
           std::pair<process_id_type, int> msg = *pg.poll(true);
@@ -104,7 +104,7 @@ namespace boost {
                 vis.discover_vertex(p.first, g);
 
                 if (shift_center_of_activity(p.first)) break;
-                
+
                 out_edge_iterator ei, ei_end;
                 for (boost::tie(ei,ei_end) = out_edges(p.first, g); ei != ei_end; ++ei)
                 {
@@ -114,19 +114,19 @@ namespace boost {
                   if (get(parent, p.first) != target(*ei, g)
                       && get(explore, p.first) != target(*ei, g)) {
                     vertex_pair visit(target(*ei, g), p.first);
-                    
+
                     send_oob(pg, get(owner, target(*ei, g)), visited_msg, visit);
                   }
                 }
               }
             }
             break;
-            
+
           case visited_msg:
             {
               vertex_pair p;
               receive_oob(pg, msg.first, msg.second, p);
-              
+
               // delete j from nomessage(j)
               if (get(color, p.second) != Color::black())
                 local_put(color, p.second, Color::gray());
@@ -134,19 +134,19 @@ namespace boost {
               recover(p);
             }
             break;
-            
+
           case return_msg:
             {
               vertex_pair p;
               receive_oob(pg, msg.first, msg.second, p);
-              
+
               // delete j from nomessage(i)
               local_put(color, p.second, Color::black());
 
               shift_center_of_activity(p.first);
             }
             break;
-            
+
           case done_msg:
             {
               receive_oob(pg, msg.first, msg.second, done);
@@ -168,7 +168,7 @@ namespace boost {
           }
         }
       }
-      
+
     private:
       bool recover(const vertex_pair& p)
       {
@@ -178,7 +178,7 @@ namespace boost {
         else
           return false;
       }
-      
+
       bool shift_center_of_activity(vertex_descriptor i)
       {
         for (out_edge_iterator ei = next_out_edge[get(index_map, i)],
@@ -197,14 +197,14 @@ namespace boost {
             send_oob(pg, get(owner, k), discover_msg, p);
             next_out_edge[get(index_map, i)] = ++ei;
             return false;
-          } 
+          }
         }
 
         next_out_edge[get(index_map, i)] = out_edges(i, g).second;
         put(explore, i, i);
         put(color, i, Color::black());
         vis.finish_vertex(i, g);
-          
+
         if (get(parent, i) == i) {
           send_oob(pg, 0, done_msg, true);
           return true;
@@ -216,15 +216,15 @@ namespace boost {
         return false;
       }
 
-      const DistributedGraph& g; 
+      const DistributedGraph& g;
       ColorMap color;
-      ParentMap parent; 
+      ParentMap parent;
       ExploreMap explore;
       VertexIndexMap index_map;
       DFSVisitor vis;
       process_group_type pg;
       typename property_map<DistributedGraph, vertex_owner_t>::const_type owner;
-      std::vector<out_edge_iterator> next_out_edge; 
+      std::vector<out_edge_iterator> next_out_edge;
     };
   } // end namespace detail
 
@@ -234,7 +234,7 @@ namespace boost {
   tsin_depth_first_visit
     (const DistributedGraph& g,
      typename graph_traits<DistributedGraph>::vertex_descriptor s,
-     DFSVisitor vis, ColorMap color, ParentMap parent, ExploreMap explore, 
+     DFSVisitor vis, ColorMap color, ParentMap parent, ExploreMap explore,
      VertexIndexMap index_map)
   {
     typedef typename graph_traits<DistributedGraph>::directed_category
@@ -244,15 +244,15 @@ namespace boost {
 
     set_property_map_role(vertex_color, color);
     graph::distributed::detail::parallel_dfs
-      <DistributedGraph, ColorMap, ParentMap, ExploreMap, VertexIndexMap, 
+      <DistributedGraph, ColorMap, ParentMap, ExploreMap, VertexIndexMap,
        DFSVisitor> do_dfs(g, color, parent, explore, index_map, vis);
     do_dfs.run(s);
 
     using boost::graph::parallel::process_group;
     synchronize(process_group(g));
   }
-    
-  template<typename DistributedGraph, typename DFSVisitor, 
+
+  template<typename DistributedGraph, typename DFSVisitor,
            typename VertexIndexMap>
   void
   tsin_depth_first_visit
@@ -276,7 +276,7 @@ namespace boost {
        index_map);
   }
 
-  template<typename DistributedGraph, typename DFSVisitor, 
+  template<typename DistributedGraph, typename DFSVisitor,
            typename VertexIndexMap>
   void
   tsin_depth_first_visit

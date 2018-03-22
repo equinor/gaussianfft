@@ -49,13 +49,13 @@ struct rounded_arith_opp;
 template<class T, class Rounding>
 struct rounded_transc_dummy;
 
-template<class T, class Rounding = rounded_arith_exact<T> > 
+template<class T, class Rounding = rounded_arith_exact<T> >
 struct rounded_transc_exact;
 
-template<class T, class Rounding = rounded_arith_std<T> > 
+template<class T, class Rounding = rounded_arith_std<T> >
 struct rounded_transc_std;
 
-template<class T, class Rounding = rounded_arith_opp<T> > 
+template<class T, class Rounding = rounded_arith_opp<T> >
 struct rounded_transc_opp;
 
 /*
@@ -83,13 +83,13 @@ struct save_state: Rounding
   ~save_state() { this->set_rounding_mode(mode); }
   typedef detail::save_state_unprotected<Rounding> unprotected_rounding;
 };
-  
+
 template<class Rounding>
 struct save_state_nothing: Rounding
 {
   typedef save_state_nothing<Rounding> unprotected_rounding;
 };
-  
+
 template<class T>
 struct rounded_math: save_state_nothing<rounded_arith_exact<T> >
 {};

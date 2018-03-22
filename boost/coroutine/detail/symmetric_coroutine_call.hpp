@@ -75,7 +75,7 @@ public:
         BOOST_ASSERT( 0 != sp);
         // placement new for internal coroutine
         impl_ = new ( sp) object_t(
-                    boost::forward< coroutine_fn >( fn), attrs, preallocated( sp, size, stack_ctx), stack_alloc); 
+                    boost::forward< coroutine_fn >( fn), attrs, preallocated( sp, size, stack_ctx), stack_alloc);
         BOOST_ASSERT( impl_);
     }
 
@@ -99,7 +99,7 @@ public:
         BOOST_ASSERT( 0 != sp);
         // placement new for internal coroutine
         impl_ = new ( sp) object_t(
-                    boost::forward< coroutine_fn >( fn), attrs, preallocated( sp, size, stack_ctx), stack_alloc); 
+                    boost::forward< coroutine_fn >( fn), attrs, preallocated( sp, size, stack_ctx), stack_alloc);
         BOOST_ASSERT( impl_);
     }
 # endif
@@ -123,7 +123,7 @@ public:
         BOOST_ASSERT( 0 != sp);
         // placement new for internal coroutine
         impl_ = new ( sp) object_t(
-                    boost::forward< Fn >( fn), attrs, preallocated( sp, size, stack_ctx), stack_alloc); 
+                    boost::forward< Fn >( fn), attrs, preallocated( sp, size, stack_ctx), stack_alloc);
         BOOST_ASSERT( impl_);
     }
 
@@ -147,7 +147,7 @@ public:
         BOOST_ASSERT( 0 != sp);
         // placement new for internal coroutine
         impl_ = new ( sp) object_t(
-                    boost::forward< Fn >( fn), attrs, preallocated( sp, size, stack_ctx), stack_alloc); 
+                    boost::forward< Fn >( fn), attrs, preallocated( sp, size, stack_ctx), stack_alloc);
         BOOST_ASSERT( impl_);
     }
 #else
@@ -171,7 +171,7 @@ public:
         BOOST_ASSERT( 0 != sp);
         // placement new for internal coroutine
         impl_ = new ( sp) object_t(
-                    fn, attrs, preallocated( sp, size, stack_ctx), stack_alloc); 
+                    fn, attrs, preallocated( sp, size, stack_ctx), stack_alloc);
         BOOST_ASSERT( impl_);
     }
 
@@ -195,7 +195,7 @@ public:
         BOOST_ASSERT( 0 != sp);
         // placement new for internal coroutine
         impl_ = new ( sp) object_t(
-                    fn, attrs, preallocated( sp, size, stack_ctx), stack_alloc); 
+                    fn, attrs, preallocated( sp, size, stack_ctx), stack_alloc);
         BOOST_ASSERT( impl_);
     }
 
@@ -219,7 +219,7 @@ public:
         BOOST_ASSERT( 0 != sp);
         // placement new for internal coroutine
         impl_ = new ( sp) object_t(
-                    fn, attrs, preallocated( sp, size, stack_ctx), stack_alloc); 
+                    fn, attrs, preallocated( sp, size, stack_ctx), stack_alloc);
         BOOST_ASSERT( impl_);
     }
 
@@ -243,7 +243,7 @@ public:
         BOOST_ASSERT( 0 != sp);
         // placement new for internal coroutine
         impl_ = new ( sp) object_t(
-                    fn, attrs, preallocated( sp, size, stack_ctx), stack_alloc); 
+                    fn, attrs, preallocated( sp, size, stack_ctx), stack_alloc);
         BOOST_ASSERT( impl_);
     }
 #endif
@@ -331,7 +331,7 @@ public:
         BOOST_ASSERT( 0 != sp);
         // placement new for internal coroutine
         impl_ = new ( sp) object_t(
-                    boost::forward< coroutine_fn >( fn), attrs, preallocated( sp, size, stack_ctx), stack_alloc); 
+                    boost::forward< coroutine_fn >( fn), attrs, preallocated( sp, size, stack_ctx), stack_alloc);
         BOOST_ASSERT( impl_);
     }
 
@@ -355,7 +355,7 @@ public:
         BOOST_ASSERT( 0 != sp);
         // placement new for internal coroutine
         impl_ = new ( sp) object_t(
-                    boost::forward< coroutine_fn >( fn), attrs, preallocated( sp, size, stack_ctx), stack_alloc); 
+                    boost::forward< coroutine_fn >( fn), attrs, preallocated( sp, size, stack_ctx), stack_alloc);
         BOOST_ASSERT( impl_);
     }
 # endif
@@ -379,7 +379,7 @@ public:
         BOOST_ASSERT( 0 != sp);
         // placement new for internal coroutine
         impl_ = new ( sp) object_t(
-                    boost::forward< Fn >( fn), attrs, preallocated( sp, size, stack_ctx), stack_alloc); 
+                    boost::forward< Fn >( fn), attrs, preallocated( sp, size, stack_ctx), stack_alloc);
         BOOST_ASSERT( impl_);
     }
 
@@ -403,7 +403,7 @@ public:
         BOOST_ASSERT( 0 != sp);
         // placement new for internal coroutine
         impl_ = new ( sp) object_t(
-                    boost::forward< Fn >( fn), attrs, preallocated( sp, size, stack_ctx), stack_alloc); 
+                    boost::forward< Fn >( fn), attrs, preallocated( sp, size, stack_ctx), stack_alloc);
         BOOST_ASSERT( impl_);
     }
 #else
@@ -427,7 +427,7 @@ public:
         BOOST_ASSERT( 0 != sp);
         // placement new for internal coroutine
         impl_ = new ( sp) object_t(
-                    fn, attrs, preallocated( sp, size, stack_ctx), stack_alloc); 
+                    fn, attrs, preallocated( sp, size, stack_ctx), stack_alloc);
         BOOST_ASSERT( impl_);
     }
 
@@ -451,7 +451,7 @@ public:
         BOOST_ASSERT( 0 != sp);
         // placement new for internal coroutine
         impl_ = new ( sp) object_t(
-                    fn, attrs, preallocated( sp, size, stack_ctx), stack_alloc); 
+                    fn, attrs, preallocated( sp, size, stack_ctx), stack_alloc);
         BOOST_ASSERT( impl_);
     }
 
@@ -475,7 +475,7 @@ public:
         BOOST_ASSERT( 0 != sp);
         // placement new for internal coroutine
         impl_ = new ( sp) object_t(
-                    fn, attrs, preallocated( sp, size, stack_ctx), stack_alloc); 
+                    fn, attrs, preallocated( sp, size, stack_ctx), stack_alloc);
         BOOST_ASSERT( impl_);
     }
 
@@ -499,7 +499,7 @@ public:
         BOOST_ASSERT( 0 != sp);
         // placement new for internal coroutine
         impl_ = new ( sp) object_t(
-                    fn, attrs, preallocated( sp, size, stack_ctx), stack_alloc); 
+                    fn, attrs, preallocated( sp, size, stack_ctx), stack_alloc);
         BOOST_ASSERT( impl_);
     }
 #endif
@@ -587,7 +587,7 @@ public:
         BOOST_ASSERT( 0 != sp);
         // placement new for internal coroutine
         impl_ = new ( sp) object_t(
-                    boost::forward< coroutine_fn >( fn), attrs, preallocated( sp, size, stack_ctx), stack_alloc); 
+                    boost::forward< coroutine_fn >( fn), attrs, preallocated( sp, size, stack_ctx), stack_alloc);
         BOOST_ASSERT( impl_);
     }
 
@@ -611,7 +611,7 @@ public:
         BOOST_ASSERT( 0 != sp);
         // placement new for internal coroutine
         impl_ = new ( sp) object_t(
-                    boost::forward< coroutine_fn >( fn), attrs, preallocated( sp, size, stack_ctx), stack_alloc); 
+                    boost::forward< coroutine_fn >( fn), attrs, preallocated( sp, size, stack_ctx), stack_alloc);
         BOOST_ASSERT( impl_);
     }
 # endif
@@ -635,7 +635,7 @@ public:
         BOOST_ASSERT( 0 != sp);
         // placement new for internal coroutine
         impl_ = new ( sp) object_t(
-                    boost::forward< Fn >( fn), attrs, preallocated( sp, size, stack_ctx), stack_alloc); 
+                    boost::forward< Fn >( fn), attrs, preallocated( sp, size, stack_ctx), stack_alloc);
         BOOST_ASSERT( impl_);
     }
 
@@ -659,7 +659,7 @@ public:
         BOOST_ASSERT( 0 != sp);
         // placement new for internal coroutine
         impl_ = new ( sp) object_t(
-                    boost::forward< Fn >( fn), attrs, preallocated( sp, size, stack_ctx), stack_alloc); 
+                    boost::forward< Fn >( fn), attrs, preallocated( sp, size, stack_ctx), stack_alloc);
         BOOST_ASSERT( impl_);
     }
 #else
@@ -683,7 +683,7 @@ public:
         BOOST_ASSERT( 0 != sp);
         // placement new for internal coroutine
         impl_ = new ( sp) object_t(
-                    fn, attrs, preallocated( sp, size, stack_ctx), stack_alloc); 
+                    fn, attrs, preallocated( sp, size, stack_ctx), stack_alloc);
         BOOST_ASSERT( impl_);
     }
 
@@ -707,7 +707,7 @@ public:
         BOOST_ASSERT( 0 != sp);
         // placement new for internal coroutine
         impl_ = new ( sp) object_t(
-                    fn, attrs, preallocated( sp, size, stack_ctx), stack_alloc); 
+                    fn, attrs, preallocated( sp, size, stack_ctx), stack_alloc);
         BOOST_ASSERT( impl_);
     }
 
@@ -731,7 +731,7 @@ public:
         BOOST_ASSERT( 0 != sp);
         // placement new for internal coroutine
         impl_ = new ( sp) object_t(
-                    fn, attrs, preallocated( sp, size, stack_ctx), stack_alloc); 
+                    fn, attrs, preallocated( sp, size, stack_ctx), stack_alloc);
         BOOST_ASSERT( impl_);
     }
 
@@ -755,7 +755,7 @@ public:
         BOOST_ASSERT( 0 != sp);
         // placement new for internal coroutine
         impl_ = new ( sp) object_t(
-                    fn, attrs, preallocated( sp, size, stack_ctx), stack_alloc); 
+                    fn, attrs, preallocated( sp, size, stack_ctx), stack_alloc);
         BOOST_ASSERT( impl_);
     }
 #endif

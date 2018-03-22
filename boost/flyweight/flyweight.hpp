@@ -1,4 +1,4 @@
-/* Flyweight class. 
+/* Flyweight class.
  *
  * Copyright 2006-2015 Joaquin M Lopez Munoz.
  * Distributed under the Boost Software License, Version 1.0.
@@ -52,7 +52,7 @@
 #endif
 
 namespace boost{
-  
+
 namespace flyweights{
 
 namespace detail{
@@ -190,7 +190,7 @@ public:
   /* construct/copy/destroy */
 
   flyweight():h(core::insert()){}
-  
+
 #define BOOST_FLYWEIGHT_PERFECT_FWD_CTR_BODY(args) \
   :h(core::insert(BOOST_FLYWEIGHT_FORWARD(args))){}
 
@@ -206,7 +206,7 @@ public:
     std::initializer_list<V> list,
     typename boost::enable_if<
       boost::is_convertible<std::initializer_list<V>,key_type> >::type* =0):
-    h(core::insert(list)){} 
+    h(core::insert(list)){}
 #endif
 
   flyweight(const flyweight& x):h(x.h){}
@@ -238,13 +238,13 @@ public:
 #endif
 
   /* convertibility to underlying type */
-  
+
   const key_type&   get_key()const{return core::key(h);}
   const value_type& get()const{return core::value(h);}
   operator const    value_type&()const{return get();}
-  
+
   /* exact type equality  */
-    
+
   friend bool operator==(const flyweight& x,const flyweight& y)
   {
     return &x.get()==&y.get();
@@ -253,7 +253,7 @@ public:
   /* modifiers */
 
   void swap(flyweight& x){boost::swap(h,x.h);}
-  
+
 private:
   handle_type h;
 };
@@ -380,10 +380,10 @@ BOOST_FLYWEIGHT_COMPLETE_COMP_OPS(
     T1 BOOST_PP_COMMA() BOOST_FLYWEIGHT_TEMPL_ARGS(1)
   >,
   T2)
-  
+
 BOOST_FLYWEIGHT_COMPLETE_COMP_OPS(
   typename T1 BOOST_PP_COMMA()
-  typename T2 BOOST_PP_COMMA() 
+  typename T2 BOOST_PP_COMMA()
   BOOST_FLYWEIGHT_TYPENAME_TEMPL_ARGS(2),
   T1,
   flyweight<

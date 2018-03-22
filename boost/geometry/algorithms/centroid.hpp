@@ -252,11 +252,11 @@ struct centroid_range
         {
             // prepare translation transformer
             translating_transformer<Range> transformer(*boost::begin(range));
-            
+
             typename Strategy::state_type state;
             centroid_range_state<Closure>::apply(range, transformer,
                                                  strategy, state);
-            
+
             if ( strategy.result(state, centroid) )
             {
                 // translate the result back
@@ -310,10 +310,10 @@ struct centroid_polygon
             // prepare translation transformer
             translating_transformer<Polygon>
                 transformer(*boost::begin(exterior_ring(poly)));
-            
+
             typename Strategy::state_type state;
             centroid_polygon_state::apply(poly, transformer, strategy, state);
-            
+
             if ( strategy.result(state, centroid) )
             {
                 // translate the result back
@@ -390,7 +390,7 @@ struct centroid_multi
             transformer.apply_reverse(centroid);
             return true;
         }
-        
+
         return false;
     }
 };

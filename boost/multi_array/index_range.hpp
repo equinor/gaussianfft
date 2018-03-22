@@ -1,6 +1,6 @@
 // Copyright 2002 The Trustees of Indiana University.
 
-// Use, modification and distribution is subject to the Boost Software 
+// Use, modification and distribution is subject to the Boost Software
 // License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
@@ -82,15 +82,15 @@ namespace multi_array {
     index_range& stride(index s) { stride_ = s; return *this; }
 
     index start() const
-    { 
-      return start_; 
+    {
+      return start_;
     }
 
     index get_start(index low_index_range = index_range::from_start()) const
-    { 
+    {
       if (start_ == from_start())
         return low_index_range;
-      return start_; 
+      return start_;
     }
 
     index finish() const
@@ -114,19 +114,19 @@ namespace multi_array {
       stride_ = stride;
     }
 
-    static index_range all() 
+    static index_range all()
     { return index_range(from_start(), to_end(), 1); }
 
     bool is_degenerate() const { return degenerate_; }
 
     index_range operator-(index shift) const
-    { 
-      return index_range(start_ - shift, finish_ - shift, stride_); 
+    {
+      return index_range(start_ - shift, finish_ - shift, stride_);
     }
 
     index_range operator+(index shift) const
-    { 
-      return index_range(start_ + shift, finish_ + shift, stride_); 
+    {
+      return index_range(start_ + shift, finish_ + shift, stride_);
     }
 
     index operator[](unsigned i) const
@@ -182,7 +182,7 @@ namespace multi_array {
   }
 
 } // namespace multi_array
-} // namespace detail  
+} // namespace detail
 } // namespace boost
 
 #endif // BOOST_INDEX_RANGE_RG071801_HPP

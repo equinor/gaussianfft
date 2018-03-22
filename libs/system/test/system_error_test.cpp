@@ -7,7 +7,7 @@
 
 //  See library home page at http://www.boost.org/libs/system
 
-//----------------------------------------------------------------------------// 
+//----------------------------------------------------------------------------//
 
 //  test without deprecated features
 #define BOOST_SYSTEM_NO_DEPRECATED
@@ -63,24 +63,24 @@ int main( int, char *[] )
 {
   // all constructors, in the same order as they appear in the header:
 
-  system_error c1_0( error_code(0, system_category()) ); 
+  system_error c1_0( error_code(0, system_category()) );
   system_error c1_1( error_code(1, system_category()) );
   system_error c1_2u( error_code(uvalue, system_category()) );
 
-  system_error c2_0( error_code(0, system_category()), string("c2_0") ); 
+  system_error c2_0( error_code(0, system_category()), string("c2_0") );
   system_error c2_1( error_code(1, system_category()), string("c2_1") );
 
-  system_error c3_0( error_code(0, system_category()), "c3_0" ); 
+  system_error c3_0( error_code(0, system_category()), "c3_0" );
   system_error c3_1( error_code(1, system_category()), "c3_1" );
 
-  system_error c4_0( 0, system_category() ); 
+  system_error c4_0( 0, system_category() );
   system_error c4_1( 1, system_category() );
   system_error c4_2u( uvalue, system_category() );
 
-  system_error c5_0( 0, system_category(), string("c5_0") ); 
+  system_error c5_0( 0, system_category(), string("c5_0") );
   system_error c5_1( 1, system_category(), string("c5_1") );
 
-  system_error c6_0( 0, system_category(), "c6_0" ); 
+  system_error c6_0( 0, system_category(), "c6_0" );
   system_error c6_1( 1, system_category(), "c6_1" );
 
   TEST( c1_0, 0, "The operation completed successfully" );

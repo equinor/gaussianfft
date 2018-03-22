@@ -1,4 +1,4 @@
-// Boost.Units - A C++ library for zero-overhead dimensional analysis and 
+// Boost.Units - A C++ library for zero-overhead dimensional analysis and
 // unit/quantity manipulation and conversion
 //
 // Copyright (C) 2003-2008 Matthias Christian Schabel
@@ -39,7 +39,7 @@ template<class T, long N> struct base_dimension_pair { };
 template<class T, long N>
 struct check_base_dimension {
     enum {
-        value = 
+        value =
             sizeof(boost_units_is_registered(units::base_dimension_ordinal<N>())) == sizeof(detail::yes) &&
             sizeof(boost_units_is_registered(units::base_dimension_pair<T, N>())) != sizeof(detail::yes)
     };
@@ -61,14 +61,14 @@ template<class Derived,
          >::type
 #endif
 >
-class base_dimension : 
-    public ordinal<N> 
+class base_dimension :
+    public ordinal<N>
 {
     public:
         /// INTERNAL ONLY
         typedef base_dimension                                                          this_type;
         /// A convenience typedef.  Equivalent to boost::units::derived_dimension<Derived,1>::type.
-#ifndef BOOST_UNITS_DOXYGEN 
+#ifndef BOOST_UNITS_DOXYGEN
         typedef list<dim<Derived,static_rational<1> >, dimensionless_type>    dimension_type;
 #else
         typedef detail::unspecified dimension_type;
@@ -83,20 +83,20 @@ class base_dimension :
         /// check_base_dimension will trigger an error earlier
         /// for compilers with less strict name lookup.
         /// INTERNAL ONLY
-        friend Derived* 
-        check_double_register(const units::base_dimension_ordinal<N>&) 
+        friend Derived*
+        check_double_register(const units::base_dimension_ordinal<N>&)
         { return(0); }
 
         /// Register this ordinal
         /// INTERNAL ONLY
-        friend detail::yes 
-        boost_units_is_registered(const units::base_dimension_ordinal<N>&) 
+        friend detail::yes
+        boost_units_is_registered(const units::base_dimension_ordinal<N>&)
         { detail::yes result; return(result); }
-        
+
         /// But make sure we can identify the current instantiation!
         /// INTERNAL ONLY
-        friend detail::yes 
-        boost_units_is_registered(const units::base_dimension_pair<Derived, N>&) 
+        friend detail::yes
+        boost_units_is_registered(const units::base_dimension_pair<Derived, N>&)
         { detail::yes result; return(result); }
 };
 

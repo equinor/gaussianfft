@@ -52,7 +52,7 @@ struct progress_display {
              << "\n|----|----|----|----|----|----|----|----|----|----|"
              << std::endl;
 
-        if( !m_expected_count ) 
+        if( !m_expected_count )
             m_expected_count = 1;  // prevent divide by zero
     }
 
@@ -63,7 +63,7 @@ struct progress_display {
 
         // use of floating point ensures that both large and small counts
         // work correctly.  static_cast<>() is also used several places
-        // to suppress spurious compiler warnings. 
+        // to suppress spurious compiler warnings.
         unsigned int tics_needed =  static_cast<unsigned int>(
             (static_cast<double>(m_count)/m_expected_count)*50.0 );
 

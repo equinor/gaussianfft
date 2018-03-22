@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 1988, 1989 Hans-J. Boehm, Alan J. Demers
  * Copyright (c) 1991-1995 by Xerox Corporation.  All rights reserved.
  * Copyright (c) 1997 by Silicon Graphics.  All rights reserved.
@@ -26,7 +26,7 @@ GC_API void GC_register_finalizer_no_order
 
 
 #ifndef SHORT_DBG_HDRS
-/* Check whether object with base pointer p has debugging info	*/ 
+/* Check whether object with base pointer p has debugging info	*/
 /* p is assumed to point to a legitimate object in our part	*/
 /* of the heap.							*/
 /* This excludes the check as to whether the back pointer is 	*/
@@ -40,7 +40,7 @@ GC_bool GC_has_other_debug_info(ptr_t p)
     register oh * ohdr = (oh *)p;
     register ptr_t body = (ptr_t)(ohdr + 1);
     register word sz = GC_size((ptr_t) ohdr);
-    
+
     if (HBLKPTR((ptr_t)ohdr) != HBLKPTR((ptr_t)body)
         || sz < DEBUG_BYTES + EXTRA_BYTES) {
         return(FALSE);
@@ -226,13 +226,13 @@ GC_bool GC_has_other_debug_info(ptr_t p)
     GC_printf("\n****Chose address %p in object\n", current);
     GC_print_backtrace(current);
   }
-    
+
   void GC_generate_random_backtrace(void)
   {
     GC_gcollect();
     GC_generate_random_backtrace_no_gc();
   }
-    
+
 #endif /* KEEP_BACK_PTRS */
 
 # define CROSSES_HBLK(p, sz) \
@@ -243,7 +243,7 @@ ptr_t GC_store_debug_info(ptr_t p, word sz, const char *string, word integer)
 {
     register word * result = (word *)((oh *)p + 1);
     DCL_LOCK_STATE;
-    
+
     /* There is some argument that we should dissble signals here.	*/
     /* But that's expensive.  And this way things should only appear	*/
     /* inconsistent while we're in the handler.				*/
@@ -274,7 +274,7 @@ ptr_t GC_store_debug_info(ptr_t p, word sz, const char *string, word integer)
 ptr_t GC_store_debug_info_inner(ptr_t p, word sz, char *string, word integer)
 {
     register word * result = (word *)((oh *)p + 1);
-    
+
     /* There is some argument that we should disable signals here.	*/
     /* But that's expensive.  And this way things should only appear	*/
     /* inconsistent while we're in the handler.				*/
@@ -371,12 +371,12 @@ void GC_print_type(ptr_t p)
     }
 }
 
-    
+
 
 void GC_print_obj(ptr_t p)
 {
     register oh * ohdr = (oh *)GC_base(p);
-    
+
     GC_ASSERT(I_DONT_HOLD_LOCK());
     GC_err_printf("%p (", ((ptr_t)ohdr + sizeof(oh)));
     GC_err_puts(ohdr -> oh_string);
@@ -405,7 +405,7 @@ void GC_debug_print_heap_obj_proc(ptr_t p)
 void GC_print_smashed_obj(ptr_t p, ptr_t clobbered_addr)
 {
     register oh * ohdr = (oh *)GC_base(p);
-    
+
     GC_ASSERT(I_DONT_HOLD_LOCK());
     GC_err_printf("%p in object at %p(", clobbered_addr, p);
     if (clobbered_addr <= (ptr_t)(&(ohdr -> oh_sz))
@@ -456,7 +456,7 @@ void GC_debug_register_displacement(size_t offset)
 void * GC_debug_malloc(size_t lb, GC_EXTRA_PARAMS)
 {
     void * result = GC_malloc(lb + DEBUG_BYTES);
-    
+
     if (result == 0) {
         GC_err_printf("GC_debug_malloc(%lu) returning NIL (",
         	      (unsigned long) lb);
@@ -474,7 +474,7 @@ void * GC_debug_malloc(size_t lb, GC_EXTRA_PARAMS)
 void * GC_debug_malloc_ignore_off_page(size_t lb, GC_EXTRA_PARAMS)
 {
     void * result = GC_malloc_ignore_off_page(lb + DEBUG_BYTES);
-    
+
     if (result == 0) {
         GC_err_printf("GC_debug_malloc_ignore_off_page(%lu) returning NIL (",
         	       (unsigned long) lb);
@@ -492,7 +492,7 @@ void * GC_debug_malloc_ignore_off_page(size_t lb, GC_EXTRA_PARAMS)
 void * GC_debug_malloc_atomic_ignore_off_page(size_t lb, GC_EXTRA_PARAMS)
 {
     void * result = GC_malloc_atomic_ignore_off_page(lb + DEBUG_BYTES);
-    
+
     if (result == 0) {
         GC_err_printf("GC_debug_malloc_atomic_ignore_off_page(%lu)"
 		       " returning NIL (", (unsigned long) lb);
@@ -508,7 +508,7 @@ void * GC_debug_malloc_atomic_ignore_off_page(size_t lb, GC_EXTRA_PARAMS)
 }
 
 # ifdef DBG_HDRS_ALL
-/* 
+/*
  * An allocation function for internal use.
  * Normally internally allocated objects do not have debug information.
  * But in this case, we need to make sure that all objects have debug
@@ -519,7 +519,7 @@ void * GC_debug_malloc_atomic_ignore_off_page(size_t lb, GC_EXTRA_PARAMS)
   void * GC_debug_generic_malloc_inner(size_t lb, int k)
   {
     void * result = GC_generic_malloc_inner(lb + DEBUG_BYTES, k);
-    
+
     if (result == 0) {
         GC_err_printf("GC internal allocation (%lu bytes) returning NIL\n",
         	       (unsigned long) lb);
@@ -533,7 +533,7 @@ void * GC_debug_malloc_atomic_ignore_off_page(size_t lb, GC_EXTRA_PARAMS)
   {
     void * result = GC_generic_malloc_inner_ignore_off_page(
 					        lb + DEBUG_BYTES, k);
-    
+
     if (result == 0) {
         GC_err_printf("GC internal allocation (%lu bytes) returning NIL\n",
         	       (unsigned long) lb);
@@ -548,7 +548,7 @@ void * GC_debug_malloc_atomic_ignore_off_page(size_t lb, GC_EXTRA_PARAMS)
 void * GC_debug_malloc_stubborn(size_t lb, GC_EXTRA_PARAMS)
 {
     void * result = GC_malloc_stubborn(lb + DEBUG_BYTES);
-    
+
     if (result == 0) {
         GC_err_printf("GC_debug_malloc(%lu) returning NIL (",
         	      (unsigned long) lb);
@@ -567,7 +567,7 @@ void GC_debug_change_stubborn(void *p)
 {
     void * q = GC_base(p);
     hdr * hhdr;
-    
+
     if (q == 0) {
         GC_err_printf("Bad argument: %p to GC_debug_change_stubborn\n", p);
         ABORT("GC_debug_change_stubborn: bad arg");
@@ -584,7 +584,7 @@ void GC_debug_end_stubborn_change(void *p)
 {
     register void * q = GC_base(p);
     register hdr * hhdr;
-    
+
     if (q == 0) {
         GC_err_printf("Bad argument: %p to GC_debug_end_stubborn_change\n", p);
         ABORT("GC_debug_end_stubborn_change: bad arg");
@@ -617,7 +617,7 @@ void GC_debug_end_stubborn_change(void *p)
 void * GC_debug_malloc_atomic(size_t lb, GC_EXTRA_PARAMS)
 {
     void * result = GC_malloc_atomic(lb + DEBUG_BYTES);
-    
+
     if (result == 0) {
         GC_err_printf("GC_debug_malloc_atomic(%lu) returning NIL (",
         	      (unsigned long) lb);
@@ -648,7 +648,7 @@ char *GC_debug_strdup(const char *str, GC_EXTRA_PARAMS)
 void * GC_debug_malloc_uncollectable(size_t lb, GC_EXTRA_PARAMS)
 {
     void * result = GC_malloc_uncollectable(lb + UNCOLLECTABLE_DEBUG_BYTES);
-    
+
     if (result == 0) {
         GC_err_printf("GC_debug_malloc_uncollectable(%lu) returning NIL (",
         	      (unsigned long) lb);
@@ -668,7 +668,7 @@ void * GC_debug_malloc_atomic_uncollectable(size_t lb, GC_EXTRA_PARAMS)
 {
     void * result =
 	GC_malloc_atomic_uncollectable(lb + UNCOLLECTABLE_DEBUG_BYTES);
-    
+
     if (result == 0) {
         GC_err_printf(
 		"GC_debug_malloc_atomic_uncollectable(%lu) returning NIL (",
@@ -689,7 +689,7 @@ void GC_debug_free(void * p)
 {
     ptr_t base;
     ptr_t clobbered;
-    
+
     if (0 == p) return;
     base = GC_base(p);
     if (base == 0) {
@@ -760,7 +760,7 @@ void * GC_debug_realloc(void * p, size_t lb, GC_EXTRA_PARAMS)
     size_t copy_sz = lb;
     size_t old_sz;
     hdr * hhdr;
-    
+
     if (p == 0) return(GC_debug_malloc(lb, OPT_RA s, i));
     if (base == 0) {
         GC_err_printf("Attempt to reallocate invalid pointer %p\n", p);
@@ -857,7 +857,7 @@ void GC_check_heap_block(struct hblk *hbp, word dummy)
     size_t sz = hhdr -> hb_sz;
     size_t bit_no;
     char *p, *plim;
-    
+
     p = hbp->hb_body;
     bit_no = 0;
     if (sz > MAXOBJBYTES) {
@@ -870,7 +870,7 @@ void GC_check_heap_block(struct hblk *hbp, word dummy)
 	    if( mark_bit_from_hdr(hhdr, bit_no)
 	        && GC_HAS_DEBUG_INFO((ptr_t)p)) {
 	        ptr_t clobbered = GC_check_annotated_obj((oh *)p);
-	        
+
 	        if (clobbered != 0) GC_add_smashed(clobbered);
 	    }
 	    bit_no += MARK_BIT_OFFSET(sz);
@@ -907,7 +907,7 @@ void * GC_make_closure(GC_finalization_proc fn, void * data)
 #   else
       (struct closure *) GC_malloc(sizeof (struct closure));
 #   endif
-    
+
     result -> cl_fn = fn;
     result -> cl_data = data;
     return((void *)result);
@@ -916,9 +916,9 @@ void * GC_make_closure(GC_finalization_proc fn, void * data)
 void GC_debug_invoke_finalizer(void * obj, void * data)
 {
     register struct closure * cl = (struct closure *) data;
-    
+
     (*(cl -> cl_fn))((void *)((char *)obj + sizeof(oh)), cl -> cl_data);
-} 
+}
 
 /* Set ofn and ocd to reflect the values we got back.	*/
 static void store_old (void *obj, GC_finalization_proc my_old_fn,

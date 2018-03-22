@@ -98,9 +98,9 @@ private:
 
       // pack the data into the buffer
       BOOST_MPI_CHECK_RESULT(MPI_Pack,
-                             (const_cast<void*>(p),l,t, 
+                             (const_cast<void*>(p),l,t,
                               detail::c_data(buffer_),
-                              buffer_.size(), 
+                              buffer_.size(),
                               &position,comm));
       // reduce the buffer size if needed
       BOOST_ASSERT(std::size_t(position) <= buffer_.size());

@@ -9,30 +9,30 @@ After the neccessary includes ::
 
   #include <boost/python/numpy.hpp>
   #include <iostream>
-  
+
   namespace p = boost::python;
   namespace np = boost::python::numpy;
 
 Now we create the structs necessary to implement the ufuncs. The typedefs *must* be made as the ufunc generators take these typedefs as inputs and return an error otherwise ::
 
-  struct UnarySquare 
+  struct UnarySquare
   {
     typedef double argument_type;
     typedef double result_type;
-  
+
     double operator()(double r) const { return r * r;}
   };
- 
+
   struct BinarySquare
   {
     typedef double first_argument_type;
     typedef double second_argument_type;
     typedef double result_type;
-  
+
     double operator()(double a,double b) const { return (a*a + b*b) ; }
   };
 
-Initialise the Python runtime and the numpy module :: 
+Initialise the Python runtime and the numpy module ::
 
   int main(int argc, char **argv)
   {
@@ -50,11 +50,11 @@ Let inst be an instance of the class ud ::
 
 Use the "__call__" method to call the overloaded () operator and print the value ::
 
-    std::cout << "Square of unary scalar 1.0 is " << p::extract<char const *>(p::str(inst.attr("__call__")(1.0))) << std::endl; 
+    std::cout << "Square of unary scalar 1.0 is " << p::extract<char const *>(p::str(inst.attr("__call__")(1.0))) << std::endl;
 
 Create an array in C++ ::
 
-    int arr[] = {1,2,3,4} ; 
+    int arr[] = {1,2,3,4} ;
 
 
 ..and use it to create the ndarray in Python ::
@@ -64,7 +64,7 @@ Create an array in C++ ::
 					   p::make_tuple(4),
 					   p::object());
 
-Print out the demo array :: 
+Print out the demo array ::
 
     std::cout << "Demo array is " << p::extract<char const *>(p::str(demo_array)) << std::endl;
 
@@ -73,7 +73,7 @@ Call the "__call__" method to perform the operation and assign the value to resu
     p::object result_array = inst.attr("__call__")(demo_array);
 
 Print the resultant array ::
- 
+
     std::cout << "Square of demo array is " << p::extract<char const *>(p::str(result_array)) << std::endl;
 
 Lets try the same with a list ::
@@ -117,4 +117,4 @@ And print the output ::
 
     std::cout << "Square of list with binary ufunc is " << p::extract<char const *>(p::str(result_array)) << std::endl;
   }
-  
+

@@ -5,7 +5,7 @@
 //
 //
 //  example that shows problems with overloading and automatic conversion.
-//  if you call one of the below functions from python with bool/int/double, 
+//  if you call one of the below functions from python with bool/int/double,
 //  you'll see that the overload called is first match, not best match.
 //  See overload matching in luabind for an example of how to do this better.
 //
@@ -33,7 +33,7 @@ std::string takes_double(double b) { return "double"; }
 
 
 BOOST_PYTHON_MODULE(overload_resolution)
-{    
+{
   def("bid", takes_bool);
   def("bid", takes_int);
   def("bid", takes_double);

@@ -76,7 +76,7 @@ private:
             >::type                           base_type;
 public:
     typedef typename char_type_of<T>::type    char_type;
-    struct category 
+    struct category
         : Mode,
           closable_tag,
           streambuf_tag
@@ -85,11 +85,11 @@ public:
 public:
     stream_buffer() { }
     ~stream_buffer()
-    { 
-        try { 
-            if (this->is_open() && this->auto_close()) 
-                this->close(); 
-        } catch (...) { } 
+    {
+        try {
+            if (this->is_open() && this->auto_close())
+                this->close();
+        } catch (...) { }
     }
     BOOST_IOSTREAMS_FORWARD( stream_buffer, open_impl, T,
                              BOOST_IOSTREAMS_PUSH_PARAMS,

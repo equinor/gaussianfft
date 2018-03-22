@@ -54,7 +54,7 @@ struct sm_domain
     : proto::domain< proto::generator<euml_terminal>, terminal_grammar, boost::msm::msm_domain >
 {};
 
-struct state_grammar : 
+struct state_grammar :
     proto::and_<
         proto::not_<proto::address_of<proto::_> >,
         proto::not_<proto::shift_right<proto::_,proto::_> >,

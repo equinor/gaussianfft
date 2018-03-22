@@ -11,7 +11,7 @@
    safe. This isn't a problem because signals aren't used to
    suspend threads on darwin.
 */
-   
+
 typedef struct {
     pthread_mutex_t mutex;
     pthread_cond_t cond;
@@ -23,7 +23,7 @@ static int sem_init(sem_t *sem, int pshared, int value) {
     if(pshared)
         GC_abort("sem_init with pshared set");
     sem->value = value;
-    
+
     ret = pthread_mutex_init(&sem->mutex,NULL);
     if(ret < 0) return -1;
     ret = pthread_cond_init(&sem->cond,NULL);
@@ -52,7 +52,7 @@ static int sem_wait(sem_t *sem) {
     }
     sem->value--;
     if(pthread_mutex_unlock(&sem->mutex) < 0)
-        return -1;    
+        return -1;
     return 0;
 }
 

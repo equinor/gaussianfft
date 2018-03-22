@@ -41,7 +41,7 @@ struct basic_protected_stack_allocator
 
         // page at bottom will be used as guard-page
         const std::size_t pages(
-            static_cast< std::size_t >( 
+            static_cast< std::size_t >(
                 std::floor(
                     static_cast< float >( size) / traits_type::page_size() ) ) );
         BOOST_ASSERT_MSG( 2 <= pages, "at least two pages must fit into stack (one page is guard-page)");

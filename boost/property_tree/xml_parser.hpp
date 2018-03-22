@@ -2,8 +2,8 @@
 // Copyright (C) 2002-2006 Marcin Kalicinski
 // Copyright (C) 2009 Sebastian Redl
 //
-// Distributed under the Boost Software License, Version 1.0. 
-// (See accompanying file LICENSE_1_0.txt or copy at 
+// Distributed under the Boost Software License, Version 1.0.
+// (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 //
 // For more information, see www.boost.org
@@ -90,7 +90,7 @@ namespace boost { namespace property_tree { namespace xml_parser
      * stream.
      * @throw xml_parser_error In case of error translating the property tree to
      *                         XML or writing to the output stream.
-     * @param stream The stream to which to write the XML representation of the 
+     * @param stream The stream to which to write the XML representation of the
      *               property tree.
      * @param pt The property tree to tranlsate to XML and output.
      * @param settings The settings to use when writing out the property tree as
@@ -113,7 +113,7 @@ namespace boost { namespace property_tree { namespace xml_parser
      * Translates the property tree to XML and writes it the given file.
      * @throw xml_parser_error In case of error translating the property tree to
      *                         XML or writing to the output stream.
-     * @param filename The file to which to write the XML representation of the 
+     * @param filename The file to which to write the XML representation of the
      *                 property tree.
      * @param pt The property tree to tranlsate to XML and output.
      * @param loc The locale to use when writing the output to file.

@@ -130,14 +130,14 @@ from __future__ import print_function
 1
 
         Slices
-        
+
 >>> assert check_string_slice()
 
         Operators
 
->>> def print_args(*args, **kwds): 
+>>> def print_args(*args, **kwds):
 ...     print(args, kwds)
->>> test_call(print_args, (0, 1, 2, 3), {'a':'A'}) 
+>>> test_call(print_args, (0, 1, 2, 3), {'a':'A'})
 (0, 1, 2, 3) {'a': 'A'}
 
 
@@ -149,7 +149,7 @@ from __future__ import print_function
 
 
        Now make sure that object is actually managing reference counts
-       
+
 >>> import weakref
 >>> class Z: pass
 ...
@@ -171,7 +171,7 @@ def run(args = None):
     if args is not None:
         sys.argv = args
     return doctest.testmod(sys.modules.get(__name__))
-    
+
 if __name__ == '__main__':
     print("running...")
     import sys

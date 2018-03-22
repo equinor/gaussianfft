@@ -12,7 +12,7 @@
 #define BOOST_CONTAINER_POOL_RESOURCE_HPP
 
 #if defined (_MSC_VER)
-#  pragma once 
+#  pragma once
 #endif
 
 #include <boost/container/detail/config_begin.hpp>
@@ -68,7 +68,7 @@ class pool_resource
    //!   request from its own internal data structures. The resulting object will hold
    //!   a copy of upstream, but will not own the resource to which upstream points.
    //!   [ Note: The intention is that calls to upstream->allocate() will be
-   //!   substantially fewer than calls to this->allocate() in most cases. - end note 
+   //!   substantially fewer than calls to this->allocate() in most cases. - end note
    //!   The behavior of the pooling mechanism is tuned according to the value of
    //!   the opts argument.
    //!

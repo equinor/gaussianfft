@@ -23,12 +23,12 @@ namespace boost { namespace program_options {
     template<class charT>
     class basic_option {
     public:
-        basic_option() 
+        basic_option()
         : position_key(-1)
-        , unregistered(false) 
+        , unregistered(false)
         , case_insensitive(false)
         {}
-        basic_option(const std::string& xstring_key, 
+        basic_option(const std::string& xstring_key,
                const std::vector< std::string> &xvalue)
         : string_key(xstring_key)
         , position_key(-1)

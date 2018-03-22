@@ -15,7 +15,7 @@
 
 #include <boost/graph/detail/is_distributed_selector.hpp>
 
-namespace boost { 
+namespace boost {
 
   /* The default local selector for a distributedS selector. */
   struct defaultS {};
@@ -27,7 +27,7 @@ namespace boost {
    */
   template<typename ProcessGroup, typename LocalS = defaultS,
            typename DistributionS = defaultS>
-  struct distributedS 
+  struct distributedS
   {
     typedef ProcessGroup process_group_type;
     typedef LocalS local_selector;

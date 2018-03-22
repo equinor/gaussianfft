@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 1988, 1989 Hans-J. Boehm, Alan J. Demers
  * Copyright (c) 1991-1995 by Xerox Corporation.  All rights reserved.
  * Copyright 1996-1999 by Silicon Graphics.  All rights reserved.
@@ -26,7 +26,7 @@
  * Everything else is best ignored unless you encounter performance
  * problems.
  */
- 
+
 #ifndef _GC_H
 
 # define _GC_H
@@ -317,7 +317,7 @@ GC_API size_t GC_size(void * object_addr);
 /* It is an error to have changes enabled for the original object.	*/
 /* Follows ANSI comventions for NULL old_object.			*/
 GC_API void * GC_realloc(void * old_object, size_t new_size_in_bytes);
-				   
+
 /* Explicitly increase the heap size.	*/
 /* Returns 0 on failure, 1 on success.  */
 GC_API int GC_expand_hp(size_t number_of_bytes);
@@ -497,7 +497,7 @@ GC_API void * GC_malloc_atomic_ignore_off_page(size_t lb);
 #if (defined(__linux__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__HAIKU__) \
      || defined(__FreeBSD__) || defined(__DragonFly__)) & !defined(GC_CAN_SAVE_CALL_STACKS)
 # define GC_ADD_CALLER
-# if __GNUC__ >= 3 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 95) 
+# if __GNUC__ >= 3 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 95)
     /* gcc knows how to retrieve return address, but we don't know */
     /* how to generate call stacks.				   */
 #   define GC_RETURN_ADDR (GC_word)__builtin_return_address(0)
@@ -549,7 +549,7 @@ GC_API void GC_debug_end_stubborn_change(void *);
 GC_API void * GC_debug_malloc_replacement (size_t size_in_bytes);
 GC_API void * GC_debug_realloc_replacement
 	      (void * object_addr, size_t size_in_bytes);
-  			 	 
+
 # ifdef GC_DEBUG
 #   define GC_MALLOC(sz) GC_debug_malloc(sz, GC_EXTRAS)
 #   define GC_MALLOC_ATOMIC(sz) GC_debug_malloc_atomic(sz, GC_EXTRAS)
@@ -643,7 +643,7 @@ GC_API void GC_debug_register_finalizer
 	/* Finalizers are implicitly unregistered just before   */
 	/* they are invoked.					*/
 	/* The old finalizer and client data are stored in	*/
-	/* *ofn and *ocd.					*/ 
+	/* *ofn and *ocd.					*/
 	/* Fn is never invoked on an accessible object,		*/
 	/* provided hidden pointers are converted to real 	*/
 	/* pointers only if the allocation lock is held, and	*/
@@ -999,7 +999,7 @@ extern void GC_thr_init(void);	/* Needed for Solaris/X86 ??	*/
    first call a user-supplied routine with filename of the library and
    the address and length of the memory region.  This routine should
    return nonzero if that region should be scanned.  */
-GC_API void 
+GC_API void
 GC_register_has_static_roots_callback
   (int (*callback)(const char *, void *, size_t));
 

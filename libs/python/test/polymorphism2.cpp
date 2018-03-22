@@ -19,7 +19,7 @@
 # define HELD_PTR(X) , std::auto_ptr< X >
 #else
 # define HELD_PTR(X)
-#endif 
+#endif
 
 using namespace boost::python;
 
@@ -36,15 +36,15 @@ struct PCallback : P, wrapper<P>
     {
 #if BOOST_WORKAROUND(BOOST_MSVC, <= 1300)
         return call<char const*>(this->get_override("f").ptr());
-#else 
+#else
         return this->get_override("f")();
-#endif 
+#endif
     }
 };
 
 struct Q : virtual P
 {
-    char const* f() { return "Q::f()"; } 
+    char const* f() { return "Q::f()"; }
 };
 
 struct A
@@ -60,9 +60,9 @@ struct ACallback :  A, wrapper<A>
         if (override f = this->get_override("f"))
 #if BOOST_WORKAROUND(BOOST_MSVC, <= 1300)
             return call<char const*>(f.ptr());
-#else 
+#else
             return f();
-#endif 
+#endif
 
         return A::f();
     }
@@ -72,7 +72,7 @@ struct ACallback :  A, wrapper<A>
 
 struct B : A
 {
-    virtual char const* f() { return "B::f()"; } 
+    virtual char const* f() { return "B::f()"; }
 };
 
 struct C : A
@@ -93,15 +93,15 @@ struct DCallback :  D,  wrapper<D>
         if (override f = this->get_override("f"))
 #if BOOST_WORKAROUND(BOOST_MSVC, <= 1300)
             return call<char const*>(f.ptr());
-#else 
+#else
             return f();
-#endif 
+#endif
         //else
             return D::f();
     }
 };
 
-    
+
 A& getBCppObj ()
 {
     static B b;
@@ -135,25 +135,25 @@ A* pass_a(A* x) { return x; }
 BOOST_PYTHON_MODULE_INIT(polymorphism2_auto_ptr_ext)
 #else
 BOOST_PYTHON_MODULE_INIT(polymorphism2_ext)
-#endif 
+#endif
 {
     class_<ACallback HELD_PTR(A),boost::noncopyable>("A")
         .def("f", &A::f, &ACallback::default_f)
         ;
-    
+
     def("getBCppObj", getBCppObj, return_value_policy<reference_existing_object>());
 
     class_<C HELD_PTR(C),bases<A>,boost::noncopyable>("C")
         .def("f", &C::f)
         ;
-    
+
     class_<DCallback HELD_PTR(D),bases<A>,boost::noncopyable>("D")
         .def("f", &D::f)
         .def("g", &D::g)
         ;
 
     def("pass_a", &pass_a,  return_internal_reference<>());
-    
+
     def("getCCppObj", getCCppObj, return_value_policy<reference_existing_object>());
 
     def("factory", factory, return_value_policy<manage_new_object>());

@@ -13,7 +13,7 @@
 
 #include <boost/range/detail/common.hpp>
 
-namespace boost 
+namespace boost
 {
     namespace range_detail
     {
@@ -23,7 +23,7 @@ namespace boost
         //////////////////////////////////////////////////////////////////////
         // default
         //////////////////////////////////////////////////////////////////////
-        
+
         template<>
         struct range_empty<std_container_>
         {
@@ -33,11 +33,11 @@ namespace boost
                 return c.empty();
             };
         };
-                    
+
         //////////////////////////////////////////////////////////////////////
         // pair
         //////////////////////////////////////////////////////////////////////
-        
+
         template<>
         struct range_empty<std_pair_>
         {
@@ -47,11 +47,11 @@ namespace boost
                 return p.first == p.second;
             }
         };
- 
+
         //////////////////////////////////////////////////////////////////////
         // array
         //////////////////////////////////////////////////////////////////////
-        
+
         template<>
         struct range_empty<array_>
         {
@@ -67,7 +67,7 @@ namespace boost
         //////////////////////////////////////////////////////////////////////
         // string
         //////////////////////////////////////////////////////////////////////
-        
+
         template<>
         struct range_empty<char_ptr_>
         {
@@ -94,7 +94,7 @@ namespace boost
                 return  s == 0 || s[0] == 0;
             }
         };
-        
+
         template<>
         struct range_empty<const_wchar_t_ptr_>
         {
@@ -105,10 +105,10 @@ namespace boost
         };
 
     } // namespace 'range_detail'
-    
-        
+
+
     template< typename C >
-    inline bool 
+    inline bool
     empty( const C& c )
     {
         return range_detail::range_empty<  BOOST_RANGE_DEDUCED_TYPENAME range_detail::range<C>::type >::fun( c );

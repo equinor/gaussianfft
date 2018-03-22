@@ -20,9 +20,9 @@ namespace boost {
   inline void serialize(Archive&, no_property&, const unsigned int) { }
 
   template<class Archive, class Tag, class T, class Base>
-  void 
-  serialize(Archive& ar, property<Tag, T, Base>& prop, 
-            const unsigned int /*version*/) 
+  void
+  serialize(Archive& ar, property<Tag, T, Base>& prop,
+            const unsigned int /*version*/)
   {
     ar & serialization::make_nvp( "property_value" , prop.m_value );
     ar & serialization::make_nvp( "property_base" , prop.m_base );
@@ -52,7 +52,7 @@ namespace boost {
 
   }
 #endif // BOOST_GRAPH_USE_MPI
-  
+
 } // end namespace boost
 
 #ifdef BOOST_GRAPH_USE_MPI

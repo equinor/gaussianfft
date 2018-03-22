@@ -24,19 +24,19 @@ namespace boost {
 
   namespace graph { namespace detail {
 
-    
+
     template<typename Lookahead>
     struct parallel_dijkstra_impl2
     {
       template<typename DistributedGraph, typename DijkstraVisitor,
-               typename PredecessorMap, typename DistanceMap, 
-               typename WeightMap, typename IndexMap, typename ColorMap, 
-               typename Compare, typename Combine, typename DistInf, 
+               typename PredecessorMap, typename DistanceMap,
+               typename WeightMap, typename IndexMap, typename ColorMap,
+               typename Compare, typename Combine, typename DistInf,
                typename DistZero>
-      static void 
+      static void
       run(const DistributedGraph& g,
           typename graph_traits<DistributedGraph>::vertex_descriptor s,
-          PredecessorMap predecessor, DistanceMap distance, 
+          PredecessorMap predecessor, DistanceMap distance,
           typename property_traits<DistanceMap>::value_type lookahead,
           WeightMap weight, IndexMap index_map, ColorMap color_map,
           Compare compare, Combine combine, DistInf inf, DistZero zero,
@@ -52,14 +52,14 @@ namespace boost {
     struct parallel_dijkstra_impl2< ::boost::param_not_found >
     {
       template<typename DistributedGraph, typename DijkstraVisitor,
-               typename PredecessorMap, typename DistanceMap, 
-               typename WeightMap, typename IndexMap, typename ColorMap, 
-               typename Compare, typename Combine, typename DistInf, 
+               typename PredecessorMap, typename DistanceMap,
+               typename WeightMap, typename IndexMap, typename ColorMap,
+               typename Compare, typename Combine, typename DistInf,
                typename DistZero>
-      static void 
+      static void
       run(const DistributedGraph& g,
           typename graph_traits<DistributedGraph>::vertex_descriptor s,
-          PredecessorMap predecessor, DistanceMap distance, 
+          PredecessorMap predecessor, DistanceMap distance,
           ::boost::param_not_found,
           WeightMap weight, IndexMap index_map, ColorMap color_map,
           Compare compare, Combine combine, DistInf inf, DistZero zero,
@@ -75,14 +75,14 @@ namespace boost {
     struct parallel_dijkstra_impl
     {
       template<typename DistributedGraph, typename DijkstraVisitor,
-               typename PredecessorMap, typename DistanceMap, 
+               typename PredecessorMap, typename DistanceMap,
                typename Lookahead, typename WeightMap, typename IndexMap,
-               typename Compare, typename Combine, 
+               typename Compare, typename Combine,
                typename DistInf, typename DistZero>
-      static void 
+      static void
       run(const DistributedGraph& g,
           typename graph_traits<DistributedGraph>::vertex_descriptor s,
-          PredecessorMap predecessor, DistanceMap distance, 
+          PredecessorMap predecessor, DistanceMap distance,
           Lookahead lookahead,
           WeightMap weight, IndexMap index_map, ColorMap color_map,
           Compare compare, Combine combine, DistInf inf, DistZero zero,
@@ -93,22 +93,22 @@ namespace boost {
                 color_map, compare, combine, inf, zero, vis);
       }
     };
-    
+
     template<>
     struct parallel_dijkstra_impl< ::boost::param_not_found >
     {
     private:
       template<typename DistributedGraph, typename DijkstraVisitor,
-               typename PredecessorMap, typename DistanceMap, 
+               typename PredecessorMap, typename DistanceMap,
                typename Lookahead, typename WeightMap, typename IndexMap,
-               typename ColorMap, typename Compare, typename Combine, 
+               typename ColorMap, typename Compare, typename Combine,
                typename DistInf, typename DistZero>
-      static void 
+      static void
       run_impl(const DistributedGraph& g,
                typename graph_traits<DistributedGraph>::vertex_descriptor s,
-               PredecessorMap predecessor, DistanceMap distance, 
-               Lookahead lookahead, WeightMap weight, IndexMap index_map, 
-               ColorMap color_map, Compare compare, Combine combine, 
+               PredecessorMap predecessor, DistanceMap distance,
+               Lookahead lookahead, WeightMap weight, IndexMap index_map,
+               ColorMap color_map, Compare compare, Combine combine,
                DistInf inf, DistZero zero, DijkstraVisitor vis)
       {
         BGL_FORALL_VERTICES_T(u, g, DistributedGraph)
@@ -122,15 +122,15 @@ namespace boost {
 
     public:
       template<typename DistributedGraph, typename DijkstraVisitor,
-               typename PredecessorMap, typename DistanceMap, 
+               typename PredecessorMap, typename DistanceMap,
                typename Lookahead, typename WeightMap, typename IndexMap,
-               typename Compare, typename Combine, 
+               typename Compare, typename Combine,
                typename DistInf, typename DistZero>
-      static void 
+      static void
       run(const DistributedGraph& g,
           typename graph_traits<DistributedGraph>::vertex_descriptor s,
-          PredecessorMap predecessor, DistanceMap distance, 
-          Lookahead lookahead, WeightMap weight, IndexMap index_map, 
+          PredecessorMap predecessor, DistanceMap distance,
+          Lookahead lookahead, WeightMap weight, IndexMap index_map,
           ::boost::param_not_found,
           Compare compare, Combine combine, DistInf inf, DistZero zero,
           DijkstraVisitor vis)
@@ -182,7 +182,7 @@ namespace boost {
       vertices_size_type;
 
     // Build a distributed property map for vertex colors, if we need it
-    bool use_default_color_map 
+    bool use_default_color_map
       = is_default_param(get_param(params, vertex_color));
     vertices_size_type n = use_default_color_map? num_vertices(g) : 1;
     std::vector<default_color_type> color(n, white_color);
@@ -193,7 +193,7 @@ namespace boost {
     typedef typename get_param_type< vertex_color_t, bgl_named_params<T, Tag, Base> >::type color_map_type;
 
     graph::detail::parallel_dijkstra_impl<color_map_type>
-      ::run(g, s, predecessor, distance, 
+      ::run(g, s, predecessor, distance,
             get_param(params, lookahead_t()),
             weight, index_map,
             get_param(params, vertex_color),

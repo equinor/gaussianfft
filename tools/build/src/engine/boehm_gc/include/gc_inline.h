@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 1988, 1989 Hans-J. Boehm, Alan J. Demers
  * Copyright (c) 1991-1995 by Xerox Corporation.  All rights reserved.
  * Copyright (c) 2005 Hewlett-Packard Development Company, L.P.
@@ -12,7 +12,7 @@
  * provided the above notices are retained, and a notice that the code was
  * modified is included with the above copyright notice.
  */
- 
+
 /* USE OF THIS FILE IS NOT RECOMMENDED unless GC_all_interior_pointers	*/
 /* is not set, or the collector has been built with			*/
 /* -DDONT_ADD_BYTE_AT_END, or the specified size includes a pointerfree	*/

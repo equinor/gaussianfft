@@ -52,7 +52,7 @@ public:
         process_characters(name.c_str(), name.length());
         return sha_to_uuid();
     }
-    
+
     uuid operator()(void const* buffer, std::size_t byte_count) {
         reset();
         sha.process_bytes(buffer, byte_count);
@@ -77,7 +77,7 @@ private:
             sha.process_byte(static_cast<unsigned char>((c >> 24) & 0xFF));
         }
     }
-    
+
     void process_characters(char const*const characters, size_t count) {
         sha.process_bytes(characters, count);
     }
@@ -87,7 +87,7 @@ private:
         sha.reset();
         sha.process_bytes(namespace_uuid.begin(), namespace_uuid.size());
     }
-    
+
     uuid sha_to_uuid()
     {
         unsigned int digest[5];

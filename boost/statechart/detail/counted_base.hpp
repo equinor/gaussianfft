@@ -21,7 +21,7 @@ namespace detail
 {
 
 
-  
+
 template< bool NeedsLocking >
 struct count_base
 {

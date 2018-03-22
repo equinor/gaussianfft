@@ -34,7 +34,7 @@ class BOOST_MPI_DECL status
 {
  public:
   status() : m_count(-1) { }
-  
+
   status(MPI_Status const& s) : m_status(s), m_count(-1) {}
 
   /**

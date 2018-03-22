@@ -5,7 +5,7 @@
 #ifndef NOT_SPECIFIED_DWA2002321_HPP
 # define NOT_SPECIFIED_DWA2002321_HPP
 
-namespace boost { namespace python { namespace detail { 
+namespace boost { namespace python { namespace detail {
 
   struct not_specified {};
 

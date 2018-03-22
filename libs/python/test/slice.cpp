@@ -12,7 +12,7 @@ using namespace boost::python;
 
 #if BOOST_WORKAROUND(__SUNPRO_CC, BOOST_TESTED_AT(0x580)) || BOOST_WORKAROUND(BOOST_MSVC, BOOST_TESTED_AT(1500))
 # define make_tuple boost::python::make_tuple
-#endif 
+#endif
 
 // These checks are only valid under Python 2.3
 // (rich slicing wasn't supported for builtins under Python 2.2)
@@ -62,17 +62,17 @@ int check_slice_get_indices(slice index);
 int check_slice_get_indices(
 #if !BOOST_WORKAROUND(__SUNPRO_CC, BOOST_TESTED_AT(0x590))
     const
-#endif 
+#endif
     slice index)
 {
     // A vector of integers from [-5, 5].
     std::vector<int> coll(11);
     typedef std::vector<int>::iterator coll_iterator;
-    
+
     for (coll_iterator i = coll.begin(); i != coll.end(); ++i) {
         *i = i - coll.begin() - 5;
     }
-    
+
     slice::range<std::vector<int>::iterator> bounds;
     try {
         bounds = index.get_indices(coll.begin(), coll.end());

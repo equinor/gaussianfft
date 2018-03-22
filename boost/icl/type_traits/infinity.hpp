@@ -22,7 +22,7 @@ namespace boost{ namespace icl
 template<class Type> struct has_std_infinity
 {
     typedef has_std_infinity type;
-    BOOST_STATIC_CONSTANT(bool, 
+    BOOST_STATIC_CONSTANT(bool,
         value = (     is_numeric<Type>::value
                    && std::numeric_limits<Type>::has_infinity
                 )
@@ -32,7 +32,7 @@ template<class Type> struct has_std_infinity
 template<class Type> struct has_max_infinity
 {
     typedef has_max_infinity type;
-    BOOST_STATIC_CONSTANT(bool, 
+    BOOST_STATIC_CONSTANT(bool,
         value = (     is_numeric<Type>::value
                    && ! std::numeric_limits<Type>::has_infinity
                 )
@@ -40,10 +40,10 @@ template<class Type> struct has_max_infinity
 };
 
 //------------------------------------------------------------------------------
-template <class Type, bool has_std_inf=false, bool has_std_max=false> 
+template <class Type, bool has_std_inf=false, bool has_std_max=false>
 struct get_numeric_infinity;
 
-template <class Type, bool has_std_max> 
+template <class Type, bool has_std_max>
 struct get_numeric_infinity<Type, true, has_std_max>
 {
     typedef get_numeric_infinity type;
@@ -53,7 +53,7 @@ struct get_numeric_infinity<Type, true, has_std_max>
     }
 };
 
-template <class Type> 
+template <class Type>
 struct get_numeric_infinity<Type, false, true>
 {
     typedef get_numeric_infinity type;
@@ -63,7 +63,7 @@ struct get_numeric_infinity<Type, false, true>
     }
 };
 
-template <class Type> 
+template <class Type>
 struct get_numeric_infinity<Type, false, false>
 {
     typedef get_numeric_infinity type;
@@ -73,7 +73,7 @@ struct get_numeric_infinity<Type, false, false>
     }
 };
 
-template <class Type> 
+template <class Type>
 struct numeric_infinity
 {
     typedef numeric_infinity type;
@@ -163,7 +163,7 @@ template <class Type> struct infinity
     }
 };
 
-template <> 
+template <>
 struct infinity<std::string>
 {
     typedef infinity type;

@@ -1,4 +1,4 @@
-/*-----------------------------------------------------------------------------+    
+/*-----------------------------------------------------------------------------+
 Copyright (c) 2008-2009: Joachim Faulhaber
 +------------------------------------------------------------------------------+
    Distributed under the Boost Software License, Version 1.0.
@@ -23,11 +23,11 @@ namespace boost{ namespace icl
 
     //--------------------------------------------------------------------------
     template <class Type>
-    struct has_element_type 
+    struct has_element_type
       : mpl::bool_<detail::has_element_type<Type>::value>
     {};
 
-    template <class Type, bool has_element_type> 
+    template <class Type, bool has_element_type>
     struct get_element_type;
 
     template <class Type>
@@ -45,17 +45,17 @@ namespace boost{ namespace icl
     template <class Type>
     struct element_type_of
     {
-        typedef typename 
+        typedef typename
             get_element_type<Type, has_element_type<Type>::value>::type type;
     };
 
     //--------------------------------------------------------------------------
     template <class Type>
-    struct has_value_type 
+    struct has_value_type
       : mpl::bool_<detail::has_value_type<Type>::value>
     {};
 
-    template <class Type, bool has_value_type> 
+    template <class Type, bool has_value_type>
     struct get_value_type;
 
     template <class Type>
@@ -73,17 +73,17 @@ namespace boost{ namespace icl
     template <class Type>
     struct value_type_of
     {
-        typedef typename 
+        typedef typename
             get_value_type<Type, has_value_type<Type>::value>::type type;
     };
 
     //--------------------------------------------------------------------------
     template <class Type>
-    struct has_key_type 
+    struct has_key_type
       : mpl::bool_<detail::has_key_type<Type>::value>
     {};
 
-    template <class Type, bool has_key_type> 
+    template <class Type, bool has_key_type>
     struct get_key_type;
 
     template <class Type>
@@ -101,7 +101,7 @@ namespace boost{ namespace icl
     template <class Type>
     struct key_type_of
     {
-        typedef typename 
+        typedef typename
             get_key_type<Type, has_key_type<Type>::value>::type type;
     };
 

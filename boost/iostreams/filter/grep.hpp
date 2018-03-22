@@ -1,7 +1,7 @@
 /*
- * Distributed under the Boost Software License, Version 1.0.(See accompanying 
+ * Distributed under the Boost Software License, Version 1.0.(See accompanying
  * file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt.)
- * 
+ *
  * See http://www.boost.org/libs/iostreams for documentation.
 
  * File:        boost/iostreams/filter/grep.hpp
@@ -19,13 +19,13 @@
 
 #if defined(_MSC_VER)
 # pragma once
-#endif              
+#endif
 
 #include <iostream>
 
 #include <memory>  // allocator.
-#include <boost/iostreams/char_traits.hpp>   
-#include <boost/iostreams/filter/line.hpp>              
+#include <boost/iostreams/char_traits.hpp>
+#include <boost/iostreams/filter/line.hpp>
 #include <boost/iostreams/pipeline.hpp>
 #include <boost/regex.hpp>
 
@@ -52,7 +52,7 @@ public:
     typedef basic_regex<Ch, Tr>                        regex_type;
     typedef regex_constants::match_flag_type           match_flag_type;
     basic_grep_filter( const regex_type& re,
-                       match_flag_type match_flags = 
+                       match_flag_type match_flags =
                            regex_constants::match_default,
                        int options = 0 );
     int count() const { return count_; }
@@ -94,13 +94,13 @@ BOOST_IOSTREAMS_PIPABLE(basic_grep_filter, 3)
 
 typedef basic_grep_filter<char>     grep_filter;
 typedef basic_grep_filter<wchar_t>  wgrep_filter;
-                    
+
 //------------------Implementation of basic_grep_filter-----------------------//
 
 template<typename Ch, typename Tr, typename Alloc>
 basic_grep_filter<Ch, Tr, Alloc>::basic_grep_filter
     (const regex_type& re, match_flag_type match_flags, int options)
-    : base_type(true), re_(re), match_flags_(match_flags), 
+    : base_type(true), re_(re), match_flags_(match_flags),
       options_(options), count_(0)
     { }
 

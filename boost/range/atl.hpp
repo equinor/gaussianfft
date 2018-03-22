@@ -7,8 +7,8 @@
 // Boost.Range ATL Extension
 //
 // Copyright Shunsuke Sogame 2005-2006.
-// Distributed under the Boost Software License, Version 1.0. 
-// (See accompanying file LICENSE_1_0.txt or copy at 
+// Distributed under the Boost Software License, Version 1.0.
+// (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
 
@@ -380,7 +380,7 @@ namespace boost { namespace range_detail_microsoft {
 
             typedef list_iterator<X, val_t *, val_t *> miter_t;
             typedef list_iterator<X const, val_t const *, val_t const *> citer_t;
-            
+
             typedef indirect_iterator<miter_t> mutable_iterator;
             typedef indirect_iterator<citer_t> const_iterator;
         };

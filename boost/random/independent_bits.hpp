@@ -175,7 +175,7 @@ public:
         }
         return S;
     }
-  
+
     /** Fills a range with random values */
     template<class Iter>
     void generate(Iter first, Iter last)

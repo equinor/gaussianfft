@@ -55,7 +55,7 @@ void skip( Filter& flt, Device& dev, stream_offset off,
 template<typename Filter, typename Device>
 void skip( Filter& flt, Device& dev, stream_offset off,
            BOOST_IOS::openmode, mpl::false_ )
-{ 
+{
     typedef typename char_type_of<Device>::type char_type;
     char_type c;
     for (stream_offset z = 0; z < off; ) {
@@ -71,7 +71,7 @@ void skip( Filter& flt, Device& dev, stream_offset off,
 
 template<typename Device>
 void skip(Device& dev, stream_offset off)
-{ 
+{
     typedef typename mode_of<Device>::type     mode;
     typedef mpl::or_<
         is_convertible<mode, input_seekable>,
@@ -84,9 +84,9 @@ void skip(Device& dev, stream_offset off)
 }
 
 template<typename Filter, typename Device>
-void skip( Filter& flt, Device& dev, stream_offset off, 
+void skip( Filter& flt, Device& dev, stream_offset off,
            BOOST_IOS::openmode which = BOOST_IOS::in | BOOST_IOS::out )
-{ 
+{
     typedef typename mode_of<Filter>::type                 filter_mode;
     typedef typename mode_of<Device>::type                 device_mode;
     typedef mpl::or_<
@@ -100,7 +100,7 @@ void skip( Filter& flt, Device& dev, stream_offset off,
         >
     >                                                      can_seek;
     BOOST_STATIC_ASSERT(
-        ( can_seek::value || 
+        ( can_seek::value ||
           (is_convertible<filter_mode, input>::value &&
           is_convertible<device_mode, input>::value) )
     );

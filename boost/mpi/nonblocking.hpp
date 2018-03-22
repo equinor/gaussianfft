@@ -25,12 +25,12 @@
 
 namespace boost { namespace mpi {
 
-/** 
+/**
  *  @brief Wait until any non-blocking request has completed.
  *
  *  This routine takes in a set of requests stored in the iterator
  *  range @c [first,last) and waits until any of these requests has
- *  been completed. It provides functionality equivalent to 
+ *  been completed. It provides functionality equivalent to
  *  @c MPI_Waitany.
  *
  *  @param first The iterator that denotes the beginning of the
@@ -44,13 +44,13 @@ namespace boost { namespace mpi {
  *  request.
  */
 template<typename ForwardIterator>
-std::pair<status, ForwardIterator> 
+std::pair<status, ForwardIterator>
 wait_any(ForwardIterator first, ForwardIterator last)
 {
   using std::advance;
 
   BOOST_ASSERT(first != last);
-  
+
   typedef typename std::iterator_traits<ForwardIterator>::difference_type
     difference_type;
 
@@ -69,9 +69,9 @@ wait_any(ForwardIterator first, ForwardIterator last)
     // Check if this request (and all others before it) are "trivial"
     // requests, e.g., they can be represented with a single
     // MPI_Request.
-    all_trivial_requests = 
+    all_trivial_requests =
       all_trivial_requests
-      && !current->m_handler 
+      && !current->m_handler
       && current->m_requests[1] == MPI_REQUEST_NULL;
 
     // Move to the next request.
@@ -89,7 +89,7 @@ wait_any(ForwardIterator first, ForwardIterator last)
         // Let MPI wait until one of these operations completes.
         int index;
         status stat;
-        BOOST_MPI_CHECK_RESULT(MPI_Waitany, 
+        BOOST_MPI_CHECK_RESULT(MPI_Waitany,
                                (n, &requests[0], &index, &stat.m_status));
 
         // We don't have a notion of empty requests or status objects,
@@ -116,7 +116,7 @@ wait_any(ForwardIterator first, ForwardIterator last)
   BOOST_ASSERT(false);
 }
 
-/** 
+/**
  *  @brief Test whether any non-blocking request has completed.
  *
  *  This routine takes in a set of requests stored in the iterator
@@ -129,7 +129,7 @@ wait_any(ForwardIterator first, ForwardIterator last)
  *  sequence of request objects.
  *
  *  @param last The iterator that denotes the end of the sequence of
- *  request objects. 
+ *  request objects.
  *
  *  @returns If any outstanding requests have completed, a pair
  *  containing the status object that corresponds to the completed
@@ -152,30 +152,30 @@ test_any(ForwardIterator first, ForwardIterator last)
   return optional<std::pair<status, ForwardIterator> >();
 }
 
-/** 
+/**
  *  @brief Wait until all non-blocking requests have completed.
  *
  *  This routine takes in a set of requests stored in the iterator
  *  range @c [first,last) and waits until all of these requests have
- *  been completed. It provides functionality equivalent to 
+ *  been completed. It provides functionality equivalent to
  *  @c MPI_Waitall.
  *
  *  @param first The iterator that denotes the beginning of the
  *  sequence of request objects.
  *
  *  @param last The iterator that denotes the end of the sequence of
- *  request objects. 
+ *  request objects.
  *
  *  @param out If provided, an output iterator through which the
  *  status of each request will be emitted. The @c status objects are
- *  emitted in the same order as the requests are retrieved from 
+ *  emitted in the same order as the requests are retrieved from
  *  @c [first,last).
  *
  *  @returns If an @p out parameter was provided, the value @c out
  *  after all of the @c status objects have been emitted.
  */
 template<typename ForwardIterator, typename OutputIterator>
-OutputIterator 
+OutputIterator
 wait_all(ForwardIterator first, ForwardIterator last, OutputIterator out)
 {
   typedef typename std::iterator_traits<ForwardIterator>::difference_type
@@ -203,10 +203,10 @@ wait_all(ForwardIterator first, ForwardIterator last, OutputIterator out)
           // Check if this request (and all others before it) are "trivial"
           // requests, e.g., they can be represented with a single
           // MPI_Request.
-          all_trivial_requests = 
+          all_trivial_requests =
             all_trivial_requests
-            && !current->m_handler 
-            && current->m_requests[1] == MPI_REQUEST_NULL;          
+            && !current->m_handler
+            && current->m_requests[1] == MPI_REQUEST_NULL;
         }
       }
     }
@@ -214,7 +214,7 @@ wait_all(ForwardIterator first, ForwardIterator last, OutputIterator out)
     // If we have yet to fulfill any requests and all of the requests
     // are trivial (i.e., require only a single MPI_Request to be
     // fulfilled), call MPI_Waitall directly.
-    if (all_trivial_requests 
+    if (all_trivial_requests
         && num_outstanding_requests == (difference_type)results.size()) {
       std::vector<MPI_Request> requests;
       requests.reserve(num_outstanding_requests);
@@ -223,11 +223,11 @@ wait_all(ForwardIterator first, ForwardIterator last, OutputIterator out)
 
       // Let MPI wait until all of these operations completes.
       std::vector<MPI_Status> stats(num_outstanding_requests);
-      BOOST_MPI_CHECK_RESULT(MPI_Waitall, 
-                             (num_outstanding_requests, &requests[0], 
+      BOOST_MPI_CHECK_RESULT(MPI_Waitall,
+                             (num_outstanding_requests, &requests[0],
                               &stats[0]));
 
-      for (std::vector<MPI_Status>::iterator i = stats.begin(); 
+      for (std::vector<MPI_Status>::iterator i = stats.begin();
            i != stats.end(); ++i, ++out) {
         status stat;
         stat.m_status = *i;
@@ -274,10 +274,10 @@ wait_all(ForwardIterator first, ForwardIterator last)
           // Check if this request (and all others before it) are "trivial"
           // requests, e.g., they can be represented with a single
           // MPI_Request.
-          all_trivial_requests = 
+          all_trivial_requests =
             all_trivial_requests
-            && !current->m_handler 
-            && current->m_requests[1] == MPI_REQUEST_NULL;          
+            && !current->m_handler
+            && current->m_requests[1] == MPI_REQUEST_NULL;
         }
       }
     }
@@ -285,7 +285,7 @@ wait_all(ForwardIterator first, ForwardIterator last)
     // If we have yet to fulfill any requests and all of the requests
     // are trivial (i.e., require only a single MPI_Request to be
     // fulfilled), call MPI_Waitall directly.
-    if (all_trivial_requests 
+    if (all_trivial_requests
         && num_outstanding_requests == (difference_type)completed.size()) {
       std::vector<MPI_Request> requests;
       requests.reserve(num_outstanding_requests);
@@ -293,8 +293,8 @@ wait_all(ForwardIterator first, ForwardIterator last)
         requests.push_back(current->m_requests[0]);
 
       // Let MPI wait until all of these operations completes.
-      BOOST_MPI_CHECK_RESULT(MPI_Waitall, 
-                             (num_outstanding_requests, &requests[0], 
+      BOOST_MPI_CHECK_RESULT(MPI_Waitall,
+                             (num_outstanding_requests, &requests[0],
                               MPI_STATUSES_IGNORE));
 
       // Signal completion
@@ -303,7 +303,7 @@ wait_all(ForwardIterator first, ForwardIterator last)
   }
 }
 
-/** 
+/**
  *  @brief Tests whether all non-blocking requests have completed.
  *
  *  This routine takes in a set of requests stored in the iterator
@@ -321,7 +321,7 @@ wait_all(ForwardIterator first, ForwardIterator last)
  *  sequence of request objects.
  *
  *  @param last The iterator that denotes the end of the sequence of
- *  request objects. 
+ *  request objects.
  *
  *  @param out If provided and all requests hav been completed, an
  *  output iterator through which the status of each request will be
@@ -383,12 +383,12 @@ test_all(ForwardIterator first, ForwardIterator last)
 
   int flag = 0;
   int n = requests.size();
-  BOOST_MPI_CHECK_RESULT(MPI_Testall, 
+  BOOST_MPI_CHECK_RESULT(MPI_Testall,
                          (n, &requests[0], &flag, MPI_STATUSES_IGNORE));
   return flag != 0;
 }
 
-/** 
+/**
  *  @brief Wait until some non-blocking requests have completed.
  *
  *  This routine takes in a set of requests stored in the iterator
@@ -415,7 +415,7 @@ test_all(ForwardIterator first, ForwardIterator last)
  *  iterator referencing the first completed request will be emitted.
  */
 template<typename BidirectionalIterator, typename OutputIterator>
-std::pair<OutputIterator, BidirectionalIterator> 
+std::pair<OutputIterator, BidirectionalIterator>
 wait_some(BidirectionalIterator first, BidirectionalIterator last,
           OutputIterator out)
 {
@@ -423,7 +423,7 @@ wait_some(BidirectionalIterator first, BidirectionalIterator last,
 
   if (first == last)
     return std::make_pair(out, first);
-  
+
   typedef typename std::iterator_traits<BidirectionalIterator>::difference_type
     difference_type;
 
@@ -432,7 +432,7 @@ wait_some(BidirectionalIterator first, BidirectionalIterator last,
   BidirectionalIterator current = first;
   BidirectionalIterator start_of_completed = last;
   while (true) {
-    // Check if we have found a completed request. 
+    // Check if we have found a completed request.
     if (optional<status> result = current->test()) {
       using std::iter_swap;
 
@@ -461,9 +461,9 @@ wait_some(BidirectionalIterator first, BidirectionalIterator last,
     // Check if this request (and all others before it) are "trivial"
     // requests, e.g., they can be represented with a single
     // MPI_Request.
-    all_trivial_requests = 
+    all_trivial_requests =
       all_trivial_requests
-      && !current->m_handler 
+      && !current->m_handler
       && current->m_requests[1] == MPI_REQUEST_NULL;
 
     // Move to the next request.
@@ -490,7 +490,7 @@ wait_some(BidirectionalIterator first, BidirectionalIterator last,
 
         // Let MPI wait until some of these operations complete.
         int num_completed;
-        BOOST_MPI_CHECK_RESULT(MPI_Waitsome, 
+        BOOST_MPI_CHECK_RESULT(MPI_Waitsome,
                                (n, &requests[0], &num_completed, &indices[0],
                                 &stats[0]));
 
@@ -546,7 +546,7 @@ wait_some(BidirectionalIterator first, BidirectionalIterator last)
 
   if (first == last)
     return first;
-  
+
   typedef typename std::iterator_traits<BidirectionalIterator>::difference_type
     difference_type;
 
@@ -555,7 +555,7 @@ wait_some(BidirectionalIterator first, BidirectionalIterator last)
   BidirectionalIterator current = first;
   BidirectionalIterator start_of_completed = last;
   while (true) {
-    // Check if we have found a completed request. 
+    // Check if we have found a completed request.
     if (optional<status> result = current->test()) {
       using std::iter_swap;
 
@@ -577,9 +577,9 @@ wait_some(BidirectionalIterator first, BidirectionalIterator last)
     // Check if this request (and all others before it) are "trivial"
     // requests, e.g., they can be represented with a single
     // MPI_Request.
-    all_trivial_requests = 
+    all_trivial_requests =
       all_trivial_requests
-      && !current->m_handler 
+      && !current->m_handler
       && current->m_requests[1] == MPI_REQUEST_NULL;
 
     // Move to the next request.
@@ -601,7 +601,7 @@ wait_some(BidirectionalIterator first, BidirectionalIterator last)
 
         // Let MPI wait until some of these operations complete.
         int num_completed;
-        BOOST_MPI_CHECK_RESULT(MPI_Waitsome, 
+        BOOST_MPI_CHECK_RESULT(MPI_Waitsome,
                                (n, &requests[0], &num_completed, &indices[0],
                                 MPI_STATUSES_IGNORE));
 
@@ -638,7 +638,7 @@ wait_some(BidirectionalIterator first, BidirectionalIterator last)
   BOOST_ASSERT(false);
 }
 
-/** 
+/**
  *  @brief Test whether some non-blocking requests have completed.
  *
  *  This routine takes in a set of requests stored in the iterator
@@ -667,14 +667,14 @@ wait_some(BidirectionalIterator first, BidirectionalIterator last)
  *  iterator referencing the first completed request will be emitted.
  */
 template<typename BidirectionalIterator, typename OutputIterator>
-std::pair<OutputIterator, BidirectionalIterator> 
+std::pair<OutputIterator, BidirectionalIterator>
 test_some(BidirectionalIterator first, BidirectionalIterator last,
           OutputIterator out)
 {
   BidirectionalIterator current = first;
   BidirectionalIterator start_of_completed = last;
   while (current != start_of_completed) {
-    // Check if we have found a completed request. 
+    // Check if we have found a completed request.
     if (optional<status> result = current->test()) {
       using std::iter_swap;
 
@@ -711,7 +711,7 @@ test_some(BidirectionalIterator first, BidirectionalIterator last)
   BidirectionalIterator current = first;
   BidirectionalIterator start_of_completed = last;
   while (current != start_of_completed) {
-    // Check if we have found a completed request. 
+    // Check if we have found a completed request.
     if (optional<status> result = current->test()) {
       using std::iter_swap;
 

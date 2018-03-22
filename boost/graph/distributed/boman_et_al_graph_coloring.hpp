@@ -47,7 +47,7 @@ struct boman_et_al_graph_coloring_stats_t
 {
   /* The size of the blocks to step through (i.e., the parameter s). */
   std::size_t block_size;
-  
+
   /* Total wall-clock time used by the algorithm.*/
   accounting::time_type execution_time;
 
@@ -67,7 +67,7 @@ struct boman_et_al_graph_coloring_stats_t
         << "Algorithm = \"Boman et al\"\n"
         << "Function = boman_et_al_graph_coloring\n"
         << "(P) Block size = " << block_size << "\n"
-        << "Wall clock time = " << accounting::print_time(execution_time) 
+        << "Wall clock time = " << accounting::print_time(execution_time)
         << "\nConflicts = " << conflicts << "\n"
         << "Supersteps = " << supersteps << "\n"
         << "(R) Colors = " << num_colors << "\n";
@@ -119,11 +119,11 @@ boman_et_al_graph_coloring
   typename property_map<DistributedGraph, vertex_owner_t>::const_type
     owner = get(vertex_owner, g);
 
-  typedef typename process_group_type<DistributedGraph>::type 
+  typedef typename process_group_type<DistributedGraph>::type
     process_group_type;
   typedef typename process_group_type::process_id_type process_id_type;
   typedef typename graph_traits<DistributedGraph>::vertex_descriptor Vertex;
-  typedef typename graph_traits<DistributedGraph>::vertices_size_type 
+  typedef typename graph_traits<DistributedGraph>::vertices_size_type
     vertices_size_type;
   typedef typename property_traits<ColorMap>::value_type color_type;
   typedef unsigned long long iterations_type;
@@ -142,11 +142,11 @@ boman_et_al_graph_coloring
   BGL_FORALL_VERTICES_T(v, g, DistributedGraph)
     put(color, v, no_color);
   color.set_reduce(detail::graph_coloring_reduce<color_type>());
-  
+
   // Determine if we'll be using synchronous or asynchronous communication.
   typedef typename process_group_type::communication_category
     communication_category;
-  static const bool asynchronous = 
+  static const bool asynchronous =
     is_convertible<communication_category, boost::parallel::immediate_process_group_tag>::value;
   process_group_type pg = process_group(g);
 
@@ -158,7 +158,7 @@ boman_et_al_graph_coloring
   std::vector<iterations_type> marked_conflicting(num_vertices(g), 0);
   std::vector<bool> sent_to_processors;
 
-  std::size_t rounds = vertices_to_color.size() / s 
+  std::size_t rounds = vertices_to_color.size() / s
     + (vertices_to_color.size() % s == 0? 0 : 1);
   rounds = all_reduce(pg, rounds, boost::parallel::maximum<std::size_t>());
 
@@ -175,7 +175,7 @@ boman_et_al_graph_coloring
       while (first != vertices_to_color.end()) {
         // For each subset of size s (or smaller for the last subset)
         vertex_set_iterator start = first;
-        for (vertices_size_type counter = s; 
+        for (vertices_size_type counter = s;
              first != vertices_to_color.end() && counter > 0;
              ++first, --counter) {
           // This vertex hasn't been sent to anyone yet
@@ -202,7 +202,7 @@ boman_et_al_graph_coloring
           // Send this vertex's color to the owner of the edge target.
           BGL_FORALL_OUTEDGES_T(*first, e, g, DistributedGraph) {
             if (!sent_to_processors[get(owner, target(e, g))]) {
-              send(pg, get(owner, target(e, g)), 17, 
+              send(pg, get(owner, target(e, g)), 17,
                    message_type(source(e, g), get(color, source(e, g))));
               sent_to_processors[get(owner, target(e, g))] = true;
             }
@@ -212,7 +212,7 @@ boman_et_al_graph_coloring
         }
 
         // Synchronize for non-immediate process groups.
-        if (!asynchronous) { 
+        if (!asynchronous) {
           --rounds;
           synchronize(pg);
         }
@@ -224,7 +224,7 @@ boman_et_al_graph_coloring
           receive(pg, stp->first, stp->second, msg);
           cache(color, msg.first, msg.second);
 #ifdef PBGL_GRAPH_COLORING_DEBUG
-          std::cerr << "Cached color " << msg.second << " for vertex " 
+          std::cerr << "Cached color " << msg.second << " for vertex "
                     << msg.first << std::endl;
 #endif
         }
@@ -252,7 +252,7 @@ boman_et_al_graph_coloring
         }
 
 #ifdef PBGL_ACCOUNTING
-        boman_et_al_graph_coloring_stats.conflicts += 
+        boman_et_al_graph_coloring_stats.conflicts +=
           conflicting_vertices.size();
 #endif
       }
@@ -284,7 +284,7 @@ boman_et_al_graph_coloring
       cache(color, msg.first, msg.second);
     }
 
-    rounds = vertices_to_color.size() / s 
+    rounds = vertices_to_color.size() / s
       + (vertices_to_color.size() % s == 0? 0 : 1);
     rounds = all_reduce(pg, rounds, boost::parallel::maximum<std::size_t>());
 
@@ -307,15 +307,15 @@ boman_et_al_graph_coloring
     }
   }
 
-  num_colors = 
+  num_colors =
     all_reduce(pg, num_colors, boost::parallel::maximum<color_type>());
 
 
 #ifdef PBGL_ACCOUNTING
-  boman_et_al_graph_coloring_stats.execution_time = 
+  boman_et_al_graph_coloring_stats.execution_time =
     accounting::get_time() - boman_et_al_graph_coloring_stats.execution_time;
-  
-  boman_et_al_graph_coloring_stats.conflicts = 
+
+  boman_et_al_graph_coloring_stats.conflicts =
     all_reduce(pg, boman_et_al_graph_coloring_stats.conflicts,
                std::plus<color_type>());
   boman_et_al_graph_coloring_stats.num_colors = num_colors;
@@ -325,7 +325,7 @@ boman_et_al_graph_coloring
 }
 
 
-template<typename DistributedGraph, typename ColorMap, typename ChooseColor, 
+template<typename DistributedGraph, typename ColorMap, typename ChooseColor,
          typename VertexOrdering>
 inline typename property_traits<ColorMap>::value_type
 boman_et_al_graph_coloring
@@ -333,7 +333,7 @@ boman_et_al_graph_coloring
    typename graph_traits<DistributedGraph>::vertices_size_type s,
    ChooseColor choose_color, VertexOrdering ordering)
 {
-  return boman_et_al_graph_coloring(g, color, s, choose_color, ordering, 
+  return boman_et_al_graph_coloring(g, color, s, choose_color, ordering,
                                     get(vertex_index, g));
 }
 

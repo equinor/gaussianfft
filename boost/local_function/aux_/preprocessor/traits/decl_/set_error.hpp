@@ -32,7 +32,7 @@
         BOOST_LOCAL_FUNCTION_AUX_PP_DECL_TRAITS_BIND_THIS_TYPES(decl_traits) \
     , /* error message (if any) */ \
         error \
-    ) 
+    )
 
 #endif // #include guard
 

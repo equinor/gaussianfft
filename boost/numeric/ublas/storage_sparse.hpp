@@ -206,7 +206,7 @@ namespace boost { namespace numeric { namespace ublas {
         }
     };
 
-    
+
 
 
     // Map array
@@ -298,7 +298,7 @@ namespace boost { namespace numeric { namespace ublas {
             }
             else
                 data = 0;
-                
+
             if (capacity_) {
                 std::for_each (data_, data_ + capacity_, static_destroy);
                 alloc_.deallocate (data_, capacity_);
@@ -321,12 +321,12 @@ namespace boost { namespace numeric { namespace ublas {
         size_type max_size () const {
             return 0; //TODO
         }
-       
+
         BOOST_UBLAS_INLINE
         bool empty () const {
             return size_ == 0;
         }
-            
+
         // Element access
         BOOST_UBLAS_INLINE
         data_reference operator [] (key_type i) {
@@ -371,9 +371,9 @@ namespace boost { namespace numeric { namespace ublas {
         }
 
         // Element insertion and deletion
-        
+
         // From Back Insertion Sequence concept
-        // BOOST_UBLAS_INLINE This function seems to be big. So we do not let the compiler inline it.    
+        // BOOST_UBLAS_INLINE This function seems to be big. So we do not let the compiler inline it.
         iterator push_back (iterator it, const value_type &p) {
             if (size () == 0 || (it = end () - 1)->first < p.first) {
                 resize (size () + 1);
@@ -384,7 +384,7 @@ namespace boost { namespace numeric { namespace ublas {
             return it;
         }
         // Form Unique Associative Container concept
-        // BOOST_UBLAS_INLINE This function seems to be big. So we do not let the compiler inline it.    
+        // BOOST_UBLAS_INLINE This function seems to be big. So we do not let the compiler inline it.
         std::pair<iterator,bool> insert (const value_type &p) {
             iterator it = detail::lower_bound (begin (), end (), p, detail::less_pair<value_type> ());
             if (it != end () && it->first == p.first)
@@ -397,48 +397,48 @@ namespace boost { namespace numeric { namespace ublas {
             return std::make_pair (it, true);
         }
         // Form Sorted Associative Container concept
-        // BOOST_UBLAS_INLINE This function seems to be big. So we do not let the compiler inline it.    
+        // BOOST_UBLAS_INLINE This function seems to be big. So we do not let the compiler inline it.
         iterator insert (iterator hint, const value_type &p) {
             return insert (p).first;
         }
-        // BOOST_UBLAS_INLINE This function seems to be big. So we do not let the compiler inline it.    
+        // BOOST_UBLAS_INLINE This function seems to be big. So we do not let the compiler inline it.
         void erase (iterator it) {
             BOOST_UBLAS_CHECK (begin () <= it && it < end (), bad_index ());
             std::copy (it + 1, end (), it);
             resize (size () - 1);
         }
-        // BOOST_UBLAS_INLINE This function seems to be big. So we do not let the compiler inline it.    
+        // BOOST_UBLAS_INLINE This function seems to be big. So we do not let the compiler inline it.
         void erase (iterator it1, iterator it2) {
             if (it1 == it2) return /* nothing to erase */;
             BOOST_UBLAS_CHECK (begin () <= it1 && it1 < it2 && it2 <= end (), bad_index ());
             std::copy (it2, end (), it1);
             resize (size () - (it2 - it1));
         }
-        // BOOST_UBLAS_INLINE This function seems to be big. So we do not let the compiler inline it.    
+        // BOOST_UBLAS_INLINE This function seems to be big. So we do not let the compiler inline it.
         void clear () {
             resize (0);
         }
 
         // Element lookup
-        // BOOST_UBLAS_INLINE This function seems to be big. So we do not let the compiler inline it.    
+        // BOOST_UBLAS_INLINE This function seems to be big. So we do not let the compiler inline it.
         const_iterator find (key_type i) const {
             const_iterator it (detail::lower_bound (begin (), end (), value_type (i, mapped_type (0)), detail::less_pair<value_type> ()));
             if (it == end () || it->first != i)
                 it = end ();
             return it;
         }
-        // BOOST_UBLAS_INLINE This function seems to be big. So we do not let the compiler inline it.    
+        // BOOST_UBLAS_INLINE This function seems to be big. So we do not let the compiler inline it.
         iterator find (key_type i) {
             iterator it (detail::lower_bound (begin (), end (), value_type (i, mapped_type (0)), detail::less_pair<value_type> ()));
             if (it == end () || it->first != i)
                 it = end ();
             return it;
         }
-        // BOOST_UBLAS_INLINE This function seems to be big. So we do not let the compiler inline it.    
+        // BOOST_UBLAS_INLINE This function seems to be big. So we do not let the compiler inline it.
         const_iterator lower_bound (key_type i) const {
             return detail::lower_bound (begin (), end (), value_type (i, mapped_type (0)), detail::less_pair<value_type> ());
         }
-        // BOOST_UBLAS_INLINE This function seems to be big. So we do not let the compiler inline it.    
+        // BOOST_UBLAS_INLINE This function seems to be big. So we do not let the compiler inline it.
         iterator lower_bound (key_type i) {
             return detail::lower_bound (begin (), end (), value_type (i, mapped_type (0)), detail::less_pair<value_type> ());
         }

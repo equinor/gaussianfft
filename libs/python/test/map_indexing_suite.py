@@ -25,7 +25,7 @@ foo
 
 # test that a string is implicitly convertible
 # to an X
->>> x_value('bochi bochi') 
+>>> x_value('bochi bochi')
 'gotya bochi bochi'
 
 #####################################################################
@@ -33,9 +33,9 @@ foo
 #####################################################################
 >>> def print_xmap(xmap):
 ...     s = '[ '
-...     for x in xmap: 
+...     for x in xmap:
 ...         s += repr(x)
-...         s += ' ' 
+...         s += ' '
 ...     s += ']'
 ...     print(s)
 
@@ -135,7 +135,7 @@ foo
 >>> assert not 12345 in xm
 
 #####################################################################
-# Some references to the container elements 
+# Some references to the container elements
 #####################################################################
 
 >>> z0 = xm['joel']
@@ -156,7 +156,7 @@ banana
 kiwi
 
 #####################################################################
-# Delete some container element 
+# Delete some container element
 #####################################################################
 
 >>> del xm['tenji']
@@ -168,7 +168,7 @@ kiwi
 [ (joel, apple) (kim, kiwi) (mariel, grape) ]
 
 #####################################################################
-# Show that the references are still valid 
+# Show that the references are still valid
 #####################################################################
 >>> z0 # proxy
 apple
@@ -216,7 +216,7 @@ joel kimpo
 4
 
 #####################################################################
-# END.... 
+# END....
 #####################################################################
 
 '''

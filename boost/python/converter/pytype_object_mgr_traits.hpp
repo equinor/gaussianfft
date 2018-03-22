@@ -11,7 +11,7 @@
 # include <boost/python/converter/pyobject_type.hpp>
 # include <boost/python/errors.hpp>
 
-namespace boost { namespace python { namespace converter { 
+namespace boost { namespace python { namespace converter {
 
 // Provide a forward declaration as a convenience for clients, who all
 // need it.

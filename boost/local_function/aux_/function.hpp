@@ -83,7 +83,7 @@
     , \
     BOOST_LOCAL_FUNCTION_AUX_bind_type(z, bind_n, ~) & \
     BOOST_LOCAL_FUNCTION_AUX_bind_name(z, bind_n, ~)
-    
+
 #define BOOST_LOCAL_FUNCTION_AUX_bind_member(z, bind_n, unsued) \
     BOOST_PP_CAT(BOOST_LOCAL_FUNCTION_AUX_bind_name(z, bind_n, ~), _)
 
@@ -135,7 +135,7 @@
 #define BOOST_LOCAL_FUNCTION_AUX_call_init(z, n, unused) \
     BOOST_LOCAL_FUNCTION_AUX_call_member(z, n, ~) = \
             BOOST_LOCAL_FUNCTION_AUX_call_name(z, n, ~);
-                
+
 #define BOOST_LOCAL_FUNCTION_AUX_operator_call(z, defaults_n, arity) \
     /* precondition: object_ && call_function_ */ \
     inline R operator()( \
@@ -303,7 +303,7 @@ public:
                 BOOST_LOCAL_FUNCTION_AUX_call_init, ~) // INC for no defaults.
         unused_ = 0; // To avoid a GCC uninitialized warning.
     }
-    
+
     // Result operator(Arg1, ..., ArgN-1, ArgN) -- iff defaults >= 0
     // Result operator(Arg1, ..., ArgN-1)       -- iff defaults >= 1
     // ...                                      -- etc

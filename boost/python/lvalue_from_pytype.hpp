@@ -85,7 +85,7 @@ struct extract_identity
 // Extractor's static execute function from Python objects whose type
 // object is python_type.
 template <class Extractor, PyTypeObject const* python_type>
-struct lvalue_from_pytype 
+struct lvalue_from_pytype
 {
     lvalue_from_pytype()
     {

@@ -30,5 +30,5 @@ namespace boost
       }
     }
   }
-  
+
 #endif // BOOST_TTI_DETAIL_TCLASS_HPP

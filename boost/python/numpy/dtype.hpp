@@ -38,7 +38,7 @@ public:
    *
    *  This is perhaps the most useful part of the numpy API: it returns the dtype object
    *  corresponding to a built-in C++ type.  This should work for any integer or floating point
-   *  type supported by numpy, and will also work for std::complex if 
+   *  type supported by numpy, and will also work for std::complex if
    *  sizeof(std::complex<T>) == 2*sizeof(T).
    *
    *  It can also be useful for users to add explicit specializations for POD structs
@@ -100,7 +100,7 @@ struct builtin_dtype<T,false> {
 
 template <typename T>
 struct builtin_dtype< std::complex<T>, false > {
-  static dtype get() { return get_complex_dtype< 16*sizeof(T) >(); }  
+  static dtype get() { return get_complex_dtype< 16*sizeof(T) >(); }
 };
 
 } // namespace detail

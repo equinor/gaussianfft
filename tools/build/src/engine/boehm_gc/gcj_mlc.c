@@ -105,7 +105,7 @@ void * GC_clear_stack(void *);
 
 #define GENERAL_MALLOC(lb,k) \
     GC_clear_stack(GC_generic_malloc_inner((word)lb, k))
-    
+
 #define GENERAL_MALLOC_IOP(lb,k) \
     GC_clear_stack(GC_generic_malloc_inner_ignore_off_page(lb, k))
 
@@ -205,7 +205,7 @@ void * GC_debug_gcj_malloc(size_t lb, void * ptr_to_struct_containing_descr,
 }
 
 void * GC_gcj_malloc_ignore_off_page(size_t lb,
-				     void * ptr_to_struct_containing_descr) 
+				     void * ptr_to_struct_containing_descr)
 {
     ptr_t op;
     ptr_t * opp;

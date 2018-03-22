@@ -86,9 +86,9 @@ shift_lower(interval_bounds decl, interval_bounds repr, const Type& low)
 {
     if(is_left_closed(decl) && !is_left_closed(repr))
         return icl::pred(low);
-    else if(!is_left_closed(decl) && is_left_closed(repr)) 
+    else if(!is_left_closed(decl) && is_left_closed(repr))
         return icl::succ(low);
-    else 
+    else
         return low;
 }
 
@@ -98,15 +98,15 @@ shift_upper(interval_bounds decl, interval_bounds repr, const Type& up)
 {
     if(!is_right_closed(decl) && is_right_closed(repr))
         return icl::pred(up);
-    else if(is_right_closed(decl) && !is_right_closed(repr)) 
+    else if(is_right_closed(decl) && !is_right_closed(repr))
         return icl::succ(up);
-    else 
+    else
         return up;
 }
 
 template<class CharType, class CharTraits>
 std::basic_ostream<CharType, CharTraits>& operator <<
-  (std::basic_ostream<CharType, CharTraits> &stream, 
+  (std::basic_ostream<CharType, CharTraits> &stream,
    interval_bounds const& object)
 {
     return stream << left_bracket(object) << right_bracket(object);
@@ -115,37 +115,37 @@ std::basic_ostream<CharType, CharTraits>& operator <<
 
 
 template<class IntervalT>
-inline typename 
+inline typename
 boost::enable_if<has_dynamic_bounds<IntervalT>, interval_bounds>::type
 outer_bounds(const IntervalT& x1, const IntervalT& x2)
 { return outer_bounds(x1.bounds(), x2.bounds()); }
 
 template<class IntervalT>
-inline typename 
+inline typename
 boost::enable_if<has_dynamic_bounds<IntervalT>, interval_bounds>::type
 inner_bounds(const IntervalT& x1, const IntervalT& x2)
 { return inner_bounds(x1.bounds(), x2.bounds()); }
 
 template<class IntervalT>
-inline typename 
+inline typename
 boost::enable_if<has_dynamic_bounds<IntervalT>, interval_bounds>::type
 left_bounds(const IntervalT& x1, const IntervalT& x2)
 { return left_bounds(x1.bounds(), x2.bounds()); }
 
 template<class IntervalT>
-inline typename 
+inline typename
 boost::enable_if<has_dynamic_bounds<IntervalT>, interval_bounds>::type
 right_bounds(const IntervalT& x1, const IntervalT& x2)
 { return right_bounds(x1.bounds(), x2.bounds()); }
 
 template<class IntervalT>
-inline typename 
+inline typename
 boost::enable_if<has_dynamic_bounds<IntervalT>, interval_bounds>::type
 left_subtract_bounds(const IntervalT& x1, const IntervalT& x2)
 { return left_subtract_bounds(x1.bounds(), x2.bounds()); }
 
 template<class IntervalT>
-inline typename 
+inline typename
 boost::enable_if<has_dynamic_bounds<IntervalT>, interval_bounds>::type
 right_subtract_bounds(const IntervalT& x1, const IntervalT& x2)
 { return right_subtract_bounds(x1.bounds(), x2.bounds()); }

@@ -19,21 +19,21 @@ Copyright (c) 2007-2009: Joachim Faulhaber
 namespace boost{namespace icl
 {
     // ------------------------------------------------------------------------
-    template <typename Type> struct identity_based_inplace_combine 
+    template <typename Type> struct identity_based_inplace_combine
         : public std::binary_function<Type&, const Type&, void>
     {
         inline static Type identity_element() { return boost::icl::identity_element<Type>::value(); }
     };
 
     // ------------------------------------------------------------------------
-    template <typename Type> struct unit_element_based_inplace_combine 
+    template <typename Type> struct unit_element_based_inplace_combine
         : public std::binary_function<Type&, const Type&, void>
     {
         inline static Type identity_element() { return boost::icl::unit_element<Type>::value(); }
     };
 
     // ------------------------------------------------------------------------
-    template <typename Type> struct inplace_identity 
+    template <typename Type> struct inplace_identity
         : public identity_based_inplace_combine<Type>
     {
         typedef inplace_identity<Type> type;
@@ -41,18 +41,18 @@ namespace boost{namespace icl
     };
 
     template<>
-    inline std::string unary_template_to_string<inplace_identity>::apply() 
+    inline std::string unary_template_to_string<inplace_identity>::apply()
     { return "i="; }
 
     // ------------------------------------------------------------------------
-    template <typename Type> struct inplace_erasure 
+    template <typename Type> struct inplace_erasure
         : public identity_based_inplace_combine<Type>
     {
         typedef inplace_erasure<Type> type;
         typedef identity_based_inplace_combine<Type> base_type;
 
         void operator()(Type& object, const Type& operand)const
-        { 
+        {
             if(object == operand)
                 //identity_element(); //JODO Old gcc-3.4.4 does not compile this
                 object = base_type::identity_element(); //<-- but this.
@@ -60,11 +60,11 @@ namespace boost{namespace icl
     };
 
     template<>
-    inline std::string unary_template_to_string<inplace_erasure>::apply() 
+    inline std::string unary_template_to_string<inplace_erasure>::apply()
     { return "0="; }
 
     // ------------------------------------------------------------------------
-    template <typename Type> struct inplace_plus 
+    template <typename Type> struct inplace_plus
         : public identity_based_inplace_combine<Type>
     {
         typedef inplace_plus<Type> type;
@@ -79,7 +79,7 @@ namespace boost{namespace icl
     inline std::string unary_template_to_string<inplace_plus>::apply() { return "+="; }
 
     // ------------------------------------------------------------------------
-    template <typename Type> struct inplace_minus 
+    template <typename Type> struct inplace_minus
         : public identity_based_inplace_combine<Type>
     {
         typedef inplace_minus<Type> type;
@@ -260,13 +260,13 @@ namespace boost{namespace icl
     {
         typedef typename boost::mpl::
             if_<has_set_semantics<Type>,
-                icl::inplace_et<Type>, 
-                icl::inplace_plus<Type> 
+                icl::inplace_et<Type>,
+                icl::inplace_plus<Type>
                >::type
             type;
 
         void operator()(Type& object, const Type& operand)const
-        { 
+        {
             type()(object, operand);
         }
     };
@@ -276,84 +276,84 @@ namespace boost{namespace icl
     //--------------------------------------------------------------------------
     template<class Functor> struct inverse;
 
-    template<class Type> 
+    template<class Type>
     struct inverse<icl::inplace_plus<Type> >
     { typedef icl::inplace_minus<Type> type; };
 
-    template<class Type> 
+    template<class Type>
     struct inverse<icl::inplace_minus<Type> >
     { typedef icl::inplace_plus<Type> type; };
 
-    template<class Type> 
+    template<class Type>
     struct inverse<icl::inplace_bit_add<Type> >
     { typedef icl::inplace_bit_subtract<Type> type; };
 
-    template<class Type> 
+    template<class Type>
     struct inverse<icl::inplace_bit_subtract<Type> >
     { typedef icl::inplace_bit_add<Type> type; };
 
-    template<class Type> 
+    template<class Type>
     struct inverse<icl::inplace_et<Type> >
     { typedef icl::inplace_caret<Type> type; };
 
-    template<class Type> 
+    template<class Type>
     struct inverse<icl::inplace_caret<Type> >
     { typedef icl::inplace_et<Type> type; };
 
-    template<class Type> 
+    template<class Type>
     struct inverse<icl::inplace_bit_and<Type> >
     { typedef icl::inplace_bit_xor<Type> type; };
 
-    template<class Type> 
+    template<class Type>
     struct inverse<icl::inplace_bit_xor<Type> >
     { typedef icl::inplace_bit_and<Type> type; };
 
-    template<class Type> 
+    template<class Type>
     struct inverse<icl::inplace_star<Type> >
     { typedef icl::inplace_slash<Type> type; };
 
-    template<class Type> 
+    template<class Type>
     struct inverse<icl::inplace_slash<Type> >
     { typedef icl::inplace_star<Type> type; };
 
-    template<class Type> 
+    template<class Type>
     struct inverse<icl::inplace_max<Type> >
     { typedef icl::inplace_min<Type> type; };
 
-    template<class Type> 
+    template<class Type>
     struct inverse<icl::inplace_min<Type> >
     { typedef icl::inplace_max<Type> type; };
 
-    template<class Type> 
+    template<class Type>
     struct inverse<icl::inplace_identity<Type> >
     { typedef icl::inplace_erasure<Type> type; };
 
-    // If a Functor 
-    template<class Functor> 
+    // If a Functor
+    template<class Functor>
     struct inverse
     {
-        typedef typename 
+        typedef typename
             remove_reference<typename Functor::first_argument_type>::type argument_type;
-        typedef icl::inplace_erasure<argument_type> type; 
+        typedef icl::inplace_erasure<argument_type> type;
     };
 
 
     //--------------------------------------------------------------------------
     // Inverse inter_section functor
     //--------------------------------------------------------------------------
-    template<class Type> 
+    template<class Type>
     struct inverse<icl::inter_section<Type> >
         : public identity_based_inplace_combine<Type>
     {
         typedef typename boost::mpl::
             if_<has_set_semantics<Type>,
-                icl::inplace_caret<Type>, 
-                icl::inplace_minus<Type> 
+                icl::inplace_caret<Type>,
+                icl::inplace_minus<Type>
                >::type
             type;
 
         void operator()(Type& object, const Type& operand)const
-        { 
+        {
             type()(object, operand);
         }
     };
@@ -364,33 +364,33 @@ namespace boost{namespace icl
     //--------------------------------------------------------------------------
 
     // A binary operation - is negative (or inverting) with respect to the
-    // neutral element iff it yields the inverse element if it is applied to the 
+    // neutral element iff it yields the inverse element if it is applied to the
     // identity element:
     // 0 - x = -x
-    // For a functor that wraps the inplace of op-assign version this is 
+    // For a functor that wraps the inplace of op-assign version this is
     // equivalent to
     //
     // T x = ..., y;
     // y = Functor::identity_element();
-    // Functor()(y, x); // y == inverse_of(x) 
+    // Functor()(y, x); // y == inverse_of(x)
 
     template<class Functor> struct is_negative;
 
-    template<class Functor> 
+    template<class Functor>
     struct is_negative
     {
         typedef is_negative<Functor> type;
         BOOST_STATIC_CONSTANT(bool, value = false);
     };
 
-    template<class Type> 
+    template<class Type>
     struct is_negative<icl::inplace_minus<Type> >
     {
         typedef is_negative type;
         BOOST_STATIC_CONSTANT(bool, value = true);
     };
 
-    template<class Type> 
+    template<class Type>
     struct is_negative<icl::inplace_bit_subtract<Type> >
     {
         typedef is_negative type;
@@ -402,9 +402,9 @@ namespace boost{namespace icl
     //--------------------------------------------------------------------------
     template<class Combiner> struct conversion;
 
-    template<class Combiner> 
+    template<class Combiner>
     struct conversion
-    { 
+    {
         typedef conversion<Combiner> type;
         typedef typename
             remove_const<
@@ -416,9 +416,9 @@ namespace boost{namespace icl
         // (0 o= x) == x;
         // Example += :  (0 += x) == x
         static argument_type proversion(const argument_type& value)
-        { 
-            return value; 
-        } 
+        {
+            return value;
+        }
 
         // The inversion of an op-assign functor o= inverts the value x
         // to it's inverse element -x
@@ -439,7 +439,7 @@ namespace boost{namespace icl
         typedef typename base_type::argument_type argument_type;
 
         argument_type operator()(const argument_type& value)
-        { return base_type::proversion(value); } 
+        { return base_type::proversion(value); }
     };
 
     template<>struct version<icl::inplace_minus<short      > >{short       operator()(short       val){return -val;}};
@@ -450,9 +450,9 @@ namespace boost{namespace icl
     template<>struct version<icl::inplace_minus<double     > >{double      operator()(double      val){return -val;}};
     template<>struct version<icl::inplace_minus<long double> >{long double operator()(long double val){return -val;}};
 
-    template<class Type> 
+    template<class Type>
     struct version<icl::inplace_minus<Type> > : public conversion<icl::inplace_minus<Type> >
-    { 
+    {
         typedef    version<icl::inplace_minus<Type> > type;
         typedef conversion<icl::inplace_minus<Type> > base_type;
         typedef typename base_type::argument_type argument_type;
@@ -460,7 +460,7 @@ namespace boost{namespace icl
         Type operator()(const Type& value)
         {
             return base_type::inversion(value);
-        } 
+        }
     };
 
 }} // namespace icl boost

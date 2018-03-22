@@ -12,7 +12,7 @@
 # include <cstddef>
 # include <utility>
 
-namespace boost { namespace python { 
+namespace boost { namespace python {
 
 namespace detail
 {
@@ -21,15 +21,15 @@ namespace detail
       keyword(char const* name_=0)
        : name(name_)
       {}
-      
+
       char const* name;
       handle<> default_value;
   };
-  
+
   template <std::size_t nkeywords = 0> struct keywords;
-  
+
   typedef std::pair<keyword const*, keyword const*> keyword_range;
-  
+
   template <>
   struct keywords<0>
   {

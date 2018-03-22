@@ -31,7 +31,7 @@ template<class Sig>
 struct constructible;
 
 namespace detail {
-    
+
 template<class Sig>
 struct null_construct;
 

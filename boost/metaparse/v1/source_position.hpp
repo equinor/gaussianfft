@@ -25,7 +25,7 @@ namespace boost
       {
         typedef source_position_tag tag;
         typedef source_position type;
-        
+
         typedef Line line;
         typedef Col col;
         typedef PrevChar prev_char;

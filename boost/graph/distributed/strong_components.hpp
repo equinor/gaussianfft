@@ -85,7 +85,7 @@ unmarshal_set( std::vector<typename graph_traits<Graph>::vertex_descriptor> in,
   typedef typename graph_traits<Graph>::vertex_descriptor vertex_descriptor;
 
   while( !in.empty() ) {
-    typename std::vector<vertex_descriptor>::iterator end 
+    typename std::vector<vertex_descriptor>::iterator end
       = std::find( in.begin(), in.end(), graph_traits<Graph>::null_vertex() );
 
     if( end == in.begin() )
@@ -149,7 +149,7 @@ struct scc_discovery_visitor : bfs_visitor<>
 } } } } /* End namespace boost::graph::distributed::detail */
 
 namespace boost { namespace graph { namespace distributed {
-    enum fhp_message_tags { fhp_edges_size_msg, fhp_add_edges_msg, fhp_pred_size_msg, 
+    enum fhp_message_tags { fhp_edges_size_msg, fhp_add_edges_msg, fhp_pred_size_msg,
                             fhp_pred_msg, fhp_succ_size_msg, fhp_succ_msg };
 
     template<typename Graph, typename ReverseGraph,
@@ -213,7 +213,7 @@ namespace boost { namespace graph { namespace distributed {
 
       // Perform sequential SCC on local subgraph, filter all components with external
       // edges, mark remaining components and remove them from vertex_sets
-#ifdef FILTER_LOCAL_COMPONENTS  
+#ifdef FILTER_LOCAL_COMPONENTS
       // This doesn't actually speed up SCC in connected graphs it seems, but it does work
       // and may help in the case where there are lots of small strong components.
       {
@@ -571,7 +571,7 @@ namespace boost { namespace graph { namespace distributed {
             vertex_descriptor v = local_start[i];
 
             // Replace this sort with an in-place merges during receive step if possible
-            if (!boost::is_same<detail::vertex_identity_property_map<vertex_descriptor>, IsoMapRF>::value) 
+            if (!boost::is_same<detail::vertex_identity_property_map<vertex_descriptor>, IsoMapRF>::value)
               std::sort(set_map[v].pred.begin(), set_map[v].pred.end(), std::less<vertex_descriptor>());
 
             // Limit predecessor and successor sets to members of the original set
@@ -884,7 +884,7 @@ namespace boost { namespace graph { namespace distributed {
     std::cerr << "Reverse graph initialization time = " << accounting::print_time(end - start) << " seconds.\n";
 #endif
 
-  fleischer_hendrickson_pinar_strong_components(g, r, gr, fr, rf, 
+  fleischer_hendrickson_pinar_strong_components(g, r, gr, fr, rf,
                                                 vertex_index_map);
 
       typename property_traits<ComponentMap>::value_type c_num = number_components(g, r, c);
@@ -907,7 +907,7 @@ namespace boost { namespace graph { namespace distributed {
       reverse_graph<Graph> gr(g);
       detail::vertex_identity_property_map<vertex_descriptor> fr, rf;
 
-      fleischer_hendrickson_pinar_strong_components(g, r, gr, fr, rf, 
+      fleischer_hendrickson_pinar_strong_components(g, r, gr, fr, rf,
                                                     vertex_index_map);
 
       typename property_traits<ComponentMap>::value_type c_num
@@ -927,7 +927,7 @@ namespace boost { namespace graph { namespace distributed {
         vertex_descriptor;
       typedef iterator_property_map<typename std::vector<vertex_descriptor>::iterator,
                                     VertexIndexMap> VertexComponentMap;
-      typename boost::graph::parallel::process_group_type<Graph>::type pg 
+      typename boost::graph::parallel::process_group_type<Graph>::type pg
         = process_group(g);
 
       if (num_processes(pg) == 1) {

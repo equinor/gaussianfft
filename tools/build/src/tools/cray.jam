@@ -26,9 +26,9 @@ generators.override cray.searched-lib-generator : searched-lib-generator ;
 rule init ( version ? : command * : options * )
 {
     local condition = [ common.check-init-parameters cray : version $(version) ] ;
-    
+
     local command = [ common.get-invocation-command cray : CC : $(command) ] ;
-    
+
     if $(command)
     {
         local root = [ common.get-absolute-tool-path $(command[-1]) ] ;
@@ -36,12 +36,12 @@ rule init ( version ? : command * : options * )
         if $(root)
         {
             flags cray .root $(condition) : "\"$(root)\"/" ;
-        }        
-    }      
+        }
+    }
     # If we can't find 'CC' anyway, at least show 'CC' in the commands
     command ?= CC ;
-        
-    common.handle-options cray : $(condition) : $(command) : $(options) ;               
+
+    common.handle-options cray : $(condition) : $(command) : $(options) ;
 }
 
 generators.register-c-compiler cray.compile.c++ : CPP : OBJ : <toolset>cray ;

@@ -1,4 +1,4 @@
-// Boost.Units - A C++ library for zero-overhead dimensional analysis and 
+// Boost.Units - A C++ library for zero-overhead dimensional analysis and
 // unit/quantity manipulation and conversion
 //
 // Copyright (C) 2003-2008 Matthias Christian Schabel
@@ -17,7 +17,7 @@
 
 namespace boost {
 
-namespace units { 
+namespace units {
 
 inline std::string name_string(const reduce_unit<cgs::acceleration>::type&) { return "galileo"; }
 inline std::string symbol_string(const reduce_unit<cgs::acceleration>::type&) { return "Gal"; }

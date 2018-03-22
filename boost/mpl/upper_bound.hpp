@@ -4,8 +4,8 @@
 
 // Copyright Aleksey Gurtovoy 2001-2004
 //
-// Distributed under the Boost Software License, Version 1.0. 
-// (See accompanying file LICENSE_1_0.txt or copy at 
+// Distributed under the Boost Software License, Version 1.0.
+// (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 //
 // See http://www.boost.org/libs/mpl for documentation.
@@ -71,7 +71,7 @@ template<
     >
 struct upper_bound_step_impl;
 
-template< 
+template<
       typename Distance
     , typename Predicate
     , typename T
@@ -85,7 +85,7 @@ struct upper_bound_step
         , DeferredIterator
         >::type type;
 };
-    
+
 template<
       typename Distance
     , typename Predicate

@@ -8,9 +8,9 @@
 # include <boost/python/object.hpp>
 # include <boost/python/str.hpp>
 
-namespace boost 
-{ 
-namespace python 
+namespace boost
+{
+namespace python
 {
 
 // Import the named module and return a reference to it.

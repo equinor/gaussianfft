@@ -65,7 +65,7 @@ public:
             os << parm._p << " " << parm._k;
             return os;
         }
-    
+
         /** Reads the parameters of the distribution from a @c std::istream. */
         template<class CharT, class Traits>
         friend std::basic_istream<CharT,Traits>&
@@ -89,7 +89,7 @@ public:
         IntType _k;
         RealType _p;
     };
-    
+
     /**
      * Construct a @c negative_binomial_distribution object. @c k and @c p
      * are the parameters of the distribution.
@@ -100,7 +100,7 @@ public:
                                             RealType p_arg = RealType(0.5))
       : _k(k_arg), _p(p_arg)
     {}
-    
+
     /**
      * Construct an @c negative_binomial_distribution object from the
      * parameters.
@@ -108,7 +108,7 @@ public:
     explicit negative_binomial_distribution(const param_type& parm)
       : _k(parm.k()), _p(parm.p())
     {}
-    
+
     /**
      * Returns a random variate distributed according to the
      * negative binomial distribution.
@@ -120,7 +120,7 @@ public:
         poisson_distribution<IntType, RealType> poisson(gamma(urng));
         return poisson(urng);
     }
-    
+
     /**
      * Returns a random variate distributed according to the negative
      * binomial distribution with parameters specified by @c param.
@@ -167,7 +167,7 @@ public:
         os << bd.param();
         return os;
     }
-    
+
     /** Reads the parameters of the distribution from a @c std::istream. */
     template<class CharT, class Traits>
     friend std::basic_istream<CharT,Traits>&

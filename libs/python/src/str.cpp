@@ -13,11 +13,11 @@ detail::new_reference str_base::call(object const& arg_)
 #if PY_VERSION_HEX >= 0x03000000
         (PyObject*)&PyUnicode_Type,
 #else
-        (PyObject*)&PyString_Type, 
+        (PyObject*)&PyString_Type,
 #endif
-        const_cast<char*>("(O)"), 
+        const_cast<char*>("(O)"),
         arg_.ptr());
-} 
+}
 
 str_base::str_base()
   : object(detail::new_reference(
@@ -415,5 +415,5 @@ static struct register_str_pytype_ptr
 #endif
     }
 }register_str_pytype_ptr_;
-    
+
 }}}  // namespace boost::python

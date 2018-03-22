@@ -31,7 +31,7 @@ http://www.boost.org/LICENSE_1_0.txt)
 #   undef BOOST_PLAT_WINDOWS_RUNTIME
 #   define BOOST_PLAT_WINDOWS_RUNTIME BOOST_VERSION_NUMBER_AVAILABLE
 #endif
- 
+
 #if BOOST_PLAT_WINDOWS_RUNTIME
 #   define BOOST_PLAT_WINDOWS_RUNTIME_AVAILABLE
 #   include <boost/predef/detail/platform_detected.h>

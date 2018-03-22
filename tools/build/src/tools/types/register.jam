@@ -30,7 +30,7 @@ for m in $(.sibling-modules)
 {
     m = [ path.basename $(m) ] ;
     m = types/$(m) ;
-    
+
     # Inject the type rule into the new module
     IMPORT $(__name__) : type : $(m:B) : type ;
     import $(m) ;

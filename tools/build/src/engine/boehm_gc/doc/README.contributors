@@ -11,12 +11,12 @@ and the Defense Advance Research Projects Agency.
 The garbage collector originated as part of the run-time system for
 the Russell programming language implementation. The first version of the
 garbage collector was written primarily by Al Demers.  It was then refined
-and mostly rewritten, primarily by Hans-J. Boehm, at Cornell U., 
+and mostly rewritten, primarily by Hans-J. Boehm, at Cornell U.,
 the University of Washington, Rice University (where it was first used for
 C and assembly code), Xerox PARC, SGI, and HP Labs.  However, significant
 contributions have also been made by many others.
 
-Some other contributors:  
+Some other contributors:
 
 More recent contributors are mentioned in the modification history in
 README.changes.  My apologies for any omissions.

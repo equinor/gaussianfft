@@ -35,7 +35,7 @@ private:
     typedef task_base< R, Args ... >    base_type;
 
 public:
-    typedef typename std::allocator_traits< Allocator >::template rebind_alloc< 
+    typedef typename std::allocator_traits< Allocator >::template rebind_alloc<
         task_object
     >                                           allocator_type;
 

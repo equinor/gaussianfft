@@ -33,10 +33,10 @@ void work_with_string(object print)
     print(data.encode("utf-8").attr("decode")("utf-8"));
     print(data.encode("utf-8").attr("decode")("utf-8"));
 #endif
-    
+
     BOOST_ASSERT(!data.endswith("xx"));
     BOOST_ASSERT(!data.startswith("test"));
-    
+
     print(data.splitlines());
     print(data.strip());
     print(data.swapcase());
@@ -65,7 +65,7 @@ void work_with_string(object print)
 
     BOOST_ASSERT(!data.startswith("asdf"));
     BOOST_ASSERT(!data.endswith("asdf"));
-    
+
     print(data.translate(str('a')*256));
 
 
@@ -73,7 +73,7 @@ void work_with_string(object print)
         data.isspace() || data.istitle() || data.isupper();
     (void)tmp; // ignored.
 }
-   
+
 
 BOOST_PYTHON_MODULE(str_ext)
 {

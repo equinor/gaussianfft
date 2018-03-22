@@ -59,7 +59,7 @@ public:
             os << parm._n;
             return os;
         }
-    
+
         /** Reads the parameters of the distribution from a @c std::istream. */
         template<class CharT, class Traits>
         friend std::basic_istream<CharT,Traits>&
@@ -82,7 +82,7 @@ public:
     private:
         RealType _n;
     };
-    
+
     /**
      * Construct a @c chi_squared_distribution object. @c n
      * is the parameter of the distribution.
@@ -93,7 +93,7 @@ public:
       : _impl(static_cast<RealType>(n_arg / 2))
     {
     }
-    
+
     /**
      * Construct an @c chi_squared_distribution object from the
      * parameters.
@@ -102,7 +102,7 @@ public:
       : _impl(static_cast<RealType>(parm.n() / 2))
     {
     }
-    
+
     /**
      * Returns a random variate distributed according to the
      * chi squared distribution.
@@ -112,7 +112,7 @@ public:
     {
         return 2 * _impl(urng);
     }
-    
+
     /**
      * Returns a random variate distributed according to the
      * chi squared distribution with parameters specified by @c param.
@@ -158,7 +158,7 @@ public:
         os << c2d.param();
         return os;
     }
-    
+
     /** Reads the parameters of the distribution from a @c std::istream. */
     template<class CharT, class Traits>
     friend std::basic_istream<CharT,Traits>&

@@ -1,8 +1,8 @@
 //////////////////////////////////////////////////////////////////////////////
 //
-// (C) Copyright Ion Gaztanaga 2005. 
-// Distributed under the Boost Software License, Version 1.0. 
-// (See accompanying file LICENSE_1_0.txt or copy at 
+// (C) Copyright Ion Gaztanaga 2005.
+// Distributed under the Boost Software License, Version 1.0.
+// (See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
 //////////////////////////////////////////////////////////////////////////////
@@ -13,33 +13,33 @@
 #include <boost/config.hpp>
 #include <boost/smart_ptr/detail/sp_noexcept.hpp>
 
-namespace boost { 
+namespace boost {
 
 //static_pointer_cast overload for raw pointers
 template<class T, class U>
 inline T* static_pointer_cast(U *ptr) BOOST_SP_NOEXCEPT
-{  
+{
    return static_cast<T*>(ptr);
 }
 
 //dynamic_pointer_cast overload for raw pointers
 template<class T, class U>
 inline T* dynamic_pointer_cast(U *ptr) BOOST_SP_NOEXCEPT
-{  
+{
    return dynamic_cast<T*>(ptr);
 }
 
 //const_pointer_cast overload for raw pointers
 template<class T, class U>
 inline T* const_pointer_cast(U *ptr) BOOST_SP_NOEXCEPT
-{  
+{
    return const_cast<T*>(ptr);
 }
 
 //reinterpret_pointer_cast overload for raw pointers
 template<class T, class U>
 inline T* reinterpret_pointer_cast(U *ptr) BOOST_SP_NOEXCEPT
-{  
+{
    return reinterpret_cast<T*>(ptr);
 }
 

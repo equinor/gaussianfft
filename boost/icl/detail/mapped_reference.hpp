@@ -62,17 +62,17 @@ class mapped_reference
 private:
     mapped_reference& operator = (const mapped_reference&);
 public:
-    typedef FirstT  first_type;   
-    typedef SecondT second_type; 
+    typedef FirstT  first_type;
+    typedef SecondT second_type;
     typedef mapped_reference type;
 
-    typedef typename 
-        mpl::if_<is_const<second_type>, 
-                       second_type&, 
+    typedef typename
+        mpl::if_<is_const<second_type>,
+                       second_type&,
                  const second_type&>::type second_reference_type;
 
-    typedef std::pair<      first_type, second_type>     std_pair_type; 
-    typedef std::pair<const first_type, second_type> key_std_pair_type; 
+    typedef std::pair<      first_type, second_type>     std_pair_type;
+    typedef std::pair<const first_type, second_type> key_std_pair_type;
 
     const first_type&     first ;
     second_reference_type second;
@@ -99,30 +99,30 @@ public:
     template<class Comparand>
     typename enable_if<is_mapped_reference_or_combinable<Comparand>, bool>::type
     operator < (const Comparand& right)const
-    { 
-        return         first < right.first 
-            ||(!(right.first <       first) && second < right.second); 
+    {
+        return         first < right.first
+            ||(!(right.first <       first) && second < right.second);
     }
 
     template<class Comparand>
     typename enable_if<is_mapped_reference_or_combinable<Comparand>, bool>::type
     operator > (const Comparand& right)const
-    { 
-        return         first > right.first 
-            ||(!(right.first >       first) && second > right.second); 
+    {
+        return         first > right.first
+            ||(!(right.first >       first) && second > right.second);
     }
 
     template<class Comparand>
     typename enable_if<is_mapped_reference_or_combinable<Comparand>, bool>::type
     operator <= (const Comparand& right)const
-    { 
+    {
         return !(*this > right);
     }
 
     template<class Comparand>
     typename enable_if<is_mapped_reference_or_combinable<Comparand>, bool>::type
     operator >= (const Comparand& right)const
-    { 
+    {
         return !(*this < right);
     }
 
@@ -131,54 +131,54 @@ public:
 //------------------------------------------------------------------------------
 template<class FirstT, class SecondT, class StdPairT>
 inline typename enable_if<is_mapped_reference_combinable<StdPairT>, bool>::type
-operator == (                         const StdPairT& left, 
+operator == (                         const StdPairT& left,
              const mapped_reference<FirstT, SecondT>& right)
-{ 
-    return right == left; 
+{
+    return right == left;
 }
 
 template<class FirstT, class SecondT, class StdPairT>
 inline typename enable_if<is_mapped_reference_combinable<StdPairT>, bool>::type
-operator != (                         const StdPairT& left, 
+operator != (                         const StdPairT& left,
              const mapped_reference<FirstT, SecondT>& right)
-{ 
-    return !(right == left); 
+{
+    return !(right == left);
 }
 
 //------------------------------------------------------------------------------
 template<class FirstT, class SecondT, class StdPairT>
 inline typename enable_if<is_mapped_reference_combinable<StdPairT>, bool>::type
-operator < (                         const StdPairT& left, 
+operator < (                         const StdPairT& left,
             const mapped_reference<FirstT, SecondT>& right)
-{ 
-    return right > left; 
+{
+    return right > left;
 }
 
 //------------------------------------------------------------------------------
 template<class FirstT, class SecondT, class StdPairT>
 inline typename enable_if<is_mapped_reference_combinable<StdPairT>, bool>::type
-operator > (                         const StdPairT& left, 
+operator > (                         const StdPairT& left,
             const mapped_reference<FirstT, SecondT>& right)
-{ 
-    return right < left; 
+{
+    return right < left;
 }
 
 //------------------------------------------------------------------------------
 template<class FirstT, class SecondT, class StdPairT>
 inline typename enable_if<is_mapped_reference_combinable<StdPairT>, bool>::type
-operator <= (                         const StdPairT& left, 
+operator <= (                         const StdPairT& left,
              const mapped_reference<FirstT, SecondT>& right)
-{ 
-    return !(right < left); 
+{
+    return !(right < left);
 }
 
 //------------------------------------------------------------------------------
 template<class FirstT, class SecondT, class StdPairT>
 inline typename enable_if<is_mapped_reference_combinable<StdPairT>, bool>::type
-operator >= (                         const StdPairT& left, 
+operator >= (                         const StdPairT& left,
              const mapped_reference<FirstT, SecondT>& right)
-{ 
-    return !(left < right); 
+{
+    return !(left < right);
 }
 
 //------------------------------------------------------------------------------

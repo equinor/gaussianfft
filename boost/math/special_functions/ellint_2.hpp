@@ -30,11 +30,11 @@
 // Elliptic integrals (complete and incomplete) of the second kind
 // Carlson, Numerische Mathematik, vol 33, 1 (1979)
 
-namespace boost { namespace math { 
-   
+namespace boost { namespace math {
+
 template <class T1, class T2, class Policy>
 typename tools::promote_args<T1, T2>::type ellint_2(T1 k, T2 phi, const Policy& pol);
-   
+
 namespace detail{
 
 template <typename T, typename Policy>

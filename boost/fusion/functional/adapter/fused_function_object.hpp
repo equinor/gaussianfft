@@ -1,7 +1,7 @@
 /*=============================================================================
     Copyright (c) 2006-2007 Tobias Schwinger
-  
-    Use modification and distribution are subject to the Boost Software 
+
+    Use modification and distribution are subject to the Boost Software
     License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
     http://www.boost.org/LICENSE_1_0.txt).
 ==============================================================================*/
@@ -42,7 +42,7 @@ namespace boost { namespace fusion
             : fnc_transformed(f)
         { }
 
-        template <class Seq> 
+        template <class Seq>
         BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
         inline typename result_of::invoke_function_object<func_const_fwd_t,
             Seq const>::type operator()(Seq const & s) const
@@ -51,17 +51,17 @@ namespace boost { namespace fusion
               func_const_fwd_t >(this->fnc_transformed,s);
         }
 
-        template <class Seq> 
+        template <class Seq>
         BOOST_CXX14_CONSTEXPR BOOST_FUSION_GPU_ENABLED
         inline typename result_of::invoke_function_object<func_fwd_t,
-            Seq const>::type 
-        operator()(Seq const & s) 
+            Seq const>::type
+        operator()(Seq const & s)
         {
           return fusion::invoke_function_object<
               func_fwd_t >(this->fnc_transformed,s);
         }
 
-        template <class Seq> 
+        template <class Seq>
         BOOST_CONSTEXPR BOOST_FUSION_GPU_ENABLED
         inline typename result_of::invoke_function_object<func_const_fwd_t,
             Seq>::type
@@ -71,10 +71,10 @@ namespace boost { namespace fusion
               func_const_fwd_t >(this->fnc_transformed,s);
         }
 
-        template <class Seq> 
+        template <class Seq>
         BOOST_CXX14_CONSTEXPR BOOST_FUSION_GPU_ENABLED
         inline typename result_of::invoke_function_object<func_fwd_t,Seq>::type
-        operator()(Seq & s) 
+        operator()(Seq & s)
         {
           return fusion::invoke_function_object<
               func_fwd_t >(this->fnc_transformed,s);
@@ -85,7 +85,7 @@ namespace boost { namespace fusion
 
         template <class Self, class Seq>
         struct result< Self const (Seq) >
-            : result_of::invoke_function_object<func_const_fwd_t, 
+            : result_of::invoke_function_object<func_const_fwd_t,
                 typename boost::remove_reference<Seq>::type >
         { };
 

@@ -27,9 +27,9 @@
 namespace boost { namespace graph { namespace distributed {
 
 namespace detail {
-  struct pair_and_or 
+  struct pair_and_or
   {
-    std::pair<bool, bool> 
+    std::pair<bool, bool>
     operator()(std::pair<bool, bool> x, std::pair<bool, bool> y) const
     {
       return std::pair<bool, bool>(x.first && y.first,
@@ -40,8 +40,8 @@ namespace detail {
 } // end namespace detail
 
 template<typename DistributedGraph, typename ColorMap, typename OwnerMap>
-bool 
-st_connected(const DistributedGraph& g, 
+bool
+st_connected(const DistributedGraph& g,
              typename graph_traits<DistributedGraph>::vertex_descriptor s,
              typename graph_traits<DistributedGraph>::vertex_descriptor t,
              ColorMap color, OwnerMap owner)
@@ -99,10 +99,10 @@ st_connected(const DistributedGraph& g,
           // Either push v into the local queue or send it off to its
           // owner.
           ProcessID v_owner = get(owner, v);
-          if (v_owner == rank) 
+          if (v_owner == rank)
             other_Q.push(v);
           else
-            send(pg, v_owner, 0, 
+            send(pg, v_owner, 0,
                  std::make_pair(v, u_color == ColorTraits::gray()));
         } else if (v_color != ColorTraits::black() && u_color != v_color) {
           // Colors have collided. We're done!
@@ -126,7 +126,7 @@ st_connected(const DistributedGraph& g,
       while (optional<std::pair<ProcessID, int> > msg = probe(pg)) {
         std::pair<Vertex, bool> data;
         receive(pg, msg->first, msg->second, data);
-        
+
         // Determine the colors of u and v, the source and target
         // vertices (v is local).
         Vertex v = data.first;
@@ -145,8 +145,8 @@ st_connected(const DistributedGraph& g,
       }
     }
 
-    // Check if either all queues are empty or 
-    std::pair<bool, bool> results = all_reduce(pg, 
+    // Check if either all queues are empty or
+    std::pair<bool, bool> results = all_reduce(pg,
             boost::parallel::detail::make_untracked_pair(Q.empty(), found),
             detail::pair_and_or());
 
@@ -161,8 +161,8 @@ st_connected(const DistributedGraph& g,
 }
 
 template<typename DistributedGraph, typename ColorMap>
-inline bool 
-st_connected(const DistributedGraph& g, 
+inline bool
+st_connected(const DistributedGraph& g,
              typename graph_traits<DistributedGraph>::vertex_descriptor s,
              typename graph_traits<DistributedGraph>::vertex_descriptor t,
              ColorMap color)
@@ -171,12 +171,12 @@ st_connected(const DistributedGraph& g,
 }
 
 template<typename DistributedGraph>
-inline bool 
-st_connected(const DistributedGraph& g, 
+inline bool
+st_connected(const DistributedGraph& g,
              typename graph_traits<DistributedGraph>::vertex_descriptor s,
              typename graph_traits<DistributedGraph>::vertex_descriptor t)
 {
-  return st_connected(g, s, t, 
+  return st_connected(g, s, t,
                       make_two_bit_color_map(num_vertices(g),
                                              get(vertex_index, g)));
 }

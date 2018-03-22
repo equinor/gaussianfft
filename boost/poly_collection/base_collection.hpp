@@ -41,7 +41,7 @@ public:
   base_collection(base_collection&& x)=default;
   base_collection& operator=(const base_collection& x)=default;
   base_collection& operator=(base_collection&& x)=default;
-   
+
   template<typename B,typename A>
   friend bool operator==(
     const base_collection<B,A>&,const base_collection<B,A>&);

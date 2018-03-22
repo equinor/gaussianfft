@@ -96,7 +96,7 @@ public:
                                 ));
 #endif
         BOOST_MPI_CHECK_RESULT(MPI_Type_commit,(&datatype_));
-        
+
         is_committed = true;
       }
 

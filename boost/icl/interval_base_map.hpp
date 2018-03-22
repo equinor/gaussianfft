@@ -14,7 +14,7 @@ Copyright (c) 1999-2006: Cortex Software GmbH, Kantstrasse 57, Berlin
 #include <boost/mpl/or.hpp>
 #include <boost/mpl/not.hpp>
 
-#include <boost/icl/detail/notate.hpp> 
+#include <boost/icl/detail/notate.hpp>
 #include <boost/icl/detail/design_config.hpp>
 #include <boost/icl/detail/on_absorbtion.hpp>
 #include <boost/icl/detail/interval_map_algo.hpp>
@@ -51,7 +51,7 @@ template
     class Traits = icl::partial_absorber,
     ICL_COMPARE Compare  = ICL_COMPARE_INSTANCE(ICL_COMPARE_DEFAULT, DomainT),
     ICL_COMBINE Combine  = ICL_COMBINE_INSTANCE(icl::inplace_plus, CodomainT),
-    ICL_SECTION Section  = ICL_SECTION_INSTANCE(icl::inter_section, CodomainT), 
+    ICL_SECTION Section  = ICL_SECTION_INSTANCE(icl::inter_section, CodomainT),
     ICL_INTERVAL(ICL_COMPARE) Interval = ICL_INTERVAL_INSTANCE(ICL_INTERVAL_DEFAULT, DomainT, Compare),
     ICL_ALLOC   Alloc    = std::allocator
 >
@@ -122,7 +122,7 @@ public:
 
     typedef typename mpl::if_
     <has_set_semantics<codomain_type>
-    , ICL_SECTION_CODOMAIN(Section,CodomainT)     
+    , ICL_SECTION_CODOMAIN(Section,CodomainT)
     , codomain_combine
     >::type                                            codomain_intersect;
 
@@ -140,10 +140,10 @@ public:
     //- Associated types: Implementation and stl related
     //--------------------------------------------------------------------------
     /// The allocator type of the set
-    typedef Alloc<std::pair<const interval_type, codomain_type> > 
+    typedef Alloc<std::pair<const interval_type, codomain_type> >
         allocator_type;
 
-    /// Container type for the implementation 
+    /// Container type for the implementation
     typedef ICL_IMPL_SPACE::map<interval_type,codomain_type,
                                 key_compare,allocator_type> ImplMapT;
 
@@ -173,23 +173,23 @@ public:
     typedef typename ImplMapT::const_reverse_iterator const_reverse_iterator;
 
     /// element iterator: Depreciated, see documentation.
-    typedef boost::icl::element_iterator<iterator> element_iterator; 
+    typedef boost::icl::element_iterator<iterator> element_iterator;
     /// const element iterator: Depreciated, see documentation.
-    typedef boost::icl::element_iterator<const_iterator> element_const_iterator; 
+    typedef boost::icl::element_iterator<const_iterator> element_const_iterator;
     /// element reverse iterator: Depreciated, see documentation.
-    typedef boost::icl::element_iterator<reverse_iterator> element_reverse_iterator; 
+    typedef boost::icl::element_iterator<reverse_iterator> element_reverse_iterator;
     /// element const reverse iterator: Depreciated, see documentation.
-    typedef boost::icl::element_iterator<const_reverse_iterator> element_const_reverse_iterator; 
-    
-    typedef typename on_absorbtion<type, codomain_combine, 
+    typedef boost::icl::element_iterator<const_reverse_iterator> element_const_reverse_iterator;
+
+    typedef typename on_absorbtion<type, codomain_combine,
                                 Traits::absorbs_identities>::type on_codomain_absorbtion;
 
 public:
-    BOOST_STATIC_CONSTANT(bool, 
-        is_total_invertible = (   Traits::is_total 
+    BOOST_STATIC_CONSTANT(bool,
+        is_total_invertible = (   Traits::is_total
                                && has_inverse<codomain_type>::value));
 
-    BOOST_STATIC_CONSTANT(int, fineness = 0); 
+    BOOST_STATIC_CONSTANT(int, fineness = 0);
 
 public:
 
@@ -229,20 +229,20 @@ public:
     }
 
     /** Move assignment operator */
-    interval_base_map& operator = (interval_base_map src) 
-    {                           //call by value sice 'src' is a "sink value" 
+    interval_base_map& operator = (interval_base_map src)
+    {                           //call by value sice 'src' is a "sink value"
         this->_map = boost::move(src._map);
-        return *this; 
+        return *this;
     }
 
     //==========================================================================
-#   else 
+#   else
 
     /** Copy assignment operator */
-    interval_base_map& operator = (const interval_base_map& src) 
-    { 
+    interval_base_map& operator = (const interval_base_map& src)
+    {
         this->_map = src._map;
-        return *this; 
+        return *this;
     }
 
 #   endif // BOOST_ICL_NO_CXX11_RVALUE_REFERENCES
@@ -269,9 +269,9 @@ public:
     }
 
     /** Size of the iteration over this container */
-    std::size_t iterative_size()const 
-    { 
-        return _map.size(); 
+    std::size_t iterative_size()const
+    {
+        return _map.size();
     }
 
     //==========================================================================
@@ -280,15 +280,15 @@ public:
 
     /** Find the interval value pair, that contains \c key */
     const_iterator find(const domain_type& key_value)const
-    { 
+    {
         return icl::find(*this, key_value);
     }
 
-    /** Find the first interval value pair, that collides with interval 
+    /** Find the first interval value pair, that collides with interval
         \c key_interval */
     const_iterator find(const interval_type& key_interval)const
-    { 
-        return _map.find(key_interval); 
+    {
+        return _map.find(key_interval);
     }
 
     /** Total select function. */
@@ -304,22 +304,22 @@ public:
     //==========================================================================
 
     /** Addition of a key value pair to the map */
-    SubType& add(const element_type& key_value_pair) 
+    SubType& add(const element_type& key_value_pair)
     {
         return icl::add(*that(), key_value_pair);
     }
 
     /** Addition of an interval value pair to the map. */
-    SubType& add(const segment_type& interval_value_pair) 
+    SubType& add(const segment_type& interval_value_pair)
     {
         this->template _add<codomain_combine>(interval_value_pair);
         return *that();
     }
 
-    /** Addition of an interval value pair \c interval_value_pair to the map. 
-        Iterator \c prior_ is a hint to the position \c interval_value_pair can be 
+    /** Addition of an interval value pair \c interval_value_pair to the map.
+        Iterator \c prior_ is a hint to the position \c interval_value_pair can be
         inserted after. */
-    iterator add(iterator prior_, const segment_type& interval_value_pair) 
+    iterator add(iterator prior_, const segment_type& interval_value_pair)
     {
         return this->template _add<codomain_combine>(prior_, interval_value_pair);
     }
@@ -329,7 +329,7 @@ public:
     //==========================================================================
     /** Subtraction of a key value pair from the map */
     SubType& subtract(const element_type& key_value_pair)
-    { 
+    {
         return icl::subtract(*that(), key_value_pair);
     }
 
@@ -345,35 +345,35 @@ public:
     //= Insertion
     //==========================================================================
     /** Insertion of a \c key_value_pair into the map. */
-    SubType& insert(const element_type& key_value_pair) 
+    SubType& insert(const element_type& key_value_pair)
     {
         return icl::insert(*that(), key_value_pair);
     }
 
     /** Insertion of an \c interval_value_pair into the map. */
     SubType& insert(const segment_type& interval_value_pair)
-    { 
-        _insert(interval_value_pair); 
+    {
+        _insert(interval_value_pair);
         return *that();
     }
 
-    /** Insertion of an \c interval_value_pair into the map. Iterator \c prior_. 
+    /** Insertion of an \c interval_value_pair into the map. Iterator \c prior_.
         serves as a hint to insert after the element \c prior point to. */
     iterator insert(iterator prior, const segment_type& interval_value_pair)
-    { 
+    {
         return _insert(prior, interval_value_pair);
     }
 
     /** With <tt>key_value_pair = (k,v)</tt> set value \c v for key \c k */
-    SubType& set(const element_type& key_value_pair) 
-    { 
+    SubType& set(const element_type& key_value_pair)
+    {
         return icl::set_at(*that(), key_value_pair);
     }
 
-    /** With <tt>interval_value_pair = (I,v)</tt> set value \c v 
+    /** With <tt>interval_value_pair = (I,v)</tt> set value \c v
         for all keys in interval \c I in the map. */
     SubType& set(const segment_type& interval_value_pair)
-    { 
+    {
         return icl::set_at(*that(), interval_value_pair);
     }
 
@@ -381,8 +381,8 @@ public:
     //= Erasure
     //==========================================================================
     /** Erase a \c key_value_pair from the map. */
-    SubType& erase(const element_type& key_value_pair) 
-    { 
+    SubType& erase(const element_type& key_value_pair)
+    {
         icl::erase(*that(), key_value_pair);
         return *that();
     }
@@ -391,17 +391,17 @@ public:
     SubType& erase(const segment_type& interval_value_pair);
 
     /** Erase a key value pair for \c key. */
-    SubType& erase(const domain_type& key) 
-    { 
-        return icl::erase(*that(), key); 
+    SubType& erase(const domain_type& key)
+    {
+        return icl::erase(*that(), key);
     }
 
-    /** Erase all value pairs within the range of the 
+    /** Erase all value pairs within the range of the
         interval <tt>inter_val</tt> from the map.   */
     SubType& erase(const interval_type& inter_val);
 
 
-    /** Erase all value pairs within the range of the interval that iterator 
+    /** Erase all value pairs within the range of the interval that iterator
         \c position points to. */
     void erase(iterator position){ this->_map.erase(position); }
 
@@ -423,8 +423,8 @@ public:
     //==========================================================================
     /** If \c *this map contains \c key_value_pair it is erased, otherwise it is added. */
     SubType& flip(const element_type& key_value_pair)
-    { 
-        return icl::flip(*that(), key_value_pair); 
+    {
+        return icl::flip(*that(), key_value_pair);
     }
 
     /** If \c *this map contains \c interval_value_pair it is erased, otherwise it is added. */
@@ -452,16 +452,16 @@ public:
     { return _map.upper_bound(interval); }
 
     std::pair<iterator,iterator> equal_range(const key_type& interval)
-    { 
+    {
         return std::pair<iterator,iterator>
-               (lower_bound(interval), upper_bound(interval)); 
+               (lower_bound(interval), upper_bound(interval));
     }
 
-    std::pair<const_iterator,const_iterator> 
+    std::pair<const_iterator,const_iterator>
         equal_range(const key_type& interval)const
-    { 
+    {
         return std::pair<const_iterator,const_iterator>
-               (lower_bound(interval), upper_bound(interval)); 
+               (lower_bound(interval), upper_bound(interval));
     }
 
     iterator begin() { return _map.begin(); }
@@ -491,7 +491,7 @@ private:
     void add_segment(const interval_type& inter_val, const CodomainT& co_val, iterator& it_);
 
     template<class Combiner>
-    void add_main(interval_type& inter_val, const CodomainT& co_val, 
+    void add_main(interval_type& inter_val, const CodomainT& co_val,
                   iterator& it_, const iterator& last_);
 
     template<class Combiner>
@@ -522,16 +522,16 @@ private:
     void partial_add_intersection(SubType& section, const segment_type& operand)const
     {
         interval_type inter_val = operand.first;
-        if(icl::is_empty(inter_val)) 
+        if(icl::is_empty(inter_val))
             return;
 
         std::pair<const_iterator, const_iterator> exterior = equal_range(inter_val);
         if(exterior.first == exterior.second)
             return;
 
-        for(const_iterator it_=exterior.first; it_ != exterior.second; it_++) 
+        for(const_iterator it_=exterior.first; it_ != exterior.second; it_++)
         {
-            interval_type common_interval = (*it_).first & inter_val; 
+            interval_type common_interval = (*it_).first & inter_val;
             if(!icl::is_empty(common_interval))
             {
                 section.template _add<codomain_combine>  (value_type(common_interval, (*it_).second) );
@@ -549,7 +549,7 @@ private:
 protected:
 
     template <class Combiner>
-    iterator gap_insert(iterator prior_, const interval_type& inter_val, 
+    iterator gap_insert(iterator prior_, const interval_type& inter_val,
                                          const codomain_type& co_val   )
     {
         // inter_val is not conained in this map. Insertion will be successful
@@ -560,13 +560,13 @@ protected:
 
     template <class Combiner>
     std::pair<iterator, bool>
-    add_at(const iterator& prior_, const interval_type& inter_val, 
+    add_at(const iterator& prior_, const interval_type& inter_val,
                                    const codomain_type& co_val   )
     {
         // Never try to insert an identity element into an identity element absorber here:
         BOOST_ASSERT((!(on_absorbtion<type,Combiner,Traits::absorbs_identities>::is_absorbable(co_val))));
 
-        iterator inserted_ 
+        iterator inserted_
             = this->_map.insert(prior_, value_type(inter_val, Combiner::identity_element()));
 
         if((*inserted_).first == inter_val && (*inserted_).second == Combiner::identity_element())
@@ -579,7 +579,7 @@ protected:
     }
 
     std::pair<iterator, bool>
-    insert_at(const iterator& prior_, const interval_type& inter_val, 
+    insert_at(const iterator& prior_, const interval_type& inter_val,
                                       const codomain_type& co_val   )
     {
         iterator inserted_
@@ -638,7 +638,7 @@ private:
     template<class Type>
     struct on_definedness<Type, true>
     {
-        static void add_intersection(Type& section, const Type& object, 
+        static void add_intersection(Type& section, const Type& object,
                                      const segment_type& operand)
         { object.total_add_intersection(section, operand); }
     };
@@ -646,7 +646,7 @@ private:
     template<class Type>
     struct on_definedness<Type, false>
     {
-        static void add_intersection(Type& section, const Type& object, 
+        static void add_intersection(Type& section, const Type& object,
                                      const segment_type& operand)
         { object.partial_add_intersection(section, operand); }
     };
@@ -656,7 +656,7 @@ private:
     //--------------------------------------------------------------------------
 
     //--------------------------------------------------------------------------
-    template<class Type, bool has_set_semantics> 
+    template<class Type, bool has_set_semantics>
     struct on_codomain_model;
 
     template<class Type>
@@ -668,12 +668,12 @@ private:
         typedef typename Type::codomain_combine codomain_combine;
         typedef typename Type::inverse_codomain_intersect inverse_codomain_intersect;
 
-        static void add(Type& intersection, interval_type& common_interval, 
+        static void add(Type& intersection, interval_type& common_interval,
                         const codomain_type& flip_value, const codomain_type& co_value)
         {
             codomain_type common_value = flip_value;
             inverse_codomain_intersect()(common_value, co_value);
-            intersection.template 
+            intersection.template
                 _add<codomain_combine>(segment_type(common_interval, common_value));
         }
     };
@@ -686,11 +686,11 @@ private:
         typedef typename Type::segment_type  segment_type;
         typedef typename Type::codomain_combine codomain_combine;
 
-        static void add(Type& intersection, interval_type& common_interval, 
+        static void add(Type& intersection, interval_type& common_interval,
                         const codomain_type&, const codomain_type&)
         {
-            intersection.template 
-              _add<codomain_combine>(segment_type(common_interval, 
+            intersection.template
+              _add<codomain_combine>(segment_type(common_interval,
                                                   identity_element<codomain_type>::value()));
         }
     };
@@ -711,10 +711,10 @@ private:
         { icl::clear(object); }
     };
 
-#ifdef BOOST_MSVC 
+#ifdef BOOST_MSVC
 #pragma warning(push)
 #pragma warning(disable:4127) // conditional expression is constant
-#endif                        
+#endif
 
     template<class Type>
     struct on_total_absorbable<Type, true, false>
@@ -723,7 +723,7 @@ private:
         typedef typename Type::codomain_type codomain_type;
 
         static void flip(Type& object, const segment_type& operand)
-        { 
+        {
             object += operand;
             ICL_FORALL(typename Type, it_, object)
                 (*it_).second = identity_element<codomain_type>::value();
@@ -754,7 +754,7 @@ private:
             // That which is not shall be added
             // So interval_value_pair has to be 'complementary added' or flipped
             interval_type span = interval_value_pair.first;
-            std::pair<const_iterator, const_iterator> exterior 
+            std::pair<const_iterator, const_iterator> exterior
                 = object.equal_range(span);
 
             const_iterator first_ = exterior.first;
@@ -767,7 +767,7 @@ private:
             set_type eraser;
             Type     intersection;
 
-            while(it_ != end_  ) 
+            while(it_ != end_  )
             {
                 const codomain_type& co_value = (*it_).second;
                 covered = (*it_++).first;
@@ -826,7 +826,7 @@ inline void interval_base_map<SubType,DomainT,CodomainT,Traits,Compare,Combine,S
     {   //            [------------ . . .
         // [left_resid---first_ --- . . .
         iterator prior_ = cyclic_prior(*this, first_);
-        const_cast<interval_type&>((*first_).first) 
+        const_cast<interval_type&>((*first_).first)
             = left_subtract((*first_).first, left_resid);
         //NOTE: Only splitting
         this->_map.insert(prior_, segment_type(left_resid, (*first_).second));
@@ -846,7 +846,7 @@ inline void interval_base_map<SubType,DomainT,CodomainT,Traits,Compare,Combine,S
     {
         // [lead_gap--- . . .
         //          [-- it_ ...
-        iterator prior_ = it_==this->_map.begin()? it_ : prior(it_); 
+        iterator prior_ = it_==this->_map.begin()? it_ : prior(it_);
         iterator inserted_ = this->template gap_insert<Combiner>(prior_, lead_gap, co_val);
         that()->handle_inserted(prior_, inserted_);
     }
@@ -861,7 +861,7 @@ inline void interval_base_map<SubType,DomainT,CodomainT,Traits,Compare,Combine,S
 template <class SubType, class DomainT, class CodomainT, class Traits, ICL_COMPARE Compare, ICL_COMBINE Combine, ICL_SECTION Section, ICL_INTERVAL(ICL_COMPARE) Interval, ICL_ALLOC Alloc>
     template<class Combiner>
 inline void interval_base_map<SubType,DomainT,CodomainT,Traits,Compare,Combine,Section,Interval,Alloc>
-    ::add_main(interval_type& inter_val, const CodomainT& co_val, 
+    ::add_main(interval_type& inter_val, const CodomainT& co_val,
                iterator& it_, const iterator& last_)
 {
     interval_type cur_interval;
@@ -942,14 +942,14 @@ inline typename interval_base_map<SubType,DomainT,CodomainT,Traits,Compare,Combi
                                 absorbs_identities<type>::value>::type on_absorbtion_;
 
     const interval_type& inter_val = addend.first;
-    if(icl::is_empty(inter_val)) 
+    if(icl::is_empty(inter_val))
         return this->_map.end();
 
     const codomain_type& co_val = addend.second;
     if(on_absorbtion_::is_absorbable(co_val))
         return this->_map.end();
 
-    std::pair<iterator,bool> insertion 
+    std::pair<iterator,bool> insertion
         = this->_map.insert(value_type(inter_val, version<Combiner>()(co_val)));
 
     if(insertion.second)
@@ -980,14 +980,14 @@ inline typename interval_base_map<SubType,DomainT,CodomainT,Traits,Compare,Combi
                                 absorbs_identities<type>::value>::type on_absorbtion_;
 
     const interval_type& inter_val = addend.first;
-    if(icl::is_empty(inter_val)) 
+    if(icl::is_empty(inter_val))
         return prior_;
 
     const codomain_type& co_val = addend.second;
     if(on_absorbtion_::is_absorbable(co_val))
         return prior_;
 
-    std::pair<iterator,bool> insertion 
+    std::pair<iterator,bool> insertion
         = add_at<Combiner>(prior_, inter_val, co_val);
 
     if(insertion.second)
@@ -1019,7 +1019,7 @@ inline void interval_base_map<SubType,DomainT,CodomainT,Traits,Compare,Combine,S
 
     if(!icl::is_empty(left_resid)) //                     [--- inter_val ---)
     {                              //[prior_) [left_resid)[--- it_ . . .
-        iterator prior_ = cyclic_prior(*this, it_); 
+        iterator prior_ = cyclic_prior(*this, it_);
         const_cast<interval_type&>((*it_).first) = left_subtract((*it_).first, left_resid);
         this->_map.insert(prior_, value_type(left_resid, (*it_).second));
         // The segemnt *it_ is split at inter_val.first(), so as an invariant
@@ -1070,11 +1070,11 @@ inline void interval_base_map<SubType,DomainT,CodomainT,Traits,Compare,Combine,S
     ::_subtract(const segment_type& minuend)
 {
     interval_type inter_val = minuend.first;
-    if(icl::is_empty(inter_val)) 
+    if(icl::is_empty(inter_val))
         return;
 
     const codomain_type& co_val = minuend.second;
-    if(on_absorbtion<type,Combiner,Traits::absorbs_identities>::is_absorbable(co_val)) 
+    if(on_absorbtion<type,Combiner,Traits::absorbs_identities>::is_absorbable(co_val))
         return;
 
     std::pair<iterator, iterator> exterior = equal_range(inter_val);
@@ -1093,7 +1093,7 @@ inline void interval_base_map<SubType,DomainT,CodomainT,Traits,Compare,Combine,S
 //==============================================================================
 template <class SubType, class DomainT, class CodomainT, class Traits, ICL_COMPARE Compare, ICL_COMBINE Combine, ICL_SECTION Section, ICL_INTERVAL(ICL_COMPARE) Interval, ICL_ALLOC Alloc>
 inline void interval_base_map<SubType,DomainT,CodomainT,Traits,Compare,Combine,Section,Interval,Alloc>
-    ::insert_main(const interval_type& inter_val, const CodomainT& co_val, 
+    ::insert_main(const interval_type& inter_val, const CodomainT& co_val,
                   iterator& it_, const iterator& last_)
 {
     iterator end_   = boost::next(last_);
@@ -1103,7 +1103,7 @@ inline void interval_base_map<SubType,DomainT,CodomainT,Traits,Compare,Combine,S
 
     while(it_ != end_  )
     {
-        cur_itv = (*it_).first ;            
+        cur_itv = (*it_).first ;
         left_gap = right_subtract(rest_interval, cur_itv);
 
         if(!icl::is_empty(left_gap))
@@ -1136,11 +1136,11 @@ inline typename interval_base_map<SubType,DomainT,CodomainT,Traits,Compare,Combi
     ::_insert(const segment_type& addend)
 {
     interval_type inter_val = addend.first;
-    if(icl::is_empty(inter_val)) 
+    if(icl::is_empty(inter_val))
         return this->_map.end();
 
     const codomain_type& co_val = addend.second;
-    if(on_codomain_absorbtion::is_absorbable(co_val)) 
+    if(on_codomain_absorbtion::is_absorbable(co_val))
         return this->_map.end();
 
     std::pair<iterator,bool> insertion = this->_map.insert(addend);
@@ -1166,11 +1166,11 @@ inline typename interval_base_map<SubType,DomainT,CodomainT,Traits,Compare,Combi
     ::_insert(iterator prior_, const segment_type& addend)
 {
     interval_type inter_val = addend.first;
-    if(icl::is_empty(inter_val)) 
+    if(icl::is_empty(inter_val))
         return prior_;
 
     const codomain_type& co_val = addend.second;
-    if(on_codomain_absorbtion::is_absorbable(co_val)) 
+    if(on_codomain_absorbtion::is_absorbable(co_val))
         return prior_;
 
     std::pair<iterator,bool> insertion = insert_at(prior_, inter_val, co_val);
@@ -1192,13 +1192,13 @@ inline typename interval_base_map<SubType,DomainT,CodomainT,Traits,Compare,Combi
 //==============================================================================
 template <class SubType, class DomainT, class CodomainT, class Traits, ICL_COMPARE Compare, ICL_COMBINE Combine, ICL_SECTION Section, ICL_INTERVAL(ICL_COMPARE) Interval, ICL_ALLOC Alloc>
 inline void interval_base_map<SubType,DomainT,CodomainT,Traits,Compare,Combine,Section,Interval,Alloc>
-    ::erase_rest(interval_type& inter_val, const CodomainT& co_val, 
+    ::erase_rest(interval_type& inter_val, const CodomainT& co_val,
                  iterator& it_, const iterator& last_)
 {
     // For all intervals within loop: (*it_).first are contained_in inter_val
     while(it_ != last_)
         if((*it_).second == co_val)
-            this->_map.erase(it_++); 
+            this->_map.erase(it_++);
         else it_++;
 
     //erase_rear:
@@ -1217,7 +1217,7 @@ inline SubType& interval_base_map<SubType,DomainT,CodomainT,Traits,Compare,Combi
     ::erase(const segment_type& minuend)
 {
     interval_type inter_val = minuend.first;
-    if(icl::is_empty(inter_val)) 
+    if(icl::is_empty(inter_val))
         return *that();
 
     const codomain_type& co_val = minuend.second;
@@ -1228,18 +1228,18 @@ inline SubType& interval_base_map<SubType,DomainT,CodomainT,Traits,Compare,Combi
     if(exterior.first == exterior.second)
         return *that();
 
-    iterator first_ = exterior.first, end_ = exterior.second, 
+    iterator first_ = exterior.first, end_ = exterior.second,
              last_  = cyclic_prior(*this, end_);
     iterator second_= first_; ++second_;
 
-    if(first_ == last_) 
+    if(first_ == last_)
     {   //     [----inter_val----)
         //   .....first_==last_.....
         // only for the last there can be a right_resid: a part of *it_ right of minuend
         interval_type right_resid = left_subtract((*first_).first, inter_val);
 
         if((*first_).second == co_val)
-        {   
+        {
             interval_type left_resid = right_subtract((*first_).first, inter_val);
             if(!icl::is_empty(left_resid)) //            [----inter_val----)
             {                              // [left_resid)..first_==last_......
@@ -1278,7 +1278,7 @@ template <class SubType, class DomainT, class CodomainT, class Traits, ICL_COMPA
 inline SubType& interval_base_map<SubType,DomainT,CodomainT,Traits,Compare,Combine,Section,Interval,Alloc>
     ::erase(const interval_type& minuend)
 {
-    if(icl::is_empty(minuend)) 
+    if(icl::is_empty(minuend))
         return *that();
 
     std::pair<iterator, iterator> exterior = equal_range(minuend);
@@ -1325,40 +1325,40 @@ inline SubType& interval_base_map<SubType,DomainT,CodomainT,Traits,Compare,Combi
 //-----------------------------------------------------------------------------
 // type traits
 //-----------------------------------------------------------------------------
-template 
+template
 <
     class SubType,
     class DomainT, class CodomainT, class Traits, ICL_COMPARE Compare, ICL_COMBINE Combine, ICL_SECTION Section, ICL_INTERVAL(ICL_COMPARE)  Interval, ICL_ALLOC Alloc
 >
 struct is_map<icl::interval_base_map<SubType,DomainT,CodomainT,Traits,Compare,Combine,Section,Interval,Alloc> >
-{ 
+{
     typedef is_map<icl::interval_base_map<SubType,DomainT,CodomainT,Traits,Compare,Combine,Section,Interval,Alloc> > type;
-    BOOST_STATIC_CONSTANT(bool, value = true); 
+    BOOST_STATIC_CONSTANT(bool, value = true);
 };
 
-template 
+template
 <
     class SubType,
     class DomainT, class CodomainT, class Traits, ICL_COMPARE Compare, ICL_COMBINE Combine, ICL_SECTION Section, ICL_INTERVAL(ICL_COMPARE)  Interval, ICL_ALLOC Alloc
 >
 struct has_inverse<icl::interval_base_map<SubType,DomainT,CodomainT,Traits,Compare,Combine,Section,Interval,Alloc> >
-{ 
+{
     typedef has_inverse<icl::interval_base_map<SubType,DomainT,CodomainT,Traits,Compare,Combine,Section,Interval,Alloc> > type;
-    BOOST_STATIC_CONSTANT(bool, value = (has_inverse<CodomainT>::value)); 
+    BOOST_STATIC_CONSTANT(bool, value = (has_inverse<CodomainT>::value));
 };
 
-template 
+template
 <
     class SubType,
     class DomainT, class CodomainT, class Traits, ICL_COMPARE Compare, ICL_COMBINE Combine, ICL_SECTION Section, ICL_INTERVAL(ICL_COMPARE)  Interval, ICL_ALLOC Alloc
 >
 struct is_interval_container<icl::interval_base_map<SubType,DomainT,CodomainT,Traits,Compare,Combine,Section,Interval,Alloc> >
-{ 
+{
     typedef is_interval_container<icl::interval_base_map<SubType,DomainT,CodomainT,Traits,Compare,Combine,Section,Interval,Alloc> > type;
-    BOOST_STATIC_CONSTANT(bool, value = true); 
+    BOOST_STATIC_CONSTANT(bool, value = true);
 };
 
-template 
+template
 <
     class SubType,
     class DomainT, class CodomainT, class Traits, ICL_COMPARE Compare, ICL_COMBINE Combine, ICL_SECTION Section, ICL_INTERVAL(ICL_COMPARE)  Interval, ICL_ALLOC Alloc
@@ -1366,10 +1366,10 @@ template
 struct absorbs_identities<icl::interval_base_map<SubType,DomainT,CodomainT,Traits,Compare,Combine,Section,Interval,Alloc> >
 {
     typedef absorbs_identities<icl::interval_base_map<SubType,DomainT,CodomainT,Traits,Compare,Combine,Section,Interval,Alloc> > type;
-    BOOST_STATIC_CONSTANT(bool, value = (Traits::absorbs_identities)); 
+    BOOST_STATIC_CONSTANT(bool, value = (Traits::absorbs_identities));
 };
 
-template 
+template
 <
     class SubType,
     class DomainT, class CodomainT, class Traits, ICL_COMPARE Compare, ICL_COMBINE Combine, ICL_SECTION Section, ICL_INTERVAL(ICL_COMPARE) Interval, ICL_ALLOC Alloc
@@ -1377,7 +1377,7 @@ template
 struct is_total<icl::interval_base_map<SubType,DomainT,CodomainT,Traits,Compare,Combine,Section,Interval,Alloc> >
 {
     typedef is_total<icl::interval_base_map<SubType,DomainT,CodomainT,Traits,Compare,Combine,Section,Interval,Alloc> > type;
-    BOOST_STATIC_CONSTANT(bool, value = (Traits::is_total)); 
+    BOOST_STATIC_CONSTANT(bool, value = (Traits::is_total));
 };
 
 

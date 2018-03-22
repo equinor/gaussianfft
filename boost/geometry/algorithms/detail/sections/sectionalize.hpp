@@ -453,7 +453,7 @@ struct sectionalize_part
         Iterator it = begin;
         robust_point_type previous_robust_point;
         geometry::recalculate(previous_robust_point, *it, robust_policy);
-        
+
         for(Iterator previous = it++;
             it != end;
             ++previous, ++it, index++)
@@ -755,9 +755,9 @@ inline void enlarge_sections(Sections& sections)
     // Reason: turns might, rarely, be missed otherwise (case: "buffer_mp1")
     // Drawback: not really, range is now completely inside the section. Section is a tiny bit too large,
     // which might cause (a small number) of more comparisons
-    
+
     // NOTE: above is old comment to the not used code expanding the Boxes by relaxed_epsilon(10)
-    
+
     // Enlarge sections by scaled epsilon, this should be consistent with math::equals().
     // Points and Segments are equal-compared WRT machine epsilon, but Boxes aren't
     // Enlarging Boxes ensures that they correspond to the bound objects,

@@ -86,7 +86,7 @@ template<typename T,typename Q>
 struct any_model_make_reference
 {
   static T& apply(Q& x){return x;}
-}; 
+};
 
 template<typename Concept>
 struct any_model

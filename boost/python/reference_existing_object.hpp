@@ -11,7 +11,7 @@
 # include <boost/python/to_python_indirect.hpp>
 # include <boost/python/detail/type_traits.hpp>
 
-namespace boost { namespace python { 
+namespace boost { namespace python {
 
 namespace detail
 {
@@ -32,7 +32,7 @@ struct reference_existing_object
     {
         BOOST_STATIC_CONSTANT(
             bool, ok = detail::is_pointer<T>::value || detail::is_reference<T>::value);
-        
+
         typedef typename mpl::if_c<
             ok
             , to_python_indirect<T, detail::make_reference_holder>

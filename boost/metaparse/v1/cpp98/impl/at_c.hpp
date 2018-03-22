@@ -41,7 +41,7 @@ namespace boost
             > : \
             boost::mpl::char_<BOOST_PP_CAT(C, n)> \
           {};
-      
+
         BOOST_PP_REPEAT(
           BOOST_METAPARSE_LIMIT_STRING_SIZE,
           BOOST_METAPARSE_STRING_CASE,

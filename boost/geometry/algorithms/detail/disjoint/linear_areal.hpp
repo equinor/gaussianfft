@@ -158,7 +158,7 @@ private:
                         ring_type, closure<ring_type>::value, Segment
                     >
             > unary_predicate_type;
-                
+
         return check_iterator_range
             <
                 unary_predicate_type

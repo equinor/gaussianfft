@@ -2,7 +2,7 @@
 //    Grant Erickson <gerickson@nuovations.com>
 //
 //  Reworked somewhat by Marshall Clow; August 2010
-//  
+//
 //  Distributed under the Boost Software License, Version 1.0. (See
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
@@ -28,7 +28,7 @@ namespace boost { namespace algorithm {
 /// \fn is_sorted_until ( ForwardIterator first, ForwardIterator last, Pred p )
 /// \return the point in the sequence [first, last) where the elements are unordered
 ///     (according to the comparison predicate 'p').
-/// 
+///
 /// \param first The start of the sequence to be tested.
 /// \param last  One past the end of the sequence
 /// \param p     A binary predicate that returns true if two elements are ordered.
@@ -44,12 +44,12 @@ namespace boost { namespace algorithm {
                 return next;
             first = next;
         }
-        return last;    
+        return last;
     }
 
 /// \fn is_sorted_until ( ForwardIterator first, ForwardIterator last )
 /// \return the point in the sequence [first, last) where the elements are unordered
-/// 
+///
 /// \param first The start of the sequence to be tested.
 /// \param last  One past the end of the sequence
 ///
@@ -63,7 +63,7 @@ namespace boost { namespace algorithm {
 
 /// \fn is_sorted ( ForwardIterator first, ForwardIterator last, Pred p )
 /// \return whether or not the entire sequence is sorted
-/// 
+///
 /// \param first The start of the sequence to be tested.
 /// \param last  One past the end of the sequence
 /// \param p     A binary predicate that returns true if two elements are ordered.
@@ -76,7 +76,7 @@ namespace boost { namespace algorithm {
 
 /// \fn is_sorted ( ForwardIterator first, ForwardIterator last )
 /// \return whether or not the entire sequence is sorted
-/// 
+///
 /// \param first The start of the sequence to be tested.
 /// \param last  One past the end of the sequence
 ///
@@ -93,14 +93,14 @@ namespace boost { namespace algorithm {
 /// \fn is_sorted_until ( const R &range, Pred p )
 /// \return the point in the range R where the elements are unordered
 ///     (according to the comparison predicate 'p').
-/// 
+///
 /// \param range The range to be tested.
 /// \param p     A binary predicate that returns true if two elements are ordered.
 ///
     template <typename R, typename Pred>
     typename boost::lazy_disable_if_c<
-        boost::is_same<R, Pred>::value, 
-        typename boost::range_iterator<const R> 
+        boost::is_same<R, Pred>::value,
+        typename boost::range_iterator<const R>
     >::type is_sorted_until ( const R &range, Pred p )
     {
         return boost::algorithm::is_sorted_until ( boost::begin ( range ), boost::end ( range ), p );
@@ -109,7 +109,7 @@ namespace boost { namespace algorithm {
 
 /// \fn is_sorted_until ( const R &range )
 /// \return the point in the range R where the elements are unordered
-/// 
+///
 /// \param range The range to be tested.
 ///
     template <typename R>
@@ -121,7 +121,7 @@ namespace boost { namespace algorithm {
 /// \fn is_sorted ( const R &range, Pred p )
 /// \return whether or not the entire range R is sorted
 ///     (according to the comparison predicate 'p').
-/// 
+///
 /// \param range The range to be tested.
 /// \param p     A binary predicate that returns true if two elements are ordered.
 ///
@@ -135,7 +135,7 @@ namespace boost { namespace algorithm {
 
 /// \fn is_sorted ( const R &range )
 /// \return whether or not the entire range R is sorted
-/// 
+///
 /// \param range The range to be tested.
 ///
     template <typename R>
@@ -150,9 +150,9 @@ namespace boost { namespace algorithm {
 ///
 
 /// \fn is_increasing ( ForwardIterator first, ForwardIterator last )
-/// \return true if the entire sequence is increasing; i.e, each item is greater than or  
+/// \return true if the entire sequence is increasing; i.e, each item is greater than or
 ///     equal to the previous one.
-/// 
+///
 /// \param first The start of the sequence to be tested.
 /// \param last  One past the end of the sequence
 ///
@@ -167,9 +167,9 @@ namespace boost { namespace algorithm {
 
 
 /// \fn is_increasing ( const R &range )
-/// \return true if the entire sequence is increasing; i.e, each item is greater than or  
+/// \return true if the entire sequence is increasing; i.e, each item is greater than or
 ///     equal to the previous one.
-/// 
+///
 /// \param range The range to be tested.
 ///
 /// \note This function will return true for sequences that contain items that compare
@@ -183,9 +183,9 @@ namespace boost { namespace algorithm {
 
 
 /// \fn is_decreasing ( ForwardIterator first, ForwardIterator last )
-/// \return true if the entire sequence is decreasing; i.e, each item is less than 
+/// \return true if the entire sequence is decreasing; i.e, each item is less than
 ///     or equal to the previous one.
-/// 
+///
 /// \param first The start of the sequence to be tested.
 /// \param last  One past the end of the sequence
 ///
@@ -199,9 +199,9 @@ namespace boost { namespace algorithm {
     }
 
 /// \fn is_decreasing ( const R &range )
-/// \return true if the entire sequence is decreasing; i.e, each item is less than 
+/// \return true if the entire sequence is decreasing; i.e, each item is less than
 ///     or equal to the previous one.
-/// 
+///
 /// \param range The range to be tested.
 ///
 /// \note This function will return true for sequences that contain items that compare
@@ -217,7 +217,7 @@ namespace boost { namespace algorithm {
 /// \fn is_strictly_increasing ( ForwardIterator first, ForwardIterator last )
 /// \return true if the entire sequence is strictly increasing; i.e, each item is greater
 ///     than the previous one
-/// 
+///
 /// \param first The start of the sequence to be tested.
 /// \param last  One past the end of the sequence
 ///
@@ -233,7 +233,7 @@ namespace boost { namespace algorithm {
 /// \fn is_strictly_increasing ( const R &range )
 /// \return true if the entire sequence is strictly increasing; i.e, each item is greater
 ///     than the previous one
-/// 
+///
 /// \param range The range to be tested.
 ///
 /// \note This function will return false for sequences that contain items that compare
@@ -248,7 +248,7 @@ namespace boost { namespace algorithm {
 /// \fn is_strictly_decreasing ( ForwardIterator first, ForwardIterator last )
 /// \return true if the entire sequence is strictly decreasing; i.e, each item is less than
 ///     the previous one
-/// 
+///
 /// \param first The start of the sequence to be tested.
 /// \param last  One past the end of the sequence
 ///
@@ -264,7 +264,7 @@ namespace boost { namespace algorithm {
 /// \fn is_strictly_decreasing ( const R &range )
 /// \return true if the entire sequence is strictly decreasing; i.e, each item is less than
 ///     the previous one
-/// 
+///
 /// \param range The range to be tested.
 ///
 /// \note This function will return false for sequences that contain items that compare

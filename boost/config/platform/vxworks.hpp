@@ -369,22 +369,22 @@ typedef int              locale_t;                     // locale_t is a POSIX-ex
 // vxWorks lies about XSI conformance, there is no nl_types.h:
 #undef BOOST_HAS_NL_TYPES_H
 
-// vxWorks 7 adds C++11 support 
+// vxWorks 7 adds C++11 support
 // however it is optional, and does not match exactly the support determined
-// by examining Dinkum STL version and GCC version (or ICC and DCC) 
+// by examining Dinkum STL version and GCC version (or ICC and DCC)
 
 #ifndef _WRS_CONFIG_LANG_LIB_CPLUS_CPLUS_USER_2011
 #  define BOOST_NO_CXX11_HDR_ARRAY
-#  define BOOST_NO_CXX11_HDR_TYPEINDEX 
+#  define BOOST_NO_CXX11_HDR_TYPEINDEX
 #  define BOOST_NO_CXX11_HDR_TYPE_TRAITS
-#  define BOOST_NO_CXX11_HDR_TUPLE 
+#  define BOOST_NO_CXX11_HDR_TUPLE
 #  define BOOST_NO_CXX11_ALLOCATOR
-#  define BOOST_NO_CXX11_SMART_PTR 
+#  define BOOST_NO_CXX11_SMART_PTR
 #  define BOOST_NO_CXX11_STD_ALIGN
-#  define BOOST_NO_CXX11_HDR_UNORDERED_SET 
+#  define BOOST_NO_CXX11_HDR_UNORDERED_SET
 #  define BOOST_NO_CXX11_HDR_TYPE_TRAITS
 #  define BOOST_NO_CXX11_HDR_UNORDERED_MAP
-#  define BOOST_NO_CXX11_HDR_FUNCTIONAL 
+#  define BOOST_NO_CXX11_HDR_FUNCTIONAL
 #  define BOOST_NO_CXX11_HDR_ATOMIC
 #else
 #  define BOOST_NO_CXX11_NULLPTR

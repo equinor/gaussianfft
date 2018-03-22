@@ -125,7 +125,7 @@ namespace boost {
 
       typedef graph_traits<DistributedGraph> Traits;
       typedef typename Traits::vertex_descriptor Vertex;
-      typedef typename boost::graph::parallel::process_group_type<DistributedGraph>::type 
+      typedef typename boost::graph::parallel::process_group_type<DistributedGraph>::type
         process_group_type;
 
       set_property_map_role(vertex_color, color);
@@ -135,7 +135,7 @@ namespace boost {
       typedef typename property_map<DistributedGraph, vertex_owner_t>
         ::const_type vertex_owner_map;
       typedef boost::graph::distributed::distributed_queue<
-                process_group_type, vertex_owner_map, queue<Vertex>, 
+                process_group_type, vertex_owner_map, queue<Vertex>,
                 detail::darken_and_push<ColorMap> > queue_t;
       queue_t Q(process_group(g),
                 get(vertex_owner, g),

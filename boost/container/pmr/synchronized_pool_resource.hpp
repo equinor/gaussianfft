@@ -12,7 +12,7 @@
 #define BOOST_CONTAINER_PMR_SYNCHRONIZED_POOL_RESOURCE_HPP
 
 #if defined (_MSC_VER)
-#  pragma once 
+#  pragma once
 #endif
 
 #include <boost/container/detail/config_begin.hpp>
@@ -112,7 +112,7 @@ class BOOST_CONTAINER_DECL synchronized_pool_resource
 
    //Non-standard observers
    public:
-   
+
    //! @copydoc ::boost::container::pmr::unsynchronized_pool_resource::pool_count()
    std::size_t pool_count() const;
 

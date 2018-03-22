@@ -220,7 +220,7 @@ struct smaller<Type, true>
         {
             return false;
         }
-        
+
         return ! equals<Type, true>::apply(b, a, equals_default_policy());
     }
 };

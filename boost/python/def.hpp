@@ -25,7 +25,7 @@ namespace detail
     template <bool> struct multiple_functions_passed_to_def;
     template <> struct multiple_functions_passed_to_def<false> { typedef char type; };
   }
-  
+
   //
   // def_from_helper --
   //
@@ -38,7 +38,7 @@ namespace detail
       typedef typename error::multiple_functions_passed_to_def<
           Helper::has_default_implementation
           >::type assertion BOOST_ATTRIBUTE_UNUSED;
-      
+
       detail::scope_setattr_doc(
           name, boost::python::make_function(
               fn
@@ -73,7 +73,7 @@ namespace detail
       , detail::overloads_base const*)
   {
       scope current;
-      
+
       detail::define_with_defaults(
           name, stubs, current, detail::get_signature(sig));
   }
