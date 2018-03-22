@@ -11,6 +11,7 @@ SETUP.PY := $(CODE_DIR)/setup.py
 DOCKERFILE := $(CODE_DIR)/Dockerfile
 
 PYTHON ?= $(shell which python)
+PIP ?= $(PYTHON) -m pip
 PIPENV ?= $(PYTHON) -m pipenv
 PY.TEST ?= $(PYTHON) -m pytest
 
@@ -33,6 +34,8 @@ password: $(PYPI_PASSWORD)
 endef
 export PYPIRC
 
+.PHONY: all tests clean
+
 docker-image:
 	docker build --pull --rm --tag $(IMAGE_NAME) --file $(DOCKERFILE) $(CODE_DIR)
 
@@ -43,16 +46,19 @@ docker-login:
 	docker login $(DOCKER_REGISTRY_SERVER)
 
 install-wheel:
-	$(PIPENV) install -U $(DISTRIBUTION_DIR)/$(shell ls $(DISTRIBUTION_DIR))
+	$(PIPENV) install -U $(DISTRIBUTION_DIR)/$(shell ls $(DISTRIBUTION_DIR)) || $(PIP) install -U $(DISTRIBUTION_DIR)/$(shell ls $(DISTRIBUTION_DIR))
 
 install: install-requirements build-boost-python
 	NRLIB_LINKING=$(NRLIB_LINKING) \
 	CXXFLAGS="-fPIC" \
 	$(PYTHON) $(SETUP.PY) build_ext --inplace build install
 
-install-requirements:
+install-requirements: install-pipenv
 	$(PIPENV) --python=$(PYTHON) --site-packages
 	$(PIPENV) install --dev
+
+install-pipenv:
+	$(PIP) install 'pipenv<11'
 
 tests:
 	$(PY.TEST) $(CODE_DIR)/tests

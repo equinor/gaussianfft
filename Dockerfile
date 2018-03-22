@@ -43,7 +43,4 @@ RUN ln -s /lib64/libgcc_s.so.1 /lib64/libgcc_s.so \
         zlib-devel \
         bzip2-devel \
         python-devel \
- && yum clean all \
- # Install pipenv
- && $SDPSOFT_PYTHON -m pip install pipenv \
- && $ROXAR_PYTHON -m pip install pipenv
+ && yum clean all
