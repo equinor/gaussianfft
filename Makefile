@@ -70,12 +70,16 @@ build: install-requirements build-boost-python
 
 build-boost-python:
 	CODE_DIR=$(CODE_DIR) \
-	  $(CODE_DIR)/bootstrap.sh --prefix=$(shell pwd)/build --with-python=$(PYTHON) --with-icu && \
+	  $(CODE_DIR)/bootstrap.sh \
+	                   --prefix=$(shell pwd)/build \
+	                   --with-python=$(PYTHON) \
+	                   --with-icu && \
 	CPLUS_INCLUDE_PATH=$(shell $(PYTHON) -c "from sysconfig import get_paths; print(get_paths()['include'])") \
 	  $(CODE_DIR)/bjam --with-python \
 	                   --with-filesystem \
 	                   --with-system \
-	                   cxxflags=-fPIC \
+	                   -q \
+	                   cxxflags="-fPIC -D_GLIBCXX_USE_CXX11_ABI=0" \
 	                   cflags=-fPIC \
 	                   python-debugging=off \
 	                   threading=multi \
