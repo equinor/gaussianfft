@@ -321,10 +321,11 @@ boost_module = Extension(
 
 setup(
     name=extension_name,
-    version="1.1",
+    version="1.1b",
     packages=find_packages(),
     ext_modules=[bp_module, boost_module],
     include_package_data=True,
+    lisence='LICENSE.txt',
     distclass=BinaryDistribution,
     package_data={
         'stage/lib': ['*.so', '*.dll', '*.dylib', '*.a'],
