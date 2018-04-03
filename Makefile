@@ -10,10 +10,11 @@ SETUP.PY := $(CODE_DIR)/setup.py
 
 DOCKERFILE := $(CODE_DIR)/Dockerfile
 
+TIMEOUT := timeout -s INT 3m
 PYTHON ?= $(shell which python)
 PIP ?= $(PYTHON) -m pip
 PIPENV ?= $(PYTHON) -m pipenv
-PY.TEST ?= $(PYTHON) -m pytest
+PY.TEST ?= $(TIMEOUT) $(PIPENV) run pytest
 VIRTUAL_PYTHON := $(shell $(PIPENV) run which python)
 
 DISTRIBUTION_DIR ?= $(CODE_DIR)/dist
