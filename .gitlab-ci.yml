@@ -15,6 +15,7 @@ variables:
   WORKON_HOME:  "$CODE_DIR/.venv"
   RMS10_PATH:   "/prog/roxar/rms/versions/10.1.1/linux-amd64-gcc_4_4-release/bin"
   SDP361_PATH:  "/prog/sdpsoft/python3.6.1/bin"
+  SHELL:        "/bin/bash"
 
 stages:
   - check requirements
@@ -23,17 +24,27 @@ stages:
   - deploy
   - clean
 
-test:SDPsoft (3.6.1):
-  stage: testing  # https://github.com/ksator/continuous-integration-with-python
+security check:
+  stage: check requirements
   variables:
-    DISTRIBUTION_DIR: $BASE_DIST/nrlib-python3.6.1
     PYTHON: "$SDP361_PATH/python3"
   script:
-    - 'eval $MAKE install-wheel'
-    - 'eval $PYTHON -m pip install pytest'
-    - 'eval $MAKE tests'
-  dependencies:
-    - build:SDPsoft (3.6.1)
+    - 'eval export PATH=$SDP361_PATH:$PATH'
+    - 'eval $MAKE check-requirements'
+
+# TODO: Fix...
+#test:SDPsoft (3.6.1):
+#  stage: testing  # https://github.com/ksator/continuous-integration-with-python
+#  variables:
+#    DISTRIBUTION_DIR: $BASE_DIST/nrlib-python3.6.1
+#    PYTHON: "$SDP361_PATH/python3"
+#  script:
+#    - 'eval export PATH=$SDP361_PATH:$PATH'
+#    - 'eval $MAKE install-requirements'
+#    - 'eval $MAKE install-wheel'
+#    - 'eval $MAKE tests'
+#  dependencies:
+#    - build:SDPsoft (3.6.1)
 
 test:RMS 10.1.1 (3.4.2):
   stage: testing  # https://github.com/ksator/continuous-integration-with-python
@@ -43,7 +54,7 @@ test:RMS 10.1.1 (3.4.2):
     PYTHON: "$RMS10_PATH/python"
   script:
     - 'eval $ROXENV $MAKE install-wheel'
-    - 'eval $ROXENV $PYTHON -m pip install pytest'
+    - 'eval $ROXENV $MAKE install-requirements'
     - 'eval $ROXENV $MAKE tests'
   dependencies:
     - build:RMS 10.1.1 (3.4.2)
@@ -56,7 +67,7 @@ build:RMS 10.1.1 (3.4.2):
     PYTHON: "$RMS10_PATH/python"
   script:
     - 'eval export PATH="$RMS10_PATH:$PATH"'
-    - 'eval $ROXENV $MAKE build'
+    - 'eval $ROXENV $MAKE build || $ROXENV $MAKE build'
   artifacts:
     expire_in: 1 week
     paths:
@@ -69,7 +80,7 @@ build:SDPsoft (3.6.1):
     PYTHON: "$SDP361_PATH/python3"
   script:
     - 'eval export PATH="$SDP361_PATH:$PATH"'
-    - 'eval $MAKE build'
+    - 'eval $MAKE build || $MAKE build'
   artifacts:
     expire_in: 1 week
     paths:
