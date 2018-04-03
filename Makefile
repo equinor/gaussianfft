@@ -14,6 +14,7 @@ PYTHON ?= $(shell which python)
 PIP ?= $(PYTHON) -m pip
 PIPENV ?= $(PYTHON) -m pipenv
 PY.TEST ?= $(PYTHON) -m pytest
+VIRTUAL_PYTHON := $(shell $(PIPENV) run which python)
 
 DISTRIBUTION_DIR ?= $(CODE_DIR)/dist
 
@@ -78,9 +79,9 @@ build-boost-python:
 	CODE_DIR=$(CODE_DIR) \
 	  $(CODE_DIR)/bootstrap.sh \
 	                   --prefix=$(shell pwd)/build \
-	                   --with-python=$(PYTHON) \
+	                   --with-python=$(VIRTUAL_PYTHON) \
 	                   --with-icu && \
-	CPLUS_INCLUDE_PATH=$(shell $(PYTHON) -c "from sysconfig import get_paths; print(get_paths()['include'])") \
+	CPLUS_INCLUDE_PATH=$(shell $(VIRTUAL_PYTHON) -c "from sysconfig import get_paths; print(get_paths()['include'])") \
 	  $(CODE_DIR)/bjam --with-python \
 	                   --with-filesystem \
 	                   --with-system \
