@@ -14,8 +14,9 @@ TIMEOUT := timeout -s INT 3m
 PYTHON ?= $(shell which python)
 PIP ?= $(PYTHON) -m pip
 PIPENV ?= $(PYTHON) -m pipenv
-PY.TEST ?= $(TIMEOUT) $(PIPENV) run pytest
-VIRTUAL_PYTHON := $(shell $(PIPENV) run which python)
+RUN ?= $(TIMEOUT) $(PIPENV) run
+PY.TEST ?= $(RUN) pytest
+VIRTUAL_PYTHON := $(shell $(RUN) which python)
 
 DISTRIBUTION_DIR ?= $(CODE_DIR)/dist
 
