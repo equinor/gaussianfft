@@ -1,4 +1,6 @@
 import glob
+from warnings import warn
+
 import os
 import platform
 
@@ -131,7 +133,8 @@ if platform.system() in ['Linux', 'Darwin']:
         )
     linking = os.getenv('NRLIB_LINKING')
     if linking not in ['static', 'shared']:
-        raise RuntimeError("The environment variable NRLIB_LINKING must be set to either 'static' or 'shared'.")
+        linking = 'static'
+        warn("The environment variable NRLIB_LINKING is unset. It must be 'static' or 'shared'. Setting it to 'static'.")
     link_libraries = []
     compile_args = [
         # Necessary for some C++11 compilers:
