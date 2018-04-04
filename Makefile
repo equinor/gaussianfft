@@ -10,10 +10,12 @@ SETUP.PY := $(CODE_DIR)/setup.py
 
 DOCKERFILE := $(CODE_DIR)/Dockerfile
 
+TIMEOUT := timeout -s INT 3m
 PYTHON ?= $(shell which python)
 PIP ?= $(PYTHON) -m pip
 PIPENV ?= $(PYTHON) -m pipenv
-PY.TEST ?= $(PYTHON) -m pytest
+PY.TEST ?= $(TIMEOUT) $(PIPENV) run pytest
+VIRTUAL_PYTHON := $(shell $(PIPENV) run which python)
 
 DISTRIBUTION_DIR ?= $(CODE_DIR)/dist
 
@@ -45,17 +47,22 @@ docker-push-image: docker-image
 docker-login:
 	docker login $(DOCKER_REGISTRY_SERVER)
 
+check-requirements: install-pipenv
+	$(PIPENV) check
+
 install-wheel:
-	$(PIPENV) install -U $(DISTRIBUTION_DIR)/$(shell ls $(DISTRIBUTION_DIR)) || $(PIP) install -U $(DISTRIBUTION_DIR)/$(shell ls $(DISTRIBUTION_DIR))
+	$(PIPENV) install $(DISTRIBUTION_DIR)/$(shell ls $(DISTRIBUTION_DIR)) || $(PIP) install -U $(DISTRIBUTION_DIR)/$(shell ls $(DISTRIBUTION_DIR))
 
 install: install-requirements build-boost-python
 	NRLIB_LINKING=$(NRLIB_LINKING) \
 	CXXFLAGS="-fPIC" \
 	$(PYTHON) $(SETUP.PY) build_ext --inplace build install
 
-install-requirements: install-pipenv
-	$(PIPENV) --python=$(PYTHON) --site-packages
+install-requirements: install-pipenv create-virtual-env
 	$(PIPENV) install --dev
+
+create-virtual-env:
+	$(PIPENV) --python=$(PYTHON) --site-packages
 
 install-pipenv:
 	$(PIP) install 'pipenv<11'
@@ -78,14 +85,14 @@ build-boost-python:
 	CODE_DIR=$(CODE_DIR) \
 	  $(CODE_DIR)/bootstrap.sh \
 	                   --prefix=$(shell pwd)/build \
-	                   --with-python=$(PYTHON) \
+	                   --with-python=$(VIRTUAL_PYTHON) \
 	                   --with-icu && \
-	CPLUS_INCLUDE_PATH=$(shell $(PYTHON) -c "from sysconfig import get_paths; print(get_paths()['include'])") \
+	CPLUS_INCLUDE_PATH=$(shell $(VIRTUAL_PYTHON) -c "from sysconfig import get_paths; print(get_paths()['include'])") \
 	  $(CODE_DIR)/bjam --with-python \
 	                   --with-filesystem \
 	                   --with-system \
 	                   -q \
-	                   cxxflags="-fPIC -D_GLIBCXX_USE_CXX11_ABI=0" \
+	                   cxxflags=-fPIC \
 	                   cflags=-fPIC \
 	                   python-debugging=off \
 	                   threading=multi \
