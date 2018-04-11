@@ -324,11 +324,11 @@ boost_module = Extension(
 
 setup(
     name=extension_name,
-    version="1.1-r4",
+    version="1.1-r5",
     packages=find_packages(),
     ext_modules=[bp_module, boost_module],
     include_package_data=True,
-    lisence='LICENSE.txt',
+    license='LICENSE.txt',
     distclass=BinaryDistribution,
     package_data={
         'stage/lib': ['*.so', '*.dll', '*.dylib', '*.a'],
@@ -340,11 +340,11 @@ setup(
     zip_safe=False,
     data_files=[
         (
-            'share/typehints/python{}.{}/nrlib'.format(*sys.version_info[:2]),
+            'nrlib/__init__.pyi',
             ['src/stub/nrlib/__init__.pyi'],
         ),
         (
-            'share/typehints/python{}.{}/nrlib/advanced'.format(*sys.version_info[:2]),
+            'nrlib/advanced/__init__pyi',
             ['src/stub/nrlib/advanced/__init__.pyi']
         )
     ],
