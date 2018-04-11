@@ -10,13 +10,12 @@ SETUP.PY := $(CODE_DIR)/setup.py
 
 DOCKERFILE := $(CODE_DIR)/Dockerfile
 
-TIMEOUT := timeout -s INT 3m
 PYTHON ?= $(shell which python)
 PIP ?= $(PYTHON) -m pip
 PIPENV ?= $(PYTHON) -m pipenv
-RUN ?= $(TIMEOUT) $(PIPENV) run
+RUN ?= IFS="|" $(PIPENV) run
 PY.TEST ?= $(RUN) pytest
-VIRTUAL_PYTHON := $(shell $(RUN) which python)
+VIRTUAL_PYTHON ?= $(shell $(PIPENV) --venv)/bin/python
 
 DISTRIBUTION_DIR ?= $(CODE_DIR)/dist
 
@@ -63,10 +62,10 @@ install-requirements: install-pipenv create-virtual-env
 	$(PIPENV) install --dev
 
 create-virtual-env:
-	$(PIPENV) --python=$(PYTHON) --site-packages
+	$(PIPENV) --venv || $(PIPENV) --python=$(PYTHON) --site-packages
 
 install-pipenv:
-	$(PIP) install 'pipenv<11'
+	$(PIP) install 'pipenv<11' || $(PIP) install --user 'pipenv<11'
 
 tests:
 	$(PY.TEST) $(CODE_DIR)/tests
@@ -82,7 +81,7 @@ build: install-requirements build-boost-python
 	CXXFLAGS="-fPIC" \
 	$(PYTHON) $(SETUP.PY) build_ext --inplace build bdist_wheel --dist-dir $(DISTRIBUTION_DIR)
 
-build-boost-python:
+build-boost-python: install-numpy
 	CODE_DIR=$(CODE_DIR) \
 	  $(CODE_DIR)/bootstrap.sh \
 	                   --prefix=$(shell pwd)/build \
@@ -101,6 +100,9 @@ build-boost-python:
 	                   link=$(NRLIB_LINKING) \
 	                   runtime-link=$(NRLIB_LINKING) \
 	                   stage
+
+install-numpy:
+	$(VIRTUAL_PYTHON) -c 'import numpy' || $(PIPENV) install numpy
 
 clean:
 	cd $(CODE_DIR) && \
