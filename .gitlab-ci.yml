@@ -1,5 +1,5 @@
 image:
-  name: "git.statoil.no:4567/sdp/nrlib/nrlib:1.2.0"
+  name: "git.statoil.no:4567/sdp/nrlib/nrlib:1.2.1"
 
 variables:
   GIT_STRATEGY:   "fetch"
@@ -12,7 +12,7 @@ variables:
   MAKE:           "make"
   BASE_DIST:      "dist"
   WORKON_HOME:    "${CODE_DIR}/.venv"
-  RMS10_PATH:     "/prog/roxar/rms/versions/10.1.1/linux-amd64-gcc_4_4-release/bin"
+  RMS10_PATH:     "/prog/roxar/rms/versions/10.1.3/linux-amd64-gcc_4_4-release/bin"
   SDP361_PATH:    "/prog/sdpsoft/python3.6.1/bin"
   SHELL:          "/bin/bash"
   VIRTUAL_PYTHON: "${WORKON_HOME}/bin/python"
@@ -46,10 +46,10 @@ test:SDPsoft (3.6.1):
   dependencies:
     - build:SDPsoft (3.6.1)
 
-test:RMS 10.1.1 (3.4.2):
+test:RMS 10.1.3 (3.4.2):
   stage: testing  # https://github.com/ksator/continuous-integration-with-python
   variables:
-    DISTRIBUTION_DIR: $BASE_DIST/nrlib-RMS-10.1.1
+    DISTRIBUTION_DIR: $BASE_DIST/nrlib-RMS-10.1.3
     ROXENV: "$RMS10_PATH/roxenv"
     PYTHON: "$RMS10_PATH/python"
   script:
@@ -57,12 +57,12 @@ test:RMS 10.1.1 (3.4.2):
     - 'eval $ROXENV $MAKE install-requirements'
     - 'eval $ROXENV $MAKE tests'
   dependencies:
-    - build:RMS 10.1.1 (3.4.2)
+    - build:RMS 10.1.3 (3.4.2)
 
-build:RMS 10.1.1 (3.4.2):
+build:RMS 10.1.3 (3.4.2):
   stage: build
   variables:
-    DISTRIBUTION_DIR: $BASE_DIST/nrlib-RMS-10.1.1
+    DISTRIBUTION_DIR: $BASE_DIST/nrlib-RMS-10.1.3
     ROXENV: "$RMS10_PATH/roxenv"
     PYTHON: "$RMS10_PATH/python"
   script:
@@ -95,7 +95,7 @@ deploy release candidate:
   only:
    - master
   dependencies:
-    - build:RMS 10.1.1 (3.4.2)
+    - build:RMS 10.1.3 (3.4.2)
     - build:SDPsoft (3.6.1)
   artifacts:
     paths:

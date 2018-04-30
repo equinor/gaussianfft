@@ -108,7 +108,7 @@ else:
 linker_args = []
 
 
-def get_library_extension(linking: str) -> str:
+def get_library_extension(linking):
     if linking == 'static':
         return 'a'
     elif linking == 'shared':
@@ -324,7 +324,7 @@ boost_module = Extension(
 
 setup(
     name=extension_name,
-    version="1.1-r5",
+    version="1.1-r6",
     packages=find_packages(),
     ext_modules=[bp_module, boost_module],
     include_package_data=True,

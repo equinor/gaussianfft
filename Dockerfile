@@ -1,5 +1,5 @@
 FROM git.statoil.no:4567/sdp/sdpsoft/centos:6
-LABEL version="1.2.0" \
+LABEL version="1.2.1" \
       maintainer="snis@statoil.com" \
       description="This is the Docker image for building, and testing nrlib." \
       "com.statoil.vendor"="Statoil ASA"
@@ -10,7 +10,7 @@ ENV GCC_PREFIX=$INSTALL_DIR/gcc-$GCC_VERSION
 
 ENV MKL_ROOT="/prog/Intel/studioxe2016/mkl"
 
-ENV ROXAR_VERSION=10.1.1
+ENV ROXAR_VERSION=10.1.3
 ENV ROXAR_RMS_ROOT="/prog/roxar/rms/versions/$ROXAR_VERSION/linux-amd64-gcc_4_4-release"
 ENV ROXAR_PYTHON="$ROXAR_RMS_ROOT/bin/python"
 ENV ROXENV="$ROXAR_RMS_ROOT/bin/roxenv"

@@ -14,7 +14,7 @@ PYTHON ?= $(shell which python)
 PIP ?= $(PYTHON) -m pip
 PIPENV ?= $(PYTHON) -m pipenv
 RUN ?= IFS="|" $(PIPENV) run
-PY.TEST ?= $(RUN) pytest
+PY.TEST ?= $(RUN) python -m pytest
 VIRTUAL_PYTHON ?= $(shell $(PIPENV) --venv)/bin/python
 
 DISTRIBUTION_DIR ?= $(CODE_DIR)/dist
@@ -65,7 +65,7 @@ create-virtual-env:
 	$(PIPENV) --venv || $(PIPENV) --python=$(PYTHON) --site-packages
 
 install-pipenv:
-	$(PIP) install 'pipenv<11' || $(PIP) install --user 'pipenv<11'
+	$(PIP) install pipenv || $(PIP) install --user pipenv
 
 tests:
 	$(PY.TEST) $(CODE_DIR)/tests
