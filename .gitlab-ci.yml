@@ -1,5 +1,5 @@
 image:
-  name: "git.statoil.no:4567/sdp/nrlib/nrlib:1.2.1"
+  name: "git.statoil.no:4567/sdp/nrlib/nrlib:1.2.2"
 
 variables:
   GIT_STRATEGY:   "fetch"

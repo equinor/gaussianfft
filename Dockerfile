@@ -1,5 +1,5 @@
 FROM git.statoil.no:4567/sdp/sdpsoft/centos:6
-LABEL version="1.2.1" \
+LABEL version="1.2.2" \
       maintainer="snis@statoil.com" \
       description="This is the Docker image for building, and testing nrlib." \
       "com.statoil.vendor"="Statoil ASA"
