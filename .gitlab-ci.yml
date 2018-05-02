@@ -68,7 +68,7 @@ build:RMS 10.1.3 (3.4.2):
   script:
     - 'eval export PATH="$RMS10_PATH:$PATH"'
     - 'eval $ROXENV $MAKE install-pipenv'
-    - 'eval $ROXENV $MAKE build'
+    - 'eval $ROXENV $MAKE build-wheel'
   artifacts:
     expire_in: 1 week
     paths:
@@ -82,7 +82,7 @@ build:SDPsoft (3.6.1):
   script:
     - 'eval export PATH="$SDP361_PATH:$PATH"'
     - 'eval $MAKE install-pipenv'
-    - 'eval $MAKE build'
+    - 'eval $MAKE build-wheel'
   artifacts:
     expire_in: 1 week
     paths:

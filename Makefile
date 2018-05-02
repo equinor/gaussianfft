@@ -65,7 +65,7 @@ create-virtual-env:
 	$(PIPENV) --venv || $(PIPENV) --python=$(PYTHON) --site-packages
 
 install-pipenv:
-	(PIPENV) 2>&1 >/dev/null && echo "Pipenv already installed" || { $(PIP) install pipenv || $(PIP) install --user pipenv ; }
+	$(PIPENV) 2>&1 >/dev/null && echo "Pipenv already installed" || { $(PIP) install pipenv || $(PIP) install --user pipenv ; }
 
 tests:
 	$(PY.TEST) $(CODE_DIR)/tests
@@ -76,10 +76,13 @@ upload: pypirc
 pypirc:
 	echo "$$PYPIRC" > $(CODE_DIR)/.pypirc
 
+build-wheel: build
+	$(PYTHON) $(SETUP.PY) bdist_wheel --dist-dir $(DISTRIBUTION_DIR)
+
 build: install-requirements build-boost-python
 	NRLIB_LINKING=$(NRLIB_LINKING) \
 	CXXFLAGS="-fPIC" \
-	$(PYTHON) $(SETUP.PY) build_ext --inplace build bdist_wheel --dist-dir $(DISTRIBUTION_DIR)
+	$(PYTHON) $(SETUP.PY) build_ext --inplace build
 
 build-boost-python: install-numpy
 	CODE_DIR=$(CODE_DIR) \
