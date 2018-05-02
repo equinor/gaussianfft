@@ -1,14 +1,10 @@
 import glob
-from warnings import warn
-
 import os
 import platform
-
-import sys
-from setuptools import Distribution, Extension, find_packages, setup
-
 from distutils.command.register import register as register_orig
 from distutils.command.upload import upload as upload_orig
+from setuptools import Distribution, Extension, find_packages, setup
+from warnings import warn
 
 """ Installation Instructions """
 # Linux:
