@@ -65,7 +65,7 @@ create-virtual-env:
 	$(PIPENV) --venv || $(PIPENV) --python=$(PYTHON) --site-packages
 
 install-pipenv:
-	$(PIP) install pipenv || $(PIP) install --user pipenv
+	(PIPENV) 2>&1 >/dev/null && echo "Pipenv already installed" || { $(PIP) install pipenv || $(PIP) install --user pipenv ; }
 
 tests:
 	$(PY.TEST) $(CODE_DIR)/tests
