@@ -15,7 +15,7 @@ numpy = ">=1.10.4"
 setuptools = "*"
 wheel = "*"
 pytest = "*"
-scipy = "*"  # Used in tests
+scipy = ">=0.17.0"  # Used in tests
 
 
 [requires]
