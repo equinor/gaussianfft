@@ -36,7 +36,7 @@ password: $(PYPI_PASSWORD)
 endef
 export PYPIRC
 
-.PHONY: all tests clean
+.PHONY: all tests clean build
 
 docker-image:
 	docker build --pull --rm --tag $(IMAGE_NAME) --file $(DOCKERFILE) $(CODE_DIR)
@@ -105,7 +105,7 @@ build-boost-python: install-numpy
 	                   stage
 
 install-numpy:
-	$(VIRTUAL_PYTHON) -c 'import numpy' || $(PIPENV) install numpy
+	$(RUN) python -c 'import numpy' || $(PIPENV) install numpy
 
 clean:
 	cd $(CODE_DIR) && \
