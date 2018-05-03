@@ -1,14 +1,10 @@
 import glob
-from warnings import warn
-
 import os
 import platform
-
-import sys
-from setuptools import Distribution, Extension, find_packages, setup
-
 from distutils.command.register import register as register_orig
 from distutils.command.upload import upload as upload_orig
+from setuptools import Distribution, Extension, find_packages, setup
+from warnings import warn
 
 """ Installation Instructions """
 # Linux:
@@ -108,7 +104,7 @@ else:
 linker_args = []
 
 
-def get_library_extension(linking: str) -> str:
+def get_library_extension(linking):
     if linking == 'static':
         return 'a'
     elif linking == 'shared':
@@ -324,11 +320,11 @@ boost_module = Extension(
 
 setup(
     name=extension_name,
-    version="1.1-r4",
+    version="1.1-r6",
     packages=find_packages(),
     ext_modules=[bp_module, boost_module],
     include_package_data=True,
-    lisence='LICENSE.txt',
+    license='LICENSE.txt',
     distclass=BinaryDistribution,
     package_data={
         'stage/lib': ['*.so', '*.dll', '*.dylib', '*.a'],
@@ -340,11 +336,11 @@ setup(
     zip_safe=False,
     data_files=[
         (
-            'share/typehints/python{}.{}/nrlib'.format(*sys.version_info[:2]),
+            'nrlib/__init__.pyi',
             ['src/stub/nrlib/__init__.pyi'],
         ),
         (
-            'share/typehints/python{}.{}/nrlib/advanced'.format(*sys.version_info[:2]),
+            'nrlib/advanced/__init__pyi',
             ['src/stub/nrlib/advanced/__init__.pyi']
         )
     ],
