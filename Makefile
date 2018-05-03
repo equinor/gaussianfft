@@ -4,17 +4,46 @@ DOCKER_REGISTRY_SERVER = git.statoil.no:4567
 DOCKER_REGISTRY = $(DOCKER_REGISTRY_SERVER)/sdp/nrlib
 IMAGE_NAME = $(DOCKER_REGISTRY)/$(NAME):$(VERSION)
 
+EMPTY :=
+
+# Use packages provided by a distribution, e.g. RMS
+USE_SITE_PACKAGES ?= yes
+USE_USER_INSTALL ?= no
+USE_SKIP_LOCKING ?= no
+
+SITE_PACAGES_OPTION := $(EMPTY)
+KEEP_OUTDATED := $(EMPTY)
+USER_INSTALL := $(EMPTY)
+SKIP_LOCKING := $(EMPTY)
+
+ifeq ($(USE_SITE_PACKAGES),yes)
+SITE_PACAGES_OPTION := --site-packages
+KEEP_OUTDATED := --keep-outdated
+USER_INSTALL := --user
+else
+# Override user installation
+ifeq ($(USE_USER_INSTALL),yes)
+USER_INSTALL := --user
+endif
+endif
+
+ifeq ($(USE_SKIP_LOCKING),yes)
+SKIP_LOCKING := --skip-lock
+endif
+
 
 CODE_DIR ?= $(shell pwd)
 SETUP.PY := $(CODE_DIR)/setup.py
 
 DOCKERFILE := $(CODE_DIR)/Dockerfile
 
+PIPENV_TO_BE_INSTALLED := 'pipenv'
+
 PYTHON ?= $(shell which python)
 PIP ?= $(PYTHON) -m pip
 PIPENV ?= $(PYTHON) -m pipenv
-RUN ?= IFS="|" $(PIPENV) run
-PY.TEST ?= $(RUN) pytest
+RUN ?= $(PIPENV) run
+PY.TEST ?= $(RUN) python -m pytest
 VIRTUAL_PYTHON ?= $(shell $(PIPENV) --venv)/bin/python
 
 DISTRIBUTION_DIR ?= $(CODE_DIR)/dist
@@ -36,7 +65,7 @@ password: $(PYPI_PASSWORD)
 endef
 export PYPIRC
 
-.PHONY: all tests clean
+.PHONY: all tests clean build
 
 docker-image:
 	docker build --pull --rm --tag $(IMAGE_NAME) --file $(DOCKERFILE) $(CODE_DIR)
@@ -51,7 +80,7 @@ check-requirements: install-pipenv
 	$(PIPENV) check
 
 install-wheel:
-	$(PIPENV) install $(DISTRIBUTION_DIR)/$(shell ls $(DISTRIBUTION_DIR)) || $(PIP) install -U $(DISTRIBUTION_DIR)/$(shell ls $(DISTRIBUTION_DIR))
+	$(PIPENV) install $(SKIP_LOCKING) $(DISTRIBUTION_DIR)/$(shell ls $(DISTRIBUTION_DIR)) || $(PIP) install -U $(DISTRIBUTION_DIR)/$(shell ls $(DISTRIBUTION_DIR))
 
 install: install-requirements build-boost-python
 	NRLIB_LINKING=$(NRLIB_LINKING) \
@@ -59,13 +88,13 @@ install: install-requirements build-boost-python
 	$(PYTHON) $(SETUP.PY) build_ext --inplace build install
 
 install-requirements: install-pipenv create-virtual-env
-	$(PIPENV) install --dev
+	$(PIPENV) install --dev $(KEEP_OUTDATED) $(SKIP_LOCKING)
 
 create-virtual-env:
-	$(PIPENV) --venv || $(PIPENV) --python=$(PYTHON) --site-packages
+	$(PIPENV) --venv || $(PIPENV) --python=$(PYTHON) $(SITE_PACAGES_OPTION)
 
 install-pipenv:
-	$(PIP) install 'pipenv<11' || $(PIP) install --user 'pipenv<11'
+	$(PIPENV) 2>&1 >/dev/null && echo "Pipenv already installed" || $(PIP) install $(USER_INSTALL) $(PIPENV_TO_BE_INSTALLED)
 
 tests:
 	$(PY.TEST) $(CODE_DIR)/tests
@@ -76,10 +105,13 @@ upload: pypirc
 pypirc:
 	echo "$$PYPIRC" > $(CODE_DIR)/.pypirc
 
+build-wheel: build
+	$(PYTHON) $(SETUP.PY) bdist_wheel --dist-dir $(DISTRIBUTION_DIR)
+
 build: install-requirements build-boost-python
 	NRLIB_LINKING=$(NRLIB_LINKING) \
 	CXXFLAGS="-fPIC" \
-	$(PYTHON) $(SETUP.PY) build_ext --inplace build bdist_wheel --dist-dir $(DISTRIBUTION_DIR)
+	$(PYTHON) $(SETUP.PY) build_ext --inplace build
 
 build-boost-python: install-numpy
 	CODE_DIR=$(CODE_DIR) \
@@ -102,7 +134,7 @@ build-boost-python: install-numpy
 	                   stage
 
 install-numpy:
-	$(VIRTUAL_PYTHON) -c 'import numpy' || $(PIPENV) install numpy
+	$(RUN) python -c 'import numpy' || $(PIPENV) install numpy $(SKIP_LOCKING)
 
 clean:
 	cd $(CODE_DIR) && \

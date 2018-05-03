@@ -1,14 +1,10 @@
 import glob
-from warnings import warn
-
 import os
 import platform
-
-import sys
-from setuptools import Distribution, Extension, find_packages, setup
-
 from distutils.command.register import register as register_orig
 from distutils.command.upload import upload as upload_orig
+from setuptools import Distribution, Extension, find_packages, setup
+from warnings import warn
 
 """ Installation Instructions """
 # Linux:
@@ -108,7 +104,7 @@ else:
 linker_args = []
 
 
-def get_library_extension(linking: str) -> str:
+def get_library_extension(linking):
     if linking == 'static':
         return 'a'
     elif linking == 'shared':
@@ -324,7 +320,7 @@ boost_module = Extension(
 
 setup(
     name=extension_name,
-    version="1.1-r5",
+    version="1.1-r6",
     packages=find_packages(),
     ext_modules=[bp_module, boost_module],
     include_package_data=True,
