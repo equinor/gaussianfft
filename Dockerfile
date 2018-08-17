@@ -1,6 +1,6 @@
-FROM git.statoil.no:4567/sdp/sdpsoft/centos:6
-LABEL version="1.2.4" \
-      maintainer="snis@statoil.com" \
+FROM git.equinor.com:4567/sdp/sdpsoft/centos:6
+LABEL version="1.2.5" \
+      maintainer="snis@equinor.com" \
       description="This is the Docker image for building, and testing nrlib." \
       "com.statoil.vendor"="Statoil ASA"
 

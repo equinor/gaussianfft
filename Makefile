@@ -1,6 +1,6 @@
 NAME = nrlib
 VERSION = $(shell ./bin/find-version-of-docker-image.sh)
-DOCKER_REGISTRY_SERVER = git.statoil.no:4567
+DOCKER_REGISTRY_SERVER = git.equinor.com:4567
 DOCKER_REGISTRY = $(DOCKER_REGISTRY_SERVER)/sdp/nrlib
 IMAGE_NAME = $(DOCKER_REGISTRY)/$(NAME):$(VERSION)
 
@@ -50,7 +50,7 @@ DISTRIBUTION_DIR ?= $(CODE_DIR)/dist
 
 NRLIB_LINKING ?= static
 
-PYPI_SERVER ?= http://pypi.aps.statoil.no:8080
+PYPI_SERVER ?= http://pypi.aps.equinor.com:8080
 PYPI_NAME := statoil
 
 define PYPIRC
