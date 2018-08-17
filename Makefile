@@ -96,7 +96,7 @@ create-virtual-env:
 install-pipenv:
 	$(PIPENV) 2>&1 >/dev/null && echo "Pipenv already installed" || $(PIP) install $(USER_INSTALL) $(PIPENV_TO_BE_INSTALLED)
 
-tests:
+tests: install-requirements
 	$(PY.TEST) $(CODE_DIR)/tests
 
 upload: pypirc
@@ -108,12 +108,12 @@ pypirc:
 build-wheel: build
 	$(PYTHON) $(SETUP.PY) bdist_wheel --dist-dir $(DISTRIBUTION_DIR)
 
-build: install-requirements build-boost-python
+build: build-boost-python
 	NRLIB_LINKING=$(NRLIB_LINKING) \
 	CXXFLAGS="-fPIC" \
 	$(PYTHON) $(SETUP.PY) build_ext --inplace build
 
-build-boost-python: install-numpy
+build-boost-python:
 	CODE_DIR=$(CODE_DIR) \
 	  $(CODE_DIR)/bootstrap.sh \
 	                   --prefix=$(shell pwd)/build \
@@ -132,9 +132,6 @@ build-boost-python: install-numpy
 	                   link=$(NRLIB_LINKING) \
 	                   runtime-link=$(NRLIB_LINKING) \
 	                   stage
-
-install-numpy:
-	$(RUN) python -c 'import numpy' || $(PIPENV) install numpy $(SKIP_LOCKING)
 
 clean:
 	cd $(CODE_DIR) && \
