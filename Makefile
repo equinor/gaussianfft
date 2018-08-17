@@ -87,8 +87,10 @@ install: install-requirements build-boost-python
 	CXXFLAGS="-fPIC" \
 	$(PYTHON) $(SETUP.PY) build_ext --inplace build install
 
-install-requirements: install-pipenv create-virtual-env
+install-requirements: setup-virtual-environment
 	$(PIPENV) install --dev $(KEEP_OUTDATED) $(SKIP_LOCKING)
+
+setup-virtual-environment: install-pipenv create-virtual-env
 
 create-virtual-env:
 	$(PIPENV) --venv || $(PIPENV) --python=$(PYTHON) $(SITE_PACAGES_OPTION)
@@ -113,7 +115,7 @@ build: build-boost-python
 	CXXFLAGS="-fPIC" \
 	$(PYTHON) $(SETUP.PY) build_ext --inplace build
 
-build-boost-python:
+build-boost-python: setup-virtual-environment
 	CODE_DIR=$(CODE_DIR) \
 	  $(CODE_DIR)/bootstrap.sh \
 	                   --prefix=$(shell pwd)/build \
