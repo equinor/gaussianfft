@@ -45,6 +45,7 @@ PIPENV ?= $(PYTHON) -m pipenv
 RUN ?= $(PIPENV) run
 PY.TEST ?= $(RUN) python -m pytest
 VIRTUAL_PYTHON ?= $(shell $(PIPENV) --venv)/bin/python
+MINIMUM_NUMPY_VERSION := 1.10.4
 
 DISTRIBUTION_DIR ?= $(CODE_DIR)/dist
 
@@ -115,7 +116,7 @@ build: build-boost-python
 	CXXFLAGS="-fPIC" \
 	$(PYTHON) $(SETUP.PY) build_ext --inplace build
 
-build-boost-python: setup-virtual-environment
+build-boost-python: setup-virtual-environment install-numpy
 	CODE_DIR=$(CODE_DIR) \
 	  $(CODE_DIR)/bootstrap.sh \
 	                   --prefix=$(shell pwd)/build \
@@ -134,6 +135,9 @@ build-boost-python: setup-virtual-environment
 	                   link=$(NRLIB_LINKING) \
 	                   runtime-link=$(NRLIB_LINKING) \
 	                   stage
+
+install-numpy:
+	$(RUN) python -c 'import numpy' || $(PIPENV) install 'numpy==$(MINIMUM_NUMPY_VERSION)' $(SKIP_LOCKING)
 
 clean:
 	cd $(CODE_DIR) && \
