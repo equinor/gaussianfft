@@ -37,10 +37,10 @@ SETUP.PY := $(CODE_DIR)/setup.py
 
 DOCKERFILE := $(CODE_DIR)/Dockerfile
 
-PIPENV_TO_BE_INSTALLED := 'pipenv'
+PIPENV_TO_BE_INSTALLED := pipenv
 
 PYTHON ?= $(shell which python)
-PIP ?= $(PYTHON) -m pip
+PIP ?= $(PYTHON) -m pip --proxy "$(HTTPS_PROXY)"
 PIPENV ?= $(PYTHON) -m pipenv
 RUN ?= $(PIPENV) run
 PY.TEST ?= $(RUN) python -m pytest
