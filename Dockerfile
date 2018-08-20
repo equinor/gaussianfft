@@ -1,8 +1,8 @@
 FROM git.equinor.com:4567/sdp/sdpsoft/centos:6
-LABEL version="1.2.5" \
+LABEL version="1.2.7" \
       maintainer="snis@equinor.com" \
       description="This is the Docker image for building, and testing nrlib." \
-      "com.statoil.vendor"="Statoil ASA"
+      "com.equinor.vendor"="Equinor ASA"
 
 # Versions
 ENV GCC_VERSION=4.9.4 \
