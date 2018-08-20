@@ -76,7 +76,7 @@ docker-push-image: docker-image
 docker-login:
 	docker login $(DOCKER_REGISTRY_SERVER)
 
-check-requirements: install-pipenv
+check-requirements: install-requirements
 	$(PIPENV) check
 
 install-wheel:
