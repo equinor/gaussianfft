@@ -73,8 +73,10 @@ build:RMS 10.1.3 (3.4.2):
     PYTHON: "$RMS10_PATH/python"
     USE_SKIP_LOCKING: "yes"
   script:
+    - 'eval export LD_LIBRARY_PATH="/prog/roxar/rms/versions/10.1.3/linux-amd64-gcc_4_4-release/lib:$LD_LIBRARY_PATH"'
+    - 'eval export LIBRARY_PATH="/prog/roxar/rms/versions/10.1.3/linux-amd64-gcc_4_4-release/lib:$LIBRARY_PATH"'
     - 'eval export PATH="$RMS10_PATH:$PATH"'
-    - 'eval $ROXENV $MAKE build-wheel'
+    - 'eval $MAKE build-wheel'
   artifacts:
     expire_in: 1 week
     paths:
