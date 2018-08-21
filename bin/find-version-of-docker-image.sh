@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # A Utility that extracts the version from a Dockerfile's label
-# Written by Sindre Nistad, snis@statoil.com
+# Written by Sindre Nistad, snis@equinor.com
 # Usage: ./find-version-of-docker-image.sh [folder in which the Docker file is]
 declare version
 declare -a arr

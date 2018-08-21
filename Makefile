@@ -1,6 +1,6 @@
 NAME = nrlib
 VERSION = $(shell ./bin/find-version-of-docker-image.sh)
-DOCKER_REGISTRY_SERVER = git.statoil.no:4567
+DOCKER_REGISTRY_SERVER = git.equinor.com:4567
 DOCKER_REGISTRY = $(DOCKER_REGISTRY_SERVER)/sdp/nrlib
 IMAGE_NAME = $(DOCKER_REGISTRY)/$(NAME):$(VERSION)
 
@@ -37,20 +37,21 @@ SETUP.PY := $(CODE_DIR)/setup.py
 
 DOCKERFILE := $(CODE_DIR)/Dockerfile
 
-PIPENV_TO_BE_INSTALLED := 'pipenv'
+PIPENV_TO_BE_INSTALLED := pipenv
 
 PYTHON ?= $(shell which python)
-PIP ?= $(PYTHON) -m pip
+PIP ?= $(PYTHON) -m pip --proxy "$(HTTPS_PROXY)"
 PIPENV ?= $(PYTHON) -m pipenv
 RUN ?= $(PIPENV) run
 PY.TEST ?= $(RUN) python -m pytest
 VIRTUAL_PYTHON ?= $(shell $(PIPENV) --venv)/bin/python
+MINIMUM_NUMPY_VERSION := 1.10.4
 
 DISTRIBUTION_DIR ?= $(CODE_DIR)/dist
 
 NRLIB_LINKING ?= static
 
-PYPI_SERVER ?= http://pypi.aps.statoil.no:8080
+PYPI_SERVER ?= http://pypi.aps.equinor.com:8080
 PYPI_NAME := statoil
 
 define PYPIRC
@@ -76,7 +77,7 @@ docker-push-image: docker-image
 docker-login:
 	docker login $(DOCKER_REGISTRY_SERVER)
 
-check-requirements: install-pipenv
+check-requirements: install-requirements
 	$(PIPENV) check
 
 install-wheel:
@@ -87,8 +88,10 @@ install: install-requirements build-boost-python
 	CXXFLAGS="-fPIC" \
 	$(PYTHON) $(SETUP.PY) build_ext --inplace build install
 
-install-requirements: install-pipenv create-virtual-env
+install-requirements: setup-virtual-environment
 	$(PIPENV) install --dev $(KEEP_OUTDATED) $(SKIP_LOCKING)
+
+setup-virtual-environment: install-pipenv create-virtual-env
 
 create-virtual-env:
 	$(PIPENV) --venv || $(PIPENV) --python=$(PYTHON) $(SITE_PACAGES_OPTION)
@@ -96,7 +99,7 @@ create-virtual-env:
 install-pipenv:
 	$(PIPENV) 2>&1 >/dev/null && echo "Pipenv already installed" || $(PIP) install $(USER_INSTALL) $(PIPENV_TO_BE_INSTALLED)
 
-tests:
+tests: install-requirements
 	$(PY.TEST) $(CODE_DIR)/tests
 
 upload: pypirc
@@ -106,14 +109,14 @@ pypirc:
 	echo "$$PYPIRC" > $(CODE_DIR)/.pypirc
 
 build-wheel: build
-	$(PYTHON) $(SETUP.PY) bdist_wheel --dist-dir $(DISTRIBUTION_DIR)
+	$(VIRTUAL_PYTHON) $(SETUP.PY) bdist_wheel --dist-dir $(DISTRIBUTION_DIR)
 
-build: install-requirements build-boost-python
+build: build-boost-python
 	NRLIB_LINKING=$(NRLIB_LINKING) \
 	CXXFLAGS="-fPIC" \
-	$(PYTHON) $(SETUP.PY) build_ext --inplace build
+	$(VIRTUAL_PYTHON) $(SETUP.PY) build_ext --inplace build
 
-build-boost-python: install-numpy
+build-boost-python: setup-virtual-environment install-numpy
 	CODE_DIR=$(CODE_DIR) \
 	  $(CODE_DIR)/bootstrap.sh \
 	                   --prefix=$(shell pwd)/build \
@@ -134,7 +137,7 @@ build-boost-python: install-numpy
 	                   stage
 
 install-numpy:
-	$(RUN) python -c 'import numpy' || $(PIPENV) install numpy $(SKIP_LOCKING)
+	$(VIRTUAL_PYTHON) -c 'import numpy' || $(PIPENV) install 'numpy==$(MINIMUM_NUMPY_VERSION)' $(SKIP_LOCKING)
 
 clean:
 	cd $(CODE_DIR) && \

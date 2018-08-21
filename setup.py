@@ -166,7 +166,7 @@ if platform.system() in ['Linux', 'Darwin']:
         link_libraries += [boost_library_path + '/' + lib_name for lib_name in boost_libraries]
     elif linking == 'static':
         # Force static linking with Boost (requires Boost compiled with fPIC flag)
-        linker_args += ['-L' + boost_library_path, '-Bstatic']
+        linker_args += ['-L' + boost_library_path, '-Bstatic', '-static-libstdc++']
         linker_args += [boost_library_path + '/lib' + lib_name + '.' + library_extension for lib_name in boost_libraries]
     # RMS develop Intel MKL (static linking):
     # linker_args += '-Wl,--start-group {0}/em64t/lib/libmkl_intel_lp64.a {0}/em64t/lib/libmkl_sequential.a {0}/em64t/lib/libmkl_core.a -Wl,--end-group -lpthread -lm -ldl'.format(mkl_root).split()
@@ -320,9 +320,12 @@ boost_module = Extension(
 
 setup(
     name=extension_name,
-    version="1.1-r6",
+    version="1.1-r7",
     packages=find_packages(),
     ext_modules=[bp_module, boost_module],
+    install_requires=[
+        'numpy>=1.10.4',
+    ],
     include_package_data=True,
     license='LICENSE.txt',
     distclass=BinaryDistribution,

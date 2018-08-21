@@ -30,7 +30,7 @@ Python wrapper around Gaussian simulation methods for 1D, 2D and 3D simulation u
 Written by: Norsk Regnesentral for Statoil APS GUI project, but can be used for all in Statoil for internal use.
 
 Contact person in Norsk Regnesentral:  Vegard Berg Kvernelv (2018),  Vegard.Kvernelv@nr.no
-Contact person in Statoil: Oddvar Lia,  olia@statoil.com
+Contact person in Statoil: Oddvar Lia,  olia@equinor.com
 
 
 This directory contains both source code and compiled version of nrlib,
