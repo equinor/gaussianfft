@@ -109,12 +109,12 @@ pypirc:
 	echo "$$PYPIRC" > $(CODE_DIR)/.pypirc
 
 build-wheel: build
-	$(PYTHON) $(SETUP.PY) bdist_wheel --dist-dir $(DISTRIBUTION_DIR)
+	$(VIRTUAL_PYTHON) $(SETUP.PY) bdist_wheel --dist-dir $(DISTRIBUTION_DIR)
 
 build: build-boost-python
 	NRLIB_LINKING=$(NRLIB_LINKING) \
 	CXXFLAGS="-fPIC" \
-	$(PYTHON) $(SETUP.PY) build_ext --inplace build
+	$(VIRTUAL_PYTHON) $(SETUP.PY) build_ext --inplace build
 
 build-boost-python: setup-virtual-environment install-numpy
 	CODE_DIR=$(CODE_DIR) \
@@ -137,7 +137,7 @@ build-boost-python: setup-virtual-environment install-numpy
 	                   stage
 
 install-numpy:
-	$(RUN) python -c 'import numpy' || $(PIPENV) install 'numpy==$(MINIMUM_NUMPY_VERSION)' $(SKIP_LOCKING)
+	$(VIRTUAL_PYTHON) -c 'import numpy' || $(PIPENV) install 'numpy==$(MINIMUM_NUMPY_VERSION)' $(SKIP_LOCKING)
 
 clean:
 	cd $(CODE_DIR) && \
