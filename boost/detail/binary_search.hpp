@@ -28,8 +28,8 @@
 #ifndef BINARY_SEARCH_DWA_122600_H_
 # define BINARY_SEARCH_DWA_122600_H_
 
-# include <boost/detail/iterator.hpp>
 # include <utility>
+# include <iterator>
 
 namespace boost { namespace detail {
 
@@ -37,9 +37,9 @@ template <class ForwardIter, class Tp>
 ForwardIter lower_bound(ForwardIter first, ForwardIter last,
                              const Tp& val)
 {
-    typedef detail::iterator_traits<ForwardIter> traits;
+    typedef std::iterator_traits<ForwardIter> traits;
 
-    typename traits::difference_type len = boost::detail::distance(first, last);
+    typename traits::difference_type len = std::distance(first, last);
     typename traits::difference_type half;
     ForwardIter middle;
 
@@ -62,9 +62,9 @@ template <class ForwardIter, class Tp, class Compare>
 ForwardIter lower_bound(ForwardIter first, ForwardIter last,
                               const Tp& val, Compare comp)
 {
-  typedef detail::iterator_traits<ForwardIter> traits;
+  typedef std::iterator_traits<ForwardIter> traits;
 
-  typename traits::difference_type len = boost::detail::distance(first, last);
+  typename traits::difference_type len = std::distance(first, last);
   typename traits::difference_type half;
   ForwardIter middle;
 
@@ -87,9 +87,9 @@ template <class ForwardIter, class Tp>
 ForwardIter upper_bound(ForwardIter first, ForwardIter last,
                            const Tp& val)
 {
-  typedef detail::iterator_traits<ForwardIter> traits;
+  typedef std::iterator_traits<ForwardIter> traits;
 
-  typename traits::difference_type len = boost::detail::distance(first, last);
+  typename traits::difference_type len = std::distance(first, last);
   typename traits::difference_type half;
   ForwardIter middle;
 
@@ -112,9 +112,9 @@ template <class ForwardIter, class Tp, class Compare>
 ForwardIter upper_bound(ForwardIter first, ForwardIter last,
                            const Tp& val, Compare comp)
 {
-  typedef detail::iterator_traits<ForwardIter> traits;
+  typedef std::iterator_traits<ForwardIter> traits;
 
-  typename traits::difference_type len = boost::detail::distance(first, last);
+  typename traits::difference_type len = std::distance(first, last);
   typename traits::difference_type half;
   ForwardIter middle;
 
@@ -137,9 +137,9 @@ template <class ForwardIter, class Tp>
 std::pair<ForwardIter, ForwardIter>
 equal_range(ForwardIter first, ForwardIter last, const Tp& val)
 {
-  typedef detail::iterator_traits<ForwardIter> traits;
+  typedef std::iterator_traits<ForwardIter> traits;
 
-  typename traits::difference_type len = boost::detail::distance(first, last);
+  typename traits::difference_type len = std::distance(first, last);
   typename traits::difference_type half;
   ForwardIter middle, left, right;
 
@@ -169,9 +169,9 @@ std::pair<ForwardIter, ForwardIter>
 equal_range(ForwardIter first, ForwardIter last, const Tp& val,
               Compare comp)
 {
-  typedef detail::iterator_traits<ForwardIter> traits;
+  typedef std::iterator_traits<ForwardIter> traits;
 
-  typename traits::difference_type len = boost::detail::distance(first, last);
+  typename traits::difference_type len = std::distance(first, last);
   typename traits::difference_type half;
   ForwardIter middle, left, right;
 

@@ -65,11 +65,11 @@ protected:
     }
     void
     save(const version_type & t){
-        save(static_cast<const unsigned int>(t));
+        save(static_cast<unsigned int>(t));
     }
     void
     save(const boost::serialization::item_version_type & t){
-        save(static_cast<const unsigned int>(t));
+        save(static_cast<unsigned int>(t));
     }
     BOOST_ARCHIVE_DECL void
     save(const char * t);
@@ -86,7 +86,7 @@ protected:
     BOOST_ARCHIVE_DECL
     xml_oarchive_impl(std::ostream & os, unsigned int flags);
     BOOST_ARCHIVE_DECL
-    ~xml_oarchive_impl();
+    ~xml_oarchive_impl() BOOST_OVERRIDE;
 public:
     BOOST_ARCHIVE_DECL
     void save_binary(const void *address, std::size_t count);
@@ -112,7 +112,7 @@ namespace archive {
 // typedef xml_oarchive_impl<xml_oarchive_impl<...> > xml_oarchive;
 
 // do not derive from this class.  If you want to extend this functionality
-// via inhertance, derived from xml_oarchive_impl instead.  This will
+// via inheritance, derived from xml_oarchive_impl instead.  This will
 // preserve correct static polymorphism.
 class BOOST_SYMBOL_VISIBLE xml_oarchive :
     public xml_oarchive_impl<xml_oarchive>
@@ -120,8 +120,11 @@ class BOOST_SYMBOL_VISIBLE xml_oarchive :
 public:
     xml_oarchive(std::ostream & os, unsigned int flags = 0) :
         xml_oarchive_impl<xml_oarchive>(os, flags)
-    {}
-    ~xml_oarchive(){}
+    {
+        if(0 == (flags & no_header))
+            init();
+    }
+    ~xml_oarchive() BOOST_OVERRIDE {}
 };
 
 } // namespace archive

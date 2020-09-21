@@ -40,23 +40,24 @@ class BOOST_SYMBOL_VISIBLE common_iarchive :
     public interface_iarchive<Archive>
 {
     friend class interface_iarchive<Archive>;
+    friend class basic_iarchive;
 private:
-    virtual void vload(version_type & t){
+    void vload(version_type & t) BOOST_OVERRIDE {
         * this->This() >> t;
     }
-    virtual void vload(object_id_type & t){
+    void vload(object_id_type & t) BOOST_OVERRIDE {
         * this->This() >> t;
     }
-    virtual void vload(class_id_type & t){
+    void vload(class_id_type & t) BOOST_OVERRIDE {
         * this->This() >> t;
     }
-    virtual void vload(class_id_optional_type & t){
+    void vload(class_id_optional_type & t) BOOST_OVERRIDE {
         * this->This() >> t;
     }
-    virtual void vload(tracking_type & t){
+    void vload(tracking_type & t) BOOST_OVERRIDE {
         * this->This() >> t;
     }
-    virtual void vload(class_name_type &s){
+    void vload(class_name_type &s) BOOST_OVERRIDE {
         * this->This() >> s;
     }
 protected:
@@ -85,4 +86,3 @@ protected:
 #endif
 
 #endif // BOOST_ARCHIVE_DETAIL_COMMON_IARCHIVE_HPP
-

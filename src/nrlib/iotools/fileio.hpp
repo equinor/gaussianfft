@@ -23,6 +23,7 @@
 #define NRLIB_FILEIO_HPP
 
 // #include <algorithm>
+#include <cassert>
 #include <cstdio>
 #include <cstdlib>
 #include <iostream>

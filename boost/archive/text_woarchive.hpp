@@ -78,10 +78,10 @@ protected:
         basic_text_oprimitive<std::wostream>::save(t);
     }
     void save(const version_type & t){
-        save(static_cast<const unsigned int>(t));
+        save(static_cast<unsigned int>(t));
     }
     void save(const boost::serialization::item_version_type & t){
-        save(static_cast<const unsigned int>(t));
+        save(static_cast<unsigned int>(t));
     }
     BOOST_WARCHIVE_DECL void
     save(const char * t);
@@ -101,10 +101,7 @@ protected:
             0 != (flags & no_codecvt)
         ),
         basic_text_oarchive<Archive>(flags)
-    {
-        if(0 == (flags & no_header))
-            basic_text_oarchive<Archive>::init();
-    }
+    {}
 public:
     void save_binary(const void *address, std::size_t count){
         put(static_cast<wchar_t>('\n'));
@@ -127,7 +124,7 @@ public:
 // typedef text_oarchive_impl<text_oarchive_impl<...> > text_oarchive;
 
 // do not derive from this class.  If you want to extend this functionality
-// via inhertance, derived from text_oarchive_impl instead.  This will
+// via inheritance, derived from text_oarchive_impl instead.  This will
 // preserve correct static polymorphism.
 class BOOST_SYMBOL_VISIBLE text_woarchive :
     public text_woarchive_impl<text_woarchive>
@@ -135,8 +132,11 @@ class BOOST_SYMBOL_VISIBLE text_woarchive :
 public:
     text_woarchive(std::wostream & os, unsigned int flags = 0) :
         text_woarchive_impl<text_woarchive>(os, flags)
-    {}
-    ~text_woarchive(){}
+    {
+        if(0 == (flags & no_header))
+            init();
+    }
+    ~text_woarchive() BOOST_OVERRIDE {}
 };
 
 } // namespace archive

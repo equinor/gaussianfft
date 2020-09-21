@@ -5,7 +5,7 @@
 #  http://www.boost.org/LICENSE_1_0.txt)
 
 # Implements OpenVMS-based HP DECC/C++ toolset.
-# Relies on POSIX-style path handling bjam/Boost.Build implementation for VMS.
+# Relies on POSIX-style path handling bjam/B2 implementation for VMS.
 
 import "class" : new ;
 import property ;
@@ -68,7 +68,7 @@ rule init ( version ? : command * : options * )
     toolset.flags vmsdecc.link .LD $(condition) :  $(linker) ;
     if $(.debug-configuration)
     {
-        ECHO notice: using linker :: $(condition) :: $(linker[1]) ;
+        ECHO notice\: using linker "::" $(condition) "::" $(linker[1]) ;
     }
 
     local archiver = LIB ;
@@ -90,9 +90,11 @@ flags vmsdecc.compile OPTIONS <profiling>on : /DEBUG ;   ## needs PCA link optio
 flags vmsdecc.compile OPTIONS <optimization>off : /NOOPT ;
 flags vmsdecc.compile OPTIONS <optimization>speed : /OPT=INLINE=SPEED/OPT=NOINLINE ;
 flags vmsdecc.compile OPTIONS <optimization>space : /OPT=INLINE=SIZE/OPT=NOINLINE ;
-flags vmsdecc.compile OPTIONS <warnings>off : /NOWARN;
+flags vmsdecc.compile OPTIONS <warnings>off : /NOWARN ;
 flags vmsdecc.compile OPTIONS <warnings>on : /WARN ;
 flags vmsdecc.compile OPTIONS <warnings>all  : /WARN=ENABLE=ALL ;
+flags vmsdecc.compile OPTIONS <warnings>extra : /WARN=ENABLE=ALL ;
+flags vmsdecc.compile OPTIONS <warnings>pedantic : /WARN=ENABLE=ALL ;
 
 flags vmsdecc.compile.c++ OPTIONS <inlining>off : /OPT=NOINLINE ;
 

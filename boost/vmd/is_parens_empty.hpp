@@ -31,6 +31,8 @@
     returns = 1 if the sequence is a set of parens with no data,
               else returns 0.
 
+  @code
+
     A set of parens with no data may be:
 
     1) a tuple whose size is a single element which is empty
@@ -38,6 +40,8 @@
                 or
 
     2) a single element seq whose data is empty
+
+  @endcode
 
 */
 
@@ -49,11 +53,13 @@
 
     \brief Determines if the sequence is a set of parens with no data. Re-entrant version.
 
-    d        = The next available BOOST_PP_WHILE iteration.
+    d        = The next available BOOST_PP_WHILE iteration. <br/>
     sequence = a VMD sequence
 
     returns = 1 if the sequence is a set of parens with no data,
               else returns 0.
+
+  @code
 
     A set of parens with no data may be:
 
@@ -62,6 +68,8 @@
                 or
 
     2) a single element seq whose data is empty
+
+  @endcode
 
 */
 

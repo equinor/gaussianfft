@@ -28,13 +28,21 @@
 namespace boost {
 namespace unit_test {
 
-class lazy_ostream {
+class BOOST_TEST_DECL lazy_ostream {
 public:
     virtual                 ~lazy_ostream()                                         {}
 
-    static lazy_ostream&    instance()                                              { static lazy_ostream inst; return inst; }
+    static lazy_ostream&    instance()                                              { return inst; }
+
+    #if !defined(BOOST_EMBTC)
 
     friend std::ostream&    operator<<( std::ostream& ostr, lazy_ostream const& o ) { return o( ostr ); }
+
+    #else
+
+    friend std::ostream&    operator<<( std::ostream& ostr, lazy_ostream const& o );
+
+    #endif
 
     // access method
     bool                    empty() const                                           { return m_empty; }
@@ -47,7 +55,14 @@ protected:
 private:
     // Data members
     bool                    m_empty;
+    static lazy_ostream     inst;
 };
+
+#if defined(BOOST_EMBTC)
+
+    inline std::ostream&    operator<<( std::ostream& ostr, lazy_ostream const& o ) { return o( ostr ); }
+
+#endif
 
 //____________________________________________________________________________//
 
@@ -61,7 +76,7 @@ public:
     {
     }
 
-    virtual std::ostream&   operator()( std::ostream& ostr ) const
+    std::ostream&   operator()( std::ostream& ostr ) const BOOST_OVERRIDE
     {
         return m_prev(ostr) << m_value;
     }

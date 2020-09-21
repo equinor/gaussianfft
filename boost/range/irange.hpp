@@ -231,6 +231,13 @@ namespace boost
             iterator_t(first, num_steps, step_size));
     }
 
+    template<typename Integer>
+    integer_range<Integer>
+    irange(Integer last)
+    {
+        return integer_range<Integer>(static_cast<Integer>(0), last);
+    }
+
 } // namespace boost
 
 #endif // include guard

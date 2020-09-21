@@ -69,7 +69,7 @@ namespace boost { namespace numeric { namespace ublas {
 	    typedef dense_tag storage_category;
 
 	    // Construction and destruction
-	
+
 	/// \brief Constructor of a vector
 	/// By default it is empty, i.e. \c size()==0.
 	    BOOST_UBLAS_INLINE
@@ -134,7 +134,7 @@ namespace boost { namespace numeric { namespace ublas {
 	// -----------------------
 	// Random Access Container
 	// -----------------------
-	
+
 	/// \brief Return the maximum size of the data container.
 	/// Return the upper bound (maximum size) on the data container. Depending on the container, it can be bigger than the current size of the vector.
 	    BOOST_UBLAS_INLINE
@@ -152,7 +152,7 @@ namespace boost { namespace numeric { namespace ublas {
 	// ---------
 	// Accessors
 	// ---------
-	
+
 	/// \brief Return the size of the vector
 	     BOOST_UBLAS_INLINE
 	     size_type size () const {
@@ -162,7 +162,7 @@ namespace boost { namespace numeric { namespace ublas {
 	// -----------------
 	// Storage accessors
 	// -----------------
-	
+
 	/// \brief Return a \c const reference to the container. Useful to access data directly for specific type of container.
 	     BOOST_UBLAS_INLINE
 	     const array_type &data () const {
@@ -178,7 +178,7 @@ namespace boost { namespace numeric { namespace ublas {
 	// --------
 	     // Resizing
 	// --------
-	
+
 	/// \brief Resize the vector
 	/// Resize the vector to a new size. If \c preserve is true, data are copied otherwise data are lost. If the new size is bigger, the remaining values are filled in with the initial value (0 by default) in the case of \c unbounded_array, which is the container by default. If the new size is smaller, last values are lost. This behaviour can be different if you explicitely specify another type of container.
 	/// \param size new size of the vector
@@ -194,7 +194,7 @@ namespace boost { namespace numeric { namespace ublas {
 	// ---------------
 	     // Element support
 	// ---------------
-	
+
 	/// \brief Return a pointer to the element \f$i\f$
 	/// \param i index of the element
 	// XXX this semantic is not the one expected by the name of this method
@@ -222,7 +222,7 @@ namespace boost { namespace numeric { namespace ublas {
 	     const_reference operator () (size_type i) const {
 	         return data () [i];
 	     }
-	
+
 	/// \brief Return a reference to the element \f$i\f$
 	/// Return a reference to the element \f$i\f$. With some compilers, this notation will be faster than \c[i]
 	/// \param i index of the element
@@ -237,7 +237,7 @@ namespace boost { namespace numeric { namespace ublas {
 	     const_reference operator [] (size_type i) const {
 	         return (*this) (i);
 	     }
-	
+
 	/// \brief Return a reference to the element \f$i\f$
 	/// \param i index of the element
 	     BOOST_UBLAS_INLINE
@@ -248,7 +248,7 @@ namespace boost { namespace numeric { namespace ublas {
 	// ------------------
 	     // Element assignment
 	// ------------------
-	
+
 	/// \brief Set element \f$i\f$ to the value \c t
 	/// \param i index of the element
 	/// \param t reference to the value to be set
@@ -268,7 +268,7 @@ namespace boost { namespace numeric { namespace ublas {
 	// -------
 	     // Zeroing
 	// -------
-	
+
 	/// \brief Clear the vector, i.e. set all values to the \c zero value.
 	     BOOST_UBLAS_INLINE
 	     void clear () {
@@ -346,7 +346,7 @@ namespace boost { namespace numeric { namespace ublas {
 	// -------------------
 	     // Computed assignment
 	// -------------------
-	
+
 	/// \brief Assign the sum of the vector and a vector_expression to the vector
 	/// Assign the sum of the vector and a vector_expression to the vector. This is lazy-compiled and will be optimized out by the compiler on any type of expression.
 	/// A temporary is created for the computations.
@@ -385,7 +385,7 @@ namespace boost { namespace numeric { namespace ublas {
 	         vector_assign<scalar_plus_assign> (*this, ae);
 	         return *this;
 	     }
-	
+
 	/// \brief Assign the difference of the vector and a vector_expression to the vector
 	/// Assign the difference of the vector and a vector_expression to the vector. This is lazy-compiled and will be optimized out by the compiler on any type of expression.
 	/// A temporary is created for the computations.
@@ -449,11 +449,11 @@ namespace boost { namespace numeric { namespace ublas {
 	        vector_assign_scalar<scalar_divides_assign> (*this, at);
 	        return *this;
 	    }
-	
+
 	// --------
 	    // Swapping
 	// --------
-	
+
 	/// \brief Swap the content of the vector with another vector
 	/// \param v is the vector to be swapped with
 	    BOOST_UBLAS_INLINE
@@ -489,7 +489,7 @@ namespace boost { namespace numeric { namespace ublas {
 	// --------------
 	    // Element lookup
 	// --------------
-	
+
 	/// \brief Return a const iterator to the element \e i
 	/// \param i index of the element
 	     BOOST_UBLAS_INLINE
@@ -526,8 +526,8 @@ namespace boost { namespace numeric { namespace ublas {
 	    // ----------------------------
 	        // Construction and destruction
 	    // ----------------------------
-	
-	
+
+
 	        BOOST_UBLAS_INLINE
 	        const_iterator ():
 	            container_const_reference<self_type> (), it_ () {}
@@ -537,11 +537,11 @@ namespace boost { namespace numeric { namespace ublas {
 	        BOOST_UBLAS_INLINE
 	        const_iterator (const typename self_type::iterator &it):  // ISSUE vector:: stops VC8 using std::iterator here
 	            container_const_reference<self_type> (it ()), it_ (it.it_) {}
-	
+
 	    // ----------
 	        // Arithmetic
 	    // ----------
-	
+
 	    /// \brief Increment by 1 the position of the iterator
 	    /// \return a reference to the const iterator
 	        BOOST_UBLAS_INLINE
@@ -565,7 +565,7 @@ namespace boost { namespace numeric { namespace ublas {
 	            it_ += n;
 	            return *this;
 	        }
-	
+
 	    /// \brief Decrement by \e n the position of the iterator
 	    /// \return a reference to the const iterator
 	        BOOST_UBLAS_INLINE
@@ -573,14 +573,14 @@ namespace boost { namespace numeric { namespace ublas {
 	            it_ -= n;
 	            return *this;
 	        }
-	
+
 	    /// \brief Return the different in number of positions between 2 iterators
 	        BOOST_UBLAS_INLINE
 	        difference_type operator - (const const_iterator &it) const {
 	            BOOST_UBLAS_CHECK (&(*this) () == &it (), external_logic ());
 	            return it_ - it.it_;
 	        }
-	
+
 	        /// \brief Dereference an iterator
 	        /// Dereference an iterator: a bounds' check is done before returning the value. A bad_index() expection is returned if out of bounds.
 	    /// \return a const reference to the value pointed by the iterator
@@ -589,7 +589,7 @@ namespace boost { namespace numeric { namespace ublas {
 	            BOOST_UBLAS_CHECK (it_ >= (*this) ().begin ().it_ && it_ < (*this) ().end ().it_, bad_index ());
 	            return *it_;
 	        }
-	
+
 	    /// \brief Dereference an iterator at the n-th forward value
 	    /// Dereference an iterator at the n-th forward value, that is the value pointed by iterator+n.
 	        /// A bounds' check is done before returning the value. A bad_index() expection is returned if out of bounds.
@@ -598,7 +598,7 @@ namespace boost { namespace numeric { namespace ublas {
 	        const_reference operator [] (difference_type n) const {
 	            return *(it_ + n);
 	        }
-	
+
 	        // Index
 	    /// \brief return the index of the element referenced by the iterator
 	         BOOST_UBLAS_INLINE
@@ -625,7 +625,7 @@ namespace boost { namespace numeric { namespace ublas {
 	            return it_ == it.it_;
 	        }
 
-	
+
 	    /// \brief compare the value of two iterators
 	    /// \return return true if the left-hand-side iterator refers to a value placed before the right-hand-side iterator
 	         BOOST_UBLAS_INLINE
@@ -762,23 +762,23 @@ namespace boost { namespace numeric { namespace ublas {
 	    iterator begin () {
 	        return find (0);
 	    }
-	
+
 	/// \brief Return an iterator at the end of the vector
 	    BOOST_UBLAS_INLINE
 	    iterator end () {
 	        return find (data_.size ());
 	    }
-	
+
 	    // Reverse iterator
 	    typedef reverse_iterator_base<const_iterator> const_reverse_iterator;
 	    typedef reverse_iterator_base<iterator> reverse_iterator;
-	
+
 	/// \brief Return a const reverse iterator before the first element of the reversed vector (i.e. end() of normal vector)
 	    BOOST_UBLAS_INLINE
 	    const_reverse_iterator rbegin () const {
 	        return const_reverse_iterator (end ());
 	    }
-	
+
     /// \brief Return a const reverse iterator before the first element of the reversed vector (i.e. end() of normal vector)
         BOOST_UBLAS_INLINE
         const_reverse_iterator crbegin () const {
@@ -790,7 +790,7 @@ namespace boost { namespace numeric { namespace ublas {
 	    const_reverse_iterator rend () const {
 	        return const_reverse_iterator (begin ());
 	    }
-	
+
     /// \brief Return a const reverse iterator on the end of the reverse vector (i.e. first element of the normal vector)
         BOOST_UBLAS_INLINE
         const_reverse_iterator crend () const {
@@ -802,17 +802,17 @@ namespace boost { namespace numeric { namespace ublas {
 	    reverse_iterator rbegin () {
 	        return reverse_iterator (end ());
 	    }
-	
+
 	/// \brief Return a const reverse iterator on the end of the reverse vector (i.e. first element of the normal vector)
 	    BOOST_UBLAS_INLINE
 	    reverse_iterator rend () {
 	        return reverse_iterator (begin ());
 	    }
-	
+
 	// -------------
 	    // Serialization
 	// -------------
-	
+
 	/// Serialize a vector into and archive as defined in Boost
 	/// \param ar Archive object. Can be a flat file, an XML file or any other stream
 	/// \param file_version Optional file version (not yet used)
@@ -903,21 +903,14 @@ namespace boost { namespace numeric { namespace ublas {
             vector_assign<scalar_assign> (*this, ae);
         }
 
-        /// \brief Construct a fixed_vector from a list of values
-        /// This constructor enables initialization by using any of:
-        /// fixed_vector<double, 3> v = { 1, 2, 3 } or fixed_vector<double,3> v( {1, 2, 3} ) or fixed_vector<double,3> v( 1, 2, 3 )
-#if defined(BOOST_MSVC)
-        // This may or may not work. Maybe use this for all instead only for MSVC
-        template <typename... U>
-        fixed_vector(U&&... values) :
-            vector_container<self_type> (),
-            data_{{ std::forward<U>(values)... }} {}
-#else
+    /// \brief Construct a fixed_vector from a list of values
+    /// This constructor enables initialization by using any of:
+    /// fixed_vector<double, 3> v = { 1, 2, 3 } or fixed_vector<double,3> v( {1, 2, 3} ) or fixed_vector<double,3> v( 1, 2, 3 )
         template <typename... Types>
+        BOOST_UBLAS_INLINE
         fixed_vector(value_type v0, Types... vrest) :
             vector_container<self_type> (),
-            data_{ { v0, vrest... } } {}
-#endif
+            data_( array_type{ v0, vrest... } ) {}
 
     // -----------------------
     // Random Access Container
@@ -1934,7 +1927,7 @@ namespace boost { namespace numeric { namespace ublas {
 	    unit_vector ():
 	        vector_container<self_type> (),
 	        size_ (0), index_ (0) {}
-	
+
 	/// \brief Constructor of unit_vector
 	/// \param size is the dimension of the vector
 	/// \param index is the order of the vector
@@ -1942,41 +1935,41 @@ namespace boost { namespace numeric { namespace ublas {
 	    explicit unit_vector (size_type size, size_type index = 0):
 	        vector_container<self_type> (),
 	        size_ (size), index_ (index) {}
-	
+
 	/// \brief Copy-constructor
 	    BOOST_UBLAS_INLINE
 	    unit_vector (const unit_vector &v):
 	        vector_container<self_type> (),
 	        size_ (v.size_), index_ (v.index_) {}
-	
+
 	    // Accessors
 	//----------
-	
+
 	/// \brief Return the size (dimension) of the vector
 	    BOOST_UBLAS_INLINE
 	    size_type size () const {
 	        return size_;
 	    }
-	
+
 	/// \brief Return the order of the unit vector
 	    BOOST_UBLAS_INLINE
 	    size_type index () const {
 	        return index_;
 	    }
-	
+
 	    // Resizing
 	// --------
-	
+
 	/// \brief Resize the vector. The values are preserved by default (i.e. the index does not change)
 	/// \param size is the new size of the vector
 	    BOOST_UBLAS_INLINE
 	    void resize (size_type size, bool /*preserve*/ = true) {
 	        size_ = size;
 	    }
-	
+
 	    // Element support
 	// ---------------
-	
+
 	/// \brief Return a const pointer to the element of index i
 	     BOOST_UBLAS_INLINE
 	     const_pointer find_element (size_type i) const {

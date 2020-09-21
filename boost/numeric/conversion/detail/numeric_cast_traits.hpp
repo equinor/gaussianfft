@@ -10,11 +10,11 @@
 #if !defined(BOOST_NUMERIC_CONVERSION_DONT_USE_PREPROCESSED_FILES)
 
     #include <boost/numeric/conversion/detail/preprocessed/numeric_cast_traits_common.hpp>
-	
+
 	#if !defined(BOOST_NO_LONG_LONG)
         #include <boost/numeric/conversion/detail/preprocessed/numeric_cast_traits_long_long.hpp>
 	#endif
-	
+
 #else
 #if !BOOST_PP_IS_ITERATING
 
@@ -36,7 +36,7 @@
     #if defined(__WAVE__) && defined(BOOST_NUMERIC_CONVERSION_CREATE_PREPROCESSED_FILES)
         #pragma wave option(preserve: 1)
     #endif
-	
+
 	//! These are the assumed common built in fundamental types (not typedefs/macros.)
 	#define BOOST_NUMERIC_CONVERSION_BASE_BUILTIN_TYPES() \
         (char)                                            \
@@ -52,7 +52,7 @@
         (double)                                          \
         (long double)                                     \
     /***/
-	
+
     #define BOOST_NUMERIC_CONVERSION_SEQ_A() BOOST_NUMERIC_CONVERSION_BASE_BUILTIN_TYPES()
 	#define BOOST_NUMERIC_CONVERSION_SEQ_B() BOOST_NUMERIC_CONVERSION_BASE_BUILTIN_TYPES()
 
@@ -66,9 +66,9 @@ namespace boost { namespace numeric {
     #if defined(__WAVE__) && defined(BOOST_NUMERIC_CONVERSION_CREATE_PREPROCESSED_FILES)
         #pragma wave option(output: null)
     #endif
-	
+
 	#if ( defined(__WAVE__) && defined(BOOST_NUMERIC_CONVERSION_CREATE_PREPROCESSED_FILES) ) || !defined(BOOST_NO_LONG_LONG)
-	
+
 	    #undef BOOST_NUMERIC_CONVERSION_SEQ_A
 	    #undef BOOST_NUMERIC_CONVERSION_SEQ_B
 
@@ -101,9 +101,9 @@ namespace boost { namespace numeric {
         #if defined(__WAVE__) && defined(BOOST_NUMERIC_CONVERSION_CREATE_PREPROCESSED_FILES)
             #pragma wave option(output: null)
         #endif
-	
+
 	#endif
-		
+
     #undef BOOST_NUMERIC_CONVERSION_BASE_BUILTIN_TYPES
 	#undef BOOST_NUMERIC_CONVERSION_SEQ_A
 	#undef BOOST_NUMERIC_CONVERSION_SEQ_B

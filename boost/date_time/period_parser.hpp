@@ -10,7 +10,12 @@
  * $Date$
  */
 
+#include <ios>
+#include <string>
+#include <vector>
+#include <iterator>
 #include <boost/throw_exception.hpp>
+#include <boost/date_time/special_defs.hpp>
 #include <boost/date_time/string_parse_tree.hpp>
 #include <boost/date_time/string_convert.hpp>
 
@@ -62,12 +67,6 @@ namespace boost { namespace date_time {
       delimiters.push_back(string_type(period_start_delimeter));
       delimiters.push_back(string_type(period_open_range_end_delimeter));
       delimiters.push_back(string_type(period_closed_range_end_delimeter));
-    }
-
-    period_parser(const period_parser<date_type,CharT>& p_parser)
-    {
-      this->delimiters = p_parser.delimiters;
-      this->m_range_option = p_parser.m_range_option;
     }
 
     period_range_option range_option() const

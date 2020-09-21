@@ -77,11 +77,11 @@ public:
         const basic_pointer_oserializer * bpos_ptr
     );
     void save_null_pointer(){
-        vsave(NULL_POINTER_TAG);
+        vsave(BOOST_SERIALIZATION_NULL_POINTER_TAG);
     }
     // real public interface starts here
     BOOST_ARCHIVE_DECL void end_preamble(); // default implementation does nothing
-    BOOST_ARCHIVE_DECL library_version_type get_library_version() const;
+    BOOST_ARCHIVE_DECL boost::serialization::library_version_type get_library_version() const;
     BOOST_ARCHIVE_DECL unsigned int get_flags() const;
 };
 

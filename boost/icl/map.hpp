@@ -32,10 +32,10 @@ Copyright (c) 2007-2011: Joachim Faulhaber
 #include <boost/icl/type_traits/is_total.hpp>
 #include <boost/icl/type_traits/is_element_container.hpp>
 #include <boost/icl/type_traits/has_inverse.hpp>
-#include <boost/icl/type_traits/to_string.hpp>
 
 #include <boost/icl/associative_element_container.hpp>
 #include <boost/icl/functors.hpp>
+#include <boost/icl/type_traits/to_string.hpp>
 
 namespace boost{namespace icl
 {
@@ -700,4 +700,3 @@ struct type_to_string<icl::map<DomainT,CodomainT,Traits,Compare,Combine,Section,
 }} // namespace icl boost
 
 #endif // BOOST_ICL_MAP_HPP_JOFA_070519
-

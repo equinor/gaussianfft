@@ -32,7 +32,6 @@ namespace std{
 #endif
 #include <boost/detail/workaround.hpp>
 
-#include <boost/archive/detail/basic_iarchive.hpp>
 #include <boost/serialization/access.hpp>
 #include <boost/serialization/nvp.hpp>
 #include <boost/serialization/detail/stack_constructor.hpp>
@@ -95,7 +94,7 @@ collection_load_impl(
         detail::stack_construct<Archive, typename T::value_type> u(ar, item_version);
         ar >> boost::serialization::make_nvp("item", u.reference());
         t.push_back(boost::move(u.reference()));
-        ar.reset_object_address(& t.back() , & u.reference());
+        ar.reset_object_address(& t.back() , u.address());
      }
 }
 

@@ -44,6 +44,8 @@
 
     .... = variadic input, for VC++8 this must be a single parameter.
 
+  @code
+
     returns = Normally the macro returns nothing.
 
               If the input is empty, nothing is output.
@@ -55,6 +57,8 @@
 
               For all other compilers a compiler error is forced
               without producing output if the input is not empty.
+
+  @endcode
 
     It is recommended to append BOOST_PP_EMPTY() to whatever input
     is being tested in order to avoid possible warning messages

@@ -12,7 +12,6 @@
 #define BOOST_STRING_FIND_FORMAT_HPP
 
 #include <deque>
-#include <boost/detail/iterator.hpp>
 #include <boost/range/iterator_range_core.hpp>
 #include <boost/range/begin.hpp>
 #include <boost/range/end.hpp>

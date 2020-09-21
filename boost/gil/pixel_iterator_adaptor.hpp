@@ -1,40 +1,25 @@
-/*
-    Copyright 2005-2007 Adobe Systems Incorporated
+//
+// Copyright 2005-2007 Adobe Systems Incorporated
+//
+// Distributed under the Boost Software License, Version 1.0
+// See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt
+//
+#ifndef BOOST_GIL_PIXEL_ITERATOR_ADAPTOR_HPP
+#define BOOST_GIL_PIXEL_ITERATOR_ADAPTOR_HPP
 
-    Use, modification and distribution are subject to the Boost Software License,
-    Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
-    http://www.boost.org/LICENSE_1_0.txt).
+#include <boost/gil/concepts.hpp>
+#include <boost/gil/pixel_iterator.hpp>
 
-    See http://opensource.adobe.com/gil for most recent version including documentation.
-*/
-
-/*************************************************************************************************/
-
-#ifndef GIL_PIXEL_ITERATOR_ADAPTOR_H
-#define GIL_PIXEL_ITERATOR_ADAPTOR_H
-
-////////////////////////////////////////////////////////////////////////////////////////
-/// \file
-/// \brief pixel step iterator, pixel image iterator and pixel dereference iterator
-/// \author Lubomir Bourdev and Hailin Jin \n
-///         Adobe Systems Incorporated
-/// \date   2005-2007 \n Last updated on February 16, 2007
-///
-////////////////////////////////////////////////////////////////////////////////////////
+#include <boost/iterator/iterator_facade.hpp>
 
 #include <iterator>
-#include <boost/iterator/iterator_facade.hpp>
-#include "gil_config.hpp"
-#include "gil_concept.hpp"
-#include "pixel_iterator.hpp"
 
 namespace boost { namespace gil {
-
 
 /// \defgroup PixelIteratorModelDerefPtr dereference_iterator_adaptor
 /// \ingroup PixelIteratorModel
 /// \brief An iterator that invokes a provided function object upon dereference. Models: IteratorAdaptorConcept, PixelIteratorConcept
-
 
 /// \ingroup PixelIteratorModelDerefPtr PixelBasedModel
 /// \brief An adaptor over an existing iterator that provides for custom filter on dereferencing the object. Models: IteratorAdaptorConcept, PixelIteratorConcept
@@ -49,15 +34,15 @@ class dereference_iterator_adaptor : public iterator_adaptor<dereference_iterato
                                                              use_default> {
     DFn _deref_fn;
 public:
-    typedef iterator_adaptor<dereference_iterator_adaptor<Iterator,DFn>,
+    using parent_t = iterator_adaptor<dereference_iterator_adaptor<Iterator,DFn>,
                                     Iterator,
                                     typename DFn::value_type,
                                     typename std::iterator_traits<Iterator>::iterator_category,
                                     typename DFn::reference,
-                                    use_default> parent_t;
-    typedef typename DFn::result_type                         reference;
-    typedef typename std::iterator_traits<Iterator>::difference_type difference_type;
-    typedef DFn                                               dereference_fn;
+                                    use_default>;
+    using reference = typename DFn::result_type;
+    using difference_type = typename std::iterator_traits<Iterator>::difference_type;
+    using dereference_fn = DFn;
 
     dereference_iterator_adaptor() {}
     template <typename Iterator1>
@@ -91,24 +76,27 @@ private:
 
 template <typename I, typename DFn>
 struct const_iterator_type<dereference_iterator_adaptor<I,DFn> > {
-    typedef dereference_iterator_adaptor<typename const_iterator_type<I>::type,typename DFn::const_t> type;
+    using type = dereference_iterator_adaptor<typename const_iterator_type<I>::type,typename DFn::const_t>;
 };
 
 template <typename I, typename DFn>
-struct iterator_is_mutable<dereference_iterator_adaptor<I,DFn> > : public mpl::bool_<DFn::is_mutable> {};
+struct iterator_is_mutable<dereference_iterator_adaptor<I, DFn>>
+    : std::integral_constant<bool, DFn::is_mutable>
+{};
 
 
 template <typename I, typename DFn>
-struct is_iterator_adaptor<dereference_iterator_adaptor<I,DFn> > : public mpl::true_{};
+struct is_iterator_adaptor<dereference_iterator_adaptor<I, DFn>> : std::true_type {};
 
 template <typename I, typename DFn>
-struct iterator_adaptor_get_base<dereference_iterator_adaptor<I,DFn> > {
-    typedef I type;
+struct iterator_adaptor_get_base<dereference_iterator_adaptor<I, DFn>>
+{
+    using type = I;
 };
 
 template <typename I, typename DFn, typename NewBaseIterator>
 struct iterator_adaptor_rebind<dereference_iterator_adaptor<I,DFn>,NewBaseIterator> {
-    typedef dereference_iterator_adaptor<NewBaseIterator,DFn> type;
+    using type = dereference_iterator_adaptor<NewBaseIterator,DFn>;
 };
 
 /////////////////////////////
@@ -176,16 +164,16 @@ memunit_advanced_ref(const dereference_iterator_adaptor<Iterator,DFn>& p,
 
 template <typename Iterator, typename DFn>
 struct dynamic_x_step_type<dereference_iterator_adaptor<Iterator,DFn> > {
-    typedef dereference_iterator_adaptor<typename dynamic_x_step_type<Iterator>::type,DFn> type;
+    using type = dereference_iterator_adaptor<typename dynamic_x_step_type<Iterator>::type,DFn>;
 };
 
 /// \brief Returns the type (and creates an instance) of an iterator that invokes the given dereference adaptor upon dereferencing
 /// \ingroup PixelIteratorModelDerefPtr
 template <typename Iterator, typename Deref>
 struct iterator_add_deref {
-    GIL_CLASS_REQUIRE(Deref, boost::gil, PixelDereferenceAdaptorConcept)
+    BOOST_GIL_CLASS_REQUIRE(Deref, boost::gil, PixelDereferenceAdaptorConcept)
 
-    typedef dereference_iterator_adaptor<Iterator, Deref> type;
+    using type = dereference_iterator_adaptor<Iterator, Deref>;
 
     static type make(const Iterator& it, const Deref& d) { return type(it,d); }
 };
@@ -194,15 +182,15 @@ struct iterator_add_deref {
 /// \brief For dereference iterator adaptors, compose the new function object after the old one
 template <typename Iterator, typename PREV_DEREF, typename Deref>
 struct iterator_add_deref<dereference_iterator_adaptor<Iterator, PREV_DEREF>,Deref> {
-//    GIL_CLASS_REQUIRE(Deref, boost::gil, PixelDereferenceAdaptorConcept)
+//    BOOST_GIL_CLASS_REQUIRE(Deref, boost::gil, PixelDereferenceAdaptorConcept)
 
-    typedef dereference_iterator_adaptor<Iterator, deref_compose<Deref,PREV_DEREF> > type;
+    using type = dereference_iterator_adaptor<Iterator, deref_compose<Deref,PREV_DEREF>>;
 
     static type make(const dereference_iterator_adaptor<Iterator, PREV_DEREF>& it, const Deref& d) {
         return type(it.base(),deref_compose<Deref,PREV_DEREF>(d,it.deref_fn()));
     }
 };
 
-} }  // namespace boost::gil
+}}  // namespace boost::gil
 
 #endif

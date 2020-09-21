@@ -34,6 +34,8 @@
 
     sequence = a possible VMD type.
 
+  @code
+
     returns = Normally the macro returns nothing.
 
               If the sequence is a VMD type, nothing is
@@ -47,6 +49,8 @@
               For all other compilers a compiler error is forced
               without producing output if the sequence is not a
               VMD type.
+
+  @endcode
 
 */
 
@@ -62,8 +66,10 @@
     to check or not check by defining the macro
     BOOST_VMD_ASSERT_DATA to 1 or 0 respectively.
 
-    d       = The next available BOOST_PP_WHILE iteration.
+    d       = The next available BOOST_PP_WHILE iteration. <br/>
     sequence = a possible VMD type.
+
+  @code
 
     returns = Normally the macro returns nothing.
 
@@ -78,6 +84,8 @@
               For all other compilers a compiler error is forced
               without producing output if the sequence is not a
               VMD type.
+
+  @endcode
 
 */
 

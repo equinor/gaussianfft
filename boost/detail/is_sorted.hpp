@@ -8,8 +8,7 @@
 #ifndef BOOST_DETAIL_SORTED_HPP
 #define BOOST_DETAIL_SORTED_HPP
 
-#include <boost/detail/iterator.hpp>
-
+#include <iterator>
 #include <functional>
 
 namespace boost {
@@ -31,7 +30,7 @@ inline Iterator is_sorted_until (Iterator first, Iterator last, Comp c) {
 
 template<class Iterator>
 inline Iterator is_sorted_until (Iterator first, Iterator last) {
-  typedef typename boost::detail::iterator_traits<Iterator>::value_type
+  typedef typename std::iterator_traits<Iterator>::value_type
     value_type;
 
   typedef std::less<value_type> c;

@@ -24,7 +24,7 @@ With these techniques, the code could be simplified.
 
 #include <boost/assert.hpp>
 #include <boost/cstdint.hpp>
-#include <boost/detail/endian.hpp>
+#include <boost/predef/other/endian.h>
 #include <boost/static_assert.hpp>
 #include <boost/type_traits/is_floating_point.hpp>
 
@@ -216,9 +216,9 @@ template<> struct fp_traits_non_native<double, double_precision>
 
 private:
 
-#if defined(BOOST_BIG_ENDIAN)
+#if BOOST_ENDIAN_BIG_BYTE
     BOOST_STATIC_CONSTANT(int, offset_ = 0);
-#elif defined(BOOST_LITTLE_ENDIAN)
+#elif BOOST_ENDIAN_LITTLE_BYTE
     BOOST_STATIC_CONSTANT(int, offset_ = 4);
 #else
     BOOST_STATIC_ASSERT(false);
@@ -276,9 +276,9 @@ template<> struct fp_traits_non_native<long double, double_precision>
 
 private:
 
-#if defined(BOOST_BIG_ENDIAN)
+#if BOOST_ENDIAN_BIG_BYTE
     BOOST_STATIC_CONSTANT(int, offset_ = 0);
-#elif defined(BOOST_LITTLE_ENDIAN)
+#elif BOOST_ENDIAN_LITTLE_BYTE
     BOOST_STATIC_CONSTANT(int, offset_ = 4);
 #else
     BOOST_STATIC_ASSERT(false);
@@ -390,9 +390,9 @@ struct fp_traits_non_native<long double, extended_double_precision>
 
 private:
 
-#if defined(BOOST_BIG_ENDIAN)
+#if BOOST_ENDIAN_BIG_BYTE
     BOOST_STATIC_CONSTANT(int, offset_ = 0);
-#elif defined(BOOST_LITTLE_ENDIAN)
+#elif BOOST_ENDIAN_LITTLE_BYTE
     BOOST_STATIC_CONSTANT(int, offset_ = 12);
 #else
     BOOST_STATIC_ASSERT(false);
@@ -471,9 +471,9 @@ struct fp_traits_non_native<long double, extended_double_precision>
 
 private:
 
-#if defined(BOOST_BIG_ENDIAN)
+#if BOOST_ENDIAN_BIG_BYTE
     BOOST_STATIC_CONSTANT(int, offset_ = 0);
-#elif defined(BOOST_LITTLE_ENDIAN)
+#elif BOOST_ENDIAN_LITTLE_BYTE
     BOOST_STATIC_CONSTANT(int, offset_ = 12);
 #else
     BOOST_STATIC_ASSERT(false);
@@ -556,7 +556,8 @@ struct select_native<long double>
    && !defined(__FAST_MATH__)\
    && !defined(BOOST_MATH_DISABLE_STD_FPCLASSIFY)\
    && !defined(BOOST_INTEL)\
-   && !defined(sun)
+   && !defined(sun)\
+   && !defined(__VXWORKS__)
 #  define BOOST_MATH_USE_STD_FPCLASSIFY
 #endif
 

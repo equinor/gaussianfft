@@ -26,6 +26,7 @@
 #include <cstddef> // NULL
 
 #include <boost/config.hpp>
+
 #include <boost/static_assert.hpp>
 #include <boost/detail/workaround.hpp>
 
@@ -67,6 +68,8 @@
 #include <boost/archive/detail/basic_pointer_oserializer.hpp>
 #include <boost/archive/detail/archive_serializer_map.hpp>
 #include <boost/archive/detail/check.hpp>
+
+#include <boost/core/addressof.hpp>
 
 namespace boost {
 
@@ -113,26 +116,26 @@ public:
             >::get_const_instance()
         )
     {}
-    virtual BOOST_DLLEXPORT void save_object_data(
+    BOOST_DLLEXPORT void save_object_data(
         basic_oarchive & ar,
         const void *x
-    ) const BOOST_USED;
-    virtual bool class_info() const {
+    ) const BOOST_OVERRIDE BOOST_USED;
+    bool class_info() const BOOST_OVERRIDE {
         return boost::serialization::implementation_level< T >::value
             >= boost::serialization::object_class_info;
     }
-    virtual bool tracking(const unsigned int /* flags */) const {
+    bool tracking(const unsigned int /* flags */) const BOOST_OVERRIDE {
         return boost::serialization::tracking_level< T >::value == boost::serialization::track_always
             || (boost::serialization::tracking_level< T >::value == boost::serialization::track_selectively
                 && serialized_as_pointer());
     }
-    virtual version_type version() const {
+    version_type version() const BOOST_OVERRIDE {
         return version_type(::boost::serialization::version< T >::value);
     }
-    virtual bool is_polymorphic() const {
+    bool is_polymorphic() const BOOST_OVERRIDE {
         return boost::is_polymorphic< T >::value;
     }
-    virtual ~oserializer(){}
+    ~oserializer() BOOST_OVERRIDE {}
 };
 
 #ifdef BOOST_MSVC
@@ -165,18 +168,18 @@ class pointer_oserializer :
 {
 private:
     const basic_oserializer &
-    get_basic_serializer() const {
+    get_basic_serializer() const BOOST_OVERRIDE {
         return boost::serialization::singleton<
             oserializer<Archive, T>
         >::get_const_instance();
     }
-    virtual BOOST_DLLEXPORT void save_object_ptr(
+    BOOST_DLLEXPORT void save_object_ptr(
         basic_oarchive & ar,
         const void * x
-    ) const BOOST_USED;
+    ) const BOOST_OVERRIDE BOOST_USED;
 public:
     pointer_oserializer();
-    ~pointer_oserializer();
+    ~pointer_oserializer() BOOST_OVERRIDE;
 };
 
 #ifdef BOOST_MSVC
@@ -253,13 +256,15 @@ struct save_non_pointer_type {
         template<class T>
         static void invoke(Archive &ar, const T & t){
             ar.save_object(
-                & t,
+                boost::addressof(t),
                 boost::serialization::singleton<
                     oserializer<Archive, T>
                 >::get_const_instance()
             );
         }
     };
+
+
 
     // adds class information to the archive. This includes
     // serialization level and class version
@@ -338,7 +343,7 @@ struct save_pointer_type {
     };
 
     template<class T>
-    static const basic_pointer_oserializer * register_type(Archive &ar, T & /*t*/){
+    static const basic_pointer_oserializer * register_type(Archive &ar, T* const /*t*/){
         // there should never be any need to save an abstract polymorphic
         // class pointer.  Inhibiting code generation for this
         // permits abstract base classes to be used - note: exception
@@ -405,7 +410,7 @@ struct save_pointer_type {
             // if its not a pointer to a more derived type
             const void *vp = static_cast<const void *>(&t);
             if(*this_type == *true_type){
-                const basic_pointer_oserializer * bpos = register_type(ar, t);
+                const basic_pointer_oserializer * bpos = register_type(ar, &t);
                 ar.save_pointer(vp, bpos);
                 return;
             }
@@ -464,7 +469,7 @@ struct save_pointer_type {
 
     template<class TPtr>
     static void invoke(Archive &ar, const TPtr t){
-        register_type(ar, * t);
+        register_type(ar, t);
         if(NULL == t){
             basic_oarchive & boa
                 = boost::serialization::smart_cast_reference<basic_oarchive &>(ar);

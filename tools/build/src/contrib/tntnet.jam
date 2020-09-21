@@ -124,7 +124,7 @@ rule init ( prefix : full_bin ? : full_inc ? : full_lib ? )
       	# Scanner for ecpp includes
         type.set-scanner ECPP : ecpp-scanner ;
 
-	
+
 	local usage-requirements =
 		<include>$(.incprefix)
 		<library-path>$(.libprefix)
@@ -145,7 +145,7 @@ rule init ( prefix : full_bin ? : full_inc ? : full_lib ? )
 		<include>$(.incprefix)/tntnet
 		$(usage-requiriments)
 		;
-		
+
     }
     project.pop-current ;
 

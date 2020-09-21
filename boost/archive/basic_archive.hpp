@@ -18,9 +18,9 @@
 #include <cstring> // count
 #include <boost/assert.hpp>
 #include <boost/config.hpp>
-#include <boost/cstdint.hpp> // size_t
-#include <boost/noncopyable.hpp>
 #include <boost/integer_traits.hpp>
+#include <boost/noncopyable.hpp>
+#include <boost/serialization/library_version_type.hpp>
 
 #include <boost/archive/detail/auto_link_archive.hpp>
 #include <boost/archive/detail/abi_prefix.hpp> // must be the last header
@@ -33,44 +33,11 @@ namespace archive {
 #pragma warning( disable : 4244 4267 )
 #endif
 
-/* NOTE : Warning  : Warning : Warning : Warning : Warning
- * Don't ever changes this.  If you do, they previously created
- * binary archives won't be readable !!!
- */
-class library_version_type {
-private:
-    typedef uint_least16_t base_type;
-    base_type t;
-public:
-    library_version_type(): t(0) {};
-    explicit library_version_type(const unsigned int & t_) : t(t_){
-        BOOST_ASSERT(t_ <= boost::integer_traits<base_type>::const_max);
-    }
-    library_version_type(const library_version_type & t_) :
-        t(t_.t)
-    {}
-    library_version_type & operator=(const library_version_type & rhs){
-        t = rhs.t;
-        return *this;
-    }
-    // used for text output
-    operator base_type () const {
-        return t;
-    }
-    // used for text input
-    operator base_type & (){
-        return t;
-    }
-    bool operator==(const library_version_type & rhs) const {
-        return t == rhs.t;
-    }
-    bool operator<(const library_version_type & rhs) const {
-        return t < rhs.t;
-    }
-};
-
-BOOST_ARCHIVE_DECL library_version_type
+BOOST_ARCHIVE_DECL boost::serialization::library_version_type
 BOOST_ARCHIVE_VERSION();
+
+// create alias in boost::archive for older user code.
+typedef boost::serialization::library_version_type library_version_type;
 
 class version_type {
 private:
@@ -78,7 +45,7 @@ private:
     base_type t;
 public:
     // should be private - but MPI fails if it's not!!!
-    version_type(): t(0) {};
+    version_type(): t(0) {}
     explicit version_type(const unsigned int & t_) : t(t_){
         BOOST_ASSERT(t_ <= boost::integer_traits<base_type>::const_max);
     }
@@ -111,7 +78,7 @@ private:
     base_type t;
 public:
     // should be private - but then can't use BOOST_STRONG_TYPE below
-    class_id_type() : t(0) {};
+    class_id_type() : t(0) {}
     explicit class_id_type(const int t_) : t(t_){
         BOOST_ASSERT(t_ <= boost::integer_traits<base_type>::const_max);
     }
@@ -127,11 +94,11 @@ public:
     }
 
     // used for text output
-    operator int () const {
+    operator base_type () const {
         return t;
     }
     // used for text input
-    operator int_least16_t &() {
+    operator base_type &() {
         return t;
     }
     bool operator==(const class_id_type & rhs) const {
@@ -142,16 +109,19 @@ public:
     }
 };
 
-#define NULL_POINTER_TAG boost::archive::class_id_type(-1)
+#define BOOST_SERIALIZATION_NULL_POINTER_TAG boost::archive::class_id_type(-1)
 
 class object_id_type {
 private:
     typedef uint_least32_t base_type;
     base_type t;
 public:
-    object_id_type(): t(0) {};
+    object_id_type(): t(0) {}
     // note: presumes that size_t >= unsigned int.
-    explicit object_id_type(const std::size_t & t_) : t(t_){
+    // use explicit cast to silence useless warning
+    explicit object_id_type(const std::size_t & t_) : t(static_cast<base_type>(t_)){
+        // make quadruple sure that we haven't lost any real integer
+        // precision
         BOOST_ASSERT(t_ <= boost::integer_traits<base_type>::const_max);
     }
     object_id_type(const object_id_type & t_) :
@@ -162,11 +132,11 @@ public:
         return *this;
     }
     // used for text output
-    operator uint_least32_t () const {
+    operator base_type () const {
         return t;
     }
     // used for text input
-    operator uint_least32_t & () {
+    operator base_type & () {
         return t;
     }
     bool operator==(const object_id_type & rhs) const {
@@ -185,16 +155,16 @@ struct tracking_type {
     bool t;
     explicit tracking_type(const bool t_ = false)
         : t(t_)
-    {};
+    {}
     tracking_type(const tracking_type & t_)
         : t(t_.t)
     {}
     operator bool () const {
         return t;
-    };
+    }
     operator bool & () {
         return t;
-    };
+    }
     tracking_type & operator=(const bool t_){
         t = t_;
         return *this;
@@ -276,7 +246,7 @@ BOOST_ARCHIVE_STRONG_TYPEDEF(object_id_type, object_reference_type)
 // set implementation level to primitive for all types
 // used internally by the serialization library
 
-BOOST_CLASS_IMPLEMENTATION(boost::archive::library_version_type, primitive_type)
+BOOST_CLASS_IMPLEMENTATION(boost::serialization::library_version_type, primitive_type)
 BOOST_CLASS_IMPLEMENTATION(boost::archive::version_type, primitive_type)
 BOOST_CLASS_IMPLEMENTATION(boost::archive::class_id_type, primitive_type)
 BOOST_CLASS_IMPLEMENTATION(boost::archive::class_id_reference_type, primitive_type)
@@ -291,7 +261,7 @@ BOOST_CLASS_IMPLEMENTATION(boost::archive::tracking_type, primitive_type)
 // set types used internally by the serialization library
 // to be bitwise serializable
 
-BOOST_IS_BITWISE_SERIALIZABLE(boost::archive::library_version_type)
+BOOST_IS_BITWISE_SERIALIZABLE(boost::serialization::library_version_type)
 BOOST_IS_BITWISE_SERIALIZABLE(boost::archive::version_type)
 BOOST_IS_BITWISE_SERIALIZABLE(boost::archive::class_id_type)
 BOOST_IS_BITWISE_SERIALIZABLE(boost::archive::class_id_reference_type)

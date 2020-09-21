@@ -29,7 +29,6 @@
 #include <boost/archive/basic_xml_iarchive.hpp>
 #include <boost/archive/detail/register_archive.hpp>
 #include <boost/serialization/item_version_type.hpp>
-// #include <boost/archive/detail/utf8_codecvt_facet.hpp>
 
 #include <boost/archive/detail/abi_prefix.hpp> // must be the last header
 
@@ -62,6 +61,7 @@ protected:
     friend class basic_xml_iarchive<Archive>;
     friend class load_access;
 #endif
+    std::locale archive_locale;
     boost::scoped_ptr<xml_wgrammar> gimpl;
     std::wistream & get_is(){
         return is;
@@ -104,9 +104,9 @@ protected:
     BOOST_WARCHIVE_DECL void
     init();
     BOOST_WARCHIVE_DECL
-    xml_wiarchive_impl(std::wistream & is, unsigned int flags) ;
+    xml_wiarchive_impl(std::wistream & is, unsigned int flags);
     BOOST_WARCHIVE_DECL
-    ~xml_wiarchive_impl();
+    ~xml_wiarchive_impl() BOOST_OVERRIDE;
 };
 
 } // namespace archive
@@ -131,8 +131,11 @@ class BOOST_SYMBOL_VISIBLE xml_wiarchive :
 public:
     xml_wiarchive(std::wistream & is, unsigned int flags = 0) :
         xml_wiarchive_impl<xml_wiarchive>(is, flags)
-    {}
-    ~xml_wiarchive(){}
+    {
+    if(0 == (flags & no_header))
+        init();
+    }
+    ~xml_wiarchive() BOOST_OVERRIDE {}
 };
 
 } // namespace archive

@@ -26,10 +26,15 @@
 #include <boost/type_traits/is_array.hpp>
 #include <boost/mpl/if.hpp>
 #include <boost/ptr_container/ptr_vector.hpp>
+#include <boost/move/utility.hpp>
+
+#if defined(BOOST_NO_CXX11_VARIADIC_TEMPLATES) || defined(BOOST_NO_CXX11_RVALUE_REFERENCES)
 
 #include <boost/preprocessor/repetition/enum_binary_params.hpp>
 #include <boost/preprocessor/repetition/enum_params.hpp>
 #include <boost/preprocessor/iteration/local.hpp>
+
+#endif
 
 namespace boost
 {
@@ -47,7 +52,11 @@ namespace assign_detail
     {
     protected:
         typedef boost::ptr_vector<T>       impl_type;
+#if defined(BOOST_NO_AUTO_PTR)
+        typedef std::unique_ptr<impl_type> release_type;
+#else
         typedef std::auto_ptr<impl_type>   release_type;
+#endif
         mutable impl_type                  values_;
 
     public:
@@ -92,9 +101,18 @@ namespace assign_detail
         }
 
         template< class PtrContainer >
-        std::auto_ptr<PtrContainer> convert( const PtrContainer* c ) const
+#if defined(BOOST_NO_AUTO_PTR)
+        std::unique_ptr<PtrContainer>
+#else
+        std::auto_ptr<PtrContainer>
+#endif
+		convert( const PtrContainer* c ) const
         {
+#if defined(BOOST_NO_AUTO_PTR)
+            std::unique_ptr<PtrContainer> res( new PtrContainer() );
+#else
             std::auto_ptr<PtrContainer> res( new PtrContainer() );
+#endif
             while( !empty() )
                 res->insert( res->end(),
                              values_.pop_back().release() );
@@ -102,7 +120,12 @@ namespace assign_detail
         }
 
         template< class PtrContainer >
-        std::auto_ptr<PtrContainer> to_container( const PtrContainer& c ) const
+#if defined(BOOST_NO_AUTO_PTR)
+        std::unique_ptr<PtrContainer>
+#else
+        std::auto_ptr<PtrContainer>
+#endif
+        to_container( const PtrContainer& c ) const
         {
             return convert( &c );
         }
@@ -111,6 +134,8 @@ namespace assign_detail
         void push_back( T* r ) { values_.push_back( r ); }
 
     public:
+#if defined(BOOST_NO_CXX11_VARIADIC_TEMPLATES) || defined(BOOST_NO_CXX11_RVALUE_REFERENCES)
+
         generic_ptr_list& operator()()
         {
             this->push_back( new T() );
@@ -145,24 +170,41 @@ namespace assign_detail
 
 #include BOOST_PP_LOCAL_ITERATE()
 
+#else
+        template< class... Us >
+        generic_ptr_list& operator()(Us&&... us)
+        {
+            this->push_back(new T(boost::forward<Us>(us)...));
+            return *this;
+        }
+#endif
+
+
+
     }; // class 'generic_ptr_list'
 
 } // namespace 'assign_detail'
 
 namespace assign
 {
+#if defined(BOOST_NO_CXX11_VARIADIC_TEMPLATES) || defined(BOOST_NO_CXX11_RVALUE_REFERENCES)
+
     template< class T >
     inline assign_detail::generic_ptr_list<T>
     ptr_list_of()
     {
-        return assign_detail::generic_ptr_list<T>()();
+        assign_detail::generic_ptr_list<T> gpl;
+        gpl();
+        return gpl;
     }
 
     template< class T, class U >
     inline assign_detail::generic_ptr_list<T>
     ptr_list_of( const U& t )
     {
-        return assign_detail::generic_ptr_list<T>()( t );
+        assign_detail::generic_ptr_list<T> gpl;
+        gpl( t );
+        return gpl;
     }
 
 
@@ -178,14 +220,28 @@ namespace assign
 
 #include BOOST_PP_LOCAL_ITERATE()
 
+#else
+    template< class T, class... Us >
+    inline assign_detail::generic_ptr_list<T>
+    ptr_list_of(Us&&... us)
+    {
+        assign_detail::generic_ptr_list<T> gpl;
+        gpl(boost::forward<Us>(us)...);
+        return gpl;
+    }
+
+#endif
 
 } // namespace 'assign'
 } // namespace 'boost'
 
+#if defined(BOOST_NO_CXX11_VARIADIC_TEMPLATES) || defined(BOOST_NO_CXX11_RVALUE_REFERENCES)
 
 #undef BOOST_ASSIGN_PARAMS1
 #undef BOOST_ASSIGN_PARAMS2
 #undef BOOST_ASSIGN_PARAMS3
 #undef BOOST_ASSIGN_MAX_PARAMETERS
+
+#endif
 
 #endif

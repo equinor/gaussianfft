@@ -11,6 +11,7 @@
 #ifndef BOOST_STRING_PREDICATE_HPP
 #define BOOST_STRING_PREDICATE_HPP
 
+#include <iterator>
 #include <boost/algorithm/string/config.hpp>
 #include <boost/range/begin.hpp>
 #include <boost/range/end.hpp>
@@ -146,8 +147,8 @@ namespace boost {
 
             typedef BOOST_STRING_TYPENAME
                 range_const_iterator<Range1T>::type Iterator1T;
-            typedef BOOST_STRING_TYPENAME boost::detail::
-                iterator_traits<Iterator1T>::iterator_category category;
+            typedef BOOST_STRING_TYPENAME
+                std::iterator_traits<Iterator1T>::iterator_category category;
 
             return detail::
                 ends_with_iter_select(

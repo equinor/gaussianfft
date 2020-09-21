@@ -113,7 +113,7 @@ build-wheel: build
 
 build: build-boost-python
 	NRLIB_LINKING=$(NRLIB_LINKING) \
-	CXXFLAGS="-fPIC" \
+	CXXFLAGS="-fPIC -fpermissive" \
 	$(VIRTUAL_PYTHON) $(SETUP.PY) build_ext --inplace build
 
 build-boost-python: setup-virtual-environment install-numpy
@@ -123,7 +123,7 @@ build-boost-python: setup-virtual-environment install-numpy
 	                   --with-python=$(VIRTUAL_PYTHON) \
 	                   --with-icu && \
 	CPLUS_INCLUDE_PATH=$(shell $(VIRTUAL_PYTHON) -c "from sysconfig import get_paths; print(get_paths()['include'])") \
-	  $(CODE_DIR)/bjam --with-python \
+	  $(CODE_DIR)/b2   --with-python \
 	                   --with-filesystem \
 	                   --with-system \
 	                   -q \

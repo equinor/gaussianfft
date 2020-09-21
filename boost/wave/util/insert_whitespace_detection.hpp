@@ -9,8 +9,8 @@
     Software License, Version 1.0. (See accompanying file
     LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 =============================================================================*/
-#if !defined(INSERT_WHITESPACE_DETECTION_HPP_765EF77B_0513_4967_BDD6_6A38148C4C96_INCLUDED)
-#define INSERT_WHITESPACE_DETECTION_HPP_765EF77B_0513_4967_BDD6_6A38148C4C96_INCLUDED
+#if !defined(BOOST_INSERT_WHITESPACE_DETECTION_HPP_765EF77B_0513_4967_BDD6_6A38148C4C96_INCLUDED)
+#define BOOST_INSERT_WHITESPACE_DETECTION_HPP_765EF77B_0513_4967_BDD6_6A38148C4C96_INCLUDED
 
 #include <boost/wave/wave_config.hpp>
 #include <boost/wave/token_ids.hpp>
@@ -56,7 +56,7 @@ namespace impl {
         boost::wave::token_id before, StringT const &value)
     {
         using namespace boost::wave;
-        switch (static_cast<unsigned int>(prev)) {
+        switch (prev) {
         case T_IDENTIFIER:
         case T_NONREPLACABLE_IDENTIFIER:
         case T_COMPL_ALT:
@@ -77,8 +77,11 @@ namespace impl {
             return (value.size() > 1 || (value[0] != 'e' && value[0] != 'E'));
 
          // avoid constructing universal characters (\u1234)
-        case TOKEN_FROM_ID('\\', UnknownTokenType):
+        case T_UNKNOWN_UNIVERSALCHAR:
             return would_form_universal_char(value);
+
+        default:
+            break;
         }
         return false;
     }
@@ -87,7 +90,7 @@ namespace impl {
     handle_intlit(boost::wave::token_id prev, boost::wave::token_id /*before*/)
     {
         using namespace boost::wave;
-        switch (static_cast<unsigned int>(prev)) {
+        switch (prev) {
         case T_IDENTIFIER:
         case T_NONREPLACABLE_IDENTIFIER:
         case T_INTLIT:
@@ -95,6 +98,9 @@ namespace impl {
         case T_FIXEDPOINTLIT:
         case T_PP_NUMBER:
             return true;
+
+        default:
+            break;
         }
         return false;
     }
@@ -104,7 +110,7 @@ namespace impl {
         boost::wave::token_id /*before*/)
     {
         using namespace boost::wave;
-        switch (static_cast<unsigned int>(prev)) {
+        switch (prev) {
         case T_IDENTIFIER:
         case T_NONREPLACABLE_IDENTIFIER:
         case T_INTLIT:
@@ -112,6 +118,9 @@ namespace impl {
         case T_FIXEDPOINTLIT:
         case T_PP_NUMBER:
             return true;
+
+        default:
+            break;
         }
         return false;
     }
@@ -121,10 +130,13 @@ namespace impl {
         boost::wave::token_id /*before*/)
     {
         using namespace boost::wave;
-        switch (static_cast<unsigned int>(prev)) {
+        switch (prev) {
         case T_LESS:        // <<%
         case T_SHIFTLEFT:   // <<<%
             return true;
+
+        default:
+            break;
         }
         return false;
     }
@@ -134,10 +146,13 @@ namespace impl {
         boost::wave::token_id /*before*/)
     {
         using namespace boost::wave;
-        switch (static_cast<unsigned int>(prev)) {
+        switch (prev) {
         case T_LESS:        // <<:
         case T_SHIFTLEFT:   // <<<:
             return true;
+
+        default:
+            break;
         }
         return false;
     }
@@ -147,7 +162,7 @@ namespace impl {
         boost::wave::token_id /*before*/)
     {
         using namespace boost::wave;
-        switch (static_cast<unsigned int>(prev)) {
+        switch (prev) {
         case T_IDENTIFIER:
         case T_NONREPLACABLE_IDENTIFIER:
         case T_INTLIT:
@@ -155,6 +170,9 @@ namespace impl {
         case T_FIXEDPOINTLIT:
         case T_PP_NUMBER:
             return true;
+
+        default:
+            break;
         }
         return false;
     }
@@ -163,10 +181,13 @@ namespace impl {
     handle_dot(boost::wave::token_id prev, boost::wave::token_id before)
     {
         using namespace boost::wave;
-        switch (static_cast<unsigned int>(prev)) {
+        switch (prev) {
         case T_DOT:
             if (T_DOT == before)
                 return true;    // ...
+            break;
+
+        default:
             break;
         }
         return false;
@@ -177,10 +198,13 @@ namespace impl {
         boost::wave::token_id /*before*/)
     {
         using namespace boost::wave;
-        switch(static_cast<unsigned int>(prev)) {
-        case TOKEN_FROM_ID('\\', UnknownTokenType):     // \?
+        switch(prev) {
+        case T_UNKNOWN_UNIVERSALCHAR:     // \?
         case T_QUESTION_MARK:   // ??
             return true;
+
+        default:
+            break;
         }
         return false;
     }
@@ -190,11 +214,14 @@ namespace impl {
         boost::wave::token_id before)
     {
         using namespace boost::wave;
-        switch(static_cast<unsigned int>(prev)) {
+        switch(prev) {
         case TOKEN_FROM_ID('\\', UnknownTokenType): // \ \n
         case T_DIVIDE:
             if (T_QUESTION_MARK == before)
                 return true;    // ?/\n     // may be \\n
+            break;
+
+        default:
             break;
         }
         return false;
@@ -203,7 +230,7 @@ namespace impl {
     inline bool
     handle_parens(boost::wave::token_id prev)
     {
-        switch (static_cast<unsigned int>(prev)) {
+        switch (prev) {
         case T_LEFTPAREN:
         case T_RIGHTPAREN:
         case T_LEFTBRACKET:
@@ -239,7 +266,7 @@ public:
             return false;       // skip whitespace insertion alltogether
 
         using namespace boost::wave;
-        switch (static_cast<unsigned int>(current)) {
+        switch (current) {
         case T_NONREPLACABLE_IDENTIFIER:
         case T_IDENTIFIER:
             return impl::handle_identifier(prev, beforeprev, value);
@@ -272,7 +299,7 @@ public:
         case T_SEMICOLON:
         case T_COMMA:
         case T_COLON:
-            switch (static_cast<unsigned int>(prev)) {
+            switch (prev) {
             case T_LEFTPAREN:
             case T_RIGHTPAREN:
             case T_LEFTBRACKET:
@@ -290,7 +317,7 @@ public:
 
         case T_LEFTBRACE:
         case T_RIGHTBRACE:
-            switch (static_cast<unsigned int>(prev)) {
+            switch (prev) {
             case T_LEFTPAREN:
             case T_RIGHTPAREN:
             case T_LEFTBRACKET:
@@ -348,7 +375,7 @@ public:
 
         case T_EQUAL:
         case T_ASSIGN:
-            switch (static_cast<unsigned int>(prev)) {
+            switch (prev) {
             case T_PLUSASSIGN:
             case T_MINUSASSIGN:
             case T_DIVIDEASSIGN:
@@ -440,7 +467,7 @@ public:
         case T_ORASSIGN_ALT:
         case T_XORASSIGN_ALT:
         case T_NOTEQUAL_ALT:
-            switch (static_cast<unsigned int>(prev)) {
+            switch (prev) {
             case T_LEFTPAREN:
             case T_RIGHTPAREN:
             case T_LEFTBRACKET:
@@ -481,6 +508,9 @@ public:
             if (T_POUND == prev)
                 return true;
             break;
+
+        default:
+            break;
         }
 
     // FIXME: else, handle operators separately (will catch to many cases)
@@ -515,4 +545,4 @@ private:
 #include BOOST_ABI_SUFFIX
 #endif
 
-#endif // !defined(INSERT_WHITESPACE_DETECTION_HPP_765EF77B_0513_4967_BDD6_6A38148C4C96_INCLUDED)
+#endif // !defined(BOOST_INSERT_WHITESPACE_DETECTION_HPP_765EF77B_0513_4967_BDD6_6A38148C4C96_INCLUDED)

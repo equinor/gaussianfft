@@ -34,6 +34,8 @@
 
     sequence = a possible Boost PP tuple.
 
+  @code
+
     returns  = Normally the macro returns nothing.
 
                If the sequence is a Boost PP tuple, nothing is
@@ -47,6 +49,8 @@
                For all other compilers a compiler error is forced
                without producing output if the sequence is not a
                Boost PP tuple.
+
+  @endcode
 
 */
 
