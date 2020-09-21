@@ -1,5 +1,5 @@
 image:
-  name: "git.equinor.com:4567/sdp/nrlib/nrlib:1.2.5"
+  name: "registry.git.equinor.com/sdp/nrlib/nrlib:1.2.5"
 
 variables:
   GIT_STRATEGY:   "fetch"
