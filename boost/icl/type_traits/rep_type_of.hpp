@@ -13,6 +13,7 @@ Copyright (c) 2008-2009: Joachim Faulhaber
 #include <boost/mpl/or.hpp>
 #include <boost/mpl/and.hpp>
 #include <boost/mpl/not.hpp>
+#include <boost/type_traits/is_same.hpp>
 #include <boost/icl/type_traits/no_type.hpp>
 
 namespace boost{ namespace icl
@@ -35,7 +36,7 @@ namespace boost{ namespace icl
         typedef represents type;
         BOOST_STATIC_CONSTANT(bool,
             value = (mpl::and_< has_rep_type<Type>
-                              , is_same<typename Type::rep, Rep> >::value)
+                              , boost::is_same<typename Type::rep, Rep> >::value)
             );
     };
 
@@ -66,5 +67,3 @@ namespace boost{ namespace icl
 }} // namespace boost icl
 
 #endif
-
-

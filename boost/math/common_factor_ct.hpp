@@ -11,6 +11,9 @@
 #define BOOST_MATH_COMMON_FACTOR_CT_HPP
 
 #include <boost/integer/common_factor_ct.hpp>
+#include <boost/config/header_deprecated.hpp>
+
+BOOST_HEADER_DEPRECATED("<boost/integer/common_factor_ct.hpp>");
 
 namespace boost
 {

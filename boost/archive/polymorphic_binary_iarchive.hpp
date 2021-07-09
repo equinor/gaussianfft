@@ -28,14 +28,14 @@
 namespace boost {
 namespace archive {
 
-class polymorphic_binary_iarchive :
+class BOOST_SYMBOL_VISIBLE polymorphic_binary_iarchive :
     public detail::polymorphic_iarchive_route<binary_iarchive>
 {
 public:
     polymorphic_binary_iarchive(std::istream & is, unsigned int flags = 0) :
         detail::polymorphic_iarchive_route<binary_iarchive>(is, flags)
     {}
-    ~polymorphic_binary_iarchive(){}
+    ~polymorphic_binary_iarchive() BOOST_OVERRIDE {}
 };
 
 } // namespace archive
@@ -51,4 +51,3 @@ BOOST_SERIALIZATION_REGISTER_ARCHIVE(
 )
 
 #endif // BOOST_ARCHIVE_POLYMORPHIC_BINARY_IARCHIVE_HPP
-

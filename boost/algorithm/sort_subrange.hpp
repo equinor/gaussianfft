@@ -22,6 +22,7 @@
 #include <iterator>         // For std::iterator_traits
 #include <algorithm>        // For nth_element and partial_sort
 
+#include <boost/config.hpp>
 #include <boost/range/begin.hpp>
 #include <boost/range/end.hpp>
 
@@ -48,7 +49,7 @@ namespace boost { namespace algorithm {
   	Pred p)
   {
   	if (sub_first == sub_last) return; // the empty sub-range is already sorted.
-  	
+
   	if (sub_first != first) { // sub-range is at the start, don't need to partition
   		(void) std::nth_element(first, sub_first, last, p);
   		++sub_first;
@@ -92,7 +93,7 @@ namespace boost { namespace algorithm {
   		(void) std::nth_element(first, sub_first, last, p);
   		++sub_first;
   		}
-  	
+
   	if (sub_last != last)
   		(void) std::nth_element(sub_first, sub_last, last, p);
   }

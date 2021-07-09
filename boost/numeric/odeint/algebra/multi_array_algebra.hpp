@@ -19,6 +19,8 @@
 #define BOOST_NUMERIC_ODEINT_ALGEBRA_MULTI_ARRAY_ALGEBRA_HPP_DEFINED
 
 
+#include <boost/multi_array.hpp>
+
 #include <boost/numeric/odeint/algebra/detail/for_each.hpp>
 #include <boost/numeric/odeint/algebra/detail/norm_inf.hpp>
 #include <boost/numeric/odeint/algebra/norm_result_type.hpp>
@@ -129,15 +131,11 @@ struct multi_array_algebra
     }
 };
 
-// template< class T , size_t N >
-// struct algebra_dispatcher< boost::array< T , N > >
-// {
-//     typedef array_algebra algebra_type;
-// };
-
-
-
-
+template< class T , size_t N >
+struct algebra_dispatcher< boost::multi_array< T , N > >
+{
+    typedef multi_array_algebra algebra_type;
+};
 
 
 } // namespace odeint

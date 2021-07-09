@@ -1,6 +1,7 @@
 import glob
 import os
 import platform
+import sys
 from distutils.command.register import register as register_orig
 from distutils.command.upload import upload as upload_orig
 from setuptools import Distribution, Extension, find_packages, setup
@@ -120,6 +121,10 @@ def get_library_extension(linking):
         raise ValueError("Invalid linking argument")
 
 
+_python_version = sys.version_info
+_python_version = "{}{}".format(_python_version.major, _python_version.minor)
+boost_libraries = ['boost_python' + _python_version, 'boost_numpy' + _python_version, 'boost_filesystem', 'boost_system']
+
 if platform.system() in ['Linux', 'Darwin']:
     mkl_root = os.getenv('MKL_ROOT') or os.getenv('MKLROOT')
     if mkl_root is None:
@@ -160,7 +165,6 @@ if platform.system() in ['Linux', 'Darwin']:
         linker_args += mkl_libraries
         linker_args += ['-Wl,--end-group']
     linker_args += ['-lpthread', '-lm', '-ldl']
-    boost_libraries = ['boost_python3', 'boost_numpy3', 'boost_filesystem', 'boost_system']
     boost_library_path = os.path.dirname(os.path.realpath(__file__)) + '/stage/lib'
     if linking == 'shared':
         link_libraries += [boost_library_path + '/' + lib_name for lib_name in boost_libraries]
@@ -314,13 +318,13 @@ boost_module = Extension(
         'boost/test',
         'boost/math/special_functions',
     ],
-    libraries=['boost_filesystem', 'boost_numpy3', 'boost_python3', 'boost_system', ]
+    libraries=boost_libraries,
 )
 
 
 setup(
     name=extension_name,
-    version="1.1-r7",
+    version="1.1-r8",
     packages=find_packages(),
     ext_modules=[bp_module, boost_module],
     install_requires=[

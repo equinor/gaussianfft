@@ -206,9 +206,7 @@ celerybeat-schedule
 # Environments
 .env
 .venv
-env/
 venv/
-ENV/
 env.bak/
 venv.bak/
 
@@ -225,7 +223,6 @@ venv.bak/
 # mypy
 .*_cache/
 .idea/
-boost_*
 prog/
 
 b2
@@ -237,6 +234,8 @@ bin.*
 !/libs/filesystem/build
 !/libs/system/build
 !/libs/python/build
+!/libs/headers/build
+!tools/build/src/engine/vswhere_usability_wrapper.cmd
 
 libs/config/checks/architecture/bin
 tools/build/src/engine/bootstrap/jam0

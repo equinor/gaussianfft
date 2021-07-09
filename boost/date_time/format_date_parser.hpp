@@ -272,7 +272,7 @@ class format_date_parser
     while (itr != format_str.end() && (sitr != stream_end)) {
       if (*itr == '%') {
         if ( ++itr == format_str.end())
-        	break;
+          break;
         if (*itr != '%') {
           switch(*itr) {
           case 'a':
@@ -478,7 +478,7 @@ class format_date_parser
     while (itr != format_str.end() && (sitr != stream_end)) {
       if (*itr == '%') {
         if ( ++itr == format_str.end())
-        	break;
+          break;
         if (*itr != '%') {
           switch(*itr) {
           case 'b':
@@ -580,7 +580,7 @@ class format_date_parser
     while (itr != format_str.end() && (sitr != stream_end)) {
       if (*itr == '%') {
         if ( ++itr == format_str.end())
-        	break;
+          break;
         if (*itr != '%') {
           switch(*itr) {
           case 'a':
@@ -659,8 +659,6 @@ class format_date_parser
              string_type format_str,
              match_results& mr) const
   {
-    bool use_current_char = false;
-
     // skip leading whitespace
     while(std::isspace(*sitr) && sitr != stream_end) { ++sitr; }
 
@@ -670,7 +668,7 @@ class format_date_parser
     while (itr != format_str.end() && (sitr != stream_end)) {
       if (*itr == '%') {
         if ( ++itr == format_str.end())
-        	break;
+          break;
         if (*itr != '%') {
           //match_results mr;
           switch(*itr) {
@@ -701,12 +699,7 @@ class format_date_parser
       }
       else {  //skip past chars in format and in buffer
         itr++;
-        if (use_current_char) {
-          use_current_char = false;
-        }
-        else {
-          sitr++;
-        }
+        sitr++;
       }
     }
 

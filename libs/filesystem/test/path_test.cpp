@@ -50,6 +50,7 @@
 #endif
 
 #include <boost/filesystem/operations.hpp>
+#include <boost/filesystem/exception.hpp>
 
 #include <boost/config.hpp>
 # if defined( BOOST_NO_STD_WSTRING )
@@ -57,13 +58,14 @@
 # endif
 
 #include <boost/utility.hpp>
+#include <boost/next_prior.hpp>
 #include <iostream>
 #include <sstream>
 #include <string>
 #include <vector>
 #include <cstring>
 #include <cassert>
-#include <boost/detail/lightweight_test.hpp>
+#include <boost/core/lightweight_test.hpp>
 #include <boost/detail/lightweight_main.hpp>
 
 namespace fs = boost::filesystem;
@@ -1933,6 +1935,12 @@ namespace
     }
   }
 
+  inline void odr_use(const path::value_type& c)
+  {
+    static const path::value_type dummy = '\0';
+    BOOST_TEST(&c != &dummy);
+  }
+
 } // unnamed namespace
 
 static boost::filesystem::path ticket_6737 = "FilePath";  // #6737 reported this crashed
@@ -2027,6 +2035,12 @@ int cpp_main(int, char*[])
   BOOST_TEST(round_trip.string() == "foo/bar");
   std::cout << round_trip.string() << "..." << round_trip << " complete\n";
 # endif
+
+  // Check that path constants have definitions
+  // https://svn.boost.org/trac10/ticket/12759
+  odr_use(path::separator);
+  odr_use(path::preferred_separator);
+  odr_use(path::dot);
 
   return ::boost::report_errors();
 }

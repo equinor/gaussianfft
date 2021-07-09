@@ -65,10 +65,10 @@ protected:
         basic_text_oprimitive<std::ostream>::save(t);
     }
     void save(const version_type & t){
-        save(static_cast<const unsigned int>(t));
+        save(static_cast<unsigned int>(t));
     }
     void save(const boost::serialization::item_version_type & t){
-        save(static_cast<const unsigned int>(t));
+        save(static_cast<unsigned int>(t));
     }
     BOOST_ARCHIVE_DECL void
     save(const char * t);
@@ -86,14 +86,14 @@ protected:
     text_oarchive_impl(std::ostream & os, unsigned int flags);
     // don't import inline definitions! leave this as a reminder.
     //BOOST_ARCHIVE_DECL
-    ~text_oarchive_impl(){};
+    ~text_oarchive_impl() BOOST_OVERRIDE {}
 public:
     BOOST_ARCHIVE_DECL void
     save_binary(const void *address, std::size_t count);
 };
 
 // do not derive from this class.  If you want to extend this functionality
-// via inhertance, derived from text_oarchive_impl instead.  This will
+// via inheritance, derived from text_oarchive_impl instead.  This will
 // preserve correct static polymorphism.
 class BOOST_SYMBOL_VISIBLE text_oarchive :
     public text_oarchive_impl<text_oarchive>
@@ -102,8 +102,11 @@ public:
     text_oarchive(std::ostream & os_, unsigned int flags = 0) :
         // note: added _ to suppress useless gcc warning
         text_oarchive_impl<text_oarchive>(os_, flags)
-    {}
-    ~text_oarchive(){}
+    {
+        if(0 == (flags & no_header))
+            init();
+    }
+    ~text_oarchive() BOOST_OVERRIDE {}
 };
 
 } // namespace archive

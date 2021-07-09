@@ -17,12 +17,14 @@
 
 #include <boost/assign/list_inserter.hpp>
 #include <boost/config.hpp>
+#include <boost/move/utility.hpp>
 #include <vector>
 
 namespace boost
 {
 namespace assign
 {
+#if defined(BOOST_NO_CXX11_RVALUE_REFERENCES)
 
     template< class V, class A, class V2 >
     inline list_inserter< assign_detail::call_push_back< std::vector<V,A> >, V >
@@ -31,6 +33,16 @@ namespace assign
         return push_back( c )( v );
     }
 
+#else
+
+    template< class V, class A, class V2 >
+    inline list_inserter< assign_detail::call_push_back< std::vector<V, A> >, V >
+    operator+=( std::vector<V, A>& c, V2&& v )
+    {
+        return push_back( c )( std::forward<V2>(v) );
+    }
+
+#endif
 }
 }
 

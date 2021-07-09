@@ -94,7 +94,7 @@ protected:
     }
     BOOST_WARCHIVE_DECL
     text_wiarchive_impl(std::wistream & is, unsigned int flags);
-    ~text_wiarchive_impl(){};
+    ~text_wiarchive_impl() BOOST_OVERRIDE {}
 };
 
 } // namespace archive
@@ -119,8 +119,11 @@ class BOOST_SYMBOL_VISIBLE text_wiarchive :
 public:
     text_wiarchive(std::wistream & is, unsigned int flags = 0) :
         text_wiarchive_impl<text_wiarchive>(is, flags)
-    {}
-    ~text_wiarchive(){}
+    {
+        if(0 == (flags & no_header))
+            init();
+    }
+    ~text_wiarchive() BOOST_OVERRIDE {}
 };
 
 } // namespace archive

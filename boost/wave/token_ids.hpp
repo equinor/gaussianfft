@@ -10,8 +10,8 @@
     LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 =============================================================================*/
 
-#if !defined(TOKEN_IDS_HPP_414E9A58_F079_4789_8AFF_513815CE475B_INCLUDED)
-#define TOKEN_IDS_HPP_414E9A58_F079_4789_8AFF_513815CE475B_INCLUDED
+#if !defined(BOOST_TOKEN_IDS_HPP_414E9A58_F079_4789_8AFF_513815CE475B_INCLUDED)
+#define BOOST_TOKEN_IDS_HPP_414E9A58_F079_4789_8AFF_513815CE475B_INCLUDED
 
 #include <string>
 
@@ -44,35 +44,36 @@ namespace wave {
 ///////////////////////////////////////////////////////////////////////////////
 //  the token_category helps to classify the different token types
 enum token_category {
-    IdentifierTokenType         = 0x10080000,
-    ParameterTokenType          = 0x11080000,
-    ExtParameterTokenType       = 0x11180000,
-    KeywordTokenType            = 0x20080000,
-    OperatorTokenType           = 0x30080000,
-    LiteralTokenType            = 0x40080000,
-    IntegerLiteralTokenType     = 0x41080000,
-    FloatingLiteralTokenType    = 0x42080000,
-    StringLiteralTokenType      = 0x43080000,
-    CharacterLiteralTokenType   = 0x44080000,
-    BoolLiteralTokenType        = 0x45080000,
-    PPTokenType                 = 0x50080000,
-    PPConditionalTokenType      = 0x50880000,
+    IdentifierTokenType         = 0x08040000,
+    ParameterTokenType          = 0x08840000,
+    ExtParameterTokenType       = 0x088C0000,
+    OptParameterTokenType       = 0x08940000,
+    KeywordTokenType            = 0x10040000,
+    OperatorTokenType           = 0x18040000,
+    LiteralTokenType            = 0x20040000,
+    IntegerLiteralTokenType     = 0x20840000,
+    FloatingLiteralTokenType    = 0x21040000,
+    StringLiteralTokenType      = 0x21840000,
+    CharacterLiteralTokenType   = 0x22040000,
+    BoolLiteralTokenType        = 0x22840000,
+    PPTokenType                 = 0x28040000,
+    PPConditionalTokenType      = 0x28440000,
 
-    UnknownTokenType            = 0xA0000000,
-    EOLTokenType                = 0xB0000000,
-    EOFTokenType                = 0xC0000000,
-    WhiteSpaceTokenType         = 0xD0000000,
-    InternalTokenType           = 0xE0080000,
+    UnknownTokenType            = 0x50000000,
+    EOLTokenType                = 0x58000000,
+    EOFTokenType                = 0x60000000,
+    WhiteSpaceTokenType         = 0x68000000,
+    InternalTokenType           = 0x70040000,
 
-    TokenTypeMask               = 0xFF000000,
-    AltTokenType                = 0x00100000,
-    TriGraphTokenType           = 0x00200000,
-    AltExtTokenType             = 0x00500000,   // and, bit_and etc.
-    PPTokenFlag                 = 0x00080000,   // these are 'real' pp-tokens
-    ExtTokenTypeMask            = 0xFFF00000,
-    ExtTokenOnlyMask            = 0x00F00000,
-    TokenValueMask              = 0x000FFFFF,
-    MainTokenMask               = 0xFF0FFFFF    // TokenTypeMask|TokenValueMask
+    TokenTypeMask               = 0x7F800000,
+    AltTokenType                = 0x00080000,
+    TriGraphTokenType           = 0x00100000,
+    AltExtTokenType             = 0x00280000,   // and, bit_and etc.
+    PPTokenFlag                 = 0x00040000,   // these are 'real' pp-tokens
+    ExtTokenTypeMask            = 0x7FF80000,
+    ExtTokenOnlyMask            = 0x00780000,
+    TokenValueMask              = 0x0007FFFF,
+    MainTokenMask               = 0x7F87FFFF    // TokenTypeMask|TokenValueMask
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -303,13 +304,16 @@ enum token_id {
     T_LAST_TOKEN_ID,
     T_LAST_TOKEN = ID_FROM_TOKEN(T_LAST_TOKEN_ID & ~PPTokenFlag),
 
+    T_UNKNOWN_UNIVERSALCHAR = TOKEN_FROM_ID('\\', UnknownTokenType),
+
 // pseudo tokens to help streamlining macro replacement, these should not
 // returned from the lexer nor should these be returned from the pp-iterator
     T_NONREPLACABLE_IDENTIFIER = TOKEN_FROM_ID(T_LAST_TOKEN+1, IdentifierTokenType),
     T_PLACEHOLDER = TOKEN_FROM_ID(T_LAST_TOKEN+2, WhiteSpaceTokenType),
     T_PLACEMARKER = TOKEN_FROM_ID(T_LAST_TOKEN+3, InternalTokenType),
     T_PARAMETERBASE = TOKEN_FROM_ID(T_LAST_TOKEN+4, ParameterTokenType),
-    T_EXTPARAMETERBASE = TOKEN_FROM_ID(T_LAST_TOKEN+4, ExtParameterTokenType)
+    T_EXTPARAMETERBASE = TOKEN_FROM_ID(T_LAST_TOKEN+4, ExtParameterTokenType),
+    T_OPTPARAMETERBASE = TOKEN_FROM_ID(T_LAST_TOKEN+4, OptParameterTokenType)
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -374,5 +378,5 @@ char const *get_token_value(token_id tokid);
 #include BOOST_ABI_SUFFIX
 #endif
 
-#endif // !defined(TOKEN_IDS_HPP_414E9A58_F079_4789_8AFF_513815CE475B_INCLUDED)
+#endif // !defined(BOOST_TOKEN_IDS_HPP_414E9A58_F079_4789_8AFF_513815CE475B_INCLUDED)
 

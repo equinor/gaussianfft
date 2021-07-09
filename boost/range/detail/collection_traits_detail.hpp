@@ -12,6 +12,8 @@
 
 #include <cstddef>
 #include <string>
+#include <utility>
+#include <iterator>
 #include <boost/type_traits/is_array.hpp>
 #include <boost/type_traits/is_pointer.hpp>
 #include <boost/type_traits/is_const.hpp>
@@ -22,7 +24,6 @@
 #include <boost/mpl/identity.hpp>
 #include <boost/mpl/vector.hpp>
 #include <boost/mpl/fold.hpp>
-#include <boost/detail/iterator.hpp>
 
 // Container traits implementation ---------------------------------------------------------
 
@@ -63,8 +64,6 @@ namespace boost {
                     return c.empty();
                 }
 
-#ifndef BOOST_NO_FUNCTION_TEMPLATE_ORDERING
-
                 template< typename C >
                 static iterator begin( C& c )
                 {
@@ -88,22 +87,6 @@ namespace boost {
                 {
                     return c.end();
                 }
-
-#else // BOOST_NO_FUNCTION_TEMPLATE_ORDERING
-
-                template< typename C >
-                static result_iterator begin( C& c )
-                {
-                    return c.begin();
-                }
-
-                template< typename C >
-                static result_iterator end( C& c )
-                {
-                    return c.end();
-                }
-
-#endif // BOOST_NO_FUNCTION_TEMPLATE_ORDERING
 
             };
 
@@ -138,11 +121,11 @@ namespace boost {
             {
                 typedef typename PairT::first_type element_type;
 
-                typedef typename ::boost::detail::
-                    iterator_traits<element_type>::value_type value_type;
+                typedef typename
+                    std::iterator_traits<element_type>::value_type value_type;
                 typedef std::size_t size_type;
-                typedef typename ::boost::detail::
-                    iterator_traits<element_type>::difference_type difference_type;
+                typedef typename
+                    std::iterator_traits<element_type>::difference_type difference_type;
 
                 typedef element_type iterator;
                 typedef element_type const_iterator;
@@ -347,8 +330,6 @@ namespace boost {
                 }
 
 
-#ifndef BOOST_NO_FUNCTION_TEMPLATE_ORDERING
-
                 template< typename A >
                 static iterator begin( A& a )
                 {
@@ -372,22 +353,6 @@ namespace boost {
                 {
                     return a+array_length_type::length(a);
                 }
-
-#else // BOOST_NO_FUNCTION_TEMPLATE_ORDERING
-
-                template< typename A >
-                static result_iterator begin( A& a )
-                {
-                    return a;
-                }
-
-                template< typename A >
-                static result_iterator end( A& a )
-                {
-                    return a+array_length_type::length(a);
-                }
-
-#endif // BOOST_NO_FUNCTION_TEMPLATE_ORDERING
 
             };
 
@@ -436,8 +401,6 @@ namespace boost {
                     return p==0 || p[0]==0;
                 }
 
-#ifndef BOOST_NO_FUNCTION_TEMPLATE_ORDERING
-
                 template< typename P >
                 static iterator begin( P& p )
                 {
@@ -468,24 +431,6 @@ namespace boost {
                         return p+char_traits::length(p);
                 }
 
-#else // BOOST_NO_FUNCTION_TEMPLATE_ORDERING
-
-                template< typename P >
-                static result_iterator begin( P& p )
-                {
-                    return p;
-                }
-
-                template< typename P >
-                static result_iterator end( P& p )
-                {
-                    if ( p==0 )
-                        return p;
-                    else
-                        return p+char_traits::length(p);
-                }
-
-#endif // BOOST_NO_FUNCTION_TEMPLATE_ORDERING
             };
 
             template<typename T>

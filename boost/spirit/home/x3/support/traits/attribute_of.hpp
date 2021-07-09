@@ -49,7 +49,6 @@ namespace boost { namespace spirit { namespace x3 { namespace traits
 
     template <typename Component, typename Context, typename Enable>
     struct attribute_of : detail::default_attribute_of<Component, Context> {};
-
 }}}}
 
 #endif

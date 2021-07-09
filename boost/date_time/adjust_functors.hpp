@@ -23,17 +23,12 @@ namespace date_time {
   public:
     typedef typename date_type::duration_type duration_type;
     day_functor(int f) : f_(f) {}
-    duration_type get_offset(const date_type& d) const
+    duration_type get_offset(const date_type&) const
     {
-      // why is 'd' a parameter???
-      // fix compiler warnings
-      d.year();
       return duration_type(f_);
     }
-    duration_type get_neg_offset(const date_type& d) const
+    duration_type get_neg_offset(const date_type&) const
     {
-      // fix compiler warnings
-      d.year();
       return duration_type(-f_);
     }
   private:
@@ -71,11 +66,9 @@ namespace date_time {
         }
       }
       typedef date_time::wrapping_int2<short,1,12> wrap_int2;
-      typedef typename wrap_int2::int_type int_type;
       wrap_int2 wi(ymd.month);
       //calc the year wrap around, add() returns 0 or 1 if wrapped
-      int_type year = wi.add(static_cast<int_type>(f_));
-      year = static_cast<int_type>(year + ymd.year); //calculate resulting year
+      const typename ymd_type::year_type year(static_cast<typename ymd_type::year_type::value_type>(ymd.year + wi.add(f_)));
 //       std::cout << "trace wi: " << wi.as_int() << std::endl;
 //       std::cout << "trace year: " << year << std::endl;
       //find the last day for the new month
@@ -102,11 +95,9 @@ namespace date_time {
         }
       }
       typedef date_time::wrapping_int2<short,1,12> wrap_int2;
-      typedef typename wrap_int2::int_type int_type;
       wrap_int2 wi(ymd.month);
       //calc the year wrap around, add() returns 0 or 1 if wrapped
-      int_type year = wi.subtract(static_cast<int_type>(f_));
-      year = static_cast<int_type>(year + ymd.year); //calculate resulting year
+      const typename ymd_type::year_type year(static_cast<typename ymd_type::year_type::value_type>(ymd.year + wi.subtract(f_)));
       //find the last day for the new month
       day_type resultingEndOfMonthDay(cal_type::end_of_month_day(year, wi.as_int()));
       //original was the end of month -- force to last day of month
@@ -133,18 +124,13 @@ namespace date_time {
     typedef typename date_type::duration_type duration_type;
     typedef typename date_type::calendar_type calendar_type;
     week_functor(int f) : f_(f) {}
-    duration_type get_offset(const date_type& d) const
+    duration_type get_offset(const date_type&) const
     {
-      // why is 'd' a parameter???
-      // fix compiler warnings
-      d.year();
-      return duration_type(f_*calendar_type::days_in_week());
+      return duration_type(f_*static_cast<int>(calendar_type::days_in_week()));
     }
-    duration_type get_neg_offset(const date_type& d) const
+    duration_type get_neg_offset(const date_type&) const
     {
-      // fix compiler warnings
-      d.year();
-      return duration_type(-f_*calendar_type::days_in_week());
+      return duration_type(-f_*static_cast<int>(calendar_type::days_in_week()));
     }
   private:
     int f_;

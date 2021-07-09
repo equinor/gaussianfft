@@ -12,7 +12,7 @@
 #endif
 
 #include <boost/math/tools/polynomial.hpp>
-#include <boost/math/common_factor_rt.hpp>
+#include <boost/integer/common_factor_rt.hpp>
 #include <boost/type_traits/is_pod.hpp>
 
 
@@ -44,7 +44,7 @@ namespace math{ namespace tools{
 *
 * We may write any nonzero polynomial u(x) from R[x] where R is a UFD as
 *
-*      u(x) = cont(u) · pp(u(x))
+*      u(x) = cont(u) . pp(u(x))
 *
 * where cont(u), the content of u, is an element of S, and pp(u(x)), the primitive
 * part of u(x), is a primitive polynomial over S.
@@ -54,7 +54,7 @@ namespace math{ namespace tools{
 template <class T>
 T content(polynomial<T> const &x)
 {
-    return x ? gcd_range(x.data().begin(), x.data().end()).first : T(0);
+    return x ? boost::integer::gcd_range(x.data().begin(), x.data().end()).first : T(0);
 }
 
 // Knuth, 4.6.1
@@ -88,7 +88,7 @@ namespace detail
     template <class T>
     T reduce_to_primitive(polynomial<T> &u, polynomial<T> &v)
     {
-        using boost::math::gcd;
+        using boost::integer::gcd;
         T const u_cont = content(u), v_cont = content(v);
         u /= u_cont;
         v /= v_cont;

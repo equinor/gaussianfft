@@ -101,7 +101,7 @@ protected:
     BOOST_ARCHIVE_DECL
     xml_iarchive_impl(std::istream & is, unsigned int flags);
     BOOST_ARCHIVE_DECL
-    ~xml_iarchive_impl();
+    ~xml_iarchive_impl() BOOST_OVERRIDE;
 };
 
 } // namespace archive
@@ -125,8 +125,11 @@ class BOOST_SYMBOL_VISIBLE xml_iarchive :
 public:
     xml_iarchive(std::istream & is, unsigned int flags = 0) :
         xml_iarchive_impl<xml_iarchive>(is, flags)
-    {}
-    ~xml_iarchive(){};
+    {
+        if(0 == (flags & no_header))
+            init();
+    }
+    ~xml_iarchive() BOOST_OVERRIDE {}
 };
 
 } // namespace archive

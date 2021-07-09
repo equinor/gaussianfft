@@ -1,4 +1,4 @@
-#ifndef  BOOST_SERIALIZATION_VOID_CAST_HPP
+#ifndef BOOST_SERIALIZATION_VOID_CAST_HPP
 #define BOOST_SERIALIZATION_VOID_CAST_HPP
 
 // MS compatible compilers support #pragma once
@@ -27,6 +27,7 @@
 #include <boost/serialization/type_info_implementation.hpp>
 #include <boost/serialization/extended_type_info.hpp>
 #include <boost/type_traits/is_virtual_base_of.hpp>
+#include <boost/type_traits/aligned_storage.hpp>
 #include <boost/serialization/void_cast_fwd.hpp>
 
 #include <boost/serialization/config.hpp>
@@ -121,7 +122,7 @@ public:
     // member extended type info records - NOT their
     // addresses.  This is necessary in order for the
     // void cast operations to work across dll and exe
-    // module boundries.
+    // module boundaries.
     bool operator<(const void_caster & rhs) const;
 
     const void_caster & operator*(){
@@ -154,26 +155,35 @@ template <class Derived, class Base>
 class BOOST_SYMBOL_VISIBLE void_caster_primitive :
     public void_caster
 {
-    virtual void const * downcast(void const * const t) const {
+    void const * downcast(void const * const t) const BOOST_OVERRIDE {
         const Derived * d =
             boost::serialization::smart_cast<const Derived *, const Base *>(
                 static_cast<const Base *>(t)
             );
         return d;
     }
-    virtual void const * upcast(void const * const t) const {
+    void const * upcast(void const * const t) const BOOST_OVERRIDE {
         const Base * b =
             boost::serialization::smart_cast<const Base *, const Derived *>(
                 static_cast<const Derived *>(t)
             );
         return b;
     }
-    virtual bool has_virtual_base() const {
+    bool has_virtual_base() const BOOST_OVERRIDE {
         return false;
     }
 public:
     void_caster_primitive();
-    virtual ~void_caster_primitive();
+    ~void_caster_primitive() BOOST_OVERRIDE;
+
+private:
+    static std::ptrdiff_t base_offset() {
+        typename boost::aligned_storage<sizeof(Derived)>::type data;
+        return reinterpret_cast<char*>(&data)
+             - reinterpret_cast<char*>(
+                   static_cast<Base*>(
+                       reinterpret_cast<Derived*>(&data)));
+    }
 };
 
 template <class Derived, class Base>
@@ -181,13 +191,7 @@ void_caster_primitive<Derived, Base>::void_caster_primitive() :
     void_caster(
         & type_info_implementation<Derived>::type::get_const_instance(),
         & type_info_implementation<Base>::type::get_const_instance(),
-        // note:I wanted to displace from 0 here, but at least one compiler
-        // treated 0 by not shifting it at all.
-        reinterpret_cast<std::ptrdiff_t>(
-            static_cast<Derived *>(
-                reinterpret_cast<Base *>(8)
-            )
-        ) - 8
+        base_offset()
     )
 {
     recursive_register();
@@ -202,18 +206,18 @@ template <class Derived, class Base>
 class BOOST_SYMBOL_VISIBLE void_caster_virtual_base :
     public void_caster
 {
-    virtual bool has_virtual_base() const {
+    bool has_virtual_base() const BOOST_OVERRIDE {
         return true;
     }
 public:
-    virtual void const * downcast(void const * const t) const {
+    void const * downcast(void const * const t) const BOOST_OVERRIDE {
         const Derived * d =
             dynamic_cast<const Derived *>(
                 static_cast<const Base *>(t)
             );
         return d;
     }
-    virtual void const * upcast(void const * const t) const {
+    void const * upcast(void const * const t) const BOOST_OVERRIDE {
         const Base * b =
             dynamic_cast<const Base *>(
                 static_cast<const Derived *>(t)
@@ -221,7 +225,7 @@ public:
         return b;
     }
     void_caster_virtual_base();
-    virtual ~void_caster_virtual_base();
+    ~void_caster_virtual_base() BOOST_OVERRIDE;
 };
 
 #ifdef BOOST_MSVC

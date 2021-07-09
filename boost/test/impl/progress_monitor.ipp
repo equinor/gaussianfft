@@ -121,8 +121,12 @@ progress_monitor_impl& s_pm_impl() { static progress_monitor_impl the_inst; retu
 
 //____________________________________________________________________________//
 
+BOOST_TEST_SINGLETON_CONS_IMPL(progress_monitor_t)
+
+//____________________________________________________________________________//
+
 void
-progress_monitor_t::test_start( counter_t test_cases_amount )
+progress_monitor_t::test_start( counter_t test_cases_amount, test_unit_id )
 {
     s_pm_impl().m_color_output = runtime_config::get<bool>( runtime_config::btrt_color_output );
 
