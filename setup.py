@@ -1,11 +1,18 @@
 import glob
 import os
 import platform
+import re
 import sys
 from distutils.command.register import register as register_orig
 from distutils.command.upload import upload as upload_orig
+from pathlib import Path
+from typing import Iterable
+
 from setuptools import Distribution, Extension, find_packages, setup
 from warnings import warn
+
+from bin.find_lowest_supported_numpy import get_minimum_supported_numpy_version
+
 
 """ Installation Instructions """
 # Linux:
@@ -128,9 +135,18 @@ boost_libraries = ['boost_python' + _python_version, 'boost_numpy' + _python_ver
 if platform.system() in ['Linux', 'Darwin']:
     mkl_root = os.getenv('MKL_ROOT') or os.getenv('MKLROOT')
     if mkl_root is None:
+        default = '/opt/intel/oneapi/mkl/latest'
+        if Path(default).exists():
+            mkl_root = default
+
+    if mkl_root is None:
         raise RuntimeError(
             "The environment variables MKL_ROOT, or MKLROOT is not defined. "
             "MKL headers and libraries are required."
+            "\nSee "
+            "https://software.intel.com/content/www/us/en/develop/documentation/"
+            "installation-guide-for-intel-oneapi-toolkits-linux/top/installation.html"
+            " for instructions on how to install Intel's OneAPI, which includes MKL."
         )
     linking = os.getenv('NRLIB_LINKING')
     if linking not in ['static', 'shared']:
@@ -267,59 +283,115 @@ bp_module = Extension(
     language='c++'
 )
 
+
+def collect_sources(from_source_files: Iterable[str]):
+    files = set()
+
+    src = Path('src')
+    root = Path('.').absolute()
+    files_to_be_inspected = set(Path(file) for file in from_source_files)
+
+    def add_if_necessary(file):
+        if file not in files and file not in files_to_be_inspected:
+            files_to_be_inspected.add(file)
+
+    while len(files_to_be_inspected) > 0:
+        file = files_to_be_inspected.pop().resolve().relative_to(root)
+        name = str(file)
+        if name in files:
+            continue
+
+        pattern = re.compile(r'^ *# *include *[<"](?P<name>.*)[">]', re.IGNORECASE)
+
+        try:
+            with file.open(encoding='utf8') as f:
+                for line in f.readlines():
+                    match = pattern.search(line)
+                    if match:
+                        item = Path(match.group('name'))
+                        if (file.parent / item).is_file():
+                            add_if_necessary(file.parent / item)
+                        elif item.is_file():
+                            add_if_necessary(item)
+                        elif (src / item).is_file():
+                            add_if_necessary(src / item)
+                        else:
+                            pass
+                            # print(file, item)
+        except UnicodeDecodeError:
+            print(f"'{name}' could not be opened / decoded as a text file. It's been ignored")
+
+        files.add(name)
+
+    return list(files)
+
+
+def get_source_files_in(directory):
+    return [str(file) for file in Path(directory).glob('**/*') if file.is_file()]
+
+
 boost_module = Extension(
     extension_name,
-    sources=[
-        'src/gaussfft.cpp',
-        'src/gaussfftinterface.cpp',
-        'src/gaussfftinterface.cpp',
-        'src/gaussfftinterface.cpp',
-        'src/nrlib/geometry/unittests/box_test.cpp',
-        'src/nrlib/geometry/unittests/interpolation_test.cpp',
-        'src/nrlib/geometry/unittests/line_test.cpp',
-        'src/nrlib/iotools/bigfile.hpp',
-        'src/nrlib/iotools/fileio.cpp',
-        'src/nrlib/iotools/fileio.hpp',
-        'src/nrlib/iotools/stringtools.cpp',
-        'src/nrlib/iotools/unittests/bigfile_test.cpp',
-        'src/nrlib/iotools/unittests/bigfile_test.cpp',
-        'src/nrlib/iotools/unittests/fileio_binaryreadwrite_test.cpp',
-        'src/nrlib/iotools/unittests/fileio_binaryreadwrite_test.cpp',
-        'src/nrlib/iotools/unittests/fileio_binaryreadwrite_test.cpp',
-        'src/nrlib/iotools/unittests/fileio_parsefrombuffer_test.cpp',
-        'src/nrlib/iotools/unittests/fileio_parsefrombuffer_test.cpp',
-        'src/nrlib/iotools/unittests/fileio_parsefrombuffer_test.cpp',
-        'src/nrlib/iotools/unittests/fileio_writetobuffer_test.cpp',
-        'src/nrlib/iotools/unittests/fileio_writetobuffer_test.cpp',
-        'src/nrlib/iotools/unittests/stringtools_test.cpp',
-        'src/nrlib/pchheader.hpp',
-        'src/nrlib/segy/unittests/segy_findformat_test.cpp',
-        'src/nrlib/segy/unittests/segy_findformat_test.cpp',
-        'src/nrlib/segy/unittests/segygeometry_line_test.cpp',
-        'src/nrlib/segy/unittests/segygeometry_test.cpp',
-        'src/nrlib/segy/unittests/segyio_test.cpp',
-        'src/nrlib/segy/unittests/segyio_test.cpp',
-        'src/nrlib/statistics/unittests/kriging_test.cpp',
-        'src/nrlib/variogram/unittests/fftcovgrid_test.cpp',
-        'src/nrlib/variogram/unittests/gaussianfield_test.cpp',
-        'src/nrlib/well/unittests/laswell_test.cpp',
-        'src/nrlib/well/unittests/laswell_test.cpp',
-        'src/nrlib/well/unittests/norsarwell_test.cpp',
-        'src/nrlib/well/unittests/norsarwell_test.cpp',
-        'src/nrlib/well/unittests/rmswell_test.cpp',
-        'src/nrlib/well/unittests/rmswell_test.cpp',
-    ],
+    sources=(
+            collect_sources(all_source_files)
+            # Needed for compiling the boost modules
+            + [
+                'bootstrap.sh',
+                'Makefile',
+                'boost-build.jam',
+                'Jamroot',
+                'boostcpp.jam',
+            ]
+            + get_source_files_in('tools')
+            + collect_sources(get_source_files_in('libs'))
+            # Some files seem to be defined dynamically, and thus not reachable to the `get_source_files_in` method
+            + get_source_files_in('boost/preprocessor/iteration/detail')
+            + get_source_files_in('boost/preprocessor')
+            + get_source_files_in('boost/function/detail')
+            + get_source_files_in('boost/mpl/aux_/preprocessed')
+            + get_source_files_in('boost/mpl/vector/aux_/preprocessed')
+            + get_source_files_in('boost/python')
+            + get_source_files_in('boost/graph')
+    ),
     include_dirs=[
+        'libs',
         'boost',
+        'boost/filesystem',
+        'boost/detail',
         'boost/python',
         'boost/python/suite/indexing',
         'boost/test',
         'boost/endian',
-        'boost/test',
         'boost/math/special_functions',
     ],
     libraries=boost_libraries,
 )
+
+
+def compile_boost_modules_if_necessary():
+    stage = Path('stage/lib')
+    if (
+            not stage.exists()
+            or not all((stage / f"lib{library}.a").exists() for library in boost_libraries)
+    ):
+        import subprocess
+
+        subprocess.run(
+            ['make _build-boost-python'],
+            env=dict(
+                os.environ,
+                **{
+                    'PYTHON': sys.executable,
+                    'VIRTUAL_PYTHON': sys.executable,
+                    'LC_ALL': 'en_US.utf8',
+                }
+            ),
+            shell=True,
+            check=True,
+        )
+
+
+compile_boost_modules_if_necessary()
 
 
 setup(
@@ -328,7 +400,7 @@ setup(
     packages=find_packages(),
     ext_modules=[bp_module, boost_module],
     install_requires=[
-        'numpy>=1.10.4',
+        f'numpy>={get_minimum_supported_numpy_version()}',
     ],
     include_package_data=True,
     license='LICENSE.txt',

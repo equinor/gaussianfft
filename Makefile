@@ -43,20 +43,41 @@ DOCKERFILE := $(CODE_DIR)/Dockerfile
 
 PIPENV_TO_BE_INSTALLED := pipenv
 
-PYTHON ?= $(shell which python)
+PYTHON ?= $(shell which python3)
 PIP ?= $(PYTHON) -m pip --proxy "$(HTTPS_PROXY)"
 PIPENV ?= $(PYTHON) -m pipenv
 RUN ?= $(PIPENV) run
 PY.TEST ?= $(RUN) python -m pytest
+PIP_INSTALL := $(PIPENV) install --ignore-pipfile --skip-lock
 VIRTUAL_PYTHON ?= $(shell $(PIPENV) --venv)/bin/python
-MINIMUM_NUMPY_VERSION := 1.10.4
+MINIMUM_NUMPY_VERSION ?= $(shell $(VIRTUAL_PYTHON) $(CODE_DIR)/bin/find_lowest_supported_numpy.py)
 
-DISTRIBUTION_DIR ?= $(CODE_DIR)/dist
+ifeq ($(OS),Windows_NT)
+    detected_OS := Windows
+else
+    detected_OS := $(shell uname -s)
+endif
 
 NRLIB_LINKING ?= static
 
 PYPI_SERVER ?= http://pypi.aps.equinor.com:8080
 PYPI_NAME := statoil
+
+define PYPROJECT_TOML
+[build-system]
+requires = [
+    "setuptools>=42",
+    "wheel",
+    # We use the oldest compatible version, to make life easier with Emerson RMS
+    # If we use a newer version, the compilation of Boost.Python, will cause the module to crach
+    # (segmentation fault) when imported
+    "numpy==$(MINIMUM_NUMPY_VERSION)",
+    "mkl-devel",
+    "mkl-static",
+]
+build-backend = "setuptools.build_meta"
+endef
+export PYPROJECT_TOML
 
 define PYPIRC
 [distutils]
@@ -112,15 +133,36 @@ upload: pypirc
 pypirc:
 	echo "$$PYPIRC" > $(CODE_DIR)/.pypirc
 
+pyproject.toml:
+	echo "$$PYPROJECT_TOML" > $(CODE_DIR)/pyproject.toml
+
 build-wheel: build
 	$(VIRTUAL_PYTHON) $(SETUP.PY) bdist_wheel --dist-dir $(DISTRIBUTION_DIR)
 
-build: build-boost-python
+build-sdist: setup-virtual-environment boost pyproject.toml
+	$(PIP_INSTALL) build
+	PYTHONPATH=$(CODE_DIR):$(PYTHONPATH) \
+	$(VIRTUAL_PYTHON) -m build --sdist
+
+build: setup-virtual-environment boost pyproject.toml
+	$(PIP_INSTALL) build
 	NRLIB_LINKING=$(NRLIB_LINKING) \
 	CXXFLAGS="-fPIC -fpermissive" \
-	$(VIRTUAL_PYTHON) $(SETUP.PY) build_ext --inplace build
+	PYTHONPATH=$(CODE_DIR):$(PYTHONPATH) \
+	$(VIRTUAL_PYTHON) -m build
 
-build-boost-python: setup-virtual-environment boost install-numpy
+ifeq ($(detected_OS),Linux)
+	# Format wheels to be compatible with PEP 600, PEP 513, PEP 571, and/or PEP 599
+	$(PIP_INSTALL) auditwheel
+	for wheel in $(CODE_DIR)/dist/$(NAME)-*.whl ; do \
+	    $(VIRTUAL_PYTHON) -m auditwheel repair $$wheel ; \
+	done
+endif
+
+
+build-boost-python: setup-virtual-environment boost _build-boost-python
+
+_build-boost-python:
 	CODE_DIR=$(CODE_DIR) \
 	  $(CODE_DIR)/bootstrap.sh \
 	                   --prefix=$(shell pwd)/build \
@@ -180,9 +222,6 @@ clean-boost:
 	       $(CODE_DIR)/project-config.jam* \
 	       $(CODE_DIR)/boost_source_files.txt
 
-install-numpy:
-	$(VIRTUAL_PYTHON) -c 'import numpy' || $(PIPENV) install 'numpy==$(MINIMUM_NUMPY_VERSION)' $(SKIP_LOCKING)
-
 clean:
 	cd $(CODE_DIR) && \
 	rm -rf build \
@@ -195,4 +234,7 @@ clean:
 	       bjam \
 	       bootstrap.log \
 	       .pypirc \
+	       boost_source_files.txt \
+	       .numpy.json \
+	       pyproject.toml \
 	       *.so
