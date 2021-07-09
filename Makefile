@@ -1,8 +1,4 @@
 NAME = nrlib
-VERSION = $(shell ./bin/find-version-of-docker-image.sh)
-DOCKER_REGISTRY_SERVER = git.equinor.com:4567
-DOCKER_REGISTRY = $(DOCKER_REGISTRY_SERVER)/sdp/nrlib
-IMAGE_NAME = $(DOCKER_REGISTRY)/$(NAME):$(VERSION)
 
 EMPTY :=
 
@@ -38,8 +34,6 @@ SETUP.PY := $(CODE_DIR)/setup.py
 BOOST_VERSION ?= 1.76.0
 BOOST_DIR := $(CODE_DIR)/sources/boost/$(BOOST_VERSION)
 BOOST_ARCHIVE := $(BOOST_DIR).tar.gz
-
-DOCKERFILE := $(CODE_DIR)/Dockerfile
 
 PIPENV_TO_BE_INSTALLED := pipenv
 
@@ -92,15 +86,6 @@ endef
 export PYPIRC
 
 .PHONY: all tests clean build
-
-docker-image:
-	docker build --pull --rm --tag $(IMAGE_NAME) --file $(DOCKERFILE) $(CODE_DIR)
-
-docker-push-image: docker-image
-	docker push $(IMAGE_NAME)
-
-docker-login:
-	docker login $(DOCKER_REGISTRY_SERVER)
 
 check-requirements: install-requirements
 	$(PIPENV) check
@@ -157,6 +142,10 @@ ifeq ($(detected_OS),Linux)
 	for wheel in $(CODE_DIR)/dist/$(NAME)-*.whl ; do \
 	    $(VIRTUAL_PYTHON) -m auditwheel repair $$wheel ; \
 	done
+
+	cp $(CODE_DIR)/dist/$(NAME)-*.tar.gz $(CODE_DIR)/wheelhouse
+else
+	mv $(CODE_DIR)/dist $(CODE_DIR)/wheelhouse
 endif
 
 
