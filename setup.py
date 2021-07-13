@@ -256,7 +256,7 @@ all_source_files = [
     # @formatter:on
 ]
 
-open('source_files.txt', 'w').writelines(all_source_files)
+open('source_files.txt', 'w').writelines([file + '\n' for file in all_source_files])
 
 """ Python module setup """
 
