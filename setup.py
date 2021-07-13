@@ -6,7 +6,7 @@ import sys
 from distutils.command.register import register as register_orig
 from distutils.command.upload import upload as upload_orig
 from pathlib import Path
-from typing import Iterable
+from typing import Iterable, List
 
 from setuptools import Distribution, Extension, find_packages, setup
 from warnings import warn
@@ -284,7 +284,7 @@ bp_module = Extension(
 )
 
 
-def collect_sources(from_source_files: Iterable[str]):
+def collect_sources(from_source_files: Iterable[str]) -> List[str]:
     files = set()
 
     src = Path('src')
@@ -326,7 +326,7 @@ def collect_sources(from_source_files: Iterable[str]):
     return list(files)
 
 
-def get_source_files_in(directory):
+def get_source_files_in(directory: str) -> List[str]:
     return [str(file) for file in Path(directory).glob('**/*') if file.is_file()]
 
 
