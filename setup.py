@@ -330,9 +330,25 @@ def get_source_files_in(directory):
     return [str(file) for file in Path(directory).glob('**/*') if file.is_file()]
 
 
-boost_module = Extension(
-    extension_name,
-    sources=(
+def cache_to_disk(func):
+
+    def decorator(*args, **kwargs):
+        sources = Path('boost_source_files.txt')
+        if sources.exists():
+            with sources.open() as f:
+                files = f.readlines()
+            return [file.strip() for file in files]
+        else:
+            files = func(*args, **kwargs)
+            with sources.open('w') as f:
+                f.writelines([file + '\n' for file in files])
+            return files
+    return decorator
+
+
+@cache_to_disk
+def get_boost_source_files() -> List[str]:
+    return (
             collect_sources(all_source_files)
             # Needed for compiling the boost modules
             + [
@@ -352,7 +368,12 @@ boost_module = Extension(
             + get_source_files_in('boost/mpl/vector/aux_/preprocessed')
             + get_source_files_in('boost/python')
             + get_source_files_in('boost/graph')
-    ),
+    )
+
+
+boost_module = Extension(
+    extension_name,
+    sources=get_boost_source_files(),
     include_dirs=[
         'libs',
         'boost',
