@@ -6,11 +6,13 @@ EMPTY :=
 USE_SITE_PACKAGES ?= yes
 USE_USER_INSTALL ?= no
 USE_SKIP_LOCKING ?= no
+USE_TEST_PYPI ?= yes
 
 SITE_PACAGES_OPTION := $(EMPTY)
 KEEP_OUTDATED := $(EMPTY)
 USER_INSTALL := $(EMPTY)
 SKIP_LOCKING := $(EMPTY)
+PYPI_REPOSITORY := pypi
 
 ifeq ($(USE_SITE_PACKAGES),yes)
 SITE_PACAGES_OPTION := --site-packages
@@ -25,6 +27,10 @@ endif
 
 ifeq ($(USE_SKIP_LOCKING),yes)
 SKIP_LOCKING := --skip-lock
+endif
+
+ifeq ($(USE_TEST_PYPI),yes)
+PYPI_REPOSITORY := testpypi
 endif
 
 
@@ -54,9 +60,6 @@ endif
 
 NRLIB_LINKING ?= static
 
-PYPI_SERVER ?= http://pypi.aps.equinor.com:8080
-PYPI_NAME := statoil
-
 define PYPROJECT_TOML
 [build-system]
 requires = [
@@ -76,12 +79,16 @@ export PYPROJECT_TOML
 define PYPIRC
 [distutils]
 index-servers =
-    $(PYPI_NAME)
+    pypi
+    testpypi
 
-[$(PYPI_NAME)]
-repository: $(PYPI_SERVER)
-username: $(PYPI_USER)
-password: $(PYPI_PASSWORD)
+[pypi]
+username = __token__
+password = $(PYPI_API_TOKEN)
+
+[testpypi]
+username = __token__
+password = $(PYPI_TEST_API_TOKEN)
 endef
 export PYPIRC
 
@@ -112,10 +119,16 @@ install-pipenv:
 tests: install-requirements
 	$(PY.TEST) $(CODE_DIR)/tests
 
-upload: pypirc
-	$(PYTHON) $(SETUP.PY) register -r $(PYPI_NAME) upload -r $(PYPI_NAME)
+upload: .pypirc setup-virtual-environment
+	$(PIP_INSTALL) twine
+	$(VIRTUAL_PYTHON) -m twine upload \
+			--repository $(PYPI_REPOSITORY) \
+			--non-interactive \
+			--config-file $(CODE_DIR)/.pypirc \
+			--verbose \
+			$(CODE_DIR)/wheelhouse/*
 
-pypirc:
+.pypirc:
 	echo "$$PYPIRC" > $(CODE_DIR)/.pypirc
 
 pyproject.toml:
@@ -226,4 +239,5 @@ clean:
 	       boost_source_files.txt \
 	       .numpy.json \
 	       pyproject.toml \
+	       .pypirc \
 	       *.so

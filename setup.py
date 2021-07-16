@@ -7,11 +7,19 @@ from distutils.command.register import register as register_orig
 from distutils.command.upload import upload as upload_orig
 from pathlib import Path
 from typing import Iterable, List
+import logging
 
 from setuptools import Distribution, Extension, find_packages, setup
 from warnings import warn
 
 from bin.find_lowest_supported_numpy import get_minimum_supported_numpy_version
+
+if os.getenv('VERBOSE', '').lower() in ['1', 'yes', 'y']:
+    logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+
+
+with open('README') as f:
+    long_description = f.read()
 
 
 """ Installation Instructions """
@@ -97,15 +105,15 @@ if os.path.isfile(compilation_logs):
         line = str(datetime.datetime.now()) + ": nrlib r{}, flens r{}\n".format(nr_rev, fl_rev)
         open(compilation_logs, 'a').write(line)
     except AssertionError as e:
-        print('Could not determine svn version. Error was: ' + str(e))
-        print('Continuing to compilation')
+        logging.info('Could not determine svn version. Error was: ' + str(e))
+        logging.info('Continuing to compilation')
 
 if os.getenv('BOOST_ROOT'):
     boost_root = os.getenv('BOOST_ROOT')
-    print('Using Boost directory determined by BOOST_ROOT env variable: ' + boost_root)
+    logging.info('Using Boost directory determined by BOOST_ROOT env variable: ' + boost_root)
 else:
     boost_root = os.getcwd()
-    print('Using current directory as Boost root: ' + boost_root)
+    logging.info('Using current directory as Boost root: ' + boost_root)
 
 
 # Platform specific definitions
@@ -317,9 +325,9 @@ def collect_sources(from_source_files: Iterable[str]) -> List[str]:
                             add_if_necessary(src / item)
                         else:
                             pass
-                            # print(file, item)
+                            # logging.info(file, item)
         except UnicodeDecodeError:
-            print(f"'{name}' could not be opened / decoded as a text file. It's been ignored")
+            logging.info(f"'{name}' could not be opened / decoded as a text file. It's been ignored")
 
         files.add(name)
 
@@ -425,6 +433,8 @@ setup(
     ],
     include_package_data=True,
     license='LICENSE.txt',
+    long_description=long_description,
+    long_description_content_type='text/plain',
     distclass=BinaryDistribution,
     package_data={
         'stage/lib': ['*.so', '*.dll', '*.dylib', '*.a'],

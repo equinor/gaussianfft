@@ -30,6 +30,7 @@ jobs:
           NRLIB_LINKING: static
           PYTHON: python${{ matrix.python }}
           PIPENV_SKIP_LOCK: "1"
+          VERBOSE: "1"
         run: |
           if [[ $RUNNER_OS == "Linux" ]]; then
             docker-compose run build-linux
@@ -46,3 +47,26 @@ jobs:
           name: wheels
           path: wheelhouse/*.whl
           if-no-files-found: error
+
+  publish:
+    runs-on: ubuntu-20.04
+    name: Publish wheels, and source to PyPi
+    if: startsWith(github.ref, 'refs/tags')
+    needs:
+      - build
+    steps:
+      - uses: actions/checkout@v2
+        name: Checkout repository
+
+      - name: Download compiled wheels
+        uses: actions/download-artifact@v2
+        with:
+          name: wheels
+          path: wheelhouse/
+
+      - name: Publish to PyPi
+        env:
+          USE_TEST_PYPI: "yes"
+          PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+          PYPI_TEST_API_TOKEN: ${{ secrets.PYPI_TEST_API_TOKEN }}
+        run: make upload

@@ -34,10 +34,14 @@ def get_numpy_meta_data():
     return content
 
 
-def get_minimum_supported_numpy_version():
-    # type: () -> Optional[str]
+def get_minimum_supported_numpy_version(python_version = None):
+    # type: (Optional[str]) -> Optional[str]
     supported_versions = []
-    current_python_version = "cp{}{}".format(PYTHON_VERSION.major, PYTHON_VERSION.minor)
+    if python_version is None:
+        current_python_version = "cp{}{}".format(PYTHON_VERSION.major, PYTHON_VERSION.minor)
+    else:
+        python_version = python_version.replace('.', '')
+        current_python_version = "cp{}".format(python_version)
 
     content = get_numpy_meta_data()
     for version_key, distributions in content['releases'].items():
@@ -62,6 +66,10 @@ def get_minimum_supported_numpy_version():
 
 
 if __name__ == '__main__':
-    min_version = get_minimum_supported_numpy_version()
+    try:
+        _, python_version, *rest = sys.argv  # type: Optional[str]
+    except ValueError:
+        python_version = None
+    min_version = get_minimum_supported_numpy_version(python_version)
     if min_version:
         print(min_version)
