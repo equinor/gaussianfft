@@ -30,6 +30,9 @@ if os.getenv('VERBOSE', '').lower() in ['1', 'yes', 'y']:
 with open('README') as f:
     long_description = f.read()
 
+if os.getenv('VERBOSE', '').lower() in ['1', 'yes', 'y']:
+    logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+
 
 """ Installation Instructions """
 # Linux:

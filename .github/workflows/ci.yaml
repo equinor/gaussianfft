@@ -63,6 +63,11 @@ jobs:
           name: wheels
           path: wheelhouse/
 
+      - name: Update NumPy requirement for source distribution
+        env:
+          MINIMUM_SUPPORTED_PYTHON: "3.6"
+        run: bin/fix-numpy-version.sh
+
       - name: Publish to PyPi
         env:
           USE_TEST_PYPI: "yes"
