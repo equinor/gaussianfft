@@ -35,6 +35,10 @@ endif
 CODE_DIR ?= $(shell pwd)
 SETUP.PY := $(CODE_DIR)/setup.py
 
+BOOST_VERSION ?= 1.76.0
+BOOST_DIR := $(CODE_DIR)/sources/boost/$(BOOST_VERSION)
+BOOST_ARCHIVE := $(BOOST_DIR).tar.gz
+
 DOCKERFILE := $(CODE_DIR)/Dockerfile
 
 PIPENV_TO_BE_INSTALLED := pipenv
@@ -116,7 +120,7 @@ build: build-boost-python
 	CXXFLAGS="-fPIC -fpermissive" \
 	$(VIRTUAL_PYTHON) $(SETUP.PY) build_ext --inplace build
 
-build-boost-python: setup-virtual-environment install-numpy
+build-boost-python: setup-virtual-environment boost install-numpy
 	CODE_DIR=$(CODE_DIR) \
 	  $(CODE_DIR)/bootstrap.sh \
 	                   --prefix=$(shell pwd)/build \
@@ -135,6 +139,46 @@ build-boost-python: setup-virtual-environment install-numpy
 	                   link=$(NRLIB_LINKING) \
 	                   runtime-link=$(NRLIB_LINKING) \
 	                   stage
+
+boost: $(BOOST_ARCHIVE) $(BOOST_DIR)
+
+$(BOOST_ARCHIVE):
+	mkdir -p $(CODE_DIR)/sources/boost
+	curl -L --output $(BOOST_DIR).tar.gz \
+	https://boostorg.jfrog.io/artifactory/main/release/$(BOOST_VERSION)/source/boost_$(shell echo $(BOOST_VERSION) | tr '.' '_').tar.gz
+
+$(BOOST_DIR):
+	mkdir -p $(BOOST_DIR)
+	tar -xvf $(BOOST_ARCHIVE) -C $(BOOST_DIR) --strip-components=1
+
+	# Remove unnecessary files, some of these are binary, and others are encoded in an encoding incompatible with UTF-8
+	rm -rf $(shell find $(BOOST_DIR) -name 'doc' -type d)
+	rm -rf $(shell find $(BOOST_DIR) -name 'test' -type d)
+	rm -f  $(shell find $(BOOST_DIR) -name '*.html' -type f)
+
+	cp -r $(BOOST_DIR)/boost $(CODE_DIR)
+
+	# Copy necessary 'libs' files
+	mkdir -p $(CODE_DIR)/libs
+	for item in config filesystem headers python system Jamfile.v2 ; do \
+		cp -r $(BOOST_DIR)/libs/$$item $(CODE_DIR)/libs ; \
+	done
+
+	# Copy necessary bootstrapping files
+	for item in tools boost-build.jam boostcpp.jam bootstrap.sh Jamroot ; do \
+		cp -r $(BOOST_DIR)/$$item $(CODE_DIR) ; \
+	done
+
+clean-boost:
+	rm -rf $(CODE_DIR)/boost \
+	       $(CODE_DIR)/tools \
+	       $(CODE_DIR)/libs \
+	       $(CODE_DIR)/boost-build.jam \
+	       $(CODE_DIR)/boostcpp.jam \
+	       $(CODE_DIR)/bootstrap.sh \
+	       $(CODE_DIR)/Jamroot \
+	       $(CODE_DIR)/project-config.jam* \
+	       $(CODE_DIR)/boost_source_files.txt
 
 install-numpy:
 	$(VIRTUAL_PYTHON) -c 'import numpy' || $(PIPENV) install 'numpy==$(MINIMUM_NUMPY_VERSION)' $(SKIP_LOCKING)
