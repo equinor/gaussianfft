@@ -41,15 +41,14 @@ BOOST_VERSION ?= 1.76.0
 BOOST_DIR := $(CODE_DIR)/sources/boost/$(BOOST_VERSION)
 BOOST_ARCHIVE := $(BOOST_DIR).tar.gz
 
-PIPENV_TO_BE_INSTALLED := pipenv
-
 PYTHON ?= $(shell which python3)
 PIP ?= $(PYTHON) -m pip --proxy "$(HTTPS_PROXY)"
-PIPENV ?= $(PYTHON) -m pipenv
-RUN ?= $(PIPENV) run
-PY.TEST ?= $(RUN) python -m pytest
-PIP_INSTALL := $(PIPENV) install --ignore-pipfile --skip-lock
-VIRTUAL_PYTHON ?= $(shell $(PIPENV) --venv)/bin/python
+ifeq ($(origin VIRTUAL_PYTHON), undefined)
+all: venv
+VIRTUAL_PYTHON = $(CODE_DIR)/venv/bin/python
+endif
+PY.TEST ?= $(VIRTUAL_PYTHON) -m pytest
+PIP_INSTALL := $(VIRTUAL_PYTHON) -m pip install --upgrade
 MINIMUM_NUMPY_VERSION ?= $(shell $(PYTHON) $(CODE_DIR)/bin/find_lowest_supported_numpy.py)
 
 ifeq ($(OS),Windows_NT)
@@ -94,32 +93,22 @@ export PYPIRC
 
 .PHONY: all tests clean build
 
-check-requirements: install-requirements
-	$(PIPENV) check
 
-install-wheel:
-	$(PIPENV) install $(SKIP_LOCKING) $(DISTRIBUTION_DIR)/$(shell ls $(DISTRIBUTION_DIR)) || $(PIP) install -U $(DISTRIBUTION_DIR)/$(shell ls $(DISTRIBUTION_DIR))
-
-install: install-requirements build-boost-python
+install: build-boost-python
 	NRLIB_LINKING=$(NRLIB_LINKING) \
 	CXXFLAGS="-fPIC" \
 	$(PYTHON) $(SETUP.PY) build_ext --inplace build install
 
-install-requirements: setup-virtual-environment
-	$(PIPENV) install --dev $(KEEP_OUTDATED) $(SKIP_LOCKING)
+venv:
+	$(PYTHON) -m venv venv
 
-setup-virtual-environment: install-pipenv create-virtual-env
-
-create-virtual-env:
-	$(PIPENV) --venv || $(PIPENV) --python=$(PYTHON) $(SITE_PACAGES_OPTION)
-
-install-pipenv:
-	$(PIPENV) 2>&1 >/dev/null && echo "Pipenv already installed" || $(PIP) install $(USER_INSTALL) $(PIPENV_TO_BE_INSTALLED)
-
-tests: install-requirements
+tests: venv
+	$(PIP_INSTALL) pip
+	$(PIP_INSTALL) wheelhouse/*.whl
+	$(PIP_INSTALL) pytest scipy
 	$(PY.TEST) $(CODE_DIR)/tests
 
-upload: .pypirc setup-virtual-environment
+upload: .pypirc venv
 	$(PIP_INSTALL) twine
 	$(VIRTUAL_PYTHON) -m twine upload \
 			--repository $(PYPI_REPOSITORY) \
@@ -137,12 +126,12 @@ pyproject.toml:
 build-wheel: build
 	$(VIRTUAL_PYTHON) $(SETUP.PY) bdist_wheel --dist-dir $(DISTRIBUTION_DIR)
 
-build-sdist: setup-virtual-environment boost pyproject.toml
+build-sdist: venv boost pyproject.toml
 	$(PIP_INSTALL) build
 	PYTHONPATH=$(CODE_DIR):$(PYTHONPATH) \
 	$(VIRTUAL_PYTHON) -m build --sdist
 
-build: setup-virtual-environment boost pyproject.toml
+build: venv boost pyproject.toml
 	$(PIP_INSTALL) build
 	NRLIB_LINKING=$(NRLIB_LINKING) \
 	CXXFLAGS="-fPIC -fpermissive" \
@@ -162,7 +151,7 @@ else
 endif
 
 
-build-boost-python: setup-virtual-environment boost _build-boost-python
+build-boost-python: venv boost _build-boost-python
 
 _build-boost-python:
 	CODE_DIR=$(CODE_DIR) \
@@ -227,6 +216,7 @@ clean-boost:
 clean:
 	cd $(CODE_DIR) && \
 	rm -rf build \
+	       venv \
 	       nrlib.egg-info \
 	       dist \
 	       bin.v2 \
