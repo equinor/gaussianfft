@@ -140,22 +140,69 @@ _python_version = sys.version_info
 _python_version = "{}{}".format(_python_version.major, _python_version.minor)
 boost_libraries = ['boost_python' + _python_version, 'boost_numpy' + _python_version, 'boost_filesystem', 'boost_system']
 
+
+def is_compiling() -> bool:
+    try:
+        _, argument, *rest = sys.argv
+        return argument in ['install', 'bdist_wheel']
+    except ValueError:
+        return False
+
+
 if platform.system() in ['Linux', 'Darwin']:
-    mkl_root = os.getenv('MKL_ROOT') or os.getenv('MKLROOT')
+    compiling = is_compiling()
+    if compiling:
+        logging.info("Preparing to compile. MKL must be available")
+
+    if compiling:
+        logging.info("Looking for MKL_ROOT / MKLROOT in environment variable")
+        mkl_root = os.getenv('MKL_ROOT') or os.getenv('MKLROOT')
+    else:
+        mkl_root = None
+
+    if compiling and mkl_root is None:
+        logging.info(
+            "No environment variable set. "
+            "Attempting to look for MKL, assuming it was installed from pip"
+        )
+
+    if mkl_root is None:
+        # Attempt to find it
+        # Assuming it was install through pip
+        from sysconfig import get_paths
+
+        site_packages = Path(get_paths()['purelib'])
+        for package in site_packages.glob('mkl_include*'):
+            mkl_root = str(package.parent.parent.parent.parent.absolute().resolve())
+
+    if compiling and mkl_root is None:
+        logging.info(
+            'MKL does not seem to be installed through pip. '
+            "Attempting to look for MKL, assuming it was installed through Intel's installer"
+        )
+
     if mkl_root is None:
         default = '/opt/intel/oneapi/mkl/latest'
         if Path(default).exists():
             mkl_root = default
 
-    if mkl_root is None:
+    if compiling:
+        if mkl_root is None:
+            logging.info('MKL does not seem to be installed on this system')
+        else:
+            logging.info(f"Using the MKL libraries located in '{mkl_root}'")
+
+    if mkl_root is None and compiling:
         raise RuntimeError(
             "The environment variables MKL_ROOT, or MKLROOT is not defined. "
-            "MKL headers and libraries are required."
+            "MKL headers and libraries are required for compilation"
             "\nSee "
             "https://software.intel.com/content/www/us/en/develop/documentation/"
             "installation-guide-for-intel-oneapi-toolkits-linux/top/installation.html"
             " for instructions on how to install Intel's OneAPI, which includes MKL."
         )
+    if mkl_root is None:
+        mkl_root = "DUMMY-VALUE"
     linking = os.getenv('NRLIB_LINKING')
     if linking not in ['static', 'shared']:
         linking = 'static'
@@ -399,7 +446,7 @@ boost_module = Extension(
 
 def compile_boost_modules_if_necessary():
     stage = Path('stage/lib')
-    if (
+    if is_compiling() and (
             not stage.exists()
             or not all((stage / f"lib{library}.a").exists() for library in boost_libraries)
     ):

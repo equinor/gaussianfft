@@ -50,7 +50,7 @@ RUN ?= $(PIPENV) run
 PY.TEST ?= $(RUN) python -m pytest
 PIP_INSTALL := $(PIPENV) install --ignore-pipfile --skip-lock
 VIRTUAL_PYTHON ?= $(shell $(PIPENV) --venv)/bin/python
-MINIMUM_NUMPY_VERSION ?= $(shell $(VIRTUAL_PYTHON) $(CODE_DIR)/bin/find_lowest_supported_numpy.py)
+MINIMUM_NUMPY_VERSION ?= $(shell $(PYTHON) $(CODE_DIR)/bin/find_lowest_supported_numpy.py)
 
 ifeq ($(OS),Windows_NT)
     detected_OS := Windows
