@@ -4,6 +4,18 @@ from numpy import ndarray
 
 Number = Union[int, float]
 
+try:
+    from typing import Literal
+
+    # More precise type annotations is available in Python 3.8
+    VARIOGRAM_TYPE = Literal[
+        'gaussian', 'exponential', 'general_exponential',
+        'spherical', 'matern32', 'matern52', 'matern72', 'constant'
+    ]
+except ImportError:
+    # Fall back to generic string
+    VARIOGRAM_TYPE = str
+
 
 class DoubleVector(object, Collection):
     def append(self, num: Number) -> None: ...
@@ -33,7 +45,15 @@ nrlib.variogram
 """
 
 
-def variogram(type: str, main_range: float, perp_range: Optional[float], depth_range: Optional[float], azimuth: Optional[float], dip: Optional[float], power: Optional[float]) -> Variogram:
+def variogram(
+        type: VARIOGRAM_TYPE,
+        main_range: float,
+        perp_range: Optional[float],
+        depth_range: Optional[float],
+        azimuth: Optional[float] = 0.0,
+        dip: Optional[float] = 0.0,
+        power: Optional[float] = 1.5,
+) -> Variogram:
     """Factory function for creating a particular variogram. The variogram is always
 defined in three directions, but for simulation in fewer dimensions than three,
 only the corresponding number of directions are used.
@@ -173,7 +193,7 @@ Examples
 >>> import nrlib
 >>> nrlib.seed(123)
 >>> nrlib.seed()
->>>12
+>>>123
     """
     pass
 
@@ -188,7 +208,21 @@ def simulation_size(variogram: Variogram, nx: int, dx: float, ny: int, dy: float
 
 
 @overload
-def simulation_size(variogram: Variogram, nx: int, dx: float, ny: int, dy: float) -> SizeTVector: ...
+def simulation_size(variogram: Variogram, nx: int, dx: float, ny: int, dy: float) -> SizeTVector:
+    """
+Function for determining the grid size after padding in order to assess the
+complexity of the problem. Returns bindings to a vector with up to three elements
+with the number of grid cells after the grid has been padded. Signature is the
+same as nrlib.simulate.
+
+Examples
+--------
+>>> v = nrlib.variogram('spherical', 250.0, 125.0)
+>>> nx, ny, dx, dy = 100, 100, 10.0, 10.0
+>>> list(nrlib.simulation_size(v, nx, dx, ny, dy))
+>>>[126, 113]
+"""
+    pass
 
 
 @overload
