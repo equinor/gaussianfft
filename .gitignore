@@ -241,3 +241,13 @@ libs/config/checks/architecture/bin
 tools/build/src/engine/bootstrap/jam0
 source_files.txt
 .pypirc
+
+# Boost related source code
+sources/boost/
+boost/
+tools/
+libs/
+boost-build.jam
+boostcpp.jam
+bootstrap.sh
+Jamroot
