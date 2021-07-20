@@ -40,7 +40,7 @@ def get_minimum_supported_numpy_version(python_version = None):
     if python_version is None:
         current_python_version = "cp{}{}".format(PYTHON_VERSION.major, PYTHON_VERSION.minor)
     else:
-        python_version = python_version.replace('.', '')
+        python_version = python_version.replace('.', '').strip()
         current_python_version = "cp{}".format(python_version)
 
     content = get_numpy_meta_data()

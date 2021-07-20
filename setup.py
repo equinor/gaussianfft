@@ -12,7 +12,16 @@ import logging
 from setuptools import Distribution, Extension, find_packages, setup
 from warnings import warn
 
-from bin.find_lowest_supported_numpy import get_minimum_supported_numpy_version
+MINIMUM_SUPPORTED_PYTHON = "3.6"
+
+
+try:
+    from bin.find_lowest_supported_numpy import get_minimum_supported_numpy_version
+    MINIMUM_SUPPORTED_NUMPY = get_minimum_supported_numpy_version(MINIMUM_SUPPORTED_PYTHON)
+except ImportError:
+    # The earliest version of numpy whit a wheel for Python 3.6
+    MINIMUM_SUPPORTED_NUMPY = "1.11.3"
+
 
 if os.getenv('VERBOSE', '').lower() in ['1', 'yes', 'y']:
     logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
@@ -476,7 +485,7 @@ setup(
     packages=find_packages(),
     ext_modules=[bp_module, boost_module],
     install_requires=[
-        f'numpy>={get_minimum_supported_numpy_version()}',
+        f'numpy>={MINIMUM_SUPPORTED_NUMPY}',
     ],
     include_package_data=True,
     license='LICENSE.txt',
