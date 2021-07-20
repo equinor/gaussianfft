@@ -127,6 +127,7 @@ build-wheel: build
 	$(VIRTUAL_PYTHON) $(SETUP.PY) bdist_wheel --dist-dir $(DISTRIBUTION_DIR)
 
 build-sdist: venv boost pyproject.toml
+	$(CODE_DIR)/bin/fix-numpy-version.sh
 	$(PIP_INSTALL) build
 	PYTHONPATH=$(CODE_DIR):$(PYTHONPATH) \
 	$(VIRTUAL_PYTHON) -m build --sdist

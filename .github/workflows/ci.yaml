@@ -63,8 +63,8 @@ jobs:
           name: wheels
           path: wheelhouse/
 
-      - name: Update NumPy requirement for source distribution
-        run: bin/fix-numpy-version.sh
+      - name: Build the source distribution, to be included
+        run: make build-sdist
 
       - name: Publish to PyPi
         env:
