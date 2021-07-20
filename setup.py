@@ -481,7 +481,7 @@ compile_boost_modules_if_necessary()
 
 setup(
     name=extension_name,
-    version="1.1-r8",
+    version="1.1-r19",
     packages=find_packages(),
     ext_modules=[bp_module, boost_module],
     install_requires=[
