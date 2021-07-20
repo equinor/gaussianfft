@@ -3,14 +3,19 @@ import os
 import platform
 import re
 import sys
+import tempfile
 from distutils.command.register import register as register_orig
 from distutils.command.upload import upload as upload_orig
 from pathlib import Path
-from typing import Iterable, List
+from typing import Iterable, List, Optional
 import logging
 
 from setuptools import Distribution, Extension, find_packages, setup
 from warnings import warn
+
+
+import pydevd_pycharm
+pydevd_pycharm.settrace('localhost', port=65432, stdoutToServer=True, stderrToServer=True)
 
 MINIMUM_SUPPORTED_PYTHON = "3.6"
 
@@ -22,13 +27,6 @@ except ImportError:
     # The earliest version of numpy whit a wheel for Python 3.6
     MINIMUM_SUPPORTED_NUMPY = "1.11.3"
 
-
-if os.getenv('VERBOSE', '').lower() in ['1', 'yes', 'y']:
-    logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
-
-
-with open('README') as f:
-    long_description = f.read()
 
 if os.getenv('VERBOSE', '').lower() in ['1', 'yes', 'y']:
     logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
@@ -165,6 +163,44 @@ def is_compiling() -> bool:
         return False
 
 
+def get_pip_build_dir():
+    # type: () -> Optional[Path]
+    # TODO: There got to be a simpler way to find which environment PIP uses
+
+    site_packages = get_site_packages()
+    # Whe PIP installs from a source distribution (sdist), it will create, and install e separate build
+    # environment (unless the user has deactivated it, in which case, the dependencies should _hopefully_)
+    # be installed in `site_packages` from before
+    for build_environment in Path(tempfile.gettempdir()).glob('pip-build-env-*'):
+        # This is a file, used to patch in the original site_packages of the Python environment
+        # which calls PIP
+        with (build_environment / 'site' / 'sitecustomize.py').open() as f:
+            can_be_used = str(site_packages.absolute().resolve()) in f.read()
+
+        if can_be_used:
+            return (build_environment / 'overlay').absolute().resolve()
+
+
+def _get_include_paths():
+    # type: () -> str
+    from sysconfig import get_paths
+    paths = get_paths()['include']
+
+    pip_include = get_pip_build_dir()
+    if pip_include:
+        version = sys.version_info
+        site_packages = pip_include / 'lib' / f'python{version.major}.{version.minor}' / 'site-packages'
+
+        paths += f":{site_packages}"
+    return paths
+
+
+def get_site_packages():
+    from sysconfig import get_paths
+
+    return Path(get_paths()['purelib'])
+
+
 if platform.system() in ['Linux', 'Darwin']:
     compiling = is_compiling()
     if compiling:
@@ -185,11 +221,14 @@ if platform.system() in ['Linux', 'Darwin']:
     if mkl_root is None:
         # Attempt to find it
         # Assuming it was install through pip
-        from sysconfig import get_paths
-
-        site_packages = Path(get_paths()['purelib'])
+        site_packages = get_site_packages()
         for package in site_packages.glob('mkl_include*'):
             mkl_root = str(package.parent.parent.parent.parent.absolute().resolve())
+
+    if mkl_root is None:
+        mkl_root = get_pip_build_dir()
+        if mkl_root is not None:
+            mkl_root = str(mkl_root)
 
     if compiling and mkl_root is None:
         logging.info(
@@ -421,6 +460,10 @@ def cache_to_disk(func):
 def get_boost_source_files() -> List[str]:
     return (
             collect_sources(all_source_files)
+            + [
+                'LOWEST_SUPPORTED_PYTHON_VERSION.txt',
+                'bin/find_lowest_supported_numpy.py',
+            ]
             # Needed for compiling the boost modules
             + [
                 'bootstrap.sh',
@@ -476,6 +519,7 @@ def compile_boost_modules_if_necessary():
                     'PYTHON': sys.executable,
                     'VIRTUAL_PYTHON': sys.executable,
                     'LC_ALL': 'en_US.utf8',
+                    'CPLUS_INCLUDE_PATH': _get_include_paths(),
                 }
             ),
             shell=True,
@@ -493,6 +537,10 @@ setup(
     ext_modules=[bp_module, boost_module],
     install_requires=[
         f'numpy>={MINIMUM_SUPPORTED_NUMPY}',
+        # Only required when installing the sdist
+        "mkl-devel",
+        "mkl-static",
+        "pydevd-pycharm~=211.7628.24",
     ],
     include_package_data=True,
     license='LICENSE.txt',
@@ -518,3 +566,6 @@ setup(
         )
     ],
 )
+
+# TODO: Check if NumPy is included in source distribution, and what's the difference between the sdist tarball,
+#  and the temporary dir / sdist used when building the wheels

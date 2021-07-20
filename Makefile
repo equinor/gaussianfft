@@ -130,7 +130,7 @@ build-sdist: venv boost pyproject.toml
 	$(CODE_DIR)/bin/fix-numpy-version.sh
 	$(PIP_INSTALL) build
 	PYTHONPATH=$(CODE_DIR):$(PYTHONPATH) \
-	$(VIRTUAL_PYTHON) -m build --sdist
+	$(VIRTUAL_PYTHON) -m build --sdist --outdir wheelhouse
 
 build: venv boost pyproject.toml
 	$(PIP_INSTALL) build
@@ -155,12 +155,18 @@ endif
 build-boost-python: venv boost _build-boost-python
 
 _build-boost-python:
+ifeq ($(origin CPLUS_INCLUDE_PATH), undefined)
+	$(eval CPLUS_INCLUDE_PATH := $(shell $(VIRTUAL_PYTHON) -c "from sysconfig import get_paths; print(get_paths()['include'])"))
+else
+	$(eval CPLUS_INCLUDE_PATH := $(CPLUS_INCLUDE_PATH))
+endif
+
 	CODE_DIR=$(CODE_DIR) \
 	  $(CODE_DIR)/bootstrap.sh \
 	                   --prefix=$(shell pwd)/build \
 	                   --with-python=$(VIRTUAL_PYTHON) \
 	                   --with-icu && \
-	CPLUS_INCLUDE_PATH=$(shell $(VIRTUAL_PYTHON) -c "from sysconfig import get_paths; print(get_paths()['include'])") \
+	CPLUS_INCLUDE_PATH=$(CPLUS_INCLUDE_PATH) \
 	  $(CODE_DIR)/b2   --with-python \
 	                   --with-filesystem \
 	                   --with-system \
