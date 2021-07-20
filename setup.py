@@ -34,6 +34,10 @@ if os.getenv('VERBOSE', '').lower() in ['1', 'yes', 'y']:
     logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 
+with open('README') as f:
+    long_description = f.read()
+
+
 """ Installation Instructions """
 # Linux:
 #   [Conditional] export MKL_ROOT=/nr/prog/intel/Compiler/mkl
