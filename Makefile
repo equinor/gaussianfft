@@ -1,8 +1,4 @@
 NAME = nrlib
-VERSION = $(shell ./bin/find-version-of-docker-image.sh)
-DOCKER_REGISTRY_SERVER = git.equinor.com:4567
-DOCKER_REGISTRY = $(DOCKER_REGISTRY_SERVER)/sdp/nrlib
-IMAGE_NAME = $(DOCKER_REGISTRY)/$(NAME):$(VERSION)
 
 EMPTY :=
 
@@ -10,11 +6,13 @@ EMPTY :=
 USE_SITE_PACKAGES ?= yes
 USE_USER_INSTALL ?= no
 USE_SKIP_LOCKING ?= no
+USE_TEST_PYPI ?= yes
 
 SITE_PACAGES_OPTION := $(EMPTY)
 KEEP_OUTDATED := $(EMPTY)
 USER_INSTALL := $(EMPTY)
 SKIP_LOCKING := $(EMPTY)
+PYPI_REPOSITORY := pypi
 
 ifeq ($(USE_SITE_PACKAGES),yes)
 SITE_PACAGES_OPTION := --site-packages
@@ -31,6 +29,10 @@ ifeq ($(USE_SKIP_LOCKING),yes)
 SKIP_LOCKING := --skip-lock
 endif
 
+ifeq ($(USE_TEST_PYPI),yes)
+PYPI_REPOSITORY := testpypi
+endif
+
 
 CODE_DIR ?= $(shell pwd)
 SETUP.PY := $(CODE_DIR)/setup.py
@@ -39,88 +41,119 @@ BOOST_VERSION ?= 1.76.0
 BOOST_DIR := $(CODE_DIR)/sources/boost/$(BOOST_VERSION)
 BOOST_ARCHIVE := $(BOOST_DIR).tar.gz
 
-DOCKERFILE := $(CODE_DIR)/Dockerfile
-
-PIPENV_TO_BE_INSTALLED := pipenv
-
-PYTHON ?= $(shell which python)
+PYTHON ?= $(shell which python3)
 PIP ?= $(PYTHON) -m pip --proxy "$(HTTPS_PROXY)"
-PIPENV ?= $(PYTHON) -m pipenv
-RUN ?= $(PIPENV) run
-PY.TEST ?= $(RUN) python -m pytest
-VIRTUAL_PYTHON ?= $(shell $(PIPENV) --venv)/bin/python
-MINIMUM_NUMPY_VERSION := 1.10.4
+ifeq ($(origin VIRTUAL_PYTHON), undefined)
+all: venv
+VIRTUAL_PYTHON = $(CODE_DIR)/venv/bin/python
+endif
+PY.TEST ?= $(VIRTUAL_PYTHON) -m pytest
+PIP_INSTALL := $(VIRTUAL_PYTHON) -m pip install --upgrade
+MINIMUM_NUMPY_VERSION ?= $(shell $(PYTHON) $(CODE_DIR)/bin/find_lowest_supported_numpy.py)
 
-DISTRIBUTION_DIR ?= $(CODE_DIR)/dist
+ifeq ($(OS),Windows_NT)
+    detected_OS := Windows
+else
+    detected_OS := $(shell uname -s)
+endif
 
 NRLIB_LINKING ?= static
 
-PYPI_SERVER ?= http://pypi.aps.equinor.com:8080
-PYPI_NAME := statoil
+define PYPROJECT_TOML
+[build-system]
+requires = [
+    "setuptools>=42",
+    "wheel",
+    # We use the oldest compatible version, to make life easier with Emerson RMS
+    # If we use a newer version, the compilation of Boost.Python, will cause the module to crach
+    # (segmentation fault) when imported
+    "numpy==$(MINIMUM_NUMPY_VERSION)",
+    "mkl-devel",
+    "mkl-static",
+]
+build-backend = "setuptools.build_meta"
+endef
+export PYPROJECT_TOML
 
 define PYPIRC
 [distutils]
 index-servers =
-    $(PYPI_NAME)
+    pypi
+    testpypi
 
-[$(PYPI_NAME)]
-repository: $(PYPI_SERVER)
-username: $(PYPI_USER)
-password: $(PYPI_PASSWORD)
+[pypi]
+username = __token__
+password = $(PYPI_API_TOKEN)
+
+[testpypi]
+username = __token__
+password = $(PYPI_TEST_API_TOKEN)
 endef
 export PYPIRC
 
 .PHONY: all tests clean build
 
-docker-image:
-	docker build --pull --rm --tag $(IMAGE_NAME) --file $(DOCKERFILE) $(CODE_DIR)
 
-docker-push-image: docker-image
-	docker push $(IMAGE_NAME)
-
-docker-login:
-	docker login $(DOCKER_REGISTRY_SERVER)
-
-check-requirements: install-requirements
-	$(PIPENV) check
-
-install-wheel:
-	$(PIPENV) install $(SKIP_LOCKING) $(DISTRIBUTION_DIR)/$(shell ls $(DISTRIBUTION_DIR)) || $(PIP) install -U $(DISTRIBUTION_DIR)/$(shell ls $(DISTRIBUTION_DIR))
-
-install: install-requirements build-boost-python
+install: build-boost-python
 	NRLIB_LINKING=$(NRLIB_LINKING) \
 	CXXFLAGS="-fPIC" \
 	$(PYTHON) $(SETUP.PY) build_ext --inplace build install
 
-install-requirements: setup-virtual-environment
-	$(PIPENV) install --dev $(KEEP_OUTDATED) $(SKIP_LOCKING)
+venv:
+	$(PYTHON) -m venv venv
 
-setup-virtual-environment: install-pipenv create-virtual-env
-
-create-virtual-env:
-	$(PIPENV) --venv || $(PIPENV) --python=$(PYTHON) $(SITE_PACAGES_OPTION)
-
-install-pipenv:
-	$(PIPENV) 2>&1 >/dev/null && echo "Pipenv already installed" || $(PIP) install $(USER_INSTALL) $(PIPENV_TO_BE_INSTALLED)
-
-tests: install-requirements
+tests: venv
+	$(PIP_INSTALL) pip
+	$(PIP_INSTALL) wheelhouse/*.whl
+	$(PIP_INSTALL) pytest scipy
 	$(PY.TEST) $(CODE_DIR)/tests
 
-upload: pypirc
-	$(PYTHON) $(SETUP.PY) register -r $(PYPI_NAME) upload -r $(PYPI_NAME)
+upload: .pypirc venv
+	$(PIP_INSTALL) twine
+	$(VIRTUAL_PYTHON) -m twine upload \
+			--repository $(PYPI_REPOSITORY) \
+			--non-interactive \
+			--config-file $(CODE_DIR)/.pypirc \
+			--verbose \
+			$(CODE_DIR)/wheelhouse/*
 
-pypirc:
+.pypirc:
 	echo "$$PYPIRC" > $(CODE_DIR)/.pypirc
+
+pyproject.toml:
+	echo "$$PYPROJECT_TOML" > $(CODE_DIR)/pyproject.toml
 
 build-wheel: build
 	$(VIRTUAL_PYTHON) $(SETUP.PY) bdist_wheel --dist-dir $(DISTRIBUTION_DIR)
 
-build: build-boost-python
+build-sdist: venv boost pyproject.toml
+	$(PIP_INSTALL) build
+	PYTHONPATH=$(CODE_DIR):$(PYTHONPATH) \
+	$(VIRTUAL_PYTHON) -m build --sdist
+
+build: venv boost pyproject.toml
+	$(PIP_INSTALL) build
 	NRLIB_LINKING=$(NRLIB_LINKING) \
 	CXXFLAGS="-fPIC -fpermissive" \
-	$(VIRTUAL_PYTHON) $(SETUP.PY) build_ext --inplace build
+	PYTHONPATH=$(CODE_DIR):$(PYTHONPATH) \
+	$(VIRTUAL_PYTHON) -m build
 
-build-boost-python: setup-virtual-environment boost install-numpy
+ifeq ($(detected_OS),Linux)
+	# Format wheels to be compatible with PEP 600, PEP 513, PEP 571, and/or PEP 599
+	$(PIP_INSTALL) auditwheel
+	for wheel in $(CODE_DIR)/dist/$(NAME)-*.whl ; do \
+	    $(VIRTUAL_PYTHON) -m auditwheel repair $$wheel ; \
+	done
+
+	cp $(CODE_DIR)/dist/$(NAME)-*.tar.gz $(CODE_DIR)/wheelhouse
+else
+	mv $(CODE_DIR)/dist $(CODE_DIR)/wheelhouse
+endif
+
+
+build-boost-python: venv boost _build-boost-python
+
+_build-boost-python:
 	CODE_DIR=$(CODE_DIR) \
 	  $(CODE_DIR)/bootstrap.sh \
 	                   --prefix=$(shell pwd)/build \
@@ -180,12 +213,10 @@ clean-boost:
 	       $(CODE_DIR)/project-config.jam* \
 	       $(CODE_DIR)/boost_source_files.txt
 
-install-numpy:
-	$(VIRTUAL_PYTHON) -c 'import numpy' || $(PIPENV) install 'numpy==$(MINIMUM_NUMPY_VERSION)' $(SKIP_LOCKING)
-
 clean:
 	cd $(CODE_DIR) && \
 	rm -rf build \
+	       venv \
 	       nrlib.egg-info \
 	       dist \
 	       bin.v2 \
@@ -194,5 +225,9 @@ clean:
 	       b2 \
 	       bjam \
 	       bootstrap.log \
+	       .pypirc \
+	       boost_source_files.txt \
+	       .numpy.json \
+	       pyproject.toml \
 	       .pypirc \
 	       *.so
