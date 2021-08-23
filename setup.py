@@ -396,15 +396,29 @@ def get_source_files_in(directory: str) -> List[str]:
 
 def cache_to_disk(func):
 
+    def hash_of_function() -> str:
+        # The function may have change, in which case, the cache should be invalidated
+        import inspect
+        from hashlib import blake2b  # Optimized for 64bit architectures, while the s variant is used for other architectures
+
+        src = inspect.getsource(func)
+        return blake2b(src.encode()).hexdigest()
+
     def decorator(*args, **kwargs):
         sources = Path('boost_source_files.txt')
         if sources.exists():
             with sources.open() as f:
-                files = f.readlines()
-            return [file.strip() for file in files]
+                _hash = f.readline().strip()
+                if _hash == hash_of_function():
+                    files = f.readlines()
+                    return [file.strip() for file in files]
+            # Invalidate cache
+            os.remove(sources)
+            return decorator(*args, **kwargs)
         else:
             files = func(*args, **kwargs)
             with sources.open('w') as f:
+                f.write(hash_of_function() + '\n')
                 f.writelines([file + '\n' for file in files])
             return files
     return decorator
