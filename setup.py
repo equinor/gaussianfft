@@ -501,6 +501,9 @@ setup(
     install_requires=[
         f'numpy>={MINIMUM_SUPPORTED_NUMPY}',
     ],
+    extras_require={
+        "util": ["scipy"]
+    },
     include_package_data=True,
     license='LICENSE.txt',
     long_description=long_description,
