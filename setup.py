@@ -298,6 +298,8 @@ source_files = [
 ]
 all_source_files = source_files + nrlib_source_files
 
+type_hint_files = [str(file) for file in Path('gaussianfft').glob('**/*.pyi')]
+
 # We do not need entire NRLib. Exclude unused files.
 
 all_source_files = [
@@ -334,7 +336,7 @@ bp_module = Extension(
     include_dirs=[
                      boost_root,
                      os.path.join(boost_root, 'include'),
-                     os.path.abspath('./src'),
+                     os.path.abspath('src'),
                  ]
                  + fftw_dirs,
     library_dirs=library_dirs,
@@ -446,6 +448,9 @@ def get_boost_source_files() -> List[str]:
             + get_source_files_in('boost/mpl/vector/aux_/preprocessed')
             + get_source_files_in('boost/python')
             + get_source_files_in('boost/graph')
+            + get_source_files_in('boost/config/no_tr1')
+            # Auxiliary files, not related to Boost
+            + type_hint_files
     )
 
 
@@ -511,20 +516,11 @@ setup(
     distclass=BinaryDistribution,
     package_data={
         'stage/lib': ['*.so', '*.dll', '*.dylib', '*.a'],
+        extension_name: ['py.typed'] + type_hint_files,
     },
     cmdclass={
         'register': register,
         'upload': upload,
     },
     zip_safe=False,
-    data_files=[
-        (
-            'nrlib/__init__.pyi',
-            ['src/stub/nrlib/__init__.pyi'],
-        ),
-        (
-            'nrlib/advanced/__init__pyi',
-            ['src/stub/nrlib/advanced/__init__.pyi']
-        )
-    ],
 )

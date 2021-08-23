@@ -7,10 +7,13 @@ from numpy import ndarray
 @overload
 def simulate(
         variogram: Variogram,
-        nx: int, ny: int, nz: int,
-        dx: float, dy: float, dz: float,
-        padx: int, pady: int, padz: int,
-        sx: float, sy: float, sz: float,
+        nx: int, dx: float,
+        ny: int = 1, dy: float = -1.0,
+        nz: int = 1, dz: float = -1.0,
+
+        padx: int = -1, pady: int = -1, padz: int = -1,
+
+        sx: float = 1.0, sy: float = 1.0, sz: float = 1.0,
 ) -> ndarray:
     """
 Same as gaussianfft.simulate, but with a few additional advanced and
@@ -47,10 +50,10 @@ out: numpy.ndarray
 @overload
 def simulate(
         variogram: Variogram,
-        nx: int, ny: int,
-        dx: float, dy: float,
-        padx: int, pady: int,
-        sx: float, sy: float,
+        nx: int, dx: float,
+        ny: int = 1, dy: float = -1.0,
+        padx: int = -1, pady: int = -1,
+        sx: float = 1.0, sy: float = 1.0,
 ) -> ndarray:...
 
 
@@ -59,6 +62,6 @@ def simulate(
         variogram: Variogram,
         nx: int,
         dx: float,
-        padx: int,
-        sx: float,
+        padx: int = -1,
+        sx: float = 1.0,
 ) -> ndarray:...

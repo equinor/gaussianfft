@@ -1,6 +1,9 @@
+from enum import Enum
 from typing import Collection, Iterable, Optional, Union, overload
 
 from numpy import ndarray
+
+import advanced
 
 Number = Union[int, float]
 
@@ -15,6 +18,17 @@ try:
 except ImportError:
     # Fall back to generic string
     VARIOGRAM_TYPE = str
+
+
+class VariogramType(Enum):
+    GAUSSIAN = 'gaussian'
+    EXPONENTIAL = 'exponential'
+    GENERAL_EXPONENTIAL = 'general_exponential'
+    SPHERICAL = 'spherical'
+    MATERN_32 = 'matern32'
+    MATERN_52 = 'matern52'
+    MATERN_72 = 'matern72'
+    CONSTANT = 'constant'
 
 
 class DoubleVector(object, Collection):
@@ -48,7 +62,7 @@ gaussianfft.variogram
 
 
 def variogram(
-        type: VARIOGRAM_TYPE,
+        type: Union[VARIOGRAM_TYPE, VariogramType],
         main_range: float,
         perp_range: Optional[float] = 0.0,
         depth_range: Optional[float] = 0.0,
@@ -153,11 +167,11 @@ Multi-dimensional simulation
 
 
 @overload
-def simulate(variogram: Variogram, nx: int, ny: int, dx: float, dy: float) -> ndarray:...
+def simulate(variogram: Variogram, nx: int, dx: float, ny: int, dy: float, nz: int, dz: float) -> ndarray:...
 
 
 @overload
-def simulate(variogram: Variogram, nx: int, nz: int, dx: float, dz: float) -> ndarray:...
+def simulate(variogram: Variogram, nx: int, dx: float, ny: int, dy: float) -> ndarray:...
 
 
 @overload
@@ -231,3 +245,9 @@ Examples
 
 @overload
 def simulation_size(variogram: Variogram, nx: int, dx: float) -> SizeTVector: ...
+
+"""
+gaussianfft.quote
+"""
+
+def quote() -> str: ...
