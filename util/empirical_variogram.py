@@ -1,16 +1,16 @@
 import random
 from time import perf_counter
 
-import nrlib
+import gaussianfft
 import numpy as np
 from scipy.spatial.distance import cdist
 from scipy.stats import binned_statistic
 
-from util.empirical_variogram2 import EmpiricalVariogram2
+from gaussianfft.util.empirical_variogram2 import EmpiricalVariogram2
 
 
 class EmpiricalVariogram:
-    def __init__(self, v: nrlib.Variogram, nx, dx, ny, dy, nz, dz, px, py, pz):
+    def __init__(self, v: gaussianfft.Variogram, nx, dx, ny, dy, nz, dz, px, py, pz):
         self.nx, self.ny, self.nz = nx, ny, nz
         self.dx, self.dy, self.dz = dx, dy, dz
         self.px, self.py, self.pz = px, py, pz
@@ -139,7 +139,7 @@ class EmpiricalVariogram:
         return edges[:-1] + np.diff(edges)[0]
 
     def simulate(self):
-        s = nrlib.advanced.simulate(self.v,
+        s = gaussianfft.advanced.simulate(self.v,
                                     self.nx, self.dx,
                                     self.ny, self.dy,
                                     self.nz, self.dz,

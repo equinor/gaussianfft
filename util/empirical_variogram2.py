@@ -1,4 +1,4 @@
-import nrlib
+import gaussianfft
 import numpy as np
 from scipy.sparse.csgraph._traversal import connected_components
 from scipy.spatial.distance import cdist, squareform, pdist
@@ -11,11 +11,11 @@ class EmpiricalVariogram2:
     """
     Estimates the variogram, given the provided parameters.
     """
-    def __init__(self, v: nrlib.Variogram, nx, ny, nz, px, py, pz, close_range, step):
+    def __init__(self, v: gaussianfft.Variogram, nx, ny, nz, px, py, pz, close_range, step):
         """
         Creates a variogram estimation class.
 
-        :param v:   A nrlib.Variogram instance
+        :param v:   A gaussianfft.Variogram instance
         :param nx:  Number of grid cells in x-direction
         :param ny:                          y-direction
         :param nz:                          z-direction
@@ -82,7 +82,7 @@ class EmpiricalVariogram2:
 
     """ Estimation, internal functions """
     def _simulate(self):
-        s = nrlib.advanced.simulate(self.v,
+        s = gaussianfft.advanced.simulate(self.v,
                                     self.nx, self.dx,
                                     self.ny, self.dy,
                                     self.nz, self.dz,
@@ -141,7 +141,7 @@ if __name__ == '__main__':
     nx, ny, nz = 100, 100, 1
     r = 600
     px, py, pz = 300, 300, 0
-    v = nrlib.variogram('exponential', r, r, r)
+    v = gaussianfft.variogram('exponential', r, r, r)
     ev = EmpiricalVariogram2(v, nx, ny, nz, px, py, pz, 30.0, 5)
     (x_short, y_short, y_err_short), (x_sample, y_sample, y_err_sample) = ev.estimate_variogram(5000)
 

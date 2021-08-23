@@ -1,6 +1,5 @@
 import unittest
-# import sys; sys.path.insert(0, 'C:\Projects\GaussFFT')  # For debugging only
-import nrlib
+import gaussianfft as grf
 import numpy as np
 
 
@@ -17,11 +16,11 @@ class TestSimulate3D(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        variogram = nrlib.variogram('gaussian', 1000)
+        variogram = grf.variogram('gaussian', 1000)
         cls.nx = 500
         cls.dx = 1.0
-        nrlib.seed(12321)
-        cls.field = nrlib.simulate(variogram, cls.nx, cls.dx)
+        grf.seed(12321)
+        cls.field = grf.simulate(variogram, cls.nx, cls.dx)
         cls.field_as_array = np.array(cls.field)
 
     def test_shape(self):
@@ -53,11 +52,11 @@ class TestSimulate3D(unittest.TestCase):
         power = 1.8
         dx = Lx / (nx - 1)
         c = _cov_mat_genexp(rx, nx, dx)
-        v = nrlib.variogram('general_exponential', rx, power=power)
+        v = grf.variogram('general_exponential', rx, power=power)
         z = []
-        nrlib.seed(41414)
+        grf.seed(41414)
         for i in range(3000):
-            f = nrlib.simulate(v, nx, dx)
+            f = grf.simulate(v, nx, dx)
             z.append(np.inner(f, np.linalg.solve(c, f)))
 
         # Compare distributions

@@ -58,7 +58,7 @@ with open('README') as f:
 """ Installation settings """
 
 # Must correspond to the name within BOOST_PYTHON_MODULE in the cpp code:
-extension_name = 'nrlib'
+extension_name = '_gaussianfft'
 
 # Log file of all compilations. If this file is not present, it has no effect. If it is, then the revision number of
 # NRLib is appended to the file, along with a time and date stamp. This is for development only and should be removed
@@ -494,8 +494,8 @@ compile_boost_modules_if_necessary()
 
 
 setup(
-    name=extension_name,
-    version="1.1-r19",
+    name=extension_name.lstrip('_'),
+    version="1.1-r21",
     packages=find_packages(),
     ext_modules=[bp_module, boost_module],
     install_requires=[

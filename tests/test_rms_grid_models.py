@@ -1,5 +1,5 @@
 import unittest
-import nrlib
+import gaussianfft as grf
 import numpy as np
 
 """
@@ -16,9 +16,9 @@ class TestRmsGridModels(unittest.TestCase):
         except NameError:
             # Not in RMS context, use other values instead
             d = (90, 120, 45)
-        v = nrlib.variogram('matern52', 312.0, 312.0, 312.0)
-        nrlib.seed(1323)
-        f_vec = nrlib.simulate(v, d[0], 20.0, d[1], 20.0, d[2], 20.0)
+        v = grf.variogram('matern52', 312.0, 312.0, 312.0)
+        grf.seed(1323)
+        f_vec = grf.simulate(v, d[0], 20.0, d[1], 20.0, d[2], 20.0)
         f = np.array(f_vec).reshape(d, order='F')
         # Regression:
         self.assertAlmostEqual(f[11 + 10, 22 + 10, 13 + 10], -1.9465313106735047, 2)

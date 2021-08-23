@@ -18,12 +18,12 @@ namespace bp = boost::python;
 const std::string set_seed_docstring =
   ""
   "Sets the current simulation seed. If this has not been set when calling\n"
-  "nrlib.simulate, it is set to the current time with second precision. Be wary of\n"
-  "the latter, in particular if nrlib is used in a parallel-processing context.\n"
+  "gaussianfft.simulate, it is set to the current time with second precision. Be wary of\n"
+  "the latter, in particular if gaussianfft is used in a parallel-processing context.\n"
   "\n"
   "Examples\n"
   "--------\n"
-  ">>> nrlib.seed(123)\n"
+  ">>> gaussianfft.seed(123)\n"
 ;
 
 const std::string get_seed_docstring =
@@ -33,8 +33,8 @@ const std::string get_seed_docstring =
   "\n"
   "Examples\n"
   "--------\n"
-  ">>> nrlib.seed(123)\n"
-  ">>> nrlib.seed()\n"
+  ">>> gaussianfft.seed(123)\n"
+  ">>> gaussianfft.seed()\n"
   "123\n"
 ;
 
@@ -43,13 +43,13 @@ const std::string padding_docstring =
   "Function for determining the grid size after padding in order to assess the\n"
   "complexity of the problem. Returns bindings to a vector with up to three elements\n"
   "with the number of grid cells after the grid has been padded. Signature is the\n"
-  "same as nrlib.simulate.\n"
+  "same as gaussianfft.simulate.\n"
   "\n"
   "Examples\n"
   "--------\n"
-  ">>> v = nrlib.variogram('spherical', 250.0, 125.0)\n"
+  ">>> v = gaussianfft.variogram('spherical', 250.0, 125.0)\n"
   ">>> nx, ny, dx, dy = 100, 100, 10.0, 10.0\n"
-  ">>> list(nrlib.simulation_size(v, nx, dx, ny, dy))\n"
+  ">>> list(gaussianfft.simulation_size(v, nx, dx, ny, dy))\n"
   "[126, 113]\n"
 ;
 
@@ -82,30 +82,30 @@ const std::string variogram_docstring =
   "Returns\n"
   "-------\n"
   "out: Variogram\n"
-  "    An instance of the class nrlib.Variogram.\n"
+  "    An instance of the class gaussianfft.Variogram.\n"
   "\n"
   "Examples\n"
   "--------\n"
-  ">>> nrlib.variogram('gaussian', 1000.0)\n"
+  ">>> gaussianfft.variogram('gaussian', 1000.0)\n"
   "\n"
   "Specifying dip\n"
   "\n"
-  ">>> nrlib.variogram('matern52', 1000.0, dip=45.0)\n"
+  ">>> gaussianfft.variogram('matern52', 1000.0, dip=45.0)\n"
   "\n"
   "Multiple directions\n"
   "\n"
-  ">>> nrlib.variogram('general_exponential', 1000.0, 500.0, 250.0, power=1.8)\n"
+  ">>> gaussianfft.variogram('general_exponential', 1000.0, 500.0, 250.0, power=1.8)\n"
 ;
 
 const std::string simulate_docstring =
   "\n"
   "Simulates a Gaussian random field with the corresponding variogram in one, two or\n"
-  "three dimensions. The random generator seed may be set by using nrlib.seed.\n"
+  "three dimensions. The random generator seed may be set by using gaussianfft.seed.\n"
   "\n"
   "Parameters\n"
   "----------\n"
-  "variogram: nrlib.Variogram\n"
-  "    An instance of nrlib.Variogram (see nrlib.variogram).\n"
+  "variogram: gaussianfft.Variogram\n"
+  "    An instance of gaussianfft.Variogram (see gaussianfft.variogram).\n"
   "nx, ny, nz: int\n"
   "    Grid size of the simulated field. Only nx is required. Setting ny and/or nz to\n"
   "    a value less than or equal to 1 reduces the dimension. Default is ny = 1 and \n"
@@ -122,9 +122,9 @@ const std::string simulate_docstring =
   "\n"
   "Examples\n"
   "--------\n"
-  ">>> v = nrlib.variogram('gaussian', 250.0, 125.0)\n"
+  ">>> v = gaussianfft.variogram('gaussian', 250.0, 125.0)\n"
   ">>> nx, dx = 10, 100.0\n"
-  ">>> z = nrlib.simulate(v, nx, dx)\n"
+  ">>> z = gaussianfft.simulate(v, nx, dx)\n"
   ">>> z\n"
   "array([-1.29924289, -1.51172913, -1.2935657 , -0.80779427,  0.22217236,\n"
   "        1.26740091,  0.66094991, -0.77396656,  0.01523847,  0.44392584])\n"
@@ -133,7 +133,7 @@ const std::string simulate_docstring =
   "\n"
   ">>> nx, ny = 100, 200\n"
   ">>> dx, dy = 10.0, 5.0\n"
-  ">>> z = nrlib.simulate(v, nx, dx, ny, dy)\n"
+  ">>> z = gaussianfft.simulate(v, nx, dx, ny, dy)\n"
   ">>> z_np = z.reshape((nx, ny), order='F')\n"
   ">>> z_np.shape\n"
   "(100,200)\n"
@@ -141,16 +141,16 @@ const std::string simulate_docstring =
 
 const std::string advanced_simulate_docstring =
   "\n"
-  "Same as nrlib.simulate, but with a few additional advanced and\n"
+  "Same as gaussianfft.simulate, but with a few additional advanced and\n"
   "experimental settings.\n"
   "\n"
   "Parameters\n"
   "----------\n"
   "variogram, nx, ny, nz, dx, dy, dz:\n"
-  "    See nrlib.simulate.\n"
+  "    See gaussianfft.simulate.\n"
   "padx, pady, padz: int\n"
-  "    Grid padding as a number of cells. In nrlib.simulate, these are set\n"
-  "    automatically to the values returned by nrlib.simulation_size.\n"
+  "    Grid padding as a number of cells. In gaussianfft.simulate, these are set\n"
+  "    automatically to the values returned by gaussianfft.simulation_size.\n"
   "sx, sy, sz: float\n"
   "    Gaussian smoothing parameters to reduce the range. The parameters are the\n"
   "    values of the smoothing kernel at one variogram range and MUST therefore be\n"
@@ -160,14 +160,14 @@ const std::string advanced_simulate_docstring =
   "Returns\n"
   "-------\n"
   "out: numpy.ndarray\n"
-  "    See nrlib.simulate.\n"
+  "    See gaussianfft.simulate.\n"
 ;
 
 /**********************************************/
 /**********************************************/
 /**********************************************/
 
-BOOST_PYTHON_MODULE(nrlib)
+BOOST_PYTHON_MODULE(_gaussianfft)
 {
   bp::numpy::initialize();
 
@@ -254,7 +254,7 @@ BOOST_PYTHON_MODULE(nrlib)
   /******************* Advanced *******************/
   // Boilerplate module stuff (http://isolation-nation.blogspot.no/2008/09/packages-in-python-extension-modules.html)
   bp::object the_module(
-    bp::handle<>(bp::borrowed(PyImport_AddModule("nrlib.advanced")))
+    bp::handle<>(bp::borrowed(PyImport_AddModule("gaussianfft.advanced")))
   );
   bp::scope().attr("advanced") = the_module;
   bp::scope the_scope = the_module;

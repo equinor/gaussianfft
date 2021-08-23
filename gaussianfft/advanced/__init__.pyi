@@ -13,13 +13,13 @@ def simulate(
         sx: float, sy: float, sz: float,
 ) -> ndarray:
     """
-Same as nrlib.simulate, but with a few additional advanced and
+Same as gaussianfft.simulate, but with a few additional advanced and
 experimental settings.
 
 Parameters
 ----------
-variogram: nrlib.Variogram
-    An instance of nrlib.Variogram (see nrlib.variogram).
+variogram: gaussianfft.Variogram
+    An instance of gaussianfft.Variogram (see gaussianfft.variogram).
 nx, ny, nz: int
     Grid size of the simulated field. Only nx is required. Setting ny and/or nz to
     a value less than or equal to 1 reduces the dimension. Default is ny = 1 and
@@ -28,8 +28,8 @@ dx, dy, dz: float
     Grid resolution in x, y and z directions. dx is always required. dy and dz are
     required if respectively ny and nz are greater than 1.
 padx, pady, padz: int
-    Grid padding as a number of cells. In nrlib.simulate, these are set
-    automatically to the values returned by nrlib.simulation_size.
+    Grid padding as a number of cells. In gaussianfft.simulate, these are set
+    automatically to the values returned by gaussianfft.simulation_size.
 sx, sy, sz: float
     Gaussian smoothing parameters to reduce the range. The parameters are the
     values of the smoothing kernel at one variogram range and MUST therefore be
@@ -39,7 +39,7 @@ sx, sy, sz: float
 Returns
 -------
 out: numpy.ndarray
-    See nrlib.simulate.
+    See gaussianfft.simulate.
   """
     pass
 
