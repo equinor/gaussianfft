@@ -27,7 +27,7 @@ if os.getenv('VERBOSE', '').lower() in ['1', 'yes', 'y']:
     logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 
-with open('README') as f:
+with open('README.md') as f:
     long_description = f.read()
 
 
@@ -512,7 +512,7 @@ setup(
     include_package_data=True,
     license='LICENSE.txt',
     long_description=long_description,
-    long_description_content_type='text/plain',
+    long_description_content_type='text/markdown',
     distclass=BinaryDistribution,
     package_data={
         'stage/lib': ['*.so', '*.dll', '*.dylib', '*.a'],

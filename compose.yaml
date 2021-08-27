@@ -14,7 +14,7 @@ services:
 
       - "./LOWEST_SUPPORTED_PYTHON_VERSION.txt:/code/LOWEST_SUPPORTED_PYTHON_VERSION.txt"
       - "./LICENSE.txt:/code/LICENSE.txt"
-      - "./README:/code/README"
+      - "./README.md:/code/README.md"
 
       - "./wheelhouse:/code/wheelhouse"  # This is where the build artefacts are placed
     entrypoint: ["make", "-C", "/code", "build"]
