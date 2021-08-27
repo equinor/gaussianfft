@@ -1,5 +1,5 @@
 import unittest
-import nrlib
+import gaussianfft as grf
 import numpy as np
 
 
@@ -7,13 +7,13 @@ class TestSimulate3D(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        variogram = nrlib.variogram('exponential', 1000, 500, 250.0)
+        variogram = grf.variogram('exponential', 1000, 500, 250.0)
         cls.nx = 100
         cls.ny = 50
         cls.dx = 1.0
         cls.dy = 1.5
-        nrlib.seed(12321)
-        cls.field3d = nrlib.simulate(variogram, cls.nx, cls.dx, cls.ny, cls.dy)
+        grf.seed(12321)
+        cls.field3d = grf.simulate(variogram, cls.nx, cls.dx, cls.ny, cls.dy)
         cls.field_as_array = np.array(cls.field3d).reshape((cls.nx, cls.ny), order='F')
 
     def test_shape(self):

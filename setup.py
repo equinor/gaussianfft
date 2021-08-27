@@ -27,7 +27,7 @@ if os.getenv('VERBOSE', '').lower() in ['1', 'yes', 'y']:
     logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 
-with open('README') as f:
+with open('README.md') as f:
     long_description = f.read()
 
 
@@ -58,7 +58,7 @@ with open('README') as f:
 """ Installation settings """
 
 # Must correspond to the name within BOOST_PYTHON_MODULE in the cpp code:
-extension_name = 'nrlib'
+extension_name = '_gaussianfft'
 
 # Log file of all compilations. If this file is not present, it has no effect. If it is, then the revision number of
 # NRLib is appended to the file, along with a time and date stamp. This is for development only and should be removed
@@ -298,6 +298,8 @@ source_files = [
 ]
 all_source_files = source_files + nrlib_source_files
 
+type_hint_files = [str(file) for file in Path('gaussianfft').glob('**/*.pyi')]
+
 # We do not need entire NRLib. Exclude unused files.
 
 all_source_files = [
@@ -334,7 +336,7 @@ bp_module = Extension(
     include_dirs=[
                      boost_root,
                      os.path.join(boost_root, 'include'),
-                     os.path.abspath('./src'),
+                     os.path.abspath('src'),
                  ]
                  + fftw_dirs,
     library_dirs=library_dirs,
@@ -396,15 +398,29 @@ def get_source_files_in(directory: str) -> List[str]:
 
 def cache_to_disk(func):
 
+    def hash_of_function() -> str:
+        # The function may have change, in which case, the cache should be invalidated
+        import inspect
+        from hashlib import blake2b  # Optimized for 64bit architectures, while the s variant is used for other architectures
+
+        src = inspect.getsource(func)
+        return blake2b(src.encode()).hexdigest()
+
     def decorator(*args, **kwargs):
         sources = Path('boost_source_files.txt')
         if sources.exists():
             with sources.open() as f:
-                files = f.readlines()
-            return [file.strip() for file in files]
+                _hash = f.readline().strip()
+                if _hash == hash_of_function():
+                    files = f.readlines()
+                    return [file.strip() for file in files]
+            # Invalidate cache
+            os.remove(sources)
+            return decorator(*args, **kwargs)
         else:
             files = func(*args, **kwargs)
             with sources.open('w') as f:
+                f.write(hash_of_function() + '\n')
                 f.writelines([file + '\n' for file in files])
             return files
     return decorator
@@ -432,6 +448,9 @@ def get_boost_source_files() -> List[str]:
             + get_source_files_in('boost/mpl/vector/aux_/preprocessed')
             + get_source_files_in('boost/python')
             + get_source_files_in('boost/graph')
+            + get_source_files_in('boost/config/no_tr1')
+            # Auxiliary files, not related to Boost
+            + type_hint_files
     )
 
 
@@ -480,34 +499,28 @@ compile_boost_modules_if_necessary()
 
 
 setup(
-    name=extension_name,
-    version="1.1-r19",
+    name=extension_name.lstrip('_'),
+    version="1.1-r21",
     packages=find_packages(),
     ext_modules=[bp_module, boost_module],
     install_requires=[
         f'numpy>={MINIMUM_SUPPORTED_NUMPY}',
     ],
+    extras_require={
+        "util": ["scipy"]
+    },
     include_package_data=True,
     license='LICENSE.txt',
     long_description=long_description,
-    long_description_content_type='text/plain',
+    long_description_content_type='text/markdown',
     distclass=BinaryDistribution,
     package_data={
         'stage/lib': ['*.so', '*.dll', '*.dylib', '*.a'],
+        extension_name: ['py.typed'] + type_hint_files,
     },
     cmdclass={
         'register': register,
         'upload': upload,
     },
     zip_safe=False,
-    data_files=[
-        (
-            'nrlib/__init__.pyi',
-            ['src/stub/nrlib/__init__.pyi'],
-        ),
-        (
-            'nrlib/advanced/__init__pyi',
-            ['src/stub/nrlib/advanced/__init__.pyi']
-        )
-    ],
 )

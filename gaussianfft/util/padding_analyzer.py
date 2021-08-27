@@ -1,9 +1,9 @@
 from time import perf_counter
 
 import numpy as np
-import nrlib
+import gaussianfft
 
-from util import EmpiricalVariogram
+from gaussianfft.util import EmpiricalVariogram
 
 
 class PaddingAnalyzerDefaults:
@@ -34,7 +34,7 @@ class PaddingAnalyzer:
         self._reference_strategy = 'origo'
         self._convergence_step = 10
         # Setup
-        nrlib.seed(seed)
+        gaussianfft.seed(seed)
         d = L / n
         dr = drf * d
 
@@ -66,10 +66,10 @@ class PaddingAnalyzer:
 
     def create_variograms(self, rrange, padding, ndims, d, n, L, vtype):
         if ndims == 1:
-            v = nrlib.variogram(vtype, rrange * L)
+            v = gaussianfft.variogram(vtype, rrange * L)
             ev = EmpiricalVariogram(v, n, d, 1, 0, 1, 0, padding, padding, padding)
         elif ndims == 2:
-            v = nrlib.variogram(vtype, rrange * L, rrange * L)
+            v = gaussianfft.variogram(vtype, rrange * L, rrange * L)
             ev = EmpiricalVariogram(v, n, d, n, d, 1, 0, padding, padding, padding)
         else:
             raise NotImplementedError("Padding analyzer is not implemented for {} dimensions.".format(ndims))

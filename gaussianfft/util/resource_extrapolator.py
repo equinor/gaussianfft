@@ -1,4 +1,4 @@
-import nrlib
+import gaussianfft.advanced
 import numpy as np
 from time import perf_counter
 
@@ -23,7 +23,7 @@ class ResourceExtrapolator:
         return x, y, ls_sol[0][0]
 
     def generate(self, vtype='exponential'):
-        vario = nrlib.variogram(vtype, self._variogram_range)
+        vario = gaussianfft.variogram(vtype, self._variogram_range)
         data = []
         for n in range(self.nmin, self.nmax + 1, self.nstep):
             t0 = perf_counter()
@@ -35,7 +35,7 @@ class ResourceExtrapolator:
 
     def _simulate(self, vario, n):
         d = self._grid_length / (n - 1)
-        nrlib.advanced.simulate(vario,
+        gaussianfft.advanced.simulate(vario,
                                 n,
                                 d,
                                 n if self.ndims > 1 else 1,

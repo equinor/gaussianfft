@@ -1,6 +1,6 @@
 from time import sleep
 
-import nrlib
+import gaussianfft as grf
 import unittest
 import numpy as np
 from multiprocessing import Process, Queue, set_start_method
@@ -8,8 +8,8 @@ from multiprocessing import Process, Queue, set_start_method
 
 def create_realization():
     # Returns a 100 x 100 realization of a random field
-    v = nrlib.variogram('exponential', 100.0, 50.0)
-    s = nrlib.simulate(v, 100, 10.0, 100, 10.0)
+    v = grf.variogram('exponential', 100.0, 50.0)
+    s = grf.simulate(v, 100, 10.0, 100, 10.0)
     return np.array(s).reshape((100, 100), order='F')
 
 
@@ -17,7 +17,7 @@ def run_simulation_process(q, dt):
     # Sleep to enable different automatic seeding for different runs
     sleep(dt)
     s = create_realization()
-    q.put((nrlib.seed(), s))
+    q.put((grf.seed(), s))
 
 
 class TestMultiprocessSeeding(unittest.TestCase):
@@ -33,7 +33,7 @@ class TestMultiprocessSeeding(unittest.TestCase):
         # Set an arbitrary starting seed. This will never be used since simulation
         # is done in child processes
         t0_seed = 123
-        nrlib.seed(t0_seed)
+        grf.seed(t0_seed)
         p1 = Process(target=run_simulation_process, args=(queue, 0))
         # Sleep >1 second to ensure a different seed for the second process
         p2 = Process(target=run_simulation_process, args=(queue, 1.1))
@@ -45,11 +45,11 @@ class TestMultiprocessSeeding(unittest.TestCase):
         seed_2, sim_2 = queue.get()
 
         # Repeat simulation 1, no parallelism
-        nrlib.seed(seed_1)
+        grf.seed(seed_1)
         seq_sim_1 = create_realization()
 
         # Repeat simulation 2, no parallelism
-        nrlib.seed(seed_2)
+        grf.seed(seed_2)
         seq_sim_2 = create_realization()
 
         # None of the three seeds that have been used should be equal
