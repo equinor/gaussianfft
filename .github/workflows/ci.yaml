@@ -9,13 +9,14 @@ jobs:
     strategy:
       matrix:
         python:
-        - 3.6  # Included in RMS 11 - 12.0
-        - 3.7
-        - 3.8  # Included in RMS 12.1, and newer
+#        - 3.6  # Included in RMS 11 - 12.0
+#        - 3.7
+#        - 3.8  # Included in RMS 12.1, and newer
         - 3.9
         os:
-        - ubuntu-20.04
-        - macos-11
+#        - ubuntu-20.04
+#        - macos-11
+        - windows-2019
 
     steps:
       - uses: actions/checkout@v2
@@ -65,7 +66,7 @@ jobs:
 
       - name: Publish to PyPi
         env:
-          USE_TEST_PYPI: "no"
+          USE_TEST_PYPI: "yes"
           PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
           PYPI_TEST_API_TOKEN: ${{ secrets.PYPI_TEST_API_TOKEN }}
         run: make upload
