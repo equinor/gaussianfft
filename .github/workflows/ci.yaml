@@ -11,8 +11,8 @@ jobs:
         python:
 #        - 3.6  # Included in RMS 11 - 12.0
 #        - 3.7
-#        - 3.8  # Included in RMS 12.1, and newer
-        - 3.9
+        - 3.8  # Included in RMS 12.1, and newer
+#        - 3.9
         os:
 #        - ubuntu-20.04
 #        - macos-11
