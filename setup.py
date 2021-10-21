@@ -481,7 +481,7 @@ def compile_boost_modules_if_necessary():
         import subprocess
 
         subprocess.run(
-            ['make _build-boost-python'],
+            ['make', '_build-boost-python'],
             env=dict(
                 os.environ,
                 **{
