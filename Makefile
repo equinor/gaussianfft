@@ -104,7 +104,7 @@ install: build-boost-python
 	$(PYTHON) $(SETUP.PY) build_ext --inplace build install
 
 venv:
-	$(PYTHON) -m venv venv
+	$(PYTHON) -m venv --symlinks venv
 
 tests: venv
 	$(PIP_INSTALL) pip
