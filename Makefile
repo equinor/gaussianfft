@@ -45,7 +45,11 @@ PYTHON ?= $(shell which python3)
 PIP ?= $(PYTHON) -m pip --proxy "$(HTTPS_PROXY)"
 ifeq ($(origin VIRTUAL_PYTHON), undefined)
 all: venv
+ifeq ($(OS),Windows_NT)
+VIRTUAL_PYTHON = $(CODE_DIR)/venv/Scripts/python.exe
+else
 VIRTUAL_PYTHON = $(CODE_DIR)/venv/bin/python
+endif
 endif
 PY.TEST ?= $(VIRTUAL_PYTHON) -m pytest
 PIP_INSTALL := $(VIRTUAL_PYTHON) -m pip install --upgrade

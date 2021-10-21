@@ -26,19 +26,6 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
 
-      - if: runner.os == 'Windows'
-        shell: bash
-        # Update Path, so that the version of Python from `setup-python` is the one to be used
-        run: |
-          export PATH=$(python <<EOF
-          paths = "$PATH".split(':')
-          for i in range(4, 7):
-              path = paths.pop(i)
-              paths.insert(0, path)
-          print(':'.join(paths))
-          EOF
-          )
-
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v3
 
@@ -49,6 +36,17 @@ jobs:
           VERBOSE: "1"
         shell: bash
         run: |
+          if [[ $RUNNER_OS == "Windows ]]; then
+          export PATH=$(python <<EOF
+          paths = "$PATH".split(':')
+          for i in range(4, 7):
+              path = paths.pop(i)
+              paths.insert(0, path)
+          print(':'.join(paths))
+          EOF
+          )
+          fi
+
           if [[ $RUNNER_OS == "Linux" ]]; then
             docker-compose run build-linux
           else
