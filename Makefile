@@ -63,6 +63,9 @@ define PYPROJECT_TOML
 [build-system]
 requires = [
     "setuptools>=42",
+    # There seems to be an issue with newer versions of setuptools
+    # See https://github.com/pypa/packaging-problems/issues/604 for details
+    "setuptools<61.0",
     "wheel",
     # We use the oldest compatible version, to make life easier with Emerson RMS
     # If we use a newer version, the compilation of Boost.Python, will cause the module to crach
@@ -91,7 +94,7 @@ password = $(PYPI_TEST_API_TOKEN)
 endef
 export PYPIRC
 
-.PHONY: all tests clean build
+.PHONY: all tests clean build pyproject.toml
 
 
 install: build-boost-python
