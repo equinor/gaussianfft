@@ -240,6 +240,9 @@ if platform.system() in ['Linux', 'Darwin']:
         linker_args += ['-I' + mkl_root + '/include', '-L' + library_dir]
         linker_args += mkl_libraries
         linker_args += ' -lpthread -lm -ldl'.format(mkl_root, library_dir).split()
+        compile_args += [
+            '-isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk',
+        ]
     else:
         linker_args += ['-Wl,--start-group']
         linker_args += mkl_libraries
