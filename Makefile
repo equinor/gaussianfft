@@ -49,7 +49,7 @@ VIRTUAL_PYTHON = $(CODE_DIR)/venv/bin/python
 endif
 PY.TEST ?= $(VIRTUAL_PYTHON) -m pytest
 PIP_INSTALL := $(VIRTUAL_PYTHON) -m pip install --upgrade
-MINIMUM_NUMPY_VERSION ?= $(shell $(PYTHON) $(CODE_DIR)/bin/find_lowest_supported_numpy.py)
+MINIMUM_NUMPY_VERSION ?= $(shell $(PYTHON) $(CODE_DIR)/setup.py --quiet min_numpy_version)
 
 ifeq ($(OS),Windows_NT)
     detected_OS := Windows
@@ -91,7 +91,7 @@ password = $(PYPI_TEST_API_TOKEN)
 endef
 export PYPIRC
 
-.PHONY: all tests clean build
+.PHONY: all tests clean build boost venv
 
 
 install: build-boost-python

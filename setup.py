@@ -1,4 +1,5 @@
 import glob
+import json
 import os
 import platform
 import re
@@ -6,18 +7,89 @@ import sys
 from distutils.command.register import register as register_orig
 from distutils.command.upload import upload as upload_orig
 from pathlib import Path
-from typing import Iterable, List
+from typing import Iterable, List, Optional, Tuple
 import logging
 
 from setuptools import Distribution, Extension, find_packages, setup
+from setuptools.command.alias import alias
 from warnings import warn
 
 MINIMUM_SUPPORTED_PYTHON = "3.6"
 
 
+class FindMinimumSupportedNumpyVersion(alias):
+
+    PYTHON_VERSION = sys.version_info
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        python_version = self.PYTHON_VERSION
+        if python_version.major < 3 or (python_version.major == 3 and python_version.minor < 6):
+            raise RuntimeError(
+                'Python 3.6, or greater is required. You are using Python {}.{}, which is not supported'
+                ''.format(python_version.major, python_version.minor)
+            )
+
+    SEMVER = re.compile(r'^[0-9]+\.[0-9]+\.[0-9]+$')  # Exclude Release candidates, betas, and alpha releases
+
+    @staticmethod
+    def get_numpy_meta_data():
+        # type: () -> dict
+        import urllib.request
+        from pathlib import Path
+
+        numpy_data = Path('.numpy.json').absolute()
+
+        if not numpy_data.exists():
+            with urllib.request.urlopen('https://pypi.org/pypi/numpy/json') as response:
+                with numpy_data.open('wb') as f:
+                    f.write(response.read())
+
+        with numpy_data.open() as f:
+            content = json.load(f)
+        return content
+
+    @classmethod
+    def get_minimum_supported_numpy_version(cls, python_version=None):
+        # type: (Optional[str]) -> Optional[str]
+        supported_versions = []
+        if python_version is None:
+            current_python_version = "cp{}{}".format(cls.PYTHON_VERSION.major, cls.PYTHON_VERSION.minor)
+        else:
+            python_version = python_version.replace('.', '').strip()
+            current_python_version = "cp{}".format(python_version)
+
+        content = cls.get_numpy_meta_data()
+        for version_key, distributions in content['releases'].items():
+            if cls.SEMVER.match(version_key) and any(
+                    distribution['python_version'] == current_python_version
+                    and distribution['packagetype'] == 'bdist_wheel'
+                    for distribution in distributions
+            ):
+                supported_versions.append(version_key)
+
+        def to_semver(version):
+            # type: (str) -> Tuple[int, int, int]
+            major, minor, patch = version.split('.')
+            return int(major), int(minor), int(patch)
+
+        versions = [to_semver(version) for version in supported_versions]
+        versions.sort()  # From lowest to highest
+
+        if len(versions) >= 1:
+            return '.'.join(str(num) for num in versions[0])
+        return None
+
+    def run(self, python_version=None):
+        # type: (Optional[str]) -> None
+        min_version = self.get_minimum_supported_numpy_version(python_version)
+        if min_version:
+            print(min_version)
+
+
 try:
-    from bin.find_lowest_supported_numpy import get_minimum_supported_numpy_version
-    MINIMUM_SUPPORTED_NUMPY = get_minimum_supported_numpy_version(MINIMUM_SUPPORTED_PYTHON)
+    MINIMUM_SUPPORTED_NUMPY = FindMinimumSupportedNumpyVersion.get_minimum_supported_numpy_version(MINIMUM_SUPPORTED_PYTHON)
 except ImportError:
     # The earliest version of numpy whit a wheel for Python 3.6
     MINIMUM_SUPPORTED_NUMPY = "1.11.3"
@@ -158,7 +230,7 @@ def is_compiling() -> bool:
         return False
 
 
-if platform.system() in ['Linux', 'Darwin']:
+if platform.system() in ['Linux', 'Darwin'] and is_compiling():
     compiling = is_compiling()
     if compiling:
         logging.info("Preparing to compile. MKL must be available")
@@ -526,6 +598,7 @@ setup(
     cmdclass={
         'register': register,
         'upload': upload,
+        "min_numpy_version": FindMinimumSupportedNumpyVersion,
     },
     zip_safe=False,
 )
