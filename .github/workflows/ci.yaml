@@ -39,6 +39,7 @@ jobs:
           if [[ $RUNNER_OS == "Linux" ]]; then
             docker-compose run build-linux
           else
+            sudo xcode-select -s /Library/Developer/CommandLineTools
             make build
           fi
 
