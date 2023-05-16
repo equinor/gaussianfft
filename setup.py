@@ -1,5 +1,7 @@
 import glob
 import os
+import os.path
+import codecs
 import platform
 import re
 import sys
@@ -503,9 +505,28 @@ def compile_boost_modules_if_necessary():
 compile_boost_modules_if_necessary()
 
 
+# read, and get_version are borrowed from
+# https://packaging.python.org/en/latest/guides/single-sourcing-package-version/#single-sourcing-the-package-version
+def read(rel_path):
+    here = os.path.abspath(os.path.dirname(__file__))
+    with codecs.open(os.path.join(here, rel_path), 'r') as fp:
+        return fp.read()
+
+
+def get_version(rel_path):
+    for line in read(rel_path).splitlines():
+        if line.startswith('__version__'):
+            delim = '"' if '"' in line else "'"
+            return line.split(delim)[1]
+    else:
+        raise RuntimeError("Unable to find version string.")
+
+
+name = extension_name.lstrip('_')
+
 setup(
-    name=extension_name.lstrip('_'),
-    version="1.1.1b1",
+    name=name,
+    version=get_version(f"{name}/__init__.py"),
     packages=find_packages(),
     ext_modules=[bp_module, boost_module],
     install_requires=[

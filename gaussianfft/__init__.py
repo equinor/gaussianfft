@@ -13,6 +13,9 @@ import _gaussianfft
 from _gaussianfft import *
 
 
+__version__ = "1.1.1b1"
+
+
 class VariogramType(Enum):
     GAUSSIAN = 'gaussian'
     EXPONENTIAL = 'exponential'
@@ -33,4 +36,5 @@ def variogram(type, *args, **kwargs):
 __all__ = [
     'variogram', 'simulate', 'seed', 'advanced', 'simulation_size',
     'quote', 'Variogram', 'VariogramType', 'util', 'SizeTVector', 'DoubleVector',
+    '__version__',
 ]
