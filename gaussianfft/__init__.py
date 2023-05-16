@@ -1,5 +1,13 @@
 from enum import Enum
 
+try:
+    # When using gaussianFFT in conjunction with Aspen RMS (former Emerson / Roxar)
+    # you could experience a segmentation fault if gaussianfft was imported before
+    # the roxar module.
+    import roxar
+except ImportError:
+    pass
+
 import _gaussianfft
 
 from _gaussianfft import *
