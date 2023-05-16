@@ -403,8 +403,13 @@ def cache_to_disk(func):
         import inspect
         from hashlib import blake2b  # Optimized for 64bit architectures, while the s variant is used for other architectures
 
-        src = inspect.getsource(func)
-        return blake2b(src.encode()).hexdigest()
+        try:
+            src = inspect.getsource(func)
+            return blake2b(src.encode()).hexdigest()
+        except OSError:
+            # That is, the file is not executed directly, up as a string
+            # this happens when using python -m build
+            return blake2b(func.__code__.co_code).hexdigest()
 
     def decorator(*args, **kwargs):
         sources = Path('boost_source_files.txt')
