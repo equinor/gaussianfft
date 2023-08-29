@@ -2,3 +2,4 @@ jupyter==1.0.0
 numpy==1.14.0
 matplotlib==2.1.2
 scipy==1.0.0
+jupyter-server>=2.7.2 # not directly required, pinned by Snyk to avoid a vulnerability
