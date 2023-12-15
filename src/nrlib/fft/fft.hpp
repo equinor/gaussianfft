@@ -28,7 +28,7 @@
 #include <iterator>
 #include <vector>
 
-#include "fftw3.h"
+#include <fftw3.h>
 
 // The "public" declarations
 namespace NRLib {
