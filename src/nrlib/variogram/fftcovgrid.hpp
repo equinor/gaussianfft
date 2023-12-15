@@ -22,8 +22,8 @@
 
 #include <cmath>
 
-#include "nrlib/grid/grid.hpp"
-#include "nrlib/grid/grid2d.hpp"
+#include "../grid/grid.hpp"
+#include "../grid/grid2d.hpp"
 
 namespace NRLib {
 class Variogram;
