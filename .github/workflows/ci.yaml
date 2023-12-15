@@ -13,6 +13,8 @@ jobs:
         - 3.7
         - 3.8  # Included in RMS 12.1, and newer
         - 3.9
+        - "3.10"
+        - 3.11  # Included in RMS 14.2, and newer
         os:
         - ubuntu-20.04
         - macos-11
@@ -27,15 +29,20 @@ jobs:
 
       - name: Build
         env:
-          NRLIB_LINKING: static
           PYTHON: python${{ matrix.python }}
           VERBOSE: "1"
         run: |
           if [[ $RUNNER_OS == "Linux" ]]; then
             docker-compose run build-linux
+          elif [[ $RUNNER_OS == "macOS" ]]; then
+              brew install coreutils
+              make build
           else
-            make build
+            # That is, windows
+            echo "No supported, yet" >/dev/stderr
+            exit 1
           fi
+        shell: bash
 
       - name: Test
         run: make tests
