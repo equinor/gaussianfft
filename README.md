@@ -94,9 +94,9 @@ So if you want to use this in RMS and load the result into a zone in a grid in R
 the grid is increased before it is simulated internally in the nrlib module. You can check this extension to see the actual grid size used.
 This grid size is reported by using the function:
 
-`[nx_extended, ny_extended, nz_extended] = grf.simulation_size(variogram, nx, dx, ny, dy, nz, dz)`
+   `[nx_extended, ny_extended, nz_extended] = grf.simulation_size(variogram, nx, dx, ny, dy, nz, dz)`
 
-and depends very much on the relative size of the correlation lengths and the grid size (length, width, height)
+    and depends very much on the relative size of the correlation lengths and the grid size (length, width, height)
 
 6. To get the start seed that is used:
   `seed = grf.seed()`
@@ -110,3 +110,41 @@ be sure to delay start of a new process by at least 1 second after the previous 
 The return seed is the same regardless of how many times you call simulation since it is the start seed of the first call to simulation.
 It must however not be called before the first call to simulation if you want the start seed to be automatically generated.
 If you want to run with a predefined start seed, call `grf.seed(seedValue)` before the first call to simulation.
+
+
+
+## Building
+We use [`scikit-build-core`](https://scikit-build-core.readthedocs.io/en/latest/index.html) as the build tool, in order to use [`pyproject.toml`](https://pip.pypa.io/en/stable/reference/build-system/pyproject-toml/) to facilitate easier building while using [`cmake`](https://cmake.org) to build the C++ extension.
+
+We also use [Boost.Python](https://www.boost.org/doc/libs/1_81_0/libs/python/doc/html/index.html) (version 1.76.0 for Python <=3.10 and 1.81.0 for newer versions).
+While compiling Boost, a python interpreter needs to be set.
+You may want to create a virtual environment before building `gaussianfft`.
+
+```bash
+python -m venv venv
+source venv/bin/activate
+```
+
+For the time being, Windows is not supported due to difficulties making `gaussianfft` compile there (on a windows runner on GitHub Actions).
+Contributions for making it compile reliably on Windows are welcome.
+
+The rest of this section assumes you are working on a UNIX-like system.
+It has been tested on macOS (Intel/Apple Silicon) and Linux (x86).
+
+To build the distribution wheel(s), run
+```bash
+export PYTHON=<which python to use>  # Only useful when not running in a virtual environment 
+make build
+```
+This will build the binary, and source distributions with the [`build`](https://github.com/pypa/build) package in a temporary / ephemeral directory.
+There is no caching of build artifacts in this case.
+
+If you need to build, and iterate on the extension module, you may want to execute
+
+```bash
+cmake -S . -B build -DPython3_EXECUTABLE=$(which python)
+cmake --build build
+```
+
+## Contributing
+Report bugs (description with reproducible steps + run environment) and feature requests are welcome.
