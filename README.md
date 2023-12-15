@@ -110,3 +110,43 @@ be sure to delay start of a new process by at least 1 second after the previous 
 The return seed is the same regardless of how many times you call simulation since it is the start seed of the first call to simulation.
 It must however not be called before the first call to simulation if you want the start seed to be automatically generated.
 If you want to run with a predefined start seed, call `grf.seed(seedValue)` before the first call to simulation.
+
+
+
+## Trying to install with modern ways (package manager and cmake)
+
+### vcpkg
+
+https://vcpkg.io/en/getting-started
+
+```bash
+brew install autoconf automake autoconf-archive
+```
+
+### conan
+
+~~For Docker / linux; `yum install devtoolset-7`~~
+
+```bash
+
+pip install conan cmake
+pip install 'numpy==1.24.3'
+
+conan profile detect --force
+conan install conanfile.py --build=missing
+#conan install conanfile.txt --output-folder=build --build=missing
+
+conan build .
+
+#cmake --preset conan-release
+
+```
+
+
+---
+
+```bash
+export PYTHON_CONFIGURE_OPTS="--enable-shared"
+asdf install
+
+```

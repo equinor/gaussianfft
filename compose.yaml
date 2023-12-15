@@ -1,6 +1,6 @@
 services:
   build-linux:
-    image: quay.io/pypa/manylinux2014_x86_64
+    image: quay.io/pypa/manylinux_2_24_x86_64
     environment:
       PYTHON:
       NRLIB_LINKING: "${NRLIB_LINKING-static}"
@@ -12,9 +12,14 @@ services:
       - "./gaussianfft:/code/gaussianfft"
       - "./setup.py:/code/setup.py"
 
-      - "./LOWEST_SUPPORTED_PYTHON_VERSION.txt:/code/LOWEST_SUPPORTED_PYTHON_VERSION.txt"
+#      - source: "./LOWEST_SUPPORTED_PYTHON_VERSION.txt"
+#        target: "/code/LOWEST_SUPPORTED_PYTHON_VERSION.txt"
+#        read_only: true
+#        type: bind
       - "./LICENSE.txt:/code/LICENSE.txt"
       - "./README.md:/code/README.md"
+      - "./conanfile.py:/code/conanfile.py"
+      - "./CMakeLists.txt:/code/CMakeLists.txt"
 
       - "./wheelhouse:/code/wheelhouse"  # This is where the build artefacts are placed
     entrypoint: ["make", "-C", "/code", "build"]

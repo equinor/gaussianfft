@@ -37,10 +37,6 @@ endif
 CODE_DIR ?= $(shell pwd)
 SETUP.PY := $(CODE_DIR)/setup.py
 
-BOOST_VERSION ?= 1.76.0
-BOOST_DIR := $(CODE_DIR)/sources/boost/$(BOOST_VERSION)
-BOOST_ARCHIVE := $(BOOST_DIR).tar.gz
-
 PYTHON ?= $(shell which python3)
 PIP ?= $(PYTHON) -m pip --proxy "$(HTTPS_PROXY)"
 ifeq ($(origin VIRTUAL_PYTHON), undefined)
@@ -50,6 +46,16 @@ endif
 PY.TEST ?= $(VIRTUAL_PYTHON) -m pytest
 PIP_INSTALL := $(VIRTUAL_PYTHON) -m pip install --upgrade
 MINIMUM_NUMPY_VERSION ?= $(shell $(PYTHON) $(CODE_DIR)/bin/find_lowest_supported_numpy.py)
+
+# Boost configuration
+BOOST_VERSION ?= $(shell $(PYTHON) $(CODE_DIR)/bin/find_boost_version.py)
+BOOST_DIR := $(CODE_DIR)/sources/boost/$(BOOST_VERSION)
+BOOST_ARCHIVE := $(BOOST_DIR).tar.gz
+
+# fftw configuration
+FFTW_VERSION ?= 3.3.10
+FFTW_DIR := $(CODE_DIR)/sources/fftw/$(FFTW_VERSION)
+FFTW_ARCHIVE := $(FFTW_DIR).tar.gz
 
 ifeq ($(OS),Windows_NT)
     detected_OS := Windows
@@ -131,7 +137,7 @@ build-sdist: venv boost pyproject.toml
 	PYTHONPATH=$(CODE_DIR):$(PYTHONPATH) \
 	$(VIRTUAL_PYTHON) -m build --sdist
 
-build: venv boost pyproject.toml
+build: #venv boost pyproject.toml
 	$(PIP_INSTALL) build
 	NRLIB_LINKING=$(NRLIB_LINKING) \
 	CXXFLAGS="-fPIC -fpermissive" \
@@ -193,7 +199,7 @@ $(BOOST_DIR):
 
 	# Copy necessary 'libs' files
 	mkdir -p $(CODE_DIR)/libs
-	for item in config filesystem headers python system Jamfile.v2 ; do \
+	for item in config filesystem headers atomic python system Jamfile.v2 ; do \
 		cp -r $(BOOST_DIR)/libs/$$item $(CODE_DIR)/libs ; \
 	done
 
@@ -201,6 +207,18 @@ $(BOOST_DIR):
 	for item in tools boost-build.jam boostcpp.jam bootstrap.sh Jamroot ; do \
 		cp -r $(BOOST_DIR)/$$item $(CODE_DIR) ; \
 	done
+
+# TODO: Perhaps fall back to this if mkl (venv/include/fftw) is not available (e.g. Apple Silicon)
+fftw: $(FFTW_ARCHIVE) $(FFTW_DIR)
+
+$(FFTW_ARCHIVE):
+	mkdir -p $(CODE_DIR)/sources/fftw
+	curl -L --output $(FFTW_ARCHIVE) \
+ 		https://fftw.org/fftw-$(FFTW_VERSION).tar.gz
+
+$(FFTW_DIR):
+	mkdir -p $(FFTW_DIR)
+	tar -xvf $(FFTW_ARCHIVE) -C $(FFTW_DIR) --strip-components=1
 
 clean-boost:
 	rm -rf $(CODE_DIR)/boost \
@@ -231,3 +249,6 @@ clean:
 	       pyproject.toml \
 	       .pypirc \
 	       *.so
+
+
+print-%  : ; @echo $($*)

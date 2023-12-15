@@ -17,6 +17,26 @@ if PYTHON_VERSION.major < 3 or (PYTHON_VERSION.major == 3 and PYTHON_VERSION.min
 SEMVER = re.compile(r'^[0-9]+\.[0-9]+\.[0-9]+$')  # Exclude Release candidates, betas, and alpha releases
 
 
+KNOWN_CONSTRAINTS = {
+    # Python Version (in RMS): Installed NumPy version (in RMS)
+    (3, 6): (1, 13, 3),
+    (3, 8): (1, 19, 2),
+    (3, 11): (1, 24, 3),
+}
+
+
+def minimum_constraint(python_version=None):
+    # type: (Optional[str]) -> Optional[(int, int, int)]
+    if python_version:
+        version = tuple(int(v) for v in python_version.split('.'))
+    else:
+        version = (PYTHON_VERSION.major, PYTHON_VERSION.minor)
+    try:
+        return KNOWN_CONSTRAINTS[version]
+    except KeyError:
+        return None
+
+
 def get_numpy_meta_data():
     # type: () -> dict
     import urllib.request
@@ -40,8 +60,7 @@ def get_minimum_supported_numpy_version(python_version = None):
     if python_version is None:
         current_python_version = "cp{}{}".format(PYTHON_VERSION.major, PYTHON_VERSION.minor)
     else:
-        python_version = python_version.replace('.', '').strip()
-        current_python_version = "cp{}".format(python_version)
+        current_python_version = "cp{}".format(python_version.replace('.', '').strip())
 
     content = get_numpy_meta_data()
     for version_key, distributions in content['releases'].items():
@@ -59,9 +78,16 @@ def get_minimum_supported_numpy_version(python_version = None):
 
     versions = [to_semver(version) for version in supported_versions]
     versions.sort()  # From lowest to highest
+    version = None
+    if len(versions) > 0:
+        version = versions[0]
 
-    if len(versions) >= 1:
-        return '.'.join(str(num) for num in versions[0])
+    expected_minimum = minimum_constraint(python_version)
+    if version and expected_minimum and version < expected_minimum:
+        version = expected_minimum
+
+    if version:
+        return '.'.join(str(num) for num in version)
     return None
 
 

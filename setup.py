@@ -6,7 +6,7 @@ import sys
 from distutils.command.register import register as register_orig
 from distutils.command.upload import upload as upload_orig
 from pathlib import Path
-from typing import Iterable, List
+from typing import Iterable, List, Optional
 import logging
 
 from setuptools import Distribution, Extension, find_packages, setup
@@ -201,15 +201,15 @@ if platform.system() in ['Linux', 'Darwin']:
         else:
             logging.info(f"Using the MKL libraries located in '{mkl_root}'")
 
-    if mkl_root is None and compiling:
-        raise RuntimeError(
-            "The environment variables MKL_ROOT, or MKLROOT is not defined. "
-            "MKL headers and libraries are required for compilation"
-            "\nSee "
-            "https://software.intel.com/content/www/us/en/develop/documentation/"
-            "installation-guide-for-intel-oneapi-toolkits-linux/top/installation.html"
-            " for instructions on how to install Intel's OneAPI, which includes MKL."
-        )
+    # if mkl_root is None and compiling:
+    #     raise RuntimeError(
+    #         "The environment variables MKL_ROOT, or MKLROOT is not defined. "
+    #         "MKL headers and libraries are required for compilation"
+    #         "\nSee "
+    #         "https://software.intel.com/content/www/us/en/develop/documentation/"
+    #         "installation-guide-for-intel-oneapi-toolkits-linux/top/installation.html"
+    #         " for instructions on how to install Intel's OneAPI, which includes MKL."
+    #     )
     if mkl_root is None:
         mkl_root = "DUMMY-VALUE"
     linking = os.getenv('NRLIB_LINKING')
@@ -331,7 +331,10 @@ bp_module = Extension(
     sources=all_source_files,
     define_macros=[
         ('FLENS_FIRST_INDEX', '0'),
-        ('MKL', None),
+        # ('MKL', None),
+        ('VECLIB', None),
+        ('ACCELERATE_NEW_LAPACK', '1'),
+        ('ACCELERATE_LAPACK_ILP64', '1'),
     ],
     include_dirs=[
                      boost_root,
@@ -350,16 +353,31 @@ bp_module = Extension(
 )
 
 
-def collect_sources(from_source_files: Iterable[str]) -> List[str]:
+def collect_sources(from_source_files: Iterable[str], ignore: Optional[List[str]] = None) -> List[str]:
+    if ignore is None:
+        ignore = []
     files = set()
 
     src = Path('src')
     root = Path('.').absolute()
     files_to_be_inspected = set(Path(file) for file in from_source_files)
 
+    header_regex = re.compile(r'\.h(pp)?$')
+    source_regex = re.compile(r'\.c(pp)?$')
+
     def add_if_necessary(file):
+        if any(str(file).startswith(ignore_folder) for ignore_folder in ignore):
+            return
         if file not in files and file not in files_to_be_inspected:
             files_to_be_inspected.add(file)
+            if file.suffix in ['.hpp', '.h']:
+                source_file = file.parent / header_regex.sub(r'.c\1', file.name)
+                if source_file.exists():
+                    files_to_be_inspected.add(source_file)
+            if file.suffix in ['.cpp', '.c']:
+                header_file = file.parent / source_regex.sub(r'.h\1', file.name)
+                if header_file.exists():
+                    files_to_be_inspected.add(header_file)
 
     while len(files_to_be_inspected) > 0:
         file = files_to_be_inspected.pop().resolve().relative_to(root)
@@ -454,8 +472,10 @@ def get_boost_source_files() -> List[str]:
             + get_source_files_in('boost/python')
             + get_source_files_in('boost/graph')
             + get_source_files_in('boost/config/no_tr1')
+            + get_source_files_in('boost/atomic')  # required for newer versions of boost (1.81.0)
             # Auxiliary files, not related to Boost
             + type_hint_files
+            + get_source_files_in('bin')
     )
 
 
@@ -465,6 +485,7 @@ boost_module = Extension(
     include_dirs=[
         'libs',
         'boost',
+        'boost/atomic',
         'boost/filesystem',
         'boost/detail',
         'boost/python',
@@ -500,32 +521,32 @@ def compile_boost_modules_if_necessary():
         )
 
 
-compile_boost_modules_if_necessary()
+if __name__ == '__main__':
+    compile_boost_modules_if_necessary()
 
-
-setup(
-    name=extension_name.lstrip('_'),
-    version="1.1.1b1",
-    packages=find_packages(),
-    ext_modules=[bp_module, boost_module],
-    install_requires=[
-        f'numpy>={MINIMUM_SUPPORTED_NUMPY}',
-    ],
-    extras_require={
-        "util": ["scipy"]
-    },
-    include_package_data=True,
-    license='LICENSE.txt',
-    long_description=long_description,
-    long_description_content_type='text/markdown',
-    distclass=BinaryDistribution,
-    package_data={
-        'stage/lib': ['*.so', '*.dll', '*.dylib', '*.a'],
-        extension_name: ['py.typed'] + type_hint_files,
-    },
-    cmdclass={
-        'register': register,
-        'upload': upload,
-    },
-    zip_safe=False,
-)
+    setup(
+        name=extension_name.lstrip('_'),
+        version="1.1.1b1",
+        packages=find_packages(),
+        ext_modules=[bp_module, boost_module],
+        install_requires=[
+            f'numpy>={MINIMUM_SUPPORTED_NUMPY}, <2.0',
+        ],
+        extras_require={
+            "util": ["scipy"]
+        },
+        include_package_data=True,
+        license='LICENSE.txt',
+        long_description=long_description,
+        long_description_content_type='text/markdown',
+        distclass=BinaryDistribution,
+        package_data={
+            'stage/lib': ['*.so', '*.dll', '*.dylib', '*.a'],
+            extension_name: ['py.typed'] + type_hint_files,
+        },
+        cmdclass={
+            'register': register,
+            'upload': upload,
+        },
+        zip_safe=False,
+    )
