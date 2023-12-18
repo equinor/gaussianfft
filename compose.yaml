@@ -20,6 +20,8 @@ services:
       - "./README.md:/code/README.md"
       - "./conanfile.py:/code/conanfile.py"
       - "./CMakeLists.txt:/code/CMakeLists.txt"
+      - "./pyproject.toml:/code/pyproject.toml"
+      - "./utils.py:/code/utils.py"
 
       - "./wheelhouse:/code/wheelhouse"  # This is where the build artefacts are placed
     entrypoint: ["make", "-C", "/code", "build"]

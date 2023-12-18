@@ -1,16 +1,17 @@
 import glob
 import os
 import platform
-import re
 import sys
 from distutils.command.register import register as register_orig
 from distutils.command.upload import upload as upload_orig
 from pathlib import Path
-from typing import Iterable, List, Optional
+from typing import List
 import logging
 
 from setuptools import Distribution, Extension, find_packages, setup
 from warnings import warn
+
+from utils import collect_sources
 
 MINIMUM_SUPPORTED_PYTHON = "3.6"
 
@@ -351,63 +352,6 @@ bp_module = Extension(
                     + linker_args,
     language='c++'
 )
-
-
-def collect_sources(from_source_files: Iterable[str], ignore: Optional[List[str]] = None) -> List[str]:
-    if ignore is None:
-        ignore = []
-    files = set()
-
-    src = Path('src')
-    root = Path('.').absolute()
-    files_to_be_inspected = set(Path(file) for file in from_source_files)
-
-    header_regex = re.compile(r'\.h(pp)?$')
-    source_regex = re.compile(r'\.c(pp)?$')
-
-    def add_if_necessary(file):
-        if any(str(file).startswith(ignore_folder) for ignore_folder in ignore):
-            return
-        if file not in files and file not in files_to_be_inspected:
-            files_to_be_inspected.add(file)
-            if file.suffix in ['.hpp', '.h']:
-                source_file = file.parent / header_regex.sub(r'.c\1', file.name)
-                if source_file.exists():
-                    files_to_be_inspected.add(source_file)
-            if file.suffix in ['.cpp', '.c']:
-                header_file = file.parent / source_regex.sub(r'.h\1', file.name)
-                if header_file.exists():
-                    files_to_be_inspected.add(header_file)
-
-    while len(files_to_be_inspected) > 0:
-        file = files_to_be_inspected.pop().resolve().relative_to(root)
-        name = str(file)
-        if name in files:
-            continue
-
-        pattern = re.compile(r'^ *# *include *[<"](?P<name>.*)[">]', re.IGNORECASE)
-
-        try:
-            with file.open(encoding='utf8') as f:
-                for line in f.readlines():
-                    match = pattern.search(line)
-                    if match:
-                        item = Path(match.group('name'))
-                        if (file.parent / item).is_file():
-                            add_if_necessary(file.parent / item)
-                        elif item.is_file():
-                            add_if_necessary(item)
-                        elif (src / item).is_file():
-                            add_if_necessary(src / item)
-                        else:
-                            pass
-                            # logging.info(file, item)
-        except UnicodeDecodeError:
-            logging.info(f"'{name}' could not be opened / decoded as a text file. It's been ignored")
-
-        files.add(name)
-
-    return list(files)
 
 
 def get_source_files_in(directory: str) -> List[str]:

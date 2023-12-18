@@ -16,6 +16,16 @@ project(
     LANGUAGES CXX
 )
 
+
+# Compile Boost
+option(BOOST_VERSION "Configure the specific version of Boost gaussianfft wil be statically linked against")
+if (NOT BOOST_VERSION)
+  execute_process(COMMAND ${CMAKE_SOURCE_DIR}/bin/find_boost_version.py OUTPUT_VARIABLE BOOST_VERSION)
+endif()
+message(VERBOSE "Using version ${BOOST_VERSION} of Boost")
+
+execute_process(COMMAND ${CMAKE_SOURCE_DIR}/bin/compile-boost.sh ${BOOST_VERSION} COMMAND_ERROR_IS_FATAL ANY)
+
 #include(src/nrlib/CMakeLists.txt)
 #include(src/flens/CMakeLists.txt)
 
@@ -23,27 +33,28 @@ project(
 #include(cmake/project-is-top-level.cmake)
 #include(cmake/variables.cmake)
 
+#set(Boost_DIR sources/boost/1.81.0)
 set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_STATIC_RUNTIME ON)
 set(Boost_LIBRARY_DIR stage/lib)
-#include(stage/lib/cmake/Boost-1.81.0/BoostConfig.cmake)
+#include(sources/boost/1.81.0/stage/lib/cmake/Boost-1.81.0/BoostConfig.cmake)
 
-include_directories(SYSTEM sources/boost/1.81.0)
-include_directories(SYSTEM /opt/_internal/cpython-3.11.1/include/python3.11)
+execute_process(COMMAND python -c "import sysconfig, sys; sys.stdout.write(sysconfig.get_paths()['include'])" OUTPUT_VARIABLE Python3_LIBRARIES)
+include_directories(SYSTEM sources/boost/${BOOST_VERSION})
+include_directories(SYSTEM ${Python3_LIBRARIES})
 
 # MKL stuff
-include_directories(venv/include/fftw)
-link_directories(venv/lib)
+#include_directories(${Python3_LIBRARIES}/fftw)
+#link_directories(venv/lib)
 
 #include_directories(SYSTEM sources/boost/1.76.0)
 #include_directories(SYSTEM ~/.asdf/installs/python/3.11.7/include/python3.11/)
 # TODO: Set appropriate path to Python header files
 #set(Python3_EXECUTABLE  venv/bin/python)
 #set(Python3_NumPy_INCLUDE_DIRS venv/lib/python3.11/site-packages/numpy/core/include)
-#find_package(Python3 3.11 REQUIRED COMPONENTS Development NumPy)
+find_package(Python3 REQUIRED COMPONENTS Development.Module NumPy )
 find_package(Boost
-1.76.0
-#        1.81.0
+        ${BOOST_VERSION} EXACT
         REQUIRED
         COMPONENTS python NumPy filesystem system
         PATHS stage/lib/cmake
@@ -61,8 +72,12 @@ find_package(Boost
 
 # MKL
 # TODO: Make this 'optional' for macOS (Apple Silicon)
-include(venv/lib/cmake/mkl/MKLConfig.cmake)
+#include(${CMAKE_INSTALL_LIBDIR}/cmake/mkl/MKLConfig.cmake)
+set(MKL_LINK "static")
 find_package(MKL CONFIG REQUIRED PATHS $ENV${MKLROOT})
+#set(MKL_LIBRARY_FLAGS "-Wl,--start-group ${MKL_ROOT}/lib/libmkl_intel_ilp64.a ${MKL_ROOT}/lib/libmkl_intel_thread.a ${MKL_ROOT}/lib/libmkl_core.a -Wl,--end-group -lgomp -lpthread -lm -ldl")
+include_directories(SYSTEM ${MKL_ROOT}/include)
+link_directories(${MKL_ROOT}/lib)
 
 # ---- Declare library ----
 set(CMAKE_SHARED_MODULE_PREFIX "")
@@ -152,9 +167,25 @@ target_link_libraries(
         Boost::boost Boost::python Boost::numpy Boost::filesystem
 )
 
+#set(MKL_LIBRARY_FLAGS "-Wl,--start-group ${MKL_ROOT}/lib/libmkl_intel_ilp64.a ${MKL_ROOT}/lib/libmkl_intel_thread.a ${MKL_ROOT}/lib/libmkl_core.a -Wl,--end-group -lgomp -lpthread -lm -ldl")
 #target_link_libraries(gaussianfft_gaussianfft PUBLIC MKL::fftw)
-target_link_libraries(gaussianfft_gaussianfft PRIVATE MKL::MKL)
+#target_link_libraries(gaussianfft_gaussianfft PRIVATE MKL::MKL)
 #target_link_libraries(gaussianfft_gaussianfft PRIVATE MKL::MKL gomp pthread m dl)
+#target_link_libraries(
+#        gaussianfft_gaussianfft PRIVATE
+#        -Wl,--start-group
+#        mkl_intel_ilp64
+#        mkl_intel_thread
+#        mkl_core
+#        -Wl,--end-group
+##        iomp5
+##        -openmp
+#        gomp
+#        pthread
+#        m
+#        dl
+#)
+#mkl-static-lp64-iomp
 
 
 # ../venv/lib/libmkl_gnu_thread.a
@@ -180,33 +211,53 @@ target_link_libraries(gaussianfft_gaussianfft PRIVATE MKL::MKL)
 # Follow the recommendations from Intel's linking advisor
 # https://www.intel.com/content/www/us/en/developer/tools/oneapi/onemkl-link-line-advisor.html
 
-# Linking the symbol mkl_dft_commit_node_d_c2c_md_omp
+## Linking the symbol mkl_dft_commit_node_d_c2c_md_omp
+# TODO: It seems this linking is only necessary if we are building 'manually'
+#       tht is; mkdir build; cd build; cmake ..
 target_link_libraries(gaussianfft_gaussianfft PRIVATE
-        mkl_intel_ilp64
-        mkl_gnu_thread
-        mkl_core
-
-        gomp pthread m dl
+        -Wl,--start-group
+        ${MKL_ROOT}/lib/libmkl_intel_ilp64.a
+        ${MKL_ROOT}/lib/libmkl_gnu_thread.a
+        ${MKL_ROOT}/lib/libmkl_core.a
+        -Wl,--end-group
+        -lgomp
+        -lpthread
+        -lm
+        -ldl
 )
+#target_link_libraries(gaussianfft_gaussianfft PRIVATE
+#        mkl_intel_ilp64
+#        mkl_gnu_thread
+#        mkl_core
+#
+#        gomp pthread m dl
+#)
 
 # Linking the symbol mkl_dft_compute_forward_dz_out_par
-target_link_libraries(gaussianfft_gaussianfft PRIVATE
-        # One or more of these MAY be unnecessary
-        # I've tried removing one at the time, bo it seems
-        # importing gaussianfft fails if one of them is removed
-        mkl_gnu_thread
-        mkl_intel_thread
-        mkl_pgi_thread
-        mkl_sequential
-        mkl_tbb_thread
-)
-
-# Linking the symbol mkl_dft_xdzforward_out
-target_link_libraries(gaussianfft_gaussianfft PRIVATE
-  mkl_core
-)
+#target_link_libraries(gaussianfft_gaussianfft PRIVATE
+#        # One or more of these MAY be unnecessary
+#        # I've tried removing one at the time, bo it seems
+#        # importing gaussianfft fails if one of them is removed
+#        mkl_gnu_thread
+#        mkl_intel_thread
+#        mkl_pgi_thread
+#        mkl_sequential
+#        mkl_tbb_thread
+#)
+#
+## Linking the symbol mkl_dft_xdzforward_out
+#target_link_libraries(gaussianfft_gaussianfft PRIVATE
+#  mkl_core
+#  mkl_gf_ilp64
+#  libmkl_gf_ilp64.a
+#)
 
 # ---- Install rules ----
+
+install(
+        TARGETS gaussianfft_gaussianfft
+        DESTINATION ${SKBUILD_PLATLIB_DIR}
+)
 
 #if(NOT CMAKE_SKIP_INSTALL_RULES)
 #  include(cmake/install-rules.cmake)

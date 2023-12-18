@@ -1,0 +1,23 @@
+[project]
+name = "gaussianfft"
+version = "1.1.1b2"
+
+
+[build-system]
+requires = [
+    "scikit-build-core",
+#    "cmeel[build]",
+#    "cmeel-boost==1.81.0",
+    "mkl-static ; platform_machine == 'x86_64'",
+    "mkl-devel ; platform_machine == 'x86_64'",
+    "numpy==1.24.3 ; python_version == '3.11'",
+]
+build-backend = "scikit_build_core.build"
+#build-backend = "cmeel.build"
+
+[tool.scikit-build]
+sdist.include = [
+    "bin/compile-boost.sh",
+    "bin/find_boost_version.py",
+    "bin/find_lowest_supported_numpy.py",
+]

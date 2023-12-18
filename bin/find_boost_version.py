@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import sys
 
 
@@ -14,7 +15,7 @@ def run():
     for constraint in KNOWN_MINIMUMS:
         if constraint["python_version"] <= python_version:
             version = constraint["min_version"]
-    print('.'.join(map(str, version)))
+    sys.stdout.write('.'.join(map(str, version)))
 
 
 if __name__ == '__main__':
