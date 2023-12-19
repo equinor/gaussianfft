@@ -13,15 +13,14 @@ class TestSimulate3D(unittest.TestCase):
         cls.dx = 1.0
         cls.dy = 1.5
         grf.seed(12321)
-        cls.field3d = grf.simulate(variogram, cls.nx, cls.dx, cls.ny, cls.dy)
-        cls.field_as_array = np.array(cls.field3d).reshape((cls.nx, cls.ny), order='F')
+        cls.field3d = grf.simulate(variogram, cls.nx, cls.dx, cls.ny, cls.dy).reshape((cls.nx, cls.ny), order='F')
 
     def test_shape(self):
-        self.assertTupleEqual(self.field_as_array.shape, (self.nx, self.ny))
+        self.assertTupleEqual(self.field3d.shape, (self.nx, self.ny))
 
     def test_gradient(self):
-        diffs0 = np.diff(self.field_as_array, axis=0)
-        diffs1 = np.diff(self.field_as_array, axis=1)
+        diffs0 = np.diff(self.field3d, axis=0)
+        diffs1 = np.diff(self.field3d, axis=1)
         self.assertAlmostEqual(0.0, np.mean(diffs0), delta=0.15)
         self.assertAlmostEqual(0.0, np.mean(diffs1), delta=0.15)
         self.assertLess(np.std(diffs0), 0.1)
@@ -34,8 +33,8 @@ class TestSimulate3D(unittest.TestCase):
     def test_rolled_gradient(self):
         # When rolling the field, there should be a spike in the gradient data. Otherwise, the padding used for fft
         # was insufficient
-        diffs0 = np.diff(np.roll(self.field_as_array, int(self.nx/2), axis=0), axis=0)
-        diffs1 = np.diff(np.roll(self.field_as_array, int(self.ny/2), axis=1), axis=1)
+        diffs0 = np.diff(np.roll(self.field3d, int(self.nx/2), axis=0), axis=0)
+        diffs1 = np.diff(np.roll(self.field3d, int(self.ny/2), axis=1), axis=1)
         self.assertLess(
             np.count_nonzero(np.argmax(np.abs(diffs0), axis=0) != int(self.nx/2 - 1)),
             self.ny/2
