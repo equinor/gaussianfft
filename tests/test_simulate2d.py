@@ -3,7 +3,7 @@ import gaussianfft as grf
 import numpy as np
 
 
-class TestSimulate3D(unittest.TestCase):
+class TestSimulate2D(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()

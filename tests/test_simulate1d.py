@@ -12,7 +12,7 @@ def _cov_mat_genexp(r, n, d):
     return s
 
 
-class TestSimulate3D(unittest.TestCase):
+class TestSimulate1D(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
