@@ -1,14 +1,13 @@
 /// Unit tests for gaussian field simulation
+#include <boost/test/unit_test.hpp>
 
 #include <nrlib/grid/grid2d.hpp>
 #include <nrlib/variogram/variogram.hpp>
 #include <nrlib/variogram/fftcovgrid.hpp>
 
-#include <boost/test/unit_test.hpp>
-
 using namespace NRLib;
 
-BOOST_AUTO_TEST_SUITE( TestFFTCovGrid )
+BOOST_AUTO_TEST_SUITE(fftcovgrid_test)
 
 BOOST_AUTO_TEST_CASE( BasicFFTCovGrid1D )
 {

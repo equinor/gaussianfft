@@ -1,0 +1,48 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Configure nrlib",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "-S", ".", // Source directory
+                "-B", "build", // Build directory
+                "-DCMAKE_BUILD_TYPE=Debug", // Optional: Specify the build type (Debug/Release)
+                "-DCMAKE_C_COMPILER=clang", // Use clang as the C compiler
+                "-DCMAKE_CXX_COMPILER=clang++" // Use clang++ as the C++ compiler
+            ],
+            "group": "build",
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        },
+        {
+            "label": "Build nrlib_tests",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "build",
+                "--target",
+                "nrlib_tests",
+                "--",
+                "-j8"
+            ],
+            "dependsOn": "Configure nrlib", // Make sure to configure before building
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        }
+    ]
+}

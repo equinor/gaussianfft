@@ -59,11 +59,11 @@ std::vector<size_t> NRLib::FindNDimPadding(const Variogram & variogram,
                                            double            dz)
 {
   std::vector<size_t> pad;
-  if (ny <= 1) {
+  if (ny <= 1) { // 1D
     double range = variogram.GetRangeX();
     pad.push_back(FindGaussianFieldPadding(variogram, nx, range, dx));
   }
-  else if (nz <= 1) {
+  else if (nz <= 1) { // 2D
     double range_x = std::max(variogram.GetRangeX(), variogram.GetRangeY());
     double range_y = range_x;
     if (variogram.GetAzimuthAngle() == 0.0) {
@@ -72,7 +72,7 @@ std::vector<size_t> NRLib::FindNDimPadding(const Variogram & variogram,
     pad.push_back(FindGaussianFieldPadding(variogram, nx, range_x, dx));
     pad.push_back(FindGaussianFieldPadding(variogram, ny, range_y, dy));
   }
-  else {
+  else { // 3D
     double range_x, range_y, range_z;
     range_x = std::max(variogram.GetRangeX(), variogram.GetRangeY());
     range_y = range_x;

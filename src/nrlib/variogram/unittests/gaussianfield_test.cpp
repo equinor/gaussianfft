@@ -1,15 +1,16 @@
 /// Unit tests for gaussian field simulation
 
+#include <boost/test/unit_test.hpp>
+
 #include <nrlib/grid/grid2d.hpp>
 #include <nrlib/random/random.hpp>
 #include <nrlib/variogram/gaussianfield.hpp>
 #include <nrlib/variogram/variogram.hpp>
 
-#include <boost/test/unit_test.hpp>
 
 using namespace NRLib;
 
-BOOST_AUTO_TEST_SUITE( TestGaussianField )
+BOOST_AUTO_TEST_SUITE(gaussianfield_test)
 
 BOOST_AUTO_TEST_CASE( Sim2dComparison )
 {

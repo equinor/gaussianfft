@@ -1,3 +1,6 @@
+cmake_minimum_required(VERSION 3.28)
+project(nrlib)
+
 list(APPEND nrlib_HEADERS
 ${CMAKE_CURRENT_LIST_DIR}/eclipsegrid/eclipsecarfin.hpp
 ${CMAKE_CURRENT_LIST_DIR}/eclipsegrid/eclipsecarfingroup.hpp
@@ -55,11 +58,6 @@ ${CMAKE_CURRENT_LIST_DIR}/random/randomgenerator.hpp
 ${CMAKE_CURRENT_LIST_DIR}/random/splituniform.hpp
 ${CMAKE_CURRENT_LIST_DIR}/random/triangular.hpp
 ${CMAKE_CURRENT_LIST_DIR}/random/uniform.hpp
-${CMAKE_CURRENT_LIST_DIR}/segy/commonheaders.hpp
-${CMAKE_CURRENT_LIST_DIR}/segy/segy.hpp
-${CMAKE_CURRENT_LIST_DIR}/segy/segygeometry.hpp
-${CMAKE_CURRENT_LIST_DIR}/segy/segytrace.hpp
-${CMAKE_CURRENT_LIST_DIR}/segy/traceheader.hpp
 ${CMAKE_CURRENT_LIST_DIR}/statistics/continuouskrigingdata2d.hpp
 ${CMAKE_CURRENT_LIST_DIR}/statistics/kriging.hpp
 ${CMAKE_CURRENT_LIST_DIR}/statistics/krigingdata2d.hpp
@@ -140,11 +138,6 @@ ${CMAKE_CURRENT_LIST_DIR}/random/randomgenerator.cpp
 ${CMAKE_CURRENT_LIST_DIR}/random/splituniform.cpp
 ${CMAKE_CURRENT_LIST_DIR}/random/triangular.cpp
 ${CMAKE_CURRENT_LIST_DIR}/random/uniform.cpp
-${CMAKE_CURRENT_LIST_DIR}/segy/commonheaders.cpp
-${CMAKE_CURRENT_LIST_DIR}/segy/segy.cpp
-${CMAKE_CURRENT_LIST_DIR}/segy/segygeometry.cpp
-${CMAKE_CURRENT_LIST_DIR}/segy/segytrace.cpp
-${CMAKE_CURRENT_LIST_DIR}/segy/traceheader.cpp
 ${CMAKE_CURRENT_LIST_DIR}/statistics/continuouskrigingdata2d.cpp
 ${CMAKE_CURRENT_LIST_DIR}/statistics/kriging.cpp
 ${CMAKE_CURRENT_LIST_DIR}/statistics/multinormal.cpp
@@ -171,3 +164,37 @@ ${CMAKE_CURRENT_LIST_DIR}/well/laswell.cpp
 ${CMAKE_CURRENT_LIST_DIR}/well/norsarwell.cpp
 ${CMAKE_CURRENT_LIST_DIR}/well/rmswell.cpp
 ${CMAKE_CURRENT_LIST_DIR}/well/well.cpp)
+
+set(BOOST_ROOT "/usr/local/Homebrew/Cellar/boost@1.76/1.76.0_4")
+set(Boost_LIBRARY_DIR "${BOOST_ROOT}/lib")
+set(Boost_USE_STATIC_LIBS ON)
+find_package(Boost 1.76 EXACT REQUIRED COMPONENTS unit_test_framework)
+include_directories(${Boost_INCLUDE_DIRS})
+
+set(FFTW_INCLUDE_DIR "/usr/local/Homebrew/Cellar/fftw/3.3.10_1/include")
+set(FFTW_DOUBLE_LIB "/usr/local/Homebrew/Cellar/fftw/3.3.10_1/lib/libfftw3.a")
+set(FFTW_SINGLE_LIB "/usr/local/Homebrew/Cellar/fftw/3.3.10_1/lib/libfftw3f.a")
+include_directories(${FFTW_INCLUDE_DIR})
+
+if (APPLE)
+include_directories("/opt/homebrew/opt/openblas/include")
+endif (APPLE)
+
+# Assuming nrlib should be compiled as a static library
+add_library(nrlib STATIC ${nrlib_SOURCES})
+
+target_include_directories(nrlib PUBLIC
+${CMAKE_CURRENT_SOURCE_DIR}  # for nrlib's own headers
+${CMAKE_CURRENT_SOURCE_DIR}/..  # for the flens headers
+)
+
+add_executable(nrlib_tests
+variogram/unittests/test.cpp
+variogram/unittests/fftcovgrid_test.cpp
+variogram/unittests/gaussianfield_test.cpp)
+
+target_link_libraries(nrlib ${FFTW_LIBRARIES} ${FFTW_DOUBLE_LIB} ${FFTW_SINGLE_LIB})
+
+target_link_libraries(nrlib_tests ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY} nrlib)
+
+target_include_directories(nrlib_tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
