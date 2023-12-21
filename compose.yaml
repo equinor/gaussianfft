@@ -9,6 +9,7 @@ services:
       - "./Makefile:/code/Makefile"
       - "./bin:/code/bin"
       - "./src:/code/src"
+      - "./sources:/code/sources"
       - "./gaussianfft:/code/gaussianfft"
       - "./setup.py:/code/setup.py"
 
