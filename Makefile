@@ -84,7 +84,7 @@ export PYPIRC
 .PHONY: all tests clean build
 
 
-install: build-boost-python
+install:
 	$(PYTHON) -m pip install $(CODE_DIR)
 
 venv:
@@ -111,12 +111,12 @@ upload: .pypirc venv
 build-wheel: build
 	$(VIRTUAL_PYTHON) -m build --wheel --outdir $(DISTRIBUTION_DIR)
 
-build-sdist: venv boost
+build-sdist: venv
 	$(PIP_INSTALL) build
 	PYTHONPATH=$(CODE_DIR):$(PYTHONPATH) \
 	$(VIRTUAL_PYTHON) -m build --sdist
 
-build: venv boost
+build: venv
 	$(PIP_INSTALL) build
 	NRLIB_LINKING=$(NRLIB_LINKING) \
 	CXXFLAGS="-fPIC -fpermissive" \
@@ -136,15 +136,6 @@ else
 endif
 
 
-build-boost-python: venv boost _build-boost-python
-
-_build-boost-python:
-	$(CODE_DIR)/bin/compile-boost.sh $(BOOST_VERSION)
-
-boost: $(BOOST_DIR)
-
-$(BOOST_DIR):
-	$(CODE_DIR)/bin/fetch-boost.sh $(BOOST_VERSION)
 
 # TODO: Perhaps fall back to this if mkl (venv/include/fftw) is not available (e.g. Apple Silicon)
 fftw: $(FFTW_ARCHIVE) $(FFTW_DIR)
