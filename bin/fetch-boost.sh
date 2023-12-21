@@ -14,7 +14,6 @@ readonly BOOST_DIR="$ROOT_DIR/sources/boost"
 readonly BOOST_ARCHIVE="$BOOST_VERSION.tar.gz"
 
 readonly PYTHON="${PYTHON:-$(which python)}"
-# TODO: Check if NumPy is installed!
 
 readonly SOURCE_ROOT="$BOOST_DIR/$BOOST_VERSION"
 
@@ -29,9 +28,10 @@ fi
 
 function extract_files() {
   # TODO: Extract only necessary files directly from the archive
-  local boost_dir="boost_$(echo "$BOOST_VERSION" | tr '.' '_')"
+  local boost_dir
+  boost_dir="boost_$(echo "$BOOST_VERSION" | tr '.' '_')"
   if [[ ! -d "$boost_dir" ]]; then
-    tar -xvf "$BOOST_ARCHIVE"
+    tar -xf "$BOOST_ARCHIVE"
   fi
   local file_name="$1"
   mkdir -p "$BOOST_VERSION/$(dirname "$file_name")"
