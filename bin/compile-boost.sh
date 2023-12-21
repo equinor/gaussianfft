@@ -28,6 +28,13 @@ fi
 cd "$SOURCE_ROOT" >/dev/null
 # Bootstrap compilation
 if [[ ! -f b2 ]]; then
+  if [ ! -x ./bootstrap.sh ]; then
+    # When mounting the files in docker / GitHub Actions, it is possible the files looses their permissions
+    chmod +x ./bootstrap.sh
+  fi
+  if [ ! -x ./tools/build/src/engine/build.sh ]; then
+    chmod +x ./tools/build/src/engine/build.sh
+  fi
 ./bootstrap.sh \
     --with-python="$PYTHON" \
     --with-icu
