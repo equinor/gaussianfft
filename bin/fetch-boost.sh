@@ -39,10 +39,18 @@ function extract_files() {
 }
 
 function files_depending_on() {
-  local boost_dir="boost_$(echo "$BOOST_VERSION" | tr '.' '_')"
+  local boost_dir
+  boost_dir="boost_$(echo "$BOOST_VERSION" | tr '.' '_')"
   cd "$boost_dir" >/dev/null
   PYTHONPATH="$ROOT_DIR" "$PYTHON" -c "
 import utils
+from pathlib import Path
+
+
+if '${2:-}' == 'missing_ok' and not Path('$1').exists():
+    # The file does not exist, but that's ok
+    exit(0)
+
 print(' '.join(utils.collect_sources(['$1'], use_absolute=True)))
 "
   cd - >/dev//null
@@ -50,8 +58,18 @@ print(' '.join(utils.collect_sources(['$1'], use_absolute=True)))
 
 function extract_files_depending_on() {
   local source="$1"
+  local may_be_missing=${2:-}
   echo "Analysing dependencies of $source"
-  read -ra dependencies <<< "$(files_depending_on "$source")"
+  read -ra dependencies <<< "$(files_depending_on "$source" "$may_be_missing")"
+  if [[ -z ${dependencies:-} ]]; then
+    if [[ "$may_be_missing" == "missing_ok" ]]; then
+      echo "$source not found"
+      return
+    else
+      # The file does not exist. This can happen because it may not be included in the desired version of Boost
+      echo "$source is missing, and that's not ok"
+    fi
+  fi
   for file in "${dependencies[@]}"; do
     if [[ -d "$SOURCE_ROOT/$file" || -f "$SOURCE_ROOT/$file" ]]; then
       continue
@@ -176,7 +194,7 @@ extract_files_depending_on "boost/filesystem/config.hpp"
 extract_files "boost/atomic/detail"
 
 ## System
-extract_files_depending_on "boost/system.hpp"
+extract_files_depending_on "boost/system.hpp" "missing_ok"
 
 ### Somewhat dynamic dependency (it is reached through a macro, which we are unable to parse)
 extract_files "boost/mpl/aux_/preprocessed"
