@@ -12,7 +12,7 @@ jobs:
         name: Checkout repository
       - name: Download relevant versions of Boost
         run: |
-          for version in (1.76.0 1.81.0); do
+          for version in ( 1.76.0 1.81.0 ); do
             ./bin/fetch-boost.sh "$version"
           done
 
