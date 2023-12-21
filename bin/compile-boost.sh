@@ -14,6 +14,10 @@ readonly BOOST_DIR="$ROOT_DIR/sources/boost"
 
 readonly PYTHON="${PYTHON:-$(which python)}"
 # TODO: Check if NumPy is installed!
+if [[ ! $(command -v "$("$PYTHON" -c 'import numpy' 2>/dev/null)") ]]; then
+  echo "NumPy is not installed" >/dev/stderr
+  exit 1
+fi
 
 readonly SOURCE_ROOT="$BOOST_DIR/$BOOST_VERSION"
 
