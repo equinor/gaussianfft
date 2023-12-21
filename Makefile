@@ -160,53 +160,12 @@ endif
 build-boost-python: venv boost _build-boost-python
 
 _build-boost-python:
-	CODE_DIR=$(CODE_DIR) \
-	  $(CODE_DIR)/bootstrap.sh \
-	                   --prefix=$(shell pwd)/build \
-	                   --with-python=$(VIRTUAL_PYTHON) \
-	                   --with-icu && \
-	CPLUS_INCLUDE_PATH=$(shell $(VIRTUAL_PYTHON) -c "from sysconfig import get_paths; print(get_paths()['include'])") \
-	  $(CODE_DIR)/b2   --with-python \
-	                   --with-filesystem \
-	                   --with-system \
-	                   -q \
-	                   cxxflags=-fPIC \
-	                   cflags=-fPIC \
-	                   python-debugging=off \
-	                   threading=multi \
-	                   variant=release \
-	                   link=$(NRLIB_LINKING) \
-	                   runtime-link=$(NRLIB_LINKING) \
-	                   stage
+	$(CODE_DIR)/bin/compile-boost.sh $(BOOST_VERSION)
 
-boost: $(BOOST_ARCHIVE) $(BOOST_DIR)
-
-$(BOOST_ARCHIVE):
-	mkdir -p $(CODE_DIR)/sources/boost
-	curl -L --output $(BOOST_DIR).tar.gz \
-	https://boostorg.jfrog.io/artifactory/main/release/$(BOOST_VERSION)/source/boost_$(shell echo $(BOOST_VERSION) | tr '.' '_').tar.gz
+boost: $(BOOST_DIR)
 
 $(BOOST_DIR):
-	mkdir -p $(BOOST_DIR)
-	tar -xvf $(BOOST_ARCHIVE) -C $(BOOST_DIR) --strip-components=1
-
-	# Remove unnecessary files, some of these are binary, and others are encoded in an encoding incompatible with UTF-8
-	rm -rf $(shell find $(BOOST_DIR) -name 'doc' -type d)
-	rm -rf $(shell find $(BOOST_DIR) -name 'test' -type d)
-	rm -f  $(shell find $(BOOST_DIR) -name '*.html' -type f)
-
-	cp -r $(BOOST_DIR)/boost $(CODE_DIR)
-
-	# Copy necessary 'libs' files
-	mkdir -p $(CODE_DIR)/libs
-	for item in config filesystem headers atomic python system Jamfile.v2 ; do \
-		cp -r $(BOOST_DIR)/libs/$$item $(CODE_DIR)/libs ; \
-	done
-
-	# Copy necessary bootstrapping files
-	for item in tools boost-build.jam boostcpp.jam bootstrap.sh Jamroot ; do \
-		cp -r $(BOOST_DIR)/$$item $(CODE_DIR) ; \
-	done
+	$(CODE_DIR)/bin/fetch-boost.sh $(BOOST_VERSION)
 
 # TODO: Perhaps fall back to this if mkl (venv/include/fftw) is not available (e.g. Apple Silicon)
 fftw: $(FFTW_ARCHIVE) $(FFTW_DIR)

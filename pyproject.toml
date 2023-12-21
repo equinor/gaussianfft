@@ -1,6 +1,12 @@
 [project]
 name = "gaussianfft"
 version = "1.1.1b2"
+license = { file = "LICENSE.txt" }
+readme = "README.md"
+dependencies = [
+    "numpy",
+]
+requires-python = ">=3.6"
 
 
 [build-system]
@@ -10,7 +16,18 @@ requires = [
 #    "cmeel-boost==1.81.0",
     "mkl-static ; platform_machine == 'x86_64'",
     "mkl-devel ; platform_machine == 'x86_64'",
-    "numpy==1.24.3 ; python_version == '3.11'",
+    # These are the versions of NumPy used by RMS
+    "numpy==1.24.3 ; python_version == '3.11'",  # 14.2.0 and newer
+    "numpy==1.19.2 ; python_version == '3.8'",  # 12.1.0 and newer
+    "numpy==1.13.3 ; python_version == '3.6'",  # 11.0.0 and newer
+    # For the rest of the versions of Python, we use the earliest version of NumPy
+    # with suport for that version of Python (to make the prebuilt versions as compatible as possible)
+    "numpy==1.26.0 ; python_version == '3.12'",
+    "numpy==1.21.2 ; python_version == '3.10'",
+    "numpy==1.19.3 ; python_version == '3.9'",
+    "numpy==1.14.5 ; python_version == '3.7'",
+    "numpy==1.13.3 ; python_version == '3.6'",
+    "numpy",
 ]
 build-backend = "scikit_build_core.build"
 #build-backend = "cmeel.build"
@@ -18,6 +35,22 @@ build-backend = "scikit_build_core.build"
 [tool.scikit-build]
 sdist.include = [
     "bin/compile-boost.sh",
+    "bin/fetch-boost.sh",
     "bin/find_boost_version.py",
     "bin/find_lowest_supported_numpy.py",
+]
+sdist.exclude = [
+    "venv",
+    "build",
+    "stage",
+    "dist",
+    # Related to bootstrapping boost
+    "sources/boost/boost_*",
+    "sources/*/*.tar.gz",
+    # These are artifacts from compiling boost, which we do not want to include
+    # in the source distribution
+    "sources/boost/*/b2",
+    "sources/boost/*/bin.v2",
+    "sources/boost/*/project-config.jam*",
+    "sources/boost/*/stage",
 ]

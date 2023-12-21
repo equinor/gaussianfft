@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ROOT_DIR=$(realpath "$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)/..")
+readonly ROOT_DIR=$(realpath "$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)/..")
 
 readonly BOOST_VERSION="${BOOST_VERSION:-$1}"
 
@@ -23,8 +23,8 @@ cd "$BOOST_DIR"
 
 if [[ ! -f "$BOOST_ARCHIVE" ]]; then
   file_name="boost_$(echo "$BOOST_VERSION" | tr '.' '_').tar.gz"
-  curl -L --output "$BOOST_DIR".tar.gz \
-  "https://boostorg.jfrog.io/artifactory/main/release/$BOOST_VERSION/source/boost_$file_name"
+  curl -L --output "$BOOST_VERSION".tar.gz \
+  "https://boostorg.jfrog.io/artifactory/main/release/$BOOST_VERSION/source/$file_name"
 fi
 
 function extract_files() {
@@ -50,6 +50,7 @@ print(' '.join(utils.collect_sources(['$1'], use_absolute=True)))
 
 function extract_files_depending_on() {
   local source="$1"
+  echo "Analysing dependencies of $source"
   read -ra dependencies <<< "$(files_depending_on "$source")"
   for file in "${dependencies[@]}"; do
     if [[ -d "$SOURCE_ROOT/$file" || -f "$SOURCE_ROOT/$file" ]]; then
@@ -62,6 +63,7 @@ function extract_files_depending_on() {
 
 function extract_boost_files_used_by_us() {
   local source="$1"
+  echo "Analysing dependencies of $source"
   read -ra dependencies <<< "$(files_depending_on "$source")"
   for file in "${dependencies[@]}"; do
     if [[ "$file" == "$ROOT_DIR"/* ]]; then
@@ -115,29 +117,21 @@ extract_files "libs/python/src/"
 extract_files_depending_on "libs/python/src/"
 extract_files libs/python/fabscript
 # Dependencies not caught in extract_files_depending_on
-extract_files_depending_on "libs/python/src/converter/type_id.cpp"
-
-extract_files_depending_on "libs/python/src/object/class.cpp"
-extract_files_depending_on "boost/detail/binary_search.hpp"
-
-extract_files_depending_on "libs/python/src/object/inheritance.cpp"
-extract_files_depending_on "boost/graph/breadth_first_search.hpp"
-extract_files_depending_on "boost/pending/queue.hpp"
-extract_files_depending_on "boost/graph/graph_traits.hpp"
-extract_files "boost/type_traits"
-extract_files_depending_on "boost/type_traits.hpp"
-
-extract_files_depending_on "boost/graph/graph_concepts.hpp"
-extract_files_depending_on "boost/graph/named_function_params.hpp"
-extract_files_depending_on "boost/utility/detail/result_of_variadic.hpp"
-
-extract_files_depending_on "libs/python/src/list.cpp"
 
 #extract_files "boost/preprocessor"
 extract_files_depending_on "boost/preprocessor.hpp"
 
-# from libs/python/src/object/inheritance.cpp:7 (related to regex / strange include)
+# (related to regex / strange include)
+# from libs/python/src/object/inheritance.cpp:7
 extract_files_depending_on "boost/graph/detail/empty_header.hpp"
+extract_files_depending_on "boost/graph/breadth_first_search.hpp"
+extract_files_depending_on "boost/function/detail/function_iterate.hpp"
+# from libs/python/src/object/inheritance.cpp:11
+extract_files_depending_on "boost/graph/adjacency_list.hpp"
+# from libs/python/src/object/inheritance.cpp:12
+extract_files_depending_on "boost/graph/reverse_graph.hpp"
+# from libs/python/src/object/inheritance.cpp:17
+extract_files_depending_on "boost/tuple/tuple_comparison.hpp"
 
 ## Filesystem
 extract_files libs/filesystem/build
@@ -194,13 +188,6 @@ extract_files_depending_on "boost/predef/architecture/x86.h"
 extract_files_depending_on "boost/predef/hardware/simd/x86.h"
 
 extract_files boost/mpl/vector/aux_/preprocessed/typeof_based
-#
-#extract_files_depending_on "boost/atomic/detail/int_sizes.hpp"
-#extract_files_depending_on "boost/atomic/detail/intptr.hpp"
-#extract_files_depending_on "boost/config/warning_disable.hpp"
-
-#extract_files boost/config
-#extract_files boost/config.hpp
 
 # Fetch all boost files that are used by gaussianfft
 extract_boost_files_used_by_us "$ROOT_DIR/src/gaussfftinterface.cpp"

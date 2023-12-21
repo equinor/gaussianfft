@@ -55,12 +55,20 @@ def collect_sources(
         if name in files:
             continue
 
-        pattern = re.compile(r'^ *# *include *[<"](?P<name>[a-z0-9/._]*)[">]', re.IGNORECASE)
+        include_pattern = re.compile(r'^ *# *include *[<"](?P<name>[a-z0-9/._]*)[">]', re.IGNORECASE)
+        define_pattern = re.compile(r'^ *# *define \w+ *(\\\n)? *[<"](?P<name>[\w/.]+)[>"]', re.IGNORECASE | re.MULTILINE)
 
         try:
             with file.open(encoding='utf8') as f:
+                previous_line = ''
                 for line in f.readlines():
-                    match = pattern.search(line)
+                    match = include_pattern.search(line)
+                    if not match:
+                        match = define_pattern.search(line)
+                    if not match:
+                        if not previous_line.endswith('\n'):
+                            previous_line += '\n'
+                        match = define_pattern.search(previous_line + line)
                     if match:
                         item = Path(match.group('name'))
                         if (file.parent / item).is_file():
@@ -72,6 +80,7 @@ def collect_sources(
                         else:
                             pass
                             # logging.info(file, item)
+                    previous_line = line
         except UnicodeDecodeError:
             logging.info(f"'{name}' could not be opened / decoded as a text file. It's been ignored")
 

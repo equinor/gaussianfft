@@ -1,6 +1,6 @@
 services:
   build-linux:
-    image: quay.io/pypa/manylinux_2_24_x86_64
+    image: quay.io/pypa/manylinux2014_x86_64
     environment:
       PYTHON:
       NRLIB_LINKING: "${NRLIB_LINKING-static}"
