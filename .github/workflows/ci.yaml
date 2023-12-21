@@ -3,7 +3,22 @@ name: Build, Test, and deploy
 on: [push]
 
 jobs:
+  prepare:
+    runs-on: ubuntu-22.04
+    name: Prepare pre-requisites
+
+    steps:
+      - uses: actions/checkout@v2
+        name: Checkout repository
+      - name: Download relevant versions of Boost
+        run: |
+          for version in (1.76.0 1.81.0); do
+            ./bin/fetch-boost.sh "$version"
+          done
+
   build:
+    needs:
+      - prepare
     runs-on: ${{ matrix.os }}
     name: Build & Test
     strategy:
