@@ -42,6 +42,7 @@ sdist.include = [
     "bin/fetch-boost.sh",
     "bin/find_boost_version.py",
     "bin/find_lowest_supported_numpy.py",
+    "sources/boost/*.*.*/",
 ]
 sdist.exclude = [
     "venv",
