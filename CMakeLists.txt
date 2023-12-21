@@ -77,6 +77,7 @@ if (DEFINED ${SKBUILD_STATE} AND ${SKBUILD_STATE} STREQUAL "sdist" AND NOT EXIST
 endif ()
 
 # TODO: Work in CMAKE_BINARY_DIR
+set(ENV{PYTHON} ${Python3_EXECUTABLE})
 execute_process(COMMAND ${CMAKE_SOURCE_DIR}/bin/compile-boost.sh ${BOOST_VERSION} COMMAND_ERROR_IS_FATAL ANY)
 
 #include(cmake/project-is-top-level.cmake)
