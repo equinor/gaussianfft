@@ -65,22 +65,6 @@ endif
 
 NRLIB_LINKING ?= static
 
-define PYPROJECT_TOML
-[build-system]
-requires = [
-    "setuptools>=42",
-    "wheel",
-    # We use the oldest compatible version, to make life easier with Emerson RMS
-    # If we use a newer version, the compilation of Boost.Python, will cause the module to crach
-    # (segmentation fault) when imported
-    "numpy==$(MINIMUM_NUMPY_VERSION)",
-    "mkl-devel",
-    "mkl-static",
-]
-build-backend = "setuptools.build_meta"
-endef
-export PYPROJECT_TOML
-
 define PYPIRC
 [distutils]
 index-servers =
@@ -101,9 +85,7 @@ export PYPIRC
 
 
 install: build-boost-python
-	NRLIB_LINKING=$(NRLIB_LINKING) \
-	CXXFLAGS="-fPIC" \
-	$(PYTHON) $(SETUP.PY) build_ext --inplace build install
+	$(PYTHON) -m pip install $(CODE_DIR)
 
 venv:
 	$(PYTHON) -m venv venv
@@ -126,18 +108,15 @@ upload: .pypirc venv
 .pypirc:
 	echo "$$PYPIRC" > $(CODE_DIR)/.pypirc
 
-pyproject.toml:
-	echo "$$PYPROJECT_TOML" > $(CODE_DIR)/pyproject.toml
-
 build-wheel: build
-	$(VIRTUAL_PYTHON) $(SETUP.PY) bdist_wheel --dist-dir $(DISTRIBUTION_DIR)
+	$(VIRTUAL_PYTHON) -m build --wheel --outdir $(DISTRIBUTION_DIR)
 
-build-sdist: venv boost pyproject.toml
+build-sdist: venv boost
 	$(PIP_INSTALL) build
 	PYTHONPATH=$(CODE_DIR):$(PYTHONPATH) \
 	$(VIRTUAL_PYTHON) -m build --sdist
 
-build: #venv boost pyproject.toml
+build: venv boost
 	$(PIP_INSTALL) build
 	NRLIB_LINKING=$(NRLIB_LINKING) \
 	CXXFLAGS="-fPIC -fpermissive" \
