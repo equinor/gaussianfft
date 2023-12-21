@@ -69,7 +69,7 @@ if (NOT BOOST_VERSION)
 endif()
 message(VERBOSE "Using version ${BOOST_VERSION} of Boost")
 
-if (DEFINED ${SKBUILD_STATE} AND ${SKBUILD_STATE} STREQUAL "sdist")
+if (DEFINED ${SKBUILD_STATE} AND ${SKBUILD_STATE} STREQUAL "sdist" AND NOT EXISTS ${CMAKE_SOURCE_DIR}/sources/boost/${BOOST_VERSION})
   execute_process(
           COMMAND_ERROR_IS_FATAL ANY
           COMMAND ${CMAKE_SOURCE_DIR}/bin/fetch-boost.sh ${BOOST_VERSION}
