@@ -8,6 +8,9 @@ dependencies = [
 ]
 requires-python = ">=3.6"
 
+[project.optional-dependencies]
+util = ["scipy"]
+
 
 [build-system]
 requires = [
