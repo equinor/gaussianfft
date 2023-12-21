@@ -12,8 +12,6 @@ requires-python = ">=3.6"
 [build-system]
 requires = [
     "scikit-build-core",
-#    "cmeel[build]",
-#    "cmeel-boost==1.81.0",
     "mkl-static ; platform_machine == 'x86_64'",
     "mkl-devel ; platform_machine == 'x86_64'",
     # These are the versions of NumPy used by RMS
@@ -30,7 +28,6 @@ requires = [
     "numpy",
 ]
 build-backend = "scikit_build_core.build"
-#build-backend = "cmeel.build"
 
 [tool.scikit-build]
 sdist.include = [
