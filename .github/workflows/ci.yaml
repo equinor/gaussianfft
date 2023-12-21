@@ -23,7 +23,7 @@ jobs:
           rm -rf sources/boost/*.tar.gz
 
       - name: Store Boost source code
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: boost
           path: sources/boost/*
@@ -52,7 +52,7 @@ jobs:
         name: Checkout repository
 
       - name: Download Boost versions
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: boost
           path: sources/boost/
@@ -78,7 +78,7 @@ jobs:
         run: make tests
 
       - name: Store wheels
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: wheels
           path: wheelhouse/*.whl
@@ -95,7 +95,7 @@ jobs:
         name: Checkout repository
 
       - name: Download compiled wheels
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: wheels
           path: wheelhouse/
