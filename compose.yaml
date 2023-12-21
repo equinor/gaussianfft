@@ -18,7 +18,6 @@ services:
 #        type: bind
       - "./LICENSE.txt:/code/LICENSE.txt"
       - "./README.md:/code/README.md"
-      - "./conanfile.py:/code/conanfile.py"
       - "./CMakeLists.txt:/code/CMakeLists.txt"
       - "./pyproject.toml:/code/pyproject.toml"
       - "./utils.py:/code/utils.py"
