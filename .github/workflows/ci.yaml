@@ -5,7 +5,7 @@ on: [push]
 jobs:
   prepare:
     runs-on: ubuntu-22.04
-    name: Prepare pre-requisites
+    name: Download and prepare Boost
     strategy:
       matrix:
         boost:
@@ -16,9 +16,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         name: Checkout repository
-      - name: Download relevant versions of Boost
+      - name: Download Boost, and extract relevant source code
         run: |
           ./bin/fetch-boost.sh ${{ matrix.boost }}
+          rm -rf sources/boost/boost_*
+          rm -rf sources/boost/*.tar.gz
 
       - name: Store Boost source code
         uses: actions/upload-artifact@v2
