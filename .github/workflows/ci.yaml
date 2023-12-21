@@ -10,6 +10,7 @@ jobs:
       matrix:
         boost:
           - "1.76.0"
+          # Used by RMS 14.2 / Python 11 and later
           - "1.81.0"
 
     steps:
@@ -17,7 +18,7 @@ jobs:
         name: Checkout repository
       - name: Download relevant versions of Boost
         run: |
-          ./bin/fetch-boost.sh ${{ $matrix.boost }}
+          ./bin/fetch-boost.sh ${{ matrix.boost }}
 
       - name: Store Boost source code
         uses: actions/upload-artifact@v2
