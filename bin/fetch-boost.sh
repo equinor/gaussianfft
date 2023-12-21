@@ -102,6 +102,7 @@ extract_files_depending_on "tools/build/src/engine/modules"
 # Files for configuring / starting the compilation
 extract_files Jamroot
 extract_files boostcpp.jam
+extract_files boost-build.jam
 
 extract_files tools/build/src/bootstrap.jam
 extract_files tools/build/src/build/
@@ -127,6 +128,8 @@ extract_files libs/config/checks/std
 extract_files libs/config/checks/Jamfile.v2
 extract_files libs/config/checks/config.jam
 extract_files libs/headers/build
+# Only required in newer versions
+extract_files_depending_on libs/config/checks/test_case.cpp
 
 ## Python
 extract_files libs/python/build
