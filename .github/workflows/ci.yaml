@@ -18,10 +18,10 @@ jobs:
         - macos-11
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         name: Checkout repository
 
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python }}
 
@@ -41,9 +41,9 @@ jobs:
         run: make tests
 
       - name: Store wheels
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
-          name: wheels
+          name: wheel-${{ matrix.python }}-${{ matrix.os }}
           path: wheelhouse/*.whl
           if-no-files-found: error
 
@@ -54,13 +54,13 @@ jobs:
     needs:
       - build
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         name: Checkout repository
 
       - name: Download compiled wheels
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
-          name: wheels
+          pattern: wheel-*
           path: wheelhouse/
 
       - name: Publish to PyPi
