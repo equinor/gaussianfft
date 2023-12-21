@@ -3,7 +3,44 @@ name: Build, Test, and deploy
 on: [push]
 
 jobs:
+  prepare-boost:
+    runs-on: ubuntu-22.04
+    name: Download and prepare Boost
+    strategy:
+      matrix:
+        boost:
+          - "1.76.0"
+          # Used by RMS 14.2 / Python 11 and later
+          - "1.81.0"
+
+    steps:
+      - uses: actions/checkout@v4
+        name: Checkout repository
+
+      - name: Restore cached Boost source
+        id: cache-boost
+        uses: actions/cache@v3
+        with:
+          path: sources/boost/${{ matrix.boost }}
+          key: boost-${{ matrix.boost }}-${{ hashFiles('bin/fetch-boost.sh') }}
+
+      - name: Download Boost, and extract relevant source code
+        if: steps.cache-boost.outputs.cache-hit != 'true'
+        run: |
+          ./bin/fetch-boost.sh ${{ matrix.boost }}
+          rm -rf sources/boost/boost_*
+          rm -rf sources/boost/*.tar.gz
+
+      - name: Store Boost source code
+        uses: actions/upload-artifact@v4
+        with:
+          name: boost-${{ matrix.boost }}
+          path: sources/boost/*
+          if-no-files-found: error
+
   build:
+    needs:
+      - prepare-boost
     runs-on: ${{ matrix.os }}
     name: Build & Test
     strategy:
@@ -22,6 +59,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         name: Checkout repository
+
+      - name: Download Boost versions
+        uses: actions/download-artifact@v4
+        with:
+          pattern: boost-*
+          path: sources/boost/
+          merge-multiple: true
 
       - uses: actions/setup-python@v4
         with:
