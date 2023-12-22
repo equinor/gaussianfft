@@ -15,16 +15,15 @@ class TestSimulate3D(unittest.TestCase):
         cls.dy = 17.5
         cls.dz = 25.0
         grf.seed(12321)
-        cls.field3d = grf.simulate(variogram, cls.nx, cls.dx, cls.ny, cls.dy, cls.nz, cls.dz)
-        cls.field_as_array = np.array(cls.field3d).reshape((cls.nx, cls.ny, cls.nz), order='F')
+        cls.field3d = grf.simulate(variogram, cls.nx, cls.dx, cls.ny, cls.dy, cls.nz, cls.dz).reshape((cls.nx, cls.ny, cls.nz), order='F')
 
     def test_shape(self):
-        self.assertTupleEqual(self.field_as_array.shape, (self.nx, self.ny, self.nz))
+        self.assertTupleEqual(self.field3d.shape, (self.nx, self.ny, self.nz))
 
     def test_gradient(self):
-        diffs0 = np.diff(self.field_as_array, axis=0)
-        diffs1 = np.diff(self.field_as_array, axis=1)
-        diffs2 = np.diff(self.field_as_array, axis=2)
+        diffs0 = np.diff(self.field3d, axis=0)
+        diffs1 = np.diff(self.field3d, axis=1)
+        diffs2 = np.diff(self.field3d, axis=2)
         self.assertAlmostEqual(0.0, np.mean(diffs0), delta=0.15)
         self.assertAlmostEqual(0.0, np.mean(diffs1), delta=0.15)
         self.assertAlmostEqual(0.0, np.mean(diffs2), delta=0.15)
@@ -40,9 +39,9 @@ class TestSimulate3D(unittest.TestCase):
     def test_rolled_gradient(self):
         # When rolling the field, there should be a spike in the gradient data. Otherwise, the padding used for fft
         # was insufficient
-        diffs0 = np.diff(np.roll(self.field_as_array, int(self.nx/2), axis=0), axis=0)
-        diffs1 = np.diff(np.roll(self.field_as_array, int(self.ny/2), axis=1), axis=1)
-        diffs2 = np.diff(np.roll(self.field_as_array, int(self.nz/2), axis=2), axis=2)
+        diffs0 = np.diff(np.roll(self.field3d, int(self.nx/2), axis=0), axis=0)
+        diffs1 = np.diff(np.roll(self.field3d, int(self.ny/2), axis=1), axis=1)
+        diffs2 = np.diff(np.roll(self.field3d, int(self.nz/2), axis=2), axis=2)
         amax = np.argmax(np.abs(diffs0), axis=0)
         # Check that most of the rolled max diffs occur at the rolled index. Most meaning more than 20 % of the
         # points. This is accurate enough to pick up if the fft does not pad correctly, but should perhaps be replaced
