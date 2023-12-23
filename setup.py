@@ -302,26 +302,6 @@ type_hint_files = [str(file) for file in Path('gaussianfft').glob('**/*.pyi')]
 
 # We do not need entire NRLib. Exclude unused files.
 
-all_source_files = [
-    a
-    for a in all_source_files
-    # @formatter:off
-    if not a.startswith(  os.path.join('src', 'nrlib', 'eclipsegrid'))
-    and not a.startswith( os.path.join('src', 'nrlib', 'geometry'   ))
-    and not a.startswith( os.path.join('src', 'nrlib', 'pointset'   ))
-    and (not a.startswith(os.path.join('src', 'nrlib', 'random'     )) or a.count('random') == 2 or 'dSFMT' in a)
-    and not a.startswith( os.path.join('src', 'nrlib', 'segy'       ))
-    and not a.startswith( os.path.join('src', 'nrlib', 'statistics' ))
-    and not a.startswith( os.path.join('src', 'nrlib', 'stormgrid'  ))
-    and not a.startswith( os.path.join('src', 'nrlib', 'surface'    ))
-    and not a.startswith( os.path.join('src', 'nrlib', 'tinyxml'    ))
-    and not a.startswith( os.path.join('src', 'nrlib', 'trend'      ))
-    and not a.startswith( os.path.join('src', 'nrlib', 'volume'     ))
-    and not a.startswith( os.path.join('src', 'nrlib', 'wavelet'    ))
-    and not a.startswith( os.path.join('src', 'nrlib', 'well'       ))
-    # @formatter:on
-]
-
 open('source_files.txt', 'w').writelines([file + '\n' for file in all_source_files])
 
 """ Python module setup """
