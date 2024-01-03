@@ -22,8 +22,8 @@ requires = [
     # Scikit-build-core does not support Python 3.6 (and older)
     "scikit-build-core ; python_version >= '3.7'",
 
-    "mkl-static ; platform_machine == 'x86_64'",
-    "mkl-devel ; platform_machine == 'x86_64'",
+    "mkl-static ; platform_machine == 'x86_64' or platform_machine == 'AMD64'",
+    "mkl-devel ; platform_machine == 'x86_64' or platform_machine == 'AMD64'",
 
     # Used to find libpython.dylib, which we need to link against on macOS
     "find-libpython ; sys_platform == 'darwin'",
