@@ -55,6 +55,15 @@ jobs:
         os:
         - ubuntu-20.04
         - macos-11
+        - macos-13-xlarge  # That is Apple silicone
+        exclude:
+          # Python 3.7-3.9 are not available on ARM64
+          - os: macos-13-xlarge
+            python: 3.7
+          - os: macos-13-xlarge
+            python: 3.8
+          - os: macos-13-xlarge
+            python: 3.9
 
     steps:
       - uses: actions/checkout@v4

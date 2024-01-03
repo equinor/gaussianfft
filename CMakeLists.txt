@@ -15,6 +15,18 @@ include(cmake/project-is-top-level.cmake)
 include(cmake/variables.cmake)
 
 # Which versions of dependencies to use
+option(USE_FFTW3 "Use FFTW3 instead of Intel MKL (default on Apple Silicon)")
+if (APPLE AND ${CMAKE_HOST_SYSTEM_PROCESSOR} STREQUAL "arm64")
+    message(WARNING "Intel MKL is not supported on Apple Silicon; using FFTW3 instead")
+    set(USE_FFT3 ON)
+endif ()
+if (USE_FFT3)
+    option(FFTW_VERSION "Which version of FFTW to compile against")
+    if (NOT FFTW_VERSION)
+        set(FFTW_VERSION "3.3.10")
+    endif ()
+endif ()
+
 option(BOOST_VERSION "Configure the specific version of Boost gaussianfft wil be statically linked against")
 if (NOT BOOST_VERSION)
     execute_process(COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/bin/find_boost_version.py OUTPUT_VARIABLE BOOST_VERSION)
@@ -47,6 +59,9 @@ add_compile_definitions(VECLIB)
 add_compile_definitions(ACCELERATE_NEW_LAPACK="1")
 add_compile_definitions(ACCELERATE_LAPACK_ILP64="1")
 
+if (APPLE)
+    set(CMAKE_SHARED_LIBRARY_SUFFIX ".so")
+endif ()
 add_library(
         gaussianfft_gaussianfft
         SHARED
@@ -94,6 +109,11 @@ if (NOT BUILD_SHARED_LIBS)
     target_compile_definitions(gaussianfft_gaussianfft PUBLIC GAUSSIANFFT_STATIC_DEFINE)
 endif ()
 
+if (APPLE)
+    # We need to explicitly link with libpython.dylib on macOS
+    target_link_libraries(gaussianfft_gaussianfft PRIVATE Python3::Module)
+endif ()
+
 set_target_properties(
         gaussianfft_gaussianfft PROPERTIES
         CXX_VISIBILITY_PRESET hidden
@@ -108,17 +128,33 @@ target_link_libraries(
         PRIVATE
         ${Boost_LIBRARIES}
 )
-target_link_libraries(gaussianfft_gaussianfft PRIVATE
-        -Wl,--start-group
-        mkl_intel_ilp64
-        mkl_gnu_thread
-        mkl_core
-        -Wl,--end-group
-        gomp
-        pthread
-        m
-        dl
-)
+if (${CMAKE_HOST_SYSTEM_PROCESSOR} STREQUAL "arm64")
+    target_link_libraries(gaussianfft_gaussianfft PRIVATE fftw3 fftw3f)
+else ()
+    if (APPLE)
+        target_link_libraries(gaussianfft_gaussianfft PRIVATE
+                mkl_intel_ilp64
+                mkl_intel_thread
+                mkl_core
+                iomp5
+        )
+    else ()
+        # Presumably Linux x86
+        target_link_libraries(gaussianfft_gaussianfft PRIVATE
+                -Wl,--start-group
+                mkl_intel_ilp64
+                mkl_gnu_thread
+                mkl_core
+                -Wl,--end-group
+                gomp
+        )
+    endif ()
+    target_link_libraries(gaussianfft_gaussianfft PRIVATE
+            pthread
+            m
+            dl
+    )
+endif ()
 
 # ---- Install rules ----
 
