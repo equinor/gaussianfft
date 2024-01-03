@@ -75,10 +75,11 @@ jobs:
         run: |
           if [[ $RUNNER_OS == "Linux" ]]; then
             docker-compose run build-linux
-          else
-            if [[ $RUNNER_OS == "macOS" ]]; then
+          elif [[ $RUNNER_OS == "macOS" ]]; then
               brew install coreutils
-            fi
+              make build
+          else
+            # That is, windows
             python -m pip install --user build
             python -m build
           fi
