@@ -89,7 +89,11 @@ build: venv
 
 ifeq ($(detected_OS),Linux)
 	# Format wheels to be compatible with PEP 600, PEP 513, PEP 571, and/or PEP 599
-	$(PIP_INSTALL) auditwheel
+	# auditweel have not released an update for Python 3.12 yet, so we install it from main
+	$(PIP_INSTALL) git+https://github.com/pypa/auditwheel 2>/dev/null || { \
+	    # Fall back to the regual version for older versions of Python, which are no longer supported ; \
+	    $(PIP_INSTALL) auditwheel ; \
+	}
 	for wheel in $(CODE_DIR)/dist/$(shell echo $(NAME) | tr '-' '_')-*.whl ; do \
 	    $(VIRTUAL_PYTHON) -m auditwheel repair $$wheel ; \
 	done
