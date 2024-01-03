@@ -79,6 +79,7 @@ jobs:
             brew install coreutils
             make build
           fi
+        shell: bash
 
       - name: Test
         run: make tests
