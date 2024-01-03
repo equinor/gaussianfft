@@ -37,6 +37,7 @@ set(Python3_USE_STATIC_LIBS ON)
 find_package(Python3 REQUIRED COMPONENTS Interpreter Development.Module)
 find_package(pybind11 CONFIG REQUIRED PATHS ${Python3_SITELIB}/pybind11)
 include_directories(SYSTEM ${Python3_INCLUDE_DIRS})
+link_directories(${Python3_LIBRARIES})
 
 
 include(cmake/fftw.cmake)
@@ -62,6 +63,8 @@ add_compile_definitions(ACCELERATE_LAPACK_ILP64="1")
 
 if (APPLE)
     set(CMAKE_SHARED_LIBRARY_SUFFIX ".so")
+elseif (WIN32)
+    set(CMAKE_SHARED_LIBRARY_SUFFIX ".pyd")
 endif ()
 
 message(STATUS "Finding used source files")
@@ -81,6 +84,9 @@ endif ()
 if (APPLE)
     # We need to explicitly link with libpython.dylib on macOS
     target_link_libraries(gaussianfft_gaussianfft PRIVATE Python3::Module)
+elseif (WIN32 AND MSVC)
+    # Windows / Visual Studio do not link with the C++ runtime redistributable by default
+    target_compile_options(gaussianfft_gaussianfft PRIVATE /MT)
 endif ()
 
 set_target_properties(
@@ -96,6 +102,7 @@ set_target_properties(
 target_link_libraries(
         gaussianfft_gaussianfft
         PRIVATE
+        ${Python3_LIBRARIES}
         pybind11::headers
         ${Boost_LIBRARIES}
 )
@@ -125,6 +132,13 @@ else ()
                 mkl_core
                 #iomp5
         )
+    elseif (WIN32)
+        target_link_libraries(gaussianfft_gaussianfft PRIVATE
+                mkl_intel_ilp64
+                mkl_intel_thread
+                mkl_core
+                libiomp5md
+        )
     else ()
         # Presumably Linux x86
         target_link_libraries(gaussianfft_gaussianfft PRIVATE
@@ -136,11 +150,13 @@ else ()
                 gomp
         )
     endif ()
-    target_link_libraries(gaussianfft_gaussianfft PRIVATE
-            pthread
-            m
-            dl
-    )
+    if (NOT WIN32)
+        target_link_libraries(gaussianfft_gaussianfft PRIVATE
+                pthread
+                m
+                dl
+        )
+    endif ()
 endif ()
 
 # ---- Install rules ----
