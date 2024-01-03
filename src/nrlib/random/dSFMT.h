@@ -41,9 +41,11 @@ extern "C" {
 #include <stdio.h>
 #include <assert.h>
 
+#ifndef __arm64__
 // ------ NR: ------
 // We only support computers that have SSE2.
 #define HAVE_SSE2
+#endif
 #define DSFMT_MEXP 19937
 #if defined(_MSC_VER) && _MSC_VER >= 1600
   // Included stdint.h to prevent warning when compiling dSFMT on VS2010 and newer
