@@ -81,7 +81,53 @@ find_package(Python3 REQUIRED COMPONENTS Interpreter Development.Module NumPy)
 
 # Configure Intel MKL & FFTW (for Apple M-series)
 if (APPLE AND ${CMAKE_HOST_SYSTEM_PROCESSOR} STREQUAL "arm64")
-  message(FATAL_ERROR "Apple Silicon is not yet supported")
+  message(WARNING "Intel MKL is not supported on Apple Silicon; using FFTW3 instead")
+  # Compiling for Apple silicone, which does not support Intel MKL
+  option(FFTW_VERSION "Which version of FFTW to compile against")
+  # TODO: Cache job
+  if(NOT FFTW_VERSION)
+    set(FFTW_VERSION "3.3.10")
+  endif ()
+  if (DEFINED ${SKBUILD_STATE} AND ${SKBUILD_STATE} STREQUAL "sdist")
+    execute_process(
+            COMMAND_ERROR_IS_FATAL ANY
+            COMMAND ${CMAKE_SOURCE_DIR}/bin/fetch-fftw.sh ${FFTW_VERSION}
+    )
+  endif ()
+  if (EXISTS ${CMAKE_SOURCE_DIR}/sources/fftw/${FFTW_VERSION})
+    message(STATUS "Copy FFTW source to build directory")
+    file(COPY ${CMAKE_SOURCE_DIR}/sources/fftw/${FFTW_VERSION} DESTINATION ${CMAKE_BINARY_DIR}/sources/fftw/)
+  endif ()
+
+  if (NOT EXISTS ${CMAKE_BINARY_DIR}/bin/compile-fftw.sh)
+    file(COPY ${CMAKE_SOURCE_DIR}/bin/compile-fftw.sh DESTINATION ${CMAKE_BINARY_DIR}/bin)
+    file(COPY ${CMAKE_SOURCE_DIR}/bin/fetch-fftw.sh DESTINATION ${CMAKE_BINARY_DIR}/bin)
+  endif ()
+  if (NOT EXISTS ${CMAKE_BINARY_DIR}/vendor/include/fftw3.h OR NOT EXISTS ${CMAKE_BINARY_DIR}/vendor/lib/libfftw3.a)
+    message(STATUS "Compiling FFTW")
+#    include(ExternalProject)
+#    ExternalProject_Add(
+#            fftw3
+#            SOURCE_DIR ${CMAKE_BINARY_DIR}/sources/fftw/${FFTW_VERSION}
+#            INSTALL_DIR "${CMAKE_BINARY_DIR}/vendor"
+#            CMAKE_ARGS
+#              -DBUILD_SHARED_LIBS=OFF
+#              -DCMAKE_INSTALL_PREFIX="${CMAKE_BINARY_DIR}/vendor"
+#            BUILD_COMMAND cmake --build build
+#            INSTALL_COMMAND cmake --install build
+#    )
+    set(ENV{CMAKE} "${CMAKE_COMMAND}")
+    execute_process(
+            COMMAND_ERROR_IS_FATAL ANY
+            COMMAND ${CMAKE_BINARY_DIR}/bin/compile-fftw.sh ${FFTW_VERSION}
+    )
+  unset(ENV{CMAKE})
+  endif ()
+  include_directories(SYSTEM ${CMAKE_BINARY_DIR}/vendor/include)
+  link_directories(${CMAKE_BINARY_DIR}/vendor/lib)
+  # TODO: Use these when fftw properly uses CMAKE
+  #find_package(FFTW3 CONFIG REQUIRED PATHS ${CMAKE_BINARY_DIR}/vendor/lib/cmake/fftw3)
+  #find_package(FFTW3f CONFIG REQUIRED PATHS ${CMAKE_BINARY_DIR}/vendor/lib/cmake/fftw3f)
 else ()
   # MKL
   set(MKL_LINK "static")
@@ -165,9 +211,19 @@ find_package(Boost
 set(CMAKE_SHARED_MODULE_PREFIX "")
 
 
+add_compile_definitions(FLENS_FIRST_INDEX="0")
+add_compile_definitions(VECLIB)
+add_compile_definitions(ACCELERATE_NEW_LAPACK="1")
+add_compile_definitions(ACCELERATE_LAPACK_ILP64="1")
+
+# python -c 'import utils; print(utils.collect_sources(["src/gaussfftinterface.cpp"]))'
+if (APPLE)
+  set(CMAKE_SHARED_LIBRARY_SUFFIX ".so")
+  set(CMAKE_SHARED_LIBRARY_PREFIX "")
+endif ()
 add_library(
     gaussianfft_gaussianfft
-    MODULE
+    SHARED
     src/gaussfftinterface.cpp
     src/gaussfft.cpp
     src/gaussfft.hpp
@@ -212,6 +268,20 @@ if(NOT BUILD_SHARED_LIBS)
   target_compile_definitions(gaussianfft_gaussianfft PUBLIC GAUSSIANFFT_STATIC_DEFINE)
 endif()
 
+if (APPLE)
+  target_link_options(gaussianfft_gaussianfft PRIVATE -dynamiclib)
+##  target_link_options(gaussianfft_gaussianfft PRIVATE -lpython311)
+endif ()
+if (APPLE)
+  # We need to explicitly link with libpython.dylib on macOS
+  execute_process(
+          COMMAND_ERROR_IS_FATAL ANY
+          COMMAND ${Python3_EXECUTABLE} -m find_libpython
+          OUTPUT_VARIABLE Python3_LIBPYTHON
+  )
+  target_link_options(gaussianfft_gaussianfft PRIVATE ${Python3_LIBPYTHON})
+endif ()
+
 set_target_properties(
     gaussianfft_gaussianfft PROPERTIES
     CXX_VISIBILITY_PRESET hidden
@@ -242,6 +312,20 @@ target_link_libraries(
 )
 # TODO: It seems this linking is only necessary if we are building 'manually'
 #       tht is; mkdir build; cd build; cmake ..
+if (${CMAKE_HOST_SYSTEM_PROCESSOR} STREQUAL "arm64")
+  target_link_libraries(gaussianfft_gaussianfft PRIVATE fftw3 fftw3f)
+elseif (APPLE)
+  target_link_libraries(gaussianfft_gaussianfft PRIVATE
+          mkl_intel_ilp64
+          mkl_intel_thread
+          mkl_core
+          iomp5
+          pthread
+          m
+          dl
+  )
+else ()
+# Presumably Linux x86
 target_link_libraries(gaussianfft_gaussianfft PRIVATE
         -Wl,--start-group
         mkl_intel_ilp64
@@ -253,6 +337,7 @@ target_link_libraries(gaussianfft_gaussianfft PRIVATE
         m
         dl
 )
+endif ()
 #target_link_libraries(gaussianfft_gaussianfft PRIVATE
 
 # ---- Install rules ----

@@ -24,6 +24,10 @@ requires = [
 
     "mkl-static ; platform_machine == 'x86_64'",
     "mkl-devel ; platform_machine == 'x86_64'",
+
+    # Used to find libpython.dylib, which we need to link against on macOS
+    "find-libpython ; sys_platform == 'darwin'",
+
     # These are the versions of NumPy used by RMS
     "numpy==1.24.3 ; python_version == '3.11'",  # 14.2.0 and newer
     "numpy==1.19.2 ; python_version == '3.8'",  # 12.1.0 and newer
