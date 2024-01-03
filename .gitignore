@@ -248,4 +248,5 @@ _deps
 requirements.txt
 
 # Dependncies
+vendor/
 sources/

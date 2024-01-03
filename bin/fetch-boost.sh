@@ -35,7 +35,17 @@ function extract_files() {
   fi
   local file_name="$1"
   mkdir -p "$BOOST_VERSION/$(dirname "$file_name")"
-  cp -r --no-target-directory "$boost_dir/$file_name" "$BOOST_VERSION/$file_name"
+  if [[ -d "$boost_dir/$file_name" && "${file_name: -1}" != "/" ]]; then
+    file_name="$file_name/"
+  fi
+  # TODO: Fall back on cp -r ---no-target-directory
+  if [[ $(command -v rsync) ]]; then
+    sync="rsync -ruat"
+  else
+    # TODO: Check if cp supports --no-target-directory / -t (GNU)
+    sync="cp -r --no-target-directory"
+  fi
+  $sync "$boost_dir/$file_name" "$BOOST_VERSION/$file_name"
 }
 
 function files_depending_on() {
