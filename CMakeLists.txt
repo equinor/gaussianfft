@@ -238,7 +238,7 @@ target_compile_features(gaussianfft_gaussianfft PUBLIC cxx_std_17)
 target_link_libraries(
         gaussianfft_gaussianfft
         PRIVATE
-        Boost::boost Boost::python Boost::numpy Boost::filesystem
+        Boost::boost Boost::python Boost::numpy Boost::filesystem Boost::system
 )
 # TODO: It seems this linking is only necessary if we are building 'manually'
 #       tht is; mkdir build; cd build; cmake ..
