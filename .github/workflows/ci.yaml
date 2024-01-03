@@ -3,35 +3,35 @@ name: Build, Test, and deploy
 on: [push]
 
 jobs:
-  prepare:
-    runs-on: ubuntu-22.04
-    name: Download and prepare Boost
-    strategy:
-      matrix:
-        boost:
-          - "1.76.0"
-          # Used by RMS 14.2 / Python 11 and later
-          - "1.81.0"
+#  prepare:
+#    runs-on: ubuntu-22.04
+#    name: Download and prepare Boost
+#    strategy:
+#      matrix:
+#        boost:
+#          - "1.76.0"
+#          # Used by RMS 14.2 / Python 11 and later
+#          - "1.81.0"
 
-    steps:
-      - uses: actions/checkout@v4
-        name: Checkout repository
-      - name: Download Boost, and extract relevant source code
-        run: |
-          ./bin/fetch-boost.sh ${{ matrix.boost }}
-          rm -rf sources/boost/boost_*
-          rm -rf sources/boost/*.tar.gz
-
-      - name: Store Boost source code
-        uses: actions/upload-artifact@v4
-        with:
-          name: boost-${{ matrix.boost }}
-          path: sources/boost/*
-          if-no-files-found: error
+#    steps:
+#      - uses: actions/checkout@v4
+#        name: Checkout repository
+#      - name: Download Boost, and extract relevant source code
+#        run: |
+#          ./bin/fetch-boost.sh ${{ matrix.boost }}
+#          rm -rf sources/boost/boost_*
+#          rm -rf sources/boost/*.tar.gz
+#
+#      - name: Store Boost source code
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: boost-${{ matrix.boost }}
+#          path: sources/boost/*
+#          if-no-files-found: error
 
   build:
-    needs:
-      - prepare
+#    needs:
+#      - prepare
     runs-on: ${{ matrix.os }}
     name: Build & Test
     strategy:
@@ -53,12 +53,12 @@ jobs:
       - uses: actions/checkout@v4
         name: Checkout repository
 
-      - name: Download Boost versions
-        uses: actions/download-artifact@v4
-        with:
-          pattern: boost-*
-          path: sources/boost/
-          merge-multiple: true
+#      - name: Download Boost versions
+#        uses: actions/download-artifact@v4
+#        with:
+#          pattern: boost-*
+#          path: sources/boost/
+#          merge-multiple: true
 
       - uses: actions/setup-python@v2
         with:
@@ -79,7 +79,8 @@ jobs:
             if [[ $RUNNER_OS == "macOS" ]]; then
               brew install coreutils
             fi
-            make build
+            $PYTHON -m pip install --user build
+            $PYTHON -m build
           fi
         shell: bash
 
