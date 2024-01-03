@@ -79,8 +79,8 @@ jobs:
             if [[ $RUNNER_OS == "macOS" ]]; then
               brew install coreutils
             fi
-            $PYTHON -m pip install --user build
-            $PYTHON -m build
+            python -m pip install --user build
+            python -m build
           fi
         shell: bash
 
