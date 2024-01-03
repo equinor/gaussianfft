@@ -2,6 +2,7 @@
 name = "gaussianfft"
 version = "1.1.1b2"
 license = { file = "LICENSE.txt" }
+description = "A fast library for simulating Gaussian Random Fields, using the fast Fourier transform"
 readme = "README.md"
 authors = [
     { name = "Norwegian Computing Center" },
