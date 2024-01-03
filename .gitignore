@@ -250,6 +250,12 @@ nrlib-*/
 .numpy.json
 boost_source_files.txt
 
+# Dependncies
+sources/**/*.tar.gz
+vendor/
+# FFTW
+sources/fftw/
+
 # Boost related source code
 sources/boost/
 boost/

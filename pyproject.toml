@@ -24,6 +24,10 @@ requires = [
 
     "mkl-static ; platform_machine == 'x86_64' or platform_machine == 'AMD64'",
     "mkl-devel ; platform_machine == 'x86_64' or platform_machine == 'AMD64'",
+
+    # Used to find libpython.dylib, which we need to link against on macOS
+    "find-libpython ; sys_platform == 'darwin'",
+
     # These are the versions of NumPy used by RMS
     "numpy==1.24.3 ; python_version == '3.11'",  # 14.2.0 and newer
     "numpy==1.19.2 ; python_version == '3.8'",  # 12.1.0 and newer
@@ -40,7 +44,10 @@ build-backend = "scikit_build_core.build"
 
 [tool.scikit-build]
 sdist.include = [
+    "vendor/",  # This is only included so that it can be reused during building wheels for Apple Silicon
+    # It should *not* be included in the actual source distribution (sdist)
     "sources/boost/*.*.*/",
+    "sources/fftw/*.*.*/",
 ]
 sdist.exclude = [
     "venv",
