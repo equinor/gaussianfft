@@ -6,7 +6,7 @@ readonly ROOT_DIR=$(realpath "$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /de
 readonly BOOST_VERSION="${BOOST_VERSION:-${1-}}"
 
 if [[ -z "$BOOST_VERSION" ]]; then
-  echo "No version of Boost is given" >/std/err
+  echo "No version of Boost is given" >/dev/stderr
   exit 1
 fi
 
