@@ -15,41 +15,68 @@ include(cmake/project-is-top-level.cmake)
 include(cmake/variables.cmake)
 
 if(NOT DEFINED SKBUILD)
-  # TODO: Ensure Python is set up correctly
   message(WARNING "Not building with scikit-build")
 
-  execute_process(
-          COMMAND_ERROR_IS_FATAL ANY
-          OUTPUT_VARIABLE Gaussianfft_ERROR
-          COMMAND python3 -c "
-import sys
-
-if sys.prefix == sys.base_prefix:
-    sys.stdout.write('Not in a virtual environment. Please create one')
-")
-  if(Gaussianfft_ERROR)
-    if (NOT EXISTS ${CMAKE_BINARY_DIR}/venv)
-      message(STATUS "Creating a new venv in ${CMAKE_BINARY_DIR}/venv")
-      find_package(Python3 ${Python3_VERSION} REQUIRED COMPONENTS Interpreter)
-      execute_process(COMMAND ${Python3_EXECUTABLE} "-m" "venv" "venv"
-              WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-              COMMAND_ERROR_IS_FATAL ANY
-      )
-      unset(${Python3_EXECUTABLE})
-    endif ()
-    set(Python3_EXECUTABLE "${CMAKE_BINARY_DIR}/venv/bin/python")
-    find_package(Python3 REQUIRED COMPONENTS Interpreter)
-    message(STATUS ${Python3_EXECUTABLE})
-
-    execute_process(
-            COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/pyproject.toml pyproject.toml
-            COMMAND ${Python3_EXECUTABLE} -c "import tomllib" || ${Python3_EXECUTABLE} -m pip install toml
-            COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/bin/install-build-requirements.py
+  if (NOT EXISTS ${CMAKE_BINARY_DIR}/venv)
+    message(STATUS "Creating a new venv in ${CMAKE_BINARY_DIR}/venv")
+    find_package(Python3 ${Python3_VERSION} EXACT REQUIRED COMPONENTS Interpreter)
+    execute_process(COMMAND ${Python3_EXECUTABLE} "-m" "venv" "venv"
+            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
             COMMAND_ERROR_IS_FATAL ANY
     )
+    unset(${Python3_EXECUTABLE})
+  endif ()
+  message(STATUS "Installing necessary dependencies in ${CMAKE_BINARY_DIR}/venv")
+  set(Python3_EXECUTABLE "${CMAKE_BINARY_DIR}/venv/bin/python")
+  find_package(Python3 REQUIRED COMPONENTS Interpreter)
+  message(STATUS ${Python3_EXECUTABLE})
+
+  # Ensure pip ins up do date
+  execute_process(
+          COMMAND ${Python3_EXECUTABLE} -m pip install --upgrade pip
+          COMMAND_ERROR_IS_FATAL ANY
+  )
+  # For very old version of pip, we may need to update it twice (e.g. Python 3.6)
+  execute_process(
+          COMMAND ${Python3_EXECUTABLE} -m pip install --upgrade pip
+          COMMAND_ERROR_IS_FATAL ANY
+  )
+  execute_process(
+  # Ensure toml / tomllib is installed
+          COMMAND ${Python3_EXECUTABLE} -c "
+try:
+    # Newer versions of Python come with tomllib preinstalled
+    import tomllib
+except ImportError:
+    try:
+        import toml
+    except ImportError:
+        # Fall back on installing it
+        import subprocess
+        import sys
+        subprocess.run(' '.join([
+                sys.executable,
+                '-m',
+                'pip',
+                'install',
+                'toml',
+            ]),
+            shell=True,
+            check=True,
+        )
+"
+          COMMAND_ERROR_IS_FATAL ANY
+  )
+  execute_process(
+          COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/pyproject.toml pyproject.toml
+          COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/bin/install-build-requirements.py
+          COMMAND_ERROR_IS_FATAL ANY
+  )
+  if (EXISTS ${CMAKE_BINARY_DIR}/venv/lib/cmake/mkl/MKLConfig.cmake)
+    include(${CMAKE_BINARY_DIR}/venv/lib/cmake/mkl/MKLConfig.cmake)
   endif ()
 endif ()
-find_package(Python3 REQUIRED COMPONENTS Development.Module NumPy)
+find_package(Python3 REQUIRED COMPONENTS Interpreter Development.Module NumPy)
 
 
 # Configure Intel MKL & FFTW (for Apple M-series)
@@ -66,7 +93,7 @@ endif ()
 # Compile Boost
 option(BOOST_VERSION "Configure the specific version of Boost gaussianfft wil be statically linked against")
 if (NOT BOOST_VERSION)
-  execute_process(COMMAND ${CMAKE_SOURCE_DIR}/bin/find_boost_version.py OUTPUT_VARIABLE BOOST_VERSION)
+  execute_process(COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/bin/find_boost_version.py OUTPUT_VARIABLE BOOST_VERSION)
 endif()
 message(STATUS "Using version ${BOOST_VERSION} of Boost")
 
