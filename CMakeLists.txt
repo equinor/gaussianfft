@@ -104,14 +104,43 @@ if (DEFINED ${SKBUILD_STATE} AND ${SKBUILD_STATE} STREQUAL "sdist" AND NOT EXIST
   )
 endif ()
 
-# TODO: Work in CMAKE_BINARY_DIR
-set(ENV{PYTHON} ${Python3_EXECUTABLE})
-execute_process(COMMAND ${CMAKE_SOURCE_DIR}/bin/compile-boost.sh ${BOOST_VERSION} COMMAND_ERROR_IS_FATAL ANY)
+set(Boost_COMPILE_SCRIPT ${CMAKE_SOURCE_DIR}/bin/compile-boost.sh)
+set(Boost_DIR ${CMAKE_SOURCE_DIR}/sources/boost/${BOOST_VERSION})
+#if (NOT DEFINED ${SKBUILD})
+  # Only necessary to copy these files if we are not building through scikit-build
+  message(STATUS "Copying boost sources to the build directory")
+  set(ENV{PYTHON} ${Python3_EXECUTABLE})
+  if (NOT EXISTS ${CMAKE_BINARY_DIR}/bin/compile-boost.sh)
+    file(COPY ${Boost_COMPILE_SCRIPT} DESTINATION ${CMAKE_BINARY_DIR}/bin/)
+    file(COPY ${CMAKE_SOURCE_DIR}/bin/fetch-boost.sh DESTINATION ${CMAKE_BINARY_DIR}/bin/)
+    file(COPY ${CMAKE_SOURCE_DIR}/utils.py DESTINATION ${CMAKE_BINARY_DIR}/)
+  endif ()
+  if (NOT EXISTS ${CMAKE_BINARY_DIR}/src)
+    file(COPY ${CMAKE_SOURCE_DIR}/src DESTINATION ${CMAKE_BINARY_DIR}/)
+  endif ()
+  # TODO: Ensure the sources are reused, if they are already downloaded
+  if (NOT EXISTS ${CMAKE_BINARY_DIR}/sources/boost/${BOOST_VERSION})
+    message(STATUS "Copying Boost source to build directory")
+    file(
+            COPY ${CMAKE_SOURCE_DIR}/sources/boost/${BOOST_VERSION}
+            DESTINATION ${CMAKE_BINARY_DIR}/sources/boost/
+            USE_SOURCE_PERMISSIONS
+            FOLLOW_SYMLINK_CHAIN
+            # TODO Make sure only relevant 'things' are copied
+#            FILES_MATCHING PATTERN b2
+#            EXCLUDE
+    )
+  endif ()
+  set(Boost_COMPILE_SCRIPT ${CMAKE_BINARY_DIR}/bin/compile-boost.sh)
+  set(Boost_DIR ${CMAKE_BINARY_DIR}/sources/boost/${BOOST_VERSION})
+#endif()
+
+message(STATUS "Compiling Boost")
+execute_process(COMMAND ${Boost_COMPILE_SCRIPT} ${BOOST_VERSION} COMMAND_ERROR_IS_FATAL ANY)
 
 #include(cmake/project-is-top-level.cmake)
 #include(cmake/variables.cmake)
 
-set(Boost_DIR ${CMAKE_SOURCE_DIR}/sources/boost/${BOOST_VERSION})
 set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_STATIC_RUNTIME ON)
 set(Boost_LIBRARY_DIR ${Boost_DIR}/stage/lib)
