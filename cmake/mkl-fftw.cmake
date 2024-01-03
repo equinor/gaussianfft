@@ -1,10 +1,35 @@
 # Configure Intel MKL & FFTW (for Apple M-series)
-if (${IS_AARCH64})
-    if (APPLE)
-        message(FATAL_ERROR "Apple Silicon is not yet supported")
-    else ()
-        message(FATAL_ERROR "ARM based systems is not yet supported")
+if (USE_FFT3)
+    message(STATUS "Using FFTW version ${FFTW_VERSION}")
+    if (DEFINED ${SKBUILD_STATE} AND ${SKBUILD_STATE} STREQUAL "sdist")
+        execute_process(
+                COMMAND_ERROR_IS_FATAL ANY
+                COMMAND ${CMAKE_SOURCE_DIR}/bin/fetch-fftw.sh ${FFTW_VERSION}
+        )
     endif ()
+    if (EXISTS ${CMAKE_SOURCE_DIR}/sources/fftw/${FFTW_VERSION})
+        message(STATUS "Copy FFTW source to build directory")
+        file(COPY ${CMAKE_SOURCE_DIR}/sources/fftw/${FFTW_VERSION} DESTINATION ${CMAKE_BINARY_DIR}/sources/fftw/)
+    endif ()
+
+    if (NOT EXISTS ${CMAKE_BINARY_DIR}/bin/compile-fftw.sh)
+        file(COPY ${CMAKE_SOURCE_DIR}/bin/compile-fftw.sh DESTINATION ${CMAKE_BINARY_DIR}/bin)
+        file(COPY ${CMAKE_SOURCE_DIR}/bin/fetch-fftw.sh DESTINATION ${CMAKE_BINARY_DIR}/bin)
+    endif ()
+    if (NOT EXISTS ${CMAKE_BINARY_DIR}/vendor/include/fftw3.h OR NOT EXISTS ${CMAKE_BINARY_DIR}/vendor/lib/libfftw3.a)
+        message(STATUS "Compiling FFTW")
+        set(ENV{CMAKE} "${CMAKE_COMMAND}")
+        execute_process(
+                COMMAND_ERROR_IS_FATAL ANY
+                COMMAND ${CMAKE_BINARY_DIR}/bin/compile-fftw.sh ${FFTW_VERSION}
+        )
+        unset(ENV{CMAKE})
+    endif ()
+    include_directories(SYSTEM ${CMAKE_BINARY_DIR}/vendor/include)
+    link_directories(${CMAKE_BINARY_DIR}/vendor/lib)
+    # TODO: Use these when fftw properly uses CMAKE
+    #find_package(FFTW3 CONFIG REQUIRED PATHS ${CMAKE_BINARY_DIR}/vendor/lib/cmake/fftw3)
+    #find_package(FFTW3f CONFIG REQUIRED PATHS ${CMAKE_BINARY_DIR}/vendor/lib/cmake/fftw3f)
 else ()
     # MKL
     if (EXISTS ${CMAKE_BINARY_DIR}/venv/lib/cmake/mkl/MKLConfig.cmake)

@@ -251,4 +251,5 @@ requirements.txt
 examples/*/*.pdf
 
 # Dependncies
+vendor/
 sources/

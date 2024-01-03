@@ -15,6 +15,18 @@ include(cmake/variables.cmake)
 include(cmake/utilities.cmake)
 
 # Which versions of dependencies to use
+option(USE_FFTW3 "Use FFTW3 instead of Intel MKL (default on Apple Silicon)")
+if (APPLE AND ${CMAKE_HOST_SYSTEM_PROCESSOR} STREQUAL "arm64")
+    message(WARNING "Intel MKL is not supported on Apple Silicon; using FFTW3 instead")
+    set(USE_FFT3 ON)
+endif ()
+if (USE_FFT3)
+    option(FFTW_VERSION "Which version of FFTW to compile against")
+    if (NOT FFTW_VERSION)
+        set(FFTW_VERSION "3.3.10")
+    endif ()
+endif ()
+
 option(BOOST_VERSION "Configure the specific version of Boost gaussianfft wil be statically linked against")
 if (NOT BOOST_VERSION)
     execute_process(COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/bin/find_boost_version.py OUTPUT_VARIABLE BOOST_VERSION)
@@ -84,8 +96,8 @@ target_link_libraries(
         PRIVATE
         ${Boost_LIBRARIES}
 )
-if (${IS_AARCH64})
-    message(FATAL_ERROR "ARM based architectures are not yet supported")
+if (${CMAKE_HOST_SYSTEM_PROCESSOR} STREQUAL "arm64")
+    target_link_libraries(gaussianfft_gaussianfft PRIVATE fftw3 fftw3f)
 else ()
     if (APPLE)
         target_link_libraries(gaussianfft_gaussianfft PRIVATE
