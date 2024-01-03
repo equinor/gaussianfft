@@ -37,16 +37,17 @@ jobs:
     strategy:
       matrix:
         python:
-#        - 3.6  # Included in RMS 11 - 12.0
-        - 3.7
-        - 3.8  # Included in RMS 12.1, and newer
-        - 3.9
-        - "3.10"
+##        - 3.6  # Included in RMS 11 - 12.0
+#        - 3.7
+#        - 3.8  # Included in RMS 12.1, and newer
+#        - 3.9
+#        - "3.10"
         - 3.11  # Included in RMS 14.2, and newer
-        - 3.12
+#        - 3.12
         os:
-        - ubuntu-20.04
-        - macos-11
+#        - ubuntu-20.04
+#        - macos-11
+        - windows-2019
 
     steps:
       - uses: actions/checkout@v4
