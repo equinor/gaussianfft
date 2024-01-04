@@ -41,9 +41,44 @@ jobs:
           path: sources/boost/*
           if-no-files-found: error
 
+  prepare-fftw:
+    # Currently, this is the only machine with Apple Silicon
+    runs-on: macos-13-xlarge
+    name: Download and prepare FFTW (for Apple Silicon)
+    strategy:
+      matrix:
+        fftw:
+          - "3.3.10"
+
+    steps:
+      - uses: actions/checkout@v4
+        name: Checkout repository
+
+      - name: Restore cached FFTW
+        id: cache-fftw
+        uses: actions/cache@v3
+        with:
+          path: |
+            sources/fftw/${{ matrix.fftw }}
+            vendor/
+          key: fftw-${{ matrix.fftw }}-${{ hashFiles('bin/*-fftw.sh') }}
+
+      - name: Download & Build FFTW
+        if: steps.cache-fftw.outputs.cache-hit != 'true'
+        run: ./bin/compile-fftw.sh ${{ matrix.fftw }}
+
+      - name: Store FFTW source, and build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: fftw-${{ matrix.fftw }}
+          path: |
+            sources/fftw/*
+            vendor/*
+
   build:
     needs:
       - prepare-boost
+      - prepare-fftw
     runs-on: ${{ matrix.os }}
     name: Build & Test
     strategy:
@@ -80,6 +115,14 @@ jobs:
         with:
           pattern: boost-*
           path: sources/boost/
+          merge-multiple: true
+
+      - name: Download FFTW source
+        if: ${{ runner.os == 'macOS' && (runner.arch == 'ARM64' || runner.arch == 'ARM') }}
+        uses: actions/download-artifact@v4
+        with:
+          pattern: fftw-*
+          path: .
           merge-multiple: true
 
       - uses: actions/setup-python@v4
