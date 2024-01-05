@@ -274,29 +274,30 @@ target_link_libraries(
 )
 if (${CMAKE_HOST_SYSTEM_PROCESSOR} STREQUAL "arm64")
   target_link_libraries(gaussianfft_gaussianfft PRIVATE fftw3 fftw3f)
-elseif (APPLE)
+else ()
+  if (APPLE)
+    target_link_libraries(gaussianfft_gaussianfft PRIVATE
+            mkl_intel_ilp64
+            mkl_intel_thread
+            mkl_core
+            iomp5
+    )
+  else ()
+    # Presumably Linux x86
+    target_link_libraries(gaussianfft_gaussianfft PRIVATE
+            -Wl,--start-group
+            mkl_intel_ilp64
+            mkl_gnu_thread
+            mkl_core
+            -Wl,--end-group
+            gomp
+    )
+  endif ()
   target_link_libraries(gaussianfft_gaussianfft PRIVATE
-          mkl_intel_ilp64
-          mkl_intel_thread
-          mkl_core
-          iomp5
           pthread
           m
           dl
   )
-else ()
-# Presumably Linux x86
-target_link_libraries(gaussianfft_gaussianfft PRIVATE
-        -Wl,--start-group
-        mkl_intel_ilp64
-        mkl_gnu_thread
-        mkl_core
-        -Wl,--end-group
-        gomp
-        pthread
-        m
-        dl
-)
 endif ()
 
 # ---- Install rules ----
