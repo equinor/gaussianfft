@@ -134,10 +134,15 @@ if (${CMAKE_HOST_SYSTEM_PROCESSOR} STREQUAL "arm64")
 else ()
     if (APPLE)
         target_link_libraries(gaussianfft_gaussianfft PRIVATE
+                # TODO: Make @rpath/libiomp.dylib work as expected
+                #       with the version installed on the target system, and
+                #       not the one it was built with (absolute path)
+                #       Until then, we use `mkl_sequential`
                 mkl_intel_ilp64
-                mkl_intel_thread
+                #mkl_intel_thread
+                mkl_sequential
                 mkl_core
-                iomp5
+                #iomp5
         )
     else ()
         # Presumably Linux x86
