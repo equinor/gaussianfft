@@ -83,7 +83,6 @@ build-sdist: venv
 
 build: venv
 	$(PIP_INSTALL) build
-	CXXFLAGS="-fPIC -fpermissive" \
 	PYTHONPATH=$(CODE_DIR):$(PYTHONPATH) \
 	$(VIRTUAL_PYTHON) -m build
 
