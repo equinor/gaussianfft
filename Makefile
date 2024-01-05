@@ -100,7 +100,8 @@ ifeq ($(detected_OS),Linux)
 
 	cp $(CODE_DIR)/dist/$(NAME)-*.tar.gz $(CODE_DIR)/wheelhouse
 else
-	mv $(CODE_DIR)/dist $(CODE_DIR)/wheelhouse
+	mkdir -p $(CODE_DIR)/wheelhouse
+	mv $(CODE_DIR)/dist/* $(CODE_DIR)/wheelhouse/
 endif
 
 
