@@ -164,12 +164,16 @@ endif ()
 set(Boost_COMPILE_SCRIPT ${CMAKE_BINARY_DIR}/bin/compile-boost.sh)
 set(Boost_DIR ${CMAKE_BINARY_DIR}/sources/boost/${BOOST_VERSION})
 
-message(STATUS "Compiling Boost")
-execute_process(COMMAND ${Boost_COMPILE_SCRIPT} ${BOOST_VERSION} COMMAND_ERROR_IS_FATAL ANY)
 
 set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_STATIC_RUNTIME ON)
 set(Boost_LIBRARY_DIR ${Boost_DIR}/stage/lib)
+if (NOT EXISTS ${Boost_LIBRARY_DIR})
+  message(STATUS "Compiling Boost")
+  execute_process(COMMAND ${Boost_COMPILE_SCRIPT} ${BOOST_VERSION} COMMAND_ERROR_IS_FATAL ANY)
+else ()
+  message(STATUS "Reusing compiled boost libraries at ${Boost_LIBRARY_DIR}")
+endif ()
 
 execute_process(
         COMMAND ${Python3_EXECUTABLE} -c "import sysconfig, sys; sys.stdout.write(sysconfig.get_paths()['include'])"
