@@ -123,6 +123,10 @@ if (APPLE AND ${CMAKE_HOST_SYSTEM_PROCESSOR} STREQUAL "arm64")
 else ()
   # MKL
   set(MKL_LINK "static")
+  if (APPLE)
+    # Ensure iomp5 works as expected
+    set(MKL_ILP64 ON)
+  endif ()
   find_package(MKL CONFIG REQUIRED PATHS $ENV${MKLROOT})
   include_directories(SYSTEM ${MKL_ROOT}/include/fftw)
   link_directories(${MKL_ROOT}/lib)
