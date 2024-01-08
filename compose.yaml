@@ -18,5 +18,5 @@ services:
       - "./pyproject.toml:/code/pyproject.toml"
       - "./utils.py:/code/utils.py"
 
-      - "./wheelhouse:/code/wheelhouse"  # This is where the build artefacts are placed
+      - "./dist:/code/dist"  # This is where the build artefacts are placed
     entrypoint: ["make", "-C", "/code", "build"]

@@ -2,16 +2,6 @@ NAME = gaussianfft
 
 EMPTY :=
 
-# Use packages provided by a distribution, e.g. RMS
-USE_TEST_PYPI ?= yes
-
-PYPI_REPOSITORY := pypi
-
-ifeq ($(USE_TEST_PYPI),yes)
-PYPI_REPOSITORY := testpypi
-endif
-
-
 CODE_DIR ?= $(shell pwd)
 SETUP.PY := $(CODE_DIR)/setup.py
 
@@ -30,22 +20,6 @@ else
     detected_OS := $(shell uname -s)
 endif
 
-define PYPIRC
-[distutils]
-index-servers =
-    pypi
-    testpypi
-
-[pypi]
-username = __token__
-password = $(PYPI_API_TOKEN)
-
-[testpypi]
-username = __token__
-password = $(PYPI_TEST_API_TOKEN)
-endef
-export PYPIRC
-
 .PHONY: all tests clean build
 
 
@@ -60,18 +34,6 @@ tests: venv
 	$(PIP_INSTALL) wheelhouse/*.whl
 	$(PIP_INSTALL) pytest scipy
 	$(PY.TEST) $(CODE_DIR)/tests
-
-upload: .pypirc venv
-	$(PIP_INSTALL) twine
-	$(VIRTUAL_PYTHON) -m twine upload \
-			--repository $(PYPI_REPOSITORY) \
-			--non-interactive \
-			--config-file $(CODE_DIR)/.pypirc \
-			--verbose \
-			$(CODE_DIR)/wheelhouse/*
-
-.pypirc:
-	echo "$$PYPIRC" > $(CODE_DIR)/.pypirc
 
 build-wheel: build
 	$(VIRTUAL_PYTHON) -m build --wheel --outdir $(DISTRIBUTION_DIR)
@@ -94,13 +56,9 @@ ifeq ($(detected_OS),Linux)
 	    $(PIP_INSTALL) auditwheel ; \
 	}
 	for wheel in $(CODE_DIR)/dist/$(shell echo $(NAME) | tr '-' '_')-*.whl ; do \
-	    $(VIRTUAL_PYTHON) -m auditwheel repair $$wheel ; \
+	    $(VIRTUAL_PYTHON) -m auditwheel repair --wheel-dir $(CODE_DIR)/dist $$wheel ; \
 	done
 
-	cp $(CODE_DIR)/dist/$(NAME)-*.tar.gz $(CODE_DIR)/wheelhouse
-else
-	mkdir -p $(CODE_DIR)/wheelhouse
-	mv $(CODE_DIR)/dist/* $(CODE_DIR)/wheelhouse/
 endif
 
 
@@ -127,11 +85,9 @@ clean:
 	       b2 \
 	       bjam \
 	       bootstrap.log \
-	       .pypirc \
 	       boost_source_files.txt \
 	       .numpy.json \
 	       pyproject.toml \
-	       .pypirc \
 	       *.so
 
 
