@@ -3,27 +3,71 @@ name: Build, Test, and deploy
 on: [push]
 
 jobs:
+#  prepare:
+#    runs-on: ubuntu-22.04
+#    name: Download and prepare Boost
+#    strategy:
+#      matrix:
+#        boost:
+#          - "1.76.0"
+#          # Used by RMS 14.2 / Python 11 and later
+#          - "1.81.0"
+
+#    steps:
+#      - uses: actions/checkout@v4
+#        name: Checkout repository
+#      - name: Download Boost, and extract relevant source code
+#        run: |
+#          ./bin/fetch-boost.sh ${{ matrix.boost }}
+#          rm -rf sources/boost/boost_*
+#          rm -rf sources/boost/*.tar.gz
+#
+#      - name: Store Boost source code
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: boost-${{ matrix.boost }}
+#          path: sources/boost/*
+#          if-no-files-found: error
+
   build:
+#    needs:
+#      - prepare
     runs-on: ${{ matrix.os }}
     name: Build & Test
     strategy:
       matrix:
         python:
-        - 3.6  # Included in RMS 11 - 12.0
-        - 3.7
-        - 3.8  # Included in RMS 12.1, and newer
-        - 3.9
+##        - 3.6  # Included in RMS 11 - 12.0
+#        - 3.7
+#        - 3.8  # Included in RMS 12.1, and newer
+#        - 3.9
+#        - "3.10"
+        - 3.11  # Included in RMS 14.2, and newer
+#        - 3.12
         os:
-        - ubuntu-20.04
-        - macos-11
+#        - ubuntu-20.04
+#        - macos-11
+        - windows-2019
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         name: Checkout repository
+
+#      - name: Download Boost versions
+#        uses: actions/download-artifact@v4
+#        with:
+#          pattern: boost-*
+#          path: sources/boost/
+#          merge-multiple: true
 
       - uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python }}
+
+#      - name: Setup upterm session
+#        uses: lhotari/action-upterm@v1
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
 
       - name: Build
         env:
@@ -33,17 +77,23 @@ jobs:
         run: |
           if [[ $RUNNER_OS == "Linux" ]]; then
             docker-compose run build-linux
+          elif [[ $RUNNER_OS == "macOS" ]]; then
+              brew install coreutils
+              make build
           else
-            make build
+            # That is, windows
+            python -m pip install --user build
+            python -m build
           fi
+        shell: bash
 
       - name: Test
         run: make tests
 
       - name: Store wheels
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
-          name: wheels
+          name: wheel-${{ matrix.python }}-${{ matrix.os }}
           path: wheelhouse/*.whl
           if-no-files-found: error
 
@@ -54,13 +104,13 @@ jobs:
     needs:
       - build
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         name: Checkout repository
 
       - name: Download compiled wheels
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
-          name: wheels
+          name: wheel-${{ matrix.python }}-${{ matrix.os }}
           path: wheelhouse/
 
       - name: Publish to PyPi

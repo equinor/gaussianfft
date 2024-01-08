@@ -27,7 +27,7 @@
 #include <iostream>
 
 // Must set MKL's /include/fftw or fftw's include directory as additional include directory.
-#include "fftw3.h"
+#include <fftw3.h>
 
 #include "../grid/grid2d.hpp"
 #include "fft.hpp"

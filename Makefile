@@ -37,10 +37,6 @@ endif
 CODE_DIR ?= $(shell pwd)
 SETUP.PY := $(CODE_DIR)/setup.py
 
-BOOST_VERSION ?= 1.76.0
-BOOST_DIR := $(CODE_DIR)/sources/boost/$(BOOST_VERSION)
-BOOST_ARCHIVE := $(BOOST_DIR).tar.gz
-
 PYTHON ?= $(shell which python3)
 PIP ?= $(PYTHON) -m pip --proxy "$(HTTPS_PROXY)"
 ifeq ($(origin VIRTUAL_PYTHON), undefined)
@@ -51,6 +47,16 @@ PY.TEST ?= $(VIRTUAL_PYTHON) -m pytest
 PIP_INSTALL := $(VIRTUAL_PYTHON) -m pip install --upgrade
 MINIMUM_NUMPY_VERSION ?= $(shell $(PYTHON) $(CODE_DIR)/bin/find_lowest_supported_numpy.py)
 
+# Boost configuration
+BOOST_VERSION ?= $(shell $(PYTHON) $(CODE_DIR)/bin/find_boost_version.py)
+BOOST_DIR := $(CODE_DIR)/sources/boost/$(BOOST_VERSION)
+BOOST_ARCHIVE := $(BOOST_DIR).tar.gz
+
+# fftw configuration
+FFTW_VERSION ?= 3.3.10
+FFTW_DIR := $(CODE_DIR)/sources/fftw/$(FFTW_VERSION)
+FFTW_ARCHIVE := $(FFTW_DIR).tar.gz
+
 ifeq ($(OS),Windows_NT)
     detected_OS := Windows
 else
@@ -58,22 +64,6 @@ else
 endif
 
 NRLIB_LINKING ?= static
-
-define PYPROJECT_TOML
-[build-system]
-requires = [
-    "setuptools>=42",
-    "wheel",
-    # We use the oldest compatible version, to make life easier with Emerson RMS
-    # If we use a newer version, the compilation of Boost.Python, will cause the module to crach
-    # (segmentation fault) when imported
-    "numpy==$(MINIMUM_NUMPY_VERSION)",
-    "mkl-devel",
-    "mkl-static",
-]
-build-backend = "setuptools.build_meta"
-endef
-export PYPROJECT_TOML
 
 define PYPIRC
 [distutils]
@@ -94,10 +84,8 @@ export PYPIRC
 .PHONY: all tests clean build
 
 
-install: build-boost-python
-	NRLIB_LINKING=$(NRLIB_LINKING) \
-	CXXFLAGS="-fPIC" \
-	$(PYTHON) $(SETUP.PY) build_ext --inplace build install
+install:
+	$(PYTHON) -m pip install $(CODE_DIR)
 
 venv:
 	$(PYTHON) -m venv venv
@@ -120,18 +108,15 @@ upload: .pypirc venv
 .pypirc:
 	echo "$$PYPIRC" > $(CODE_DIR)/.pypirc
 
-pyproject.toml:
-	echo "$$PYPROJECT_TOML" > $(CODE_DIR)/pyproject.toml
-
 build-wheel: build
-	$(VIRTUAL_PYTHON) $(SETUP.PY) bdist_wheel --dist-dir $(DISTRIBUTION_DIR)
+	$(VIRTUAL_PYTHON) -m build --wheel --outdir $(DISTRIBUTION_DIR)
 
-build-sdist: venv boost pyproject.toml
+build-sdist: venv
 	$(PIP_INSTALL) build
 	PYTHONPATH=$(CODE_DIR):$(PYTHONPATH) \
 	$(VIRTUAL_PYTHON) -m build --sdist
 
-build: venv boost pyproject.toml
+build: venv
 	$(PIP_INSTALL) build
 	NRLIB_LINKING=$(NRLIB_LINKING) \
 	CXXFLAGS="-fPIC -fpermissive" \
@@ -151,56 +136,18 @@ else
 endif
 
 
-build-boost-python: venv boost _build-boost-python
 
-_build-boost-python:
-	CODE_DIR=$(CODE_DIR) \
-	  $(CODE_DIR)/bootstrap.sh \
-	                   --prefix=$(shell pwd)/build \
-	                   --with-python=$(VIRTUAL_PYTHON) \
-	                   --with-icu && \
-	CPLUS_INCLUDE_PATH=$(shell $(VIRTUAL_PYTHON) -c "from sysconfig import get_paths; print(get_paths()['include'])") \
-	  $(CODE_DIR)/b2   --with-python \
-	                   --with-filesystem \
-	                   --with-system \
-	                   -q \
-	                   cxxflags=-fPIC \
-	                   cflags=-fPIC \
-	                   python-debugging=off \
-	                   threading=multi \
-	                   variant=release \
-	                   link=$(NRLIB_LINKING) \
-	                   runtime-link=$(NRLIB_LINKING) \
-	                   stage
+# TODO: Perhaps fall back to this if mkl (venv/include/fftw) is not available (e.g. Apple Silicon)
+fftw: $(FFTW_ARCHIVE) $(FFTW_DIR)
 
-boost: $(BOOST_ARCHIVE) $(BOOST_DIR)
+$(FFTW_ARCHIVE):
+	mkdir -p $(CODE_DIR)/sources/fftw
+	curl -L --output $(FFTW_ARCHIVE) \
+ 		https://fftw.org/fftw-$(FFTW_VERSION).tar.gz
 
-$(BOOST_ARCHIVE):
-	mkdir -p $(CODE_DIR)/sources/boost
-	curl -L --output $(BOOST_DIR).tar.gz \
-	https://boostorg.jfrog.io/artifactory/main/release/$(BOOST_VERSION)/source/boost_$(shell echo $(BOOST_VERSION) | tr '.' '_').tar.gz
-
-$(BOOST_DIR):
-	mkdir -p $(BOOST_DIR)
-	tar -xvf $(BOOST_ARCHIVE) -C $(BOOST_DIR) --strip-components=1
-
-	# Remove unnecessary files, some of these are binary, and others are encoded in an encoding incompatible with UTF-8
-	rm -rf $(shell find $(BOOST_DIR) -name 'doc' -type d)
-	rm -rf $(shell find $(BOOST_DIR) -name 'test' -type d)
-	rm -f  $(shell find $(BOOST_DIR) -name '*.html' -type f)
-
-	cp -r $(BOOST_DIR)/boost $(CODE_DIR)
-
-	# Copy necessary 'libs' files
-	mkdir -p $(CODE_DIR)/libs
-	for item in config filesystem headers python system Jamfile.v2 ; do \
-		cp -r $(BOOST_DIR)/libs/$$item $(CODE_DIR)/libs ; \
-	done
-
-	# Copy necessary bootstrapping files
-	for item in tools boost-build.jam boostcpp.jam bootstrap.sh Jamroot ; do \
-		cp -r $(BOOST_DIR)/$$item $(CODE_DIR) ; \
-	done
+$(FFTW_DIR):
+	mkdir -p $(FFTW_DIR)
+	tar -xvf $(FFTW_ARCHIVE) -C $(FFTW_DIR) --strip-components=1
 
 clean-boost:
 	rm -rf $(CODE_DIR)/boost \
@@ -231,3 +178,6 @@ clean:
 	       pyproject.toml \
 	       .pypirc \
 	       *.so
+
+
+print-%  : ; @echo $($*)

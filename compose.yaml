@@ -9,12 +9,19 @@ services:
       - "./Makefile:/code/Makefile"
       - "./bin:/code/bin"
       - "./src:/code/src"
+      - "./sources:/code/sources"
       - "./gaussianfft:/code/gaussianfft"
       - "./setup.py:/code/setup.py"
 
-      - "./LOWEST_SUPPORTED_PYTHON_VERSION.txt:/code/LOWEST_SUPPORTED_PYTHON_VERSION.txt"
+#      - source: "./LOWEST_SUPPORTED_PYTHON_VERSION.txt"
+#        target: "/code/LOWEST_SUPPORTED_PYTHON_VERSION.txt"
+#        read_only: true
+#        type: bind
       - "./LICENSE.txt:/code/LICENSE.txt"
       - "./README.md:/code/README.md"
+      - "./CMakeLists.txt:/code/CMakeLists.txt"
+      - "./pyproject.toml:/code/pyproject.toml"
+      - "./utils.py:/code/utils.py"
 
       - "./wheelhouse:/code/wheelhouse"  # This is where the build artefacts are placed
     entrypoint: ["make", "-C", "/code", "build"]

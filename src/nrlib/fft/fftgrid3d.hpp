@@ -26,7 +26,7 @@
 #include <complex>
 
 // Must set MKL's /include/fftw or fftw's include directory as additional include directory.
-#include "fftw3.h"
+#include <fftw3.h>
 
 
 // #define  FFTW_DEBUG

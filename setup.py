@@ -1,16 +1,17 @@
 import glob
 import os
 import platform
-import re
 import sys
 from distutils.command.register import register as register_orig
 from distutils.command.upload import upload as upload_orig
 from pathlib import Path
-from typing import Iterable, List
+from typing import List
 import logging
 
 from setuptools import Distribution, Extension, find_packages, setup
 from warnings import warn
+
+from utils import collect_sources
 
 MINIMUM_SUPPORTED_PYTHON = "3.6"
 
@@ -201,15 +202,15 @@ if platform.system() in ['Linux', 'Darwin']:
         else:
             logging.info(f"Using the MKL libraries located in '{mkl_root}'")
 
-    if mkl_root is None and compiling:
-        raise RuntimeError(
-            "The environment variables MKL_ROOT, or MKLROOT is not defined. "
-            "MKL headers and libraries are required for compilation"
-            "\nSee "
-            "https://software.intel.com/content/www/us/en/develop/documentation/"
-            "installation-guide-for-intel-oneapi-toolkits-linux/top/installation.html"
-            " for instructions on how to install Intel's OneAPI, which includes MKL."
-        )
+    # if mkl_root is None and compiling:
+    #     raise RuntimeError(
+    #         "The environment variables MKL_ROOT, or MKLROOT is not defined. "
+    #         "MKL headers and libraries are required for compilation"
+    #         "\nSee "
+    #         "https://software.intel.com/content/www/us/en/develop/documentation/"
+    #         "installation-guide-for-intel-oneapi-toolkits-linux/top/installation.html"
+    #         " for instructions on how to install Intel's OneAPI, which includes MKL."
+    #     )
     if mkl_root is None:
         mkl_root = "DUMMY-VALUE"
     linking = os.getenv('NRLIB_LINKING')
@@ -331,7 +332,10 @@ bp_module = Extension(
     sources=all_source_files,
     define_macros=[
         ('FLENS_FIRST_INDEX', '0'),
-        ('MKL', None),
+        # ('MKL', None),
+        ('VECLIB', None),
+        ('ACCELERATE_NEW_LAPACK', '1'),
+        ('ACCELERATE_LAPACK_ILP64', '1'),
     ],
     include_dirs=[
                      boost_root,
@@ -348,48 +352,6 @@ bp_module = Extension(
                     + linker_args,
     language='c++'
 )
-
-
-def collect_sources(from_source_files: Iterable[str]) -> List[str]:
-    files = set()
-
-    src = Path('src')
-    root = Path('.').absolute()
-    files_to_be_inspected = set(Path(file) for file in from_source_files)
-
-    def add_if_necessary(file):
-        if file not in files and file not in files_to_be_inspected:
-            files_to_be_inspected.add(file)
-
-    while len(files_to_be_inspected) > 0:
-        file = files_to_be_inspected.pop().resolve().relative_to(root)
-        name = str(file)
-        if name in files:
-            continue
-
-        pattern = re.compile(r'^ *# *include *[<"](?P<name>.*)[">]', re.IGNORECASE)
-
-        try:
-            with file.open(encoding='utf8') as f:
-                for line in f.readlines():
-                    match = pattern.search(line)
-                    if match:
-                        item = Path(match.group('name'))
-                        if (file.parent / item).is_file():
-                            add_if_necessary(file.parent / item)
-                        elif item.is_file():
-                            add_if_necessary(item)
-                        elif (src / item).is_file():
-                            add_if_necessary(src / item)
-                        else:
-                            pass
-                            # logging.info(file, item)
-        except UnicodeDecodeError:
-            logging.info(f"'{name}' could not be opened / decoded as a text file. It's been ignored")
-
-        files.add(name)
-
-    return list(files)
 
 
 def get_source_files_in(directory: str) -> List[str]:
@@ -454,8 +416,10 @@ def get_boost_source_files() -> List[str]:
             + get_source_files_in('boost/python')
             + get_source_files_in('boost/graph')
             + get_source_files_in('boost/config/no_tr1')
+            + get_source_files_in('boost/atomic')  # required for newer versions of boost (1.81.0)
             # Auxiliary files, not related to Boost
             + type_hint_files
+            + get_source_files_in('bin')
     )
 
 
@@ -465,6 +429,7 @@ boost_module = Extension(
     include_dirs=[
         'libs',
         'boost',
+        'boost/atomic',
         'boost/filesystem',
         'boost/detail',
         'boost/python',
@@ -500,32 +465,32 @@ def compile_boost_modules_if_necessary():
         )
 
 
-compile_boost_modules_if_necessary()
+if __name__ == '__main__':
+    compile_boost_modules_if_necessary()
 
-
-setup(
-    name=extension_name.lstrip('_'),
-    version="1.1.1b1",
-    packages=find_packages(),
-    ext_modules=[bp_module, boost_module],
-    install_requires=[
-        f'numpy>={MINIMUM_SUPPORTED_NUMPY}',
-    ],
-    extras_require={
-        "util": ["scipy"]
-    },
-    include_package_data=True,
-    license='LICENSE.txt',
-    long_description=long_description,
-    long_description_content_type='text/markdown',
-    distclass=BinaryDistribution,
-    package_data={
-        'stage/lib': ['*.so', '*.dll', '*.dylib', '*.a'],
-        extension_name: ['py.typed'] + type_hint_files,
-    },
-    cmdclass={
-        'register': register,
-        'upload': upload,
-    },
-    zip_safe=False,
-)
+    setup(
+        name=extension_name.lstrip('_'),
+        version="1.1.1b1",
+        packages=find_packages(),
+        ext_modules=[bp_module, boost_module],
+        install_requires=[
+            f'numpy>={MINIMUM_SUPPORTED_NUMPY}, <2.0',
+        ],
+        extras_require={
+            "util": ["scipy"]
+        },
+        include_package_data=True,
+        license='LICENSE.txt',
+        long_description=long_description,
+        long_description_content_type='text/markdown',
+        distclass=BinaryDistribution,
+        package_data={
+            'stage/lib': ['*.so', '*.dll', '*.dylib', '*.a'],
+            extension_name: ['py.typed'] + type_hint_files,
+        },
+        cmdclass={
+            'register': register,
+            'upload': upload,
+        },
+        zip_safe=False,
+    )
