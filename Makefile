@@ -55,7 +55,7 @@ venv:
 
 tests: venv
 	$(PIP_INSTALL) pip
-	$(PIP_INSTALL) wheelhouse/*.whl
+	$(PIP_INSTALL) dist/*.whl
 	$(PIP_INSTALL) pytest scipy
 	$(PY.TEST) $(CODE_DIR)/tests
 
@@ -94,10 +94,6 @@ ifeq ($(detected_OS),Linux)
 	for wheel in $(CODE_DIR)/dist/$(shell echo $(NAME) | tr '-' '_')-*.whl ; do \
 	    $(VIRTUAL_PYTHON) -m auditwheel repair $$wheel ; \
 	done
-
-	cp $(CODE_DIR)/dist/$(NAME)-*.tar.gz $(CODE_DIR)/wheelhouse
-else
-	mv $(CODE_DIR)/dist $(CODE_DIR)/wheelhouse
 endif
 
 clean:

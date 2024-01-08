@@ -59,6 +59,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         name: Checkout repository
+        with:
+          fetch-depth: 0
+          filter: tree:0
 
       - name: Download Boost versions
         uses: actions/download-artifact@v4
@@ -77,6 +80,8 @@ jobs:
           VERBOSE: "1"
         run: |
           if [[ $RUNNER_OS == "Linux" ]]; then
+            # Ensure shared directories have the correct permissions
+            mkdir -p dist wheelhouse
             docker-compose run build-linux
           elif [[ $RUNNER_OS == "macOS" ]]; then
               make build
@@ -90,11 +95,18 @@ jobs:
       - name: Test
         run: make tests
 
+      - name: Move results from auditwheel
+        # The reason for this, is because setuptools_scm and auditwheel
+        # causes an incompatibility between the updated wheels, which causes the installation during tests to fail
+        if: ${{ runner.os == 'Linux' }}
+        run: |
+          mv wheelhouse/*.whl dist/
+
       - name: Store wheels
         uses: actions/upload-artifact@v4
         with:
           name: wheel-${{ matrix.python }}-${{ matrix.os }}
-          path: wheelhouse/*.whl
+          path: dist/*.whl
           if-no-files-found: error
 
   source-distribution:
@@ -107,6 +119,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         name: Checkout repository
+        with:
+          fetch-depth: 0
+          filter: tree:0
 
       - uses: actions/setup-python@v4
         with:
@@ -153,7 +168,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           pattern: wheel-*
-          path: wheelhouse/
+          path: dist/
       - name: Download source distribution
         uses: actions/download-artifact@v4
         with:
