@@ -12,7 +12,7 @@ def collect_sources(
 ) -> List[str]:
     if ignore is None:
         ignore = []
-    files = set()
+    files = []
 
     src = Path(source_dir)
     root = Path('.').absolute()
@@ -33,15 +33,19 @@ def collect_sources(
         if any(str(file).startswith(ignore_folder) for ignore_folder in ignore):
             return
         if file not in files and file not in files_to_be_inspected:
+
+            def _add_file(repl: str, file_regex):
+                target_file = file.parent / file_regex.sub(repl, file.name)
+                if target_file.exists():
+                    files_to_be_inspected.add(target_file)
+
             files_to_be_inspected.add(file)
+            # TODO: Deal with dSFT.cpp has a .h file
             if file.suffix in ['.hpp', '.h']:
-                source_file = file.parent / header_regex.sub(r'.c\1', file.name)
-                if source_file.exists():
-                    files_to_be_inspected.add(source_file)
+                _add_file(r'.c\1', header_regex)
+                _add_file(r'.cpp', header_regex)
             if file.suffix in ['.cpp', '.c']:
-                header_file = file.parent / source_regex.sub(r'.h\1', file.name)
-                if header_file.exists():
-                    files_to_be_inspected.add(header_file)
+                _add_file(r'.h\1', source_regex)
 
     while len(files_to_be_inspected) > 0:
 
@@ -84,6 +88,6 @@ def collect_sources(
         except UnicodeDecodeError:
             logging.info(f"'{name}' could not be opened / decoded as a text file. It's been ignored")
 
-        files.add(name)
+        files.append(name)
 
-    return list(files)
+    return files
