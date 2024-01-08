@@ -2,16 +2,6 @@ NAME = gaussianfft
 
 EMPTY :=
 
-# Use packages provided by a distribution, e.g. RMS
-USE_TEST_PYPI ?= yes
-
-PYPI_REPOSITORY := pypi
-
-ifeq ($(USE_TEST_PYPI),yes)
-PYPI_REPOSITORY := testpypi
-endif
-
-
 CODE_DIR ?= $(shell pwd)
 
 PYTHON ?= $(shell which python3)
@@ -28,22 +18,6 @@ else
     detected_OS := $(shell uname -s)
 endif
 
-define PYPIRC
-[distutils]
-index-servers =
-    pypi
-    testpypi
-
-[pypi]
-username = __token__
-password = $(PYPI_API_TOKEN)
-
-[testpypi]
-username = __token__
-password = $(PYPI_TEST_API_TOKEN)
-endef
-export PYPIRC
-
 .PHONY: all tests clean build
 
 
@@ -58,18 +32,6 @@ tests: venv
 	$(PIP_INSTALL) dist/*.whl
 	$(PIP_INSTALL) pytest scipy
 	$(PY.TEST) $(CODE_DIR)/tests
-
-upload: .pypirc venv
-	$(PIP_INSTALL) twine
-	$(VIRTUAL_PYTHON) -m twine upload \
-			--repository $(PYPI_REPOSITORY) \
-			--non-interactive \
-			--config-file $(CODE_DIR)/.pypirc \
-			--verbose \
-			$(CODE_DIR)/wheelhouse/*
-
-.pypirc:
-	echo "$$PYPIRC" > $(CODE_DIR)/.pypirc
 
 build-wheel: build
 	$(VIRTUAL_PYTHON) -m build --wheel --outdir $(DISTRIBUTION_DIR)
