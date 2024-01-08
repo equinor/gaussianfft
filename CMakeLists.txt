@@ -53,46 +53,12 @@ if (APPLE)
     set(CMAKE_SHARED_LIBRARY_SUFFIX ".so")
 endif ()
 
+dependants(SOURCE_FILES_LIST src/gaussfftinterface.cpp)
+
 add_library(
-        gaussianfft_gaussianfft
-        SHARED
-        src/gaussfftinterface.cpp
-        src/gaussfft.cpp
-        src/gaussfft.hpp
-        src/nrlib/exception/exception.hpp
-        src/nrlib/fft/fft.cpp
-        src/nrlib/fft/fft.hpp
-        src/nrlib/fft/fftgrid2d.cpp
-        src/nrlib/fft/fftgrid2d.hpp
-        src/nrlib/fft/fftgrid3d.cpp
-        src/nrlib/fft/fftgrid3d.hpp
-        src/nrlib/grid/grid.hpp
-        src/nrlib/grid/grid2d.hpp
-        src/nrlib/iotools/fileio.cpp
-        src/nrlib/iotools/fileio.hpp
-        src/nrlib/iotools/stringtools.cpp
-        src/nrlib/iotools/stringtools.hpp
-        src/nrlib/math/constants.cpp
-        src/nrlib/math/constants.hpp
-        src/nrlib/random/dSFMT.cpp
-        src/nrlib/random/dSFMT.h
-        src/nrlib/random/random.cpp
-        src/nrlib/random/random.hpp
-        src/nrlib/random/randomgenerator.cpp
-        src/nrlib/random/randomgenerator.hpp
-        src/nrlib/surface/regularsurface.hpp
-        src/nrlib/surface/regularsurfacerotated.hpp
-        src/nrlib/surface/surface.hpp
-        src/nrlib/surface/surfaceio.cpp
-        src/nrlib/surface/surfaceio.hpp
-        src/nrlib/variogram/fftcovgrid.cpp
-        src/nrlib/variogram/fftcovgrid.hpp
-        src/nrlib/variogram/gaussianfield.cpp
-        src/nrlib/variogram/gaussianfield.hpp
-        src/nrlib/variogram/variogram.cpp
-        src/nrlib/variogram/variogram.hpp
-        src/nrlib/variogram/variogramtypes.cpp
-        src/nrlib/variogram/variogramtypes.hpp
+    gaussianfft_gaussianfft
+    SHARED
+    ${SOURCE_FILES_LIST}
 )
 add_library(gaussianfft::gaussianfft ALIAS gaussianfft_gaussianfft)
 
