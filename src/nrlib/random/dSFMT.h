@@ -42,11 +42,9 @@ extern "C" {
 #include <assert.h>
 #include <stddef.h>
 
-#ifndef __arm64__
 // ------ NR: ------
 // We only support computers that have SSE2.
 #define HAVE_SSE2
-#endif
 #define DSFMT_MEXP 19937
 #if defined(_MSC_VER) && _MSC_VER >= 1600
   // Included stdint.h to prevent warning when compiling dSFMT on VS2010 and newer
@@ -159,7 +157,11 @@ union W128_T {
 };
 
 #elif defined(HAVE_SSE2)
+#ifndef __arm64__
 #  include <emmintrin.h>
+#else
+#  include "sse2neon.h"
+#endif
 
 /** 128-bit data structure */
 union W128_T {
