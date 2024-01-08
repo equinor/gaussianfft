@@ -1,6 +1,6 @@
 [project]
 name = "gaussianfft"
-version = "1.1.1b2"
+dynamic = ["version"]
 license = { file = "LICENSE.txt" }
 description = "A fast library for simulating Gaussian Random Fields, using the fast Fourier transform"
 readme = "README.md"
@@ -43,11 +43,14 @@ requires = [
 build-backend = "scikit_build_core.build"
 
 [tool.scikit-build]
+metadata.version.provider = "scikit_build_core.metadata.setuptools_scm"
+
 sdist.include = [
     "vendor/",  # This is only included so that it can be reused during building wheels for Apple Silicon
     # It should *not* be included in the actual source distribution (sdist)
     "sources/boost/*.*.*/",
     "sources/fftw/*.*.*/",
+    "gaussianfft/_version.py"
 ]
 sdist.exclude = [
     "venv",
@@ -71,3 +74,6 @@ sdist.exclude = [
     "examples",
     "compose.yaml",
 ]
+
+[tool.setuptools_scm]
+write_to = "gaussianfft/_version.py"

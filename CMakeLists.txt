@@ -5,7 +5,6 @@ include(cmake/prelude.cmake)
 
 project(
     gaussianfft
-    VERSION 1.1.1
     DESCRIPTION "GaussianFFT"
     HOMEPAGE_URL "https://github.com/equinor/gaussianfft"
     LANGUAGES CXX
