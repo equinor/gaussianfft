@@ -245,6 +245,7 @@ CTestTestfile.cmake
 _deps
 
 # Created dynamically
+gaussianfft/_version.py
 requirements.txt
 ## These are not build artifacts, but results from the examples
 examples/*/*.pdf
