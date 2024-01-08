@@ -245,6 +245,7 @@ CTestTestfile.cmake
 _deps
 
 # Created dynamically
+gaussianfft/_version.py
 requirements.txt
 
 # Dependncies

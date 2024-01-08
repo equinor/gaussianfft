@@ -5,6 +5,7 @@ services:
       PYTHON:
     volumes:
       # Sharing the entire volume causes the created venv to be broken on the host
+      - "./.git:/code/.git"  # Used to get the version while building (setuptools_scm)
       - "./Makefile:/code/Makefile"
       - "./bin:/code/bin"
       - "./cmake:/code/cmake"
@@ -18,5 +19,7 @@ services:
       - "./pyproject.toml:/code/pyproject.toml"
       - "./utils.py:/code/utils.py"
 
-      - "./wheelhouse:/code/wheelhouse"  # This is where the build artefacts are placed
+      # The build artifacts are stored in these locations
+      - "./dist:/code/dist"  # The result from python -m build
+      - "./wheelhouse:/code/wheelhouse"  # The result from python -m auditwheel
     entrypoint: ["make", "-C", "/code", "build"]

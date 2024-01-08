@@ -5,7 +5,6 @@ include(cmake/prelude.cmake)
 
 project(
         gaussianfft
-        VERSION 1.1.1
         DESCRIPTION "GaussianFFT"
         HOMEPAGE_URL "https://github.com/equinor/gaussianfft"
         LANGUAGES CXX
@@ -60,9 +59,9 @@ endif ()
 dependants(SOURCE_FILES_LIST src/gaussfftinterface.cpp)
 
 add_library(
-    gaussianfft_gaussianfft
-    SHARED
-    ${SOURCE_FILES_LIST}
+        gaussianfft_gaussianfft
+        SHARED
+        ${SOURCE_FILES_LIST}
 )
 add_library(gaussianfft::gaussianfft ALIAS gaussianfft_gaussianfft)
 
