@@ -3,48 +3,193 @@ name: Build, Test, and deploy
 on: [push]
 
 jobs:
+  prepare-boost:
+    runs-on: ubuntu-22.04
+    name: Download and prepare Boost
+    strategy:
+      matrix:
+        boost:
+          - "1.76.0"
+          # Used by RMS 14.2 / Python 11 and later
+          - "1.81.0"
+
+    steps:
+      - uses: actions/checkout@v4
+        name: Checkout repository
+
+      - name: Restore cached Boost source
+        id: cache-boost
+        uses: actions/cache@v3
+        with:
+          path: sources/boost/${{ matrix.boost }}
+          key: boost-${{ matrix.boost }}-${{ hashFiles('bin/*-boost.sh') }}
+
+      - name: Download Boost, and extract relevant source code
+        if: steps.cache-boost.outputs.cache-hit != 'true'
+        run: |
+          ./bin/fetch-boost.sh ${{ matrix.boost }}
+          rm -rf sources/boost/boost_*
+          rm -rf sources/boost/*.tar.gz
+
+      - name: Store Boost source code
+        uses: actions/upload-artifact@v4
+        with:
+          name: boost-${{ matrix.boost }}
+          path: sources/boost/*
+          if-no-files-found: error
+
+  prepare-fftw:
+    # Currently, this is the only machine with Apple Silicon
+    runs-on: macos-13-xlarge
+    name: Download and prepare FFTW (for Apple Silicon)
+    strategy:
+      matrix:
+        fftw:
+          - "3.3.10"
+
+    steps:
+      - uses: actions/checkout@v4
+        name: Checkout repository
+
+      - name: Restore cached FFTW
+        id: cache-fftw
+        uses: actions/cache@v3
+        with:
+          path: |
+            sources/fftw/${{ matrix.fftw }}
+            vendor/
+          key: fftw-${{ matrix.fftw }}-${{ hashFiles('bin/*-fftw.sh') }}
+
+      - name: Download & Build FFTW
+        if: steps.cache-fftw.outputs.cache-hit != 'true'
+        run: ./bin/compile-fftw.sh ${{ matrix.fftw }}
+
+      - name: Store FFTW source, and build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: fftw-${{ matrix.fftw }}
+          path: |
+            sources/fftw/*
+            vendor/*
+
   build:
+    needs:
+      - prepare-boost
+      - prepare-fftw
     runs-on: ${{ matrix.os }}
     name: Build & Test
     strategy:
       matrix:
         python:
-        - 3.6  # Included in RMS 11 - 12.0
+#        - 3.6  # Included in RMS 11 - 12.0
         - 3.7
         - 3.8  # Included in RMS 12.1, and newer
         - 3.9
+        - "3.10"
+        - 3.11  # Included in RMS 14.2, and newer
+        - 3.12
         os:
         - ubuntu-20.04
         - macos-11
+        - macos-13-xlarge  # That is Apple silicone
+        exclude:
+          # Python 3.7-3.9 are not available on ARM64
+          - os: macos-13-xlarge
+            python: 3.7
+          - os: macos-13-xlarge
+            python: 3.8
+          - os: macos-13-xlarge
+            python: 3.9
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         name: Checkout repository
 
-      - uses: actions/setup-python@v2
+      - name: Download Boost versions
+        uses: actions/download-artifact@v4
+        with:
+          pattern: boost-*
+          path: sources/boost/
+          merge-multiple: true
+
+      - name: Download FFTW source
+        if: ${{ runner.os == 'macOS' && (runner.arch == 'ARM64' || runner.arch == 'ARM') }}
+        uses: actions/download-artifact@v4
+        with:
+          pattern: fftw-*
+          path: .
+          merge-multiple: true
+
+      - uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python }}
 
       - name: Build
         env:
-          NRLIB_LINKING: static
           PYTHON: python${{ matrix.python }}
           VERBOSE: "1"
         run: |
           if [[ $RUNNER_OS == "Linux" ]]; then
             docker-compose run build-linux
+          elif [[ $RUNNER_OS == "macOS" ]]; then
+              brew install coreutils
+              make build
           else
-            make build
+            # That is, windows
+            echo "No supported, yet" >/dev/stderr
+            exit 1
           fi
+        shell: bash
 
       - name: Test
         run: make tests
 
       - name: Store wheels
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
-          name: wheels
+          name: wheel-${{ matrix.python }}-${{ matrix.os }}
           path: wheelhouse/*.whl
+          if-no-files-found: error
+
+  source-distribution:
+    runs-on: ubuntu-20.04
+    name: Create source distribution (sdist)
+    needs:
+      - prepare-boost
+      - prepare-fftw
+
+    steps:
+      - uses: actions/checkout@v4
+        name: Checkout repository
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.7"  # Minimum supported version
+
+      - name: Download Boost versions
+        uses: actions/download-artifact@v4
+        with:
+          pattern: boost-*
+          path: sources/boost/
+          merge-multiple: true
+
+      - name: Download FFTW source
+        uses: actions/download-artifact@v4
+        with:
+          pattern: fftw-*
+          path: .
+          merge-multiple: true
+
+      - name: Create source distribution
+        run: |
+          ./bin/prepare-sdist.sh
+          make build-sdist
+
+      - name: Store source distribution
+        uses: actions/upload-artifact@v4
+        with:
+          name: sdist
+          path: dist/*.tar.gz
           if-no-files-found: error
 
   publish:
@@ -53,15 +198,20 @@ jobs:
     if: startsWith(github.ref, 'refs/tags')
     needs:
       - build
+      - source-distribution
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         name: Checkout repository
 
       - name: Download compiled wheels
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
-          name: wheels
+          name: wheel-*
           path: wheelhouse/
+      - name: Download source distribution
+        uses: actions/download-artifact@v4
+        with:
+          name: sdist
 
       - name: Publish to PyPi
         env:

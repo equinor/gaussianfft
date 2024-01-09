@@ -24,7 +24,11 @@
 #include "dSFMT.h"
 
 #if defined(HAVE_SSE2)
+#ifndef __arm64__
 #  include <emmintrin.h>
+#else
+# include "sse2neon.h"
+#endif
 union X128I_T {
     uint64_t u[2];
     __m128i  i128;

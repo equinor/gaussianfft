@@ -1,0 +1,73 @@
+[project]
+name = "gaussianfft"
+version = "1.1.1b2"
+license = { file = "LICENSE.txt" }
+description = "A fast library for simulating Gaussian Random Fields, using the fast Fourier transform"
+readme = "README.md"
+authors = [
+    { name = "Norwegian Computing Center" },
+    { name = "Sindre Nistad", email = "snis@equinor.com"},
+]
+dependencies = [
+    "numpy",
+]
+requires-python = ">=3.6"
+
+[project.optional-dependencies]
+util = ["scipy"]
+
+
+[build-system]
+requires = [
+    # Scikit-build-core does not support Python 3.6 (and older)
+    "scikit-build-core ; python_version >= '3.7'",
+
+    "mkl-static ; platform_machine == 'x86_64' or platform_machine == 'AMD64'",
+    "mkl-devel ; platform_machine == 'x86_64' or platform_machine == 'AMD64'",
+
+    # Used to find libpython.dylib, which we need to link against on macOS
+    "find-libpython ; sys_platform == 'darwin'",
+
+    # These are the versions of NumPy used by RMS
+    "numpy==1.24.3 ; python_version == '3.11'",  # 14.2.0 and newer
+    "numpy==1.19.2 ; python_version == '3.8'",  # 12.1.0 and newer
+    "numpy==1.13.3 ; python_version == '3.6'",  # 11.0.0 and newer
+    # For the rest of the versions of Python, we use the earliest version of NumPy
+    # with suport for that version of Python (to make the prebuilt versions as compatible as possible)
+    "numpy==1.26.0 ; python_version == '3.12'",
+    "numpy==1.21.2 ; python_version == '3.10'",
+    "numpy==1.19.3 ; python_version == '3.9'",
+    "numpy==1.14.5 ; python_version == '3.7'",
+    "numpy  ; python_version > '3.12'",
+]
+build-backend = "scikit_build_core.build"
+
+[tool.scikit-build]
+sdist.include = [
+    "vendor/",  # This is only included so that it can be reused during building wheels for Apple Silicon
+    # It should *not* be included in the actual source distribution (sdist)
+    "sources/boost/*.*.*/",
+    "sources/fftw/*.*.*/",
+]
+sdist.exclude = [
+    "venv",
+    "build",
+    "stage",
+    "dist",
+    # Related to bootstrapping boost
+    "sources/boost/boost_*",
+    "sources/*/*.tar.gz",
+    # These are artifacts from compiling boost, which we do not want to include
+    # in the source distribution
+    "sources/boost/*/b2",
+    "sources/boost/*/bin.v2",
+    "sources/boost/*/project-config.jam*",
+    "sources/boost/*/stage",
+    "cmake-build-debug",
+    ".github",
+    "notebooks",
+    "doc",
+    "tests",
+    "examples",
+    "compose.yaml",
+]

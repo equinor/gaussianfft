@@ -3,18 +3,20 @@ services:
     image: quay.io/pypa/manylinux2014_x86_64
     environment:
       PYTHON:
-      NRLIB_LINKING: "${NRLIB_LINKING-static}"
     volumes:
       # Sharing the entire volume causes the created venv to be broken on the host
       - "./Makefile:/code/Makefile"
       - "./bin:/code/bin"
+      - "./cmake:/code/cmake"
       - "./src:/code/src"
+      - "./sources:/code/sources"
       - "./gaussianfft:/code/gaussianfft"
-      - "./setup.py:/code/setup.py"
 
-      - "./LOWEST_SUPPORTED_PYTHON_VERSION.txt:/code/LOWEST_SUPPORTED_PYTHON_VERSION.txt"
       - "./LICENSE.txt:/code/LICENSE.txt"
       - "./README.md:/code/README.md"
+      - "./CMakeLists.txt:/code/CMakeLists.txt"
+      - "./pyproject.toml:/code/pyproject.toml"
+      - "./utils.py:/code/utils.py"
 
       - "./wheelhouse:/code/wheelhouse"  # This is where the build artefacts are placed
     entrypoint: ["make", "-C", "/code", "build"]

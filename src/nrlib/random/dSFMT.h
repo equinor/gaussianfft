@@ -157,7 +157,11 @@ union W128_T {
 };
 
 #elif defined(HAVE_SSE2)
+#ifndef __arm64__
 #  include <emmintrin.h>
+#else
+#  include "sse2neon.h"
+#endif
 
 /** 128-bit data structure */
 union W128_T {
