@@ -31,6 +31,14 @@ set(BUILD_PYTHON_SUPPORT ON)
 set(Boost_LIBRARY_DIR ${Boost_DIR}/stage/lib)
 if (NOT EXISTS ${Boost_LIBRARY_DIR})
     message(STATUS "Compiling Boost")
+    if (DEFINED APPLE AND "${APPLE}" AND ${BOOST_VERSION} STRLESS "1.76.0")
+        message(WARNING "There are known problems compiling Boost prior to 1.76.0 on newer versions of macOS")
+        # There is a problem with the C++11 check in tools/build/src/engine/build.sh
+        # for Boost 1.74.0 on macOS; the script does not add the necessary include directories for clang
+        # causing check_cxx11.cpp to fail by not finding <wchar.h>
+        # This is not a problem in Boost 1.76.0 and newer
+        set(ENV{NO_CXX11_CHECK} "1")
+    endif ()
     execute_process(COMMAND ${Boost_COMPILE_SCRIPT} ${BOOST_VERSION} COMMAND_ERROR_IS_FATAL ANY)
 else ()
     message(STATUS "Reusing compiled boost libraries at ${Boost_LIBRARY_DIR}")
