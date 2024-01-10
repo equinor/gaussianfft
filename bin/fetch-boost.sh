@@ -163,6 +163,10 @@ extract_files_depending_on "boost/graph/adjacency_list.hpp"
 extract_files_depending_on "boost/graph/reverse_graph.hpp"
 # from libs/python/src/object/inheritance.cpp:17
 extract_files_depending_on "boost/tuple/tuple_comparison.hpp"
+# from ./boost/math/policies/policy.hpp:9 (in boost 1.74.0)
+extract_files_depending_on "boost/mpl/list/list20.hpp"
+extract_files_depending_on "boost/mpl/list/aux_/preprocessed/plain/list10.hpp"
+extract_files_depending_on "boost/mpl/list/aux_/preprocessed/plain/list20.hpp"
 
 ## Filesystem
 extract_files libs/filesystem/build

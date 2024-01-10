@@ -92,7 +92,7 @@ If you want to run with a predefined start seed, call `grf.seed(seed_value)` bef
 ## Building
 We use [`scikit-build-core`](https://scikit-build-core.readthedocs.io/en/latest/index.html) as the build tool, in order to use [`pyproject.toml`](https://pip.pypa.io/en/stable/reference/build-system/pyproject-toml/) to facilitate easier building while using [`cmake`](https://cmake.org) to build the C++ extension.
 
-We also use [Boost.Python](https://www.boost.org/doc/libs/1_81_0/libs/python/doc/html/index.html) (version 1.76.0 for Python <=3.10 and 1.81.0 for newer versions).
+We also use [Boost.Python](https://www.boost.org/doc/libs/1_81_0/libs/python/doc/html/index.html) (version 1.74.0 for Python <=3.9, 1.76.0 for Python <= 3.10, and 1.81.0 for newer versions).
 While compiling Boost, a python interpreter needs to be set.
 You may want to create a virtual environment before building `gaussianfft`.
 
