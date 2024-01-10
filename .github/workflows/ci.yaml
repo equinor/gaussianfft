@@ -9,8 +9,11 @@ jobs:
     strategy:
       matrix:
         boost:
+          # Used by RMS 12.1 / Python 3.8 and later
+          - "1.74.0"
+          # newer versions of macOS (11+) / XCode (14+) have issues compiling Boost older than
           - "1.76.0"
-          # Used by RMS 14.2 / Python 11 and later
+          # Used by RMS 14.2 / Python 3.11 and later
           - "1.81.0"
 
     steps:
