@@ -1,6 +1,7 @@
 # Gaussianfft
 
-A fast library for simulating Gaussian Random Fields, using the fast Fourier transform (Intel MKL).
+A fast library for simulating Gaussian Random Fields in 1-, 2-, and 3-dimensional space, using the fast Fourier transform (Intel MKL).
+It can handle very large grids (The ambition is to handle grid sizes of 1000 x 1000 x 1000 and greater).
 
 Originally developed by Norsk Regnesentral on commission from Equinor.
 Documentation from Norsk Regnesentral: [SAND_04_18.pdf](https://github.com/equinor/gaussianfft/blob/master/doc/SAND_04_18.pdf)
@@ -23,43 +24,11 @@ simulation = grf.simulate(variogram, nx=100, dx=1, ny=100, dy=1)  # 2D 100 x 100
 See [examples](examples/) for examples, getting started, and other documentation.
 
 
-## Previous versions
-
-### nrlib version pr 28.02.2018  for RMS10 is the final version compiled for RMS10
-The directory  for this version: nrlib-dist-RMS10-180228
-Compatibility: Compatible with python 3.4 which is used in RMS10
-
-### nrlib version pr 28.02.2018  for RMS11Beta is the final version compiled for RMS11Beta
-The directory  for this version: nrlib-dist-RMS11Beta-180228
-Compatibility: Compatible with python 3.6 which is used in RMS11Beta
-
-### nrlib version 09.02.2018 for RMS11Beta
-The directory nrlib-dist-RMS11Beta is the one to use for RMS11Beta
-Compatibility: Compatible with python 3.6 which is used in RMS11Beta
-
-### nrlib version pr 13.02.2018  for RMS10
-The directory nrlib-dist-RMS10-optimalized is the one to use for RMS10.
-Is updated to be more efficient. It generates an message which can be ignored:
-   "RuntimeError: module compiled against API version 0xb but this version of numpy is 0xa"
-This "error" message can be ignored.
-Compatibility: Compatible with python 3.4 which is used in RMS10
-
-
 ##  Description
-Python wrapper around Gaussian simulation methods for 1D, 2D and 3D simulation using the FFT based method.
-
-Written by: Norsk Regnesentral for Equinor APS GUI project, but can be used for all in Equinor for internal use.
-
 Contact person in Norsk Regnesentral: [Petter Abrahamsen](mailto:Petter.Abrahamsen@nr.no) (2024)
 Contact person in Equinor: [Oddvar Lia](mailto:olia@equinor.com)
 
 
-This directory contains both source code and compiled version of nrlib,
-a library for simulating gaussian fields in 1D, 2D and 3D using python 3.4 (RMS version 10 installation of python)
-
-This code is for Equinor internal use and the development of the code is paid by the APS GUI project.
-Norsk Regnesentral (contact person: Vegard Berg Kvernelv, 2018) has developed the code which is based on FFT
-and can handle very large grids (The ambition is to handle up to 1000x1000x1000  grid size).
 Check Docstring for usage but a brief summary follows:
 
 How to use it in python scripts called up from RMS:
