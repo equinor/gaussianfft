@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import nrlib
+import gaussianfft as grf
 
 
 VTYPES = [
@@ -15,12 +15,12 @@ VTYPES = [
 
 
 def example_cube():
-    nrlib.seed(123)
+    grf.seed(123)
     n = 200
     p = 400
     d = 0.5
-    variogram = nrlib.variogram('gaussian', main_range=100, perp_range=100)
-    field = nrlib.advanced.simulate(variogram, n, d, n, d, padx=p, pady=p)
+    variogram = grf.variogram('gaussian', main_range=100, perp_range=100)
+    field = grf.advanced.simulate(variogram, n, d, n, d, padx=p, pady=p)
     field2d = np.array(field).reshape((n, n), order='F')
     plot_surface(field2d, 'Gaussian variogram, insufficient simulation padding')
     plt.show()
@@ -30,9 +30,9 @@ def example_cubes():
     n = 100
     d = 1.0
     for i, p in enumerate([100, 200, 300, 400]):
-        nrlib.seed(123)
-        variogram = nrlib.variogram('gaussian', main_range=100, perp_range=100)
-        field = nrlib.advanced.simulate(variogram, n, d, n, d, padx=p, pady=p)
+        grf.seed(123)
+        variogram = grf.variogram('gaussian', main_range=100, perp_range=100)
+        field = grf.advanced.simulate(variogram, n, d, n, d, padx=p, pady=p)
         field2d = np.array(field).reshape((n, n), order='F')
         plt.subplot(411 + i)
         plot_surface(field2d, 'Gaussian variogram, padding={} x range'.format(int(p/100)))
@@ -40,11 +40,11 @@ def example_cubes():
 
 
 def example_box():
-    nrlib.seed(123)
-    variogram = nrlib.variogram('exponential', main_range=1000.0, perp_range=1000.0,)
+    grf.seed(123)
+    variogram = grf.variogram('exponential', main_range=1000.0, perp_range=1000.0,)
     nx, ny = 50, 100
     dx, dy = 10, 10
-    field = nrlib.simulate(variogram, nx, dx, ny, dy)
+    field = grf.simulate(variogram, nx, dx, ny, dy)
     field2d = np.array(field).reshape((nx, ny), order='F')
     plot_surface(field2d, 'Exponential variogram')
     plt.show()
@@ -55,8 +55,8 @@ def example_variogram():
     dx, dy = 10.0, 10.0
     fig, axes = plt.subplots(2, 3)
     for vt, ax in zip(VTYPES, axes.flatten()):
-        v = nrlib.variogram(vt, 1000.0, 250.0)
-        f = nrlib.simulate(v, nx, dx, ny, dy).reshape((nx, ny), order='F')
+        v = grf.variogram(vt, 1000.0, 250.0)
+        f = grf.simulate(v, nx, dx, ny, dy).reshape((nx, ny), order='F')
         ax.imshow(f, interpolation='None')
         ax.set_title(vt)
     plt.suptitle('Variogram comparisons')
@@ -69,9 +69,9 @@ def example_variogram2():
     px, py = nx * 7, ny * 7
     fig, axes = plt.subplots(2, 3)
     for vt, ax in zip(VTYPES, axes.flatten()):
-        nrlib.seed(5545)
-        v = nrlib.variogram(vt, 1000.0, 250.0)
-        f = nrlib.advanced.simulate(v, nx, dx, ny, dy, padx=px, pady=py).reshape((nx, ny), order='F')
+        grf.seed(5545)
+        v = grf.variogram(vt, 1000.0, 250.0)
+        f = grf.advanced.simulate(v, nx, dx, ny, dy, padx=px, pady=py).reshape((nx, ny), order='F')
         ax.imshow(f, interpolation='None')
         ax.set_title(vt)
     plt.suptitle('Variogram comparisons (equal padding)')

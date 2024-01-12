@@ -260,3 +260,6 @@ boost-build.jam
 boostcpp.jam
 bootstrap.sh
 Jamroot
+
+
+examples/*/*.pdf
