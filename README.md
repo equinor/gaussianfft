@@ -3,7 +3,7 @@
 A fast library for simulating Gaussian Random Fields in 1-, 2-, and 3-dimensional space, using the fast Fourier transform (Intel MKL).
 It can handle very large grids (The ambition is to handle grid sizes of 1000 x 1000 x 1000 and greater).
 
-Originally developed by Norsk Regnesentral on commission from Equinor.
+Originally developed by [Norsk Regnesentral (NR)](https://nr.no) on commission from Equinor.
 Documentation from Norsk Regnesentral: [SAND_04_18.pdf](https://github.com/equinor/gaussianfft/blob/master/doc/SAND_04_18.pdf)
 
 ## Usage
