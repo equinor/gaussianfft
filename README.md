@@ -32,7 +32,7 @@ Contact person in Equinor: [Oddvar Lia](mailto:olia@equinor.com)
 Check Docstring for usage but a brief summary follows:
 
 How to use it in python scripts called up from RMS:
-1. In RMS set python path to include: `/project/res/nrlib/nrlib-dist`
+1. Ensure it is installed, and available[^1]
 2. In python script:
    ```python
    import gaussianfft as grf
@@ -83,3 +83,5 @@ be sure to delay start of a new process by at least 1 second after the previous 
 The return seed is the same regardless of how many times you call simulation since it is the start seed of the first call to simulation.
 It must however not be called before the first call to simulation if you want the start seed to be automatically generated.
 If you want to run with a predefined start seed, call `grf.seed(seed_value)` before the first call to simulation.
+
+[^1]: If using [RMS](https://www.aspentech.com/en/products/sse/aspen-rms), make sure the path where `gaussianfft` is installed is available to RMS.
