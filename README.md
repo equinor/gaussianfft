@@ -41,19 +41,20 @@ How to use it in python scripts called up from RMS:
 3. Set variogram:
    `variogram = grf.variogram(variogram_name, main_range, perp_range, vert_range, azimuth, dip, power)`
 
-   variogramName is one of:
-              `exponential`
-              `spherical`
-              `gaussian`
-              `general_exponential`  (this is the only one using the exponent called power in the variogram function)
-              `matern32`
-              `matern52`
-              `matern72`
-              `constant`
-The ranges are given the same name as in IPL but corresponds to x,y,z directions.
-Note that the simulation is a regular 3D grid and the coordinate system is right-handed. This means that input azimuth angle
-should be  `(90 - azimut_used_in_rms)` for standard RMS grids which are left-handed.
-So if you want to use this in RMS and load the result into a zone in a grid in RMS (e.g by using Roxar API) then be aware of this.
+   `variogram_name` is one of:
+   * `exponential`
+   * `spherical`
+   * `gaussian`
+   * `general_exponential`  (this is the only one using the exponent called power in the variogram function)
+   * `matern32`
+   * `matern52`
+   * `matern72`
+   * `constant`
+
+   The ranges are given the same name as in IPL but corresponds to x,y,z directions.
+
+   Note that the simulation is a regular 3D grid and the coordinate system is right-handed. This means that input azimuth angle should be  `(90 - azimut_used_in_rms)` for standard RMS grids which are left-handed.
+   So if you want to use this in RMS and load the result into a zone in a grid in RMS (e.g by using Roxar API) then be aware of this.
 
 4. Simulation is done by:
 
@@ -64,12 +65,14 @@ So if you want to use this in RMS and load the result into a zone in a grid in R
    `gauss_result = np.reshape(gauss_vector, (nx, ny, nz), order='F')`   one get a 3D numpy array
 
 5. To check how large the extension of the internal simulation grid is (to avoid edge effects in the result from the FFT algorithm)
-the grid is increased before it is simulated internally in the nrlib module. You can check this extension to see the actual grid size used.
+the grid is increased before it is simulated internally in the module. You can check this extension to see the actual grid size used.
 This grid size is reported by using the function:
 
-`[nx_extended, ny_extended, nz_extended] = grf.simulation_size(variogram, nx, dx, ny, dy, nz, dz)`
+   ```python
+   [nx_extended, ny_extended, nz_extended] = grf.simulation_size(variogram, nx, dx, ny, dy, nz, dz)
+   ```
 
-and depends very much on the relative size of the correlation lengths and the grid size (length, width, height)
+    and depends very much on the relative size of the correlation lengths and the grid size (length, width, height)
 
 6. To get the start seed that is used:
   `seed = grf.seed()`
@@ -77,8 +80,8 @@ and depends very much on the relative size of the correlation lengths and the gr
 7. To set a seed before calling any simulation:
   `grf.seed(seed_value)`
 
-Note: the returned seed from `grf.seed()` is created automatically by the clock time. If you use multiprocessing, and run several processes in parallel
-be sure to delay start of a new process by at least 1 second after the previous process to avoid that two different processes get the same start seed.
+**Note**: the returned seed from `grf.seed()` is created automatically by the clock time.
+If you use multiprocessing, and run several processes in parallel be sure to delay start of a new process by at least 1 second after the previous process to avoid that two different processes get the same start seed.
 
 The return seed is the same regardless of how many times you call simulation since it is the start seed of the first call to simulation.
 It must however not be called before the first call to simulation if you want the start seed to be automatically generated.
