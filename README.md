@@ -3,7 +3,7 @@
 A fast library for simulating Gaussian Random Fields, using the fast Fourier transform (Intel MKL).
 
 Originally developed by Norsk Regnesentral on commission from Equinor.
-Documentation from Norsk Regnesentral: [SAND_04_18.pdf](doc/SAND_04_18.pdf) ([also available on GitHub](https://github.com/equinor/gaussianfft/blob/master/doc/SAND_04_18.pdf))
+Documentation from Norsk Regnesentral: [SAND_04_18.pdf](https://github.com/equinor/gaussianfft/blob/master/doc/SAND_04_18.pdf)
 
 ## Usage
 
