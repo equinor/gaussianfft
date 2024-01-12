@@ -64,9 +64,13 @@ Check Docstring for usage but a brief summary follows:
 
 How to use it in python scripts called up from RMS:
 1. In RMS set python path to include: `/project/res/nrlib/nrlib-dist`
-2. In python script: `import gaussianfft as grf`
+2. In python script:
+   ```python
+   import gaussianfft as grf
+   import numpy as np
+   ```
 3. Set variogram:
-   `variogram = grf.variogram(variogramName, mainRange, perpRange,vertRange, azimuth, dip, power)`
+   `variogram = grf.variogram(variogram_name, main_range, perp_range, vert_range, azimuth, dip, power)`
 
    variogramName is one of:
               `exponential`
@@ -84,11 +88,11 @@ So if you want to use this in RMS and load the result into a zone in a grid in R
 
 4. Simulation is done by:
 
-   `gaussVector = grf.simulation(variogram, nx, dx, ny, dy, nz, dz)`
+   `gauss_vector = grf.simulation(variogram, nx, dx, ny, dy, nz, dz)`
 
    The gauss field output is a 1D numpy array and by using
 
-   `gaussResult = grf.reshape(gaussVector,(nx,ny,nz),order='F')`   one get a 3D numpy array
+   `gauss_result = np.reshape(gauss_vector, (nx, ny, nz), order='F')`   one get a 3D numpy array
 
 5. To check how large the extension of the internal simulation grid is (to avoid edge effects in the result from the FFT algorithm)
 the grid is increased before it is simulated internally in the nrlib module. You can check this extension to see the actual grid size used.
@@ -102,11 +106,11 @@ and depends very much on the relative size of the correlation lengths and the gr
   `seed = grf.seed()`
 
 7. To set a seed before calling any simulation:
-  `grf.seed(seedValue)`
+  `grf.seed(seed_value)`
 
 Note: the returned seed from `grf.seed()` is created automatically by the clock time. If you use multiprocessing, and run several processes in parallel
 be sure to delay start of a new process by at least 1 second after the previous process to avoid that two different processes get the same start seed.
 
 The return seed is the same regardless of how many times you call simulation since it is the start seed of the first call to simulation.
 It must however not be called before the first call to simulation if you want the start seed to be automatically generated.
-If you want to run with a predefined start seed, call `grf.seed(seedValue)` before the first call to simulation.
+If you want to run with a predefined start seed, call `grf.seed(seed_value)` before the first call to simulation.
