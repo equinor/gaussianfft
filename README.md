@@ -50,7 +50,7 @@ Python wrapper around Gaussian simulation methods for 1D, 2D and 3D simulation u
 
 Written by: Norsk Regnesentral for Equinor APS GUI project, but can be used for all in Equinor for internal use.
 
-Contact person in Norsk Regnesentral: [Vegard Berg Kvernelv](mailto:Vegard.Kvernelv@nr.no) (2018)
+Contact person in Norsk Regnesentral: [Petter Abrahamsen](mailto:Petter.Abrahamsen@nr.no) (2024)
 Contact person in Equinor: [Oddvar Lia](mailto:olia@equinor.com)
 
 
