@@ -43,7 +43,7 @@ class EmpiricalVariogram2:
         self.ix_sample_points = np.array([
             all((j % step == 0) for j in i)
             for i in self.tuple_indexes
-        ], dtype=np.bool)
+        ], dtype=bool)
 
         self.short_bins = self._find_distance_bins(self.ix_short_points)
         self.sample_bins = self._find_distance_bins(self.ix_sample_points)
