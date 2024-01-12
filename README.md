@@ -87,4 +87,7 @@ The return seed is the same regardless of how many times you call simulation sin
 It must however not be called before the first call to simulation if you want the start seed to be automatically generated.
 If you want to run with a predefined start seed, call `grf.seed(seed_value)` before the first call to simulation.
 
+## Contributing
+Report bugs (description with reproducible steps + run environment) and feature requests are welcome.
+
 [^1]: If using [RMS](https://www.aspentech.com/en/products/sse/aspen-rms), make sure the path where `gaussianfft` is installed is available to RMS.
