@@ -1,11 +1,11 @@
 import matplotlib.pyplot as plt
-import nrlib
+import gaussianfft as grf
 import numpy as np
 import os
 
 import sys
 
-from util.empirical_variogram2 import EmpiricalVariogram2
+from gaussianfft.util.empirical_variogram2 import EmpiricalVariogram2
 
 
 def run_analysis(output_folder):
@@ -35,7 +35,7 @@ def create_plots_for_vtype(output_folder, vtype):
     # - 1D verification that the estimation is working as intended.
     nx, ny, nz = 100, 100, 1
     r = 100
-    v = nrlib.variogram(vtype, r, r, r)
+    v = grf.variogram(vtype, r, r, r)
     ev = EmpiricalVariogram2(v, nx, ny, nz, -1, -1, -1, 30.0, 5)
     (x_short, y_short, y_err_short), (x_sample, y_sample, y_err_sample) = ev.estimate_variogram(5000)
 

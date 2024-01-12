@@ -1,15 +1,15 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import nrlib
+import gaussianfft as grf
 
 
 def example_cube():
-    nrlib.seed(123)
-    variogram = nrlib.variogram('gaussian', 100, 100, 100, 0.0, 0.0, 1.5)
+    grf.seed(123)
+    variogram = grf.variogram('gaussian', 100, 100, 100, 0.0, 0.0, 1.5)
     # nx, ny, nz = 100, 100, 100
     nx, ny, nz = 127, 127, 127
     dx, dy, dz = 2, 2, 2
-    field = nrlib.advanced.simulate(variogram, nx, dx, ny, dy, nz, dz, padx=-1, pady=-1, padz=-1)
+    field = grf.advanced.simulate(variogram, nx, dx, ny, dy, nz, dz, padx=-1, pady=-1, padz=-1)
     field3d = np.array(field).reshape((nx, ny, nz), order='F')
     lin = np.arange(0, nx) * dx
     plot_3d_mid_slices(field3d, lin, lin, lin)
@@ -17,13 +17,13 @@ def example_cube():
 
 
 def example_box():
-    nrlib.seed(123)
+    grf.seed(123)
     az = 90.0
     dip = 30.0
-    variogram = nrlib.variogram('exponential', 1000, 1000, 100, az, dip, 1.5)
+    variogram = grf.variogram('exponential', 1000, 1000, 100, az, dip, 1.5)
     nx, ny, nz = 100, 50, 25
     dx, dy, dz = 10, 10, 10
-    field = nrlib.simulate(variogram, nx, dx, ny, dy, nz, dz)
+    field = grf.simulate(variogram, nx, dx, ny, dy, nz, dz)
     field3d = np.array(field).reshape((nx, ny, nz), order='F')
     lin_x = np.arange(0, nx) * dx
     lin_y = np.arange(0, ny) * dy
