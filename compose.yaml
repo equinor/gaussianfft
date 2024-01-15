@@ -3,6 +3,7 @@ services:
     image: quay.io/pypa/manylinux2014_x86_64
     environment:
       PYTHON:
+      ENFORCE_CLEAN_GIT: "true"
     volumes:
       # Sharing the entire volume causes the created venv to be broken on the host
 

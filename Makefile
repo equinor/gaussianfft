@@ -25,6 +25,12 @@ install:
 	$(PYTHON) -m pip install $(CODE_DIR)
 
 venv:
+ifeq ($(ENFORCE_CLEAN_GIT),true)
+	# Ensure git 'trusts' the directory inside docker
+	git config --global --add safe.directory $(CODE_DIR)
+	$(CODE_DIR)/bin/ensure-clean-working-directory.sh
+
+endif
 	$(PYTHON) -m venv venv
 
 tests: venv
