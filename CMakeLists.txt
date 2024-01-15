@@ -15,15 +15,12 @@ include(cmake/variables.cmake)
 include(cmake/utilities.cmake)
 
 option(FFTW_DEBUG "Flag to add methods for writing the FFT grid to file. Requires Boost" OFF)
+if (FFTW_DEBUG)
+    option(BOOST_VERSION "Configure the specific version of Boost gaussianfft wil be statically linked against" "1.81.0")
+endif ()
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(FFTW_DEBUG ON)
     # TODO: Move this logic into CMakePresets.json
-endif ()
-
-# Which versions of dependencies to use
-option(BOOST_VERSION "Configure the specific version of Boost gaussianfft wil be statically linked against")
-if (NOT BOOST_VERSION)
-    execute_process(COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/bin/find_boost_version.py OUTPUT_VARIABLE BOOST_VERSION)
 endif ()
 
 
@@ -32,7 +29,8 @@ if (NOT DEFINED SKBUILD)
     include(cmake/python-venv.cmake)
 endif ()
 set(Python3_USE_STATIC_LIBS ON)
-find_package(Python3 REQUIRED COMPONENTS Interpreter Development.Module NumPy)
+find_package(Python3 REQUIRED COMPONENTS Interpreter Development.Module)
+find_package(pybind11 CONFIG REQUIRED PATHS ${Python3_SITELIB}/pybind11)
 include_directories(SYSTEM ${Python3_INCLUDE_DIRS})
 
 
@@ -43,8 +41,10 @@ file(COPY ${CMAKE_SOURCE_DIR}/src DESTINATION ${CMAKE_BINARY_DIR}/)
 
 if (FFTW_DEBUG)
     add_compile_definitions(FFTW_DEBUG)
+    find_package(Python3 REQUIRED COMPONENTS Interpreter Development.Module)
+    # ./bin/fetch-boost.sh requires access to the source code when it searches through src/gaussfftinterface.cpp
+    include(cmake/boost.cmake)
 endif ()
-include(cmake/boost.cmake)
 
 # ---- Declare library ----
 set(CMAKE_SHARED_LIBRARY_PREFIX "")
@@ -90,6 +90,7 @@ set_target_properties(
 target_link_libraries(
         gaussianfft_gaussianfft
         PRIVATE
+        pybind11::headers
         ${Boost_LIBRARIES}
 )
 if (${IS_AARCH64})

@@ -27,7 +27,12 @@
 #include <string>
 #include <sstream>
 
+#if __has_include(<boost/filesystem.hpp>)
+// The helper methods that depend on boost::filesystem, is not used by the main
+// gaussianfft library, but som of the debug functionallity use them
 #include <boost/filesystem.hpp>
+#define HAS_BOOST_FILESYSTEM 1
+#endif
 
 using namespace NRLib;
 
@@ -38,6 +43,7 @@ std::string NRLib::ParseType<std::string>(const std::string& s)
 }
 
 
+#ifdef HAS_BOOST_FILESYSTEM
 std::string
 NRLib::GetPath(const std::string& filename)
 {
@@ -82,18 +88,19 @@ NRLib::ReplaceExtension(const std::string& filename,
 }
 
 std::string
+NRLib::GetStem(const std::string& filename)
+{
+  boost::filesystem::path path(filename);
+  return path.stem().string();
+}
+#endif
+
+std::string
 NRLib::AddExtension(const std::string& filename,
                     const std::string& extension)
 {
   std::string new_filename = filename + "." + extension;
   return new_filename;
-}
-
-std::string
-NRLib::GetStem(const std::string& filename)
-{
-  boost::filesystem::path path(filename);
-  return path.stem().string();
 }
 
 

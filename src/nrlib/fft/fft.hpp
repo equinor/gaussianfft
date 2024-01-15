@@ -22,10 +22,8 @@
 #ifndef NRLIB_FFT_HPP
 #define NRLIB_FFT_HPP
 
-#include <cassert>
 #include <cmath>
 #include <complex>
-#include <iterator>
 #include <vector>
 
 #include <fftw3.h>

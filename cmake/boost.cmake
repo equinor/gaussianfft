@@ -56,6 +56,6 @@ include_directories(SYSTEM ${Boost_DIR})
 find_package(Boost
         ${BOOST_VERSION} EXACT
         REQUIRED
-        COMPONENTS python numpy filesystem system
+        COMPONENTS filesystem
         PATHS ${Boost_LIBRARY_DIR}/cmake
 )

@@ -1,10 +1,13 @@
 #include "gaussfft.hpp"
 
-#include <boost/python/numpy.hpp>
+#include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
+#include <pybind11/numpy.h>
 
 #include <iostream>
 
 #include "nrlib/iotools/stringtools.hpp"
+#include "nrlib/exception/exception.hpp"
 #include "nrlib/grid/grid.hpp"
 #include "nrlib/grid/grid2d.hpp"
 #include "nrlib/math/constants.hpp"
@@ -12,7 +15,7 @@
 #include "nrlib/variogram/variogram.hpp"
 #include "nrlib/variogram/gaussianfield.hpp"
 
-namespace bp = boost::python;
+namespace py = pybind11;
 
 /***************************/
 std::string GaussFFT::Quote()
@@ -90,7 +93,7 @@ NRLib::Variogram * GaussFFT::CreateVariogram(const std::string & type,
 }
 
 /******************************************************************/
-bp::numpy::ndarray  GaussFFT::Simulate(NRLib::Variogram * variogram,
+py::array_t<double> GaussFFT::Simulate(NRLib::Variogram * variogram,
                                        size_t             nx,
                                        double             dx,
                                        size_t             ny,
@@ -102,7 +105,7 @@ bp::numpy::ndarray  GaussFFT::Simulate(NRLib::Variogram * variogram,
 }
 
 /***********************************************************************************/
-bp::numpy::ndarray  GaussFFT::SimulateWithAdvancedSettings(NRLib::Variogram * variogram,
+py::array_t<double> GaussFFT::SimulateWithAdvancedSettings(NRLib::Variogram * variogram,
                                                            size_t             nx,
                                                            double             dx,
                                                            size_t             ny,
@@ -134,12 +137,8 @@ bp::numpy::ndarray  GaussFFT::SimulateWithAdvancedSettings(NRLib::Variogram * va
     result = GaussFFT::Simulate3D(variogram, nx, dx, ny, dy, nz, dz, padding_x, padding_y, padding_z, scaling_x, scaling_y, scaling_z);
   }
 
-  bp::numpy::dtype dt = bp::numpy::dtype::get_builtin<double>();
-  bp::tuple shape = bp::make_tuple(result.size());
-  bp::tuple stride = bp::make_tuple(sizeof(double));
-  bp::object owner;
-  bp::numpy::ndarray np_result = bp::numpy::from_data(&result[0], dt, shape, stride, owner);
-  return np_result.copy();
+  py::array_t<double> np_result = py::cast(result);
+  return np_result;
 }
 
 /********************************************************************/
