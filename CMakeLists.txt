@@ -15,9 +15,9 @@ include(cmake/variables.cmake)
 include(cmake/utilities.cmake)
 
 # Which versions of dependencies to use
-option(USE_FFTW3 "Use FFTW3 instead of Intel MKL (default on Apple Silicon)")
-if (APPLE AND ${CMAKE_HOST_SYSTEM_PROCESSOR} STREQUAL "arm64")
-    message(WARNING "Intel MKL is not supported on Apple Silicon; using FFTW3 instead")
+option(USE_FFTW3 "Use FFTW3 instead of Intel MKL (default on Apple Silicon and ARM)")
+if (${IS_AARCH64})
+    message(WARNING "Intel MKL is not supported on ARM based systems; using FFTW3 instead")
     set(USE_FFT3 ON)
 endif ()
 if (USE_FFT3)
@@ -96,7 +96,7 @@ target_link_libraries(
         PRIVATE
         ${Boost_LIBRARIES}
 )
-if (${CMAKE_HOST_SYSTEM_PROCESSOR} STREQUAL "arm64")
+if (${IS_AARCH64})
     target_link_libraries(gaussianfft_gaussianfft PRIVATE fftw3 fftw3f)
 else ()
     if (APPLE)

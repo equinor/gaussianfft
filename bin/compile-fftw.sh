@@ -38,6 +38,7 @@ function compile() {
     ;;
   esac
 
+  CPPFLAGS="-fPIC" \
   ./configure \
     --prefix="$ROOT_DIR/vendor" \
     --enable-threads \

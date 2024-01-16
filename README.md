@@ -87,6 +87,16 @@ The return seed is the same regardless of how many times you call simulation sin
 It must however not be called before the first call to simulation if you want the start seed to be automatically generated.
 If you want to run with a predefined start seed, call `grf.seed(seed_value)` before the first call to simulation.
 
+## License
+`gaussianfft` is licensed under the BSD 2-clause license.
+On `x86_64` architectures, it uses [Intel MKL](https://www.intel.com/content/www/us/en/developer/tools/oneapi/onemkl.html) for it s Fast Fourier Transfer calculations, which is proprietary.
+On `aarch64` architectures, however, it uses [FFTW3](https://www.fftw.org) which is licensed under GPL v2, or later, which means those versions
+Particular versions of FFTW can be set with `-DFFTW_VERSION=3.3.10`, when building `_gaussianfft.so` (see [Building](#building)).
+If building it with pip / source distribution, add
+
+```bash
+export CMAKE_ARGS="-DFFTW_VERSION=""
+```
 
 
 ## Building
