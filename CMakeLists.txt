@@ -13,6 +13,7 @@ project(
 
 include(cmake/project-is-top-level.cmake)
 include(cmake/variables.cmake)
+include(cmake/utilities.cmake)
 
 # Which versions of dependencies to use
 option(BOOST_VERSION "Configure the specific version of Boost gaussianfft wil be statically linked against")
@@ -47,6 +48,10 @@ add_compile_definitions(FLENS_FIRST_INDEX="0")
 add_compile_definitions(VECLIB)
 add_compile_definitions(ACCELERATE_NEW_LAPACK="1")
 add_compile_definitions(ACCELERATE_LAPACK_ILP64="1")
+
+if (APPLE)
+    set(CMAKE_SHARED_LIBRARY_SUFFIX ".so")
+endif ()
 
 add_library(
         gaussianfft_gaussianfft
@@ -95,6 +100,11 @@ if (NOT BUILD_SHARED_LIBS)
     target_compile_definitions(gaussianfft_gaussianfft PUBLIC GAUSSIANFFT_STATIC_DEFINE)
 endif ()
 
+if (APPLE)
+    # We need to explicitly link with libpython.dylib on macOS
+    target_link_libraries(gaussianfft_gaussianfft PRIVATE Python3::Module)
+endif ()
+
 set_target_properties(
         gaussianfft_gaussianfft PROPERTIES
         CXX_VISIBILITY_PRESET hidden
@@ -109,17 +119,33 @@ target_link_libraries(
         PRIVATE
         ${Boost_LIBRARIES}
 )
-target_link_libraries(gaussianfft_gaussianfft PRIVATE
-        -Wl,--start-group
-        mkl_intel_ilp64
-        mkl_gnu_thread
-        mkl_core
-        -Wl,--end-group
-        gomp
-        pthread
-        m
-        dl
-)
+if (${IS_AARCH64})
+    message(FATAL_ERROR "ARM based architectures are not yet supported")
+else ()
+    if (APPLE)
+        target_link_libraries(gaussianfft_gaussianfft PRIVATE
+                mkl_intel_ilp64
+                mkl_intel_thread
+                mkl_core
+                iomp5
+        )
+    else ()
+        # Presumably Linux x86
+        target_link_libraries(gaussianfft_gaussianfft PRIVATE
+                -Wl,--start-group
+                mkl_intel_ilp64
+                mkl_gnu_thread
+                mkl_core
+                -Wl,--end-group
+                gomp
+        )
+    endif ()
+    target_link_libraries(gaussianfft_gaussianfft PRIVATE
+            pthread
+            m
+            dl
+    )
+endif ()
 
 # ---- Install rules ----
 

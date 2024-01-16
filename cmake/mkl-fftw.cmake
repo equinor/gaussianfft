@@ -1,6 +1,10 @@
 # Configure Intel MKL & FFTW (for Apple M-series)
-if (APPLE AND ${CMAKE_HOST_SYSTEM_PROCESSOR} STREQUAL "arm64")
-    message(FATAL_ERROR "Apple Silicon is not yet supported")
+if (${IS_AARCH64})
+    if (APPLE)
+        message(FATAL_ERROR "Apple Silicon is not yet supported")
+    else ()
+        message(FATAL_ERROR "ARM based systems is not yet supported")
+    endif ()
 else ()
     # MKL
     if (EXISTS ${CMAKE_BINARY_DIR}/venv/lib/cmake/mkl/MKLConfig.cmake)
