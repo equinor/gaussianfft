@@ -3,69 +3,216 @@ name: Build, Test, and deploy
 on: [push]
 
 jobs:
+  prepare-boost:
+    runs-on: ubuntu-22.04
+    name: Download and prepare Boost
+    strategy:
+      matrix:
+        boost:
+          # Used by RMS 12.1 / Python 3.8 and later
+          - "1.74.0"
+          # newer versions of macOS (11+) / XCode (14+) have issues compiling Boost older than
+          - "1.76.0"
+          # Used by RMS 14.2 / Python 3.11 and later
+          - "1.81.0"
+
+    steps:
+      - uses: actions/checkout@v4
+        name: Checkout repository
+
+      - name: Restore cached Boost source
+        id: cache-boost
+        uses: actions/cache@v3
+        with:
+          path: sources/boost/${{ matrix.boost }}
+          key: boost-${{ matrix.boost }}-${{ hashFiles('bin/fetch-boost.sh') }}
+
+      - name: Download Boost, and extract relevant source code
+        if: steps.cache-boost.outputs.cache-hit != 'true'
+        run: |
+          ./bin/fetch-boost.sh ${{ matrix.boost }}
+          rm -rf sources/boost/boost_*
+          rm -rf sources/boost/*.tar.gz
+
+      - name: Store Boost source code
+        uses: actions/upload-artifact@v4
+        with:
+          name: boost-${{ matrix.boost }}
+          path: sources/boost/*
+          if-no-files-found: error
+
   build:
+    needs:
+      - prepare-boost
     runs-on: ${{ matrix.os }}
     name: Build & Test
     strategy:
       matrix:
         python:
-        - 3.6  # Included in RMS 11 - 12.0
         - 3.7
         - 3.8  # Included in RMS 12.1, and newer
         - 3.9
+        - "3.10"
+        - 3.11  # Included in RMS 14.2, and newer
+        - 3.12
         os:
         - ubuntu-20.04
         - macos-11
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         name: Checkout repository
+        with:
+          fetch-depth: 0
+          filter: tree:0
 
-      - uses: actions/setup-python@v2
+      - name: Download Boost versions
+        uses: actions/download-artifact@v4
+        with:
+          pattern: boost-*
+          path: sources/boost/
+          merge-multiple: true
+
+      - uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python }}
 
       - name: Build
         env:
-          NRLIB_LINKING: static
           PYTHON: python${{ matrix.python }}
           VERBOSE: "1"
         run: |
           if [[ $RUNNER_OS == "Linux" ]]; then
+            # Ensure shared directories have the correct permissions
+            mkdir -p dist wheelhouse
             docker-compose run build-linux
+          elif [[ $RUNNER_OS == "macOS" ]]; then
+              make build
           else
-            make build
+            # That is, windows
+            echo "No supported, yet" >/dev/stderr
+            exit 1
           fi
+        shell: bash
 
       - name: Test
         run: make tests
 
+      - name: Move results from auditwheel
+        # The reason for this, is because setuptools_scm and auditwheel
+        # causes an incompatibility between the updated wheels, which causes the installation during tests to fail
+        if: ${{ runner.os == 'Linux' }}
+        run: |
+          mv wheelhouse/*.whl dist/
+
       - name: Store wheels
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
-          name: wheels
-          path: wheelhouse/*.whl
+          name: wheel-${{ matrix.python }}-${{ matrix.os }}
+          path: dist/*.whl
+          if-no-files-found: error
+
+  source-distribution:
+    runs-on: ubuntu-20.04
+    name: Create source distribution (sdist)
+    needs:
+      - prepare-boost
+
+    steps:
+      - uses: actions/checkout@v4
+        name: Checkout repository
+        with:
+          fetch-depth: 0
+          filter: tree:0
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.7"  # Minimum supported version
+
+      - name: Download Boost versions
+        uses: actions/download-artifact@v4
+        with:
+          pattern: boost-*
+          path: sources/boost/
+          merge-multiple: true
+
+      - name: Download FFTW source
+        uses: actions/download-artifact@v4
+        with:
+          pattern: fftw-*
+          path: .
+          merge-multiple: true
+
+      - name: Create source distribution
+        run: |
+          ./bin/prepare-sdist.sh
+          make build-sdist
+
+      - name: Store source distribution
+        uses: actions/upload-artifact@v4
+        with:
+          name: sdist
+          path: dist/*.tar.gz
+          if-no-files-found: error
+
+  check-created-artifacts:
+    runs-on: ubuntu-20.04
+    name: Check that all the created artifacts have a consistent version
+    needs:
+      - build
+      - source-distribution
+    steps:
+      - uses: actions/checkout@v4
+        name: Checkout repository
+        with:
+          fetch-depth: 0
+          filter: tree:0
+
+      - name: Download compiled wheels
+        uses: actions/download-artifact@v4
+        with:
+          pattern: wheel-*
+          path: .
+          merge-multiple: true
+
+      - name: Download source distribution
+        uses: actions/download-artifact@v4
+        with:
+          name: sdist
+
+      - name: Gather wheels and source distribution
+        run: |
+          mkdir -p dist/
+          mv *.whl dist/
+          mv *.tar.gz dist/
+
+      - name: Ensure artifacts have consistent version
+        run: ./bin/ensure-consistent-version.sh
+
+      - name: Package all artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: distribution
+          path: dist/
           if-no-files-found: error
 
   publish:
     runs-on: ubuntu-20.04
     name: Publish wheels, and source to PyPi
-    if: startsWith(github.ref, 'refs/tags')
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
     needs:
-      - build
+      - check-created-artifacts
+    # Specifying a GitHub environment is optional, but strongly encouraged
+    environment: release
+    permissions:
+      # IMPORTANT: this permission is mandatory for trusted publishing
+      id-token: write
     steps:
-      - uses: actions/checkout@v2
-        name: Checkout repository
-
-      - name: Download compiled wheels
-        uses: actions/download-artifact@v2
+      - name: Download distribution
+        uses: actions/download-artifact@v4
         with:
-          name: wheels
-          path: wheelhouse/
+          name: distribution
+          path: dist/
 
-      - name: Publish to PyPi
-        env:
-          USE_TEST_PYPI: "no"
-          PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
-          PYPI_TEST_API_TOKEN: ${{ secrets.PYPI_TEST_API_TOKEN }}
-        run: make upload
+      - name: Publish package distributions to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1

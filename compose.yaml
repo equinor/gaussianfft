@@ -3,18 +3,40 @@ services:
     image: quay.io/pypa/manylinux2014_x86_64
     environment:
       PYTHON:
-      NRLIB_LINKING: "${NRLIB_LINKING-static}"
+      ENFORCE_CLEAN_GIT: "true"
     volumes:
       # Sharing the entire volume causes the created venv to be broken on the host
+
+      # We need to mount git related files to get the version while building (setuptools_scm)
+      - "./.git:/code/.git"
+      - "./.gitignore:/code/.gitignore"
+      # These files are not necessary for building gaussianfft, but without them
+      # git will see them as being deleted, causing `setuptools_scm` to see a dirty environment
+      - "./.github:/code/.github"
+      - "./SECURITY.md:/code/SECURITY.md"
+      - "./compose.yaml:/code/compose.yaml"
+      - "./doc:/code/doc"
+      - "./examples:/code/examples"
+      - "./notebooks:/code/notebooks"
+      - "./tests:/code/tests"
+
+      # These files are used for building the extension
+      - "./CMakeLists.txt:/code/CMakeLists.txt"
       - "./Makefile:/code/Makefile"
       - "./bin:/code/bin"
-      - "./src:/code/src"
+      - "./cmake:/code/cmake"
       - "./gaussianfft:/code/gaussianfft"
-      - "./setup.py:/code/setup.py"
+      - "./pyproject.toml:/code/pyproject.toml"
+      - "./sources:/code/sources"
+      - "./src:/code/src"
+      - "./utils.py:/code/utils.py"
 
-      - "./LOWEST_SUPPORTED_PYTHON_VERSION.txt:/code/LOWEST_SUPPORTED_PYTHON_VERSION.txt"
+      # These are included in the source distribution
       - "./LICENSE.txt:/code/LICENSE.txt"
       - "./README.md:/code/README.md"
+      - "./py.typed:/code/py.typed"
 
-      - "./wheelhouse:/code/wheelhouse"  # This is where the build artefacts are placed
+      # The build artifacts are stored in these locations
+      - "./dist:/code/dist"  # The result from python -m build
+      - "./wheelhouse:/code/wheelhouse"  # The result from python -m auditwheel
     entrypoint: ["make", "-C", "/code", "build"]

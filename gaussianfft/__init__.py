@@ -1,4 +1,8 @@
+from ._version import __version__
 from enum import Enum
+from importlib.util import find_spec
+if find_spec("numpy") is None:
+    raise ImportError("gaussianfft requires NumPy to be installed")
 
 try:
     # When using gaussianFFT in conjunction with Aspen RMS (former Emerson / Roxar)
@@ -33,4 +37,5 @@ def variogram(type, *args, **kwargs):
 __all__ = [
     'variogram', 'simulate', 'seed', 'advanced', 'simulation_size',
     'quote', 'Variogram', 'VariogramType', 'util', 'SizeTVector', 'DoubleVector',
+    '__version__',
 ]
