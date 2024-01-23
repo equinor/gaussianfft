@@ -21,8 +21,6 @@
 
 #include "fft.hpp"
 
-#include <cassert>
-
 template <>
 void NRLib::NRLibPrivate::ComputeFFT1D<double>(size_t n,
   double* in,
