@@ -28,7 +28,7 @@ endif ()
 
 
 if (NOT DEFINED SKBUILD)
-    message(WARNING "Not building with scikit-build")
+    message(STATUS "Not building with scikit-build; using a local virtual environment instead")
     include(cmake/python-venv.cmake)
 endif ()
 set(Python3_USE_STATIC_LIBS ON)
@@ -94,7 +94,7 @@ target_link_libraries(
         ${Boost_LIBRARIES}
 )
 if (${IS_AARCH64})
-    message(FATAL_ERROR "ARM based architectures are not yet supported")
+    message(WARNING "ARM based architectures are not yet supported")
 else ()
     if (APPLE)
         target_link_libraries(gaussianfft_gaussianfft PRIVATE
