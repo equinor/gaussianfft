@@ -2,7 +2,6 @@
 
 #include <boost/python/numpy.hpp>
 
-//#include <chrono>
 #include <iostream>
 
 #include "nrlib/iotools/stringtools.hpp"

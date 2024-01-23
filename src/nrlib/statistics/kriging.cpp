@@ -37,10 +37,6 @@
 #include <omp.h>
 #endif
 
-////for debug print
-//#include <nrlib/surface/regularsurface.hpp>
-//#include <nrlib/surface/surfaceio.hpp>
-
 #ifdef PARALLEL
 #include <omp.h>
 #endif

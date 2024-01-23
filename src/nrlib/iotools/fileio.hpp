@@ -22,7 +22,6 @@
 #ifndef NRLIB_FILEIO_HPP
 #define NRLIB_FILEIO_HPP
 
-// #include <algorithm>
 #include <cassert>
 #include <cstdio>
 #include <cstdlib>

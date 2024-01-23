@@ -23,7 +23,6 @@
 #include <ostream>
 #include <fstream>
 
-//#include "nrlib/iotools/logkit.hpp"
 #include "nrlib/iotools/fileio.hpp"
 
 #include "nodalkrigingdata2d.hpp"
