@@ -1,9 +1,9 @@
 # Configure Intel MKL & FFTW (for Apple M-series)
 if (${IS_AARCH64})
     if (APPLE)
-        message(FATAL_ERROR "Apple Silicon is not yet supported")
+        message(WARNING "Apple Silicon is not yet supported")
     else ()
-        message(FATAL_ERROR "ARM based systems is not yet supported")
+        message(WARNING "ARM based systems is not yet supported")
     endif ()
 else ()
     # MKL
