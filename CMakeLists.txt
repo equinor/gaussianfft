@@ -14,6 +14,12 @@ include(cmake/project-is-top-level.cmake)
 include(cmake/variables.cmake)
 include(cmake/utilities.cmake)
 
+option(FFTW_DEBUG "Flag to add methods for writing the FFT grid to file. Requires Boost" OFF)
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set(FFTW_DEBUG ON)
+    # TODO: Move this logic into CMakePresets.json
+endif ()
+
 # Which versions of dependencies to use
 option(BOOST_VERSION "Configure the specific version of Boost gaussianfft wil be statically linked against")
 if (NOT BOOST_VERSION)
@@ -32,6 +38,9 @@ include_directories(SYSTEM ${Python3_INCLUDE_DIRS})
 
 include(cmake/mkl-fftw.cmake)
 
+if (FFTW_DEBUG)
+    add_compile_definitions(FFTW_DEBUG)
+endif ()
 include(cmake/boost.cmake)
 
 # ---- Copy source files ----

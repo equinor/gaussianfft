@@ -3,8 +3,6 @@
 #include <nrlib/geometry/line.hpp>
 
 #include <boost/test/unit_test.hpp>
-//#include <math.h>
-//#include <algorithm>
 
 using namespace NRLib;
 

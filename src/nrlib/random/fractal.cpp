@@ -22,9 +22,6 @@
 
 #include "fractal.hpp"
 
-//#include "../iotools/stringtools.hpp"
-//#include "../math/mathutility.hpp"
-
 namespace NRLib {
 
 Fractal::Fractal(double min, double max, double dim)
