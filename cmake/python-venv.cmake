@@ -15,6 +15,7 @@ find_package(Python3 REQUIRED COMPONENTS Interpreter)
 if (NOT VENV_INITIALIZED)
     message(STATUS "Installing necessary dependencies in ${CMAKE_BINARY_DIR}/venv")
 
+    file(COPY_FILE ${CMAKE_SOURCE_DIR}/pyproject.toml ${CMAKE_BINARY_DIR}/pyproject.toml)
     # Ensure pip ins up do date
     execute_process(
             COMMAND ${Python3_EXECUTABLE} -m pip install --upgrade pip
@@ -52,7 +53,6 @@ except ImportError:
             COMMAND_ERROR_IS_FATAL ANY
     )
     execute_process(
-            COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/pyproject.toml pyproject.toml
             COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/bin/install-build-requirements.py
             COMMAND_ERROR_IS_FATAL ANY
     )
