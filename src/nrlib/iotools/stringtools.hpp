@@ -22,7 +22,7 @@
 #ifndef NRLIB_STRINGTOOLS_HPP
 #define NRLIB_STRINGTOOLS_HPP
 
-#include <stdlib.h> // For atoi and atof
+#include <cstdlib> // For atoi and atof
 
 #include <string>
 #include <iomanip>
