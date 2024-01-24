@@ -16,15 +16,15 @@ def collect_sources(
 
     src = Path(source_dir)
     root = Path('.').absolute()
-    _files_to_be_inspected = set(Path(file) for file in from_source_files)
-    files_to_be_inspected = set()
+    _files_to_be_inspected = [Path(file) for file in from_source_files]
+    files_to_be_inspected = []
     for file in _files_to_be_inspected:  # type: Path
         if file.is_dir():
             for child in file.glob('*'):
                 if child.is_file():
-                    files_to_be_inspected.add(child)
+                    files_to_be_inspected.append(child)
         else:
-            files_to_be_inspected.add(file)
+            files_to_be_inspected.append(file)
 
     header_regex = re.compile(r'\.h(pp)?$')
     source_regex = re.compile(r'\.c(pp)?$')
@@ -37,9 +37,9 @@ def collect_sources(
             def _add_file(repl: str, file_regex):
                 target_file = file.parent / file_regex.sub(repl, file.name)
                 if target_file.exists():
-                    files_to_be_inspected.add(target_file)
+                    files_to_be_inspected.append(target_file)
 
-            files_to_be_inspected.add(file)
+            files_to_be_inspected.append(file)
             # TODO: Deal with dSFT.cpp has a .h file
             if file.suffix in ['.hpp', '.h']:
                 _add_file(r'.c\1', header_regex)
