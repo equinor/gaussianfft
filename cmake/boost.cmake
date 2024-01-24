@@ -1,3 +1,10 @@
+if (NOT DEFINED BOOST_VERSION)
+    message(FATAL_ERROR "Boost was requested, but no version was set. Use -DBOOST_VERSION")
+endif ()
+if (NOT ${BOOST_VERSION} MATCHES "^[0-9]\.[0-9]+\.[0-9]$")
+    message(FATAL_ERROR "BOOST_VERSION does not match a sematic version;\n got '${BOOST_VERSION}', expect \\d.\\d.\\d")
+endif ()
+
 message(STATUS "Using version ${BOOST_VERSION} of Boost")
 
 if (DEFINED ${SKBUILD_STATE} AND ${SKBUILD_STATE} STREQUAL "sdist" AND NOT EXISTS ${CMAKE_SOURCE_DIR}/sources/boost/${BOOST_VERSION})
@@ -12,7 +19,7 @@ set(ENV{PYTHON} ${Python3_EXECUTABLE})
 file(COPY_FILE ${CMAKE_SOURCE_DIR}/bin/compile-boost.sh ${CMAKE_BINARY_DIR}/bin/compile-boost.sh ONLY_IF_DIFFERENT)
 file(COPY_FILE ${CMAKE_SOURCE_DIR}/bin/fetch-boost.sh ${CMAKE_BINARY_DIR}/bin/fetch-boost.sh ONLY_IF_DIFFERENT)
 file(COPY_FILE ${CMAKE_SOURCE_DIR}/utils.py ${CMAKE_BINARY_DIR}/utils.py ONLY_IF_DIFFERENT)
-if (NOT EXISTS ${CMAKE_BINARY_DIR}/sources/boost/${BOOST_VERSION})
+if (NOT EXISTS ${CMAKE_BINARY_DIR}/sources/boost/${BOOST_VERSION} AND EXISTS ${CMAKE_SOURCE_DIR}/sources/boost/${BOOST_VERSION})
     message(STATUS "Copying Boost source to build directory")
     file(
             COPY ${CMAKE_SOURCE_DIR}/sources/boost/${BOOST_VERSION}
