@@ -1,3 +1,10 @@
+if (NOT DEFINED BOOST_VERSION)
+    message(FATAL_ERROR "Boost was requested, but no version was set. Use -DBOOST_VERSION")
+endif ()
+if (NOT ${BOOST_VERSION} MATCHES "^[0-9]\.[0-9]+\.[0-9]$")
+    message(FATAL_ERROR "BOOST_VERSION does not match a sematic version;\n got '${BOOST_VERSION}', expect \\d.\\d.\\d")
+endif ()
+
 message(STATUS "Using version ${BOOST_VERSION} of Boost")
 
 if (DEFINED ${SKBUILD_STATE} AND ${SKBUILD_STATE} STREQUAL "sdist" AND NOT EXISTS ${CMAKE_SOURCE_DIR}/sources/boost/${BOOST_VERSION})
