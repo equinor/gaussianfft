@@ -38,15 +38,13 @@ include_directories(SYSTEM ${Python3_INCLUDE_DIRS})
 
 include(cmake/mkl-fftw.cmake)
 
+# ---- Copy source files ----
+file(COPY ${CMAKE_SOURCE_DIR}/src DESTINATION ${CMAKE_BINARY_DIR}/)
+
 if (FFTW_DEBUG)
     add_compile_definitions(FFTW_DEBUG)
 endif ()
 include(cmake/boost.cmake)
-
-# ---- Copy source files ----
-if (NOT EXISTS ${CMAKE_BINARY_DIR}/src)
-    file(COPY ${CMAKE_SOURCE_DIR}/src DESTINATION ${CMAKE_BINARY_DIR}/)
-endif ()
 
 # ---- Declare library ----
 set(CMAKE_SHARED_LIBRARY_PREFIX "")
