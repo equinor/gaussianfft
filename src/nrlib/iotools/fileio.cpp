@@ -24,7 +24,7 @@
 #include "../exception/exception.hpp"
 #include "stringtools.hpp"
 
-#include <boost/filesystem.hpp>
+#include "boost-filesystem.hpp"
 
 #include <fstream>
 #include <iostream>
@@ -42,6 +42,7 @@ const std::string format_desc[5] = {"storm_petro_binary",
                                     "NORSAR"};
 
 
+#ifdef HAS_BOOST_FILESYSTEM
 void NRLib::OpenRead(std::ifstream&          stream,
                      const std::string&      filename,
                      std::ios_base::openmode mode)
@@ -201,6 +202,7 @@ void NRLib::CreateDirIfNotExists(const std::string & filename)
       create_directories(dir);
   }
 }
+#endif
 
 std::istream& NRLib::ReadNextToken(std::istream & stream,
                                    std::string  & s,
@@ -324,6 +326,7 @@ bool NRLib::CheckEndOfFile(std::istream& stream)
 }
 
 
+#ifdef HAS_BOOST_FILESYSTEM
 unsigned long long
 NRLib::FindFileSize(const std::string& filename)
 {
@@ -334,6 +337,7 @@ NRLib::FindFileSize(const std::string& filename)
   return static_cast<unsigned long long>(boost::filesystem::file_size(filename));
 }
 
+#endif
 
 int NRLib::FindGridFileType(const std::string& filename )
 {
