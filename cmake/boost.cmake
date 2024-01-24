@@ -12,7 +12,7 @@ set(ENV{PYTHON} ${Python3_EXECUTABLE})
 file(COPY_FILE ${CMAKE_SOURCE_DIR}/bin/compile-boost.sh ${CMAKE_BINARY_DIR}/bin/compile-boost.sh ONLY_IF_DIFFERENT)
 file(COPY_FILE ${CMAKE_SOURCE_DIR}/bin/fetch-boost.sh ${CMAKE_BINARY_DIR}/bin/fetch-boost.sh ONLY_IF_DIFFERENT)
 file(COPY_FILE ${CMAKE_SOURCE_DIR}/utils.py ${CMAKE_BINARY_DIR}/utils.py ONLY_IF_DIFFERENT)
-if (NOT EXISTS ${CMAKE_BINARY_DIR}/sources/boost/${BOOST_VERSION})
+if (NOT EXISTS ${CMAKE_BINARY_DIR}/sources/boost/${BOOST_VERSION} AND EXISTS ${CMAKE_SOURCE_DIR}/sources/boost/${BOOST_VERSION})
     message(STATUS "Copying Boost source to build directory")
     file(
             COPY ${CMAKE_SOURCE_DIR}/sources/boost/${BOOST_VERSION}
