@@ -92,8 +92,10 @@ If you want to run with a predefined start seed, call `grf.seed(seed_value)` bef
 ## Building
 We use [`scikit-build-core`](https://scikit-build-core.readthedocs.io/en/latest/index.html) as the build tool, in order to use [`pyproject.toml`](https://pip.pypa.io/en/stable/reference/build-system/pyproject-toml/) to facilitate easier building while using [`cmake`](https://cmake.org) to build the C++ extension.
 
-We also use [Boost.Python](https://www.boost.org/doc/libs/1_81_0/libs/python/doc/html/index.html) (version 1.74.0 for Python <=3.9, 1.76.0 for Python <= 3.10, and 1.81.0 for newer versions).
-While compiling Boost, a python interpreter needs to be set.
+We use [`pybind11`](https://pybind11.readthedocs.io/en/stable/) to create a Python module from the C++ source code.
+When building with `-DCMAKE_BUILD_TARGET=Debug` (the default), [Boost::filesystem](https://www.boost.org/doc/libs/1_81_0/libs/filesystem/doc/index.htm).
+By default, [Boost 1.81.0](https://www.boost.org/doc/libs/1_81_0/) will be used.
+This can be overwritten by setting `-DBOOST_VERSION`.
 You may want to create a virtual environment before building `gaussianfft`.
 
 ```bash
@@ -118,7 +120,7 @@ There is no caching of build artifacts in this case.
 If you need to build, and iterate on the extension module, you may want to execute
 
 ```bash
-cmake -S . -B build -DPython3_EXECUTABLE=$(which python)
+cmake -S . -B build
 cmake --build build
 ```
 

@@ -12,12 +12,6 @@ fi
 
 readonly BOOST_DIR="$ROOT_DIR/sources/boost"
 
-readonly PYTHON="${PYTHON:-$(which python)}"
-if [[ ! "$("$PYTHON" -c 'import numpy as np; print(np.get_include())' 2>/dev/null)" ]]; then
-  echo "NumPy is not installed" >/dev/stderr
-  exit 1
-fi
-
 readonly SOURCE_ROOT="$BOOST_DIR/$BOOST_VERSION"
 
 # Fetch files if necessary (this should probably not happen if we're building from a source distribution)
@@ -37,8 +31,7 @@ if [[ ! -f b2 ]]; then
   fi
 ./bootstrap.sh \
     --prefix="$ROOT_DIR" \
-    --with-python="$PYTHON" \
-    --with-libraries=filesystem,python,system \
+    --with-libraries=filesystem \
     --with-icu || {
       cat bootstrap.log >/dev/stderr ;
       exit 1 ;
@@ -46,15 +39,11 @@ if [[ ! -f b2 ]]; then
 fi
 
 # Compile necessary modules
-CPLUS_INCLUDE_PATH=$($PYTHON -c "from sysconfig import get_paths; print(get_paths()['include'])") \
 ./b2 \
-    --with-python \
     --with-filesystem \
-    --with-system \
     -q \
     cxxflags=-fPIC \
     cflags=-fPIC \
-    python-debugging=off \
     threading=multi \
     variant=release \
     link=static \

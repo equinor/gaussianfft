@@ -27,7 +27,7 @@
 #include <string>
 #include <sstream>
 
-#include <boost/filesystem.hpp>
+#include "boost-filesystem.hpp"
 
 using namespace NRLib;
 
@@ -38,6 +38,7 @@ std::string NRLib::ParseType<std::string>(const std::string& s)
 }
 
 
+#ifdef HAS_BOOST_FILESYSTEM
 std::string
 NRLib::GetPath(const std::string& filename)
 {
@@ -82,18 +83,19 @@ NRLib::ReplaceExtension(const std::string& filename,
 }
 
 std::string
+NRLib::GetStem(const std::string& filename)
+{
+  boost::filesystem::path path(filename);
+  return path.stem().string();
+}
+#endif
+
+std::string
 NRLib::AddExtension(const std::string& filename,
                     const std::string& extension)
 {
   std::string new_filename = filename + "." + extension;
   return new_filename;
-}
-
-std::string
-NRLib::GetStem(const std::string& filename)
-{
-  boost::filesystem::path path(filename);
-  return path.stem().string();
 }
 
 

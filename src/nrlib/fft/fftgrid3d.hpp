@@ -29,6 +29,9 @@
 #include <fftw3.h>
 
 
+// TODO: Consider removing FFTW_DEBUG
+// that way, we can simplify _a lot_ of logic
+
 // #define  FFTW_DEBUG
 #ifdef FFTW_DEBUG
 #include <string>
@@ -403,7 +406,7 @@ void FFTGrid3D<T>::WriteRealToFile(const std::string& filename)
 template <typename T>
 void FFTGrid3D<T>::WriteComplexToFile(const std::string& filename)
 {
-  ofstream outreal;
+  std::ofstream outreal;
   NRLib::OpenWrite(outreal, "real_"+filename);
 
   for (size_t k = 0; k < nk_tot_; ++k) {
@@ -415,7 +418,7 @@ void FFTGrid3D<T>::WriteComplexToFile(const std::string& filename)
     outreal << "\n";
   }
 
-  ofstream outimag;
+  std::ofstream outimag;
   NRLib::OpenWrite(outimag, "imag_"+filename);
 
   for (size_t k = 0; k < GetComplexNK(); ++k) {

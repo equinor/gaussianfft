@@ -1,15 +1,12 @@
-#include <boost/python.hpp>
-#include <boost/python/suite/indexing/vector_indexing_suite.hpp>
-
-// May want to reintroduce this later:
-#include <boost/python/numpy.hpp>
+#include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
 
 #include "gaussfft.hpp"
 
 #include "nrlib/variogram/variogram.hpp"
 #include "nrlib/random/random.hpp"
 
-namespace bp = boost::python;
+namespace py = pybind11;
 
 /**********************************************/
 /* Docstrings                                 */
@@ -167,17 +164,9 @@ const std::string advanced_simulate_docstring =
 /**********************************************/
 /**********************************************/
 
-BOOST_PYTHON_MODULE(_gaussianfft)
+PYBIND11_MODULE(_gaussianfft, m)
 {
-  bp::numpy::initialize();
-
-  bp::class_<std::vector<double> >("DoubleVector")
-    .def(bp::vector_indexing_suite< std::vector<double> >())
-  ;
-  bp::class_<std::vector<size_t> >("SizeTVector")
-    .def(bp::vector_indexing_suite< std::vector<size_t> >())
-    ;
-  bp::def("quote",&GaussFFT::Quote);
+  m.def("quote",&GaussFFT::Quote);
 
   //
   // Variogram class
@@ -186,7 +175,7 @@ BOOST_PYTHON_MODULE(_gaussianfft)
     double(NRLib::Variogram::*ptr1)(double)                 const = &NRLib::Variogram::GetCorr;
     double(NRLib::Variogram::*ptr2)(double, double)         const = &NRLib::Variogram::GetCorr;
     double(NRLib::Variogram::*ptr3)(double, double, double) const = &NRLib::Variogram::GetCorr;
-    bp::class_<NRLib::Variogram, boost::noncopyable>("Variogram", bp::no_init)
+    py::class_<NRLib::Variogram>(m, "Variogram")
       .def("corr", ptr1)
       .def("corr", ptr2)
       .def("corr", ptr3)
@@ -198,85 +187,72 @@ BOOST_PYTHON_MODULE(_gaussianfft)
   //
   {
     void(*ptr)(unsigned long) = &NRLib::Random::Initialize;
-    bp::def("seed", ptr,                          set_seed_docstring.c_str());
-    bp::def("seed", &NRLib::Random::GetStartSeed, get_seed_docstring.c_str());
+    m.def("seed", ptr,                          set_seed_docstring.c_str());
+    m.def("seed", &NRLib::Random::GetStartSeed, get_seed_docstring.c_str());
   }
 
   //
   // Padding
   //
-  bp::def("simulation_size", &GaussFFT::FindGridSizeAfterPadding,
-    (
-      bp::arg("variogram"),
-      bp::arg("nx"),
-      bp::arg("dx"),
-      bp::arg("ny") = 1U,
-      bp::arg("dy") = -1.0,
-      bp::arg("nz") = 1U,
-      bp::arg("dz") = -1.0
-    ),
+  m.def("simulation_size", &GaussFFT::FindGridSizeAfterPadding,
+      py::arg("variogram"),
+      py::arg("nx"),
+      py::arg("dx"),
+      py::arg("ny") = 1U,
+      py::arg("dy") = -1.0,
+      py::arg("nz") = 1U,
+      py::arg("dz") = -1.0,
     padding_docstring.c_str()
   );
 
   //
   // Variogram factory function
   //
-  bp::def("variogram", &GaussFFT::CreateVariogram,
-    (
-      bp::arg("type"),
-      bp::arg("main_range"),
-      bp::arg("perp_range")=-1.0,
-      bp::arg("depth_range")=-1.0,
-      bp::arg("azimuth")=0.0,
-      bp::arg("dip")=0.0,
-      // bp::arg("sd")=1.0,
-      bp::arg("power")=1.5
-    ),
-    bp::return_value_policy<bp::manage_new_object>(),
+  m.def("variogram", &GaussFFT::CreateVariogram,
+      py::arg("type"),
+      py::arg("main_range"),
+      py::arg("perp_range")=-1.0,
+      py::arg("depth_range")=-1.0,
+      py::arg("azimuth")=0.0,
+      py::arg("dip")=0.0,
+      // py::arg("sd")=1.0,
+      py::arg("power")=1.5,
+    py::return_value_policy::take_ownership,
     variogram_docstring.c_str()
   );
-  //
+
   // Simulate core function
   //
-  bp::def("simulate", &GaussFFT::Simulate,
-    (
-      bp::arg("variogram"),
-      bp::arg("nx"),
-      bp::arg("dx"),
-      bp::arg("ny")=1U,
-      bp::arg("dy")=-1.0,
-      bp::arg("nz")=1U,
-      bp::arg("dz")=-1.0
-    ),
+  m.def("simulate", &GaussFFT::Simulate,
+      py::arg("variogram"),
+      py::arg("nx"),
+      py::arg("dx"),
+      py::arg("ny")=1U,
+      py::arg("dy")=-1.0,
+      py::arg("nz")=1U,
+      py::arg("dz")=-1.0,
     simulate_docstring.c_str()
   );
 
   /******************* Advanced *******************/
-  // Boilerplate module stuff (http://isolation-nation.blogspot.no/2008/09/packages-in-python-extension-modules.html)
-  bp::object the_module(
-    bp::handle<>(bp::borrowed(PyImport_AddModule("gaussianfft.advanced")))
-  );
-  bp::scope().attr("advanced") = the_module;
-  bp::scope the_scope = the_module;
+  auto advanced = m.def_submodule("advanced");
   //
   // Simulate core function
   //
-  bp::def("simulate", &GaussFFT::SimulateWithAdvancedSettings,
-    (
-      bp::arg("variogram"),
-      bp::arg("nx"),
-      bp::arg("dx"),
-      bp::arg("ny") = 1U,
-      bp::arg("dy") = -1.0,
-      bp::arg("nz") = 1U,
-      bp::arg("dz") = -1.0,
-      bp::arg("padx") = -1,
-      bp::arg("pady") = -1,
-      bp::arg("padz") = -1,
-      bp::arg("sx") = 1.0,
-      bp::arg("sy") = 1.0,
-      bp::arg("sz") = 1.0
-    ),
+  advanced.def("simulate", &GaussFFT::SimulateWithAdvancedSettings,
+      py::arg("variogram"),
+      py::arg("nx"),
+      py::arg("dx"),
+      py::arg("ny") = 1U,
+      py::arg("dy") = -1.0,
+      py::arg("nz") = 1U,
+      py::arg("dz") = -1.0,
+      py::arg("padx") = -1,
+      py::arg("pady") = -1,
+      py::arg("padz") = -1,
+      py::arg("sx") = 1.0,
+      py::arg("sy") = 1.0,
+      py::arg("sz") = 1.0,
     advanced_simulate_docstring.c_str()
   );
 }

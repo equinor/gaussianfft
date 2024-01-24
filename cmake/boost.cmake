@@ -56,6 +56,10 @@ include_directories(SYSTEM ${Boost_DIR})
 find_package(Boost
         ${BOOST_VERSION} EXACT
         REQUIRED
-        COMPONENTS python numpy filesystem system
+        COMPONENTS filesystem
         PATHS ${Boost_LIBRARY_DIR}/cmake
 )
+# Helper-macro to toggle whether boost is intentionally requested.
+# When building on GitHub Action runners, boost is available and added to the system path
+# It is used by boost-filesystem.hpp
+add_compile_definitions(USE_BOOST)

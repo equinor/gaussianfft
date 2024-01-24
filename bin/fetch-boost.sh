@@ -137,36 +137,10 @@ extract_files libs/config/checks/architecture
 extract_files libs/config/checks/std
 extract_files libs/config/checks/Jamfile.v2
 extract_files libs/config/checks/config.jam
+extract_files libs/config/test
 extract_files libs/headers/build
 # Only required in newer versions
 extract_files_depending_on libs/config/checks/test_case.cpp
-
-## Python
-extract_files libs/python/build
-extract_files libs/python/meta
-extract_files "libs/python/src/"
-extract_files_depending_on "libs/python/src/"
-extract_files libs/python/fabscript
-# Dependencies not caught in extract_files_depending_on
-
-#extract_files "boost/preprocessor"
-extract_files_depending_on "boost/preprocessor.hpp"
-
-# (related to regex / strange include)
-# from libs/python/src/object/inheritance.cpp:7
-extract_files_depending_on "boost/graph/detail/empty_header.hpp"
-extract_files_depending_on "boost/graph/breadth_first_search.hpp"
-extract_files_depending_on "boost/function/detail/function_iterate.hpp"
-# from libs/python/src/object/inheritance.cpp:11
-extract_files_depending_on "boost/graph/adjacency_list.hpp"
-# from libs/python/src/object/inheritance.cpp:12
-extract_files_depending_on "boost/graph/reverse_graph.hpp"
-# from libs/python/src/object/inheritance.cpp:17
-extract_files_depending_on "boost/tuple/tuple_comparison.hpp"
-# from ./boost/math/policies/policy.hpp:9 (in boost 1.74.0)
-extract_files_depending_on "boost/mpl/list/list20.hpp"
-extract_files_depending_on "boost/mpl/list/aux_/preprocessed/plain/list10.hpp"
-extract_files_depending_on "boost/mpl/list/aux_/preprocessed/plain/list20.hpp"
 
 ## Filesystem
 extract_files libs/filesystem/build
@@ -181,28 +155,11 @@ extract_files libs/atomic/config
 extract_files libs/atomic/meta
 extract_files_depending_on "libs/atomic/src/"
 
-extract_files_depending_on "libs/atomic/src/lock_pool.cpp"
-
 extract_files_depending_on "boost/align/aligned_alloc.hpp"
 # Related to static linking
 extract_files_depending_on "boost/preprocessor/iteration/detail/iter/forward1.hpp"
 extract_files_depending_on "boost/type_traits/alignment_of.hpp"
 extract_files boost/preprocessor
-
-## System
-extract_files libs/system/build
-extract_files libs/system/meta
-extract_files_depending_on "libs/system/src/"
-extract_files_depending_on "libs/filesystem/src/operations.cpp"
-
-
-# Source files and headers
-## Python
-extract_files "boost/python"
-extract_files_depending_on "boost/python.hpp"
-# Additional files not caught above
-extract_files_depending_on "boost/python/detail/decorated_type_id.hpp"
-
 
 ## Filesystem
 extract_files_depending_on "boost/filesystem.hpp"
@@ -210,19 +167,8 @@ extract_files_depending_on "boost/filesystem/config.hpp"
 ## Somewhat dynamic dependencies (through macro)
 extract_files "boost/atomic/detail"
 
-## System
-extract_files_depending_on "boost/system.hpp" "missing_ok"
-
 ### Somewhat dynamic dependency (it is reached through a macro, which we are unable to parse)
 extract_files "boost/mpl/aux_/preprocessed"
-
-
-## Used for static linking
-# TODO: We may want to include ARM / macOS M
-extract_files_depending_on "boost/predef/architecture/x86.h"
-extract_files_depending_on "boost/predef/hardware/simd/x86.h"
-
-extract_files boost/mpl/vector/aux_/preprocessed/typeof_based
 
 # Fetch all boost files that are used by gaussianfft
 extract_boost_files_used_by_us "$ROOT_DIR/src/gaussfftinterface.cpp"

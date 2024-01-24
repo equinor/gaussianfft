@@ -3,14 +3,10 @@
 #include <string>
 #include "nrlib/grid/grid.hpp"
 #include "nrlib/variogram/variogram.hpp"
+#include <pybind11/pybind11.h>
+#include <pybind11/numpy.h>
 
-namespace boost {
-namespace python {
-namespace numpy {
-class ndarray;
-}
-}
-}
+namespace py = pybind11;
 
 namespace GaussFFT {
 
@@ -33,7 +29,7 @@ CreateVariogram(const std::string & type,
                 double      dip_angle,
                 double      power);
 
-boost::python::numpy::ndarray Simulate(NRLib::Variogram * variogram,
+py::array_t<double>Simulate(NRLib::Variogram * variogram,
                                        size_t             nx,
                                        double             dx,
                                        size_t             ny,
@@ -41,7 +37,7 @@ boost::python::numpy::ndarray Simulate(NRLib::Variogram * variogram,
                                        size_t             nz,
                                        double             dz);
 
-boost::python::numpy::ndarray SimulateWithAdvancedSettings(NRLib::Variogram * variogram,
+py::array_t<double> SimulateWithAdvancedSettings(NRLib::Variogram * variogram,
                                                            size_t             nx,
                                                            double             dx,
                                                            size_t             ny,
