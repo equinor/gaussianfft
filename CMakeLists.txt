@@ -15,14 +15,13 @@ include(cmake/variables.cmake)
 include(cmake/utilities.cmake)
 
 option(FFTW_DEBUG "Flag to add methods for writing the FFT grid to file. Requires Boost" OFF)
-if (FFTW_DEBUG)
-    option(BOOST_VERSION "Configure the specific version of Boost gaussianfft wil be statically linked against" "1.81.0")
-endif ()
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(FFTW_DEBUG ON)
     # TODO: Move this logic into CMakePresets.json
 endif ()
-
+if (FFTW_DEBUG)
+    set(BOOST_VERSION "1.81.0" CACHE STRING "Configure the specific version of Boost gaussianfft wil be statically linked against")
+endif ()
 
 if (NOT DEFINED SKBUILD)
     message(STATUS "Not building with scikit-build; using a local virtual environment instead")
