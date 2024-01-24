@@ -61,7 +61,8 @@ if (APPLE)
     set(CMAKE_SHARED_LIBRARY_SUFFIX ".so")
 endif ()
 
-dependants(SOURCE_FILES_LIST src/gaussfftinterface.cpp)
+message(STATUS "Finding used source files")
+dependants(SOURCE_FILES_LIST --use-preprocessor src/gaussfftinterface.cpp)
 
 add_library(
         gaussianfft_gaussianfft

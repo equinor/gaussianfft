@@ -15,9 +15,13 @@ file(
 )
 function(dependants output_variables)
     set(ENV{PYTHONPATH} ${CMAKE_BINARY_DIR})
+    set(ENV{CXX} ${CMAKE_CXX_COMPILER})
+    set(ENV{CXXFLAGS} ${CMAKE_CXX_FLAGS})
+    get_property(include_directories DIRECTORY ${CMAKE_SOURCE_DIR} PROPERTY INCLUDE_DIRECTORIES)
+    list(APPEND include_directories ${CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES} ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
     execute_process(
             COMMAND_ERROR_IS_FATAL ANY
-            COMMAND ${Python3_EXECUTABLE} ${CMAKE_BINARY_DIR}/bin/find_dependants.py ${ARGN}
+            COMMAND ${Python3_EXECUTABLE} ${CMAKE_BINARY_DIR}/bin/find_dependants.py --include-directories "${include_directories}" ${ARGN}
             OUTPUT_VARIABLE _FILES
     )
     separate_arguments(_FILES_LIST UNIX_COMMAND PROGRAM SEPARATE_ARGS ${_FILES})
