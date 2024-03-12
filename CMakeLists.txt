@@ -101,6 +101,7 @@ target_link_libraries(
 if (${IS_AARCH64})
     if (USE_ARM_PERFORMANCE_LIBRARY)
         target_link_libraries(gaussianfft_gaussianfft PRIVATE
+                # TODO: Make work with OpenMP / parallel
                 armpl_lp64.a
                 FortranDecimal
                 FortranRuntime

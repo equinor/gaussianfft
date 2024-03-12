@@ -69,3 +69,7 @@ rm -rf \
   "$ARMPL_SOURCES/armpl_env_vars.sh" \
   "$ARMPL_SOURCES/CHANGELOG" \
   "$ARMPL_SOURCES/README"
+# We don't use the shared libraries
+rm -f \
+  "$ARMPL_SOURCES"/lib/*.dylib* \
+  "$ARMPL_SOURCES"/lib/*.so*
