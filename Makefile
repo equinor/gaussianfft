@@ -35,7 +35,7 @@ endif
 
 tests: venv
 	$(PIP_INSTALL) pip
-	$(PIP_INSTALL) dist/*.whl
+	$(PIP_INSTALL) --force-reinstall dist/*.whl
 	$(PIP_INSTALL) pytest scipy
 	$(PY.TEST) $(CODE_DIR)/tests
 

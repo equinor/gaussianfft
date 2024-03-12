@@ -19,8 +19,14 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(FFTW_DEBUG ON)
     # TODO: Move this logic into CMakePresets.json
 endif ()
+set(FFTW_DEBUG OFF)
 if (FFTW_DEBUG)
     set(BOOST_VERSION "1.81.0" CACHE STRING "Configure the specific version of Boost gaussianfft wil be statically linked against")
+endif ()
+
+option(USE_ARM_PERFORMANCE_LIBRARY "Use ARM Performance Library's FFT functionality on ARM-based builds" ON)
+if (${USE_ARM_PERFORMANCE_LIBRARY})
+    set(ARMPL_VERSION "23.10" CACHE STRING "Which version of ARM Performance Libraries to Use")
 endif ()
 
 if (NOT DEFINED SKBUILD)
@@ -33,7 +39,7 @@ find_package(pybind11 CONFIG REQUIRED PATHS ${Python3_SITELIB}/pybind11)
 include_directories(SYSTEM ${Python3_INCLUDE_DIRS})
 
 
-include(cmake/mkl-fftw.cmake)
+include(cmake/fftw.cmake)
 
 # ---- Copy source files ----
 file(COPY ${CMAKE_SOURCE_DIR}/src DESTINATION ${CMAKE_BINARY_DIR}/)
@@ -93,7 +99,18 @@ target_link_libraries(
         ${Boost_LIBRARIES}
 )
 if (${IS_AARCH64})
-    message(WARNING "ARM based architectures are not yet supported")
+    if (USE_ARM_PERFORMANCE_LIBRARY)
+        target_link_libraries(gaussianfft_gaussianfft PRIVATE
+                # TODO: Make work with OpenMP / parallel
+                armpl_lp64.a
+                FortranDecimal
+                FortranRuntime
+                m
+                c++
+        )
+    else ()
+        message(WARNING "ARM based architectures are not yet supported")
+    endif ()
 else ()
     if (APPLE)
         target_link_libraries(gaussianfft_gaussianfft PRIVATE

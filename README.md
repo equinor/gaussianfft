@@ -109,6 +109,10 @@ Contributions for making it compile reliably on Windows are welcome.
 The rest of this section assumes you are working on a UNIX-like system.
 It has been tested on macOS (Intel/Apple Silicon) and Linux (x86).
 
+If you are compiling `gaussianfft` for ARM / Aarch / Apple Silicon, ARM performance library must be installed.
+Please follow [ARM's Install Guide](https://learn.arm.com/install-guides/armpl/) for instructions on how to install them.
+The libraries are available for download [here](https://developer.arm.com/downloads/-/arm-performance-libraries).
+
 To build the distribution wheel(s), run
 ```bash
 export PYTHON=<which python to use>  # Only useful when not running in a virtual environment 
