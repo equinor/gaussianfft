@@ -3,7 +3,41 @@ name: Build, Test, and deploy
 on: [push]
 
 jobs:
+  prepare-arm-performance-libraries:
+    runs-on: ${{ matrix.os }}
+    name: Download and prepare ARM Performance Libraries
+    strategy:
+      matrix:
+        armpl:
+          - "23.10"
+        os:
+          - macos-14
+    steps:
+      - uses: actions/checkout@v4
+        name: Checkout repository
+
+      - name: Restore cached ARM sources and libraries
+        id: cache-armpl
+        uses: actions/cache@v3
+        with:
+          path: sources/arm-performance-libraries/${{ matrix.armpl }}/${{ runner.os }}
+          key: armpl-${{ matrix.armpl }}-${{ matrix.os }}-${{ hashFiles('bin/fetch-ArmPL.sh') }}
+
+      - name: Download ARM Performance Libraries and extract relevant headers and libraries
+        if: steps.cache-armpl.outputs.cache-hit != 'true'
+        run: |
+          ./bin/fetch-ArmPL.sh ${{ matrix.armpl }}
+
+      - name: Store headers and libraries
+        uses: actions/upload-artifact@v4
+        with:
+          name: armpl-${{ matrix.armpl }}-${{ matrix.os }}
+          path: sources/arm-performance-libraries/*
+          if-no-files-found: error
+
   build:
+    needs:
+      - prepare-arm-performance-libraries
     runs-on: ${{ matrix.os }}
     name: Build & Test
     strategy:
@@ -17,7 +51,18 @@ jobs:
         - 3.12
         os:
         - ubuntu-20.04
+        # Intel based
         - macos-11
+        # ARM based
+        - macos-14
+        exclude:
+          # Python 3.7-3.9 are not available on ARM64
+          - os: macos-14
+            python: 3.7
+          - os: macos-14
+            python: 3.8
+          - os: macos-14
+            python: 3.9
 
     steps:
       - uses: actions/checkout@v4
@@ -25,6 +70,14 @@ jobs:
         with:
           fetch-depth: 0
           filter: tree:0
+
+      - name: Download ARM Performance Libraries
+        uses: actions/download-artifact@v4
+        if: ${{ matrix.os == 'macos-14' }}
+        with:
+          pattern: armpl-*
+          path: sources/arm-performance-libraries
+          merge-multiple: true
 
       - uses: actions/setup-python@v4
         with:
