@@ -136,7 +136,6 @@ def collect_sources(
                         add_if_necessary(src / item)
                     else:
                         pass
-                        # logging.info(file, item)
                 previous_line = line
         except UnicodeDecodeError:
             logging.info(f"'{name}' could not be opened / decoded as a text file. It's been ignored")

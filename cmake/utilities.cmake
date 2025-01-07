@@ -20,8 +20,6 @@ function(dependants output_variables)
     get_property(include_directories DIRECTORY ${CMAKE_SOURCE_DIR} PROPERTY INCLUDE_DIRECTORIES)
     list(APPEND include_directories ${CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES} ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
     list(APPEND include_directories ${Python3_INCLUDE_DIRS} ${pybind11_INCLUDE_DIR})
-#    message(FATAL_ERROR ${include_directories})
-#    list(APPEND include_directories "/Users/SNIS/Projects/APS/gaussianfft/sources/arm-performance-libraries/armpl_23.10_flang-new_clang_17/include_int64_mp")
     execute_process(
             COMMAND_ERROR_IS_FATAL ANY
             COMMAND ${Python3_EXECUTABLE} ${CMAKE_BINARY_DIR}/bin/find_dependants.py --include-directories "${include_directories}" ${ARGN}
