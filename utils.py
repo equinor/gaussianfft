@@ -48,7 +48,6 @@ def collect_sources(
         from_source_files: Iterable[str],
         ignore: Optional[List[str]] = None,
         source_dir: str = 'src',
-        use_absolute: bool = False,
         use_preprocessor: bool = True,
         include_directories: Optional[List[str]] = None,
 ) -> List[str]:
@@ -101,8 +100,12 @@ def collect_sources(
         try:
             file = file.relative_to(root)
         except ValueError:
-            if not use_absolute:
-                raise
+            # Skip files from the system
+            continue
+        if use_preprocessor and file.is_relative_to(sysconfig.get_path("include")):
+            # We are not interested in these files, and some of them should not be used directly
+            # which we'll be doing here
+            continue
         name = str(file)
         if name in files:
             continue
