@@ -4,7 +4,7 @@ import re
 import subprocess
 import sysconfig
 from pathlib import Path
-from typing import Iterable, Optional, List
+from typing import Iterable, Optional, List, Union
 
 
 def preprocess(file: Path, include_directories: Optional[List[str]] = None) -> Optional[List[str]]:
@@ -42,6 +42,18 @@ def preprocess(file: Path, include_directories: Optional[List[str]] = None) -> O
             line[0].decode("utf-8").strip()
             for line in re.findall(b'^((# *[0-9]+ +|Note: including file: +|.*-E -dI).*$)', res.stdout + res.stderr, re.MULTILINE)
         ]
+
+
+def is_relative_to(path: Path, other: Union[Path, str]) -> bool:
+    try:
+        return path.is_relative_to(other)
+    except AttributeError:
+        # Backport for Python < 3.9
+        try:
+            path.relative_to(other)
+            return True
+        except ValueError:
+            return False
 
 
 def collect_sources(
@@ -102,7 +114,7 @@ def collect_sources(
         except ValueError:
             # Skip files from the system
             continue
-        if use_preprocessor and file.is_relative_to(sysconfig.get_path("include")):
+        if use_preprocessor and is_relative_to(file, sysconfig.get_path("include")):
             # We are not interested in these files, and some of them should not be used directly
             # which we'll be doing here
             continue
