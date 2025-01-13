@@ -124,9 +124,17 @@ jobs:
             C:\Program Files (x86)\Intel\oneAPI\
           fail-on-cache-miss: true
 
+      - name: Configure build for 64-bit Windows
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: amd64
+
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.22.0
         env:
+          CIBW_ENVIRONMENT_WINDOWS: >
+            MKL_DIR="C:\\Program Files (x86)\\Intel\\oneAPI\\mkl\\2025.0\\lib\\cmake\\mkl"
+          CIBW_ARCHS_WINDOWS: AMD64
           # Intel MKL only support glibc x86 64bit Intel CPUs
           # If you need to compile gaussianfft for other architectures,
           # a different fftw3 implementation must be used
