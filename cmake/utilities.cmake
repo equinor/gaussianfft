@@ -25,6 +25,7 @@ function(dependants output_variables)
             COMMAND ${Python3_EXECUTABLE} ${CMAKE_BINARY_DIR}/bin/find_dependants.py --include-directories "${include_directories}" ${ARGN}
             OUTPUT_VARIABLE _FILES
     )
+    message(STATUS "Found dependants: ${_FILES}")
     separate_arguments(_FILES_LIST NATIVE_COMMAND PROGRAM SEPARATE_ARGS ${_FILES})
     set(${output_variables} ${_FILES_LIST} PARENT_SCOPE)
 endfunction()
