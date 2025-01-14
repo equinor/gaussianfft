@@ -105,6 +105,9 @@ target_link_libraries(
         ${Python3_LIBRARIES}
         pybind11::headers
         ${Boost_LIBRARIES}
+        pybind11::module
+        pybind11::lto
+        pybind11::windows_extras
 )
 if (${IS_AARCH64})
     if (USE_ARM_PERFORMANCE_LIBRARY)
