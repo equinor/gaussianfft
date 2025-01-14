@@ -125,7 +125,7 @@ jobs:
           fail-on-cache-miss: true
 
       - name: Configure build for 64-bit Windows
-        uses: ilammy/msvc-dev-cmd@v1
+        uses: ilammy/msvc-dev-cmd@0b201ec74fa43914dc39ae48a89fd1d8cb592756  # v1.13.0
         with:
           arch: amd64
 
