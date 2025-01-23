@@ -45,7 +45,7 @@ jobs:
         os:
         - ubuntu-20.04
         # Intel based
-        - macos-11
+        - macos-13
         # ARM based
         - macos-14
 
