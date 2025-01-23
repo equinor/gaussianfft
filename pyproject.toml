@@ -26,6 +26,7 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: Implementation :: CPython",
     "Topic :: Scientific/Engineering",
     "Topic :: Scientific/Engineering :: Mathematics",
@@ -34,7 +35,7 @@ classifiers = [
 dependencies = [
     "numpy",
 ]
-requires-python = ">=3.6"
+requires-python = ">=3.7"
 
 [project.urls]
 Homepage = "https://equinor.com"
@@ -56,6 +57,13 @@ requires = [
     "pybind11[global]",
 ]
 build-backend = "scikit_build_core.build"
+
+[tool.cibuildwheel]
+test-requires = [
+    "pytest",
+    "scipy",
+]
+test-command = "pytest {project}/tests"
 
 [tool.scikit-build]
 cmake.version = ">=3.19"
