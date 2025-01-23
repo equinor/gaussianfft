@@ -44,7 +44,11 @@ def test_rolled_gradient(simulated_field):
 def test_chi2():
     # A multivariate normal vector, x, with covariance matrix S, shall satisfy x'(S^-1)x ~ chi2(x.size)
     # This test makes an approximate check of this assumption. Parameters are taken from a Hufsa case.
-    from scipy.stats import chi2
+    try:
+        from scipy.stats import chi2
+    except ImportError:
+        from helpers import chi2
+
     nx = 40
     Lx = 8222
     rx = 6106

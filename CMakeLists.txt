@@ -90,6 +90,7 @@ set_target_properties(
         VISIBILITY_INLINES_HIDDEN YES
         EXPORT_NAME _gaussianfft
         OUTPUT_NAME _gaussianfft
+        SUFFIX ".${SKBUILD_SOABI}${CMAKE_SHARED_LIBRARY_SUFFIX}"
 )
 
 target_link_libraries(

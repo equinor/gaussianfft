@@ -61,7 +61,9 @@ build-backend = "scikit_build_core.build"
 [tool.cibuildwheel]
 test-requires = [
     "pytest",
-    "scipy",
+    # There are no pre-compiled wheels available for pypy, so we use a (custom)
+    # pure Python implementation of the functions we use from SciPy
+    "scipy;platform_python_implementation!='PyPy'",
 ]
 test-command = "pytest {project}/tests"
 
