@@ -20,6 +20,7 @@ jobs:
         id: cache-armpl
         uses: actions/cache@v3
         with:
+          lookup-only: true
           path: sources/arm-performance-libraries/${{ matrix.armpl }}/${{ runner.os }}
           key: armpl-${{ matrix.armpl }}-${{ matrix.os }}-${{ hashFiles('bin/fetch-ArmPL.sh') }}
 
@@ -29,6 +30,7 @@ jobs:
           ./bin/fetch-ArmPL.sh ${{ matrix.armpl }}
 
       - name: Store headers and libraries
+        if: steps.cache-armpl.outputs.cache-hit != 'true'
         uses: actions/upload-artifact@v4
         with:
           name: armpl-${{ matrix.armpl }}-${{ matrix.os }}
