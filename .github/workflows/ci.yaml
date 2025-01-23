@@ -74,6 +74,7 @@ jobs:
           # a different fftw3 implementation must be used
           CIBW_ARCHS_LINUX: "x86_64"
           CIBW_SKIP: "*-musllinux_x86_64"
+          CIBW_ENABLE: "pypy"
         with:
           output-dir: 'dist'
 
