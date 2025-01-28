@@ -115,8 +115,9 @@ The libraries are available for download [here](https://developer.arm.com/downlo
 
 To build the distribution wheel(s), run
 ```bash
-export PYTHON=<which python to use>  # Only useful when not running in a virtual environment 
-make build
+# Assuming you are in a venv
+pip install build
+python -m build
 ```
 This will build the binary, and source distributions with the [`build`](https://github.com/pypa/build) package in a temporary / ephemeral directory.
 There is no caching of build artifacts in this case.
@@ -126,6 +127,18 @@ If you need to build, and iterate on the extension module, you may want to execu
 ```bash
 cmake -S . -B build
 cmake --build build
+```
+
+## Testing
+We use [`pytest`](https://docs.pytest.org/en/stable/)  as a test runner.
+Some of the tests use functionality from [`scipy`](https://scipy.org).
+To run the tests, execute
+```bash
+# Assuming you have activated a virtual environment
+pip install pytest scipy
+pip install -e .  # To make sure `_gaussianfft` is compiled.
+
+pytest tests
 ```
 
 ## Contributing

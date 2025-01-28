@@ -22,7 +22,6 @@ services:
 
       # These files are used for building the extension
       - "./CMakeLists.txt:/code/CMakeLists.txt"
-      - "./Makefile:/code/Makefile"
       - "./bin:/code/bin"
       - "./cmake:/code/cmake"
       - "./gaussianfft:/code/gaussianfft"
