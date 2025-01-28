@@ -20,6 +20,7 @@ jobs:
         id: cache-armpl
         uses: actions/cache@v3
         with:
+          lookup-only: true
           path: sources/arm-performance-libraries/${{ matrix.armpl }}/${{ runner.os }}
           key: armpl-${{ matrix.armpl }}-${{ matrix.os }}-${{ hashFiles('bin/fetch-ArmPL.sh') }}
 
@@ -29,6 +30,7 @@ jobs:
           ./bin/fetch-ArmPL.sh ${{ matrix.armpl }}
 
       - name: Store headers and libraries
+        if: steps.cache-armpl.outputs.cache-hit != 'true'
         uses: actions/upload-artifact@v4
         with:
           name: armpl-${{ matrix.armpl }}-${{ matrix.os }}
@@ -42,27 +44,12 @@ jobs:
     name: Build & Test
     strategy:
       matrix:
-        python:
-        - 3.7
-        - 3.8  # Included in RMS 12.1, and newer
-        - 3.9
-        - "3.10"
-        - 3.11  # Included in RMS 14.2, and newer
-        - 3.12
         os:
         - ubuntu-20.04
         # Intel based
-        - macos-11
+        - macos-13
         # ARM based
         - macos-14
-        exclude:
-          # Python 3.7-3.9 are not available on ARM64
-          - os: macos-14
-            python: 3.7
-          - os: macos-14
-            python: 3.8
-          - os: macos-14
-            python: 3.9
 
     steps:
       - uses: actions/checkout@v4
@@ -79,42 +66,22 @@ jobs:
           path: sources/arm-performance-libraries
           merge-multiple: true
 
-      - uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python }}
-
-      - name: Build
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v2.22.0
         env:
-          PYTHON: python${{ matrix.python }}
-          VERBOSE: "1"
-        run: |
-          if [[ $RUNNER_OS == "Linux" ]]; then
-            # Ensure shared directories have the correct permissions
-            mkdir -p dist wheelhouse
-            docker-compose run build-linux
-          elif [[ $RUNNER_OS == "macOS" ]]; then
-              make build
-          else
-            # That is, windows
-            echo "No supported, yet" >/dev/stderr
-            exit 1
-          fi
-        shell: bash
-
-      - name: Test
-        run: make tests
-
-      - name: Move results from auditwheel
-        # The reason for this, is because setuptools_scm and auditwheel
-        # causes an incompatibility between the updated wheels, which causes the installation during tests to fail
-        if: ${{ runner.os == 'Linux' }}
-        run: |
-          mv wheelhouse/*.whl dist/
+          # Intel MKL only support glibc x86 64bit Intel CPUs
+          # If you need to compile gaussianfft for other architectures,
+          # a different fftw3 implementation must be used
+          CIBW_ARCHS_LINUX: "x86_64"
+          CIBW_SKIP: "*-musllinux_x86_64"
+          CIBW_ENABLE: "pypy"
+        with:
+          output-dir: 'dist'
 
       - name: Store wheels
         uses: actions/upload-artifact@v4
         with:
-          name: wheel-${{ matrix.python }}-${{ matrix.os }}
+          name: wheels-${{ matrix.os }}
           path: dist/*.whl
           if-no-files-found: error
 
@@ -160,7 +127,7 @@ jobs:
       - name: Download compiled wheels
         uses: actions/download-artifact@v4
         with:
-          pattern: wheel-*
+          pattern: wheels-*
           path: .
           merge-multiple: true
 
