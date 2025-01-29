@@ -66,6 +66,12 @@ test-requires = [
     "scipy;platform_python_implementation!='PyPy'",
 ]
 test-command = "pytest {project}/tests"
+[tool.cibuildwheel.windows]
+# We use delvewheel to ensure _gaussianfft.lib, which is part of the build artefacts,
+# is included / imported when _gaussianfft.pyd is imported
+before-all = "pip install delvewheel==1.10.0"
+repair-wheel-command = "delvewheel repair --include-imports --wheel-dir {dest_dir} {wheel}"
+
 
 [tool.scikit-build]
 cmake.version = ">=3.19"
