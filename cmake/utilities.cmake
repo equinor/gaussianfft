@@ -20,6 +20,7 @@ function(dependants output_variables)
     get_property(include_directories DIRECTORY ${CMAKE_SOURCE_DIR} PROPERTY INCLUDE_DIRECTORIES)
     list(APPEND include_directories ${CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES} ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
     list(APPEND include_directories ${Python3_INCLUDE_DIRS} ${pybind11_INCLUDE_DIR})
+    message(INFO "${Python3_EXECUTABLE} ${CMAKE_BINARY_DIR}/bin/find_dependants.py --include-directories "${include_directories}" ${ARGN}")
     execute_process(
             COMMAND_ERROR_IS_FATAL ANY
             COMMAND ${Python3_EXECUTABLE} ${CMAKE_BINARY_DIR}/bin/find_dependants.py --include-directories "${include_directories}" ${ARGN}
