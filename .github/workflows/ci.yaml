@@ -91,12 +91,12 @@ jobs:
     strategy:
       matrix:
         os:
-        - ubuntu-22.04
+#        - ubuntu-22.04
         - windows-2022
-        # Intel based
-        - macos-13
-        # ARM based
-        - macos-14
+#        # Intel based
+#        - macos-13
+#        # ARM based
+#        - macos-14
 
     steps:
       - uses: actions/checkout@v4
@@ -129,6 +129,15 @@ jobs:
         with:
           arch: amd64
           toolset: 19
+
+      - name: Setup tmate session
+        if: ${{ false }}
+        uses: mxschmitt/action-tmate@v3
+        # When trying to build interactively on Windows
+        # "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat"
+        # is a useful script
+        with:
+          limit-access-to-actor: true
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v3.1.4
