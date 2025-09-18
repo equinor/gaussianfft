@@ -130,7 +130,7 @@ jobs:
           arch: amd64
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.22.0
+        uses: pypa/cibuildwheel@v3.1.4
         env:
           CIBW_ENVIRONMENT_WINDOWS: >
             MKL_DIR="C:\\Program Files (x86)\\Intel\\oneAPI\\mkl\\2025.0\\lib\\cmake\\mkl"
