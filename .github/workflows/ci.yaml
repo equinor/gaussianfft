@@ -38,7 +38,7 @@ jobs:
           if-no-files-found: error
 
   install-intel-oneapi:
-    runs-on: windows-2019
+    runs-on: windows-2022
     name: Install Intel oneAPI with MKL
     env:
       WINDOWS_BASEKIT_URL: https://registrationcenter-download.intel.com/akdlm/IRC_NAS/ae29263e-38b9-4d43-86c3-376d6e0668e7/intel-oneapi-base-toolkit-2025.0.1.47_offline.exe
@@ -92,7 +92,7 @@ jobs:
       matrix:
         os:
         - ubuntu-20.04
-        - windows-2019
+        - windows-2022
         # Intel based
         - macos-13
         # ARM based
