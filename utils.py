@@ -25,6 +25,15 @@ def preprocess(file: Path, include_directories: Optional[List[str]] = None) -> O
             preprocessor_args = ("-E", "-dI")
             include_arg = "-I"
         cxx_flags = os.environ.get("CXXFLAGS") or ""
+        print(cxx, cxx_flags, preprocessor_args, additional_include_directories, file)
+        print(" ".join([
+            f'"{cxx}"',
+            *cxx_flags.split(" "),
+            *preprocessor_args,
+            *[f'{include_arg}"{include}"' for include in additional_include_directories],
+            str(file),
+        ]))
+
         res = subprocess.run(" ".join([
             f'"{cxx}"',
             *cxx_flags.split(" "),
