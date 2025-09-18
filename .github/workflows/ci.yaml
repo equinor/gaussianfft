@@ -128,6 +128,7 @@ jobs:
         uses: ilammy/msvc-dev-cmd@0b201ec74fa43914dc39ae48a89fd1d8cb592756  # v1.13.0
         with:
           arch: amd64
+          toolset: 19
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v3.1.4
