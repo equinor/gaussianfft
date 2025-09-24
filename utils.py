@@ -36,8 +36,6 @@ def preprocess(file: Path, include_directories: Optional[List[str]] = None) -> O
             capture_output=True,
             shell=True,
         )
-        if res.returncode > 0:
-            raise SystemError(res.stderr)
         return [
             line[0].decode("utf-8").strip()
             for line in re.findall(b'^((# *[0-9]+ +|Note: including file: +|.*-E -dI).*$)', res.stdout + res.stderr, re.MULTILINE)
