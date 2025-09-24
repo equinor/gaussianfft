@@ -33,15 +33,9 @@ if (${IS_AARCH64})
 else ()
     # MKL
     execute_process(
-            COMMAND find ${Python3_SITELIB}/../../ -name "MKLConfig.cmake"
+            COMMAND ${Python_EXECUTABLE} ${CMAKE_BINARY_DIR}/bin/find-mkl-config.py
             OUTPUT_VARIABLE MKL_CONFIG
     )
-    if (NOT DEFINED MKL_CONFIG AND WIN32)
-        execute_process(
-                COMMAND find "C:/Program Files (x86)/Intel/oneAPI/mkl" -name "MKLConfig.cmake"
-                OUTPUT_VARIABLE MKL_CONFIG
-        )
-    endif ()
     if (DEFINED MKL_CONFIG)
         get_filename_component(MKL_CONFIG ${MKL_CONFIG}/.. REALPATH)
         list(APPEND CMAKE_MODULE_PATH ${MKL_CONFIG})
