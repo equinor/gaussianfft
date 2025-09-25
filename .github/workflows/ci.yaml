@@ -141,8 +141,6 @@ jobs:
       - name: Build wheels
         uses: pypa/cibuildwheel@v3.1.4
         env:
-          CIBW_ENVIRONMENT_WINDOWS: >
-            MKL_DIR="C:\\Program Files (x86)\\Intel\\oneAPI\\mkl\\2025.0\\lib\\cmake\\mkl"
           CIBW_ARCHS_WINDOWS: AMD64
           # Intel MKL only support glibc x86 64bit Intel CPUs
           # If you need to compile gaussianfft for other architectures,
