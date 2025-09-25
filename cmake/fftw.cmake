@@ -32,6 +32,7 @@ if (${IS_AARCH64})
     link_directories(${CMAKE_BINARY_DIR}/${ARMPL_DIR}/lib)
 else ()
     # MKL
+    file(COPY_FILE ${CMAKE_SOURCE_DIR}/bin/find-mkl-config.py ${CMAKE_BINARY_DIR}/bin/find-mkl-config.py ONLY_IF_DIFFERENT)
     execute_process(
             COMMAND ${Python_EXECUTABLE} ${CMAKE_BINARY_DIR}/bin/find-mkl-config.py
             OUTPUT_VARIABLE MKL_CONFIG
