@@ -4,8 +4,8 @@ import sys
 import os
 from pathlib import Path
 
-def find_mkl_config() -> Path | None:
-    for root, dirs, files in os.walk(sys.prefix):
+def find_mkl_config(prefix_path: str) -> "Path | None":
+    for root, dirs, files in os.walk(prefix_path):
         for file in files:
             if file == "MKLConfig.cmake":
                 return Path(root) / file
@@ -13,12 +13,12 @@ def find_mkl_config() -> Path | None:
 
 
 def run():
-    mkl_config = find_mkl_config()
-    if mkl_config is None:
-        print("MKLConfig.cmake not found", file=sys.stderr)
-        sys.exit(1)
-    print(mkl_config)
-    sys.exit(0)
+    for prefix_path in sys.argv + [sys.prefix]:
+        mkl_config = find_mkl_config(prefix_path)
+        if mkl_config:
+            print(mkl_config)
+            sys.exit(0)
+    sys.exit(1)
 
 if __name__ == '__main__':
     run()

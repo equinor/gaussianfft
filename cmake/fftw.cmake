@@ -34,7 +34,7 @@ else ()
     # MKL
     file(COPY_FILE ${CMAKE_SOURCE_DIR}/bin/find-mkl-config.py ${CMAKE_BINARY_DIR}/bin/find-mkl-config.py ONLY_IF_DIFFERENT)
     execute_process(
-            COMMAND ${Python_EXECUTABLE} ${CMAKE_BINARY_DIR}/bin/find-mkl-config.py
+            COMMAND ${Python_EXECUTABLE} ${CMAKE_BINARY_DIR}/bin/find-mkl-config.py ${pybind11_INCLUDE_DIR}/../../../..
             OUTPUT_VARIABLE MKL_CONFIG
     )
     if (DEFINED MKL_CONFIG)
