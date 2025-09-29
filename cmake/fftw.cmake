@@ -44,6 +44,18 @@ else ()
     endif ()
     set(MKL_LINK "static")
     set(MKL_ILP64 ON)
+    # Adjustments needed for MKL 2025.2
+#    set(ENABLE_SCALAPACK true)
+#    set(ENABLE_BLAS true)
+#    set(MKL_INTERFACE "lp64")
+    # "lp64" is the 32-bit interface, "ilp64" is the 64-bit interface
+
+#    set(MKL_SYCL_MPI false)
+#    set(MKL_SYCL_LINK false)
+    # for Intel oneAPI 2025.2, we don't need SYCL
+    # TODO: Only for Windows
+#    set(mkl_intel_ilp64_file "mkl_intel_ilp64_dll.lib")
+    # OMP_DLL_DIR
     find_package(MKL CONFIG REQUIRED PATHS $ENV${MKLROOT} ${MKL_CONFIG})
     include_directories(SYSTEM ${MKL_ROOT}/include/fftw)
     link_directories(${MKL_ROOT}/lib)
