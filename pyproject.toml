@@ -70,7 +70,9 @@ test-command = "pytest {project}/tests"
 # We use delvewheel to ensure _gaussianfft.lib, which is part of the build artefacts,
 # is included / imported when _gaussianfft.pyd is imported
 before-all = "pip install delvewheel==1.12.0"
-repair-wheel-command = "delvewheel repair --include-imports --wheel-dir {dest_dir} {wheel}"
+repair-wheel-command = """
+delvewheel repair --add-path "{wheel}/../../../Lib/site-packages/intel_openmp/bin" --include-imports --analyze-existing --wheel-dir {dest_dir} {wheel}
+"""
 
 
 [tool.scikit-build]
