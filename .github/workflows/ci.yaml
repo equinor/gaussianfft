@@ -73,7 +73,7 @@ jobs:
           arch: amd64
 
       - name: Setup tmate session
-        if: ${{ true }}
+        if: ${{ false }}
         uses: mxschmitt/action-tmate@v3
         # When trying to build interactively on Windows
         # "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat"
