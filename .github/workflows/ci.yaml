@@ -82,7 +82,7 @@ jobs:
           limit-access-to-actor: true
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@v3.1.4
+        uses: pypa/cibuildwheel@v3.3.1
         env:
           CIBW_ARCHS_WINDOWS: AMD64
           # Intel MKL only support glibc x86 64bit Intel CPUs
