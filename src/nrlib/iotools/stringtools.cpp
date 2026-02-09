@@ -21,13 +21,9 @@
 
 #include "stringtools.hpp"
 
-#include <algorithm>
-#include <cctype>
 #include <iostream>
 #include <string>
 #include <sstream>
-
-#include "boost-filesystem.hpp"
 
 using namespace NRLib;
 

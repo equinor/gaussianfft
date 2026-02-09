@@ -38,7 +38,7 @@ jobs:
           if-no-files-found: error
 
   install-intel-oneapi:
-    runs-on: windows-2019
+    runs-on: windows-2022
     name: Install Intel oneAPI with MKL
     env:
       WINDOWS_BASEKIT_URL: https://registrationcenter-download.intel.com/akdlm/IRC_NAS/ae29263e-38b9-4d43-86c3-376d6e0668e7/intel-oneapi-base-toolkit-2025.0.1.47_offline.exe
@@ -91,12 +91,12 @@ jobs:
     strategy:
       matrix:
         os:
-        - ubuntu-20.04
-        - windows-2019
-        # Intel based
-        - macos-13
-        # ARM based
-        - macos-14
+#        - ubuntu-22.04
+        - windows-2022
+#        # Intel based
+#        - macos-13
+#        # ARM based
+#        - macos-14
 
     steps:
       - uses: actions/checkout@v4
@@ -113,27 +113,23 @@ jobs:
           path: sources/arm-performance-libraries
           merge-multiple: true
 
-      - name: Install Intel oneAPI
-        uses: actions/cache/restore@v4
-        if: ${{ startsWith(matrix.os, 'windows-') }}
-        with:
-          key: -non-existent
-          restore-keys: |
-            intel-openapi-install-
-          path: |
-            C:\Program Files (x86)\Intel\oneAPI\
-          fail-on-cache-miss: true
-
       - name: Configure build for 64-bit Windows
         uses: ilammy/msvc-dev-cmd@0b201ec74fa43914dc39ae48a89fd1d8cb592756  # v1.13.0
         with:
           arch: amd64
 
+      - name: Setup tmate session
+        if: ${{ false }}
+        uses: mxschmitt/action-tmate@v3
+        # When trying to build interactively on Windows
+        # "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat"
+        # is a useful script
+        with:
+          limit-access-to-actor: true
+
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.22.0
+        uses: pypa/cibuildwheel@v3.3.1
         env:
-          CIBW_ENVIRONMENT_WINDOWS: >
-            MKL_DIR="C:\\Program Files (x86)\\Intel\\oneAPI\\mkl\\2025.0\\lib\\cmake\\mkl"
           CIBW_ARCHS_WINDOWS: AMD64
           # Intel MKL only support glibc x86 64bit Intel CPUs
           # If you need to compile gaussianfft for other architectures,
@@ -152,7 +148,7 @@ jobs:
           if-no-files-found: error
 
   source-distribution:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     name: Create source distribution (sdist)
 
     steps:
@@ -179,7 +175,7 @@ jobs:
           if-no-files-found: error
 
   check-created-artifacts:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     name: Check that all the created artifacts have a consistent version
     needs:
       - build
@@ -220,7 +216,7 @@ jobs:
           if-no-files-found: error
 
   publish:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     name: Publish wheels, and source to PyPi
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
     needs:

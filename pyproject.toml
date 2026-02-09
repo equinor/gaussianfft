@@ -20,13 +20,12 @@ classifiers = [
     "Operating System :: POSIX :: Linux",
     "Programming Language :: C++",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.7",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Programming Language :: Python :: Implementation :: CPython",
     "Topic :: Scientific/Engineering",
     "Topic :: Scientific/Engineering :: Mathematics",
@@ -35,7 +34,7 @@ classifiers = [
 dependencies = [
     "numpy",
 ]
-requires-python = ">=3.7"
+requires-python = ">=3.9"
 
 [project.urls]
 Homepage = "https://equinor.com"
@@ -53,6 +52,7 @@ requires = [
 
     "mkl-static ; platform_machine == 'x86_64' or platform_machine == 'AMD64'",
     "mkl-devel ; platform_machine == 'x86_64' or platform_machine == 'AMD64'",
+    "intel-openmp ; platform_machine == 'x86_64' or platform_machine == 'AMD64'",
 
     "pybind11[global]",
 ]
@@ -69,8 +69,10 @@ test-command = "pytest {project}/tests"
 [tool.cibuildwheel.windows]
 # We use delvewheel to ensure _gaussianfft.lib, which is part of the build artefacts,
 # is included / imported when _gaussianfft.pyd is imported
-before-all = "pip install delvewheel==1.10.0"
-repair-wheel-command = "delvewheel repair --include-imports --wheel-dir {dest_dir} {wheel}"
+before-all = "pip install delvewheel==1.12.0"
+repair-wheel-command = """
+delvewheel repair --add-path "{wheel}/../../../Library/lib" --include-imports --analyze-existing --wheel-dir {dest_dir} {wheel}
+"""
 
 
 [tool.scikit-build]
@@ -89,15 +91,15 @@ sdist.exclude = [
     "stage",
     "dist",
     # Related to bootstrapping boost
-    "sources/boost/boost_*",
-    "sources/*/*.tar.gz",
+    "sources/boost/boost_**",
+    "sources/**/**.tar.gz",
     # These are artifacts from compiling boost, which we do not want to include
     # in the source distribution
     "sources/boost/*/b2",
     "sources/boost/*/bin.v2",
     "sources/boost/*/project-config.jam*",
     "sources/boost/*/stage",
-    "cmake-build-debug/*",
+    "cmake-build-debug",
 
     ".github",
     "notebooks",
@@ -105,6 +107,7 @@ sdist.exclude = [
     "tests",
     "examples",
     "compose.yaml",
+    "**.dmg",
 ]
 
 [tool.setuptools_scm]
