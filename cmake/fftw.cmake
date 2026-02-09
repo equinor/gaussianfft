@@ -1,35 +1,36 @@
-# Configure Intel MKL & FFTW (for Apple M-series)
+# Configure FFTW via Intel MKL on x86_64 and ARM Performance Libraries on AArch64
 if (${IS_AARCH64})
     if (${APPLE})
         set(RUNNER_OS "macOS")
     else ()
         message(FATAL_ERROR "Currently, ARM is only supported macOS")
     endif ()
+    execute_process(
+            COMMAND ${Python3_EXECUTABLE} -m arm_performance_libraries --version
+            OUTPUT_VARIABLE ARMPL_VERSION
+            COMMAND_ERROR_IS_FATAL ANY
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
     message(STATUS "Using version ${ARMPL_VERSION} of ARM Performance Libraries")
 
-    file(COPY_FILE ${CMAKE_SOURCE_DIR}/bin/fetch-ArmPL.sh ${CMAKE_BINARY_DIR}/bin/fetch-ArmPL.sh ONLY_IF_DIFFERENT)
-    set(ARMPL_DIR "sources/arm-performance-libraries/${ARMPL_VERSION}/${RUNNER_OS}")
-    if (
-            NOT EXISTS ${CMAKE_BINARY_DIR}/${ARMPL_DIR}
-            AND EXISTS ${CMAKE_SOURCE_DIR}/${ARMPL_DIR}
+    execute_process(
+            COMMAND ${Python3_EXECUTABLE} -m arm_performance_libraries
+            OUTPUT_VARIABLE BUILD_ENVIRONMENT
+            COMMAND_ERROR_IS_FATAL ANY
+            OUTPUT_STRIP_TRAILING_WHITESPACE
     )
-        message(STATUS "Copy ArmPL files to build directory")
-        file(
-                COPY ${CMAKE_SOURCE_DIR}/${ARMPL_DIR}
-                DESTINATION ${CMAKE_BINARY_DIR}/sources/arm-performance-libraries/${ARMPL_VERSION}/
-                USE_SOURCE_PERMISSIONS
-                FOLLOW_SYMLINK_CHAIN
-        )
-    else ()
-        message(STATUS "Downloading ARM performance library")
-        execute_process(
-                COMMAND_ERROR_IS_FATAL ANY
-                COMMAND ${CMAKE_BINARY_DIR}/bin/fetch-ArmPL.sh ${ARMPL_VERSION}
-        )
+    find_library(
+        ARMPL_STATIC_LIB
+        NAMES libarmpl_lp64.a armpl_lp64.a
+        PATHS ${BUILD_ENVIRONMENT}/lib
+        NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH
+    )
+    if (NOT ARMPL_STATIC_LIB)
+        message(FATAL_ERROR "Could not find the static libraries for ARM Performance Libraries in ${BUILD_ENVIRONMENT}/lib")
     endif ()
 
-    include_directories(SYSTEM ${CMAKE_BINARY_DIR}/${ARMPL_DIR}/include_lp64)
-    link_directories(${CMAKE_BINARY_DIR}/${ARMPL_DIR}/lib)
+    include_directories(SYSTEM ${BUILD_ENVIRONMENT}/include)
+    link_directories(${BUILD_ENVIRONMENT}/lib)
 else ()
     # MKL
     file(COPY_FILE ${CMAKE_SOURCE_DIR}/bin/find-mkl-config.py ${CMAKE_BINARY_DIR}/bin/find-mkl-config.py ONLY_IF_DIFFERENT)
