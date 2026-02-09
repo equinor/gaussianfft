@@ -121,3 +121,8 @@ sdist.exclude = [
 write_to = "gaussianfft/_version.py"
 # This should only be present on CI
 local_scheme = "no-local-version"
+
+[tool.uv.workspace]
+members = [
+    "sources/arm-performance-libraries/26.01/macOS",
+]

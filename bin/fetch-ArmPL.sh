@@ -8,7 +8,7 @@ function abort() {
   exit 1
 }
 # Download necessary files
-ARMPL_VERSION="${ARMPL_VERSION:-${1-}}"
+ARMPL_VERSION="${ARMPL_VERSION:-${1:-26.01}}"
 
 if [[ -z $ARMPL_VERSION || "$ARMPL_VERSION" == 'OFF' ]]; then
   abort "No version of RMS Performance Libraries given"
@@ -28,23 +28,24 @@ mkdir -p "$ARMPL_DIR"
 
 if [[ $OS == "Darwin" ]]; then
   ARMPL_SOURCES="$ARMPL_SOURCES/macOS"
-  readonly ARMPL_ARCHIVE="$ARMPL_DIR/${ARMPL_VERSION}_macOS.dmg"
+  readonly ARMPL_ARCHIVE="$ARMPL_DIR/armpl_${ARMPL_VERSION}_flang-21.dmg"
   if [[ ! -f "$ARMPL_ARCHIVE" ]]; then
-    URL="https://developer.arm.com/-/media/Files/downloads/hpc/arm-performance-libraries/$(echo "$ARMPL_VERSION" | tr '.' '-')/macos/arm-performance-libraries_${ARMPL_VERSION}_macOS.dmg"
+    URL="https://developer.arm.com/-/cdn-downloads/permalink/Arm-Performance-Libraries/Version_$ARMPL_VERSION/arm-performance-libraries_${ARMPL_VERSION}_macOS.tgz"
     echo "Downloading Arm Performance Libraries from '$URL'"
-    curl -sSL "$URL" --output "$ARMPL_ARCHIVE"
+    curl -sSL "$URL" --output "$ARMPL_ARCHIVE.tgz"
+    tar -xf "$ARMPL_ARCHIVE.tgz" -C "$ARMPL_DIR"
   fi
 
-  if [[ ! -d "$ARMPL_SOURCES" ]]; then
+  if [[ ! -d "$ARMPL_SOURCES" || -z "$(ls -A "$ARMPL_SOURCES")" ]]; then
     mkdir -p "$ARMPL_SOURCES"
-    VOLUME="/Volumes/armpl_${ARMPL_VERSION}_flang-new_clang_17_installer"
+    VOLUME="/Volumes/armpl_${ARMPL_VERSION}_flang-21_installer"
 
     if [[ ! -d $VOLUME ]]; then
       hdiutil attach "$ARMPL_ARCHIVE"
     fi
 
     # Install the libraries
-    "$VOLUME/armpl_${ARMPL_VERSION}_flang-new_clang_17_install.sh" \
+    "$VOLUME/armpl_${ARMPL_VERSION}_flang-21_install.sh" \
         --install_dir="$ARMPL_SOURCES" \
         -y
     diskutil unmount "$VOLUME"
@@ -53,8 +54,10 @@ if [[ $OS == "Darwin" ]]; then
     if [[ -z $install_dir ]]; then
       abort "Could not find installation directory"
     fi
-    mv "$install_dir/"* "$ARMPL_SOURCES"
-    rmdir "$install_dir"
+    mkdir "$ARMPL_SOURCES/arm_performance_libraries"
+    mv "$install_dir/"* "$ARMPL_SOURCES/arm_performance_libraries"
+#    rmdir "$install_dir"
+# TODO: Rename README to README.rst
   fi
 
 else
@@ -67,9 +70,4 @@ rm -rf \
   "$ARMPL_SOURCES/examples"* \
   "$ARMPL_SOURCES/src"* \
   "$ARMPL_SOURCES/armpl_env_vars.sh" \
-  "$ARMPL_SOURCES/CHANGELOG" \
-  "$ARMPL_SOURCES/README"
-# We don't use the shared libraries
-rm -f \
-  "$ARMPL_SOURCES"/lib/*.dylib* \
-  "$ARMPL_SOURCES"/lib/*.so*
+

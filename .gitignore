@@ -243,12 +243,27 @@ compile_commands.json
 CTestTestfile.cmake
 _deps
 
+*.lprof
+
 # Created dynamically
 gaussianfft/_version.py
 requirements.txt
 ## These are not build artifacts, but results from the examples
 examples/*/*.pdf
 
-# Dependencies 
+# Dependencies
 sources/
 build-cpp-tests/
+
+# We download and 'install' ARM's Performance libraries during building
+# Since they are proprietary and the license does not permit simple redistribution (the end-user must accept the EULA),
+# we download then on the machine which builds the package.
+# To facilitate simpler building with cibuildwheels, we package the necessary files in a package,
+# which can then be used as a build dependency.
+build-packages/arm-performance-libraries/
+!build-packages/arm-performance-libraries/scripts/*
+!build-packages/arm-performance-libraries/arm_performance_libraries/*.py
+!build-packages/arm-performance-libraries/.gitignore
+!build-packages/arm-performance-libraries/hatch_build.py
+!build-packages/arm-performance-libraries/pyproject.toml
+!build-packages/arm-performance-libraries/README.md
