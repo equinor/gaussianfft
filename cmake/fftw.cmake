@@ -7,29 +7,16 @@ if (${IS_AARCH64})
     endif ()
     message(STATUS "Using version ${ARMPL_VERSION} of ARM Performance Libraries")
 
-    file(COPY_FILE ${CMAKE_SOURCE_DIR}/bin/fetch-ArmPL.sh ${CMAKE_BINARY_DIR}/bin/fetch-ArmPL.sh ONLY_IF_DIFFERENT)
-    set(ARMPL_DIR "sources/arm-performance-libraries/${ARMPL_VERSION}/${RUNNER_OS}")
-    if (
-            NOT EXISTS ${CMAKE_BINARY_DIR}/${ARMPL_DIR}
-            AND EXISTS ${CMAKE_SOURCE_DIR}/${ARMPL_DIR}
+    set(BUILD_ENVIRONMENT ${pybind11_INCLUDE_DIR}/../../../../..)
+    find_library(
+        ARMPL_STATIC_LIB
+        NAMES libarmpl_lp64.a armpl_lp64.a
+        PATHS ${BUILD_ENVIRONMENT}/lib
+        NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH
     )
-        message(STATUS "Copy ArmPL files to build directory")
-        file(
-                COPY ${CMAKE_SOURCE_DIR}/${ARMPL_DIR}
-                DESTINATION ${CMAKE_BINARY_DIR}/sources/arm-performance-libraries/${ARMPL_VERSION}/
-                USE_SOURCE_PERMISSIONS
-                FOLLOW_SYMLINK_CHAIN
-        )
-    else ()
-        message(STATUS "Downloading ARM performance library")
-        execute_process(
-                COMMAND_ERROR_IS_FATAL ANY
-                COMMAND ${CMAKE_BINARY_DIR}/bin/fetch-ArmPL.sh ${ARMPL_VERSION}
-        )
-    endif ()
 
-    include_directories(SYSTEM ${CMAKE_BINARY_DIR}/${ARMPL_DIR}/include_lp64)
-    link_directories(${CMAKE_BINARY_DIR}/${ARMPL_DIR}/lib)
+    include_directories(SYSTEM ${BUILD_ENVIRONMENT}/include)
+    link_directories(${BUILD_ENVIRONMENT}/lib)
 else ()
     # MKL
     file(COPY_FILE ${CMAKE_SOURCE_DIR}/bin/find-mkl-config.py ${CMAKE_BINARY_DIR}/bin/find-mkl-config.py ONLY_IF_DIFFERENT)

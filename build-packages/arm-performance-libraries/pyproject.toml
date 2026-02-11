@@ -2,7 +2,7 @@
 name = "arm-performance-libraries"
 version = "26.01"
 description = "ARM Performance Libraries"
-readme = "README.rst"
+readme = "README.md"
 requires-python = ">=3.9"
 dependencies = []
 license-files = ["license_terms/*.txt"]

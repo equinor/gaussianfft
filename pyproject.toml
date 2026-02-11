@@ -53,6 +53,7 @@ requires = [
 
     "mkl-static ; platform_machine == 'x86_64' or platform_machine == 'AMD64'",
     "mkl-devel ; platform_machine == 'x86_64' or platform_machine == 'AMD64'",
+    "arm-performance-libraries ; platform_machine == 'arm64' or platform_machine == 'aarch64'",
 
     "pybind11[global]",
 ]
@@ -70,7 +71,17 @@ test = [
     # pure Python implementation of the functions we use from SciPy
     "scipy ; platform_python_implementation != 'PyPy'",
 ]
+
+[tool.uv.sources]
+arm-performance-libraries = { index = "arm-performance-libraries" }
+
+[[tool.uv.index]]
+name = "arm-performance-libraries"
+url = "./build-packages/arm-performance-libraries/dist"
+format = "flat"
+
 [tool.cibuildwheel]
+build-frontend = "build[uv]"
 test-groups = ["test"]
 test-command = "pytest {project}/tests"
 [tool.cibuildwheel.windows]
@@ -121,8 +132,3 @@ sdist.exclude = [
 write_to = "gaussianfft/_version.py"
 # This should only be present on CI
 local_scheme = "no-local-version"
-
-[tool.uv.workspace]
-members = [
-    "sources/arm-performance-libraries/26.01/macOS",
-]

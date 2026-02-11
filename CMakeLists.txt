@@ -113,14 +113,13 @@ if (${IS_AARCH64})
     if (USE_ARM_PERFORMANCE_LIBRARY)
         target_link_libraries(gaussianfft_gaussianfft PRIVATE
                 # TODO: Make work with OpenMP / parallel
-                armpl_lp64.a
-                FortranDecimal
-                FortranRuntime
+                ${ARMPL_STATIC_LIB}
+                flang_rt.runtime
                 m
                 c++
         )
     else ()
-        message(WARNING "ARM based architectures are not yet supported")
+        message(FATAL_ERROR "ARM based architectures are not yet supported")
     endif ()
 else ()
     if (APPLE)
