@@ -15,6 +15,7 @@ from urllib.request import urlopen
 import subprocess
 
 from hatchling.builders.hooks.plugin.interface import BuildHookInterface
+from debx.ar import unpack_ar_archive
 
 if TYPE_CHECKING:
     from hatchling.bridge.app import Application
@@ -41,7 +42,7 @@ class CustomBuildHook(BuildHookInterface):
         build_data["force_include_editable"] = {}
 
 
-TargetPlatform = Literal["macos"]
+TargetPlatform = Literal["macos", "linux_gcc"]
 
 
 def get_target_platform() -> TargetPlatform:
@@ -49,6 +50,7 @@ def get_target_platform() -> TargetPlatform:
     if target_platform is None or target_platform == "auto":
         mapping: dict[str, TargetPlatform] = {
             "darwin": "macos",
+            "linux": "linux_gcc",
         }
         return mapping[sys.platform]
     if target_platform not in TargetPlatform.__args__:
@@ -180,6 +182,8 @@ class GatherArmPerformanceLibraries:
     def platform(self):
         if self.target_platform == "macos":
             return "macosx-11.0-arm64"
+        elif self.target_platform == "linux_gcc":
+            return "linux-aarch64"
         else:
             raise NotImplementedError(f"Unsupported platform: {self.target_platform}")
 
@@ -225,6 +229,13 @@ class GatherArmPerformanceLibraries:
                     f"Expected exactly one installation directory for ARM Performance libraries for {self.target_platform}, found {len(options)}"
                 )
 
+        elif self.target_platform == "linux_gcc":
+            return (
+                self.installation_target
+                / "opt"
+                / "arm"
+                / f"armpl_{self.armpl_version}_gcc"
+            )
         else:
             raise NotImplementedError(f"Unsupported platform: {self.target_platform}")
 
@@ -257,6 +268,8 @@ class GatherArmPerformanceLibraries:
     def _get_download_url(self):
         if self.target_platform == "macos":
             return f"https://developer.arm.com/-/cdn-downloads/permalink/Arm-Performance-Libraries/Version_{self.armpl_version}/arm-performance-libraries_{self.armpl_version}_macOS.tgz"
+        elif self.target_platform == "linux_gcc":
+            return f"https://developer.arm.com/-/cdn-downloads/permalink/Arm-Performance-Libraries/Version_{self.armpl_version}/arm-performance-libraries_{self.armpl_version}_deb_gcc.tar"
         else:
             raise NotImplementedError(f"Unsupported platform: {self.target_platform}")
 
@@ -272,6 +285,11 @@ class GatherArmPerformanceLibraries:
     def _get_expected_installation_script(self):
         if self.target_platform == "macos":
             return self.target_dir / "install.sh"
+        elif self.target_platform == "linux_gcc":
+            return (
+                self.target_dir
+                / f"arm-performance-libraries_{self.armpl_version}_deb/arm-performance-libraries_{self.armpl_version}_deb.sh"
+            )
         else:
             raise NotImplementedError(f"Unsupported platform: {self.target_platform}")
 
@@ -330,6 +348,21 @@ class GatherArmPerformanceLibraries:
                     ],
                     capture_output=True,
                 )
+            elif self.target_platform == "linux_gcc":
+                if (_bash_version := bash_version()) < (5, 0, 0):
+                    raise RuntimeError(
+                        f"Bash version 5.0 or higher is required to install ARM Performance Libraries on Linux (got {_bash_version})"
+                    )
+                command = subprocess.run(
+                    [
+                        "bash",
+                        str(installation_script),
+                        "--accept",
+                        "--save-packages-to",
+                        str(self.installation_target),
+                    ],
+                    capture_output=True,
+                )
             else:
                 raise NotImplementedError(
                     f"Unsupported platform: {self.target_platform}"
@@ -340,6 +373,13 @@ class GatherArmPerformanceLibraries:
             if command.returncode != 0:
                 raise RuntimeError(
                     f"Installation script failed with exit code {command.returncode}"
+                )
+
+            # Post-install setup
+            if self.target_platform == "linux_gcc":
+                self._extract_archive(
+                    self.installation_target / f"armpl_{self.armpl_version}_gcc.deb",
+                    target_dir=self.installation_target,
                 )
 
     @classmethod
@@ -363,3 +403,14 @@ class GatherArmPerformanceLibraries:
         instance.prepare()
         instance.write_platform_file()
         return instance
+
+
+def bash_version():
+    command = subprocess.run(["bash", "--version"], capture_output=True, check=True)
+    match = re.search(
+        r"GNU bash, version (?P<version>[0-9]+\.[0-9]+\.[0-9]+)",
+        command.stdout.decode(),
+    )
+    if match:
+        return tuple(int(part) for part in match.group("version").split("."))
+    raise RuntimeError("Could not determine bash version")

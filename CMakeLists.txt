@@ -115,8 +115,14 @@ if (${IS_AARCH64})
                     flang_rt.runtime
                     m
             )
+        elseif (LINUX)
+            target_link_libraries(gaussianfft_gaussianfft PRIVATE
+                    ${ARMPL_STATIC_LIB}
+                    amath.a
+                    m
+            )
         else ()
-            message(FATAL_ERROR "Currently, only MacOS is supported on ARM")
+            message(FATAL_ERROR "Currently, only MacOS and linux are supported on ARM")
         endif()
     else ()
         message(FATAL_ERROR "ARM based architectures are not yet supported")

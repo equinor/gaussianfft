@@ -1,10 +1,5 @@
 # Configure FFTW via Intel MKL on x86_64 and ARM Performance Libraries on AArch64
 if (${IS_AARCH64})
-    if (${APPLE})
-        set(RUNNER_OS "macOS")
-    else ()
-        message(FATAL_ERROR "Currently, ARM is only supported macOS")
-    endif ()
     execute_process(
             COMMAND ${Python3_EXECUTABLE} -m arm_performance_libraries --version
             OUTPUT_VARIABLE ARMPL_VERSION

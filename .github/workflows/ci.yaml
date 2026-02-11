@@ -27,6 +27,7 @@ jobs:
     strategy:
       matrix:
         target_platform:
+          - linux_gcc
           - macos
     steps:
       - uses: actions/checkout@v6
@@ -76,6 +77,7 @@ jobs:
       matrix:
         os:
         - ubuntu-22.04
+        - ubuntu-22.04-arm
         # Intel based
         - macos-15-intel
         # ARM based
@@ -90,7 +92,7 @@ jobs:
 
       - name: Download ARM Performance Libraries
         uses: actions/download-artifact@v7
-        if: ${{ matrix.os == 'macos-15' }}
+        if: ${{ (startsWith(matrix.os, 'macos-') && ! endsWith(matrix.os, '-intel')) || endsWith(matrix.os, '-arm') }}
         with:
           pattern: arm-performance-libraries-*
           path: build-packages/arm-performance-libraries/dist
@@ -100,11 +102,7 @@ jobs:
         uses: pypa/cibuildwheel@v3.3.1
         env:
           CIBW_ARCHS_WINDOWS: AMD64
-          # Intel MKL only support glibc x86 64bit Intel CPUs
-          # If you need to compile gaussianfft for other architectures,
-          # a different fftw3 implementation must be used
-          CIBW_ARCHS_LINUX: "x86_64"
-          CIBW_SKIP: "*-musllinux_x86_64"
+          CIBW_SKIP: "*-musllinux_*"  # Currently, OpenBLAS (via scipy) does not support musl
           CIBW_ENABLE: "pypy"
         with:
           output-dir: 'dist'

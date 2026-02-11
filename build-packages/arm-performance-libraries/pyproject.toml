@@ -18,6 +18,7 @@ armpl = "arm_performance_libraries.lib.pkgconfig"
 requires = [
     "hatchling",
     "pydmg",
+    "debx == 0.2.12",
 ]
 build-backend = "hatchling.build"
 
