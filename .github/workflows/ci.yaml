@@ -3,6 +3,27 @@ name: Build, Test, and deploy
 on: [push]
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Run tests with uv
+    steps:
+      - uses: actions/checkout@v4
+        name: Checkout repository
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Run tests
+        run: uv run pytest
+
   prepare-arm-performance-libraries:
     runs-on: ${{ matrix.os }}
     name: Download and prepare ARM Performance Libraries
@@ -84,6 +105,7 @@ jobs:
 
   build:
     needs:
+      - test
       - prepare-arm-performance-libraries
       - install-intel-oneapi
     runs-on: ${{ matrix.os }}
