@@ -6,6 +6,21 @@ permissions:
   contents: read
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Run C++ tests
+    steps:
+      - uses: actions/checkout@v4
+        name: Checkout repository
+
+      - name: Install native dependencies for C++ tests
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pkg-config libfftw3-dev libboost-filesystem-dev libboost-test-dev
+
+      - name: Build and run C++ tests
+        run: ./bin/run-cpp-tests.sh
+
   prepare-arm-performance-libraries:
     runs-on: ${{ matrix.os }}
     name: Download and prepare ARM Performance Libraries
@@ -42,6 +57,7 @@ jobs:
 
   build:
     needs:
+      - test
       - prepare-arm-performance-libraries
     runs-on: ${{ matrix.os }}
     name: Build & Test

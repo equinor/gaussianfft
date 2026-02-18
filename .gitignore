@@ -249,5 +249,6 @@ requirements.txt
 ## These are not build artifacts, but results from the examples
 examples/*/*.pdf
 
-# Dependncies
+# Dependencies 
 sources/
+build-cpp-tests/

@@ -34,6 +34,7 @@ classifiers = [
 dependencies = [
     "numpy",
 ]
+
 requires-python = ">=3.9"
 
 [project.urls]
@@ -69,7 +70,6 @@ test = [
     # pure Python implementation of the functions we use from SciPy
     "scipy ; platform_python_implementation != 'PyPy'",
 ]
-
 [tool.cibuildwheel]
 test-groups = ["test"]
 test-command = "pytest {project}/tests"
