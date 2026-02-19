@@ -57,13 +57,16 @@ requires = [
 ]
 build-backend = "scikit_build_core.build"
 
-[tool.cibuildwheel]
-test-requires = [
+[dependency-groups]
+test = [
     "pytest",
     # There are no pre-compiled wheels available for pypy, so we use a (custom)
     # pure Python implementation of the functions we use from SciPy
-    "scipy;platform_python_implementation!='PyPy'",
+    "scipy ; platform_python_implementation != 'PyPy'",
 ]
+
+[tool.cibuildwheel]
+test-groups = ["test"]
 test-command = "pytest {project}/tests"
 [tool.cibuildwheel.windows]
 # We use delvewheel to ensure _gaussianfft.lib, which is part of the build artefacts,

@@ -135,7 +135,7 @@ Some of the tests use functionality from [`scipy`](https://scipy.org).
 To run the tests, execute
 ```bash
 # Assuming you have activated a virtual environment
-pip install pytest scipy
+pip install --group 'test'
 pip install -e .  # To make sure `_gaussianfft` is compiled.
 
 pytest tests
