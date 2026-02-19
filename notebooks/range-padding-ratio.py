@@ -18,7 +18,6 @@ def _():
     import numpy as np
     from scipy.spatial.distance import cdist
     from gaussianfft.util import EmpiricalVariogram
-    # '%matplotlib inline' command supported automatically in marimo
     plt.rcParams['figure.figsize'] = [15,7]
     return EmpiricalVariogram, gaussianfft, np, plt
 
@@ -56,7 +55,7 @@ def _(EmpiricalVariogram, gaussianfft, np):
     Lx, Ly, Lz = nx * dx, ny * dy, nz * dz
     def simulate(vtype):
         # Simulation
-    
+
         deltas = [[], []]
         true_variogram = []
         estimated_variograms = [[], []]

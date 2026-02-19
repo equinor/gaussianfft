@@ -9,7 +9,6 @@ def _():
     import gaussianfft
     import matplotlib.pyplot as plt
     import numpy as np
-    # '%matplotlib notebook' command supported automatically in marimo
     # plt.rcParams['figure.figsize'] = [15, 10]
     return gaussianfft, np, plt
 
@@ -46,15 +45,14 @@ def _(corr, np, plt, smoothing, x):
     # plt.plot(x[:-d], np.diff(smoothing, n=d))
     plt.legend(['Corr', 'sCorr'])
     plt.grid()
+    plt.show()
     return
 
 
-app._unparsable_cell(
-    r"""
-    np.diff?
-    """,
-    name="_"
-)
+@app.cell
+def _(corr, np):
+    np.diff(corr)
+    return
 
 
 @app.cell

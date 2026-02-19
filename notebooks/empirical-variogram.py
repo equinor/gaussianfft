@@ -18,7 +18,6 @@ def _():
     import numpy as np
     from scipy.spatial.distance import cdist
     from gaussianfft.util import EmpiricalVariogram
-    # '%matplotlib inline' command supported automatically in marimo
     plt.rcParams['figure.figsize'] = [10,7]
     return EmpiricalVariogram, gaussianfft, np, plt
 
@@ -254,8 +253,8 @@ def _(EmpiricalVariogram, desired_padding_f, desired_range, gaussianfft, np):
     nmax = 600
     output_padding = []
     # Convert from aprx pl to exact
-    for p in desired_padding_f:  # Actual padding (in number of gridcells)
-        output_padding.append(int(p * L / d))
+    for _p in desired_padding_f:  # Actual padding (in number of gridcells)
+        output_padding.append(int(_p * L / d))
     output_padding_f = np.array(output_padding) / n
     v_3 = gaussianfft.variogram(vtype, desired_range[0] * L, desired_range[0] * L)
     ev_2 = EmpiricalVariogram(v_3, n, d, n, d, 1, 0, output_padding[0], output_padding[0], output_padding[0])
@@ -263,20 +262,21 @@ def _(EmpiricalVariogram, desired_padding_f, desired_range, gaussianfft, np):
     refs_3 = ev_2.pick_reference_points('origo')
     mid, _, _, _, convrg_2 = ev_2.estimate_variogram(nmax, dr_3, refs_3, analyze_convergence=5)
     output_deltas = np.zeros((len(output_padding), len(desired_range), convrg_2.deltas.shape[1]))
-    for i, r in enumerate(desired_range):
+    for _i, _r in enumerate(desired_range):
     # -----
-        print('*** {}/{} ***'.format(i, len(desired_range)))
-        for j, p in enumerate(output_padding):
-            v_3 = gaussianfft.variogram(vtype, r * L, r * L)
-            ev_2 = EmpiricalVariogram(v_3, n, d, n, d, 1, 0, p, p, p)
+        print('*** {}/{} ***'.format(_i, len(desired_range)))
+        for _j, _p in enumerate(output_padding):
+            v_3 = gaussianfft.variogram(vtype, _r * L, _r * L)
+            ev_2 = EmpiricalVariogram(v_3, n, d, n, d, 1, 0, _p, _p, _p)
             refs_3 = ev_2.pick_reference_points('origo')
             mid, _, _, _, convrg_2 = ev_2.estimate_variogram(nmax, dr_3, refs_3, analyze_convergence=5)
-            output_deltas[j, i, :] = convrg_2.deltas[-1]
+            output_deltas[_j, _i, :] = convrg_2.deltas[-1]
     output_range = desired_range  # For notational purposes only
     return (
         L,
         d,
         dr_3,
+        mid,
         n,
         nmax,
         output_deltas,
@@ -296,26 +296,25 @@ def _(np, output_deltas, output_padding_f, output_range, plt):
         ndelta = output_deltas.shape[2]
         plt.contourf(np.arange(0, ndelta), output_padding_f, np.abs(output_deltas[:, ir, :]), 40, vmax=0.3)
         plt.colorbar()
+        plt.show()
     return
 
 
-app._unparsable_cell(
-    r"""
+@app.cell
+def _(delta_res, mid, np, ou, output_deltas, rl):
     res = np.zeros((len(ou), len(rl), 9))
-    for j in range(output_deltas.shape[0]):
-        for i in range(delta_res.shape[1]):
-            res[j, i, 0] = np.max(np.abs(delta_res[j, i, :]))                    # Max error
-            res[j, i, 1] = np.max(np.abs(delta_res[j, i, :int(0.25*len(mid))]))  # Max error, close
-            res[j, i, 2] = np.max(np.abs(delta_res[j, i, :int(0.5*len(mid))]))   # Max error, half way
-            res[j, i, 3] = np.mean(np.abs(delta_res[j, i, :]))                   # Mean error
-            res[j, i, 4] = np.mean(np.abs(delta_res[j, i, :int(0.25*len(mid))])) # Mean error, close
-            res[j, i, 5] = np.mean(np.abs(delta_res[j, i, :int(0.5*len(mid))])  # Mean error, half way
-            res[j, i, 6] = np.sum(np.abs(delta_res[j, i, :]))                    # L1 error
-            res[j, i, 7] = np.sum(np.abs(delta_res[j, i, :int(0.25*len(mid))]))  # L1 error, close
-            res[j, i, 8] = np.sum(np.abs(delta_res[j, i, :int(0.5*len(mid))]))   # L1 error, half way
-    """,
-    name="_"
-)
+    for _j in range(output_deltas.shape[0]):
+        for _i in range(delta_res.shape[1]):
+            res[_j, _i, 0] = np.max(np.abs(delta_res[_j, _i, :]))                    # Max error
+            res[_j, _i, 1] = np.max(np.abs(delta_res[_j, _i, :int(0.25*len(mid))]))  # Max error, close
+            res[_j, _i, 2] = np.max(np.abs(delta_res[_j, _i, :int(0.5*len(mid))]))   # Max error, half way
+            res[_j, _i, 3] = np.mean(np.abs(delta_res[_j, _i, :]))                   # Mean error
+            res[_j, _i, 4] = np.mean(np.abs(delta_res[_j, _i, :int(0.25*len(mid))])) # Mean error, close
+            res[_j, _i, 5] = np.mean(np.abs(delta_res[_j, _i, :int(0.5*len(mid))]))  # Mean error, half way
+            res[_j, _i, 6] = np.sum(np.abs(delta_res[_j, _i, :]))                    # L1 error
+            res[_j, _i, 7] = np.sum(np.abs(delta_res[_j, _i, :int(0.25*len(mid))]))  # L1 error, close
+            res[_j, _i, 8] = np.sum(np.abs(delta_res[_j, _i, :int(0.5*len(mid))]))   # L1 error, half way
+    return (res,)
 
 
 @app.cell
@@ -328,6 +327,7 @@ def _(res):
 def _(pl_fraction, plt, rl, selected_res):
     plt.contourf(pl_fraction, rl, selected_res.T, 40)
     plt.colorbar()
+    plt.show()
     return
 
 
@@ -393,9 +393,9 @@ def _(finterp, np, pl_fraction, rl):
     gridx = np.linspace(np.min(pl_fraction), np.max(pl_fraction), nix)
     gridy = np.linspace(np.min(rl), np.max(rl), niy)
     zinterp = np.zeros((nix, niy))
-    for i_1, x in enumerate(gridx):
-        for j_1, y in enumerate(gridy):
-            zinterp[i_1, j_1] = finterp(x, y)
+    for _i, x in enumerate(gridx):
+        for _j, y in enumerate(gridy):
+            zinterp[_i, _j] = finterp(x, y)
     return gridx, gridy, zinterp
 
 
@@ -404,6 +404,7 @@ def _(gridx, gridy, np, plt, zinterp):
     plt.contourf(gridx, gridy, np.log10(zinterp.T), 80)
     plt.grid()
     plt.colorbar()
+    plt.show()
     return
 
 

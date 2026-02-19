@@ -16,7 +16,6 @@ def _():
     import gaussianfft
     import numpy as np
     import matplotlib.pyplot as plt
-    # '%matplotlib inline' command supported automatically in marimo
     plt.rcParams['figure.figsize'] = [15.0, 10.0]
     return gaussianfft, np, plt
 
@@ -54,7 +53,7 @@ def _(lx, ly, lz, nx, ny, nz, plt):
         else:
             plt.xlabel('y')
             plt.ylabel('z')
-    
+
     def ploty(f):
         plt.contourf(lx,
                      lz,
@@ -66,7 +65,7 @@ def _(lx, ly, lz, nx, ny, nz, plt):
         else:
             plt.xlabel('x')
             plt.ylabel('z')
-    
+
     def plotz(f):
         if use_NED:
             plt.contourf(ly,
@@ -97,6 +96,7 @@ def _(lx, ly, lz, nx, ny, nz, plt):
         plotz(f)
         plt.gca().set_aspect('equal')
         plt.title('Down-slice' if use_NED else 'z-slice')
+        plt.show()
 
     return (complete_plot,)
 

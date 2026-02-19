@@ -131,7 +131,7 @@ def _(OrderedDict, gaussianfft, so):
     alpha = 0.05
     effective_ranges = OrderedDict()
 
-    def report_root(vtype, root):
+    def report_root(_vtype, root):
         effective_ranges[_vtype] = root
         print('{:30} {:.3f}'.format(_vtype, root))
 
@@ -266,8 +266,8 @@ def _(gaussianfft, np):
 
 @app.cell
 def _(c, np, plt):
-    # '%matplotlib inline' command supported automatically in marimo
     plt.plot(c)
+    plt.show()
     np.max(np.abs(c[::-1] - c))  # Print this to verify c is symmetric
     return
 
@@ -555,7 +555,7 @@ def _(L_6, X_6, c_2, np, plt):
 
 @app.cell
 def _(gaussianfft, np):
-    def analyze_filter_circ_diff(vtype, r, Lmax):
+    def analyze_filter_circ_diff(_vtype, r, Lmax):
         v = gaussianfft.variogram(_vtype, r)
         _lvals = np.arange(0.1, 1.0, 0.05) * Lmax
         _circ_diffs = []

@@ -16,7 +16,6 @@ def _():
     import gaussianfft
     import numpy as np
     import matplotlib.pyplot as plt
-    # '%matplotlib inline' command supported automatically in marimo
     plt.rcParams['figure.figsize'] = [10, 7]
     return gaussianfft, np, plt
 
@@ -36,6 +35,7 @@ def _(gaussianfft, np, plt):
     s = s_pre + s_pre.T - np.diag(np.diag(s_pre))
     plt.imshow(s)
     plt.colorbar()
+    plt.show()
     return X, s
 
 
@@ -82,6 +82,7 @@ def _(np, plt, s):
     plt.show()
     plt.imshow(np.imag(L_2), interpolation='None', cmap=plt.cm.hot_r)
     plt.colorbar()
+    plt.show()
     return (L_2,)
 
 

@@ -36,6 +36,7 @@ def _(dx, dy, gaussianfft, np, nx, ny, plt, v):
     _f_arr = np.array(_f).reshape((nx, ny), order='F')
     plt.imshow(_f_arr, interpolation='None')
     plt.colorbar()
+    plt.show()
     return
 
 
@@ -46,6 +47,7 @@ def _(dx, dy, gaussianfft, np, nx, ny, plt, v):
     _f_arr = np.array(_f).reshape((nx, ny), order='F')
     plt.imshow(_f_arr, interpolation='None')
     plt.colorbar()
+    plt.show()
     return
 
 
@@ -56,6 +58,7 @@ def _(dx, dy, gaussianfft, np, nx, ny, plt, v):
     _f_arr = np.array(_f).reshape((nx, ny), order='F')
     plt.imshow(_f_arr, interpolation='None')
     plt.colorbar()
+    plt.show()
     return
 
 
@@ -66,6 +69,7 @@ def _(dx, dy, gaussianfft, np, nx, ny, plt, v):
     _f_arr = np.array(_f).reshape((nx, ny), order='F')
     plt.imshow(_f_arr, interpolation='None')
     plt.colorbar()
+    plt.show()
     return
 
 
@@ -76,6 +80,7 @@ def _(dx, dy, gaussianfft, np, nx, ny, plt, v):
     _f_arr = np.array(_f).reshape((nx, ny), order='F')
     plt.imshow(_f_arr, interpolation='None')
     plt.colorbar()
+    plt.show()
     return
 
 
