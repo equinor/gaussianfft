@@ -58,6 +58,11 @@ requires = [
 build-backend = "scikit_build_core.build"
 
 [dependency-groups]
+notebooks = [
+    "marimo>=0.17.6",
+    "matplotlib",
+    "scipy",
+]
 test = [
     "pytest",
     # There are no pre-compiled wheels available for pypy, so we use a (custom)
