@@ -194,6 +194,7 @@ target/
 
 # Jupyter Notebook
 .ipynb_checkpoints
+__marimo__/
 
 # pyenv
 .python-version
