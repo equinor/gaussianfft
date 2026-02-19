@@ -591,4 +591,3 @@ void LasWell::WriteLasLine(std::ofstream     & file,
 {
   file << mnemonic << " ." << units << " " << data << " : " << description << "\n";
 }
-

@@ -1,5 +1,6 @@
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
+
 import gaussianfft as grf
 
 
@@ -35,13 +36,17 @@ def example_cubes():
         field = grf.advanced.simulate(variogram, n, d, n, d, padx=p, pady=p)
         field2d = np.array(field).reshape((n, n), order='F')
         plt.subplot(411 + i)
-        plot_surface(field2d, 'Gaussian variogram, padding={} x range'.format(int(p/100)))
+        plot_surface(field2d, f'Gaussian variogram, padding={int(p / 100)} x range')
     plt.show()
 
 
 def example_box():
     grf.seed(123)
-    variogram = grf.variogram('exponential', main_range=1000.0, perp_range=1000.0,)
+    variogram = grf.variogram(
+        'exponential',
+        main_range=1000.0,
+        perp_range=1000.0,
+    )
     nx, ny = 50, 100
     dx, dy = 10, 10
     field = grf.simulate(variogram, nx, dx, ny, dy)
@@ -85,6 +90,7 @@ def plot_surface(field, title):
 
 if __name__ == '__main__':
     import sys
+
     examples = {
         'box': example_box,
         'cube': example_cube,
@@ -93,11 +99,11 @@ if __name__ == '__main__':
         'vario2': example_variogram2,
     }
     if len(sys.argv) != 2 or sys.argv[1] not in examples:
-        print("Run as")
-        print("  [python] {} <example>".format("validate_2d_simulation"))
-        print("")
-        print("  <example> being one of:")
+        print('Run as')
+        print('  [python] {} <example>'.format('validate_2d_simulation'))
+        print('')
+        print('  <example> being one of:')
         for f in examples.keys():
-            print("    " + f)
+            print('    ' + f)
     else:
         examples[sys.argv[1]]()

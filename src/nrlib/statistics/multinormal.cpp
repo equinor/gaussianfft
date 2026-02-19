@@ -127,6 +127,3 @@ MultiNormal::Potential(const Vector & x)  const
 
 
 }
-
-
-

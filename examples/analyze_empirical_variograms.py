@@ -1,10 +1,10 @@
-import matplotlib.pyplot as plt
-import gaussianfft as grf
-import numpy as np
 import os
-
 import sys
 
+import matplotlib.pyplot as plt
+import numpy as np
+
+import gaussianfft as grf
 from gaussianfft.util.empirical_variogram2 import EmpiricalVariogram2
 
 
@@ -43,12 +43,12 @@ def create_plots_for_vtype(output_folder, vtype):
     # plt.title('n+p={}, range={}'.format(nx + px, r))
     plt.title('Variogram estimation')
     plt.xlabel('Distance')
-    plt.ylabel('Variogram value, $\gamma$')
+    plt.ylabel(r'Variogram value, $\gamma$')
     plt.plot(x_short, 0.5 * y_short, '.b', label='Empirical')
     plt.plot(x_sample, 0.5 * y_sample, '.b', label='_nolegend_')
     plt.grid()
 
-    x_true = np.linspace(0, np.sqrt(nx ** 2 + ny ** 2 + nz ** 2), 100)
+    x_true = np.linspace(0, np.sqrt(nx**2 + ny**2 + nz**2), 100)
     y_true = [1.0 - v.corr(x) for x in x_true]
     plt.plot(x_true, y_true, '-k', label='True', lw=2)
 

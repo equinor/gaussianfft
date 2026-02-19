@@ -85,4 +85,3 @@ std::string ReadParameterBuffer(std::ifstream& in_file)
 }
 
 } // namespace NRLib
-

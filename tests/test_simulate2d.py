@@ -1,6 +1,8 @@
-import pytest
-import gaussianfft as grf
 import numpy as np
+import pytest
+
+import gaussianfft as grf
+
 
 @pytest.fixture
 def simulated_field():
@@ -13,6 +15,7 @@ def simulated_field():
     field2d = grf.simulate(variogram, nx, dx, ny, dy).reshape((nx, ny), order='F')
     assert field2d.shape == (nx, ny)
     return field2d, nx, ny
+
 
 def test_gradient(simulated_field):
     field, _, _ = simulated_field
@@ -31,11 +34,12 @@ def test_gradient(simulated_field):
     assert np.max(np.abs(diffs0)) < 5 * np.std(diffs0)
     assert np.max(np.abs(diffs1)) < 5 * np.std(diffs1)
 
+
 def test_rolled_gradient(simulated_field):
     field, nx, ny = simulated_field
     # When rolling the field, there should be a spike in the gradient data. Otherwise, the padding used for fft
     # was insufficient
-    diffs0 = np.diff(np.roll(field, int(nx/2), axis=0), axis=0)
-    diffs1 = np.diff(np.roll(field, int(ny/2), axis=1), axis=1)
-    assert np.count_nonzero(np.argmax(np.abs(diffs0), axis=0) != int(nx/2 - 1)) < ny/2
-    assert np.count_nonzero(np.argmax(np.abs(diffs1), axis=1) != int(ny/2 - 1)) < nx/3
+    diffs0 = np.diff(np.roll(field, int(nx / 2), axis=0), axis=0)
+    diffs1 = np.diff(np.roll(field, int(ny / 2), axis=1), axis=1)
+    assert np.count_nonzero(np.argmax(np.abs(diffs0), axis=0) != int(nx / 2 - 1)) < ny / 2
+    assert np.count_nonzero(np.argmax(np.abs(diffs1), axis=1) != int(ny / 2 - 1)) < nx / 3

@@ -48,5 +48,3 @@ pow(const Polynom<T> &p, int n);
 #include <flens/polynom.tcc>
 
 #endif // FLENS_POLYNOM_H
-
-

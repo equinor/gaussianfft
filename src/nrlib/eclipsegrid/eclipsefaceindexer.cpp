@@ -86,4 +86,3 @@ bool FaceIndexer::IsFinished()
 }
 
 } // namespace NRLib
-

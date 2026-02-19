@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.19.11"
+__generated_with = '0.19.11'
 app = marimo.App()
 
 
@@ -13,12 +13,15 @@ def _():
 
 @app.cell
 def _():
-    import gaussianfft
+    from pathlib import Path
+
     import matplotlib.pyplot as plt
     import numpy as np
-    from scipy.spatial.distance import cdist
-    from gaussianfft.util import EmpiricalVariogram, PaddingAnalyzer, PaddingAnalyzerDefaults
-    from pathlib import Path
+
+    from gaussianfft.util import (
+        PaddingAnalyzer,
+        PaddingAnalyzerDefaults,
+    )
 
     return PaddingAnalyzer, PaddingAnalyzerDefaults, Path, np, plt
 
@@ -33,7 +36,14 @@ def _(Path):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    This notebook compares the estimated variograms and how the error/deviation from the true variogram looks at different distances. For each variogram type, three sets of plots are generated: low range-to-grid-size ratio, range-to-grid-size aprx 1.0 and high range-to-grid-size ratio. Ideally, it is possible to derive a method for choosing the padding that only depends on the range and variogram type.
+    This notebook compares the estimated variograms and how the error/deviation
+    from the true variogram looks at different distances.
+    For each variogram type, three sets of plots are generated:
+    low range-to-grid-size ratio,
+    range-to-grid-size aprx 1.0,
+    and high range-to-grid-size ratio.
+    Ideally,
+    it is possible to derive a method for choosing the padding that only depends on the range and variogram type.
 
     The following limitations must be considered:
     - It is assumed that the variogram estimation has converged
@@ -46,13 +56,20 @@ def _(mo):
 
 @app.cell
 def _(PaddingAnalyzer, plt):
-    def plot5(r: PaddingAnalyzer, vmin=-0.25, vmax=.25):
+    def plot5(r: PaddingAnalyzer, vmin=-0.25, vmax=0.25):
         plt.rcParams['figure.figsize'] = [20, 6 * len(r.range)]
         for ir in range(len(r.range)):
-            plt.subplot(100*len(r.range) + 10 + 1*ir + 1)
+            plt.subplot(100 * len(r.range) + 10 + 1 * ir + 1)
             plt.title(r.range[ir])
-            ndelta = r.deltas.shape[2]
-            plt.contourf(r.grid, r.padding_f, r.deltas[:, ir, :], 40, vmin=vmin, vmax=vmax, cmap='bwr')
+            plt.contourf(
+                r.grid,
+                r.padding_f,
+                r.deltas[:, ir, :],
+                40,
+                vmin=vmin,
+                vmax=vmax,
+                cmap='bwr',
+            )
             plt.colorbar()
             plt.show()
 
@@ -66,7 +83,6 @@ def _(np):
     equal_range = np.linspace(0.8, 1.2, 5)
     high_range = np.linspace(2, 10, 9)
 
-    padding = np.arange(1, 21) * 0.5
     return equal_range, high_range, low_range
 
 
@@ -79,9 +95,9 @@ def _(np):
 
 @app.cell
 def _(PaddingAnalyzerDefaults):
-    PaddingAnalyzerDefaults.nmax=6000
-    PaddingAnalyzerDefaults.seed=1333
-    PaddingAnalyzerDefaults.ndims=1
+    PaddingAnalyzerDefaults.nmax = 6000
+    PaddingAnalyzerDefaults.seed = 1333
+    PaddingAnalyzerDefaults.ndims = 1
     return
 
 
@@ -104,7 +120,12 @@ def _(mo):
 @app.cell
 def _(PaddingAnalyzer, low_range, np, padding_1, plot5, storage_area):
     _rpa_short = PaddingAnalyzer(low_range, padding_1, vtype='spherical')
-    np.savez(storage_area / 'spherical_short.npz', grid=_rpa_short.grid, range=_rpa_short.range, padding_f=_rpa_short.padding_f)
+    np.savez(
+        storage_area / 'spherical_short.npz',
+        grid=_rpa_short.grid,
+        range=_rpa_short.range,
+        padding_f=_rpa_short.padding_f,
+    )
     plot5(_rpa_short)
     return
 
@@ -112,7 +133,12 @@ def _(PaddingAnalyzer, low_range, np, padding_1, plot5, storage_area):
 @app.cell
 def _(PaddingAnalyzer, equal_range, np, padding_1, plot5, storage_area):
     _rpa_equal = PaddingAnalyzer(equal_range, padding_1, vtype='spherical')
-    np.savez(storage_area / 'spherical_equal.npz', grid=_rpa_equal.grid, range=_rpa_equal.range, padding_f=_rpa_equal.padding_f)
+    np.savez(
+        storage_area / 'spherical_equal.npz',
+        grid=_rpa_equal.grid,
+        range=_rpa_equal.range,
+        padding_f=_rpa_equal.padding_f,
+    )
     plot5(_rpa_equal)
     return
 
@@ -120,7 +146,12 @@ def _(PaddingAnalyzer, equal_range, np, padding_1, plot5, storage_area):
 @app.cell
 def _(PaddingAnalyzer, high_range, np, padding_1, plot5, storage_area):
     _rpa_high = PaddingAnalyzer(high_range, padding_1, vtype='spherical')
-    np.savez(storage_area / 'spherical_high.npz', grid=_rpa_high.grid, range=_rpa_high.range, padding_f=_rpa_high.padding_f)
+    np.savez(
+        storage_area / 'spherical_high.npz',
+        grid=_rpa_high.grid,
+        range=_rpa_high.range,
+        padding_f=_rpa_high.padding_f,
+    )
     plot5(_rpa_high)
     return
 
@@ -135,14 +166,19 @@ def _(mo):
 
 @app.cell
 def _(PaddingAnalyzerDefaults):
-    PaddingAnalyzerDefaults.nmax=5000
+    PaddingAnalyzerDefaults.nmax = 5000
     return
 
 
 @app.cell
 def _(PaddingAnalyzer, low_range, np, padding_1, plot5, storage_area):
     _rpa_short = PaddingAnalyzer(low_range, padding_1, vtype='gaussian')
-    np.savez(storage_area / 'gaussian_short.npz', grid=_rpa_short.grid, range=_rpa_short.range, padding_f=_rpa_short.padding_f)
+    np.savez(
+        storage_area / 'gaussian_short.npz',
+        grid=_rpa_short.grid,
+        range=_rpa_short.range,
+        padding_f=_rpa_short.padding_f,
+    )
     plot5(_rpa_short)
     return
 
@@ -150,7 +186,12 @@ def _(PaddingAnalyzer, low_range, np, padding_1, plot5, storage_area):
 @app.cell
 def _(PaddingAnalyzer, equal_range, np, padding_1, plot5, storage_area):
     _rpa_equal = PaddingAnalyzer(equal_range, padding_1, vtype='gaussian')
-    np.savez(storage_area / 'gaussian_equal.npz', grid=_rpa_equal.grid, range=_rpa_equal.range, padding_f=_rpa_equal.padding_f)
+    np.savez(
+        storage_area / 'gaussian_equal.npz',
+        grid=_rpa_equal.grid,
+        range=_rpa_equal.range,
+        padding_f=_rpa_equal.padding_f,
+    )
     plot5(_rpa_equal)
     return
 
@@ -158,7 +199,12 @@ def _(PaddingAnalyzer, equal_range, np, padding_1, plot5, storage_area):
 @app.cell
 def _(PaddingAnalyzer, high_range, np, padding_1, plot5, storage_area):
     _rpa_high = PaddingAnalyzer(high_range, padding_1, vtype='gaussian')
-    np.savez(storage_area / 'gaussian_high.npz', grid=_rpa_high.grid, range=_rpa_high.range, padding_f=_rpa_high.padding_f)
+    np.savez(
+        storage_area / 'gaussian_high.npz',
+        grid=_rpa_high.grid,
+        range=_rpa_high.range,
+        padding_f=_rpa_high.padding_f,
+    )
     plot5(_rpa_high)
     return
 
@@ -175,7 +221,7 @@ def _(mo):
 
 @app.cell
 def _(PaddingAnalyzerDefaults):
-    PaddingAnalyzerDefaults.ndims=2
+    PaddingAnalyzerDefaults.ndims = 2
     return
 
 
@@ -191,10 +237,15 @@ def _(
 ):
     PaddingAnalyzerDefaults.nmax = 6000
     _rpa_equal = PaddingAnalyzer(equal_range, padding_1, vtype='spherical')
-    np.savez(storage_area / 'spherical_equal.npz', grid=_rpa_equal.grid, range=_rpa_equal.range, padding_f=_rpa_equal.padding_f)
+    np.savez(
+        storage_area / 'spherical_equal.npz',
+        grid=_rpa_equal.grid,
+        range=_rpa_equal.range,
+        padding_f=_rpa_equal.padding_f,
+    )
     plot5(_rpa_equal)
     return
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run()

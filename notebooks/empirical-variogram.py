@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.19.11"
+__generated_with = '0.19.11'
 app = marimo.App()
 
 
@@ -13,12 +13,13 @@ def _():
 
 @app.cell
 def _():
-    import gaussianfft
     import matplotlib.pyplot as plt
     import numpy as np
-    from scipy.spatial.distance import cdist
+
+    import gaussianfft
     from gaussianfft.util import EmpiricalVariogram
-    plt.rcParams['figure.figsize'] = [10,7]
+
+    plt.rcParams['figure.figsize'] = [10, 7]
     return EmpiricalVariogram, gaussianfft, np, plt
 
 
@@ -27,7 +28,7 @@ def _(EmpiricalVariogram, gaussianfft):
     # Setup
     nx, ny, nz = 200, 200, 1
     dx, dy, dz = 20, 20, 20
-    px, py, pz = 2*nx, 2*ny, 2*nz
+    px, py, pz = 2 * nx, 2 * ny, 2 * nz
     v = gaussianfft.variogram('gaussian', 500, 500, 500)
     ev = EmpiricalVariogram(v, nx, dx, ny, dy, nz, dz, px, py, pz)
 
@@ -41,7 +42,8 @@ def _(mo):
     mo.md(r"""
     # Estimation
 
-    Estimating variance could make sense if we also included variance data from each simulation. As of now, it does not.
+    Estimating variance could make sense if we also included variance data from each simulation.
+    As of now, it does not.
     """)
     return
 
@@ -102,13 +104,28 @@ def _(mo):
     mo.md(r"""
     ## Analysis
 
-    EmpiricalVariogram works when there is sufficient padding. For the longest ranges, we may see some artifacts when the padding is large and the variogram range is short. This could simply be caused by a lack of samples, but that may not be the whole story. To verify this, we should try to run an estimation with a huge number of realizations. Another explanation could actually be numerical noise when calculating the mean. How we choose the reference points have not been tested rigorously, but it appears to be convenient to use a number of realizations.
+    EmpiricalVariogram works when there is sufficient padding.
+    For the longest ranges, we may see some artifacts when the padding is large and the variogram range is short.
+    This could simply be caused by a lack of samples,
+    but that may not be the whole story.
+    To verify this, we should try to run an estimation with a huge number of realizations.
+    Another explanation could actually be numerical noise when calculating the mean.
+    How we choose the reference points have not been tested rigorously,
+    but it appears to be convenient to use a number of realizations.
 
     ## Ways forward for the EmpiricalVariogram class
 
-    - Convergence analysis. We know the true variogram, so we can find, plot and analyze the convergence for each range bin as a function of the number of realizations. This can also be done outside the class, but this may not be as robust (we must at least implement a seeding mechanism). The main purpose of doing this is to identify when we have generated a sufficient number of realizations (for arbitrary input parameters).
-    - Reference point dependent variogram estimation. It may be of interest to differentiate the variograms estimated in each reference point. For symmetric fields, there should ideally be no difference if the number of realizations is sufficiently high
-    - Analyze ringing effects. Can we provoke generation of ringing effects, and will the empirical variogram pick up the effect?
+    - Convergence analysis. We know the true variogram, so we can find,
+      plot and analyze the convergence for each range bin as a function of the number of realizations.
+      This can also be done outside the class,
+      but this may not be as robust (we must at least implement a seeding mechanism).
+      The main purpose of doing this is to identify when we have generated a sufficient number of realizations
+      (for arbitrary input parameters).
+    - Reference point dependent variogram estimation.
+      It may be of interest to differentiate the variograms estimated in each reference point.
+      For symmetric fields, there should ideally be no difference if the number of realizations is sufficiently high
+    - Analyze ringing effects. Can we provoke generation of ringing effects,
+      and will the empirical variogram pick up the effect?
     """)
     return
 
@@ -144,7 +161,9 @@ def _(ev_1):
 
 @app.cell
 def _(dr_1, ev_1, refs_1):
-    midpoints_1, rec_mean_1, n_samples_1, tdata_1, convrg_1 = ev_1.estimate_variogram(5000, dr_1, refs_1, analyze_convergence=10)
+    midpoints_1, rec_mean_1, n_samples_1, tdata_1, convrg_1 = ev_1.estimate_variogram(
+        5000, dr_1, refs_1, analyze_convergence=10
+    )
     return convrg_1, midpoints_1, rec_mean_1
 
 
@@ -263,8 +282,8 @@ def _(EmpiricalVariogram, desired_padding_f, desired_range, gaussianfft, np):
     mid, _, _, _, convrg_2 = ev_2.estimate_variogram(nmax, dr_3, refs_3, analyze_convergence=5)
     output_deltas = np.zeros((len(output_padding), len(desired_range), convrg_2.deltas.shape[1]))
     for _i, _r in enumerate(desired_range):
-    # -----
-        print('*** {}/{} ***'.format(_i, len(desired_range)))
+        # -----
+        print(f'*** {_i}/{len(desired_range)} ***')
         for _j, _p in enumerate(output_padding):
             v_3 = gaussianfft.variogram(vtype, _r * L, _r * L)
             ev_2 = EmpiricalVariogram(v_3, n, d, n, d, 1, 0, _p, _p, _p)
@@ -294,7 +313,13 @@ def _(np, output_deltas, output_padding_f, output_range, plt):
         plt.subplot(510 + ir)
         plt.title(output_range[ir])
         ndelta = output_deltas.shape[2]
-        plt.contourf(np.arange(0, ndelta), output_padding_f, np.abs(output_deltas[:, ir, :]), 40, vmax=0.3)
+        plt.contourf(
+            np.arange(0, ndelta),
+            output_padding_f,
+            np.abs(output_deltas[:, ir, :]),
+            40,
+            vmax=0.3,
+        )
         plt.colorbar()
         plt.show()
     return
@@ -305,6 +330,7 @@ def _(delta_res, mid, np, ou, output_deltas, rl):
     res = np.zeros((len(ou), len(rl), 9))
     for _j in range(output_deltas.shape[0]):
         for _i in range(delta_res.shape[1]):
+            # fmt: off
             res[_j, _i, 0] = np.max(np.abs(delta_res[_j, _i, :]))                    # Max error
             res[_j, _i, 1] = np.max(np.abs(delta_res[_j, _i, :int(0.25*len(mid))]))  # Max error, close
             res[_j, _i, 2] = np.max(np.abs(delta_res[_j, _i, :int(0.5*len(mid))]))   # Max error, half way
@@ -314,6 +340,7 @@ def _(delta_res, mid, np, ou, output_deltas, rl):
             res[_j, _i, 6] = np.sum(np.abs(delta_res[_j, _i, :]))                    # L1 error
             res[_j, _i, 7] = np.sum(np.abs(delta_res[_j, _i, :int(0.25*len(mid))]))  # L1 error, close
             res[_j, _i, 8] = np.sum(np.abs(delta_res[_j, _i, :int(0.5*len(mid))]))   # L1 error, half way
+    # fmt: on
     return (res,)
 
 
@@ -356,7 +383,7 @@ def _(
 
 @app.cell
 def _(convrg_3):
-    convrg_3.deltas.shape
+    convrg_3.deltas.shape  # noqa: B018
     return
 
 
@@ -383,6 +410,7 @@ def _(plt, selected_res):
 @app.cell
 def _(pl_fraction, rl, selected_res):
     from scipy.interpolate import interp2d
+
     finterp = interp2d(pl_fraction, rl, selected_res.T)
     return (finterp,)
 
@@ -410,7 +438,7 @@ def _(gridx, gridy, np, plt, zinterp):
 
 @app.cell
 def _(np, plt, rl):
-    plt.plot(np.exp(5)*rl, 'o')
+    plt.plot(np.exp(5) * rl, 'o')
     return
 
 
@@ -420,5 +448,5 @@ def _(np, selected_res):
     return
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run()

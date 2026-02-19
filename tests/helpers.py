@@ -1,8 +1,8 @@
-import numpy as np
-import numpy.typing as npt
 import math
 from typing import Union
 
+import numpy as np
+import numpy.typing as npt
 
 # This is a pure Python implementation of the chi2 probability distribution
 # which we use in one of the tests.
@@ -18,7 +18,7 @@ class chi2:
         :param x: quantiles
         :param df: degrees of freedom
         :returns: Probability density function evaluated at x"""
-        return 1 / (2 ** (df / 2) * math.gamma(df / 2) ) * x ** (df / 2 - 1) * np.exp(-x / 2)
+        return 1 / (2 ** (df / 2) * math.gamma(df / 2)) * x ** (df / 2 - 1) * np.exp(-x / 2)
 
     @classmethod
     def ppf(cls, q: float, df: int):

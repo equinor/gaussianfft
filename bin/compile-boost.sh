@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-readonly ROOT_DIR="$(cd "$(dirname -- "$0")/.." >/dev/null; pwd -P)"
+readonly ROOT_DIR="$(
+  cd "$(dirname -- "$0")/.." >/dev/null
+  pwd -P
+)"
 
 readonly BOOST_VERSION="${BOOST_VERSION:-${1-}}"
 
@@ -29,23 +32,23 @@ if [[ ! -f b2 ]]; then
   if [ ! -x ./tools/build/src/engine/build.sh ]; then
     chmod +x ./tools/build/src/engine/build.sh
   fi
-./bootstrap.sh \
+  ./bootstrap.sh \
     --prefix="$ROOT_DIR" \
     --with-libraries=filesystem \
     --with-icu || {
-      cat bootstrap.log >/dev/stderr ;
-      exit 1 ;
-    }
+    cat bootstrap.log >/dev/stderr
+    exit 1
+  }
 fi
 
 # Compile necessary modules
 ./b2 \
-    --with-filesystem \
-    -q \
-    cxxflags=-fPIC \
-    cflags=-fPIC \
-    threading=multi \
-    variant=release \
-    link=static \
-    runtime-link=static \
-    stage
+  --with-filesystem \
+  -q \
+  cxxflags=-fPIC \
+  cflags=-fPIC \
+  threading=multi \
+  variant=release \
+  link=static \
+  runtime-link=static \
+  stage

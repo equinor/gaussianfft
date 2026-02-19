@@ -1,20 +1,23 @@
-import pytest
-import gaussianfft as grf
 import numpy as np
 import numpy.typing as npt
+import pytest
+
+import gaussianfft as grf
+
 
 def _cov_mat_genexp(range_: int, n: int, distance: int) -> npt.NDArray[np.double]:
-    """Generate covariance matrix based on a general exponential model.
-    """
+    """Generate covariance matrix based on a general exponential model."""
     c = np.array([((n - i) * distance / range_) ** 1.8 for i in range(2 * n + 1)])
     c = np.exp(-3 * np.abs(c))
     s = np.zeros((n, n))
     for i in range(n):
-        s[i, :] = c[n - i:2 * n - i]
+        s[i, :] = c[n - i : 2 * n - i]
     return s
+
 
 # Values for the tests below have been set based on the specific seed being used above. Using a random seed could
 # cause the tests to fail from time to time.
+
 
 @pytest.fixture
 def simulated_field():
@@ -22,24 +25,31 @@ def simulated_field():
     nx = 500
     dx = 1.0
     grf.seed(12321)
-    field =  grf.simulate(variogram, nx, dx)
-    assert field.shape == (nx, )
+    field = grf.simulate(variogram, nx, dx)
+    assert field.shape == (nx,)
     return field, nx
+
 
 def test_gradient(simulated_field):
     field, _ = simulated_field
     diffs = np.diff(field)
-    assert np.isclose(0.0, np.mean(diffs), atol=1e-2), "The field should not have any overall directional trend"
-    assert np.std(diffs) < 0.1, "Changes between consecutive points should be small and consistent, indicating a relatively smooth field without large, abrupt changes"
-    assert np.max(np.abs(diffs)) < 5 * np.std(diffs), "There should be no large jumps in the field"
+    assert np.isclose(0.0, np.mean(diffs), atol=1e-2), 'The field should not have any overall directional trend'
+    assert np.std(diffs) < 0.1, (
+        'Changes between consecutive points should be small and consistent, indicating a relatively smooth field without large, abrupt changes'
+    )
+    assert np.max(np.abs(diffs)) < 5 * np.std(diffs), 'There should be no large jumps in the field'
+
 
 def test_rolled_gradient(simulated_field):
     # When rolling the field, there should be a spike in the gradient data. Otherwise, the padding used for fft
     # was insufficient
     field, nx = simulated_field
-    diffs = np.diff(np.roll(field, int(nx/2)))
-    assert np.argmax(np.abs(diffs)) == int(nx/2) - 1, "Largest spike in gradient should occur exactly at the point where the field was rolled"
-    assert np.max(np.abs(diffs)) > 15 * np.std(diffs), "Rolling should cause significant changes to the gradient"
+    diffs = np.diff(np.roll(field, int(nx / 2)))
+    assert np.argmax(np.abs(diffs)) == int(nx / 2) - 1, (
+        'Largest spike in gradient should occur exactly at the point where the field was rolled'
+    )
+    assert np.max(np.abs(diffs)) > 15 * np.std(diffs), 'Rolling should cause significant changes to the gradient'
+
 
 def test_chi2():
     # A multivariate normal vector, x, with covariance matrix S, shall satisfy x'(S^-1)x ~ chi2(x.size)

@@ -1,0 +1,99 @@
+default_stages: [pre-commit]
+default_install_hook_types: [pre-commit, commit-msg]
+repos:
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-ast
+        language_version: python3.14
+      - id: check-merge-conflict
+      - id: check-case-conflict
+      - id: check-json
+      - id: check-toml
+      - id: check-yaml
+        args: ['--allow-multiple-documents']
+        exclude: mkdocs.yml
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: mixed-line-ending
+      - id: detect-private-key
+      - id: no-commit-to-branch
+        args: [--branch, main, --branch, master]
+        stages: [commit-msg]
+
+  - repo: https://github.com/google/yamlfmt
+    rev: v0.21.0
+    hooks:
+      - id: yamlfmt
+        args: ["-conf", ".yamlfmt.yml"]
+
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v4.4.0
+    hooks:
+      - id: conventional-pre-commit
+        stages: [commit-msg]
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: "v0.15.1"
+    hooks:
+      - id: ruff-check
+        name: Python lint
+        files: ^.*\.py$
+        args: ["--fix"]
+
+      - id: ruff-format
+        name: Python format
+        files: ^.*\.py$
+
+  - repo: local
+    hooks:
+      - id: check-notebooks
+        name: Check notebooks
+        entry: marimo check ./notebooks
+        files: ^notebooks/.*\.py$
+        pass_filenames: false
+        language: python
+        additional_dependencies:
+          - marimo==0.19.11
+
+  - repo: local
+    hooks:
+      # FIXME: Adjust
+      - id: pyrefly-typecheck
+        name: Typechecking Python
+        entry: pyrefly check
+        language: system
+        pass_filenames: false
+        files: ^.*\.py$
+
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.4.1
+    hooks:
+      - id: codespell
+        name: codespell
+        description: Checks for shared misspellings in text files.
+        entry: codespell
+        language: python
+        types: [text]
+        additional_dependencies:
+          - tomli==2.4.0
+
+  - repo: https://github.com/koalaman/shellcheck-precommit
+    rev: v0.11.0
+    hooks:
+      - id: shellcheck
+
+  - repo: https://github.com/scop/pre-commit-shfmt
+    rev: v3.12.0-2
+    hooks:
+      - id: shfmt  # prebuilt upstream executable
+        args: ["-w", "-i", "2"]
+
+  - repo: https://github.com/equinor/dependency-consistency
+    rev: v3.1.0
+    hooks:
+      - id: consistent-dependencies
+        name: Dependency consistency in hooks
+        args:
+          - "uv.lock"

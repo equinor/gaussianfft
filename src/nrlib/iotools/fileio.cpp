@@ -492,5 +492,3 @@ long long NRLib::Tell(FILE * file)
 #endif
   return(ret);
 }
-
-

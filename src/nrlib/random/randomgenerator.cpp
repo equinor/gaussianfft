@@ -160,4 +160,3 @@ RandomGenerator::InitializeMT(unsigned long seed)
 {
   dsfmt_init_gen_rand(&dsfmt, seed);
 }
-

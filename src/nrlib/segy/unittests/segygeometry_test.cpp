@@ -604,4 +604,3 @@ BOOST_AUTO_TEST_CASE(FindIndexXYToIJLargeGrid)
   BOOST_CHECK_THROW(geometry.FindIndex(406056.0, 6568865.0, i, j), NRLib::Exception);
   BOOST_CHECK_THROW(geometry.FindIndex(442600.0, 6647845.0, i, j), NRLib::Exception);
 }
-

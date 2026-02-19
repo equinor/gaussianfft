@@ -187,5 +187,3 @@ NRLib::Chomp(const std::string& s)
 
   return out;
 }
-
-

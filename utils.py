@@ -3,12 +3,13 @@ import os
 import re
 import subprocess
 import sysconfig
+from collections.abc import Iterable
 from pathlib import Path
-from typing import Iterable, Optional, List, Union
+from typing import List, Optional, Union
 
 
 def preprocess(file: Path, include_directories: Optional[List[str]] = None) -> Optional[List[str]]:
-    cxx = os.environ.get("CXX")
+    cxx = os.environ.get('CXX')
     if cxx:
         # GCC, and older versions of clang may fail if it cannot find references to the #include directives
         # Additionally, the result will not be annotated with -E -dI
@@ -18,27 +19,38 @@ def preprocess(file: Path, include_directories: Optional[List[str]] = None) -> O
         else:
             additional_include_directories = [Path(directory) for directory in include_directories]
         # MSVC uses different arguments and notation than gcc / llvm
-        if re.search(r"^[a-z]:[\\/].*[\\/]Microsoft Visual Studio[\\/].*[\\/]cl.exe", cxx, re.IGNORECASE):
-            preprocessor_args = ("/P", "/showIncludes")
-            include_arg = "/I"
+        if re.search(
+            r'^[a-z]:[\\/].*[\\/]Microsoft Visual Studio[\\/].*[\\/]cl.exe',
+            cxx,
+            re.IGNORECASE,
+        ):
+            preprocessor_args = ('/P', '/showIncludes')
+            include_arg = '/I'
         else:
-            preprocessor_args = ("-E", "-dI")
-            include_arg = "-I"
-        cxx_flags = os.environ.get("CXXFLAGS") or ""
-        res = subprocess.run(" ".join([
-            f'"{cxx}"',
-            *cxx_flags.split(" "),
-            *preprocessor_args,
-            *[f'{include_arg}"{include}"' for include in additional_include_directories],
-            str(file),
-        ]),
+            preprocessor_args = ('-E', '-dI')
+            include_arg = '-I'
+        cxx_flags = os.environ.get('CXXFLAGS') or ''
+        res = subprocess.run(
+            ' '.join(
+                [
+                    f'"{cxx}"',
+                    *cxx_flags.split(' '),
+                    *preprocessor_args,
+                    *[f'{include_arg}"{include}"' for include in additional_include_directories],
+                    str(file),
+                ]
+            ),
             check=False,
             capture_output=True,
             shell=True,
         )
         return [
-            line[0].decode("utf-8").strip()
-            for line in re.findall(b'^((# *[0-9]+ +|Note: including file: +|.*-E -dI).*$)', res.stdout + res.stderr, re.MULTILINE)
+            line[0].decode('utf-8').strip()
+            for line in re.findall(
+                b'^((# *[0-9]+ +|Note: including file: +|.*-E -dI).*$)',
+                res.stdout + res.stderr,
+                re.MULTILINE,
+            )
         ]
 
 
@@ -55,11 +67,11 @@ def is_relative_to(path: Path, other: Union[Path, str]) -> bool:
 
 
 def collect_sources(
-        from_source_files: Iterable[str],
-        ignore: Optional[List[str]] = None,
-        source_dir: str = 'src',
-        use_preprocessor: bool = True,
-        include_directories: Optional[List[str]] = None,
+    from_source_files: Iterable[str],
+    ignore: Optional[List[str]] = None,
+    source_dir: str = 'src',
+    use_preprocessor: bool = True,
+    include_directories: Optional[List[str]] = None,
 ) -> List[str]:
     if ignore is None:
         ignore = []
@@ -105,14 +117,13 @@ def collect_sources(
     completely_preprocessed_pattern = re.compile(r'^ *# *\d+ *' + _name_pattern + r'( \d+)*', re.IGNORECASE)
     msvc_include_pattern = re.compile(r'^Note: including file: +' + _name_group, re.IGNORECASE)
     while len(files_to_be_inspected) > 0:
-
         file = files_to_be_inspected.pop().resolve()
         try:
             file = file.relative_to(root)
         except ValueError:
             # Skip files from the system
             continue
-        if use_preprocessor and is_relative_to(file, sysconfig.get_path("include")):
+        if use_preprocessor and is_relative_to(file, sysconfig.get_path('include')):
             # We are not interested in these files, and some of them should not be used directly
             # which we'll be doing here
             continue

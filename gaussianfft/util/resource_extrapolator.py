@@ -1,6 +1,8 @@
-import gaussianfft.advanced
-import numpy as np
 from time import perf_counter
+
+import numpy as np
+
+import gaussianfft.advanced
 
 
 class ResourceExtrapolator:
@@ -29,32 +31,35 @@ class ResourceExtrapolator:
             t0 = perf_counter()
             self._simulate(vario, n)
             t1 = perf_counter() - t0
-            print('{:4}: {} s'.format(n, t1))
+            print(f'{n:4}: {t1} s')
             data.append((n, t1))
         return data
 
     def _simulate(self, vario, n):
         d = self._grid_length / (n - 1)
-        gaussianfft.advanced.simulate(vario,
-                                n,
-                                d,
-                                n if self.ndims > 1 else 1,
-                                d,
-                                n if self.ndims > 2 else 1,
-                                d,
-                                padx=n,
-                                pady=n,
-                                padz=n)
+        gaussianfft.advanced.simulate(
+            vario,
+            n,
+            d,
+            n if self.ndims > 1 else 1,
+            d,
+            n if self.ndims > 2 else 1,
+            d,
+            padx=n,
+            pady=n,
+            padz=n,
+        )
 
 
 if __name__ == '__main__':
     import matplotlib.pyplot as plt
+
     re = ResourceExtrapolator(nmin=16, nmax=256, nstep=16, ndims=3)
     en = 512
     x, y, sol = re.extrapolate(en, 'exponential')
     plt.loglog(x, y, 'o')
     lref = 1000
-    plt.loglog([lref, en ** re.ndims], [sol * lref, sol * en ** re.ndims])
+    plt.loglog([lref, en**re.ndims], [sol * lref, sol * en**re.ndims])
     plt.title('Line/Square/Cube simulation time')
     plt.legend(['Data', 'Extrapolated'], loc=4)
     plt.xlabel('Number of cells (before padding)')

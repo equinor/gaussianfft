@@ -680,5 +680,3 @@ BOOST_AUTO_TEST_CASE(ParseIBMFloatBETest)
   ParseIBMFloatBE(buf, f);
   BOOST_CHECK_CLOSE_FRACTION(f, 3.14159265e-12, 1e-6);
 }
-
-

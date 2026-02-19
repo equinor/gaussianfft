@@ -114,5 +114,3 @@ operator<<(std::ostream &out, const Polynom<T> &rhs)
 }
 
 } // namespace flens
-
-

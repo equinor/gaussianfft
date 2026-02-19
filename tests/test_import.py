@@ -4,6 +4,7 @@ import unittest
 class TestImport(unittest.TestCase):
     def test_simple(self):
         import gaussianfft
+
         self.assertIn('amplitude', gaussianfft.quote())
 
 

@@ -1,8 +1,8 @@
 from time import perf_counter
 
 import numpy as np
-import gaussianfft
 
+import gaussianfft
 from gaussianfft.util import EmpiricalVariogram
 
 
@@ -20,8 +20,19 @@ class PaddingAnalyzer:
     Class for analyzing the relationship between range and padding and how it affects the estimation of the true
     variogram.
     """
-    def __init__(self, desired_range, desired_padding_f, L=None, n=None, drf=None, nmax=None, vtype='gaussian',
-                 seed=None, ndims=None):
+
+    def __init__(
+        self,
+        desired_range,
+        desired_padding_f,
+        L=None,
+        n=None,
+        drf=None,
+        nmax=None,
+        vtype='gaussian',
+        seed=None,
+        ndims=None,
+    ):
         # Get default values
         n = n or PaddingAnalyzerDefaults.n
         drf = drf or PaddingAnalyzerDefaults.DRF
@@ -52,12 +63,14 @@ class PaddingAnalyzer:
         self.deltas = np.zeros((len(output_padding), len(desired_range), convrg.deltas.shape[1]))
         t0 = perf_counter()
         for i, r in enumerate(desired_range):
-            print("*** {}/{} ***".format(i, len(desired_range)))
-            print("  Total time spent: {:.2f}".format(perf_counter() - t0))
+            print(f'*** {i}/{len(desired_range)} ***')
+            print(f'  Total time spent: {perf_counter() - t0:.2f}')
             for j, p in enumerate(output_padding):
                 v, ev = self.create_variograms(r, p, ndims, d, n, L, vtype)
                 refs = ev.pick_reference_points('origo')
-                mid, _, _, _, convrg = ev.estimate_variogram(nmax, dr, refs, analyze_convergence=self._convergence_step)
+                mid, _, _, _, convrg = ev.estimate_variogram(
+                    nmax, dr, refs, analyze_convergence=self._convergence_step
+                )
                 self.deltas[j, i, :] = convrg.deltas[-1]
 
         self.range = desired_range
@@ -72,5 +85,5 @@ class PaddingAnalyzer:
             v = gaussianfft.variogram(vtype, rrange * L, rrange * L)
             ev = EmpiricalVariogram(v, n, d, n, d, 1, 0, padding, padding, padding)
         else:
-            raise NotImplementedError("Padding analyzer is not implemented for {} dimensions.".format(ndims))
+            raise NotImplementedError(f'Padding analyzer is not implemented for {ndims} dimensions.')
         return v, ev

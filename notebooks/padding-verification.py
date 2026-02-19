@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.19.11"
+__generated_with = '0.19.11'
 app = marimo.App()
 
 
@@ -13,9 +13,11 @@ def _():
 
 @app.cell
 def _():
-    import gaussianfft
-    import numpy as np
     import matplotlib.pyplot as plt
+    import numpy as np
+
+    import gaussianfft
+
     plt.rcParams['figure.figsize'] = [12, 7]
     return gaussianfft, np, plt
 
@@ -23,14 +25,17 @@ def _():
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    This notebook investigates the hypothesis that $L/r > 3$ in order to generate a valid simulation result. $L$ is the length of padding + grid size and $r$ is the range of the variogram. The intention is to try different cases, set the padding according to this rule and inspect simulated realizations.
+    This notebook investigates the hypothesis that $L/r > 3$ in order to generate a valid simulation result.
+    $L$ is the length of padding + grid size and $r$ is the range of the variogram.
+    The intention is to try different cases,
+    set the padding according to this rule and inspect simulated realizations.
     """)
     return
 
 
 @app.function
 def find_padding(n, d, r):
-    return int(max(3 * r/d - 1, 0))
+    return int(max(3 * r / d - 1, 0))
 
 
 @app.cell
@@ -39,11 +44,11 @@ def _(gaussianfft, np, plt):
         # Function that relies on data in the global scope
         gaussianfft.seed(121314)
         print('Running simulation with padding')
-        print('  {} {}'.format(px, py))
+        print(f'  {px} {py}')
         z_vec = gaussianfft.advanced.simulate(v, nx, dx, ny, dy, padx=px, pady=py)
         z = np.array(z_vec).reshape((nx, ny), order='F')
 
-        plt.contourf(np.arange(0, nx)*dx, np.arange(0, ny)*dy, z.T, 30)
+        plt.contourf(np.arange(0, nx) * dx, np.arange(0, ny) * dy, z.T, 30)
         plt.colorbar()
         plt.show()
 
@@ -56,21 +61,21 @@ def _(gaussianfft, np, plt):
         # Function that relies on data in the global scope
         gaussianfft.seed(121314)
         print('Running simulation with padding')
-        print('  {} {} {}'.format(px, py, pz))
+        print(f'  {px} {py} {pz}')
         z_vec = gaussianfft.advanced.simulate(v, nx, dx, ny, dy, nz, dz, px, py, pz)
         z = np.array(z_vec).reshape((nx, ny, nz), order='F')
 
-        plt.contourf(np.arange(0, ny)*dy, np.arange(0, nz)*dz, z[int(nx/2), :, :].T, 30)
+        plt.contourf(np.arange(0, ny) * dy, np.arange(0, nz) * dz, z[int(nx / 2), :, :].T, 30)
         plt.title('YZ-slice')
         plt.colorbar()
         plt.show()
 
-        plt.contourf(np.arange(0, nx)*dx, np.arange(0, nz)*dz, z[:, int(ny/2), :].T, 30)
+        plt.contourf(np.arange(0, nx) * dx, np.arange(0, nz) * dz, z[:, int(ny / 2), :].T, 30)
         plt.title('XZ-slice')
         plt.colorbar()
         plt.show()
 
-        plt.contourf(np.arange(0, nx)*dx, np.arange(0, ny)*dy, z[:, :, int(nz/2)].T, 30)
+        plt.contourf(np.arange(0, nx) * dx, np.arange(0, ny) * dy, z[:, :, int(nz / 2)].T, 30)
         plt.title('XY-slice')
         plt.colorbar()
         plt.show()
@@ -104,12 +109,12 @@ def _(gaussianfft, run_and_plot_simulation):
 
         run_and_plot_simulation(v, px, py, nx, ny, dx, dy)
 
-        px = int(find_padding(nx, dx, rx)/2)
-        py = int(find_padding(ny, dy, ry)/2)
+        px = int(find_padding(nx, dx, rx) / 2)
+        py = int(find_padding(ny, dy, ry) / 2)
         run_and_plot_simulation(v, px, py, nx, ny, dx, dy)
 
-        px = int(find_padding(nx, dx, rx)/4)
-        py = int(find_padding(ny, dy, ry)/4)
+        px = int(find_padding(nx, dx, rx) / 4)
+        py = int(find_padding(ny, dy, ry) / 4)
         run_and_plot_simulation(v, px, py, nx, ny, dx, dy)
 
     _()
@@ -142,6 +147,7 @@ def _(gaussianfft, run_and_plot_simulation):
         px = int(find_padding(nx, dx, rx) / 4)
         py = int(find_padding(ny, dy, ry) / 4)
         return run_and_plot_simulation(v, px, py, nx, ny, dx, dy)
+
     _()
     return
 
@@ -175,6 +181,7 @@ def _(gaussianfft, run_and_plot_simulation):
         px = int(find_padding(nx, dx, rx) / 4)
         py = int(find_padding(ny, dy, ry) / 4)
         run_and_plot_simulation(v, px, py, nx, ny, dx, dy)
+
     _()
     return
 
@@ -208,6 +215,7 @@ def _(gaussianfft, run_and_plot_simulation):
         px = int(find_padding(nx, dx, rx) / 4)
         py = int(find_padding(ny, dy, ry) / 4)
         run_and_plot_simulation(v, px, py, nx, ny, dx, dy)
+
     _()
     return
 
@@ -233,6 +241,7 @@ def _(gaussianfft, run_and_plot_simulation):
         px = int(find_padding(nx, dx, rx) / 4)
         py = int(find_padding(ny, dy, ry) / 4)
         run_and_plot_simulation(v, px, py, nx, ny, dx, dy)
+
     _()
     return
 
@@ -266,6 +275,7 @@ def _(gaussianfft, run_and_plot_simulation):
         px = int(find_padding(nx, dx, rx) / 4)
         py = int(find_padding(ny, dy, ry) / 4)
         run_and_plot_simulation(v, px, py, nx, ny, dx, dy)
+
     _()
     return
 
@@ -294,6 +304,7 @@ def _(dx, dy, dz, nx, ny, nz, run_and_plot_simulation3d, rx, ry, rz, v):
         py = find_padding(ny, dy, ry)
         pz = find_padding(nz, dz, rz)
         run_and_plot_simulation3d(v, px, py, pz, nx, ny, nz, dx, dy, dz)
+
     _()
     return
 
@@ -305,9 +316,10 @@ def _(dx, dy, dz, nx, ny, nz, run_and_plot_simulation3d, rx, ry, rz, v):
         py = int(find_padding(ny, dy, ry) / 8)
         pz = int(find_padding(nz, dz, rz) / 8)
         run_and_plot_simulation3d(v, px, py, pz, nx, ny, nz, dx, dy, dz)
+
     _()
     return
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run()

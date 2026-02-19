@@ -1,14 +1,16 @@
 import marimo
 
-__generated_with = "0.19.11"
+__generated_with = '0.19.11'
 app = marimo.App()
 
 
 @app.cell
 def _():
-    import gaussianfft
     import matplotlib.pyplot as plt
     import numpy as np
+
+    import gaussianfft
+
     # plt.rcParams['figure.figsize'] = [15, 10]
     return gaussianfft, np, plt
 
@@ -23,8 +25,7 @@ def _(gaussianfft):
 def _(np, v):
     x = np.linspace(0, 2.0, 100)
     corr = np.array([v.corr(d) for d in x])
-    k = 0.5
-    smoothing = np.exp(-0.5 * x ** 2)
+    smoothing = np.exp(-0.5 * x**2)
     return corr, smoothing, x
 
 
@@ -57,9 +58,9 @@ def _(corr, np):
 
 @app.cell
 def _(corr):
-    corr
+    corr  # noqa: B018
     return
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run()

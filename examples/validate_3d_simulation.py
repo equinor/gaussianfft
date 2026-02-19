@@ -1,5 +1,6 @@
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
+
 import gaussianfft as grf
 
 
@@ -29,24 +30,24 @@ def example_box():
     lin_y = np.arange(0, ny) * dy
     lin_z = np.arange(0, nz) * dz
     fig = plot_3d_mid_slices(field3d, lin_x, lin_y, lin_z)
-    fig.suptitle('Azimuth = {}, Dip = {}'.format(az, dip))
+    fig.suptitle(f'Azimuth = {az}, Dip = {dip}')
     plt.show()
 
 
 def plot_3d_using_imshow(field3d):
     plt.subplot(131)
     nx, ny, nz = field3d.shape
-    plt.imshow(field3d[int(nx/2), :, :], interpolation='None')
+    plt.imshow(field3d[int(nx / 2), :, :], interpolation='None')
     plt.colorbar(orientation='horizontal')
     plt.title('x-slice')
 
     plt.subplot(132)
-    plt.imshow(field3d[:, int(ny/2), :], interpolation='None')
+    plt.imshow(field3d[:, int(ny / 2), :], interpolation='None')
     plt.colorbar(orientation='horizontal')
     plt.title('y-slice')
 
     plt.subplot(133)
-    plt.imshow(field3d[:, :, int(nz/2)], interpolation='None')
+    plt.imshow(field3d[:, :, int(nz / 2)], interpolation='None')
     plt.colorbar(orientation='horizontal')
     plt.title('z-slice')
 
@@ -58,21 +59,21 @@ def plot_3d_mid_slices(field3d, lin_x, lin_y, lin_z):
 
     ax1 = fig.add_subplot(131)
     nx, ny, nz = field3d.shape
-    ax1.contourf(lin_y, lin_z, field3d[int(nx/2), :, :].T, 30)
+    ax1.contourf(lin_y, lin_z, field3d[int(nx / 2), :, :].T, 30)
     ax1.set_aspect('equal')
     ax1.set_xlabel('E')
     ax1.set_ylabel('Z')
     ax1.set_title('x-slice/North-slice')
 
     ax2 = fig.add_subplot(132)
-    ax2.contourf(lin_x, lin_z, field3d[:, int(ny/2), :].T, 30)
+    ax2.contourf(lin_x, lin_z, field3d[:, int(ny / 2), :].T, 30)
     ax2.set_aspect('equal')
     ax2.set_xlabel('N')
     ax2.set_ylabel('Z')
     ax2.set_title('y-slice/East-slice')
 
     ax3 = fig.add_subplot(133)
-    ax3.contourf(lin_y, lin_x, field3d[:, :, int(nz/2)], 30)
+    ax3.contourf(lin_y, lin_x, field3d[:, :, int(nz / 2)], 30)
     ax3.set_aspect('equal')
     ax3.set_xlabel('E')
     ax3.set_ylabel('N')
@@ -84,16 +85,17 @@ def plot_3d_mid_slices(field3d, lin_x, lin_y, lin_z):
 
 if __name__ == '__main__':
     import sys
+
     examples = {
         'box': example_box,
         'cube': example_cube,
     }
     if len(sys.argv) != 2 or sys.argv[1] not in examples:
-        print("Run as")
-        print("  [python] {} <example>".format("validate_3d_simulation"))
-        print("")
-        print("  <example> being one of:")
+        print('Run as')
+        print('  [python] {} <example>'.format('validate_3d_simulation'))
+        print('')
+        print('  <example> being one of:')
         for f in examples.keys():
-            print("    " + f)
+            print('    ' + f)
     else:
         examples[sys.argv[1]]()

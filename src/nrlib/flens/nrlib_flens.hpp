@@ -281,4 +281,3 @@ namespace NRLib {
 } // namespace NRLib
 
 #endif // NRLIB_FLENS_HPP
-

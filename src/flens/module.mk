@@ -33,4 +33,3 @@ SRC += flens/aux_complex.cc \
 
 ##-static -Wl,--start-group $(MKLLIBPATH)/libmkl_intel_lp64.a $(MKLLIBPATH)/libmkl_sequential.a $(MKLLIBPATH)/libmkl_core.a -Wl,--end-group
 #--------------------------------------------
-

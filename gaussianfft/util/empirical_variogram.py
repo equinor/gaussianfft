@@ -1,12 +1,11 @@
 import random
 from time import perf_counter
 
-import gaussianfft
 import numpy as np
 from scipy.spatial.distance import cdist
 from scipy.stats import binned_statistic
 
-from gaussianfft.util.empirical_variogram2 import EmpiricalVariogram2
+import gaussianfft
 
 
 class EmpiricalVariogram:
@@ -15,9 +14,9 @@ class EmpiricalVariogram:
         self.dx, self.dy, self.dz = dx, dy, dz
         self.px, self.py, self.pz = px, py, pz
         self.v = v
-        self.points, self.indexes = EmpiricalVariogram.find_grid_points(self.nx, self.dx,
-                                                                        self.ny, self.dy,
-                                                                        self.nz, self.dz)
+        self.points, self.indexes = EmpiricalVariogram.find_grid_points(
+            self.nx, self.dx, self.ny, self.dy, self.nz, self.dz
+        )
         self.tuple_indexes = [tuple(i) for i in self.indexes]
 
     def estimate_variogram(self, nmax, resolution, reference_points, analyze_convergence=0):
@@ -63,7 +62,7 @@ class EmpiricalVariogram:
             t3 = perf_counter() - t2
             tdata['est'].append(t3)
             if analyze_convergence > 0 and not i % analyze_convergence:
-                ca.feed(accumulated_sum/(i+1))
+                ca.feed(accumulated_sum / (i + 1))
         accumulated_mean = accumulated_sum / nmax
         return midpoints, accumulated_mean, n_samples, tdata, ca
 
@@ -98,13 +97,13 @@ class EmpiricalVariogram:
         elif strategy == 'origo':
             reference_points = [(0, 0, 0)]
         elif strategy == 'center':
-            reference_points = [(int(self.nx/2), int(self.ny/2), int(self.nz/2))]
+            reference_points = [(int(self.nx / 2), int(self.ny / 2), int(self.nz / 2))]
         elif strategy == 'random':
             reference_points = random.sample(self.tuple_indexes, n)
         elif strategy == 'regular':
-            reference_points = self.tuple_indexes[offset::int(len(self.tuple_indexes)/n)]
+            reference_points = self.tuple_indexes[offset :: int(len(self.tuple_indexes) / n)]
         else:
-            raise ValueError("Invalid strategy '{}'".format(strategy))
+            raise ValueError(f"Invalid strategy '{strategy}'")
         return reference_points
 
     """********************************************************"""
@@ -129,7 +128,7 @@ class EmpiricalVariogram:
         dists, deltas = self.calculate_deltas(grid, ref)
         dists = dists.flatten()
         deltas2 = np.square(deltas)
-        nbins = int(np.max(dists)/resolution)
+        nbins = int(np.max(dists) / resolution)
         mean_stats, edges, _ = binned_statistic(dists, deltas2, statistic='mean', bins=nbins)
         return mean_stats, edges
 
@@ -139,11 +138,17 @@ class EmpiricalVariogram:
         return edges[:-1] + np.diff(edges)[0]
 
     def simulate(self):
-        s = gaussianfft.advanced.simulate(self.v,
-                                    self.nx, self.dx,
-                                    self.ny, self.dy,
-                                    self.nz, self.dz,
-                                    padx=self.px, pady=self.py, padz=self.pz)
+        s = gaussianfft.advanced.simulate(
+            self.v,
+            # fmt: off
+            self.nx, self.dx,
+            self.ny, self.dy,
+            self.nz, self.dz,
+            # fmt: on
+            padx=self.px,
+            pady=self.py,
+            padz=self.pz,
+        )
         s = np.array(s).reshape((self.nx, self.ny, self.nz), order='F')
         return s
 
@@ -158,7 +163,7 @@ class EmpiricalVariogram:
         p_idx = self.tuple_indexes.index(ref)
         dists = cdist(self.points[p_idx].reshape((1, 3)), self.points)
         dists = dists.flatten()
-        s_values = [np.sqrt((1-self.v.corr(d)) * 2) for d in dists]
+        s_values = [np.sqrt((1 - self.v.corr(d)) * 2) for d in dists]
         s = np.zeros((self.nx, self.ny, self.nz))
         s[self.indexes[:, 0], self.indexes[:, 1], self.indexes[:, 2]] = s_values
         return s

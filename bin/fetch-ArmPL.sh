@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-readonly ROOT_DIR="$(cd "$(dirname -- "$0")/.." >/dev/null; pwd -P)"
+readonly ROOT_DIR="$(
+  cd "$(dirname -- "$0")/.." >/dev/null
+  pwd -P
+)"
 
 function abort() {
   echo "$1" >/dev/stderr
@@ -25,7 +28,6 @@ readonly ARMPL_DIR="$ROOT_DIR/sources/arm-performance-libraries"
 ARMPL_SOURCES="$ARMPL_DIR/$ARMPL_VERSION"
 mkdir -p "$ARMPL_DIR"
 
-
 if [[ $OS == "Darwin" ]]; then
   ARMPL_SOURCES="$ARMPL_SOURCES/macOS"
   readonly ARMPL_ARCHIVE="$ARMPL_DIR/${ARMPL_VERSION}_macOS.dmg"
@@ -45,8 +47,8 @@ if [[ $OS == "Darwin" ]]; then
 
     # Install the libraries
     "$VOLUME/armpl_${ARMPL_VERSION}_flang-new_clang_17_install.sh" \
-        --install_dir="$ARMPL_SOURCES" \
-        -y
+      --install_dir="$ARMPL_SOURCES" \
+      -y
     diskutil unmount "$VOLUME"
 
     readonly install_dir=$(find "$ARMPL_SOURCES" -name "armpl_${ARMPL_VERSION}*" -type d)

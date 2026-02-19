@@ -87,4 +87,3 @@ void EclipseTransMult::WriteMultiply(std::ofstream                     & out_fil
 
 
 } // namespace NRLib
-

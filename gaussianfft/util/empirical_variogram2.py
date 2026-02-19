@@ -1,7 +1,8 @@
-import gaussianfft
 import numpy as np
 from scipy.sparse.csgraph._traversal import connected_components
-from scipy.spatial.distance import cdist, squareform, pdist
+from scipy.spatial.distance import cdist, pdist, squareform
+
+import gaussianfft
 
 
 class EmpiricalVariogram2:
@@ -11,6 +12,7 @@ class EmpiricalVariogram2:
     """
     Estimates the variogram, given the provided parameters.
     """
+
     def __init__(self, v: gaussianfft.Variogram, nx, ny, nz, px, py, pz, close_range, step):
         """
         Creates a variogram estimation class.
@@ -22,17 +24,17 @@ class EmpiricalVariogram2:
         :param px:  Number of cells to pad with in x-direction
         :param py:                                 y-direction
         :param pz:                                 z-direction
-        :param close_range:  Float value defining the range that is considered 'close'. All points within this range are
-                             included in the estimation
+        :param close_range:  Float value defining the range that is considered 'close'.
+                             All points within this range are included in the estimation
         :param step:  Sampling resolution in number of cells when beyond close range.
         """
         self.nx, self.ny, self.nz = nx, ny, nz
         self.dx, self.dy, self.dz = 1.0, 1.0, 1.0
         self.px, self.py, self.pz = px, py, pz
         self.v = v
-        self.points, self.indexes = EmpiricalVariogram2.find_grid_points(self.nx, self.dx,
-                                                                         self.ny, self.dy,
-                                                                         self.nz, self.dz)
+        self.points, self.indexes = EmpiricalVariogram2.find_grid_points(
+            self.nx, self.dx, self.ny, self.dy, self.nz, self.dz
+        )
         self.tuple_indexes = [tuple(i) for i in self.indexes]
         self.dists_from_ref = self._calculate_dists()
 
@@ -40,10 +42,7 @@ class EmpiricalVariogram2:
         self.ix_short_points = self.dists_from_ref < close_range
 
         # Indexes for sample points
-        self.ix_sample_points = np.array([
-            all((j % step == 0) for j in i)
-            for i in self.tuple_indexes
-        ], dtype=bool)
+        self.ix_sample_points = np.array([all((j % step == 0) for j in i) for i in self.tuple_indexes], dtype=bool)
 
         self.short_bins = self._find_distance_bins(self.ix_short_points)
         self.sample_bins = self._find_distance_bins(self.ix_sample_points)
@@ -52,6 +51,7 @@ class EmpiricalVariogram2:
         self.s = None
 
     """ External function """
+
     def estimate_variogram(self, nmax):
         vdata_short, vdata_sample = self._estimate_variogram_data(nmax)
         x_short = self.short_bins[2]
@@ -63,6 +63,7 @@ class EmpiricalVariogram2:
         return (x_short, y_short, y_err_short), (x_sample, y_sample, y_err_sample)
 
     """ Initialization """
+
     def _calculate_dists(self):
         p_idx = self.tuple_indexes.index(EmpiricalVariogram2.reference_point)
         dists = cdist(self.points[p_idx].reshape((1, 3)), self.points)
@@ -73,23 +74,27 @@ class EmpiricalVariogram2:
         pairwise_dists = squareform(pdist(dists.reshape((-1, 1))))
         closeness = pairwise_dists < 1e-10
         n_comps, labels = connected_components(closeness, False)
-        groups = [
-            np.argwhere(labels == i).flatten()
-            for i in range(n_comps)
-        ]
+        groups = [np.argwhere(labels == i).flatten() for i in range(n_comps)]
         group_dists = [dists[g[0]] for g in groups]
         return n_comps, groups, group_dists
 
     """ Estimation, internal functions """
+
     def _simulate(self):
-        s = gaussianfft.advanced.simulate(self.v,
-                                    self.nx, self.dx,
-                                    self.ny, self.dy,
-                                    self.nz, self.dz,
-                                    padx=self.px, pady=self.py, padz=self.pz,
-                                    sx=EmpiricalVariogram2.smoothing,
-                                    sy=EmpiricalVariogram2.smoothing,
-                                    sz=EmpiricalVariogram2.smoothing)
+        s = gaussianfft.advanced.simulate(
+            self.v,
+            # fmt: off
+            self.nx, self.dx,
+            self.ny, self.dy,
+            self.nz, self.dz,
+            # fmt: on
+            padx=self.px,
+            pady=self.py,
+            padz=self.pz,
+            sx=EmpiricalVariogram2.smoothing,
+            sy=EmpiricalVariogram2.smoothing,
+            sz=EmpiricalVariogram2.smoothing,
+        )
         self.s = np.array(s).reshape((self.nx, self.ny, self.nz), order='F')
         return self.s
 
@@ -135,6 +140,7 @@ class EmpiricalVariogram2:
 
 if __name__ == '__main__':
     import matplotlib.pyplot as plt
+
     # Next steps:
     # - structured testing of the parameters. Verify the hypothesis that 4x range is sufficient
     # - 1D verification that the estimation is working as intended.
@@ -153,19 +159,19 @@ if __name__ == '__main__':
         # plt.title('n+p={}, range={}'.format(nx + px, r))
         plt.title('Variogram estimation')
         plt.xlabel('Distance')
-        plt.ylabel('Variogram value, $\gamma$')
+        plt.ylabel(r'Variogram value, $\gamma$')
         plt.plot(x_short, 0.5 * y_short, '.b', label='Empirical')
         plt.plot(x_sample, 0.5 * y_sample, '.b', label='_nolegend_')
         plt.grid()
 
-        x_true = np.linspace(0, np.sqrt(nx ** 2 + ny ** 2 + nz ** 2), 100)
+        x_true = np.linspace(0, np.sqrt(nx**2 + ny**2 + nz**2), 100)
         y_true = [1.0 - v.corr(x) for x in x_true]
         plt.plot(x_true, y_true, '-k', label='True')
         plt.legend(loc=4)
         plt.xlim([0, 141])
 
         plt.subplot(122)
-        plt.imshow(ev.s[:, :, int(ev.s.shape[2]/2)], interpolation='None')
+        plt.imshow(ev.s[:, :, int(ev.s.shape[2] / 2)], interpolation='None')
         plt.title('Sample realization')
 
         plt.show()
@@ -176,12 +182,12 @@ if __name__ == '__main__':
         # plt.title('n+p={}, range={}'.format(nx + px, r))
         plt.title('Variogram estimation')
         plt.xlabel('Distance')
-        plt.ylabel('Variogram value, $\gamma$')
+        plt.ylabel(r'Variogram value, $\gamma$')
         plt.plot(x_short, 0.5 * y_short, '.b', label='Empirical')
         plt.plot(x_sample, 0.5 * y_sample, '.b', label='_nolegend_')
         plt.grid()
 
-        x_true = np.linspace(0, np.sqrt(nx ** 2 + ny ** 2 + nz ** 2), 100)
+        x_true = np.linspace(0, np.sqrt(nx**2 + ny**2 + nz**2), 100)
         y_true = [1.0 - v.corr(x) for x in x_true]
         plt.plot(x_true, y_true, '-k', label='True', lw=2)
 
@@ -189,16 +195,16 @@ if __name__ == '__main__':
 
         if plot_method == 2:
             # Include the smoothed variogram
-            y_smooth = [1.0 - v.corr(x) * EmpiricalVariogram2.smoothing ** ((x/r)**2) for x in x_true]
+            y_smooth = [1.0 - v.corr(x) * EmpiricalVariogram2.smoothing ** ((x / r) ** 2) for x in x_true]
             plt.plot(x_true, y_smooth, '-r', lw=2, label='Smoothed')
         plt.legend(loc=4)
 
         plt.subplot(122)
         diffs = []
         for x, y in zip(x_short, y_short):
-            diffs.append(0.5*y - (1.0 - v.corr(x)))
+            diffs.append(0.5 * y - (1.0 - v.corr(x)))
         for x, y in zip(x_sample, y_sample):
-            diffs.append(0.5*y - (1.0 - v.corr(x)))
+            diffs.append(0.5 * y - (1.0 - v.corr(x)))
         plt.plot(x_short + x_sample, diffs, '.b')
         plt.xlim([0, 141])
         plt.plot([0, 141], [0, 0], 'k', lw=2)
@@ -208,4 +214,3 @@ if __name__ == '__main__':
         plt.ylim([-yl, yl])
         plt.title('Difference')
         plt.show()
-

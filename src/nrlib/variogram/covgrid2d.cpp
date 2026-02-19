@@ -125,4 +125,3 @@ CovGrid2D::WriteToFile(const std::string & name) const
   file << std::endl;
   file.close();
 }
-

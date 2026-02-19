@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.19.11"
+__generated_with = '0.19.11'
 app = marimo.App()
 
 
@@ -13,9 +13,11 @@ def _():
 
 @app.cell
 def _():
-    import gaussianfft
-    import numpy as np
     import matplotlib.pyplot as plt
+    import numpy as np
+
+    import gaussianfft
+
     plt.rcParams['figure.figsize'] = [15.0, 10.0]
     return gaussianfft, np, plt
 
@@ -42,11 +44,9 @@ def _(gaussianfft, np):
 @app.cell
 def _(lx, ly, lz, nx, ny, nz, plt):
     use_NED = True  # North-East-Down
+
     def plotx(f):
-        plt.contourf(ly,
-                     lz,
-                     f[int(nx/2), :, :].T,
-                     40)
+        plt.contourf(ly, lz, f[int(nx / 2), :, :].T, 40)
         if use_NED:
             plt.xlabel('East')
             plt.ylabel('Down')
@@ -55,10 +55,7 @@ def _(lx, ly, lz, nx, ny, nz, plt):
             plt.ylabel('z')
 
     def ploty(f):
-        plt.contourf(lx,
-                     lz,
-                     f[:, int(ny/2), :].T,
-                     40)
+        plt.contourf(lx, lz, f[:, int(ny / 2), :].T, 40)
         if use_NED:
             plt.xlabel('North')
             plt.ylabel('Down')
@@ -68,17 +65,11 @@ def _(lx, ly, lz, nx, ny, nz, plt):
 
     def plotz(f):
         if use_NED:
-            plt.contourf(ly,
-                         lx,
-                         f[:, :, int(nz/2)],
-                         40)
+            plt.contourf(ly, lx, f[:, :, int(nz / 2)], 40)
             plt.xlabel('East')
             plt.ylabel('North')
         else:
-            plt.contourf(lx,
-                         ly,
-                         f[:, :, int(nz/2)].T,
-                         40)
+            plt.contourf(lx, ly, f[:, :, int(nz / 2)].T, 40)
             plt.xlabel('x')
             plt.ylabel('y')
 
@@ -191,5 +182,5 @@ def _(complete_plot, sim):
     return
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run()

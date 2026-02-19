@@ -669,4 +669,3 @@ Trend2DStorage::GenerateTrend(const std::string                       & path,
   return trend;
 
 }
-

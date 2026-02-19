@@ -121,3 +121,33 @@ sdist.exclude = [
 write_to = "gaussianfft/_version.py"
 # This should only be present on CI
 local_scheme = "no-local-version"
+
+[tool.ruff]
+target-version = "py39"
+line-length = 119
+
+[tool.ruff.lint]
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "S",  # flake8-bandit
+    "C",  # flake8-comprehensions
+    "B",  # flake8-bugbear
+    "UP", # automatically upgrade syntax for newer versions of the language
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101"]  # Allow the use of ´assert´ in tests
+
+[tool.ruff.format]
+quote-style = "single"
+
+[tool.pyrefly]
+search-path = [
+    ".",
+    "gaussianfft",
+    "notebooks",
+    "examples",
+]

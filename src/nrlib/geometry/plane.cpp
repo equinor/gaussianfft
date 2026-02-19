@@ -166,4 +166,3 @@ bool Plane::IsOnPositiveSide(const NRLib::Point& p_in)
     return true;
   return false;
 }
-

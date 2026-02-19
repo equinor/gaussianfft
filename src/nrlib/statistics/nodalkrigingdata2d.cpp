@@ -168,4 +168,3 @@ NodalKrigingData2D::AddDataToBlock(KrigingData2D & kriging_data_block,
             kriging_data_block_tmp.AddData(static_cast<int>(index_i), static_cast<int>(index_j), data_[k]);
   }
 }
-

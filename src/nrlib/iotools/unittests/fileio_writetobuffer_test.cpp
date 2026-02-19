@@ -920,4 +920,3 @@ BOOST_AUTO_TEST_CASE(WriteIBMFloatBETest)
   BOOST_CHECK_EQUAL(buffer[2], 0x44);
   BOOST_CHECK_EQUAL(buffer[3], 0x79);
 }
-

@@ -1115,4 +1115,3 @@ void Kriging::FillKrigingVector(NRLib::Vector             & k,
     k(i) = var.GetCov(deltax, deltay);
   }
 }
-

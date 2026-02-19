@@ -184,10 +184,3 @@ void Grid5D<A>::Swap(NRLib::Grid5D<A> &other)
 
 }
 #endif
-
-
-
-
-
-
-

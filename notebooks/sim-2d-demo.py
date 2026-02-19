@@ -1,14 +1,16 @@
 import marimo
 
-__generated_with = "0.19.11"
+__generated_with = '0.19.11'
 app = marimo.App()
 
 
 @app.cell
 def _():
-    import gaussianfft
-    import numpy as np
     import matplotlib.pyplot as plt
+    import numpy as np
+
+    import gaussianfft
+
     # '%matplotlib inline' command supported automatically in marimo
     plt.rcParams['figure.figsize'] = [15, 10]
     return gaussianfft, np, plt
@@ -84,5 +86,5 @@ def _(dx, dy, gaussianfft, np, nx, ny, plt, v):
     return
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run()

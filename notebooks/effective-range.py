@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.19.11"
+__generated_with = '0.19.11'
 app = marimo.App()
 
 
@@ -13,9 +13,11 @@ def _():
 
 @app.cell
 def _():
-    import numpy as np
-    import gaussianfft
     import matplotlib.pyplot as plt
+    import numpy as np
+
+    import gaussianfft
+
     np.random.seed(123)
     # '%matplotlib inline' command supported automatically in marimo
     return gaussianfft, np, plt
@@ -24,8 +26,8 @@ def _():
 @app.cell
 def _(np):
     def corr_to_filter(ccc, LLL, XXX):
-        dx = LLL/XXX.size
-        return np.real(np.fft.ifft(np.sqrt(np.fft.fft(ccc) * dx)) / dx )
+        dx = LLL / XXX.size
+        return np.real(np.fft.ifft(np.sqrt(np.fft.fft(ccc) * dx)) / dx)
 
     return (corr_to_filter,)
 
@@ -76,8 +78,8 @@ def _(X, f, np, plt):
 
 @app.cell
 def _(f, np, plt):
-    f2 = (f - np.min(f))
-    f2 = f2/np.max(f2)
+    f2 = f - np.min(f)
+    f2 = f2 / np.max(f2)
     plt.plot(f2)
     return (f2,)
 
@@ -90,7 +92,7 @@ def _(f2, np, plt, w):
 
 @app.cell
 def _(X, f, np):
-    f3 = f * np.exp(-np.square((X-np.max(X)/2.0)*2))
+    f3 = f * np.exp(-np.square((X - np.max(X) / 2.0) * 2))
     return (f3,)
 
 
@@ -118,34 +120,44 @@ def _(mo):
 
 @app.cell
 def _():
-    import scipy.optimize as so
     from collections import OrderedDict
+    from functools import partial
 
-    return OrderedDict, so
+    import scipy.optimize as so
+
+    return OrderedDict, so, partial
 
 
 @app.cell
-def _(OrderedDict, gaussianfft, so):
-    vtypes = ['spherical', 'exponential', 'general_exponential', 'gaussian', 'matern32', 'matern52']
+def _(OrderedDict, gaussianfft, so, partial):
+    vtypes = [
+        'spherical',
+        'exponential',
+        'general_exponential',
+        'gaussian',
+        'matern32',
+        'matern52',
+    ]
     powers = [1.5, 1.75, 1.99]
     alpha = 0.05
     effective_ranges = OrderedDict()
 
     def report_root(_vtype, root):
         effective_ranges[_vtype] = root
-        print('{:30} {:.3f}'.format(_vtype, root))
+        print(f'{_vtype:30} {root:.3f}')
 
     def f_root(v, alpha):
         return lambda x: v.corr(x) - alpha
+
     for _vtype in vtypes:
         if _vtype == 'general_exponential':
             for p in powers:
-                v_1 = gaussianfft.variogram(_vtype, 1.0, power=p)
-                root = so.brentq(lambda x: v_1.corr(x) - alpha, 0.0, 10.0)
+                _v = gaussianfft.variogram(_vtype, 1.0, power=p)
+                root = so.brentq(partial(lambda x, _v: _v.corr(x) - alpha, 0.0, 10.0), _v=_v)
                 report_root(_vtype + ' - ' + str(p), root)
         else:
-            v_1 = gaussianfft.variogram(_vtype, 1.0)
-            root = so.brentq(lambda x: v_1.corr(x) - alpha, 0.0, 10.0)
+            _v = gaussianfft.variogram(_vtype, 1.0)
+            root = so.brentq(partial(lambda x, _v: _v.corr(x) - alpha, 0.0, 10.0), _v=_v)
             report_root(_vtype, root)
     return (effective_ranges,)
 
@@ -192,7 +204,8 @@ def _(X_1, effective_ranges, gaussianfft, np, plt):
 def _(mo):
     mo.md(r"""
     #### Foreløpig konklusjon:
-    Utfordringen ligger i at konvolusjonen egentlig ikke lar seg gjør på et for lite grid. Dette har ingenting med FFT å gjøre, men konvolusjonen i utgangspunktet.
+    Utfordringen ligger i at konvolusjonen egentlig ikke lar seg gjør på et for lite grid.
+    Dette har ingenting med FFT å gjøre, men konvolusjonen i utgangspunktet.
 
     Dette betyr at løsningen må enten:
     - Lage griddet større
@@ -213,7 +226,8 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    FFT wrapper rundt. Det har innvirkning. Må sørge for at det tilfeldige feltet wrapper rundt, eller så er ikke dette en rettferdig sammenligning.
+    FFT wrapper rundt. Det har innvirkning. Må sørge for at det tilfeldige feltet wrapper rundt,
+    eller så er ikke dette en rettferdig sammenligning.
     """)
     return
 
@@ -275,7 +289,9 @@ def _(c, np, plt):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    For the Gaussian variogram, we have a closed for expression for a function that satisfies $f* f = c$. To verify that this function $f$ actually does satisfy this equality, we plot the convolution of the function with itself.
+    For the Gaussian variogram, we have a closed for expression for a function that satisfies $f* f = c$.
+    To verify that this function $f$ actually does satisfy this equality,
+    we plot the convolution of the function with itself.
     """)
     return
 
@@ -285,7 +301,20 @@ def _(L_4, X_4, c, np, plt):
     # Option A:
     f_4 = np.sqrt(np.sqrt(12 / np.pi)) * np.exp(-6 * np.square(L_4 / 2 - X_4))
     plt.plot(c)
-    ff_conv = L_4 / X_4.size * np.convolve(np.pad(f_4, (int(X_4.size / 2), int(X_4.size / 2)), mode='constant', constant_values=0.0), f_4, 'valid')
+    ff_conv = (
+        L_4
+        / X_4.size
+        * np.convolve(
+            np.pad(
+                f_4,
+                (int(X_4.size / 2), int(X_4.size / 2)),
+                mode='constant',
+                constant_values=0.0,
+            ),
+            f_4,
+            'valid',
+        )
+    )
     plt.plot(ff_conv)
     plt.show()
     return f_4, ff_conv
@@ -330,7 +359,9 @@ def _(c, ff_conv, np, plt):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    Alternatively, the FFT of convolution can be calculated by taking the FFT (DFT) of $f$ and multiplying this with itself. This should compare nicely to the FFT of the correlation function, $c$.
+    Alternatively,
+    the FFT of convolution can be calculated by taking the FFT (DFT) of $f$ and multiplying this with itself.
+    This should compare nicely to the FFT of the correlation function, $c$.
     """)
     return
 
@@ -350,9 +381,12 @@ def _(L_4, X_4, c, f_4, np, plt):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    The sign here is different, but the absolute values match. This is probably related to the fact that the function $f$ is just one of the possible solutions to $f* f = c$?
+    The sign here is different, but the absolute values match.
+    This is probably related to the fact that the function $f$ is just one of the possible solutions to $f* f = c$?
 
-    Further, we may show the difference in using the explicit solution $f$, and the solution found by taking the positive square root of the correlation function in the FFT domain. This is not equivalent since the filters that are effectively used, are different
+    Further, we may show the difference in using the explicit solution $f$,
+    and the solution found by taking the positive square root of the correlation function in the FFT domain.
+    This is not equivalent since the filters that are effectively used, are different
     """)
     return
 
@@ -369,7 +403,8 @@ def _(L_4, X_4, c, f_4, np, plt):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    Both simulations behave similarly (similar curvature, max/min values, etc.), but they are not equal. We therefore investigate the filter that is being apploed in the second case.
+    Both simulations behave similarly (similar curvature, max/min values, etc.), but they are not equal.
+    We therefore investigate the filter that is being apploed in the second case.
     """)
     return
 
@@ -394,7 +429,9 @@ def _(L_4, X_4, c, f2_1, np, plt):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    As we can see, this filter also satisfy $f * f = c$, which was intended by construction, but a double verification now proves its validity. Also, comparing the second filter with the explicit one shows two quite different filters.
+    As we can see, this filter also satisfy $f * f = c$, which was intended by construction,
+    but a double verification now proves its validity.
+    Also, comparing the second filter with the explicit one shows two quite different filters.
     """)
     return
 
@@ -457,14 +494,14 @@ def _(f_5, np, plt, w_5):
 @app.cell
 def _(L_5, X_5, c_1, np, plt, w_5):
     # Not to scale
-    dx = L_5 / X_5.size
+
     plt.plot(np.real(np.fft.ifft(np.fft.fft(w_5 / w_5.size) * np.sqrt(np.fft.fft(c_1)))))
     return
 
 
 @app.cell
 def _(w_gaussianfft):
-    w_gaussianfft
+    w_gaussianfft  # noqa: B018
     return
 
 
@@ -528,10 +565,15 @@ def _(f_5, np, plt):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    # Finding the appropriate range thresholds
+# Finding the appropriate range thresholds
 
-    This section assumes that for a given range, the filter becomes circular continuous. Until this range is reached, we have a degenerate case for the transformation of $w$ (at least for the default filter choice). The solution to this problem is probably to find a different filter function that satisfy $f* f = c$, but this is not covered in this section. One solution that may be investigated in the Gaussian case is to use an analytically calculated filter.
-    """)
+This section assumes that for a given range, the filter becomes circular continuous.
+Until this range is reached,
+we have a degenerate case for the transformation of $w$ (at least for the default filter choice).
+The solution to this problem is probably to find a different filter function that satisfy $f* f = c$,
+but this is not covered in this section.
+One solution that may be investigated in the Gaussian case is to use an analytically calculated filter.
+""")
     return
 
 
@@ -566,7 +608,12 @@ def _(gaussianfft, np):
             c = np.array(_c_list)
             f = np.fft.ifft(np.sqrt(np.fft.fft(c) * L / X.size)) * X.size / L
             abs_diffs = np.abs(np.diff(np.real(f)))
-            print('L={:.2f}   {:.4f}  {:.4f}  {:.4f}'.format(L, np.mean(abs_diffs[:100]), np.mean(abs_diffs[-100:]), np.abs(f[0] - f[-1])))
+            print(
+                f'L={L:.2f}   '
+                f'{np.mean(abs_diffs[:100]):.4f}  '
+                f'{np.mean(abs_diffs[-100:]):.4f}  '
+                f'{np.abs(f[0] - f[-1]):.4f}'
+            )
             _circ_diffs.append(np.abs(f[0] - f[-1]))
         return (_lvals, _circ_diffs)
 
@@ -649,12 +696,22 @@ def _(mo):
 
     The testing above have indicated that:
     - A circular continuous function $f$ is not a sufficient criteria for a proper filter
-    - Not having a circular continuous function could also work (i.e. it may not even be necessary), although this is surprising. It could be that if the function is "close" to circular continuous, it is not visually possible to say that it is a valid function or not
+    - Not having a circular continuous function could also work (i.e. it may not even be necessary),
+      although this is surprising. It could be that if the function is "close" to circular continuous,
+      it is not visually possible to say that it is a valid function or not
     - There problem may be with the model and not the implementation
 
-    To elaborate on the last point; the calculations should be correct. However, we have not inferred any restrictions on $c$ (other than that it should be a variogram-function). When applying the FFT (or perhaps just the convolution), we are implicitly adding features to $c$ which can make it non-positive definite. If $c$ is not positive definite, this is not a well-posed problem since the corresponding covariance matrix is not SPD.
+    To elaborate on the last point; the calculations should be correct.
+    However, we have not inferred any restrictions on $c$ (other than that it should be a variogram-function).
+    When applying the FFT (or perhaps just the convolution),
+    we are implicitly adding features to $c$ which can make it non-positive definite.
+    If $c$ is not positive definite, this is not a well-posed problem since the corresponding covariance matrix is not SPD.
 
-    We therefore start by investigating how far from SPD the various functions are. According to Wikipedia, a function is positive definite if it is the Fourier transform of a function $g$ on the real line, with $g > 0$. (Correction: We are primarily interested in positive _semi_-definite function, which only slightly changes the above).
+    We therefore start by investigating how far from SPD the various functions are.
+    According to Wikipedia,
+    a function is positive definite if it is the Fourier transform of a function $g$ on the real line,
+    with $g > 0$.
+    (Correction: We are primarily interested in positive _semi_-definite function, which only slightly changes the above).
 
     First, an inspection of the resulting matrix and its positive semi-definiteness.
     """)
@@ -667,7 +724,6 @@ def _(gaussianfft, np, plt):
     L_8 = 1
     X_8 = np.linspace(0, L_8 / 2, 63)
     _c_list = [v_9.corr(L_8 / 2 - x) for x in X_8]
-    c_4 = np.array(_c_list)
     c_flat = np.array([v_9.corr(x) for x in X_8])
     plt.plot(c_flat)
     return (c_flat,)
@@ -693,11 +749,10 @@ def _(np, plt, s):
     reigs = np.real(eigs)
     ieigs = np.imag(eigs)
 
-    assert np.max(np.abs(ieigs)) < 1e-14  # Just to be sure
+    assert np.max(np.abs(ieigs)) < 1e-14  # Just to be sure  # noqa: S101
 
-    print("Smallest eigvalue: {}".format(np.min(reigs)))
-    print("Largest eigvalue : {}".format(np.max(reigs)))
-
+    print(f'Smallest eigvalue: {np.min(reigs)}')
+    print(f'Largest eigvalue : {np.max(reigs)}')
 
     plt.semilogy(reigs)
     return
@@ -706,9 +761,13 @@ def _(np, plt, s):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    Experimenting with different ranges and lengths shows that in general, longer rangest yield a less positive semi-definite matrix (when the number of 0-valued eigenvalues are a metric for positive semi-definiteness). Short ranges converge $s$ towards the identity matrix.
+    Experimenting with different ranges and lengths shows that in general,
+    longer rangest yield a less positive semi-definite matrix
+    (when the number of 0-valued eigenvalues are a metric for positive semi-definiteness).
+    Short ranges converge $s$ towards the identity matrix.
 
-    A conjecture that I have not found the proof of yet, although it may be trivial, is that the Fourier transform of a positive definite function is purely real and positive (?)
+    A conjecture that I have not found the proof of yet, although it may be trivial,
+    is that the Fourier transform of a positive definite function is purely real and positive (?)
     """)
     return
 
@@ -746,7 +805,10 @@ def _(mo):
 
     ### Re-visiting the analytical solution
 
-    The current working hypothesis is that the correlation function becomes problematic when the range increases. One thing that has not been tested, though, is the analytical solution to the Gaussian variogram case for long ranges. If the working hypothesis is correct, then using the analytically found filter should also be problematic, even if regular convultion is performed.
+    The current working hypothesis is that the correlation function becomes problematic when the range increases.
+    One thing that has not been tested, though, is the analytical solution to the Gaussian variogram case for long ranges.
+    If the working hypothesis is correct, then using the analytically found filter should also be problematic,
+    even if regular convultion is performed.
 
     First, verify the procedure for a short range
     """)
@@ -791,7 +853,8 @@ def _(f_analytic, f_filtered, np, plt):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    Looks fine. The analytic self-convolution is shifted, but that is no problem. Now copy-and-paste all the above and re-run with a longer, known to be problematic, range.
+    Looks fine. The analytic self-convolution is shifted, but that is no problem.
+    Now copy-and-paste all the above and re-run with a longer, known to be problematic, range.
     """)
     return
 
@@ -844,14 +907,26 @@ def _(mo):
     mo.md(r"""
     # Summary
 
-    The primary conclusion to this notebook is that long ranges compared to grid sizes are problematic, and the problem is that the correlation function is badly conditioned/not "sufficiently" positive semi-definite in these cases. The correlation function may have a positive semi-definite form, but in the context of taking its convolution, this form is no longer the one being applied.
+    The primary conclusion to this notebook is that long ranges compared to grid sizes are problematic,
+    and the problem is that the correlation function is badly conditioned /
+    not "sufficiently" positive semi-definite in these cases.
+    The correlation function may have a positive semi-definite form, but in the context of taking its convolution,
+    this form is no longer the one being applied.
 
-    The path forward is to find a threshold for the range/grid-size relationship, that depends on the variogram type. This threshold will be utilized to determine the required grid size, and padding will be applied accordingly. This is to an extent exactly what is being done today, except that the current threshold is not variogram type dependent.
+    The path forward is to find a threshold for the range/grid-size relationship, that depends on the variogram type.
+    This threshold will be utilized to determine the required grid size, and padding will be applied accordingly.
+    This is to an extent exactly what is being done today,
+    except that the current threshold is not variogram type dependent.
 
-    The threshold approach introduces another issue; computation time. If the required padding makes the grid too large for practical purposes, we have a problem. We may argue, however, that if the padded grid is too large (in number of cells), then the resolution is too high compared to the expected variation of the data, and resampling the grid before simulation and  interpolating afterwards should not alter the results too significantly, assuming a proper interpolation scheme is used.
+    The threshold approach introduces another issue; computation time.
+    If the required padding makes the grid too large for practical purposes,
+    we have a problem. We may argue, however, that if the padded grid is too large (in number of cells),
+    then the resolution is too high compared to the expected variation of the data,
+    and resampling the grid before simulation and interpolating afterwards should not alter the results too significantly,
+    assuming a proper interpolation scheme is used.
     """)
     return
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run()

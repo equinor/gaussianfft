@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.19.11"
+__generated_with = '0.19.11'
 app = marimo.App()
 
 
@@ -13,9 +13,11 @@ def _():
 
 @app.cell
 def _():
-    import gaussianfft
-    import numpy as np
     import matplotlib.pyplot as plt
+    import numpy as np
+
+    import gaussianfft
+
     plt.rcParams['figure.figsize'] = [10, 7]
     return gaussianfft, np, plt
 
@@ -26,7 +28,7 @@ def _(gaussianfft, np, plt):
     L = 0.5
     X = np.linspace(0, L / 2, 65)
     c_list = [_v.corr(L / 2 - x) for x in X]
-    c = np.array(c_list)
+    c = np.array(c_list)  # noqa: F841
     c_flat = np.array([_v.corr(x) for x in X])
     s_pre = np.outer(np.ones((c_flat.size,)), c_flat)
     for i in range(s_pre.shape[0]):
@@ -45,11 +47,10 @@ def _(np, plt, s):
     reigs = np.real(eigs)
     ieigs = np.imag(eigs)
 
-    assert np.max(np.abs(ieigs)) < 1e-14  # Just to be sure
+    assert np.max(np.abs(ieigs)) < 1e-14  # Just to be sure  # noqa: S101
 
-    print("Smallest eigvalue: {}".format(np.min(reigs)))
-    print("Largest eigvalue : {}".format(np.max(reigs)))
-
+    print(f'Smallest eigvalue: {np.min(reigs)}')
+    print(f'Largest eigvalue : {np.max(reigs)}')
 
     plt.semilogy(reigs)
     return
@@ -114,5 +115,5 @@ def _(plt, z):
     return
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run()

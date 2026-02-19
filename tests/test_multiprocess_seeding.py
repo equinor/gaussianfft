@@ -1,9 +1,10 @@
+import unittest
+from multiprocessing import Process, Queue, set_start_method
 from time import sleep
 
-import gaussianfft as grf
-import unittest
 import numpy as np
-from multiprocessing import Process, Queue, set_start_method
+
+import gaussianfft as grf
 
 
 def create_realization():
@@ -22,8 +23,8 @@ def run_simulation_process(q, dt):
 
 class TestMultiprocessSeeding(unittest.TestCase):
     def test_mp(self):
-        """ Two random fields are generated in two different processes using the multiprocessing module. The purpose
-        of this test is to show how automatic seed generation works for sub processes. """
+        """Two random fields are generated in two different processes using the multiprocessing module. The purpose
+        of this test is to show how automatic seed generation works for sub processes."""
 
         # Set start method if multiprocessing since the default is different on
         # Windows and Linux

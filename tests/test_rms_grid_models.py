@@ -1,6 +1,8 @@
 import unittest
-import gaussianfft as grf
+
 import numpy as np
+
+import gaussianfft as grf
 
 """
 The contents of these tests are intended to be able to run in RMS as well simply by copying the contents without

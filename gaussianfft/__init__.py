@@ -1,13 +1,20 @@
-from ._version import __version__
 from enum import Enum
 from importlib.util import find_spec
-if find_spec("numpy") is None:
-    raise ImportError("gaussianfft requires NumPy to be installed")
+
+from ._version import __version__
+
+if find_spec('numpy') is None:
+    raise ImportError('gaussianfft requires NumPy to be installed')
 
 
 import _gaussianfft
-
-from _gaussianfft import *
+from _gaussianfft import (
+    Variogram,
+    quote,
+    seed,
+    simulate,
+    simulation_size,
+)
 
 
 class VariogramType(Enum):
@@ -28,7 +35,12 @@ def variogram(type, *args, **kwargs):
 
 
 __all__ = [
-    'variogram', 'simulate', 'seed', 'advanced', 'simulation_size',
-    'quote', 'Variogram', 'VariogramType', 'util', 'SizeTVector', 'DoubleVector',
+    'variogram',
+    'simulate',
+    'seed',
+    'simulation_size',
+    'quote',
+    'Variogram',
+    'VariogramType',
     '__version__',
 ]

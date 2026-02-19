@@ -177,10 +177,3 @@ void Grid4D<A>::Swap(NRLib::Grid4D<A> &other)
 
 }
 #endif
-
-
-
-
-
-
-

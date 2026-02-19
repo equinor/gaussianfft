@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-readonly ROOT_DIR="$(cd "$(dirname -- "$0")/.." >/dev/null; pwd -P)"
+readonly ROOT_DIR="$(
+  cd "$(dirname -- "$0")/.." >/dev/null
+  pwd -P
+)"
 
 readonly BOOST_VERSION="${BOOST_VERSION:-$1}"
 
@@ -23,7 +26,7 @@ cd "$BOOST_DIR"
 if [[ ! -f "$BOOST_ARCHIVE" ]]; then
   file_name="boost_$(echo "$BOOST_VERSION" | tr '.' '_').tar.gz"
   curl -L --output "$BOOST_VERSION".tar.gz \
-  "https://boostorg.jfrog.io/artifactory/main/release/$BOOST_VERSION/source/$file_name"
+    "https://boostorg.jfrog.io/artifactory/main/release/$BOOST_VERSION/source/$file_name"
 fi
 
 function extract_files() {
@@ -70,7 +73,7 @@ function extract_files_depending_on() {
   local source="$1"
   local may_be_missing=${2:-}
   echo "Analysing dependencies of $source"
-  read -ra dependencies <<< "$(files_depending_on "$source" "$may_be_missing")"
+  read -ra dependencies <<<"$(files_depending_on "$source" "$may_be_missing")"
   if [[ -z ${dependencies:-} ]]; then
     if [[ "$may_be_missing" == "missing_ok" ]]; then
       echo "$source not found"
@@ -92,7 +95,7 @@ function extract_files_depending_on() {
 function extract_boost_files_used_by_us() {
   local source="$1"
   echo "Analysing dependencies of $source"
-  read -ra dependencies <<< "$(files_depending_on "$source")"
+  read -ra dependencies <<<"$(files_depending_on "$source")"
   for file in "${dependencies[@]}"; do
     if [[ "$file" == "$ROOT_DIR"/* ]]; then
       continue

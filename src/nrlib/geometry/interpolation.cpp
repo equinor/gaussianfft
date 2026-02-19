@@ -196,4 +196,3 @@ int Interpolation::FindNearestNeighborIndex(const double x, const std::vector<do
   }
   return idx;
 }
-

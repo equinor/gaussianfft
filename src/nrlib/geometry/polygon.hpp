@@ -131,4 +131,3 @@ inline const std::vector<Point>& Polygon::GetPoints(std::vector<Point>& pt_out, 
 }   // end of namespace NRLib
 
 #endif  // NRLib_POLYGON
-

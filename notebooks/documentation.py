@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.19.11"
+__generated_with = '0.19.11'
 app = marimo.App()
 
 
@@ -35,5 +35,5 @@ def _(gaussianfft):
     return
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run()

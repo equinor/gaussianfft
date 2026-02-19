@@ -11,4 +11,3 @@ SRC += $(NRLIB_BASE_DIR)geometry/bilinearsurface.cpp \
 
 TEST_SRC += $(NRLIB_BASE_DIR)geometry/unittests/interpolation_test.cpp \
 			$(NRLIB_BASE_DIR)geometry/unittests/line_test.cpp
-

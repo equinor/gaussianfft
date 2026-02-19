@@ -6,6 +6,58 @@ permissions:
   contents: read
 
 jobs:
+  dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+
+      - uses: jdx/mise-action@v3
+
+      - uses: actions/cache@v5
+        id: cache
+        with:
+          path: .venv
+          key: uv|${{ hashFiles('uv.lock', 'pyproject.toml') }}
+
+      - name: Install pyrefly and Python dependencies
+        if: ${{ steps.cache.outputs.cache-hit != 'true' }}
+        run: |
+          uv venv
+          uv sync
+
+  pre-commit:
+    runs-on: ubuntu-latest
+    # pyrefly requires all dependencies to be installed in a (local) venv
+    # Currently, it is not possible to achieve this using `additional_dependencies` in the pre-commit hook
+    needs: dependencies
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: jdx/mise-action@v3
+
+      - uses: actions/cache@v5
+        with:
+          path: .venv
+          key: uv|${{ hashFiles('uv.lock', 'pyproject.toml') }}
+          fail-on-cache-miss: true
+
+      - uses: actions/cache@v5
+        with:
+          path: ~/.cache/pre-commit
+          # Ensure we can update the cache
+          # see https://github.com/actions/cache/blob/main/tips-and-workarounds.md#update-a-cache for details
+          key: pre-commit-${{ runner.os }}-${{ github.run_id }}
+          restore-keys: pre-commit-${{ runner.os }}
+
+      - name: Run pre-commit
+        run: |
+          # pyrefly-typecheck is dependent on using an installed venv
+          source .venv/bin/activate
+          pre-commit run --all-files
+          pre-commit gc
+
+  # TODO: Add doctest
+
   prepare-arm-performance-libraries:
     runs-on: ${{ matrix.os }}
     name: Download and prepare ARM Performance Libraries
@@ -48,11 +100,11 @@ jobs:
     strategy:
       matrix:
         os:
-        - ubuntu-22.04
-        # Intel based
-        - macos-15-intel
-        # ARM based
-        - macos-15
+          - ubuntu-22.04
+          # Intel based
+          - macos-15-intel
+          # ARM based
+          - macos-15
 
     steps:
       - uses: actions/checkout@v4

@@ -533,4 +533,3 @@ void NRLib::WriteVectorToFile(const std::string   & filename,
     }
   }
 }
-

@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 
-import sys
 import os
+import sys
 from pathlib import Path
 
-def find_mkl_config(prefix_path: str) -> "Path | None":
-    for root, dirs, files in os.walk(prefix_path):
+
+def find_mkl_config(prefix_path: str) -> 'Path | None':
+    for root, _, files in os.walk(prefix_path):
         for file in files:
-            if file == "MKLConfig.cmake":
+            if file == 'MKLConfig.cmake':
                 return Path(root) / file
     return None
 
@@ -19,6 +20,7 @@ def run():
             print(mkl_config)
             sys.exit(0)
     sys.exit(1)
+
 
 if __name__ == '__main__':
     run()

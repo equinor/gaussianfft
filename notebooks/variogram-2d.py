@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.19.11"
+__generated_with = '0.19.11'
 app = marimo.App()
 
 
@@ -13,9 +13,11 @@ def _():
 
 @app.cell
 def _():
-    import gaussianfft
-    import numpy as np
     import matplotlib.pyplot as plt
+    import numpy as np
+
+    import gaussianfft
+
     plt.rcParams['figure.figsize'] = [10.0, 7.0]  # notebook
     return gaussianfft, np, plt
 
@@ -40,10 +42,7 @@ def _(gaussianfft, np):
 
 @app.cell
 def _(dx, dy, field_array, np, nx, ny, plt):
-    plt.contourf(np.arange(0, nx) * dx,
-                 np.arange(0, ny) * dy,
-                 field_array.T,
-                 40)
+    plt.contourf(np.arange(0, nx) * dx, np.arange(0, ny) * dy, field_array.T, 40)
     return
 
 
@@ -58,7 +57,16 @@ def _(mo):
 @app.cell
 def _(gaussianfft, np, plt):
     from mpl_toolkits.axes_grid1 import make_axes_locatable
-    vtypes = ['exponential', 'spherical', 'gaussian', 'matern32', 'matern52', 'matern72', 'general_exponential']
+
+    vtypes = [
+        'exponential',
+        'spherical',
+        'gaussian',
+        'matern32',
+        'matern52',
+        'matern72',
+        'general_exponential',
+    ]
     fields = {}
     nx_1, ny_1 = (1500, 2000)
     dx_1, dy_1 = (10, 10)
@@ -68,11 +76,16 @@ def _(gaussianfft, np, plt):
         fields[_t] = np.array(gaussianfft.simulate(vario, nx_1, dx_1, ny_1, dy_1)).reshape((nx_1, ny_1), order='F')
     shown_variograms = vtypes
     fig, axes = plt.subplots(nrows=3, ncols=3, figsize=(15, 10))
-    global_min = min((_field.min() for _field in fields.values()))
-    global_max = max((_field.max() for _field in fields.values()))
+    global_min = min(_field.min() for _field in fields.values())
+    global_max = max(_field.max() for _field in fields.values())
     axes_flat = axes.flat
     for _t, ax in zip(shown_variograms, axes_flat):
-        im = ax.imshow(fields[_t][700:800, 950:1050], interpolation='None', vmin=global_min, vmax=global_max)
+        im = ax.imshow(
+            fields[_t][700:800, 950:1050],
+            interpolation='None',
+            vmin=global_min,
+            vmax=global_max,
+        )
         ax.set_title(_t)
         divider = make_axes_locatable(ax)
         cax = divider.append_axes('right', size='5%', pad=0.08)
@@ -208,5 +221,5 @@ def _(dx_4, np, nx_4, padding_fields_1, padding_fraction_1, plt):
     return
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run()

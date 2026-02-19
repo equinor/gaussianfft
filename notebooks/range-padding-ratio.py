@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.19.11"
+__generated_with = '0.19.11'
 app = marimo.App()
 
 
@@ -13,12 +13,13 @@ def _():
 
 @app.cell
 def _():
-    import gaussianfft
     import matplotlib.pyplot as plt
     import numpy as np
-    from scipy.spatial.distance import cdist
+
+    import gaussianfft
     from gaussianfft.util import EmpiricalVariogram
-    plt.rcParams['figure.figsize'] = [15,7]
+
+    plt.rcParams['figure.figsize'] = [15, 7]
     return EmpiricalVariogram, gaussianfft, np, plt
 
 
@@ -34,7 +35,15 @@ def _(np, range_length_ratio):
     def plot_deltas(fig, ax, m, d):
         mid_nan, deltas_nan, _ = filter_deltas(m, d)
         mid_nan = mid_nan / np.max(mid_nan)
-        cf = ax.contourf(mid_nan, range_length_ratio, deltas_nan, 30, vmin=-0.15, vmax=0.15, cmap='bwr')
+        cf = ax.contourf(
+            mid_nan,
+            range_length_ratio,
+            deltas_nan,
+            30,
+            vmin=-0.15,
+            vmax=0.15,
+            cmap='bwr',
+        )
         return cf  # Plot
 
     return filter_deltas, plot_deltas
@@ -53,6 +62,7 @@ def _(EmpiricalVariogram, gaussianfft, np):
 
     # Derived constants
     Lx, Ly, Lz = nx * dx, ny * dy, nz * dz
+
     def simulate(vtype):
         # Simulation
 
@@ -112,7 +122,6 @@ def _(deltas, ecorr, filter_deltas, mid, np, plt, range_length_ratio, tcorr):
     ir = np.argmin(np.abs(range_length_ratio - ratio))
     evario = np.array(ecorr[idelta][ir])[np.invert(nancols)]
     tvario = np.array(tcorr[ir])
-
 
     plt.plot(fmid, evario)
     plt.plot(tvario[0], tvario[1])
@@ -237,5 +246,5 @@ def _(deltas_4, mid_4, plot_deltas, plt):
     return
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run()

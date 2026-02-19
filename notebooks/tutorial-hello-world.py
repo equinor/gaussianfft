@@ -1,14 +1,16 @@
 import marimo
 
-__generated_with = "0.19.11"
+__generated_with = '0.19.11'
 app = marimo.App()
 
 
 @app.cell
 def _():
-    import gaussianfft
-    import numpy as np
     import matplotlib.pyplot as plt
+    import numpy as np
+
+    import gaussianfft
+
     plt.rcParams['figure.dpi'] = 300
 
     v = gaussianfft.variogram('general_exponential', 2000.0, 1000.0, azimuth=30.0)
@@ -28,5 +30,5 @@ def _():
     return
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run()
