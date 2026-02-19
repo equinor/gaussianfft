@@ -2,6 +2,9 @@ name: Build, Test, and deploy
 
 on: [push]
 
+permissions:
+  contents: read
+
 jobs:
   prepare-arm-performance-libraries:
     runs-on: ${{ matrix.os }}
