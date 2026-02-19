@@ -164,7 +164,7 @@ const std::string advanced_simulate_docstring =
 /**********************************************/
 /**********************************************/
 
-PYBIND11_MODULE(_gaussianfft, m)
+PYBIND11_MODULE(_gaussianfft, m, py::mod_gil_not_used(), py::multiple_interpreters::per_interpreter_gil())
 {
   m.def("quote",&GaussFFT::Quote);
 
