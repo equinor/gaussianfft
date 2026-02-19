@@ -21,7 +21,42 @@ variogram = grf.variogram(grf.VariogramType.GAUSSIAN, 1000)
 simulation = grf.simulate(variogram, nx=100, dx=1, ny=100, dy=1)  # 2D 100 x 100 grid
 ```
 
-See [examples](examples/) for examples, getting started, and other documentation.
+### Examples
+
+See [examples](examples/) and [notebooks](notebooks/) for examples, getting started, and other documentation.
+
+#### Notebooks
+
+They are provided as [`marimo`](https://marimo.io) notebooks.
+
+Assuming [`uv`](https://docs.astral.sh/uv/) is installed, execute
+
+```bash
+uv sync --group=notebooks
+
+uv run marimo edit ./notebooks
+```
+
+Alternatively, using regular `pip` (version 25.1 or later), execute
+
+```bash
+python -m venv venv
+source venv/bin/activate
+```
+(on UNIX-like systems)
+
+```powershell
+python -m venv venv
+.\venv\Scripts\Activate.ps1
+```
+(on Windows / PowerShell)
+
+```bash
+pip install --upgrade 'pip>=25.1'
+pip install --group notebooks
+pip install -e .
+marimo edit ./notebooks
+```
 
 
 ##  Description
