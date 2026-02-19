@@ -32,16 +32,11 @@ if (${IS_AARCH64})
     link_directories(${CMAKE_BINARY_DIR}/${ARMPL_DIR}/lib)
 else ()
     # MKL
+    file(COPY_FILE ${CMAKE_SOURCE_DIR}/bin/find-mkl-config.py ${CMAKE_BINARY_DIR}/bin/find-mkl-config.py ONLY_IF_DIFFERENT)
     execute_process(
-            COMMAND find ${Python3_SITELIB}/../../ -name "MKLConfig.cmake"
+            COMMAND ${Python3_EXECUTABLE} ${CMAKE_BINARY_DIR}/bin/find-mkl-config.py ${pybind11_INCLUDE_DIR}/../../../..
             OUTPUT_VARIABLE MKL_CONFIG
     )
-    if (NOT DEFINED MKL_CONFIG AND WIN32)
-        execute_process(
-                COMMAND find "C:/Program Files (x86)/Intel/oneAPI/mkl" -name "MKLConfig.cmake"
-                OUTPUT_VARIABLE MKL_CONFIG
-        )
-    endif ()
     if (DEFINED MKL_CONFIG)
         get_filename_component(MKL_CONFIG ${MKL_CONFIG}/.. REALPATH)
         list(APPEND CMAKE_MODULE_PATH ${MKL_CONFIG})

@@ -11,7 +11,7 @@ jobs:
         armpl:
           - "23.10"
         os:
-          - macos-14
+          - macos-15
     steps:
       - uses: actions/checkout@v4
         name: Checkout repository
@@ -37,66 +37,19 @@ jobs:
           path: sources/arm-performance-libraries/*
           if-no-files-found: error
 
-  install-intel-oneapi:
-    runs-on: windows-2019
-    name: Install Intel oneAPI with MKL
-    env:
-      WINDOWS_BASEKIT_URL: https://registrationcenter-download.intel.com/akdlm/IRC_NAS/ae29263e-38b9-4d43-86c3-376d6e0668e7/intel-oneapi-base-toolkit-2025.0.1.47_offline.exe
-      WINDOWS_COMPONENTS: intel.oneapi.win.mkl.devel:intel.oneapi.win.tbb.devel:intel.oneapi.win.dpl
-      CACHE_NUMBER: 1
-
-    defaults:
-      run:
-        shell: bash
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: cache install
-        id: cache-install
-        uses: actions/cache@v4
-        with:
-          lookup-only: true  # We don't use oneAPI here, rather it is used in the build step
-          path: |
-            C:\Program Files (x86)\Intel\oneAPI\
-          key: intel-openapi-install-${{ env.CACHE_NUMBER }}-${{ env.WINDOWS_BASEKIT_URL }}-${{ env.WINDOWS_COMPONENTS }}-compiler-${{ hashFiles('**/bin/cache_exclude_windows.sh') }}
-
-      - name: install
-        if: steps.cache-install.outputs.cache-hit != 'true'
-        timeout-minutes: 10
-        run: bin/install-intel-oneapi.bat $WINDOWS_BASEKIT_URL $WINDOWS_COMPONENTS
-
-      - name: exclude unused files from cache
-        if: steps.cache-install.outputs.cache-hit != 'true'
-        shell: bash
-        run: bin/cache_exclude_windows.sh
-
-      # Delete the following if you don't want to save install logs
-      - name: Saving install logs
-        if: steps.cache-install.outputs.cache-hit != 'true'
-        uses: actions/upload-artifact@v4
-        with:
-          name: InstallLogs_${{ github.job }}
-          path: |
-            extract.log
-            bootstrapper*
-            installer*
-          retention-days: 7
-
   build:
     needs:
       - prepare-arm-performance-libraries
-      - install-intel-oneapi
     runs-on: ${{ matrix.os }}
     name: Build & Test
     strategy:
       matrix:
         os:
-        - ubuntu-20.04
-        - windows-2019
+        - ubuntu-22.04
         # Intel based
-        - macos-13
+        - macos-15-intel
         # ARM based
-        - macos-14
+        - macos-15
 
     steps:
       - uses: actions/checkout@v4
@@ -107,33 +60,15 @@ jobs:
 
       - name: Download ARM Performance Libraries
         uses: actions/download-artifact@v4
-        if: ${{ matrix.os == 'macos-14' }}
+        if: ${{ matrix.os == 'macos-15' }}
         with:
           pattern: armpl-*
           path: sources/arm-performance-libraries
           merge-multiple: true
 
-      - name: Install Intel oneAPI
-        uses: actions/cache/restore@v4
-        if: ${{ startsWith(matrix.os, 'windows-') }}
-        with:
-          key: -non-existent
-          restore-keys: |
-            intel-openapi-install-
-          path: |
-            C:\Program Files (x86)\Intel\oneAPI\
-          fail-on-cache-miss: true
-
-      - name: Configure build for 64-bit Windows
-        uses: ilammy/msvc-dev-cmd@0b201ec74fa43914dc39ae48a89fd1d8cb592756  # v1.13.0
-        with:
-          arch: amd64
-
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.22.0
+        uses: pypa/cibuildwheel@v3.3.1
         env:
-          CIBW_ENVIRONMENT_WINDOWS: >
-            MKL_DIR="C:\\Program Files (x86)\\Intel\\oneAPI\\mkl\\2025.0\\lib\\cmake\\mkl"
           CIBW_ARCHS_WINDOWS: AMD64
           # Intel MKL only support glibc x86 64bit Intel CPUs
           # If you need to compile gaussianfft for other architectures,
@@ -152,7 +87,7 @@ jobs:
           if-no-files-found: error
 
   source-distribution:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     name: Create source distribution (sdist)
 
     steps:
@@ -179,7 +114,7 @@ jobs:
           if-no-files-found: error
 
   check-created-artifacts:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     name: Check that all the created artifacts have a consistent version
     needs:
       - build
@@ -220,7 +155,7 @@ jobs:
           if-no-files-found: error
 
   publish:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     name: Publish wheels, and source to PyPi
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
     needs:
