@@ -2,18 +2,17 @@
 
 /// \file Unit tests testing reading Norsar well format.
 
-#include <nrlib/well/norsarwell.hpp>
-#include <boost/test/unit_test.hpp>
 #include <boost/filesystem.hpp>
+#include <boost/test/unit_test.hpp>
+#include <nrlib/well/norsarwell.hpp>
 
 #include <unittests/util.hpp>
 
 using namespace boost::filesystem;
 using namespace NRLib;
 
-BOOST_AUTO_TEST_CASE(NorsarWellReadTest)
-{
-  path filename = GetTestDir() / "wells" / "norsar_well_w_twt.nwh";
+BOOST_AUTO_TEST_CASE(NorsarWellReadTest) {
+  path       filename = GetTestDir() / "wells" / "norsar_well_w_twt.nwh";
 
   NorsarWell well(filename.string());
 

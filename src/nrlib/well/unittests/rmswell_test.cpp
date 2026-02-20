@@ -2,18 +2,17 @@
 
 /// \file Unit tests testing reading LAS well.
 
-#include <nrlib/well/rmswell.hpp>
-#include <boost/test/unit_test.hpp>
 #include <boost/filesystem.hpp>
+#include <boost/test/unit_test.hpp>
+#include <nrlib/well/rmswell.hpp>
 
 #include <unittests/util.hpp>
 
 using namespace boost::filesystem;
 using namespace NRLib;
 
-BOOST_AUTO_TEST_CASE(RMSWellReadTest)
-{
-  path filename = GetTestDir() / "wells" / "Well_A.rmswell";
+BOOST_AUTO_TEST_CASE(RMSWellReadTest) {
+  path    filename = GetTestDir() / "wells" / "Well_A.rmswell";
 
   RMSWell well(filename.string());
 

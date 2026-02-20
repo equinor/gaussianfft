@@ -31,14 +31,14 @@
  */
 
 #ifndef FLENS_FULLSTORAGE_H
-#define FLENS_FULLSTORAGE_H 1
+#  define FLENS_FULLSTORAGE_H 1
 
-#include <flens/array.h>
-#include <flens/storage.h>
+#  include <flens/array.h>
+#  include <flens/storage.h>
 
-#ifndef FLENS_FIRST_INDEX
+#  ifndef FLENS_FIRST_INDEX
 #    define FLENS_FIRST_INDEX 1
-#endif
+#  endif
 
 namespace flens {
 
@@ -49,405 +49,337 @@ class FullStorageView;
 template <typename T, StorageOrder Order>
 class FullStorage;
 
-
 template <typename T, StorageOrder Order>
-class ConstFullStorageView
-{
-    public:
-        typedef const T                        ElementType;
-        typedef ConstFullStorageView           ConstView;
-        typedef FullStorageView<T, Order>      View;
-        typedef FullStorage<T, Order>          NoView;
+class ConstFullStorageView {
+ public:
+  typedef const T                   ElementType;
+  typedef ConstFullStorageView      ConstView;
+  typedef FullStorageView<T, Order> View;
+  typedef FullStorage<T, Order>     NoView;
 
-        typedef ConstArrayView<T>              ConstVectorView;
-        typedef ArrayView<T>                   VectorView;
-        typedef Array<T>                       VectorNoView;
+  typedef ConstArrayView<T>         ConstVectorView;
+  typedef ArrayView<T>              VectorView;
+  typedef Array<T>                  VectorNoView;
 
-        ConstFullStorageView(const T *data,
-                             int numRows, int numCols,
-                             int leadingDimension,
-                             int firstRow=FLENS_FIRST_INDEX, int firstCol=FLENS_FIRST_INDEX);
+  ConstFullStorageView(const T* data,
+                       int      numRows,
+                       int      numCols,
+                       int      leadingDimension,
+                       int      firstRow = FLENS_FIRST_INDEX,
+                       int      firstCol = FLENS_FIRST_INDEX);
 
-        ConstFullStorageView(const ConstFullStorageView<T, Order> &rhs);
+  ConstFullStorageView(const ConstFullStorageView<T, Order>& rhs);
 
-        ~ConstFullStorageView();
+  ~ConstFullStorageView();
 
-        //-- operators ---------------------------------------------------------
+  //-- operators ---------------------------------------------------------
 
-        const T &
-        operator()(int row, int col) const;
+  const T&                       operator()(int row, int col) const;
 
-        //-- methods -----------------------------------------------------------
+  //-- methods -----------------------------------------------------------
 
-        int
-        firstRow() const;
+  int                            firstRow() const;
 
-        int
-        firstCol() const;
+  int                            firstCol() const;
 
-        int
-        lastRow() const;
+  int                            lastRow() const;
 
-        int
-        lastCol() const;
+  int                            lastCol() const;
 
-        int
-        numRows() const;
+  int                            numRows() const;
 
-        int
-        numCols() const;
+  int                            numCols() const;
 
-        int
-        leadingDimension() const;
+  int                            leadingDimension() const;
 
-        int
-        strideRow() const;
+  int                            strideRow() const;
 
-        int
-        strideCol() const;
+  int                            strideCol() const;
 
-        const T *
-        data() const;
+  const T*                       data() const;
 
-        T *
-        data();
+  T*                             data();
 
-        ConstFullStorageView<T, Order>
-        view(int fromRow, int fromCol, int toRow, int toCol,
-             int firstViewRow=FLENS_FIRST_INDEX, int firstViewCol=FLENS_FIRST_INDEX) const;
+  ConstFullStorageView<T, Order> view(int fromRow,
+                                      int fromCol,
+                                      int toRow,
+                                      int toCol,
+                                      int firstViewRow = FLENS_FIRST_INDEX,
+                                      int firstViewCol = FLENS_FIRST_INDEX) const;
 
-        ConstArrayView<T>
-        viewRow(int row, int firstViewIndex=FLENS_FIRST_INDEX) const;
+  ConstArrayView<T>              viewRow(int row, int firstViewIndex = FLENS_FIRST_INDEX) const;
 
-        ConstArrayView<T>
-        viewCol(int col, int firstViewIndex=FLENS_FIRST_INDEX) const;
+  ConstArrayView<T>              viewCol(int col, int firstViewIndex = FLENS_FIRST_INDEX) const;
 
-        ConstArrayView<T>
-        viewRow(int row, int fromCol, int toCol, int firstViewIndex=FLENS_FIRST_INDEX) const;
+  ConstArrayView<T> viewRow(int row, int fromCol, int toCol, int firstViewIndex = FLENS_FIRST_INDEX) const;
 
-        ConstArrayView<T>
-        viewCol(int col, int fromRow, int toRow, int firstViewIndex=FLENS_FIRST_INDEX) const;
+  ConstArrayView<T> viewCol(int col, int fromRow, int toRow, int firstViewIndex = FLENS_FIRST_INDEX) const;
 
-    private:
-        //const T * const *
-        //leadingDimensionStorage() const;
+ private:
+  // const T * const *
+  // leadingDimensionStorage() const;
 
-        //const T **
-        //leadingDimensionStorage();
+  // const T **
+  // leadingDimensionStorage();
 
-        //void
-        //_allocate(const T *data);
+  // void
+  //_allocate(const T *data);
 
-        //const T **_data;
-        const T *_data;
-        int _numRows, _numCols;
-        int _leadingDimension;
-        int _firstRow, _firstCol;
+  // const T **_data;
+  const T* _data;
+  int      _numRows, _numCols;
+  int      _leadingDimension;
+  int      _firstRow, _firstCol;
 };
 
 template <typename T, StorageOrder Order>
-class FullStorageView
-{
-    public:
-        typedef T                              ElementType;
-        typedef ConstFullStorageView<T, Order> ConstView;
-        typedef FullStorageView                View;
-        typedef FullStorage<T, Order>          NoView;
+class FullStorageView {
+ public:
+  typedef T                              ElementType;
+  typedef ConstFullStorageView<T, Order> ConstView;
+  typedef FullStorageView                View;
+  typedef FullStorage<T, Order>          NoView;
 
-        typedef ConstArrayView<T>              ConstVectorView;
-        typedef ArrayView<T>                   VectorView;
-        typedef Array<T>                       VectorNoView;
+  typedef ConstArrayView<T>              ConstVectorView;
+  typedef ArrayView<T>                   VectorView;
+  typedef Array<T>                       VectorNoView;
 
+  FullStorageView(T*  data,
+                  int numRows,
+                  int numCols,
+                  int leadingDimension,
+                  int firstRow = FLENS_FIRST_INDEX,
+                  int firstCol = FLENS_FIRST_INDEX);
 
-        FullStorageView(T *data,
-                        int numRows, int numCols,
-                        int leadingDimension,
-                        int firstRow=FLENS_FIRST_INDEX, int firstCol=FLENS_FIRST_INDEX);
+  FullStorageView(const FullStorageView<T, Order>& rhs);
 
-        FullStorageView(const FullStorageView<T, Order> &rhs);
+  ~FullStorageView();
 
-        ~FullStorageView();
+  //-- operators ---------------------------------------------------------
 
-        //-- operators ---------------------------------------------------------
+  FullStorageView<T, Order>&     operator=(const FullStorage<T, Order>& rhs);
 
-        FullStorageView<T, Order> &
-        operator=(const FullStorage<T, Order> &rhs);
+  FullStorageView<T, Order>&     operator=(const FullStorageView<T, Order>& rhs);
 
-        FullStorageView<T, Order> &
-        operator=(const FullStorageView<T, Order> &rhs);
+  FullStorageView<T, Order>&     operator=(const ConstFullStorageView<T, Order>& rhs);
 
-        FullStorageView<T, Order> &
-        operator=(const ConstFullStorageView<T, Order> &rhs);
+  const T&                       operator()(int row, int col) const;
 
-        const T &
-        operator()(int row, int col) const;
+  T&                             operator()(int row, int col);
 
-        T &
-        operator()(int row, int col);
+                                 operator ConstView() const;
 
-        operator ConstView() const;
+  //-- methods -----------------------------------------------------------
 
-        //-- methods -----------------------------------------------------------
+  int                            firstRow() const;
 
-        int
-        firstRow() const;
+  int                            firstCol() const;
 
-        int
-        firstCol() const;
+  int                            lastRow() const;
 
-        int
-        lastRow() const;
+  int                            lastCol() const;
 
-        int
-        lastCol() const;
+  int                            numRows() const;
 
-        int
-        numRows() const;
+  int                            numCols() const;
 
-        int
-        numCols() const;
+  int                            leadingDimension() const;
 
-        int
-        leadingDimension() const;
+  int                            strideRow() const;
 
-        int
-        strideRow() const;
+  int                            strideCol() const;
 
-        int
-        strideCol() const;
+  const T*                       data() const;
 
-        const T *
-        data() const;
+  T*                             data();
 
-        T *
-        data();
+  ConstFullStorageView<T, Order> view(int fromRow,
+                                      int fromCol,
+                                      int toRow,
+                                      int toCol,
+                                      int firstViewRow = FLENS_FIRST_INDEX,
+                                      int firstViewCol = FLENS_FIRST_INDEX) const;
 
-        ConstFullStorageView<T, Order>
-        view(int fromRow, int fromCol, int toRow, int toCol,
-             int firstViewRow=FLENS_FIRST_INDEX, int firstViewCol=FLENS_FIRST_INDEX) const;
+  FullStorageView<T, Order>      view(int fromRow,
+                                      int fromCol,
+                                      int toRow,
+                                      int toCol,
+                                      int firstViewRow = FLENS_FIRST_INDEX,
+                                      int firstViewCol = FLENS_FIRST_INDEX);
 
-        FullStorageView<T, Order>
-        view(int fromRow, int fromCol, int toRow, int toCol,
-             int firstViewRow=FLENS_FIRST_INDEX, int firstViewCol=FLENS_FIRST_INDEX);
+  ConstArrayView<T>              viewRow(int row, int firstViewIndex = FLENS_FIRST_INDEX) const;
 
-        ConstArrayView<T>
-        viewRow(int row, int firstViewIndex=FLENS_FIRST_INDEX) const;
+  ArrayView<T>                   viewRow(int row, int firstViewIndex = FLENS_FIRST_INDEX);
 
-        ArrayView<T>
-        viewRow(int row, int firstViewIndex=FLENS_FIRST_INDEX);
+  ConstArrayView<T>              viewCol(int col, int firstViewIndex = FLENS_FIRST_INDEX) const;
 
-        ConstArrayView<T>
-        viewCol(int col, int firstViewIndex=FLENS_FIRST_INDEX) const;
+  ArrayView<T>                   viewCol(int col, int firstViewIndex = FLENS_FIRST_INDEX);
 
-        ArrayView<T>
-        viewCol(int col, int firstViewIndex=FLENS_FIRST_INDEX);
+  ConstArrayView<T> viewRow(int row, int fromCol, int toCol, int firstViewIndex = FLENS_FIRST_INDEX) const;
 
-        ConstArrayView<T>
-        viewRow(int row, int fromCol, int toCol, int firstViewIndex=FLENS_FIRST_INDEX) const;
+  ArrayView<T>      viewRow(int row, int fromCol, int toCol, int firstViewIndex = FLENS_FIRST_INDEX);
 
-        ArrayView<T>
-        viewRow(int row, int fromCol, int toCol, int firstViewIndex=FLENS_FIRST_INDEX);
+  ConstArrayView<T> viewCol(int col, int fromRow, int toRow, int firstViewIndex = FLENS_FIRST_INDEX) const;
 
-        ConstArrayView<T>
-        viewCol(int col, int fromRow, int toRow, int firstViewIndex=FLENS_FIRST_INDEX) const;
+  ArrayView<T>      viewCol(int col, int fromRow, int toRow, int firstViewIndex = FLENS_FIRST_INDEX);
 
-        ArrayView<T>
-        viewCol(int col, int fromRow, int toRow, int firstViewIndex=FLENS_FIRST_INDEX);
+  ArrayView<T>      viewDiag(int d);
 
-                ArrayView<T>
-                viewDiag(int d);
+  ConstArrayView<T> viewDiag(int d) const;
 
-                ConstArrayView<T>
-                viewDiag(int d) const;
+  void resize(int numRows, int numCols, int firstRow = FLENS_FIRST_INDEX, int firstCol = FLENS_FIRST_INDEX);
 
-        void
-        resize(int numRows, int numCols, int firstRow=FLENS_FIRST_INDEX, int firstCol=FLENS_FIRST_INDEX);
+ private:
+  // const T *const *
+  // leadingDimensionStorage() const;
 
-    private:
-        //const T *const *
-        //leadingDimensionStorage() const;
+  // T**
+  // leadingDimensionStorage();
 
-        //T**
-        //leadingDimensionStorage();
+  // void
+  //_allocate(T *data);
 
-        //void
-        //_allocate(T *data);
-
-        //T **_data;
-        T* _data;
-        int _numRows, _numCols;
-        int _leadingDimension;
-        int _firstRow, _firstCol;
+  // T **_data;
+  T*  _data;
+  int _numRows, _numCols;
+  int _leadingDimension;
+  int _firstRow, _firstCol;
 };
 
 template <typename T, StorageOrder Order>
-class FullStorage
-{
-    public:
-        typedef T                              ElementType;
-        typedef ConstFullStorageView<T, Order> ConstView;
-        typedef FullStorageView<T, Order>      View;
-        typedef FullStorage                    NoView;
+class FullStorage {
+ public:
+  typedef T                              ElementType;
+  typedef ConstFullStorageView<T, Order> ConstView;
+  typedef FullStorageView<T, Order>      View;
+  typedef FullStorage                    NoView;
 
-        typedef ConstArrayView<T>              ConstVectorView;
-        typedef ArrayView<T>                   VectorView;
-        typedef Array<T>                       VectorNoView;
+  typedef ConstArrayView<T>              ConstVectorView;
+  typedef ArrayView<T>                   VectorView;
+  typedef Array<T>                       VectorNoView;
 
-        FullStorage();
+  FullStorage();
 
-        FullStorage(int numRows, int numCols, int firstRow=FLENS_FIRST_INDEX, int firstCol=FLENS_FIRST_INDEX);
+  FullStorage(int numRows, int numCols, int firstRow = FLENS_FIRST_INDEX, int firstCol = FLENS_FIRST_INDEX);
 
-        FullStorage(const FullStorage<T, Order> &rhs);
+  FullStorage(const FullStorage<T, Order>& rhs);
 
-        FullStorage(const FullStorageView<T, Order> &rhs);
+  FullStorage(const FullStorageView<T, Order>& rhs);
 
-        FullStorage(const ConstFullStorageView<T, Order> &rhs);
+  FullStorage(const ConstFullStorageView<T, Order>& rhs);
 
-        ~FullStorage();
+  ~FullStorage();
 
-        //-- operators ---------------------------------------------------------
+  //-- operators ---------------------------------------------------------
 
-        FullStorage<T, Order> &
-        operator=(const FullStorage<T, Order> &rhs);
+  FullStorage<T, Order>& operator=(const FullStorage<T, Order>& rhs);
 
-        FullStorage<T, Order> &
-        operator=(const FullStorageView<T, Order> &rhs);
+  FullStorage<T, Order>& operator=(const FullStorageView<T, Order>& rhs);
 
-        FullStorage<T, Order> &
-        operator=(const ConstFullStorageView<T, Order> &rhs);
+  FullStorage<T, Order>& operator=(const ConstFullStorageView<T, Order>& rhs);
 
-        const T &
-        operator()(int row, int col) const;
+  const T&               operator()(int row, int col) const;
 
-        T &
-        operator()(int row, int col);
+  T&                     operator()(int row, int col);
 
-        //-- methods -----------------------------------------------------------
+  //-- methods -----------------------------------------------------------
 
-        int
-        firstRow() const;
+  int                    firstRow() const;
 
-        int
-        firstCol() const;
+  int                    firstCol() const;
 
-        int
-        lastRow() const;
+  int                    lastRow() const;
 
-        int
-        lastCol() const;
+  int                    lastCol() const;
 
-        int
-        numRows() const;
+  int                    numRows() const;
 
-        int
-        numCols() const;
+  int                    numCols() const;
 
-        int
-        leadingDimension() const;
+  int                    leadingDimension() const;
 
-        int
-        strideRow() const;
+  int                    strideRow() const;
 
-        int
-        strideCol() const;
+  int                    strideCol() const;
 
-        const T *
-        data() const;
+  const T*               data() const;
 
-        T *
-        data();
+  T*                     data();
 
-        void
-        resize(int numRows, int numCols, int firstRow=FLENS_FIRST_INDEX, int firstCol=FLENS_FIRST_INDEX);
+  void resize(int numRows, int numCols, int firstRow = FLENS_FIRST_INDEX, int firstCol = FLENS_FIRST_INDEX);
 
-        void
-        resizeOrClear(int numRows, int numCols, int firstRow=FLENS_FIRST_INDEX, int firstCol=FLENS_FIRST_INDEX);
+  void resizeOrClear(int numRows, int numCols, int firstRow = FLENS_FIRST_INDEX, int firstCol = FLENS_FIRST_INDEX);
 
-        void
-        initialize(T val = T());
+  void initialize(T val = T());
 
-        void
-        shiftIndexTo(int firstRow, int firstCol);
+  void shiftIndexTo(int firstRow, int firstCol);
 
-        ConstFullStorageView<T, Order>
-        view(int fromRow, int fromCol, int toRow, int toCol,
-             int firstViewRow=FLENS_FIRST_INDEX, int firstViewCol=FLENS_FIRST_INDEX) const;
+  ConstFullStorageView<T, Order> view(int fromRow,
+                                      int fromCol,
+                                      int toRow,
+                                      int toCol,
+                                      int firstViewRow = FLENS_FIRST_INDEX,
+                                      int firstViewCol = FLENS_FIRST_INDEX) const;
 
-        FullStorageView<T, Order>
-        view(int fromRow, int fromCol, int toRow, int toCol,
-             int firstViewRow=FLENS_FIRST_INDEX, int firstViewCol=FLENS_FIRST_INDEX);
+  FullStorageView<T, Order>      view(int fromRow,
+                                      int fromCol,
+                                      int toRow,
+                                      int toCol,
+                                      int firstViewRow = FLENS_FIRST_INDEX,
+                                      int firstViewCol = FLENS_FIRST_INDEX);
 
-        ConstArrayView<T>
-        viewRow(int row, int firstViewIndex=FLENS_FIRST_INDEX) const;
+  ConstArrayView<T>              viewRow(int row, int firstViewIndex = FLENS_FIRST_INDEX) const;
 
-        ArrayView<T>
-        viewRow(int row, int firstViewIndex=FLENS_FIRST_INDEX);
+  ArrayView<T>                   viewRow(int row, int firstViewIndex = FLENS_FIRST_INDEX);
 
-        ConstArrayView<T>
-        viewCol(int col, int firstViewIndex=FLENS_FIRST_INDEX) const;
+  ConstArrayView<T>              viewCol(int col, int firstViewIndex = FLENS_FIRST_INDEX) const;
 
-        ArrayView<T>
-        viewCol(int col, int firstViewIndex=FLENS_FIRST_INDEX);
+  ArrayView<T>                   viewCol(int col, int firstViewIndex = FLENS_FIRST_INDEX);
 
-        ConstArrayView<T>
-        viewRow(int row, int fromCol, int toCol, int firstViewIndex=FLENS_FIRST_INDEX) const;
+  ConstArrayView<T> viewRow(int row, int fromCol, int toCol, int firstViewIndex = FLENS_FIRST_INDEX) const;
 
-        ArrayView<T>
-        viewRow(int row, int fromCol, int toCol, int firstViewIndex=FLENS_FIRST_INDEX);
+  ArrayView<T>      viewRow(int row, int fromCol, int toCol, int firstViewIndex = FLENS_FIRST_INDEX);
 
-        ConstArrayView<T>
-        viewCol(int col, int fromRow, int toRow, int firstViewIndex=FLENS_FIRST_INDEX) const;
+  ConstArrayView<T> viewCol(int col, int fromRow, int toRow, int firstViewIndex = FLENS_FIRST_INDEX) const;
 
-        ArrayView<T>
-        viewCol(int col, int fromRow, int toRow, int firstViewIndex=FLENS_FIRST_INDEX);
+  ArrayView<T>      viewCol(int col, int fromRow, int toRow, int firstViewIndex = FLENS_FIRST_INDEX);
 
-        ArrayView<T>
-        viewDiag(int d, int firstViewIndex=FLENS_FIRST_INDEX);
+  ArrayView<T>      viewDiag(int d, int firstViewIndex = FLENS_FIRST_INDEX);
 
-        ConstArrayView<T>
-        viewDiag(int d, int firstViewIndex=FLENS_FIRST_INDEX) const;
+  ConstArrayView<T> viewDiag(int d, int firstViewIndex = FLENS_FIRST_INDEX) const;
 
-    private:
-        const T * const *
-        leadingDimensionStorage() const;
+ private:
+  const T* const* leadingDimensionStorage() const;
 
-        T**
-        leadingDimensionStorage();
+  T**             leadingDimensionStorage();
 
-        void
-        _allocate();
+  void            _allocate();
 
-        void
-        _release();
+  void            _release();
 
-        int _numRows, _numCols, _firstRow, _firstCol;
-        T **_data;
+  int             _numRows, _numCols, _firstRow, _firstCol;
+  T**             _data;
 };
-
 
 //------------------------------------------------------------------------------
 
 template <typename T, StorageOrder Order>
-struct StorageInfo<FullStorage<T, Order> >
-{
-    static const StorageOrder order = Order;
+struct StorageInfo<FullStorage<T, Order> > {
+  static const StorageOrder order = Order;
 };
 
 template <typename T, StorageOrder Order>
-struct StorageInfo<FullStorageView<T, Order> >
-{
-    static const StorageOrder order = Order;
+struct StorageInfo<FullStorageView<T, Order> > {
+  static const StorageOrder order = Order;
 };
 
 template <typename T, StorageOrder Order>
-struct StorageInfo<ConstFullStorageView<T, Order> >
-{
-    static const StorageOrder order = Order;
+struct StorageInfo<ConstFullStorageView<T, Order> > {
+  static const StorageOrder order = Order;
 };
 
+}  // namespace flens
 
-} // namespace flens
+#  include <flens/fullstorage.tcc>
 
-#include <flens/fullstorage.tcc>
-
-#endif // FLENS_FULLSTORAGE_H
+#endif  // FLENS_FULLSTORAGE_H

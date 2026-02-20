@@ -2,44 +2,37 @@
 #define NRLIB_GEOMETRY_INTERPOLATION_HPP
 
 #include <cstdlib>
-#include <vector>
 #include <string>
-
+#include <vector>
 
 namespace NRLib {
-class Interpolation
-{
-public:
+class Interpolation {
+ public:
+  static double InterpolateBetweenPoints(const std::vector<double>& x_in, const std::vector<double>& y_in, double x);
 
-  static double InterpolateBetweenPoints(const std::vector<double> &x_in,
-                                  const std::vector<double> &y_in,
-                                  double x);
+  static std::vector<double> Interpolate1D(const std::vector<double>& x_in,
+                                           const std::vector<double>& y_in,
+                                           const std::vector<double>& x_out,
+                                           const std::string&         method);
 
-  static std::vector<double> Interpolate1D(const std::vector<double> &x_in,
-                                           const std::vector<double> &y_in,
-                                           const std::vector<double> &x_out,
-                                           const std::string         &method);
-
-  static std::vector<double> Interpolate1D(const std::vector<double> &x_in,
-                                           const std::vector<double> &y_in,
-                                           const std::vector<double> &x_out,
-                                           const std::string         &method,
+  static std::vector<double> Interpolate1D(const std::vector<double>& x_in,
+                                           const std::vector<double>& y_in,
+                                           const std::vector<double>& x_out,
+                                           const std::string&         method,
                                            const double               extrap_value);
 
-
-private:
-  static std::vector<double> Spline1D(const std::vector<double> &x_in,
-                                      const std::vector<double> &y_in,
-                                      const std::vector<double> &x_out,
+ private:
+  static std::vector<double> Spline1D(const std::vector<double>& x_in,
+                                      const std::vector<double>& y_in,
+                                      const std::vector<double>& x_out,
                                       const double               extrap_value,
                                       const bool                 use_extrap_value = false);
 
-  static std::vector<double> Linear1D(const std::vector<double> &x_in,
-                                      const std::vector<double> &y_in,
-                                      const std::vector<double> &x_out);
+  static std::vector<double> Linear1D(const std::vector<double>& x_in,
+                                      const std::vector<double>& y_in,
+                                      const std::vector<double>& x_out);
 
-  static int FindNearestNeighborIndex(const double x, const std::vector<double> &x_in);
-
+  static int                 FindNearestNeighborIndex(const double x, const std::vector<double>& x_in);
 };
-}
+}  // namespace NRLib
 #endif

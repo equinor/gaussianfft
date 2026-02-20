@@ -37,100 +37,101 @@ namespace flens {
 //-- crs - compressed row storage ----------------------------------------------
 
 template <typename T>
-void
-crs_gemv(Transpose trans, int m, int n, T alpha,
-         const T *a, const int *ia, const int *ja,
-         const T *x, T beta, T *y)
-{
-    assert((beta==T(0)) || (beta==T(1)));
+void crs_gemv(Transpose  trans,
+              int        m,
+              int        n,
+              T          alpha,
+              const T*   a,
+              const int* ia,
+              const int* ja,
+              const T*   x,
+              T          beta,
+              T*         y) {
+  assert((beta == T(0)) || (beta == T(1)));
 
-    // shift to index base 1
-    a = a-1;
-    ia = ia-1;
-    ja = ja-1;
-    x = x-1;
-    y = y-1;
+  // shift to index base 1
+  a               = a - 1;
+  ia              = ia - 1;
+  ja              = ja - 1;
+  x               = x - 1;
+  y               = y - 1;
 
-    const bool init = (beta==T(0));
+  const bool init = (beta == T(0));
 
-    if (trans==NoTrans) {
-        if (init) {
-            for (int i=1; i<=m; ++i) {
-                y[i] = T(0);
-                for (int k=ia[i]; k<ia[i+1]; ++k) {
-                    y[i] += alpha*a[k]*x[ja[k]];
-                }
-            }
-        } else {
-            for (int i=1; i<=m; ++i) {
-                for (int k=ia[i]; k<ia[i+1]; ++k) {
-                    y[i] += alpha*a[k]*x[ja[k]];
-                }
-            }
+  if (trans == NoTrans) {
+    if (init) {
+      for (int i = 1; i <= m; ++i) {
+        y[i] = T(0);
+        for (int k = ia[i]; k < ia[i + 1]; ++k) {
+          y[i] += alpha * a[k] * x[ja[k]];
         }
+      }
     } else {
-        if (init) {
-            for (int i=1; i<=n; ++i) {
-                y[i] = T(0);
-            }
+      for (int i = 1; i <= m; ++i) {
+        for (int k = ia[i]; k < ia[i + 1]; ++k) {
+          y[i] += alpha * a[k] * x[ja[k]];
         }
-        for (int i=1; i<=m; ++i) {
-            for (int k=ia[i]; k<ia[i+1]; ++k) {
-                y[ja[k]] += alpha*a[k]*x[i];
-            }
-        }
+      }
     }
+  } else {
+    if (init) {
+      for (int i = 1; i <= n; ++i) {
+        y[i] = T(0);
+      }
+    }
+    for (int i = 1; i <= m; ++i) {
+      for (int k = ia[i]; k < ia[i + 1]; ++k) {
+        y[ja[k]] += alpha * a[k] * x[i];
+      }
+    }
+  }
 }
 
 template <typename T>
-void
-crs_symv(StorageUpLo upLo, int m, T alpha,
-         const T *a, const int *ia, const int *ja,
-         const T *x, T beta, T *y)
-{
-    assert((beta==T(0)) || (beta==T(1)));
+void crs_symv(StorageUpLo upLo, int m, T alpha, const T* a, const int* ia, const int* ja, const T* x, T beta, T* y) {
+  assert((beta == T(0)) || (beta == T(1)));
 
-    // shift to index base 1
-    a = a-1;
-    ia = ia-1;
-    ja = ja-1;
-    x = x-1;
-    y = y-1;
+  // shift to index base 1
+  a  = a - 1;
+  ia = ia - 1;
+  ja = ja - 1;
+  x  = x - 1;
+  y  = y - 1;
 
-    if (beta==T(0)) {
-        for (int i=1; i<=m; ++i) {
-            y[i] = 0;
-        }
+  if (beta == T(0)) {
+    for (int i = 1; i <= m; ++i) {
+      y[i] = 0;
     }
+  }
 
-    T a_k, x_i, y_i;
-    if (upLo==Upper) {
-        for (int i=1; i<=m; ++i) {
-            assert(ja[ia[i]]==i);
-            y_i = y[i];
-            x_i = x[i];
-            y_i += alpha*a[ia[i]]*x_i;
-            for (int k=ia[i]+1; k<ia[i+1]; ++k) {
-                a_k = a[k];
-                y_i += alpha*a_k*x[ja[k]];
-                y[ja[k]] += alpha*a_k*x_i;
-            }
-            y[i] = y_i;
-        }
-    } else {
-        for (int i=1; i<=m; ++i) {
-            y_i = y[i];
-            x_i = x[i];
-            for (int k=ia[i]; k<ia[i+1]-1; ++k) {
-                a_k = a[k];
-                y_i += alpha*a_k*x[ja[k]];
-                y[ja[k]] += alpha*a_k*x_i;
-            }
-            assert(ja[ia[i+1]-1]==i);
-            y_i += alpha*a[ia[i+1]-1]*x_i;
-            y[i] = y_i;
-        }
+  T a_k, x_i, y_i;
+  if (upLo == Upper) {
+    for (int i = 1; i <= m; ++i) {
+      assert(ja[ia[i]] == i);
+      y_i  = y[i];
+      x_i  = x[i];
+      y_i += alpha * a[ia[i]] * x_i;
+      for (int k = ia[i] + 1; k < ia[i + 1]; ++k) {
+        a_k       = a[k];
+        y_i      += alpha * a_k * x[ja[k]];
+        y[ja[k]] += alpha * a_k * x_i;
+      }
+      y[i] = y_i;
     }
+  } else {
+    for (int i = 1; i <= m; ++i) {
+      y_i = y[i];
+      x_i = x[i];
+      for (int k = ia[i]; k < ia[i + 1] - 1; ++k) {
+        a_k       = a[k];
+        y_i      += alpha * a_k * x[ja[k]];
+        y[ja[k]] += alpha * a_k * x_i;
+      }
+      assert(ja[ia[i + 1] - 1] == i);
+      y_i  += alpha * a[ia[i + 1] - 1] * x_i;
+      y[i]  = y_i;
+    }
+  }
 }
 
-} // namespace flens
+}  // namespace flens

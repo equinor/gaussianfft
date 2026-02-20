@@ -2,22 +2,26 @@
 
 // Copyright (c)  2011, Norwegian Computing Center
 // All rights reserved.
-// Redistribution and use in source and binary forms, with or without modification,
-// are permitted provided that the following conditions are met:
-// •  Redistributions of source code must retain the above copyright notice, this
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+// •  Redistributions of source code must retain the above copyright notice,
+// this
 //    list of conditions and the following disclaimer.
-// •  Redistributions in binary form must reproduce the above copyright notice, this list of
-//    conditions and the following disclaimer in the documentation and/or other materials
-//    provided with the distribution.
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
-// EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-// OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
-// SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
-// OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-// HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-// OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
-// EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+// •  Redistributions in binary form must reproduce the above copyright notice,
+// this list of
+//    conditions and the following disclaimer in the documentation and/or other
+//    materials provided with the distribution.
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE.
 
 #include "bigfile.hpp"
 
@@ -27,7 +31,7 @@
 #include <cstdio>
 
 #if defined(_MSC_VER)
-#include <wchar.h>
+#  include <wchar.h>
 #endif
 
 #define NRLIB_BIGFILE_BUFFERSIZE 131072
@@ -36,23 +40,13 @@ using namespace NRLib;
 
 namespace fs = boost::filesystem;
 
+BigFile::BigFile() : filename_(""), file_(NULL), buffer_(0), error_code_(0) {}
 
-BigFile::BigFile()
-  : filename_(""),
-    file_(NULL),
-    buffer_(0),
-    error_code_(0)
-{}
-
-
-BigFile::~BigFile()
-{
+BigFile::~BigFile() {
   close();
 }
 
-
-void BigFile::OpenRead(const fs::path& filename, bool is_binary)
-{
+void BigFile::OpenRead(const fs::path& filename, bool is_binary) {
   filename_ = filename;
 #if defined(_MSC_VER)
   std::wstring mode = (is_binary) ? L"rb" : L"r";
@@ -64,12 +58,10 @@ void BigFile::OpenRead(const fs::path& filename, bool is_binary)
     close();
 
   if (!fs::exists(filename)) {
-    throw IOError("Failed to open " + filename.string() + " for reading: " +
-                  "File does not exist.");
+    throw IOError("Failed to open " + filename.string() + " for reading: " + "File does not exist.");
   }
   if (fs::is_directory(filename)) {
-    throw IOError("Failed to open " + filename.string() + " for reading: " +
-                  " It is a directory.");
+    throw IOError("Failed to open " + filename.string() + " for reading: " + " It is a directory.");
   }
 #if defined(_MSC_VER)
   file_ = _wfopen(filename.c_str(), mode.c_str());
@@ -78,27 +70,21 @@ void BigFile::OpenRead(const fs::path& filename, bool is_binary)
 #endif
   if (!file_) {
     error_code_ = errno;
-    throw IOError("Failed to open " + filename.string() + " for reading: " +
-                  GetErrorMessage());
+    throw IOError("Failed to open " + filename.string() + " for reading: " + GetErrorMessage());
   }
 
   buffer_ = new char[NRLIB_BIGFILE_BUFFERSIZE];
   if (!buffer_)
-    throw Exception("Failed to open " + filename.string() +
-                    ": Failed to allocate file buffer of size "
-                    + NRLib::ToString(NRLIB_BIGFILE_BUFFERSIZE));
+    throw Exception("Failed to open " + filename.string() + ": Failed to allocate file buffer of size " +
+                    NRLib::ToString(NRLIB_BIGFILE_BUFFERSIZE));
 
   if (setvbuf(file_, buffer_, _IOFBF, NRLIB_BIGFILE_BUFFERSIZE)) {
     error_code_ = errno;
-    throw Exception("Failed to set buffer when opening " + filename.string()
-                    + ": " + GetErrorMessage());
+    throw Exception("Failed to set buffer when opening " + filename.string() + ": " + GetErrorMessage());
   }
 }
 
-
-void BigFile::OpenWrite(const boost::filesystem::path& filename, bool is_binary,
-                        bool create_dir)
-{
+void BigFile::OpenWrite(const boost::filesystem::path& filename, bool is_binary, bool create_dir) {
   filename_ = filename;
 #if defined(_MSC_VER)
   std::wstring mode = (is_binary) ? L"wb" : L"w";
@@ -111,8 +97,7 @@ void BigFile::OpenWrite(const boost::filesystem::path& filename, bool is_binary,
 
   try {
     if (fs::is_directory(filename)) {
-      throw IOError("Failed to open " + filename.string() + " for writing: " +
-                    " It is a directory.");
+      throw IOError("Failed to open " + filename.string() + " for writing: " + " It is a directory.");
     }
     fs::path dir = filename.parent_path();
     if (!dir.empty()) {
@@ -120,13 +105,11 @@ void BigFile::OpenWrite(const boost::filesystem::path& filename, bool is_binary,
         if (create_dir)
           fs::create_directories(dir);
         else {
-          throw IOError("Failed to open " + filename.string() + " for writing: "
-                        + "Parent directory does not exist.");
+          throw IOError("Failed to open " + filename.string() + " for writing: " + "Parent directory does not exist.");
         }
       }
     }
-  }
-  catch (fs::filesystem_error& e) {
+  } catch (fs::filesystem_error& e) {
     throw IOError("Failed to open " + filename.string() + " for writing: " + e.what());
   }
 
@@ -138,33 +121,26 @@ void BigFile::OpenWrite(const boost::filesystem::path& filename, bool is_binary,
 
   if (!file_) {
     error_code_ = errno;
-    throw IOError("Failed to open " + filename.string() + " for writing: " +
-                  GetErrorMessage());
+    throw IOError("Failed to open " + filename.string() + " for writing: " + GetErrorMessage());
   }
 
   buffer_ = new char[NRLIB_BIGFILE_BUFFERSIZE];
   if (!buffer_)
-    throw Exception("Failed to open " + filename.string() +
-                    ": Failed to allocate file buffer of size "
-                    + NRLib::ToString(NRLIB_BIGFILE_BUFFERSIZE));
+    throw Exception("Failed to open " + filename.string() + ": Failed to allocate file buffer of size " +
+                    NRLib::ToString(NRLIB_BIGFILE_BUFFERSIZE));
 
   if (setvbuf(file_, buffer_, _IOFBF, NRLIB_BIGFILE_BUFFERSIZE)) {
     error_code_ = errno;
-    throw Exception("Failed to set buffer when opening " + filename.string()
-                    + ": " + GetErrorMessage());
+    throw Exception("Failed to set buffer when opening " + filename.string() + ": " + GetErrorMessage());
   }
 }
 
-
-void BigFile::clear()
-{
+void BigFile::clear() {
   if (file_ != NULL)
     clearerr(file_);
 }
 
-
-void BigFile::close()
-{
+void BigFile::close() {
   if (file_ != NULL)
     fclose(file_);
   file_ = NULL;
@@ -173,9 +149,7 @@ void BigFile::close()
   buffer_ = 0;
 }
 
-
-std::string BigFile::GetErrorMessage() const
-{
+std::string BigFile::GetErrorMessage() const {
 #if defined(_MSC_VER)
   char msg[512];
   strerror_s(msg, 512, GetErrorCode());

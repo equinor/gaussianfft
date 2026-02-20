@@ -35,139 +35,103 @@ namespace flens {
 // == TinyGeMatrix =============================================================
 
 template <typename A>
-TinyGeMatrix<A>::TinyGeMatrix()
-{
-}
+TinyGeMatrix<A>::TinyGeMatrix() {}
 
 // -- operators ----------------------------------------------------------------
 
 template <typename A>
-ListInitializer<A>
-TinyGeMatrix<A>::operator=(const T &value)
-{
-    return ListInitializer<A>(0, 0, _engine, value);
+ListInitializer<A> TinyGeMatrix<A>::operator=(const T& value) {
+  return ListInitializer<A>(0, 0, _engine, value);
 }
 
 template <typename A>
-TinyGeMatrix<A> &
-TinyGeMatrix<A>::operator=(const TinyGeMatrix<A> &rhs)
-{
-    copy(rhs, *this);
-    return *this;
+TinyGeMatrix<A>& TinyGeMatrix<A>::operator=(const TinyGeMatrix<A>& rhs) {
+  copy(rhs, *this);
+  return *this;
 }
 
 template <typename A>
 template <typename RHS>
-TinyGeMatrix<A> &
-TinyGeMatrix<A>::operator=(const Matrix<RHS> &rhs)
-{
-    copy(rhs.impl(), *this);
-    return *this;
+TinyGeMatrix<A>& TinyGeMatrix<A>::operator=(const Matrix<RHS>& rhs) {
+  copy(rhs.impl(), *this);
+  return *this;
 }
 
 template <typename A>
 template <typename RHS>
-TinyGeMatrix<A> &
-TinyGeMatrix<A>::operator+=(const Matrix<RHS> &rhs)
-{
-    axpy(T(1), rhs.impl(), *this);
-    return *this;
+TinyGeMatrix<A>& TinyGeMatrix<A>::operator+=(const Matrix<RHS>& rhs) {
+  axpy(T(1), rhs.impl(), *this);
+  return *this;
 }
 
 template <typename A>
 template <typename RHS>
-TinyGeMatrix<A> &
-TinyGeMatrix<A>::operator-=(const Vector<RHS> &rhs)
-{
-    axpy(T(-1), rhs.impl(), *this);
-    return *this;
+TinyGeMatrix<A>& TinyGeMatrix<A>::operator-=(const Vector<RHS>& rhs) {
+  axpy(T(-1), rhs.impl(), *this);
+  return *this;
 }
 
 template <typename A>
-const typename TinyGeMatrix<A>::T &
-TinyGeMatrix<A>::operator()(int row, int col) const
-{
-    return _engine(row, col);
+const typename TinyGeMatrix<A>::T& TinyGeMatrix<A>::operator()(int row, int col) const {
+  return _engine(row, col);
 }
 
 template <typename A>
-typename TinyGeMatrix<A>::T &
-TinyGeMatrix<A>::operator()(int row, int col)
-{
-    return _engine(row, col);
+typename TinyGeMatrix<A>::T& TinyGeMatrix<A>::operator()(int row, int col) {
+  return _engine(row, col);
 }
 
 //-- methods -------------------------------------------------------------------
 
 template <typename A>
-void
-TinyGeMatrix<A>::resize(int numRows, int numCols)
-{
-    assert((numRows==this->numRows()) && (numCols==this->numCols()));
+void TinyGeMatrix<A>::resize(int numRows, int numCols) {
+  assert((numRows == this->numRows()) && (numCols == this->numCols()));
 }
 
 template <typename A>
-void
-TinyGeMatrix<A>::resize(int numRows, int numCols, int firstRow, int firstCol)
-{
-    assert((numRows==this->numRows()) && (numCols==this->numCols()));
-    assert((firstRow==this->firstRow()) && (firstCol==this->firstCol()));
+void TinyGeMatrix<A>::resize(int numRows, int numCols, int firstRow, int firstCol) {
+  assert((numRows == this->numRows()) && (numCols == this->numCols()));
+  assert((firstRow == this->firstRow()) && (firstCol == this->firstCol()));
 }
 
 template <typename A>
-int
-TinyGeMatrix<A>::numRows() const
-{
-    return _engine.numRows();
+int TinyGeMatrix<A>::numRows() const {
+  return _engine.numRows();
 }
 
 template <typename A>
-int
-TinyGeMatrix<A>::numCols() const
-{
-    return _engine.numCols();
+int TinyGeMatrix<A>::numCols() const {
+  return _engine.numCols();
 }
 
 template <typename A>
-int
-TinyGeMatrix<A>::firstRow() const
-{
-    return _engine.firstRow();
+int TinyGeMatrix<A>::firstRow() const {
+  return _engine.firstRow();
 }
 
 template <typename A>
-int
-TinyGeMatrix<A>::lastRow() const
-{
-    return _engine.lastRow();
+int TinyGeMatrix<A>::lastRow() const {
+  return _engine.lastRow();
 }
 
 template <typename A>
-int
-TinyGeMatrix<A>::firstCol() const
-{
-    return _engine.firstCol();
+int TinyGeMatrix<A>::firstCol() const {
+  return _engine.firstCol();
 }
 
 template <typename A>
-int
-TinyGeMatrix<A>::lastCol() const
-{
-    return _engine.lastCol();
+int TinyGeMatrix<A>::lastCol() const {
+  return _engine.lastCol();
 }
 
 template <typename A>
-const A &
-TinyGeMatrix<A>::engine() const
-{
-    return _engine;
+const A& TinyGeMatrix<A>::engine() const {
+  return _engine;
 }
 
 template <typename A>
-A &
-TinyGeMatrix<A>::engine()
-{
-    return _engine;
+A& TinyGeMatrix<A>::engine() {
+  return _engine;
 }
 
-} // namespace flens
+}  // namespace flens

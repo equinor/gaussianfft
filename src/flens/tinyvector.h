@@ -31,96 +31,76 @@
  */
 
 #ifndef FLENS_TINYVECTOR_H
-#define FLENS_TINYVECTOR_H 1
+#  define FLENS_TINYVECTOR_H 1
 
-#include <flens/matvec.h>
-#include <flens/listinitializer.h>
-#include <flens/fixedsizearray.h>
+#  include <flens/fixedsizearray.h>
+#  include <flens/listinitializer.h>
+#  include <flens/matvec.h>
 
 namespace flens {
 
 // == TinyVector ==============================================================
 
 template <typename A>
-class TinyVector
-    : public Vector<TinyVector<A> >
-{
-    public:
-        typedef typename TypeInfo<TinyVector<A> >::ElementType T;
+class TinyVector : public Vector<TinyVector<A> > {
+ public:
+  typedef typename TypeInfo<TinyVector<A> >::ElementType T;
 
-        TinyVector();
+  TinyVector();
 
-        // -- operators --------------------------------------------------------
+  // -- operators --------------------------------------------------------
 
-        ListInitializer<A>
-        operator=(const T &value);
+  ListInitializer<A> operator=(const T& value);
 
-        TinyVector<A> &
-        operator=(const TinyVector<A> &rhs);
+  TinyVector<A>&     operator=(const TinyVector<A>& rhs);
 
-        template <typename RHS>
-            TinyVector<A> &
-            operator=(const Vector<RHS> &rhs);
+  template <typename RHS>
+  TinyVector<A>& operator=(const Vector<RHS>& rhs);
 
-        template <typename RHS>
-            TinyVector<A> &
-            operator+=(const Vector<RHS> &rhs);
+  template <typename RHS>
+  TinyVector<A>& operator+=(const Vector<RHS>& rhs);
 
-        template <typename RHS>
-            TinyVector<A> &
-            operator-=(const Vector<RHS> &rhs);
+  template <typename RHS>
+  TinyVector<A>& operator-=(const Vector<RHS>& rhs);
 
-        const T &
-        operator()(int index) const;
+  const T&       operator()(int index) const;
 
-        T &
-        operator()(int index);
+  T&             operator()(int index);
 
-        //-- methods -----------------------------------------------------------
+  //-- methods -----------------------------------------------------------
 
-        int
-        length() const;
+  int            length() const;
 
-        int
-        firstIndex() const;
+  int            firstIndex() const;
 
-        int
-        lastIndex() const;
+  int            lastIndex() const;
 
-        int
-        stride() const;
+  int            stride() const;
 
-        void
-        resize(int length);
+  void           resize(int length);
 
-        void
-        resize(int length, int firstIndex);
+  void           resize(int length, int firstIndex);
 
-        const T *
-        data() const;
+  const T*       data() const;
 
-        T *
-        data();
+  T*             data();
 
-        const A &
-        engine() const;
+  const A&       engine() const;
 
-        A &
-        engine();
+  A&             engine();
 
-    private:
-        A _engine;
+ private:
+  A _engine;
 };
 
 template <typename A>
-struct TypeInfo<TinyVector<A> >
-{
-    typedef TinyVector<A> Impl;
-    typedef typename A::ElementType ElementType;
+struct TypeInfo<TinyVector<A> > {
+  typedef TinyVector<A>           Impl;
+  typedef typename A::ElementType ElementType;
 };
 
-} // namespace flens
+}  // namespace flens
 
-#include <flens/tinyvector.tcc>
+#  include <flens/tinyvector.tcc>
 
-#endif // FLENS_TINYVECTOR_H
+#endif  // FLENS_TINYVECTOR_H

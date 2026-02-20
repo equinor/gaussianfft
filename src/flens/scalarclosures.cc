@@ -34,35 +34,25 @@
 
 namespace flens {
 
-void
-SimpleIndexEngine::setRange(int firstIndex, int lastIndex)
-{
-    _firstIndex = firstIndex;
-    _lastIndex = lastIndex;
+void SimpleIndexEngine::setRange(int firstIndex, int lastIndex) {
+  _firstIndex = firstIndex;
+  _lastIndex  = lastIndex;
 }
 
-int
-SimpleIndexEngine::firstIndex() const
-{
-    return _firstIndex;
+int SimpleIndexEngine::firstIndex() const {
+  return _firstIndex;
 }
 
-int
-SimpleIndexEngine::lastIndex() const
-{
-    return _lastIndex;
+int SimpleIndexEngine::lastIndex() const {
+  return _lastIndex;
 }
 
-int
-SimpleIndexEngine::value() const
-{
-    return _value;
+int SimpleIndexEngine::value() const {
+  return _value;
 }
 
-int &
-SimpleIndexEngine::value()
-{
-    return _value;
+int& SimpleIndexEngine::value() {
+  return _value;
 }
 
-} // namespace flens
+}  // namespace flens

@@ -31,24 +31,21 @@
  */
 
 #ifndef FLENS_UNDERSCORE_H
-#define FLENS_UNDERSCORE_H 1
+#  define FLENS_UNDERSCORE_H 1
 
 namespace flens {
 
 class Range;
 
-class Underscore
-{
-    public:
-        Range
-        operator()(int firstIndex, int lastIndex);
+class Underscore {
+ public:
+  Range operator()(int firstIndex, int lastIndex);
 
-        Range
-        operator()(int firstIndex, int stride, int lastIndex);
+  Range operator()(int firstIndex, int stride, int lastIndex);
 };
 
 extern Underscore _;
 
-} // namespace flens
+}  // namespace flens
 
-#endif // FLENS_UNDERSCORE_H
+#endif  // FLENS_UNDERSCORE_H

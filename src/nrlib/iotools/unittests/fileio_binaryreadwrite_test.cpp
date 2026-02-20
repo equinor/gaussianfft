@@ -3,19 +3,18 @@
 /// \file Unit tests for reading and writing binary files using
 ///       the FileIO functions in the NRLib IOTools library.
 
-#include <nrlib/iotools/fileio.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/math/special_functions/fpclassify.hpp>
 #include <boost/test/unit_test.hpp>
+#include <nrlib/iotools/fileio.hpp>
 
 #include <fstream>
 
 using namespace NRLib;
 using namespace boost::filesystem;
 
-BOOST_AUTO_TEST_CASE(ReadWriteBinaryShortTest)
-{
-  path filepath = temp_directory_path() / "test_shorts.bin";
+BOOST_AUTO_TEST_CASE(ReadWriteBinaryShortTest) {
+  path               filepath = temp_directory_path() / "test_shorts.bin";
 
   std::vector<short> ints(8);
   ints[0] = 0;
@@ -98,10 +97,8 @@ BOOST_AUTO_TEST_CASE(ReadWriteBinaryShortTest)
   remove(filepath);
 }
 
-
-BOOST_AUTO_TEST_CASE(ReadWriteBinaryShortLETest)
-{
-  path filepath = temp_directory_path() / "test_shorts_le.bin";
+BOOST_AUTO_TEST_CASE(ReadWriteBinaryShortLETest) {
+  path               filepath = temp_directory_path() / "test_shorts_le.bin";
 
   std::vector<short> ints(8);
   ints[0] = 0;
@@ -159,7 +156,6 @@ BOOST_AUTO_TEST_CASE(ReadWriteBinaryShortLETest)
   BOOST_CHECK_EQUAL(buffer[14], 0xb7);
   BOOST_CHECK_EQUAL(buffer[15], 0x7a);
 
-
   ifile.open(filepath.c_str(), std::ios::binary | std::ios::in);
 
   for (int i = 0; i < 8; ++i) {
@@ -185,10 +181,8 @@ BOOST_AUTO_TEST_CASE(ReadWriteBinaryShortLETest)
   remove(filepath);
 }
 
-
-BOOST_AUTO_TEST_CASE(ReadWriteBinaryIntTest)
-{
-  path filepath = temp_directory_path() / "test_ints.bin";
+BOOST_AUTO_TEST_CASE(ReadWriteBinaryIntTest) {
+  path             filepath = temp_directory_path() / "test_ints.bin";
 
   std::vector<int> ints(8);
   ints[0] = 0;
@@ -262,7 +256,6 @@ BOOST_AUTO_TEST_CASE(ReadWriteBinaryIntTest)
   BOOST_CHECK_EQUAL(buffer[30], 0xb0);
   BOOST_CHECK_EQUAL(buffer[31], 0xa1);
 
-
   ifile.open(filepath.c_str(), std::ios::binary | std::ios::in);
 
   for (int i = 0; i < 8; ++i) {
@@ -288,10 +281,8 @@ BOOST_AUTO_TEST_CASE(ReadWriteBinaryIntTest)
   remove(filepath);
 }
 
-
-BOOST_AUTO_TEST_CASE(ReadWriteBinaryIntLETest)
-{
-  path filepath = temp_directory_path() / "test_ints_le.bin";
+BOOST_AUTO_TEST_CASE(ReadWriteBinaryIntLETest) {
+  path             filepath = temp_directory_path() / "test_ints_le.bin";
 
   std::vector<int> ints(8);
   ints[0] = 0;
@@ -365,7 +356,6 @@ BOOST_AUTO_TEST_CASE(ReadWriteBinaryIntLETest)
   BOOST_CHECK_EQUAL(buffer[30], 0xb9);
   BOOST_CHECK_EQUAL(buffer[31], 0x12);
 
-
   ifile.open(filepath.c_str(), std::ios::binary | std::ios::in);
 
   for (int i = 0; i < 8; ++i) {
@@ -391,10 +381,8 @@ BOOST_AUTO_TEST_CASE(ReadWriteBinaryIntLETest)
   remove(filepath);
 }
 
-
-BOOST_AUTO_TEST_CASE(ReadWriteBinaryFloatTest)
-{
-  path filepath = temp_directory_path() / "test_floats.bin";
+BOOST_AUTO_TEST_CASE(ReadWriteBinaryFloatTest) {
+  path               filepath = temp_directory_path() / "test_floats.bin";
 
   std::vector<float> f(8);
   f[0] = 0.0F;
@@ -500,10 +488,8 @@ BOOST_AUTO_TEST_CASE(ReadWriteBinaryFloatTest)
   remove(filepath);
 }
 
-
-BOOST_AUTO_TEST_CASE(ReadWriteBinaryFloatLETest)
-{
-  path filepath = temp_directory_path() / "test_floats_le.bin";
+BOOST_AUTO_TEST_CASE(ReadWriteBinaryFloatLETest) {
+  path               filepath = temp_directory_path() / "test_floats_le.bin";
 
   std::vector<float> f(8);
   f[0] = 0.0F;
@@ -609,10 +595,8 @@ BOOST_AUTO_TEST_CASE(ReadWriteBinaryFloatLETest)
   remove(filepath);
 }
 
-
-BOOST_AUTO_TEST_CASE(ReadWriteBinaryDoubleTest)
-{
-  path filepath = temp_directory_path() / "test_doubles.bin";
+BOOST_AUTO_TEST_CASE(ReadWriteBinaryDoubleTest) {
+  path                filepath = temp_directory_path() / "test_doubles.bin";
 
   std::vector<double> f(8);
   f[0] = 0.0;
@@ -709,10 +693,8 @@ BOOST_AUTO_TEST_CASE(ReadWriteBinaryDoubleTest)
   remove(filepath);
 }
 
-
-BOOST_AUTO_TEST_CASE(ReadWriteBinaryDoubleLETest)
-{
-  path filepath = temp_directory_path() / "test_doubles.bin";
+BOOST_AUTO_TEST_CASE(ReadWriteBinaryDoubleLETest) {
+  path                filepath = temp_directory_path() / "test_doubles.bin";
 
   std::vector<double> f(8);
   f[0] = 0.0;
@@ -809,10 +791,8 @@ BOOST_AUTO_TEST_CASE(ReadWriteBinaryDoubleLETest)
   remove(filepath);
 }
 
-
-BOOST_AUTO_TEST_CASE(ReadWriteBinaryIbmFloatTest)
-{
-  path filepath = temp_directory_path() / "test_IBM_float.bin";
+BOOST_AUTO_TEST_CASE(ReadWriteBinaryIbmFloatTest) {
+  path               filepath = temp_directory_path() / "test_IBM_float.bin";
 
   std::vector<float> f(8);
   f[0] = 0.0F;
@@ -856,7 +836,6 @@ BOOST_AUTO_TEST_CASE(ReadWriteBinaryIbmFloatTest)
   BOOST_CHECK_EQUAL(buffer[10], 0x00);
   BOOST_CHECK_EQUAL(buffer[11], 0x00);
 
-
   // 1.5622F
   BOOST_CHECK_EQUAL(buffer[20], 0x41);
   BOOST_CHECK_EQUAL(buffer[21], 0x18);
@@ -876,7 +855,7 @@ BOOST_AUTO_TEST_CASE(ReadWriteBinaryIbmFloatTest)
       // Not true on VS2012
       // BOOST_CHECK(boost::math::isnan(ReadBinaryIbmFloat(ifile)));
       ReadBinaryIbmFloat(ifile);
-    else if (i == 5 || i == 7) // IBM float has lower precision than IEEE float:
+    else if (i == 5 || i == 7)  // IBM float has lower precision than IEEE float:
       BOOST_CHECK_CLOSE_FRACTION(ReadBinaryIbmFloat(ifile), f[i], 3e-7);
     else
       BOOST_CHECK_EQUAL(ReadBinaryIbmFloat(ifile), f[i]);
@@ -894,7 +873,7 @@ BOOST_AUTO_TEST_CASE(ReadWriteBinaryIbmFloatTest)
   // BOOST_CHECK(boost::math::isnan(in_f[6]));
 
   for (int i = 0; i < 8; ++i) {
-    if (i == 5 || i == 7) // IBM float has lower precision than IEEE float:
+    if (i == 5 || i == 7)  // IBM float has lower precision than IEEE float:
       BOOST_CHECK_CLOSE_FRACTION(in_f[i], f[i], 3e-7);
     else if (i != 6)
       BOOST_CHECK_EQUAL(in_f[i], f[i]);
@@ -905,13 +884,10 @@ BOOST_AUTO_TEST_CASE(ReadWriteBinaryIbmFloatTest)
   ifile.close();
 
   remove(filepath);
-
 }
 
-
-BOOST_AUTO_TEST_CASE(ReadWriteBinaryIbmFloatLETest)
-{
-  path filepath = temp_directory_path() / "test_IBM_float_le.bin";
+BOOST_AUTO_TEST_CASE(ReadWriteBinaryIbmFloatLETest) {
+  path               filepath = temp_directory_path() / "test_IBM_float_le.bin";
 
   std::vector<float> f(8);
   f[0] = 0.0F;
@@ -972,9 +948,10 @@ BOOST_AUTO_TEST_CASE(ReadWriteBinaryIbmFloatLETest)
   for (int i = 0; i < 8; ++i) {
     if (i == 6)
       // Not true on VS2012
-      // BOOST_CHECK(boost::math::isnan(ReadBinaryIbmFloat(ifile, END_LITTLE_ENDIAN)));
+      // BOOST_CHECK(boost::math::isnan(ReadBinaryIbmFloat(ifile,
+      // END_LITTLE_ENDIAN)));
       ReadBinaryIbmFloat(ifile, END_LITTLE_ENDIAN);
-    else if (i == 5 || i == 7) // IBM float has lower precision than IEEE float:
+    else if (i == 5 || i == 7)  // IBM float has lower precision than IEEE float:
       BOOST_CHECK_CLOSE_FRACTION(ReadBinaryIbmFloat(ifile, END_LITTLE_ENDIAN), f[i], 3e-7);
     else
       BOOST_CHECK_EQUAL(ReadBinaryIbmFloat(ifile, END_LITTLE_ENDIAN), f[i]);
@@ -992,7 +969,7 @@ BOOST_AUTO_TEST_CASE(ReadWriteBinaryIbmFloatLETest)
   // BOOST_CHECK(boost::math::isnan(in_f[6]));
 
   for (int i = 0; i < 8; ++i) {
-    if (i == 5 || i == 7) // IBM float has lower precision than IEEE float:
+    if (i == 5 || i == 7)  // IBM float has lower precision than IEEE float:
       BOOST_CHECK_CLOSE_FRACTION(in_f[i], f[i], 3e-7);
     else if (i != 6)
       BOOST_CHECK_EQUAL(in_f[i], f[i]);

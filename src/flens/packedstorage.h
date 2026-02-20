@@ -31,229 +31,188 @@
  */
 
 #ifndef FLENS_PACKEDSTORAGE_H
-#define FLENS_PACKEDSTORAGE_H 1
+#  define FLENS_PACKEDSTORAGE_H 1
 
-#include <flens/array.h>
+#  include <flens/array.h>
 
-#ifndef FLENS_FIRST_INDEX
+#  ifndef FLENS_FIRST_INDEX
 #    define FLENS_FIRST_INDEX 1
-#endif
+#  endif
 
 namespace flens {
 
 // forward decalarations
 template <typename T, StorageOrder Order, StorageUpLo UpLo>
-    class PackedStorage;
+class PackedStorage;
 
 template <typename T, StorageOrder Order, StorageUpLo UpLo>
-    class PackedStorageView;
+class PackedStorageView;
 
 template <typename T, StorageOrder Order, StorageUpLo UpLo>
-class ConstPackedStorageView
-{
-    public:
-        typedef T                                        ElementType;
-        typedef ConstPackedStorageView<T, Order, UpLo>   ConstView;
-        typedef PackedStorageView<T, Order, UpLo>        View;
-        typedef PackedStorage<T, Order, UpLo>            NoView;
+class ConstPackedStorageView {
+ public:
+  typedef T                                      ElementType;
+  typedef ConstPackedStorageView<T, Order, UpLo> ConstView;
+  typedef PackedStorageView<T, Order, UpLo>      View;
+  typedef PackedStorage<T, Order, UpLo>          NoView;
 
-        ConstPackedStorageView(const ConstArrayView<T> &data,
-                               int dim, int indexBase=FLENS_FIRST_INDEX);
+  ConstPackedStorageView(const ConstArrayView<T>& data, int dim, int indexBase = FLENS_FIRST_INDEX);
 
-        ConstPackedStorageView(const ArrayView<T> &data,
-                               int dim, int indexBase=FLENS_FIRST_INDEX);
+  ConstPackedStorageView(const ArrayView<T>& data, int dim, int indexBase = FLENS_FIRST_INDEX);
 
-        ConstPackedStorageView(const ConstPackedStorageView<T,Order,UpLo> &rhs);
+  ConstPackedStorageView(const ConstPackedStorageView<T, Order, UpLo>& rhs);
 
-        ~ConstPackedStorageView();
+  ~ConstPackedStorageView();
 
-        //-- operators ---------------------------------------------------------
+  //-- operators ---------------------------------------------------------
 
-        const T &
-        operator()(int row, int col) const;
+  const T&  operator()(int row, int col) const;
 
-        //-- methods -----------------------------------------------------------
+  //-- methods -----------------------------------------------------------
 
-        int
-        firstIndex() const;
+  int       firstIndex() const;
 
-        int
-        lastIndex() const;
+  int       lastIndex() const;
 
-        int
-        dim() const;
+  int       dim() const;
 
-        const T *
-        data() const;
+  const T*  data() const;
 
-        ConstView
-        view() const;
+  ConstView view() const;
 
-    private:
-        ConstArrayView<T>  _data;
-        int                _dim, _indexBase;
+ private:
+  ConstArrayView<T> _data;
+  int               _dim, _indexBase;
 };
 
 //------------------------------------------------------------------------------
 
 template <typename T, StorageOrder Order, StorageUpLo UpLo>
-struct StorageInfo<ConstPackedStorageView<T, Order, UpLo> >
-{
-    static const StorageOrder order = Order;
-    static const StorageUpLo upLo = UpLo;
+struct StorageInfo<ConstPackedStorageView<T, Order, UpLo> > {
+  static const StorageOrder order = Order;
+  static const StorageUpLo  upLo  = UpLo;
 };
 
 //------------------------------------------------------------------------------
 
 template <typename T, StorageOrder Order, StorageUpLo UpLo>
-class PackedStorageView
-{
-    public:
-        typedef T                                        ElementType;
-        typedef ConstPackedStorageView<T, Order, UpLo>   ConstView;
-        typedef PackedStorageView<T, Order, UpLo>        View;
-        typedef PackedStorage<T, Order, UpLo>            NoView;
+class PackedStorageView {
+ public:
+  typedef T                                      ElementType;
+  typedef ConstPackedStorageView<T, Order, UpLo> ConstView;
+  typedef PackedStorageView<T, Order, UpLo>      View;
+  typedef PackedStorage<T, Order, UpLo>          NoView;
 
-        PackedStorageView(const ArrayView<T> &data,
-                          int dim, int indexBase=FLENS_FIRST_INDEX);
+  PackedStorageView(const ArrayView<T>& data, int dim, int indexBase = FLENS_FIRST_INDEX);
 
-        PackedStorageView(const PackedStorageView<T, Order, UpLo> &rhs);
+  PackedStorageView(const PackedStorageView<T, Order, UpLo>& rhs);
 
-        ~PackedStorageView();
+  ~PackedStorageView();
 
-        //-- operators ---------------------------------------------------------
+  //-- operators ---------------------------------------------------------
 
-        PackedStorageView<T, Order, UpLo> &
-        operator=(const NoView &rhs);
+  PackedStorageView<T, Order, UpLo>& operator=(const NoView& rhs);
 
-        PackedStorageView<T, Order, UpLo> &
-        operator=(const View &rhs);
+  PackedStorageView<T, Order, UpLo>& operator=(const View& rhs);
 
-        PackedStorageView<T, Order, UpLo> &
-        operator=(const ConstView &rhs);
+  PackedStorageView<T, Order, UpLo>& operator=(const ConstView& rhs);
 
-        const T &
-        operator()(int row, int col) const;
+  const T&                           operator()(int row, int col) const;
 
-        T &
-        operator()(int row, int col);
+  T&                                 operator()(int row, int col);
 
-        //-- methods -----------------------------------------------------------
+  //-- methods -----------------------------------------------------------
 
-        int
-        firstIndex() const;
+  int                                firstIndex() const;
 
-        int
-        lastIndex() const;
+  int                                lastIndex() const;
 
-        int
-        dim() const;
+  int                                dim() const;
 
-        const T *
-        data() const;
+  const T*                           data() const;
 
-        T *
-        data();
+  T*                                 data();
 
-        ConstView
-        view() const;
+  ConstView                          view() const;
 
-        View
-        view();
+  View                               view();
 
-    private:
-        ArrayView<T>  _data;
-        int           _dim, _indexBase;
+ private:
+  ArrayView<T> _data;
+  int          _dim, _indexBase;
 };
 
 //------------------------------------------------------------------------------
 
 template <typename T, StorageOrder Order, StorageUpLo UpLo>
-struct StorageInfo<PackedStorageView<T, Order, UpLo> >
-{
-    static const StorageOrder order = Order;
-    static const StorageUpLo upLo = UpLo;
+struct StorageInfo<PackedStorageView<T, Order, UpLo> > {
+  static const StorageOrder order = Order;
+  static const StorageUpLo  upLo  = UpLo;
 };
 
 //------------------------------------------------------------------------------
 
 template <typename T, StorageOrder Order, StorageUpLo UpLo>
-class PackedStorage
-{
-    public:
-        typedef T                                        ElementType;
-        typedef ConstPackedStorageView<T, Order, UpLo>   ConstView;
-        typedef PackedStorageView<T, Order, UpLo>        View;
-        typedef PackedStorage<T, Order, UpLo>            NoView;
+class PackedStorage {
+ public:
+  typedef T                                      ElementType;
+  typedef ConstPackedStorageView<T, Order, UpLo> ConstView;
+  typedef PackedStorageView<T, Order, UpLo>      View;
+  typedef PackedStorage<T, Order, UpLo>          NoView;
 
-        PackedStorage();
+  PackedStorage();
 
-        PackedStorage(int dim, int indexBase=FLENS_FIRST_INDEX);
+  PackedStorage(int dim, int indexBase = FLENS_FIRST_INDEX);
 
-        PackedStorage(const PackedStorage<T, Order, UpLo> &rhs);
+  PackedStorage(const PackedStorage<T, Order, UpLo>& rhs);
 
-        ~PackedStorage();
+  ~PackedStorage();
 
-        //-- operators ---------------------------------------------------------
+  //-- operators ---------------------------------------------------------
 
-        PackedStorage<T, Order, UpLo> &
-        operator=(const NoView &rhs);
+  PackedStorage<T, Order, UpLo>& operator=(const NoView& rhs);
 
-        PackedStorage<T, Order, UpLo> &
-        operator=(const View &rhs);
+  PackedStorage<T, Order, UpLo>& operator=(const View& rhs);
 
-        PackedStorage<T, Order, UpLo> &
-        operator=(const ConstView &rhs);
+  PackedStorage<T, Order, UpLo>& operator=(const ConstView& rhs);
 
-        const T &
-        operator()(int row, int col) const;
+  const T&                       operator()(int row, int col) const;
 
-        T &
-        operator()(int row, int col);
+  T&                             operator()(int row, int col);
 
-        //-- methods -----------------------------------------------------------
+  //-- methods -----------------------------------------------------------
 
-        int
-        firstIndex() const;
+  int                            firstIndex() const;
 
-        int
-        lastIndex() const;
+  int                            lastIndex() const;
 
-        int
-        dim() const;
+  int                            dim() const;
 
-        const T *
-        data() const;
+  const T*                       data() const;
 
-        T *
-        data();
+  T*                             data();
 
-        void
-        resize(int dim, int indexBase=FLENS_FIRST_INDEX);
+  void                           resize(int dim, int indexBase = FLENS_FIRST_INDEX);
 
-        ConstView
-        view() const;
+  ConstView                      view() const;
 
-        View
-        view();
+  View                           view();
 
-    private:
-        Array<T>  _data;
-        int       _dim, _indexBase;
+ private:
+  Array<T> _data;
+  int      _dim, _indexBase;
 };
 
 //------------------------------------------------------------------------------
 
 template <typename T, StorageOrder Order, StorageUpLo UpLo>
-struct StorageInfo<PackedStorage<T, Order, UpLo> >
-{
-    static const StorageOrder order = Order;
-    static const StorageUpLo upLo = UpLo;
+struct StorageInfo<PackedStorage<T, Order, UpLo> > {
+  static const StorageOrder order = Order;
+  static const StorageUpLo  upLo  = UpLo;
 };
 
+}  // namespace flens
 
-} // namespace flens
+#  include <flens/packedstorage.tcc>
 
-#include <flens/packedstorage.tcc>
-
-#endif // FLENS_PACKEDSTORAGE_H
+#endif  // FLENS_PACKEDSTORAGE_H

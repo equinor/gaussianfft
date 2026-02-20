@@ -10,9 +10,8 @@
 using namespace NRLib;
 using namespace boost::filesystem;
 
-BOOST_AUTO_TEST_CASE(BigFileReadWriteTest)
-{
-  path test_file_name = temp_directory_path() / "test_bigfile.bin";
+BOOST_AUTO_TEST_CASE(BigFileReadWriteTest) {
+  path    test_file_name = temp_directory_path() / "test_bigfile.bin";
 
   BigFile file_out;
   file_out.OpenWrite(test_file_name);
@@ -28,7 +27,7 @@ BOOST_AUTO_TEST_CASE(BigFileReadWriteTest)
   BigFile file_in;
   file_in.OpenRead(test_file_name);
 
-  char buffer2[256];
+  char   buffer2[256];
   size_t nread = file_in.read(buffer2, 256);
   BOOST_CHECK_EQUAL(nread, 256U);
 

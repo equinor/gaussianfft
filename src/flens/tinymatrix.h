@@ -31,96 +31,76 @@
  */
 
 #ifndef FLENS_TINYMATRIX_H
-#define FLENS_TINYMATRIX_H 1
+#  define FLENS_TINYMATRIX_H 1
 
-#include <flens/matvec.h>
-#include <flens/listinitializer.h>
-#include <flens/fixedsizearray.h>
+#  include <flens/fixedsizearray.h>
+#  include <flens/listinitializer.h>
+#  include <flens/matvec.h>
 
 namespace flens {
 
 // == TinyGeMatrix =============================================================
 
 template <typename A>
-class TinyGeMatrix
-    : public GeneralMatrix<TinyGeMatrix<A> >
-{
-    public:
-        typedef typename TypeInfo<TinyGeMatrix<A> >::ElementType T;
+class TinyGeMatrix : public GeneralMatrix<TinyGeMatrix<A> > {
+ public:
+  typedef typename TypeInfo<TinyGeMatrix<A> >::ElementType T;
 
-        TinyGeMatrix();
+  TinyGeMatrix();
 
-        // -- operators --------------------------------------------------------
+  // -- operators --------------------------------------------------------
 
-        ListInitializer<A>
-        operator=(const T &value);
+  ListInitializer<A> operator=(const T& value);
 
-        TinyGeMatrix<A> &
-        operator=(const TinyGeMatrix<A> &rhs);
+  TinyGeMatrix<A>&   operator=(const TinyGeMatrix<A>& rhs);
 
-        template <typename RHS>
-            TinyGeMatrix<A> &
-            operator=(const Matrix<RHS> &rhs);
+  template <typename RHS>
+  TinyGeMatrix<A>& operator=(const Matrix<RHS>& rhs);
 
-        template <typename RHS>
-            TinyGeMatrix<A> &
-            operator+=(const Matrix<RHS> &rhs);
+  template <typename RHS>
+  TinyGeMatrix<A>& operator+=(const Matrix<RHS>& rhs);
 
-        template <typename RHS>
-            TinyGeMatrix<A> &
-            operator-=(const Vector<RHS> &rhs);
+  template <typename RHS>
+  TinyGeMatrix<A>& operator-=(const Vector<RHS>& rhs);
 
-        const T &
-        operator()(int row, int col) const;
+  const T&         operator()(int row, int col) const;
 
-        T &
-        operator()(int row, int col);
+  T&               operator()(int row, int col);
 
-        //-- methods -----------------------------------------------------------
+  //-- methods -----------------------------------------------------------
 
-        void
-        resize(int numRows, int numCols);
+  void             resize(int numRows, int numCols);
 
-        void
-        resize(int numRows, int numCols, int firstRow, int firstCol);
+  void             resize(int numRows, int numCols, int firstRow, int firstCol);
 
-        int
-        numRows() const;
+  int              numRows() const;
 
-        int
-        numCols() const;
+  int              numCols() const;
 
-        int
-        firstRow() const;
+  int              firstRow() const;
 
-        int
-        lastRow() const;
+  int              lastRow() const;
 
-        int
-        firstCol() const;
+  int              firstCol() const;
 
-        int
-        lastCol() const;
+  int              lastCol() const;
 
-        const A &
-        engine() const;
+  const A&         engine() const;
 
-        A &
-        engine();
+  A&               engine();
 
-    private:
-        A _engine;
+ private:
+  A _engine;
 };
 
 template <typename A>
-struct TypeInfo<TinyGeMatrix<A> >
-{
-    typedef TinyGeMatrix<A> Impl;
-    typedef typename A::ElementType ElementType;
+struct TypeInfo<TinyGeMatrix<A> > {
+  typedef TinyGeMatrix<A>         Impl;
+  typedef typename A::ElementType ElementType;
 };
 
-} // namespace flens
+}  // namespace flens
 
-#include <flens/tinymatrix.tcc>
+#  include <flens/tinymatrix.tcc>
 
-#endif // FLENS_TINYMATRIX_H
+#endif  // FLENS_TINYMATRIX_H

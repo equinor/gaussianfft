@@ -31,44 +31,44 @@
  */
 
 #ifndef FLENS_CG_H
-#define FLENS_CG_H 1
+#  define FLENS_CG_H 1
 
-#include <limits>
-#include <flens/densevector.h>
+#  include <flens/densevector.h>
+#  include <limits>
 
 namespace flens {
 
 template <typename A>
-struct cg_
-{
-    typedef A AuxVector;
-    typedef typename A::ElementType T;
+struct cg_ {
+  typedef A                       AuxVector;
+  typedef typename A::ElementType T;
 };
 
 template <typename MA, typename VX, typename VB>
-    int
-    cg(const MA &A, VX &x, const VB &b,
-       double tol = std::numeric_limits<double>::epsilon(),
-       long maxIterations = std::numeric_limits<long>::max());
+int cg(const MA& A,
+       VX&       x,
+       const VB& b,
+       double    tol           = std::numeric_limits<double>::epsilon(),
+       long      maxIterations = std::numeric_limits<long>::max());
 
 template <typename Prec, typename MA, typename VA, typename VB>
-    int
-    pcg(const Prec &B, const MA &A, VA &x, const VB &b,
-        double tol = std::numeric_limits<double>::epsilon(),
-        long maxIterations = std::numeric_limits<long>::max());
+int pcg(const Prec& B,
+        const MA&   A,
+        VA&         x,
+        const VB&   b,
+        double      tol           = std::numeric_limits<double>::epsilon(),
+        long        maxIterations = std::numeric_limits<long>::max());
 
 //-- trait specialization for FLENS types --------------------------------------
 
 template <typename I>
-struct cg_<DenseVector<I> >
-{
-    typedef typename DenseVector<I>::NoView AuxVector;
-    typedef typename DenseVector<I>::ElementType T;
+struct cg_<DenseVector<I> > {
+  typedef typename DenseVector<I>::NoView      AuxVector;
+  typedef typename DenseVector<I>::ElementType T;
 };
 
+}  // namespace flens
 
-} // namespace flens
+#  include <flens/cg.tcc>
 
-#include <flens/cg.tcc>
-
-#endif // FLENS_CG_H
+#endif  // FLENS_CG_H

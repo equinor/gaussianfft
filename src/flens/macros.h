@@ -1,12 +1,12 @@
 #ifndef FLENS_MACROS_H
-#define FLENS_MACROS_H 1
+#  define FLENS_MACROS_H 1
 
-#   include <cassert>
+#  include <cassert>
 
-#   define ADDRESS(x) reinterpret_cast<const void *>(&x)
+#  define ADDRESS(x) reinterpret_cast<const void*>(&x)
 
-#   ifndef ASSERT
-#       define ASSERT(x) assert(x)
-#   endif //ASSERT
+#  ifndef ASSERT
+#    define ASSERT(x) assert(x)
+#  endif  // ASSERT
 
-#endif // FLENS_MACROS_H
+#endif  // FLENS_MACROS_H

@@ -33,19 +33,17 @@
 namespace flens {
 
 template <typename T>
-void
-copy(StorageOrder order, int M, int N, const T *A, int lda, T *B, int ldb)
-{
-    if (order==RowMajor) {
-        for (int i=0; i<M; ++i) {
-            copy(N, A+i*lda, 1, B+i*ldb, 1);
-        }
+void copy(StorageOrder order, int M, int N, const T* A, int lda, T* B, int ldb) {
+  if (order == RowMajor) {
+    for (int i = 0; i < M; ++i) {
+      copy(N, A + i * lda, 1, B + i * ldb, 1);
     }
-    if (order==ColMajor) {
-        for (int j=0; j<N;  ++j) {
-            copy(M, A+j*lda, 1, B+j*ldb, 1);
-        }
+  }
+  if (order == ColMajor) {
+    for (int j = 0; j < N; ++j) {
+      copy(M, A + j * lda, 1, B + j * ldb, 1);
     }
+  }
 }
 
-} // namespace flens
+}  // namespace flens

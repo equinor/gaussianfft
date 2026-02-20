@@ -41,395 +41,284 @@ namespace flens {
 // == DenseVector ==============================================================
 
 template <typename A>
-DenseVector<A>::DenseVector()
-{
+DenseVector<A>::DenseVector() {}
+
+template <typename A>
+DenseVector<A>::DenseVector(const A& engine) : _engine(engine) {}
+
+template <typename A>
+DenseVector<A>::DenseVector(int length, int firstIndex) : _engine(length, firstIndex) {}
+
+template <typename A>
+DenseVector<A>::DenseVector(const Range r) : _engine(r.length(), r.firstIndex()) {
+  assert(r.stride() == 1);
 }
 
 template <typename A>
-DenseVector<A>::DenseVector(const A &engine)
-    : _engine(engine)
-{
-}
-
-template <typename A>
-DenseVector<A>::DenseVector(int length, int firstIndex)
-    : _engine(length, firstIndex)
-{
-}
-
-template <typename A>
-DenseVector<A>::DenseVector(const Range r)
-    : _engine(r.length(), r.firstIndex())
-{
-    assert(r.stride()==1);
-}
-
-template <typename A>
-DenseVector<A>::DenseVector(const DenseVector<A> &rhs)
-    : Vector<DenseVector<A> >(), _engine(rhs._engine)
-{
-}
+DenseVector<A>::DenseVector(const DenseVector<A>& rhs) : Vector<DenseVector<A> >(), _engine(rhs._engine) {}
 
 template <typename A>
 template <typename E>
-DenseVector<A>::DenseVector(const DenseVector<E> &rhs)
-    : _engine(rhs.engine())
-{
-}
+DenseVector<A>::DenseVector(const DenseVector<E>& rhs) : _engine(rhs.engine()) {}
 
 template <typename A>
 template <typename E>
-DenseVector<A>::DenseVector(const Vector<E> &rhs)
-{
-    copy(rhs.impl(), *this);
+DenseVector<A>::DenseVector(const Vector<E>& rhs) {
+  copy(rhs.impl(), *this);
 }
 
 // -- operators --------------------------------------------------------
 template <typename A>
-ListInitializerSwitch<DenseVector<A> >
-DenseVector<A>::operator=(const typename DenseVector<A>::T &value)
-{
-    return ListInitializerSwitch<DenseVector<A> >(_engine.data(),
-                                                  _engine.stride(),
-                                                  _engine.length(),
-                                                  value);
+ListInitializerSwitch<DenseVector<A> > DenseVector<A>::operator=(const typename DenseVector<A>::T& value) {
+  return ListInitializerSwitch<DenseVector<A> >(_engine.data(), _engine.stride(), _engine.length(), value);
 }
 
 template <typename A>
-DenseVector<A> &
-DenseVector<A>::operator=(const DenseVector<A> &rhs)
-{
-    copy(rhs, *this);
-    return *this;
-}
-
-template <typename A>
-    template <typename RHS>
-DenseVector<A> &
-DenseVector<A>::operator=(const Vector<RHS> &rhs)
-{
-    copy(rhs.impl(), *this);
-    return *this;
-}
-
-template <typename A>
-DenseVector<A> &
-DenseVector<A>::operator=(const Range &r)
-{
-    this->resize(r);
-    int index = firstIndex();
-    for (int i=0; i<length(); ++i) {
-        this->operator()(index++) = r.firstIndex()+i*r.stride();
-    }
-    return *this;
+DenseVector<A>& DenseVector<A>::operator=(const DenseVector<A>& rhs) {
+  copy(rhs, *this);
+  return *this;
 }
 
 template <typename A>
 template <typename RHS>
-DenseVector<A> &
-DenseVector<A>::operator+=(const Vector<RHS> &rhs)
-{
-    axpy(T(1), rhs.impl(), *this);
-    return *this;
+DenseVector<A>& DenseVector<A>::operator=(const Vector<RHS>& rhs) {
+  copy(rhs.impl(), *this);
+  return *this;
 }
 
 template <typename A>
-    template <typename RHS>
-DenseVector<A> &
-DenseVector<A>::operator-=(const Vector<RHS> &rhs)
-{
-    axpy(T(-1), rhs.impl(), *this);
-    return *this;
+DenseVector<A>& DenseVector<A>::operator=(const Range& r) {
+  this->resize(r);
+  int index = firstIndex();
+  for (int i = 0; i < length(); ++i) {
+    this->operator()(index++) = r.firstIndex() + i * r.stride();
+  }
+  return *this;
 }
 
 template <typename A>
-DenseVector<A> &
-DenseVector<A>::operator+=(T c)
-{
-    for (int i=firstIndex(); i<=lastIndex(); ++i) {
-        this->operator()(i) += c;
-    }
-    return *this;
+template <typename RHS>
+DenseVector<A>& DenseVector<A>::operator+=(const Vector<RHS>& rhs) {
+  axpy(T(1), rhs.impl(), *this);
+  return *this;
 }
 
 template <typename A>
-DenseVector<A> &
-DenseVector<A>::operator-=(T c)
-{
-    for (int i=firstIndex(); i<=lastIndex(); ++i) {
-        this->operator()(i) -= c;
-    }
-    return *this;
+template <typename RHS>
+DenseVector<A>& DenseVector<A>::operator-=(const Vector<RHS>& rhs) {
+  axpy(T(-1), rhs.impl(), *this);
+  return *this;
 }
 
 template <typename A>
-DenseVector<A> &
-DenseVector<A>::operator*=(T alpha)
-{
-    scal(alpha, *this);
-    return *this;
+DenseVector<A>& DenseVector<A>::operator+=(T c) {
+  for (int i = firstIndex(); i <= lastIndex(); ++i) {
+    this->operator()(i) += c;
+  }
+  return *this;
 }
 
 template <typename A>
-DenseVector<A> &
-DenseVector<A>::operator/=(T alpha)
-{
-    scal(T(1)/alpha, *this);
-    return *this;
+DenseVector<A>& DenseVector<A>::operator-=(T c) {
+  for (int i = firstIndex(); i <= lastIndex(); ++i) {
+    this->operator()(i) -= c;
+  }
+  return *this;
 }
 
 template <typename A>
-const typename DenseVector<A>::T &
-DenseVector<A>::operator()(int index) const
-{
-    return _engine(index);
+DenseVector<A>& DenseVector<A>::operator*=(T alpha) {
+  scal(alpha, *this);
+  return *this;
 }
 
 template <typename A>
-typename DenseVector<A>::T &
-DenseVector<A>::operator()(int index)
-{
-    return _engine(index);
+DenseVector<A>& DenseVector<A>::operator/=(T alpha) {
+  scal(T(1) / alpha, *this);
+  return *this;
 }
 
 template <typename A>
-typename DenseVector<A>::ConstView
-DenseVector<A>::operator()(const Range &r) const
-{
-    assert(r.firstIndex()>=this->firstIndex());
-    assert(r.lastIndex()<=this->lastIndex());
-    return _engine.view(r.firstIndex(), r.lastIndex(), r.stride(),
-                        this->firstIndex());
+const typename DenseVector<A>::T& DenseVector<A>::operator()(int index) const {
+  return _engine(index);
 }
 
 template <typename A>
-typename DenseVector<A>::ConstView
-DenseVector<A>::operator()(const Range &r, int startIndex) const
-{
-    assert(r.firstIndex()>=this->firstIndex());
-    assert(r.lastIndex()<=this->lastIndex());
-    return _engine.view(r.firstIndex(), r.lastIndex(), r.stride(),
-                        startIndex);
+typename DenseVector<A>::T& DenseVector<A>::operator()(int index) {
+  return _engine(index);
 }
 
 template <typename A>
-typename DenseVector<A>::View
-DenseVector<A>::operator()(const Range &r)
-{
-    assert(r.firstIndex()>=this->firstIndex());
-    assert(r.lastIndex()<=this->lastIndex());
-    return _engine.view(r.firstIndex(), r.lastIndex(), r.stride(),
-                        this->firstIndex());
+typename DenseVector<A>::ConstView DenseVector<A>::operator()(const Range& r) const {
+  assert(r.firstIndex() >= this->firstIndex());
+  assert(r.lastIndex() <= this->lastIndex());
+  return _engine.view(r.firstIndex(), r.lastIndex(), r.stride(), this->firstIndex());
 }
 
 template <typename A>
-typename DenseVector<A>::View
-DenseVector<A>::operator()(const Range &r, int startIndex)
-{
-    assert(r.firstIndex()>=this->firstIndex());
-    assert(r.lastIndex()<=this->lastIndex());
-    return _engine.view(r.firstIndex(), r.lastIndex(), r.stride(),
-                        startIndex);
+typename DenseVector<A>::ConstView DenseVector<A>::operator()(const Range& r, int startIndex) const {
+  assert(r.firstIndex() >= this->firstIndex());
+  assert(r.lastIndex() <= this->lastIndex());
+  return _engine.view(r.firstIndex(), r.lastIndex(), r.stride(), startIndex);
 }
 
 template <typename A>
-typename DenseVector<A>::ConstView
-DenseVector<A>::operator()(int firstIndex, int stride, int lastIndex) const
-{
-    assert(firstIndex>=this->firstIndex());
-    assert(lastIndex<=this->lastIndex());
-    return _engine.view(firstIndex, lastIndex, stride,
-                        this->firstIndex());
+typename DenseVector<A>::View DenseVector<A>::operator()(const Range& r) {
+  assert(r.firstIndex() >= this->firstIndex());
+  assert(r.lastIndex() <= this->lastIndex());
+  return _engine.view(r.firstIndex(), r.lastIndex(), r.stride(), this->firstIndex());
 }
 
 template <typename A>
-typename DenseVector<A>::ConstView
-DenseVector<A>::operator()(int firstIndex, int stride, int lastIndex,
-                           int startIndex) const
-{
-    assert(firstIndex>=this->firstIndex());
-    assert(lastIndex<=this->lastIndex());
-    return _engine.view(firstIndex, lastIndex, stride,
-                        startIndex);
+typename DenseVector<A>::View DenseVector<A>::operator()(const Range& r, int startIndex) {
+  assert(r.firstIndex() >= this->firstIndex());
+  assert(r.lastIndex() <= this->lastIndex());
+  return _engine.view(r.firstIndex(), r.lastIndex(), r.stride(), startIndex);
 }
 
 template <typename A>
-typename DenseVector<A>::View
-DenseVector<A>::operator()(int firstIndex, int stride, int lastIndex)
-{
-    assert(firstIndex>=this->firstIndex());
-    assert(lastIndex<=this->lastIndex());
-    return _engine.view(firstIndex, lastIndex, stride,
-                        this->firstIndex());
+typename DenseVector<A>::ConstView DenseVector<A>::operator()(int firstIndex, int stride, int lastIndex) const {
+  assert(firstIndex >= this->firstIndex());
+  assert(lastIndex <= this->lastIndex());
+  return _engine.view(firstIndex, lastIndex, stride, this->firstIndex());
 }
 
 template <typename A>
-typename DenseVector<A>::View
-DenseVector<A>::operator()(int firstIndex, int stride, int lastIndex,
-                           int startIndex)
-{
-    assert(firstIndex>=this->firstIndex());
-    assert(lastIndex<=this->lastIndex());
-    return _engine.view(firstIndex, lastIndex, stride,
-                        startIndex);
+typename DenseVector<A>::ConstView DenseVector<A>::operator()(int firstIndex,
+                                                              int stride,
+                                                              int lastIndex,
+                                                              int startIndex) const {
+  assert(firstIndex >= this->firstIndex());
+  assert(lastIndex <= this->lastIndex());
+  return _engine.view(firstIndex, lastIndex, stride, startIndex);
+}
+
+template <typename A>
+typename DenseVector<A>::View DenseVector<A>::operator()(int firstIndex, int stride, int lastIndex) {
+  assert(firstIndex >= this->firstIndex());
+  assert(lastIndex <= this->lastIndex());
+  return _engine.view(firstIndex, lastIndex, stride, this->firstIndex());
+}
+
+template <typename A>
+typename DenseVector<A>::View DenseVector<A>::operator()(int firstIndex, int stride, int lastIndex, int startIndex) {
+  assert(firstIndex >= this->firstIndex());
+  assert(lastIndex <= this->lastIndex());
+  return _engine.view(firstIndex, lastIndex, stride, startIndex);
 }
 
 // -- support for summation convention ---------------------------------
 
 template <typename A>
-ScalarClosure<VectorElement<DenseVector<A> > >
-DenseVector<A>::operator()(Index &index)
-{
-    typedef VectorElement<DenseVector<A> > VEC;
-    index.engine().setRange(firstIndex(), lastIndex());
-    return VEC(*this, index);
+ScalarClosure<VectorElement<DenseVector<A> > > DenseVector<A>::operator()(Index& index) {
+  typedef VectorElement<DenseVector<A> > VEC;
+  index.engine().setRange(firstIndex(), lastIndex());
+  return VEC(*this, index);
 }
 
 template <typename A>
-int
-DenseVector<A>::firstIndex() const
-{
-    return _engine.firstIndex();
+int DenseVector<A>::firstIndex() const {
+  return _engine.firstIndex();
 }
 
 template <typename A>
-int
-DenseVector<A>::lastIndex() const
-{
-    return _engine.lastIndex();
+int DenseVector<A>::lastIndex() const {
+  return _engine.lastIndex();
 }
 
 template <typename A>
-int
-DenseVector<A>::length() const
-{
-    return _engine.length();
+int DenseVector<A>::length() const {
+  return _engine.length();
 }
 
 template <typename A>
-int
-DenseVector<A>::stride() const
-{
-    return _engine.stride();
+int DenseVector<A>::stride() const {
+  return _engine.stride();
 }
 
 template <typename A>
-Range
-DenseVector<A>::range() const
-{
-    return _(firstIndex(), lastIndex());
+Range DenseVector<A>::range() const {
+  return _(firstIndex(), lastIndex());
 }
 
 template <typename A>
-const typename DenseVector<A>::T *
-DenseVector<A>::data() const
-{
-    return _engine.data();
+const typename DenseVector<A>::T* DenseVector<A>::data() const {
+  return _engine.data();
 }
 
 template <typename A>
-typename DenseVector<A>::T *
-DenseVector<A>::data()
-{
-    return _engine.data();
+typename DenseVector<A>::T* DenseVector<A>::data() {
+  return _engine.data();
 }
 
 template <typename A>
-const typename DenseVector<A>::T *
-DenseVector<A>::begin() const
-{
-    return _engine.data();
+const typename DenseVector<A>::T* DenseVector<A>::begin() const {
+  return _engine.data();
 }
 
 template <typename A>
-typename DenseVector<A>::T *
-DenseVector<A>::begin()
-{
-    return _engine.data();
+typename DenseVector<A>::T* DenseVector<A>::begin() {
+  return _engine.data();
 }
 
 template <typename A>
-const typename DenseVector<A>::T *
-DenseVector<A>::end() const
-{
-    return &(this->operator()(this->lastIndex()))+1;
+const typename DenseVector<A>::T* DenseVector<A>::end() const {
+  return &(this->operator()(this->lastIndex())) + 1;
 }
 
 template <typename A>
-typename DenseVector<A>::T *
-DenseVector<A>::end()
-{
-    return &(this->operator()(this->lastIndex()))+1;
+typename DenseVector<A>::T* DenseVector<A>::end() {
+  return &(this->operator()(this->lastIndex())) + 1;
 }
 
 template <typename A>
-const A &
-DenseVector<A>::engine() const
-{
-    return _engine;
+const A& DenseVector<A>::engine() const {
+  return _engine;
 }
 
 template <typename A>
-A &
-DenseVector<A>::engine()
-{
-    return _engine;
+A& DenseVector<A>::engine() {
+  return _engine;
 }
 
 template <typename A>
-void
-DenseVector<A>::resize(int length)
-{
-    _engine.resize(length, _engine.firstIndex());
+void DenseVector<A>::resize(int length) {
+  _engine.resize(length, _engine.firstIndex());
 }
 
 template <typename A>
-void
-DenseVector<A>::resize(int length, int firstIndex)
-{
-    _engine.resize(length, firstIndex);
+void DenseVector<A>::resize(int length, int firstIndex) {
+  _engine.resize(length, firstIndex);
 }
 
 template <typename A>
-void
-DenseVector<A>::resizeOrClear(const Range &r)
-{
-    _engine.resizeOrClear(r.length(), r.firstIndex());
+void DenseVector<A>::resizeOrClear(const Range& r) {
+  _engine.resizeOrClear(r.length(), r.firstIndex());
 }
 
 template <typename A>
-void
-DenseVector<A>::resizeOrClear(int length, int firstIndex)
-{
-    _engine.resizeOrClear(length, firstIndex);
+void DenseVector<A>::resizeOrClear(int length, int firstIndex) {
+  _engine.resizeOrClear(length, firstIndex);
 }
 
 template <typename A>
-void
-DenseVector<A>::resize(const Range &r)
-{
-    _engine.resize(r.length(), r.firstIndex());
+void DenseVector<A>::resize(const Range& r) {
+  _engine.resize(r.length(), r.firstIndex());
 }
 
 template <typename A>
-void
-DenseVector<A>::initialize(T val)
-{
-    _engine.initialize(val);
+void DenseVector<A>::initialize(T val) {
+  _engine.initialize(val);
 }
 
 template <typename A>
-void
-DenseVector<A>::shiftIndexTo(int firstIndex)
-{
-        _engine.shiftIndexTo(firstIndex);
+void DenseVector<A>::shiftIndexTo(int firstIndex) {
+  _engine.shiftIndexTo(firstIndex);
 }
 
 template <typename A>
-void
-DenseVector<A>::shiftIndex(int amount)
-{
-        _engine.shiftIndexTo(firstIndex()+amount);
+void DenseVector<A>::shiftIndex(int amount) {
+  _engine.shiftIndexTo(firstIndex() + amount);
 }
 
-} // namespace flens
+}  // namespace flens

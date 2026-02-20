@@ -37,35 +37,25 @@
 namespace flens {
 
 /** round abs of value to next integer */
-int
-iabsround(const double &x)
-{
-    return static_cast<int>(round(std::fabs(x)));
+int iabsround(const double& x) {
+  return static_cast<int>(round(std::fabs(x)));
 }
 
 /** round abs of value to next integer */
-int
-iabsround(const std::complex<double> &x)
-{
-    return static_cast<int>(round(std::abs(x)));
+int iabsround(const std::complex<double>& x) {
+  return static_cast<int>(round(std::abs(x)));
 }
 
-double
-conjugate(const double &x)
-{
-    return x;
+double conjugate(const double& x) {
+  return x;
 }
 
-std::complex<double>
-conjugate(const std::complex<double> &x)
-{
-    return conj(x);
+std::complex<double> conjugate(const std::complex<double>& x) {
+  return conj(x);
 }
 
-bool
-operator==(const std::complex<double> &lhs, int rhs)
-{
-    return (lhs.imag()==0) && (lhs.real()==rhs);
+bool operator==(const std::complex<double>& lhs, int rhs) {
+  return (lhs.imag() == 0) && (lhs.real() == rhs);
 }
 
-} // namespace flens
+}  // namespace flens

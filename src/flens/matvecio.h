@@ -31,160 +31,127 @@
  */
 
 #ifndef FLENS_MATVEC_IO
-#define FLENS_MATVEC_IO 1
+#  define FLENS_MATVEC_IO 1
 
-#include <fstream>
-#include <iostream>
+#  include <fstream>
+#  include <iostream>
 
-#include <flens/crs.h>
-#include <flens/densevector.h>
-#include <flens/generalmatrix.h>
-#include <flens/hermitianmatrix.h>
-#include <flens/matvec.h>
-#include <flens/sparsematrix.h>
-#include <flens/symmetricmatrix.h>
-#include <flens/tinymatrix.h>
-#include <flens/tinyvector.h>
-#include <flens/triangularmatrix.h>
+#  include <flens/crs.h>
+#  include <flens/densevector.h>
+#  include <flens/generalmatrix.h>
+#  include <flens/hermitianmatrix.h>
+#  include <flens/matvec.h>
+#  include <flens/sparsematrix.h>
+#  include <flens/symmetricmatrix.h>
+#  include <flens/tinymatrix.h>
+#  include <flens/tinyvector.h>
+#  include <flens/triangularmatrix.h>
 
 namespace flens {
 
 template <typename I>
-    std::ostream &
-    operator<<(std::ostream &out, const Matrix<I> &A);
+std::ostream& operator<<(std::ostream& out, const Matrix<I>& A);
 
 template <typename I>
-    std::ostream &
-    operator<<(std::ostream &out, const Vector<I> &x);
+std::ostream& operator<<(std::ostream& out, const Vector<I>& x);
 
 template <typename A>
-    std::ostream &
-    operator<<(std::ostream &out, const TinyVector<A> &x);
+std::ostream& operator<<(std::ostream& out, const TinyVector<A>& x);
 
 template <typename I>
-    std::ostream &
-    operator<<(std::ostream &out, const TinyGeMatrix<I> &A);
+std::ostream& operator<<(std::ostream& out, const TinyGeMatrix<I>& A);
 
 template <typename I>
-    std::ostream &
-    operator<<(std::ostream &out, const GeMatrix<I> &A);
+std::ostream& operator<<(std::ostream& out, const GeMatrix<I>& A);
 
 template <typename I>
-    std::ostream &
-    operator<<(std::ostream &out, const GbMatrix<I> &A);
+std::ostream& operator<<(std::ostream& out, const GbMatrix<I>& A);
 
 template <typename I>
-    std::ostream &
-    operator<<(std::ostream &out, const SyMatrix<I> &A);
+std::ostream& operator<<(std::ostream& out, const SyMatrix<I>& A);
 
 template <typename I>
-    std::ostream &
-    operator<<(std::ostream &out, const SbMatrix<I> &A);
+std::ostream& operator<<(std::ostream& out, const SbMatrix<I>& A);
 
 template <typename I>
-    std::ostream &
-    operator<<(std::ostream &out, const SpMatrix<I> &A);
+std::ostream& operator<<(std::ostream& out, const SpMatrix<I>& A);
 
 template <typename I>
-    std::ostream &
-    operator<<(std::ostream &out, const HeMatrix<I> &A);
+std::ostream& operator<<(std::ostream& out, const HeMatrix<I>& A);
 
 template <typename I>
-    std::ostream &
-    operator<<(std::ostream &out, const HbMatrix<I> &A);
+std::ostream& operator<<(std::ostream& out, const HbMatrix<I>& A);
 
 template <typename I>
-    std::ostream &
-    operator<<(std::ostream &out, const HpMatrix<I> &A);
+std::ostream& operator<<(std::ostream& out, const HpMatrix<I>& A);
 
 template <typename I>
-    std::ostream &
-    operator<<(std::ostream &out, const TrMatrix<I> &A);
+std::ostream& operator<<(std::ostream& out, const TrMatrix<I>& A);
 
 template <typename I>
-    std::ostream &
-    operator<<(std::ostream &out, const TbMatrix<I> &A);
+std::ostream& operator<<(std::ostream& out, const TbMatrix<I>& A);
 
 template <typename I>
-    std::ostream &
-    operator<<(std::ostream &out, const TpMatrix<I> &A);
+std::ostream& operator<<(std::ostream& out, const TpMatrix<I>& A);
 
 template <typename I>
-    std::ostream &
-    operator<<(std::ostream &out, const SparseGeMatrix<I> &A);
+std::ostream& operator<<(std::ostream& out, const SparseGeMatrix<I>& A);
 
 template <typename I>
-    std::ostream &
-    operator<<(std::ostream &out, const SparseSymmetricMatrix<I> &A);
+std::ostream& operator<<(std::ostream& out, const SparseSymmetricMatrix<I>& A);
 
 template <typename I>
-    std::ostream &
-    operator<<(std::ostream &out, const DenseVector<I> &x);
+std::ostream& operator<<(std::ostream& out, const DenseVector<I>& x);
 
 template <typename T>
-    void
-    binary(std::ostream &out, const T &t);
+void binary(std::ostream& out, const T& t);
 
 template <typename I>
-    void
-    binary(std::ostream &out, const GeMatrix<I> &A);
+void binary(std::ostream& out, const GeMatrix<I>& A);
 
 template <typename I>
-    void
-    binary(std::ostream &out, const DenseVector<I> &x);
+void binary(std::ostream& out, const DenseVector<I>& x);
 
 template <typename T>
-    void
-    binary(std::ostream &out, const DenseVector<Array<T> > &x);
+void binary(std::ostream& out, const DenseVector<Array<T> >& x);
 
 //-- file stream ouput ---------------------------------------------------------
 
 template <typename I>
-    std::ofstream &
-    operator<<(std::ofstream &out, const DenseVector<I> &x);
+std::ofstream& operator<<(std::ofstream& out, const DenseVector<I>& x);
 
 template <typename I>
-    std::ofstream &
-    operator<<(std::ofstream &out, const GeMatrix<I> &A);
+std::ofstream& operator<<(std::ofstream& out, const GeMatrix<I>& A);
 
 template <typename T>
-    std::ofstream &
-    operator<<(std::ofstream &out,
-               const SparseGeMatrix<CRS<T,CRS_General> > &A);
+std::ofstream& operator<<(std::ofstream& out, const SparseGeMatrix<CRS<T, CRS_General> >& A);
 
 //-- file stream input ---------------------------------------------------------
 
 template <typename I>
-    std::ifstream &
-    operator>>(std::ifstream &in, DenseVector<I> &x);
+std::ifstream& operator>>(std::ifstream& in, DenseVector<I>& x);
 
 template <typename T>
-    std::ifstream &
-    operator>>(std::ifstream &in, GeMatrix<FullStorage<T,ColMajor> > &A);
+std::ifstream& operator>>(std::ifstream& in, GeMatrix<FullStorage<T, ColMajor> >& A);
 
 template <typename T>
-    std::ifstream &
-    operator>>(std::ifstream &in, SparseGeMatrix<CRS<T,CRS_General> > &A);
+std::ifstream& operator>>(std::ifstream& in, SparseGeMatrix<CRS<T, CRS_General> >& A);
 
 //-- binary input --------------------------------------------------------------
 template <typename T>
-    void
-    binary(std::istream &in, T &t);
+void binary(std::istream& in, T& t);
 
 template <typename I>
-    void
-    binary(std::istream &in, GeMatrix<I> &A);
+void binary(std::istream& in, GeMatrix<I>& A);
 
 template <typename I>
-    void
-    binary(std::istream &in, DenseVector<I> x);
+void binary(std::istream& in, DenseVector<I> x);
 
 template <typename T>
-    void
-    binary(std::istream &in, DenseVector<Array<T> > &x);
+void binary(std::istream& in, DenseVector<Array<T> >& x);
 
-} // namespace flens
+}  // namespace flens
 
-#include <flens/matvecio.tcc>
+#  include <flens/matvecio.tcc>
 
-#endif // FLENS_MATVEC_IO
+#endif  // FLENS_MATVEC_IO

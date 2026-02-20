@@ -30,72 +30,67 @@
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include <flens/matvecio.h>
 #include <cassert>
 #include <limits>
-#include <flens/matvecio.h>
 
 namespace flens {
 
 template <typename MA, typename VX, typename VB>
-int
-cg(const MA &A, VX &x, const VB &b, double tol, long maxIterations)
-{
-    typename cg_<VB>::T alpha, beta, rNormSquare, rNormSquarePrev;
-    typename cg_<VB>::AuxVector Ap, r, p;
+int cg(const MA& A, VX& x, const VB& b, double tol, long maxIterations) {
+  typename cg_<VB>::T         alpha, beta, rNormSquare, rNormSquarePrev;
+  typename cg_<VB>::AuxVector Ap, r, p;
 
-    r = b - A*x;
-    p = r;
-    rNormSquare = r*r;
-    for (long k=1; k<=maxIterations; k++) {
-        if (rNormSquare<=tol) {
-            return k-1;
-        }
-        Ap = A*p;
-        alpha = rNormSquare/(p * Ap);
-        x += alpha*p;
-        r -= alpha*Ap;
-
-        rNormSquarePrev = rNormSquare;
-        rNormSquare = r*r;
-        beta = rNormSquare/rNormSquarePrev;
-        p = beta*p + r;
+  r           = b - A * x;
+  p           = r;
+  rNormSquare = r * r;
+  for (long k = 1; k <= maxIterations; k++) {
+    if (rNormSquare <= tol) {
+      return k - 1;
     }
-    return maxIterations;
+    Ap               = A * p;
+    alpha            = rNormSquare / (p * Ap);
+    x               += alpha * p;
+    r               -= alpha * Ap;
+
+    rNormSquarePrev  = rNormSquare;
+    rNormSquare      = r * r;
+    beta             = rNormSquare / rNormSquarePrev;
+    p                = beta * p + r;
+  }
+  return maxIterations;
 }
 
 template <typename Prec, typename MA, typename VX, typename VB>
-int
-pcg(const Prec &B, const MA &A, VX &x, const VB &b,
-    double tol, long maxIterations)
-{
-    typename cg_<VB>::T pNormSquare, alpha, beta, rq, rqPrev;
-    typename cg_<VB>::AuxVector r, q, p, Ap;
+int pcg(const Prec& B, const MA& A, VX& x, const VB& b, double tol, long maxIterations) {
+  typename cg_<VB>::T         pNormSquare, alpha, beta, rq, rqPrev;
+  typename cg_<VB>::AuxVector r, q, p, Ap;
 
-    r = b - A*x;
-    q = B*r;
+  r  = b - A * x;
+  q  = B * r;
 
-    p = q;
+  p  = q;
 
-    rq = r*q;
-    for (long k=1; k<=maxIterations; k++) {
-        pNormSquare = p*p;
-        if (pNormSquare<=tol) {
-            return k-1;
-        }
-        Ap = A*p;
-        alpha = rq/(p*Ap);
-        x += alpha*p;
-
-        r -= alpha*Ap;
-        q = B*r;
-
-        rqPrev = rq;
-        rq = r*q;
-        beta = rq/rqPrev;
-        //p = q + beta*p;
-        p = beta*p + q;
+  rq = r * q;
+  for (long k = 1; k <= maxIterations; k++) {
+    pNormSquare = p * p;
+    if (pNormSquare <= tol) {
+      return k - 1;
     }
-    return maxIterations;
+    Ap      = A * p;
+    alpha   = rq / (p * Ap);
+    x      += alpha * p;
+
+    r      -= alpha * Ap;
+    q       = B * r;
+
+    rqPrev  = rq;
+    rq      = r * q;
+    beta    = rq / rqPrev;
+    // p = q + beta*p;
+    p       = beta * p + q;
+  }
+  return maxIterations;
 }
 
-} // namespace flens
+}  // namespace flens

@@ -33,30 +33,34 @@
 namespace flens {
 
 template <typename ALPHA, typename M, typename V, typename Mat, typename BETA>
-void
-mm(Transpose transA, Transpose transB, ALPHA alpha,
-   const OrthMatrixQR<M,V> &A, const Mat &X,
-   BETA beta, Mat &B)
-{
-    assert(alpha==ALPHA(1));
-    assert(beta==BETA(0));
-    assert(transB==NoTrans);
-    assert(ADDRESS(X)==ADDRESS(B));
+void mm(Transpose                 transA,
+        Transpose                 transB,
+        ALPHA                     alpha,
+        const OrthMatrixQR<M, V>& A,
+        const Mat&                X,
+        BETA                      beta,
+        Mat&                      B) {
+  assert(alpha == ALPHA(1));
+  assert(beta == BETA(0));
+  assert(transB == NoTrans);
+  assert(ADDRESS(X) == ADDRESS(B));
 
-    ormqr(Left, transA, A.QR, A.tau, B);
+  ormqr(Left, transA, A.QR, A.tau, B);
 }
 
 template <typename ALPHA, typename M, typename V, typename Mat, typename BETA>
-void
-mm(Transpose transB, Transpose transA, ALPHA alpha,
-   const Mat &X, const OrthMatrixQR<M,V> &A,
-   BETA beta, Mat &B)
-{
-    assert(alpha==ALPHA(1));
-    assert(beta==BETA(0));
-    assert(transB==NoTrans);
+void mm(Transpose                 transB,
+        Transpose                 transA,
+        ALPHA                     alpha,
+        const Mat&                X,
+        const OrthMatrixQR<M, V>& A,
+        BETA                      beta,
+        Mat&                      B) {
+  assert(alpha == ALPHA(1));
+  assert(beta == BETA(0));
+  assert(transB == NoTrans);
 
-    ormqr(Right, transA, A.QR, A.tau, B);
+  ormqr(Right, transA, A.QR, A.tau, B);
 }
 
-} // namespace flens
+}  // namespace flens

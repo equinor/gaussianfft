@@ -2,25 +2,29 @@
 
 // Copyright (c)  2011, Norwegian Computing Center
 // All rights reserved.
-// Redistribution and use in source and binary forms, with or without modification,
-// are permitted provided that the following conditions are met:
-// •  Redistributions of source code must retain the above copyright notice, this
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+// •  Redistributions of source code must retain the above copyright notice,
+// this
 //    list of conditions and the following disclaimer.
-// •  Redistributions in binary form must reproduce the above copyright notice, this list of
-//    conditions and the following disclaimer in the documentation and/or other materials
-//    provided with the distribution.
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
-// EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-// OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
-// SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
-// OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-// HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-// OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
-// EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+// •  Redistributions in binary form must reproduce the above copyright notice,
+// this list of
+//    conditions and the following disclaimer in the documentation and/or other
+//    materials provided with the distribution.
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE.
 
-#include "wavelet.hpp"
 #include "waveletio.hpp"
+#include "wavelet.hpp"
 
 #include "../exception/exception.hpp"
 #include "../iotools/fileio.hpp"
@@ -31,8 +35,7 @@
 
 namespace NRLib {
 
-WaveletFileType FindWaveletFileType(const std::string& filename)
-{
+WaveletFileType FindWaveletFileType(const std::string& filename) {
   if (CheckFileIsJasonAscii(filename))
     return JasonAscii;
   if (CheckFileIsSyntoolOW(filename))
@@ -44,30 +47,25 @@ WaveletFileType FindWaveletFileType(const std::string& filename)
   return UnknownWavelet;
 }
 
-
-bool CheckFileIsJasonAscii(const std::string& filename)
-{
+bool CheckFileIsJasonAscii(const std::string& filename) {
   std::ifstream file;
   OpenRead(file, filename);
 
   try {
-    int line_number;
+    int         line_number;
     std::string line = NRLibPrivate::JasonGetFirstNonCommentLine(file, line_number);
     std::string data_type, data_unit, depth_type, depth_unit;
     NRLibPrivate::JasonParseUnits(line, data_type, data_unit, depth_type, depth_unit);
 
     // Seems like a Jason ASCII file.
     return true;
-  }
-  catch (Exception& ) {
+  } catch (Exception&) {
     // Format did not match, not Jason ASCII file.
     return false;
   }
 }
 
-
-bool CheckFileIsSyntoolOW(const std::string& filename)
-{
+bool CheckFileIsSyntoolOW(const std::string& filename) {
   std::ifstream file;
   OpenRead(file, filename);
 
@@ -81,9 +79,7 @@ bool CheckFileIsSyntoolOW(const std::string& filename)
   return false;
 }
 
-
-bool CheckFileIsStrata(const std::string& filename)
-{
+bool CheckFileIsStrata(const std::string& filename) {
   std::ifstream file;
   OpenRead(file, filename);
 
@@ -95,9 +91,7 @@ bool CheckFileIsStrata(const std::string& filename)
   return false;
 }
 
-
-bool CheckFileIsLandmarkAscii(const std::string& filename)
-{
+bool CheckFileIsLandmarkAscii(const std::string& filename) {
   std::ifstream file;
   OpenRead(file, filename);
 
@@ -109,10 +103,8 @@ bool CheckFileIsLandmarkAscii(const std::string& filename)
   return false;
 }
 
-
-void ReadJasonAsciiFile(const std::string& filename, Wavelet& wavelet)
-{
-  int line_number = 0;
+void ReadJasonAsciiFile(const std::string& filename, Wavelet& wavelet) {
+  int           line_number = 0;
 
   std::ifstream infile;
   OpenRead(infile, filename);
@@ -124,14 +116,13 @@ void ReadJasonAsciiFile(const std::string& filename, Wavelet& wavelet)
     try {
       NRLibPrivate::JasonParseUnits(line, data_type, data_unit, depth_type, depth_unit);
     } catch (FileFormatError&) {
-      std::string msg = "Error parsing " + filename + " , line "
-                        + ToString(line_number) + ": Units line expected.";
+      std::string msg = "Error parsing " + filename + " , line " + ToString(line_number) + ": Units line expected.";
       throw FileFormatError(msg);
     }
 
     double start  = ReadNext<double>(infile, line_number);
     double dt     = ReadNext<double>(infile, line_number);
-    size_t center = static_cast<size_t>(-start/dt + 0.5);
+    size_t center = static_cast<size_t>(-start / dt + 0.5);
     size_t nw     = ReadNext<size_t>(infile, line_number);
 
     wavelet.SetSampleInterval(dt);
@@ -146,8 +137,7 @@ void ReadJasonAsciiFile(const std::string& filename, Wavelet& wavelet)
   } catch (EndOfFile&) {
     throw FileFormatError("Unexpected end of file.");
   } catch (Exception& e) {
-    std::string msg = "Error parsing " + filename + ", line number "
-                      + ToString(line_number) + ": " + e.what();
+    std::string msg = "Error parsing " + filename + ", line number " + ToString(line_number) + ": " + e.what();
     throw FileFormatError(msg);
   }
 
@@ -160,11 +150,9 @@ void ReadJasonAsciiFile(const std::string& filename, Wavelet& wavelet)
   }
 }
 
-
 void WriteJasonAsciiFile(const std::string&              filename,
                          const Wavelet&                  wavelet,
-                         const std::vector<std::string>& text_header)
-{
+                         const std::vector<std::string>& text_header) {
   std::ofstream out;
   NRLib::OpenWrite(out, filename);
 
@@ -174,7 +162,8 @@ void WriteJasonAsciiFile(const std::string&              filename,
   out << "\"*\n";
   out << "\"* File format:\n"
          "\"* - N lines starting with * are comment (such as this line)\n"
-         "\"* - 1 line with four fields (data type, data unit, depth type, depth unit)\n"
+         "\"* - 1 line with four fields (data type, data unit, depth type, "
+         "depth unit)\n"
          "\"* - 1 line with start time/depth\n"
          "\"* - 1 line with sample interval\n"
          "\"* - 1 line with number of data lines\n"
@@ -190,53 +179,48 @@ void WriteJasonAsciiFile(const std::string&              filename,
   NRLib::WriteAsciiArray(out, wavelet.begin(), wavelet.end(), 1);
 }
 
-
-void ReadSyntoolOWFile(const std::string& filename, Wavelet& wavelet)
-{
-  int line_number = 0;
+void ReadSyntoolOWFile(const std::string& filename, Wavelet& wavelet) {
+  int           line_number = 0;
   std::ifstream infile;
 
   OpenRead(infile, filename);
 
   // Setting default values so we know if we didn't find the values we
   // were looking for.
-  double n_samples = -1;
-  double time_zero_sample = -1;
-  double sample_interval = -1;
-  bool end_of_header = false;
+  double      n_samples        = -1;
+  double      time_zero_sample = -1;
+  double      sample_interval  = -1;
+  bool        end_of_header    = false;
   std::string line;
   // Parsing header
-  while(!end_of_header && std::getline(infile, line)) {
+  while (!end_of_header && std::getline(infile, line)) {
     ++line_number;
     if (line.find("Total Samples:") != std::string::npos) {
       if (n_samples != -1) {
-        std::string msg = "Error parsing line " + ToString(line_number)
-                          + ": Total Samples is set several times.";
+        std::string msg = "Error parsing line " + ToString(line_number) + ": Total Samples is set several times.";
         throw FileFormatError(msg);
       }
       std::string::size_type pos = line.find(':');
-      n_samples = NRLib::ParseType<double>(NRLib::Chomp(line.substr(pos + 1)));
+      n_samples                  = NRLib::ParseType<double>(NRLib::Chomp(line.substr(pos + 1)));
     }
     if (line.find("Sample Interval:") != std::string::npos) {
       if (sample_interval != -1) {
-        std::string msg = "Error parsing  line " + ToString(line_number)
-                          + ": Sample Interval is set several times.";
+        std::string msg = "Error parsing  line " + ToString(line_number) + ": Sample Interval is set several times.";
         throw FileFormatError(msg);
       }
       std::string::size_type pos = line.find(':');
-      sample_interval = NRLib::ParseType<double>(NRLib::Chomp(line.substr(pos + 1)));
+      sample_interval            = NRLib::ParseType<double>(NRLib::Chomp(line.substr(pos + 1)));
     }
     if (line.find("Time Zero Sample:") != std::string::npos) {
       if (time_zero_sample != -1) {
-        std::string msg = "Error parsing  line " + ToString(line_number)
-                          + ": Time Zero Sample is set several times.";
+        std::string msg = "Error parsing  line " + ToString(line_number) + ": Time Zero Sample is set several times.";
         throw FileFormatError(msg);
       }
       std::string::size_type pos = line.find(':');
-      time_zero_sample = NRLib::ParseType<double>(NRLib::Chomp(line.substr(pos + 1)));
+      time_zero_sample           = NRLib::ParseType<double>(NRLib::Chomp(line.substr(pos + 1)));
     }
     if (line.find("--------") != std::string::npos) {
-       // End of header
+      // End of header
       end_of_header = true;
     }
   }
@@ -263,7 +247,7 @@ void ReadSyntoolOWFile(const std::string& filename, Wavelet& wavelet)
 
   size_t center = static_cast<size_t>(time_zero_sample);
   wavelet.SetSampleInterval(sample_interval);
-  size_t nw     = static_cast<size_t>(n_samples);
+  size_t nw          = static_cast<size_t>(n_samples);
 
   size_t data_length = NRLibPrivate::FindWaveletLength(nw, center);
   wavelet.Resize(data_length);
@@ -278,18 +262,17 @@ void ReadSyntoolOWFile(const std::string& filename, Wavelet& wavelet)
       std::vector<std::string> tokens = GetTokens(line);
       if (tokens.size() == 2) {
         try {
-          ParseType<double>(tokens[0]); // z, not used.
-          val = ParseType<double>(tokens[1]);
+          ParseType<double>(tokens[0]);  // z, not used.
+          val                = ParseType<double>(tokens[1]);
           wavelet[i + shift] = val;
         } catch (Exception&) {
-          std::string msg = "Error parsing line " + ToString(line_number)
-            + ": Line with z-value and wavelet value expected.";
+          std::string msg =
+              "Error parsing line " + ToString(line_number) + ": Line with z-value and wavelet value expected.";
           throw FileFormatError(msg);
         }
-      }
-      else {
-        std::string msg = "Error parsing line " + ToString(line_number)
-          + ": Line with z-value and wavelet value expected.";
+      } else {
+        std::string msg =
+            "Error parsing line " + ToString(line_number) + ": Line with z-value and wavelet value expected.";
         throw FileFormatError(msg);
       }
     }
@@ -299,17 +282,15 @@ void ReadSyntoolOWFile(const std::string& filename, Wavelet& wavelet)
   }
 }
 
-
-void ReadStrataFile(const std::string& filename, Wavelet& wavelet)
-{
-  int line_number = 0;
+void ReadStrataFile(const std::string& filename, Wavelet& wavelet) {
+  int           line_number = 0;
   std::ifstream infile;
   OpenRead(infile, filename);
 
-  bool end_of_header = false;
+  bool        end_of_header = false;
   std::string line;
   // Skip textual header
-  while(!end_of_header && std::getline(infile, line)) {
+  while (!end_of_header && std::getline(infile, line)) {
     ++line_number;
     if (line.find("#STRATA_WPARAMS") != std::string::npos) {
       end_of_header = true;
@@ -320,38 +301,33 @@ void ReadStrataFile(const std::string& filename, Wavelet& wavelet)
     throw FileFormatError("Unexpected end of file.");
   }
 
-  end_of_header = false;
+  end_of_header           = false;
 
   // Setting default values so we know if we didn't find the values we
   // were looking for.
-  int n_samples = -1;
-  int time_zero_sample = -1;
-  double sample_interval = -1;
+  int    n_samples        = -1;
+  int    time_zero_sample = -1;
+  double sample_interval  = -1;
 
   // Parse wavelet parameters
-  while(!end_of_header && std::getline(infile, line)) {
+  while (!end_of_header && std::getline(infile, line)) {
     ++line_number;
     if (line[0] != '~') {
       end_of_header = true;
-    }
-    else {
+    } else {
       std::string code = line.substr(1, 2);
       if (code == "SR") {
         std::string val = line.substr(3);
         sample_interval = ParseType<double>(val);
-      }
-      else if (code == "TZ") {
-        std::string val = line.substr(3);
+      } else if (code == "TZ") {
+        std::string val  = line.substr(3);
         time_zero_sample = ParseType<int>(val);
-      }
-      else if (code == "NS") {
+      } else if (code == "NS") {
         std::string val = line.substr(3);
-        n_samples = ParseType<int>(val);
-      }
-      else if (code == "PR") {
+        n_samples       = ParseType<int>(val);
+      } else if (code == "PR") {
         // Ignore
-      }
-      else {
+      } else {
         // Ignore
         /// @todo Print warning.
       }
@@ -375,7 +351,7 @@ void ReadStrataFile(const std::string& filename, Wavelet& wavelet)
 
   size_t data_length = NRLibPrivate::FindWaveletLength(n_samples, center);
   wavelet.Resize(data_length);
-  size_t shift = NRLibPrivate::FindWaveletShift(data_length, center);
+  size_t shift   = NRLibPrivate::FindWaveletShift(data_length, center);
 
   wavelet[shift] = ParseType<double>(line);
 
@@ -390,9 +366,7 @@ void ReadStrataFile(const std::string& filename, Wavelet& wavelet)
   }
 }
 
-
-void ReadLandmarkAsciiFile(const std::string& filename, Wavelet& wavelet)
-{
+void ReadLandmarkAsciiFile(const std::string& filename, Wavelet& wavelet) {
   int line_number = 0;
   try {
     std::ifstream infile;
@@ -419,28 +393,21 @@ void ReadLandmarkAsciiFile(const std::string& filename, Wavelet& wavelet)
     for (size_t i = 0; i < nw; ++i) {
       wavelet[i + shift] = ReadNext<double>(infile, line_number);
     }
-  }
-  catch (EndOfFile&) {
-    throw FileFormatError("Error reading Landmark ASCII Wavelet file " + filename
-                          + ", Unexpected end of file.");
-  }
-  catch (IOError& e) {
+  } catch (EndOfFile&) {
+    throw FileFormatError("Error reading Landmark ASCII Wavelet file " + filename + ", Unexpected end of file.");
+  } catch (IOError& e) {
     throw e;
-  }
-  catch (Exception& e) {
-    throw FileFormatError("Error reading Landmark ASCII Wavelet file " + filename
-                          + ", line " + ToString(line_number) + ": " + e.what());
+  } catch (Exception& e) {
+    throw FileFormatError("Error reading Landmark ASCII Wavelet file " + filename + ", line " + ToString(line_number) +
+                          ": " + e.what());
   }
 }
 
-
 namespace NRLibPrivate {
 
-std::string JasonGetFirstNonCommentLine(std::ifstream & infile,
-                                        int           & line_number)
-{
+std::string JasonGetFirstNonCommentLine(std::ifstream& infile, int& line_number) {
   std::string line;
-  while(std::getline(infile, line)) {
+  while (std::getline(infile, line)) {
     ++line_number;
     // Skip whitespace.
     std::string::size_type start = line.find_first_not_of(Whitespace());
@@ -449,18 +416,16 @@ std::string JasonGetFirstNonCommentLine(std::ifstream & infile,
       continue;
     }
     if (line[start] == '\"') {
-      std::string::size_type p
-        = line.find_first_not_of(Whitespace(), start + 1);
+      std::string::size_type p = line.find_first_not_of(Whitespace(), start + 1);
       if (p != std::string::npos && line[p] == '*') {
         // Comment line
         continue;
       }
     }
 
-    std::string::size_type end
-      = line.find_last_not_of(Whitespace());
+    std::string::size_type end          = line.find_last_not_of(Whitespace());
 
-    std::string strippedLine = line.substr(start, end - start + 1);
+    std::string            strippedLine = line.substr(start, end - start + 1);
     return strippedLine;
   }
   // End of file reached, or something bad happend while reading
@@ -468,27 +433,23 @@ std::string JasonGetFirstNonCommentLine(std::ifstream & infile,
   throw EndOfFile();
 }
 
-
-void JasonParseUnits(const std::string & line,
-                     std::string       & data_type,
-                     std::string       & data_unit,
-                     std::string       & depth_type,
-                     std::string       & depth_unit)
-{
+void JasonParseUnits(const std::string& line,
+                     std::string&       data_type,
+                     std::string&       data_unit,
+                     std::string&       depth_type,
+                     std::string&       depth_unit) {
   // Data Type
   std::string::size_type pos1 = line.find(',');
   if (pos1 == std::string::npos) {
     throw FileFormatError();
   }
   std::string::size_type start = line.find('\"', 0);
-  std::string::size_type end = line.rfind('\"', pos1);
-  if (start == std::string::npos
-      || end == std::string::npos
-      || start >= end) {
+  std::string::size_type end   = line.rfind('\"', pos1);
+  if (start == std::string::npos || end == std::string::npos || start >= end) {
     throw FileFormatError();
   }
 
-  data_type = line.substr(start + 1, end - start - 1);
+  data_type                   = line.substr(start + 1, end - start - 1);
 
   // Data Unit
   std::string::size_type pos2 = line.find(',', pos1 + 1);
@@ -496,65 +457,56 @@ void JasonParseUnits(const std::string & line,
     throw FileFormatError();
   }
   start = line.find('\"', pos1);
-  end = line.rfind('\"', pos2);
-  if (start == std::string::npos
-      || end == std::string::npos
-      || start >= end) {
+  end   = line.rfind('\"', pos2);
+  if (start == std::string::npos || end == std::string::npos || start >= end) {
     throw FileFormatError();
   }
 
   data_unit = line.substr(start + 1, end - start - 1);
 
   // Depth Type
-  pos1 = pos2;
-  pos2 = line.find(',', pos1 + 1);
+  pos1      = pos2;
+  pos2      = line.find(',', pos1 + 1);
   if (pos2 == std::string::npos) {
     throw FileFormatError();
   }
   start = line.find('\"', pos1);
-  end = line.rfind('\"', pos2);
-  if (start == std::string::npos
-      || end == std::string::npos
-      || start >= end) {
+  end   = line.rfind('\"', pos2);
+  if (start == std::string::npos || end == std::string::npos || start >= end) {
     throw FileFormatError();
   }
 
   depth_type = line.substr(start + 1, end - start - 1);
 
   // Depth Unit
-  pos1 = pos2;
+  pos1       = pos2;
 
-  start = line.find('\"', pos1);
-  end = line.rfind('\"', std::string::npos);
-  if (start == std::string::npos
-      || end == std::string::npos
-      || start >= end) {
+  start      = line.find('\"', pos1);
+  end        = line.rfind('\"', std::string::npos);
+  if (start == std::string::npos || end == std::string::npos || start >= end) {
     throw FileFormatError();
   }
 
   depth_unit = line.substr(start + 1, end - start - 1);
 }
 
-size_t FindWaveletLength(size_t file_wavelet_length, size_t center_index)
-{
+size_t FindWaveletLength(size_t file_wavelet_length, size_t center_index) {
   assert(file_wavelet_length > center_index);
 
   size_t n_before = center_index;
   size_t n_after  = file_wavelet_length - center_index - 1;
-  size_t length = 2 * std::max(n_before, n_after) + 1;
+  size_t length   = 2 * std::max(n_before, n_after) + 1;
 
   return length;
 }
 
-size_t FindWaveletShift(size_t wavelet_length, size_t center_index)
-{
-  size_t new_center = wavelet_length/2;
+size_t FindWaveletShift(size_t wavelet_length, size_t center_index) {
+  size_t new_center = wavelet_length / 2;
   assert(new_center >= center_index);
 
   return new_center - center_index;
 }
 
+}  // namespace NRLibPrivate
 
-} // namespace NRLibPrivate
-
-} // namespace NRLib
+}  // namespace NRLib

@@ -6,16 +6,13 @@
 #include "nrlib/segy/segygeometry.hpp"
 #include "unittests/util.hpp"
 
-#include <boost/test/unit_test.hpp>
 #include <boost/filesystem.hpp>
-
+#include <boost/test/unit_test.hpp>
 
 using namespace boost::filesystem;
 using namespace NRLib;
 
-
-BOOST_AUTO_TEST_CASE(SegyReadGeometryTest)
-{
+BOOST_AUTO_TEST_CASE(SegyReadGeometryTest) {
   path input_filename = GetTestDir() / "lnea32_mr_jura_IL_3461_4410_XL_1617_2378.segy";
   SegY in_file(input_filename.string(), 0);
 
@@ -99,19 +96,16 @@ BOOST_AUTO_TEST_CASE(SegyReadGeometryTest)
   BOOST_CHECK_EQUAL(trace_header.GetCoord2(), 7230371.84);
   BOOST_CHECK_EQUAL(trace_header.GetDt(), 4000);
   BOOST_CHECK_EQUAL(trace_header.GetStatus(), 0);
-
 }
 
-
-BOOST_AUTO_TEST_CASE(SegyReadGeometryMinimalTraceheaderTest)
-{
-  path input_filename = GetTestDir() / "lnea32_mr_jura_IL_3461_4410_XL_1617_2378.segy";
+BOOST_AUTO_TEST_CASE(SegyReadGeometryMinimalTraceheaderTest) {
+  path              input_filename = GetTestDir() / "lnea32_mr_jura_IL_3461_4410_XL_1617_2378.segy";
 
   TraceHeaderFormat thf(-1, -1, -1, -1, -1, -1, TraceHeaderFormat::ILXL);
 
-  SegY in_file(input_filename.string(), 0, thf);
+  SegY              in_file(input_filename.string(), 0, thf);
 
-  SegYTrace* trace = in_file.GetNextTrace();
+  SegYTrace*        trace = in_file.GetNextTrace();
 
   BOOST_CHECK_CLOSE(trace->GetTrace()[15], 6764.14, 0.01);
 
@@ -119,9 +113,7 @@ BOOST_AUTO_TEST_CASE(SegyReadGeometryMinimalTraceheaderTest)
   // BOOST_CHECK(!thf.GetStandardType());
 }
 
-
-BOOST_AUTO_TEST_CASE(SegyReadAllTracesTest)
-{
+BOOST_AUTO_TEST_CASE(SegyReadAllTracesTest) {
   path input_filename = GetTestDir() / "lnea32_mr_jura_IL_3461_4410_XL_1617_2378.segy";
 
   SegY in_file(input_filename.string(), 0);
@@ -131,8 +123,8 @@ BOOST_AUTO_TEST_CASE(SegyReadAllTracesTest)
   in_file.CreateRegularGrid(true);
 
   std::vector<float> trace;
-  bool missing = true;
-  double z0_data = 0;
+  bool               missing = true;
+  double             z0_data = 0;
   in_file.GetNearestTrace(trace, missing, z0_data, 402600.80, 7230371.84);
   BOOST_CHECK_CLOSE(trace[40], -2336.68, 0.01);
 
@@ -143,20 +135,18 @@ BOOST_AUTO_TEST_CASE(SegyReadAllTracesTest)
   BOOST_CHECK_CLOSE(val, -2336.68, 0.03);
 }
 
+BOOST_AUTO_TEST_CASE(SegyReadWriteTest) {
+  path          input_filename = GetTestDir() / "lnea32_mr_jura_IL_3461_4410_XL_1617_2378.segy";
+  path          out_path       = temp_directory_path() / "test_write_trace_by_trace.sgy";
 
-BOOST_AUTO_TEST_CASE(SegyReadWriteTest)
-{
-  path input_filename = GetTestDir() / "lnea32_mr_jura_IL_3461_4410_XL_1617_2378.segy";
-  path out_path = temp_directory_path() / "test_write_trace_by_trace.sgy";
-
-  SegY in_file_orig(input_filename.string(), 0);
+  SegY          in_file_orig(input_filename.string(), 0);
 
   TextualHeader test_header;
 
   {
     // Reduce scope, to ensure that out_file1 is closed before we read from it.
-    SegY out_file1(out_path.string(), 0.0F, in_file_orig.GetNz(), in_file_orig.GetDz(),
-                   test_header, in_file_orig.GetTraceHeaderFormat());
+    SegY       out_file1(out_path.string(), 0.0F, in_file_orig.GetNz(), in_file_orig.GetDz(), test_header,
+                         in_file_orig.GetTraceHeaderFormat());
 
     SegYTrace* trace = in_file_orig.GetNextTrace();
     while (trace != NULL) {
@@ -190,7 +180,6 @@ BOOST_AUTO_TEST_CASE(SegyReadWriteTest)
     BOOST_CHECK_LT(format.GetOffsetLoc(), 0);
     BOOST_CHECK_EQUAL(format.GetCoordSys(), TraceHeaderFormat::UTM);
     BOOST_CHECK_NO_THROW(format.CheckFormat());
-
 
     // NB: We loose precision after writing and reading again.
     // See commented-out tests below.

@@ -31,52 +31,91 @@
  */
 
 #ifndef FLENS_SPARSE_BLAS_H
-#define FLENS_SPARSE_BLAS_H 1
+#  define FLENS_SPARSE_BLAS_H 1
 
-#include <flens/storage.h>
+#  include <flens/storage.h>
 
 namespace flens {
 
 //-- crs - compressed row storage ----------------------------------------------
 
 template <typename T>
-    void
-    crs_gemv(Transpose trans, int m, int n, T alpha,
-             const T *a, const int *ia, const int *ja,
-             const T *x, T beta, T *y);
+void crs_gemv(Transpose  trans,
+              int        m,
+              int        n,
+              T          alpha,
+              const T*   a,
+              const int* ia,
+              const int* ja,
+              const T*   x,
+              T          beta,
+              T*         y);
 
 template <typename T>
-    void
-    crs_symv(StorageUpLo upLo, int m, T alpha,
-             const T *a, const int *ia, const int *ja,
-             const T *x, T beta, T *y);
+void crs_symv(StorageUpLo upLo, int m, T alpha, const T* a, const int* ia, const int* ja, const T* x, T beta, T* y);
 
 //-- csr - compressed sparse row - (the Intel variant for crs) -----------------
 
-void
-csrmv(Transpose trans, int m, int k, float alpha, char *matdescra,
-      float  *values, int *columns,  int *pointerB, int *pointerE,
-      float *x, float beta, float *y);
+void csrmv(Transpose trans,
+           int       m,
+           int       k,
+           float     alpha,
+           char*     matdescra,
+           float*    values,
+           int*      columns,
+           int*      pointerB,
+           int*      pointerE,
+           float*    x,
+           float     beta,
+           float*    y);
 
-void
-csrmv(Transpose trans, int m, int k, double alpha, char *matdescra,
-      double  *values, int *columns,  int *pointerB, int *pointerE,
-      double *x, double beta, double *y);
+void csrmv(Transpose trans,
+           int       m,
+           int       k,
+           double    alpha,
+           char*     matdescra,
+           double*   values,
+           int*      columns,
+           int*      pointerB,
+           int*      pointerE,
+           double*   x,
+           double    beta,
+           double*   y);
 
-void
-csrmm(Transpose transA, int m, int n, int k, float alpha, char *matdescra,
-      const float *values, const int *columns, const int *pointerB,
-      const int *pointerE, const float *B, int ldb,
-      float beta, float *C, int ldc);
+void csrmm(Transpose    transA,
+           int          m,
+           int          n,
+           int          k,
+           float        alpha,
+           char*        matdescra,
+           const float* values,
+           const int*   columns,
+           const int*   pointerB,
+           const int*   pointerE,
+           const float* B,
+           int          ldb,
+           float        beta,
+           float*       C,
+           int          ldc);
 
-void
-csrmm(Transpose transA, int m, int n, int k, double alpha, char *matdescra,
-      const double *values, const int *columns, const int *pointerB,
-      const int *pointerE, const double *B, int ldb,
-      double beta, double *C, int ldc);
+void csrmm(Transpose     transA,
+           int           m,
+           int           n,
+           int           k,
+           double        alpha,
+           char*         matdescra,
+           const double* values,
+           const int*    columns,
+           const int*    pointerB,
+           const int*    pointerE,
+           const double* B,
+           int           ldb,
+           double        beta,
+           double*       C,
+           int           ldc);
 
-} // namespace flens
+}  // namespace flens
 
-#include <flens/sparse_blas.tcc>
+#  include <flens/sparse_blas.tcc>
 
-#endif // FLENS_SPBLAS_H
+#endif  // FLENS_SPBLAS_H

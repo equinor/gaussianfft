@@ -36,339 +36,258 @@ namespace flens {
 
 // -- constructors -------------------------------------------------------------
 template <typename E>
-SparseGeMatrix<E>::SparseGeMatrix()
-    : _initializer(0)
-{
-}
+SparseGeMatrix<E>::SparseGeMatrix() : _initializer(0) {}
 
 template <typename E>
-SparseGeMatrix<E>::SparseGeMatrix(int numRows, int numCols, int k)
-    : _engine(numRows, numCols, k)
-{
-    _initializer = engine().initializer();
+SparseGeMatrix<E>::SparseGeMatrix(int numRows, int numCols, int k) : _engine(numRows, numCols, k) {
+  _initializer = engine().initializer();
 }
 
 // -- operators ----------------------------------------------------------------
 template <typename E>
 template <typename RHS>
-SparseGeMatrix<E> &
-SparseGeMatrix<E>::operator=(const Matrix<RHS> &rhs)
-{
-    copy(rhs.impl(), *this);
-//    _initializer = 0;
-    return *this;
+SparseGeMatrix<E>& SparseGeMatrix<E>::operator=(const Matrix<RHS>& rhs) {
+  copy(rhs.impl(), *this);
+  //    _initializer = 0;
+  return *this;
 }
 
 template <typename E>
-SparseGeMatrix<E> &
-SparseGeMatrix<E>::operator*=(T alpha)
-{
-    engine() *= alpha;
-    return *this;
+SparseGeMatrix<E>& SparseGeMatrix<E>::operator*=(T alpha) {
+  engine() *= alpha;
+  return *this;
 }
 
 template <typename E>
-SparseGeMatrix<E> &
-SparseGeMatrix<E>::operator/=(T alpha)
-{
-    engine() /= alpha;
-    return *this;
+SparseGeMatrix<E>& SparseGeMatrix<E>::operator/=(T alpha) {
+  engine() /= alpha;
+  return *this;
 }
 
 template <typename E>
-typename SparseGeMatrix<E>::T &
-SparseGeMatrix<E>::operator()(int row, int col)
-{
-    return _initializer->operator()(row,col);
+typename SparseGeMatrix<E>::T& SparseGeMatrix<E>::operator()(int row, int col) {
+  return _initializer->operator()(row, col);
 }
 
 // -- methods ------------------------------------------------------------------
 template <typename E>
-void
-SparseGeMatrix<E>::finalize()
-{
-    delete _initializer;
-    _initializer = 0;
+void SparseGeMatrix<E>::finalize() {
+  delete _initializer;
+  _initializer = 0;
 }
 
 template <typename E>
-int
-SparseGeMatrix<E>::numRows() const
-{
-    return _engine.numRows();
+int SparseGeMatrix<E>::numRows() const {
+  return _engine.numRows();
 }
 
 template <typename E>
-int
-SparseGeMatrix<E>::numCols() const
-{
-    return _engine.numCols();
+int SparseGeMatrix<E>::numCols() const {
+  return _engine.numCols();
 }
 
 template <typename E>
-int
-SparseGeMatrix<E>::numNonZeros() const
-{
-    assert(!_initializer);
+int SparseGeMatrix<E>::numNonZeros() const {
+  assert(!_initializer);
 
-    return _engine.numNonZeros();
+  return _engine.numNonZeros();
 }
 
 template <typename E>
-typename SparseGeMatrix<E>::const_iterator
-SparseGeMatrix<E>::begin() const
-{
-    assert(!_initializer);
+typename SparseGeMatrix<E>::const_iterator SparseGeMatrix<E>::begin() const {
+  assert(!_initializer);
 
-    return _engine.begin();
+  return _engine.begin();
 }
 
 template <typename E>
-typename SparseGeMatrix<E>::iterator
-SparseGeMatrix<E>::begin()
-{
-    assert(!_initializer);
+typename SparseGeMatrix<E>::iterator SparseGeMatrix<E>::begin() {
+  assert(!_initializer);
 
-    return _engine.begin();
+  return _engine.begin();
 }
 
 template <typename E>
-typename SparseGeMatrix<E>::const_iterator
-SparseGeMatrix<E>::end() const
-{
-    assert(!_initializer);
+typename SparseGeMatrix<E>::const_iterator SparseGeMatrix<E>::end() const {
+  assert(!_initializer);
 
-    return _engine.end();
+  return _engine.end();
 }
 
 template <typename E>
-typename SparseGeMatrix<E>::iterator
-SparseGeMatrix<E>::end()
-{
-    assert(!_initializer);
+typename SparseGeMatrix<E>::iterator SparseGeMatrix<E>::end() {
+  assert(!_initializer);
 
-    return _engine.end();
+  return _engine.end();
 }
 
 template <typename E>
-void
-SparseGeMatrix<E>::resize(int m, int n, int k)
-{
-    delete _initializer;
-    _engine = E(m, n, k);
-    _initializer = _engine.initializer();
+void SparseGeMatrix<E>::resize(int m, int n, int k) {
+  delete _initializer;
+  _engine      = E(m, n, k);
+  _initializer = _engine.initializer();
 }
 
 // -- implementation -----------------------------------------------------------
 template <typename E>
-const E &
-SparseGeMatrix<E>::engine() const
-{
-    return _engine;
+const E& SparseGeMatrix<E>::engine() const {
+  return _engine;
 }
 
 template <typename E>
-E &
-SparseGeMatrix<E>::engine()
-{
-    return _engine;
+E& SparseGeMatrix<E>::engine() {
+  return _engine;
 }
 
 //== SparseSyMatrix ============================================================
 
 // -- constructors -------------------------------------------------------------
 template <typename E>
-SparseSyMatrix<E>::SparseSyMatrix(int dim, int k)
-    : _engine(dim, dim, k)
-{
-    _initializer = engine().initializer();
+SparseSyMatrix<E>::SparseSyMatrix(int dim, int k) : _engine(dim, dim, k) {
+  _initializer = engine().initializer();
 }
 
 // -- operators ----------------------------------------------------------------
 template <typename E>
-SparseSyMatrix<E> &
-SparseSyMatrix<E>::operator*=(T alpha)
-{
-    assert(!_initializer);
+SparseSyMatrix<E>& SparseSyMatrix<E>::operator*=(T alpha) {
+  assert(!_initializer);
 
-    engine() *= alpha;
-    return *this;
+  engine() *= alpha;
+  return *this;
 }
 
 template <typename E>
-SparseSyMatrix<E> &
-SparseSyMatrix<E>::operator/=(T alpha)
-{
-    assert(!_initializer);
+SparseSyMatrix<E>& SparseSyMatrix<E>::operator/=(T alpha) {
+  assert(!_initializer);
 
-    engine() /= alpha;
-    return *this;
+  engine() /= alpha;
+  return *this;
 }
 
 template <typename E>
-typename SparseSyMatrix<E>::T &
-SparseSyMatrix<E>::operator()(int row, int col)
-{
-    return _initializer->operator()(row,col);
+typename SparseSyMatrix<E>::T& SparseSyMatrix<E>::operator()(int row, int col) {
+  return _initializer->operator()(row, col);
 }
 
 // -- methods ------------------------------------------------------------------
 template <typename E>
-void
-SparseSyMatrix<E>::finalize()
-{
-    delete _initializer;
-    _initializer = 0;
+void SparseSyMatrix<E>::finalize() {
+  delete _initializer;
+  _initializer = 0;
 }
 
 template <typename E>
-int
-SparseSyMatrix<E>::dim() const
-{
-    assert(_engine.numRows()==_engine.numCols());
-    return _engine.numRows();
+int SparseSyMatrix<E>::dim() const {
+  assert(_engine.numRows() == _engine.numCols());
+  return _engine.numRows();
 }
 
 template <typename E>
-int
-SparseSyMatrix<E>::numNonZeros() const
-{
-    assert(!_initializer);
+int SparseSyMatrix<E>::numNonZeros() const {
+  assert(!_initializer);
 
-    return _engine.numNonZeros();
+  return _engine.numNonZeros();
 }
 
 template <typename E>
-typename SparseSyMatrix<E>::const_iterator
-SparseSyMatrix<E>::begin() const
-{
-    assert(!_initializer);
+typename SparseSyMatrix<E>::const_iterator SparseSyMatrix<E>::begin() const {
+  assert(!_initializer);
 
-    return _engine.begin();
+  return _engine.begin();
 }
 
 template <typename E>
-typename SparseSyMatrix<E>::iterator
-SparseSyMatrix<E>::begin()
-{
-    assert(!_initializer);
+typename SparseSyMatrix<E>::iterator SparseSyMatrix<E>::begin() {
+  assert(!_initializer);
 
-    return _engine.begin();
+  return _engine.begin();
 }
 
 template <typename E>
-typename SparseSyMatrix<E>::const_iterator
-SparseSyMatrix<E>::end() const
-{
-    assert(!_initializer);
+typename SparseSyMatrix<E>::const_iterator SparseSyMatrix<E>::end() const {
+  assert(!_initializer);
 
-    return _engine.end();
+  return _engine.end();
 }
 
 template <typename E>
-typename SparseSyMatrix<E>::iterator
-SparseSyMatrix<E>::end()
-{
-    assert(!_initializer);
+typename SparseSyMatrix<E>::iterator SparseSyMatrix<E>::end() {
+  assert(!_initializer);
 
-    return _engine.end();
+  return _engine.end();
 }
 
 // -- implementation -----------------------------------------------------------
 template <typename E>
-const E &
-SparseSyMatrix<E>::engine() const
-{
-    return _engine;
+const E& SparseSyMatrix<E>::engine() const {
+  return _engine;
 }
 
 template <typename E>
-E &
-SparseSyMatrix<E>::engine()
-{
-    return _engine;
+E& SparseSyMatrix<E>::engine() {
+  return _engine;
 }
 
 //== SparseSymmertricMatrix ====================================================
 
 // -- constructors -------------------------------------------------------------
 template <typename E>
-SparseSymmetricMatrix<E>::SparseSymmetricMatrix(int numRows, int numCols)
-    : _engine(numRows, numCols)
-{
-    _initializer = engine().initializer();
+SparseSymmetricMatrix<E>::SparseSymmetricMatrix(int numRows, int numCols) : _engine(numRows, numCols) {
+  _initializer = engine().initializer();
 }
 
 // -- operators ----------------------------------------------------------------
 template <typename E>
-typename E::ElementType &
-SparseSymmetricMatrix<E>::operator()(int row, int col)
-{
-    return _initializer->operator()(std::min(row,col), std::max(row,col));
+typename E::ElementType& SparseSymmetricMatrix<E>::operator()(int row, int col) {
+  return _initializer->operator()(std::min(row, col), std::max(row, col));
 }
 
 // -- methods ------------------------------------------------------------------
 template <typename E>
-void
-SparseSymmetricMatrix<E>::finalize()
-{
-    delete _initializer;
-    _initializer = 0;
+void SparseSymmetricMatrix<E>::finalize() {
+  delete _initializer;
+  _initializer = 0;
 }
 
 template <typename E>
-int
-SparseSymmetricMatrix<E>::numRows() const
-{
-    return _engine.numRows();
+int SparseSymmetricMatrix<E>::numRows() const {
+  return _engine.numRows();
 }
 
 template <typename E>
-int
-SparseSymmetricMatrix<E>::numCols() const
-{
-    return _engine.numCols();
+int SparseSymmetricMatrix<E>::numCols() const {
+  return _engine.numCols();
 }
 
 template <typename E>
-int
-SparseSymmetricMatrix<E>::numNonZeros() const
-{
-    assert(!_initializer);
+int SparseSymmetricMatrix<E>::numNonZeros() const {
+  assert(!_initializer);
 
-    return _engine.numNonZeros();
+  return _engine.numNonZeros();
 }
 
 template <typename E>
-typename SparseSymmetricMatrix<E>::const_iterator
-SparseSymmetricMatrix<E>::begin() const
-{
-    assert(!_initializer);
+typename SparseSymmetricMatrix<E>::const_iterator SparseSymmetricMatrix<E>::begin() const {
+  assert(!_initializer);
 
-    return _engine.begin();
+  return _engine.begin();
 }
 
 template <typename E>
-typename SparseSymmetricMatrix<E>::const_iterator
-SparseSymmetricMatrix<E>::end() const
-{
-    assert(!_initializer);
+typename SparseSymmetricMatrix<E>::const_iterator SparseSymmetricMatrix<E>::end() const {
+  assert(!_initializer);
 
-    return _engine.end();
+  return _engine.end();
 }
 
 template <typename E>
-const E &
-SparseSymmetricMatrix<E>::engine() const
-{
-    return _engine;
+const E& SparseSymmetricMatrix<E>::engine() const {
+  return _engine;
 }
 
 template <typename E>
-E &
-SparseSymmetricMatrix<E>::engine()
-{
-    return _engine;
+E& SparseSymmetricMatrix<E>::engine() {
+  return _engine;
 }
 
-} // namespace flens
+}  // namespace flens

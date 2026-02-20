@@ -2,23 +2,22 @@
 
 /// \file Unit tests for the writing binary data to buffers in NRLib fileio.
 
-#include <nrlib/iotools/fileio.hpp>
-#include <boost/test/unit_test.hpp>
 #include <boost/test/floating_point_comparison.hpp>
+#include <boost/test/unit_test.hpp>
+#include <nrlib/iotools/fileio.hpp>
 
 #include <limits>
 
 using namespace NRLib;
 using namespace NRLib::NRLibPrivate;
 
-BOOST_AUTO_TEST_CASE(WriteUInt16BETest)
-{
+BOOST_AUTO_TEST_CASE(WriteUInt16BETest) {
   unsigned short us;
-  unsigned char buffer[2] = { 0xff, 0xff };
-  char* buf = reinterpret_cast<char*>(&buffer);
+  unsigned char  buffer[2] = {0xff, 0xff};
+  char*          buf       = reinterpret_cast<char*>(&buffer);
 
   // 0
-  us = 0U;
+  us                       = 0U;
   WriteUInt16BE(buf, us);
   BOOST_CHECK_EQUAL(buffer[0], 0x00);
   BOOST_CHECK_EQUAL(buffer[1], 0x00);
@@ -49,15 +48,13 @@ BOOST_AUTO_TEST_CASE(WriteUInt16BETest)
   BOOST_CHECK_EQUAL(buffer[1], 0xb7);
 }
 
-
-BOOST_AUTO_TEST_CASE(WriteUInt16LETest)
-{
+BOOST_AUTO_TEST_CASE(WriteUInt16LETest) {
   unsigned short us;
-  unsigned char buffer[2] = { 0xff, 0xff };
-  char* buf = reinterpret_cast<char*>(&buffer);
+  unsigned char  buffer[2] = {0xff, 0xff};
+  char*          buf       = reinterpret_cast<char*>(&buffer);
 
   // 0
-  us = 0U;
+  us                       = 0U;
   WriteUInt16LE(buf, us);
   BOOST_CHECK_EQUAL(buffer[0], 0x00);
   BOOST_CHECK_EQUAL(buffer[1], 0x00);
@@ -88,15 +85,13 @@ BOOST_AUTO_TEST_CASE(WriteUInt16LETest)
   BOOST_CHECK_EQUAL(buffer[1], 0x7a);
 }
 
-
-BOOST_AUTO_TEST_CASE(WriteUInt32BETest)
-{
-  unsigned int ui;
-  unsigned char buffer[4] = { 0xff, 0xff, 0xff, 0xff };
-  char* buf = reinterpret_cast<char*>(&buffer);
+BOOST_AUTO_TEST_CASE(WriteUInt32BETest) {
+  unsigned int  ui;
+  unsigned char buffer[4] = {0xff, 0xff, 0xff, 0xff};
+  char*         buf       = reinterpret_cast<char*>(&buffer);
 
   // 0
-  ui = 0U;
+  ui                      = 0U;
   WriteUInt32BE(buf, ui);
   BOOST_CHECK_EQUAL(buffer[0], 0x00);
   BOOST_CHECK_EQUAL(buffer[1], 0x00);
@@ -153,15 +148,13 @@ BOOST_AUTO_TEST_CASE(WriteUInt32BETest)
   BOOST_CHECK_EQUAL(buffer[3], 0x4d);
 }
 
-
-BOOST_AUTO_TEST_CASE(WriteUInt32LETest)
-{
-  unsigned int ui;
-  unsigned char buffer[4] = { 0xff, 0xff, 0xff, 0xff };
-  char* buf = reinterpret_cast<char*>(&buffer);
+BOOST_AUTO_TEST_CASE(WriteUInt32LETest) {
+  unsigned int  ui;
+  unsigned char buffer[4] = {0xff, 0xff, 0xff, 0xff};
+  char*         buf       = reinterpret_cast<char*>(&buffer);
 
   // 0
-  ui = 0U;
+  ui                      = 0U;
   WriteUInt32LE(buf, ui);
   BOOST_CHECK_EQUAL(buffer[0], 0x00);
   BOOST_CHECK_EQUAL(buffer[1], 0x00);
@@ -218,15 +211,13 @@ BOOST_AUTO_TEST_CASE(WriteUInt32LETest)
   BOOST_CHECK_EQUAL(buffer[3], 0xbb);
 }
 
-
-BOOST_AUTO_TEST_CASE(WriteInt16BETest)
-{
-  short n;
-  unsigned char buffer[2] = { 0xff, 0xff };
-  char* buf = reinterpret_cast<char*>(&buffer);
+BOOST_AUTO_TEST_CASE(WriteInt16BETest) {
+  short         n;
+  unsigned char buffer[2] = {0xff, 0xff};
+  char*         buf       = reinterpret_cast<char*>(&buffer);
 
   // 0
-  n = 0;
+  n                       = 0;
   WriteInt16BE(buf, n);
   BOOST_CHECK_EQUAL(buffer[0], 0x00);
   BOOST_CHECK_EQUAL(buffer[1], 0x00);
@@ -267,15 +258,13 @@ BOOST_AUTO_TEST_CASE(WriteInt16BETest)
   BOOST_CHECK_EQUAL(buffer[1], 0xb7);
 }
 
-
-BOOST_AUTO_TEST_CASE(WriteInt32BETest)
-{
-  int n;
-  unsigned char buffer[4] = { 0xff, 0xff, 0xff, 0xff };
-  char* buf = reinterpret_cast<char*>(&buffer);
+BOOST_AUTO_TEST_CASE(WriteInt32BETest) {
+  int           n;
+  unsigned char buffer[4] = {0xff, 0xff, 0xff, 0xff};
+  char*         buf       = reinterpret_cast<char*>(&buffer);
 
   // 0
-  n = 0;
+  n                       = 0;
   WriteInt32BE(buf, n);
   BOOST_CHECK_EQUAL(buffer[0], 0x00);
   BOOST_CHECK_EQUAL(buffer[1], 0x00);
@@ -332,15 +321,13 @@ BOOST_AUTO_TEST_CASE(WriteInt32BETest)
   BOOST_CHECK_EQUAL(buffer[3], 0xa1);
 }
 
-
-BOOST_AUTO_TEST_CASE(WriteIEEEFloatBETest)
-{
-  float f;
-  unsigned char buffer[4] = { 0xff, 0xff, 0xff, 0xff };
-  char* buf = reinterpret_cast<char*>(&buffer);
+BOOST_AUTO_TEST_CASE(WriteIEEEFloatBETest) {
+  float         f;
+  unsigned char buffer[4] = {0xff, 0xff, 0xff, 0xff};
+  char*         buf       = reinterpret_cast<char*>(&buffer);
 
   // 0
-  f = 0.0F;
+  f                       = 0.0F;
   WriteIEEEFloatBE(buf, f);
   BOOST_CHECK_EQUAL(buffer[0], 0x00);
   BOOST_CHECK_EQUAL(buffer[1], 0x00);
@@ -449,15 +436,13 @@ BOOST_AUTO_TEST_CASE(WriteIEEEFloatBETest)
   BOOST_CHECK_EQUAL(buffer[3], 0x36);
 }
 
-
-BOOST_AUTO_TEST_CASE(WriteIEEEFloatLETest)
-{
-  float f;
-  unsigned char buffer[4] = { 0xff, 0xff, 0xff, 0xff };
-  char* buf = reinterpret_cast<char*>(&buffer);
+BOOST_AUTO_TEST_CASE(WriteIEEEFloatLETest) {
+  float         f;
+  unsigned char buffer[4] = {0xff, 0xff, 0xff, 0xff};
+  char*         buf       = reinterpret_cast<char*>(&buffer);
 
   // 0
-  f = 0.0F;
+  f                       = 0.0F;
   WriteIEEEFloatLE(buf, f);
   BOOST_CHECK_EQUAL(buffer[3], 0x00);
   BOOST_CHECK_EQUAL(buffer[2], 0x00);
@@ -566,15 +551,13 @@ BOOST_AUTO_TEST_CASE(WriteIEEEFloatLETest)
   BOOST_CHECK_EQUAL(buffer[0], 0x36);
 }
 
-
-BOOST_AUTO_TEST_CASE(WriteIEEEDoubleBETest)
-{
-  double d;
-  unsigned char buffer[8] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
-  char* buf = reinterpret_cast<char*>(&buffer);
+BOOST_AUTO_TEST_CASE(WriteIEEEDoubleBETest) {
+  double        d;
+  unsigned char buffer[8] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
+  char*         buf       = reinterpret_cast<char*>(&buffer);
 
   // 0
-  d = 0.0;
+  d                       = 0.0;
   WriteIEEEDoubleBE(buf, d);
   BOOST_CHECK_EQUAL(buffer[0], 0x00);
   BOOST_CHECK_EQUAL(buffer[1], 0x00);
@@ -675,8 +658,7 @@ BOOST_AUTO_TEST_CASE(WriteIEEEDoubleBETest)
   BOOST_CHECK_EQUAL(buffer[0], 0x7f);
   unsigned char flag = buffer[1] & 0xf0;
   BOOST_CHECK_EQUAL(flag, 0xf0);
-  flag = (buffer[1] & 0x0f) | buffer[2] | buffer[3] | buffer[4] | buffer[5]
-          | buffer[6] | buffer[7];
+  flag = (buffer[1] & 0x0f) | buffer[2] | buffer[3] | buffer[4] | buffer[5] | buffer[6] | buffer[7];
   BOOST_CHECK_NE(flag, 0x00);
 
   // -Signalling NaN
@@ -685,8 +667,7 @@ BOOST_AUTO_TEST_CASE(WriteIEEEDoubleBETest)
   BOOST_CHECK_EQUAL(buffer[0], 0xff);
   flag = buffer[1] & 0xf0;
   BOOST_CHECK_EQUAL(flag, 0xf0);
-  flag = (buffer[1] & 0x0f) | buffer[2] | buffer[3] | buffer[4] | buffer[5]
-    | buffer[6] | buffer[7];
+  flag = (buffer[1] & 0x0f) | buffer[2] | buffer[3] | buffer[4] | buffer[5] | buffer[6] | buffer[7];
   BOOST_CHECK_NE(flag, 0x00);
 
   // "Random" number
@@ -703,15 +684,13 @@ BOOST_AUTO_TEST_CASE(WriteIEEEDoubleBETest)
   BOOST_CHECK_EQUAL(buffer[7], 0xb5);
 }
 
-
-BOOST_AUTO_TEST_CASE(WriteIEEEDoubleLETest)
-{
-  double d;
-  unsigned char buffer[8] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
-  char* buf = reinterpret_cast<char*>(&buffer);
+BOOST_AUTO_TEST_CASE(WriteIEEEDoubleLETest) {
+  double        d;
+  unsigned char buffer[8] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
+  char*         buf       = reinterpret_cast<char*>(&buffer);
 
   // 0
-  d = 0.0;
+  d                       = 0.0;
   WriteIEEEDoubleLE(buf, d);
   BOOST_CHECK_EQUAL(buffer[0], 0x00);
   BOOST_CHECK_EQUAL(buffer[1], 0x00);
@@ -812,8 +791,7 @@ BOOST_AUTO_TEST_CASE(WriteIEEEDoubleLETest)
   BOOST_CHECK_EQUAL(buffer[7], 0x7f);
   unsigned char flag = buffer[6] & 0xf0;
   BOOST_CHECK_EQUAL(flag, 0xf0);
-  flag = (buffer[6] & 0x0f) | buffer[5] | buffer[4] | buffer[3] | buffer[2]
-    | buffer[1] | buffer[0];
+  flag = (buffer[6] & 0x0f) | buffer[5] | buffer[4] | buffer[3] | buffer[2] | buffer[1] | buffer[0];
   BOOST_CHECK_NE(flag, 0x00);
 
   // -Signalling NaN
@@ -822,8 +800,7 @@ BOOST_AUTO_TEST_CASE(WriteIEEEDoubleLETest)
   BOOST_CHECK_EQUAL(buffer[7], 0xff);
   flag = buffer[6] & 0xf0;
   BOOST_CHECK_EQUAL(flag, 0xf0);
-  flag = (buffer[6] & 0x0f) | buffer[5] | buffer[4] | buffer[3] | buffer[2]
-    | buffer[1] | buffer[0];
+  flag = (buffer[6] & 0x0f) | buffer[5] | buffer[4] | buffer[3] | buffer[2] | buffer[1] | buffer[0];
   BOOST_CHECK_NE(flag, 0x00);
 
   // "Random" number
@@ -840,15 +817,13 @@ BOOST_AUTO_TEST_CASE(WriteIEEEDoubleLETest)
   BOOST_CHECK_EQUAL(buffer[0], 0xb5);
 }
 
-
-BOOST_AUTO_TEST_CASE(WriteIBMFloatBETest)
-{
-  float f;
-  unsigned char buffer[4] = { 0xff, 0xff, 0xff, 0xff };
-  char* buf = reinterpret_cast<char*>(&buffer);
+BOOST_AUTO_TEST_CASE(WriteIBMFloatBETest) {
+  float         f;
+  unsigned char buffer[4] = {0xff, 0xff, 0xff, 0xff};
+  char*         buf       = reinterpret_cast<char*>(&buffer);
 
   // 0
-  f = 0.0F;
+  f                       = 0.0F;
   WriteIBMFloatBE(buf, f);
   BOOST_CHECK_EQUAL(buffer[0], 0x00);
   BOOST_CHECK_EQUAL(buffer[1], 0x00);
@@ -856,12 +831,12 @@ BOOST_AUTO_TEST_CASE(WriteIBMFloatBETest)
   BOOST_CHECK_EQUAL(buffer[3], 0x00);
 
   // -0    (Not supported by NRLib)
-  //f = -0.0F;
-  //WriteIBMFloatBE(buf, f);
+  // f = -0.0F;
+  // WriteIBMFloatBE(buf, f);
   // BOOST_CHECK_EQUAL(buffer[0], 0x80);
-  //BOOST_CHECK_EQUAL(buffer[1], 0x00);
-  //BOOST_CHECK_EQUAL(buffer[2], 0x00);
-  //BOOST_CHECK_EQUAL(buffer[3], 0x00);
+  // BOOST_CHECK_EQUAL(buffer[1], 0x00);
+  // BOOST_CHECK_EQUAL(buffer[2], 0x00);
+  // BOOST_CHECK_EQUAL(buffer[3], 0x00);
 
   // 1
   f = 1.0F;

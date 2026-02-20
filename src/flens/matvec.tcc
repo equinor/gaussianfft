@@ -35,49 +35,37 @@ namespace flens {
 // == Vector ===================================================================
 
 template <typename Impl>
-Vector<Impl>::~Vector()
-{
+Vector<Impl>::~Vector() {}
+
+template <typename Impl>
+const typename TypeInfo<Impl>::Impl& Vector<Impl>::impl() const {
+  typedef const typename TypeInfo<Impl>::Impl& TI;
+  return static_cast<TI>(static_cast<const Impl&>(*this));
 }
 
 template <typename Impl>
-const typename TypeInfo<Impl>::Impl &
-Vector<Impl>::impl() const
-{
-    typedef const typename TypeInfo<Impl>::Impl &TI;
-    return static_cast<TI>(static_cast<const Impl &>(*this));
-}
-
-template <typename Impl>
-typename TypeInfo<Impl>::Impl &
-Vector<Impl>::impl()
-{
-    typedef typename TypeInfo<Impl>::Impl &TI;
-    //return static_cast<TI>(static_cast<Impl &>(*this));
-    return static_cast<TI>(*this);
+typename TypeInfo<Impl>::Impl& Vector<Impl>::impl() {
+  typedef typename TypeInfo<Impl>::Impl& TI;
+  // return static_cast<TI>(static_cast<Impl &>(*this));
+  return static_cast<TI>(*this);
 }
 
 // == Matrix ===================================================================
 
 template <typename Impl>
-Matrix<Impl>::~Matrix()
-{
+Matrix<Impl>::~Matrix() {}
+
+template <typename Impl>
+const typename TypeInfo<Impl>::Impl& Matrix<Impl>::impl() const {
+  typedef const typename TypeInfo<Impl>::Impl& TI;
+  // return static_cast<TI>(static_cast<const Impl &>(*this));
+  return static_cast<TI>(*this);
 }
 
 template <typename Impl>
-const typename TypeInfo<Impl>::Impl &
-Matrix<Impl>::impl() const
-{
-    typedef const typename TypeInfo<Impl>::Impl &TI;
-    //return static_cast<TI>(static_cast<const Impl &>(*this));
-    return static_cast<TI>(*this);
+typename TypeInfo<Impl>::Impl& Matrix<Impl>::impl() {
+  typedef typename TypeInfo<Impl>::Impl& TI;
+  return static_cast<TI>(static_cast<Impl&>(*this));
 }
 
-template <typename Impl>
-typename TypeInfo<Impl>::Impl &
-Matrix<Impl>::impl()
-{
-    typedef typename TypeInfo<Impl>::Impl &TI;
-    return static_cast<TI>(static_cast<Impl &>(*this));
-}
-
-} // namespace flens
+}  // namespace flens

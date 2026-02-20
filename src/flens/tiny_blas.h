@@ -31,7 +31,7 @@
  */
 
 #ifndef FLENS_TINY_BLAS_H
-#define FLENS_TINY_BLAS_H 1
+#  define FLENS_TINY_BLAS_H 1
 
 namespace flens {
 
@@ -40,80 +40,67 @@ namespace flens {
 //-- Level 1 -------------------------------------------------------------------
 
 template <int N, typename TX, int incX, typename TY, int incY>
-    void
-    copy(const TX *x, TY *y);
+void copy(const TX* x, TY* y);
 
 template <int M, int N, typename TX, typename TY>
-    void
-    copy(const TX x[M][N], TY y[M][N]);
+void copy(const TX x[M][N], TY y[M][N]);
 
 template <int N, typename T, typename TX, int incX, typename TY, int incY>
-    void
-    axpy(T alpha, const TX *x, TY *y);
+void axpy(T alpha, const TX* x, TY* y);
 
 template <int M, int N, typename T, typename TX, typename TY>
-    void
-    axpy(T alpha, const TX x[M][N], TY y[M][N]);
+void axpy(T alpha, const TX x[M][N], TY y[M][N]);
 
 template <int N, typename TX, int incX, typename TY, int incY>
-    typename Promotion<TX, TY>::Type
-    dot(const TX *x, const TY *y);
+typename Promotion<TX, TY>::Type dot(const TX* x, const TY* y);
 
 //== High-Level BLAS: Tiny Types ===============================================
 
 template <typename I>
-    class TinyVector;
+class TinyVector;
 
 template <typename I>
-    class TinyGeMatrix;
+class TinyGeMatrix;
 
 template <typename I>
-    class DenseVector;
+class DenseVector;
 
 template <typename I>
-    class GeMatrix;
+class GeMatrix;
 
 //-- Level 1 -------------------------------------------------------------------
 
 template <typename X, typename Y>
-    typename Promotion<typename TypeInfo<X>::ElementType,
-                       typename TypeInfo<Y>::ElementType>::Type
-    dot(const TinyVector<X> &x, const TinyVector<Y> &y);
+typename Promotion<typename TypeInfo<X>::ElementType, typename TypeInfo<Y>::ElementType>::Type dot(
+    const TinyVector<X>& x,
+    const TinyVector<Y>& y);
 
 template <typename X, typename Y>
-    void
-    copy(const TinyVector<X> &x, TinyVector<Y> &y);
+void copy(const TinyVector<X>& x, TinyVector<Y>& y);
 
 template <typename X, typename Y>
-    void
-    copy(const TinyVector<X> &x, DenseVector<Y> &y);
+void copy(const TinyVector<X>& x, DenseVector<Y>& y);
 
 template <typename X, typename Y>
-    void
-    copy(const DenseVector<X> &x, TinyVector<Y> &y);
+void copy(const DenseVector<X>& x, TinyVector<Y>& y);
 
 template <typename X, typename Y>
-    void
-    copy(const TinyGeMatrix<X> &x, TinyGeMatrix<Y> &y);
+void copy(const TinyGeMatrix<X>& x, TinyGeMatrix<Y>& y);
 
 template <typename X, typename Y>
-    void
-    copy(const TinyGeMatrix<X> &x, GeMatrix<Y> &y);
+void copy(const TinyGeMatrix<X>& x, GeMatrix<Y>& y);
 
 template <typename X, typename Y>
-    void
-    copy(const GeMatrix<X> &x, TinyGeMatrix<Y> &y);
+void copy(const GeMatrix<X>& x, TinyGeMatrix<Y>& y);
 
 template <typename T, typename X, typename Y>
-    void
-    axpy(T alpha, const TinyVector<X> &x, TinyVector<Y> &y);
+void axpy(T alpha, const TinyVector<X>& x, TinyVector<Y>& y);
 
 template <typename T, typename X, typename Y>
-    void
-    axpy(T alpha, const TinyGeMatrix<X> &x, TinyGeMatrix<Y> &y);
+void axpy(T alpha, const TinyGeMatrix<X>& x, TinyGeMatrix<Y>& y);
 
-} // namespace flens
+}  // namespace flens
 
-#include <flens/tiny_blas.tcc>
+#  include <flens/tiny_blas.tcc>
 
-#endif // FLENS_TINY_BLAS_H
+#endif  // FLENS_TINY_BLAS_H

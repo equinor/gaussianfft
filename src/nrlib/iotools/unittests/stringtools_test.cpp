@@ -2,19 +2,16 @@
 
 /// \file Unit tests for the Stringtools functions in the NRLib IOTools library.
 
-#include <nrlib/iotools/stringtools.hpp>
 #include <boost/test/unit_test.hpp>
+#include <nrlib/iotools/stringtools.hpp>
 
 using namespace NRLib;
 
-BOOST_AUTO_TEST_CASE(ExtensionsTest)
-{
+BOOST_AUTO_TEST_CASE(ExtensionsTest) {
+  std::string file = "f";
+  file             = AddExtension(file, "ex1");
+  BOOST_CHECK_EQUAL(file, "f.ex1");
 
-    std::string file = "f";
-    file = AddExtension(file, "ex1");
-    BOOST_CHECK_EQUAL(file, "f.ex1");
-
-    file = ReplaceExtension(file, "ex2");
-    BOOST_CHECK_EQUAL(file, "f.ex2");
-
+  file = ReplaceExtension(file, "ex2");
+  BOOST_CHECK_EQUAL(file, "f.ex2");
 }

@@ -31,31 +31,27 @@
  */
 
 #ifndef FLENS_MULTIGRID_H
-#define FLENS_MULTIGRID_H 1
+#  define FLENS_MULTIGRID_H 1
 
 namespace flens {
 
-template <typename Mat, typename Vec,
-          typename Res, typename Pro,
-          typename S, typename DS>
-class MultiGrid
-{
-    public:
-        MultiGrid(const Mat *A, Vec *f, Vec *r, Vec *u, DS &ds);
+template <typename Mat, typename Vec, typename Res, typename Pro, typename S, typename DS>
+class MultiGrid {
+ public:
+  MultiGrid(const Mat* A, Vec* f, Vec* r, Vec* u, DS& ds);
 
-        void
-        vCycle(int l, int v1, int v2);
+  void vCycle(int l, int v1, int v2);
 
-    private:
-        const Mat  *A;
-        Vec        *f, *r, *u;
-        Res        R;
-        Pro        P;
-        DS         ds;
+ private:
+  const Mat* A;
+  Vec *      f, *r, *u;
+  Res        R;
+  Pro        P;
+  DS         ds;
 };
 
-} // namespace flens
+}  // namespace flens
 
-#include <flens/multigrid.tcc>
+#  include <flens/multigrid.tcc>
 
-#endif // FLENS_MULTIGRID_H
+#endif  // FLENS_MULTIGRID_H

@@ -2,27 +2,31 @@
 
 // Copyright (c)  2011, Norwegian Computing Center
 // All rights reserved.
-// Redistribution and use in source and binary forms, with or without modification,
-// are permitted provided that the following conditions are met:
-// •  Redistributions of source code must retain the above copyright notice, this
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+// •  Redistributions of source code must retain the above copyright notice,
+// this
 //    list of conditions and the following disclaimer.
-// •  Redistributions in binary form must reproduce the above copyright notice, this list of
-//    conditions and the following disclaimer in the documentation and/or other materials
-//    provided with the distribution.
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
-// EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-// OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
-// SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
-// OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-// HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-// OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
-// EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+// •  Redistributions in binary form must reproduce the above copyright notice,
+// this list of
+//    conditions and the following disclaimer in the documentation and/or other
+//    materials provided with the distribution.
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE.
 
 #include <fstream>
 
-#include "logstream.hpp"
 #include "fileio.hpp"
+#include "logstream.hpp"
 
 using namespace NRLib;
 
@@ -32,8 +36,7 @@ LogStream::LogStream(int level) {
   fullLevel_ = level;
 }
 
-
-LogStream::LogStream(const std::vector<int> & levels, bool ignore_general) {
+LogStream::LogStream(const std::vector<int>& levels, bool ignore_general) {
   unsigned int i;
   fullLevel_ = 0;
   for (i = 0; i < levels.size(); i++) {
@@ -43,89 +46,57 @@ LogStream::LogStream(const std::vector<int> & levels, bool ignore_general) {
   }
 }
 
+LogStream::~LogStream() {}
 
-LogStream::~LogStream() { }
-
-
-bool
-LogStream::ShouldLog(int level, int phase)
-{
+bool LogStream::ShouldLog(int level, int phase) {
   if (phase < static_cast<int>(levels_.size())) {
     if ((level & levels_[phase]) > 0)
       return true;
-  }
-  else if ((level & fullLevel_) > 0)
+  } else if ((level & fullLevel_) > 0)
     return true;
 
   return false;
 }
 
-
 // =========================== FileLogStream ================================
 
-
-FileLogStream::FileLogStream(const std::string& filename, int level)
-  : LogStream(level)
-{
+FileLogStream::FileLogStream(const std::string& filename, int level) : LogStream(level) {
   NRLib::OpenWrite(file_, filename);
 }
 
-
-FileLogStream::FileLogStream(const std::string      & filename,
-                             const std::vector<int> & levels,
-                             bool                     ignore_general)
-  : LogStream(levels, ignore_general)
-{
+FileLogStream::FileLogStream(const std::string& filename, const std::vector<int>& levels, bool ignore_general)
+    : LogStream(levels, ignore_general) {
   NRLib::OpenWrite(file_, filename);
 }
 
-
-FileLogStream::~FileLogStream()
-{
+FileLogStream::~FileLogStream() {
   file_.close();
 }
 
-
-void
-FileLogStream::LogMessage(int level, const std::string & message) {
+void FileLogStream::LogMessage(int level, const std::string& message) {
   if (ShouldLog(level)) {
     file_ << message;
     file_.flush();
   }
 }
 
-
-void
-FileLogStream::LogMessage(int level, int phase, const std::string & message) {
+void FileLogStream::LogMessage(int level, int phase, const std::string& message) {
   if (ShouldLog(level, phase)) {
     file_ << message;
     file_.flush();
   }
 }
-
 
 // ========================== ScreenLogStream ===============================
 
+ScreenLogStream::ScreenLogStream(int level) : LogStream(level), is_writing_progress_(false) {}
 
-ScreenLogStream::ScreenLogStream(int level)
-  : LogStream(level),
-    is_writing_progress_(false)
-{ }
+ScreenLogStream::ScreenLogStream(const std::vector<int>& levels, bool ignore_general)
+    : LogStream(levels, ignore_general), is_writing_progress_(false) {}
 
+ScreenLogStream::~ScreenLogStream() {}
 
-ScreenLogStream::ScreenLogStream(const std::vector<int> & levels,
-                                 bool                     ignore_general)
-  : LogStream(levels, ignore_general),
-    is_writing_progress_(false)
-{ }
-
-
-ScreenLogStream::~ScreenLogStream()
-{ }
-
-
-void
-ScreenLogStream::LogMessage(int level, const std::string & message) {
+void ScreenLogStream::LogMessage(int level, const std::string& message) {
   if (ShouldLog(level)) {
     if (is_writing_progress_) {
       std::cout << "\n\n";
@@ -137,9 +108,7 @@ ScreenLogStream::LogMessage(int level, const std::string & message) {
   }
 }
 
-
-void
-ScreenLogStream::LogMessage(int level, int phase, const std::string & message) {
+void ScreenLogStream::LogMessage(int level, int phase, const std::string& message) {
   if (ShouldLog(level, phase)) {
     if (is_writing_progress_) {
       std::cout << "\n\n";
@@ -151,9 +120,7 @@ ScreenLogStream::LogMessage(int level, int phase, const std::string & message) {
   }
 }
 
-
-void
-ScreenLogStream::WriteProgress(double progress, const std::string & message) {
+void ScreenLogStream::WriteProgress(double progress, const std::string& message) {
   int n_hats = 1 + static_cast<int>(progress * n_progress_hats_);
 
   std::cout << "\r  ";
@@ -161,9 +128,7 @@ ScreenLogStream::WriteProgress(double progress, const std::string & message) {
   std::cout << message;
 }
 
-
-void
-ScreenLogStream::UpdateProgress(double progress, const std::string & message) {
+void ScreenLogStream::UpdateProgress(double progress, const std::string& message) {
   if (!is_writing_progress_) {
     WriteProgressHeader();
   }
@@ -171,10 +136,8 @@ ScreenLogStream::UpdateProgress(double progress, const std::string & message) {
   WriteProgress(progress, message);
 }
 
-
-void
-ScreenLogStream::WriteProgressHeader() {
-  std::cout <<  "  0%       20%       40%       60%       80%      100%\n";
+void ScreenLogStream::WriteProgressHeader() {
+  std::cout << "  0%       20%       40%       60%       80%      100%\n";
   std::cout << ("  |    |    |    |    |    |    |    |    |    |    |\n");
   is_writing_progress_ = true;
 }

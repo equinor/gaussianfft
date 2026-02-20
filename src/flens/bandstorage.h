@@ -31,317 +31,256 @@
  */
 
 #ifndef FLENS_BANDSTORAGE_H
-#define FLENS_BANDSTORAGE_H 1
+#  define FLENS_BANDSTORAGE_H 1
 
-#include <flens/fullstorage.h>
+#  include <flens/fullstorage.h>
 
-#ifndef FLENS_FIRST_INDEX
+#  ifndef FLENS_FIRST_INDEX
 #    define FLENS_FIRST_INDEX 1
-#endif
+#  endif
 
 namespace flens {
 
 // forward decalarations
 template <typename T, StorageOrder Order>
-    class BandStorage;
+class BandStorage;
 
 template <typename T, StorageOrder Order>
-    class BandStorageView;
+class BandStorageView;
 
 template <typename T, StorageOrder Order>
-class ConstBandStorageView
-{
-    public:
-        typedef T                              ElementType;
-        typedef ConstBandStorageView           ConstView;
-        typedef BandStorageView<T, Order>      View;
-        typedef BandStorage<T, Order>          NoView;
+class ConstBandStorageView {
+ public:
+  typedef T                         ElementType;
+  typedef ConstBandStorageView      ConstView;
+  typedef BandStorageView<T, Order> View;
+  typedef BandStorage<T, Order>     NoView;
 
-        typedef ConstArrayView<T>              ConstVectorView;
-        typedef ArrayView<T>                   VectorView;
-        typedef Array<T>                       VectorNoView;
+  typedef ConstArrayView<T>         ConstVectorView;
+  typedef ArrayView<T>              VectorView;
+  typedef Array<T>                  VectorNoView;
 
+  ConstBandStorageView(const ConstFullStorageView<T, ColMajor>& data,
+                       int                                      numRows,
+                       int                                      numCols,
+                       int                                      indexBase = FLENS_FIRST_INDEX);
 
-        ConstBandStorageView(const ConstFullStorageView<T, ColMajor> &data,
-                             int numRows, int numCols, int indexBase=FLENS_FIRST_INDEX);
+  ConstBandStorageView(const FullStorageView<T, ColMajor>& data,
+                       int                                 numRows,
+                       int                                 numCols,
+                       int                                 indexBase = FLENS_FIRST_INDEX);
 
-        ConstBandStorageView(const FullStorageView<T, ColMajor> &data,
-                             int numRows, int numCols, int indexBase=FLENS_FIRST_INDEX);
+  ConstBandStorageView(const ConstBandStorageView<T, Order>& rhs);
 
-        ConstBandStorageView(const ConstBandStorageView<T, Order> &rhs);
+  ~ConstBandStorageView();
 
-        ~ConstBandStorageView();
+  //-- operators ---------------------------------------------------------
 
-        //-- operators ---------------------------------------------------------
+  const T&        operator()(int row, int col) const;
 
-        const T &
-        operator()(int row, int col) const;
+  //-- methods -----------------------------------------------------------
 
-        //-- methods -----------------------------------------------------------
+  int             firstRow() const;
 
-        int
-        firstRow() const;
+  int             lastRow() const;
 
-        int
-        lastRow() const;
+  int             firstCol() const;
 
-        int
-        firstCol() const;
+  int             lastCol() const;
 
-        int
-        lastCol() const;
+  int             numRows() const;
 
-        int
-        numRows() const;
+  int             numCols() const;
 
-        int
-        numCols() const;
+  int             numSubDiags() const;
 
-        int
-        numSubDiags() const;
+  int             numSuperDiags() const;
 
-        int
-        numSuperDiags() const;
+  int             leadingDimension() const;
 
-        int
-        leadingDimension() const;
+  const T*        data() const;
 
-        const T *
-        data() const;
+  ConstVectorView viewDiag(int diag, int viewIndexBase = FLENS_FIRST_INDEX) const;
 
-        ConstVectorView
-        viewDiag(int diag, int viewIndexBase=FLENS_FIRST_INDEX) const;
+  ConstView       viewDiags(int fromDiag, int toDiag, int viewIndexBase = FLENS_FIRST_INDEX) const;
 
-        ConstView
-        viewDiags(int fromDiag, int toDiag, int viewIndexBase=FLENS_FIRST_INDEX) const;
-
-    private:
-        int _numRows, _numCols, _indexBase;
-        ConstFullStorageView<T, ColMajor> _data;
+ private:
+  int                               _numRows, _numCols, _indexBase;
+  ConstFullStorageView<T, ColMajor> _data;
 };
 
 //------------------------------------------------------------------------------
 
 template <typename T, StorageOrder Order>
-struct StorageInfo<ConstBandStorageView<T, Order> >
-{
-    static const StorageOrder order = Order;
+struct StorageInfo<ConstBandStorageView<T, Order> > {
+  static const StorageOrder order = Order;
 };
 
 //------------------------------------------------------------------------------
 
 template <typename T, StorageOrder Order>
-class BandStorageView
-{
-    public:
-        typedef T                              ElementType;
-        typedef ConstBandStorageView<T, Order> ConstView;
-        typedef BandStorageView                View;
-        typedef BandStorage<T, Order>          NoView;
+class BandStorageView {
+ public:
+  typedef T                              ElementType;
+  typedef ConstBandStorageView<T, Order> ConstView;
+  typedef BandStorageView                View;
+  typedef BandStorage<T, Order>          NoView;
 
-        typedef ConstArrayView<T>              ConstVectorView;
-        typedef ArrayView<T>                   VectorView;
-        typedef Array<T>                       VectorNoView;
+  typedef ConstArrayView<T>              ConstVectorView;
+  typedef ArrayView<T>                   VectorView;
+  typedef Array<T>                       VectorNoView;
 
+  BandStorageView(const FullStorageView<T, ColMajor>& data,
+                  int                                 numRows,
+                  int                                 numCols,
+                  int                                 indexBase = FLENS_FIRST_INDEX);
 
-        BandStorageView(const FullStorageView<T, ColMajor> &data,
-                        int numRows, int numCols, int indexBase=FLENS_FIRST_INDEX);
+  BandStorageView(const BandStorageView<T, Order>& rhs);
 
-        BandStorageView(const BandStorageView<T, Order> &rhs);
+  ~BandStorageView();
 
-        ~BandStorageView();
+  //-- operators ---------------------------------------------------------
 
-        //-- operators ---------------------------------------------------------
+  BandStorageView<T, Order>& operator=(const NoView& rhs);
 
-        BandStorageView<T, Order> &
-        operator=(const NoView &rhs);
+  BandStorageView<T, Order>& operator=(const View& rhs);
 
-        BandStorageView<T, Order> &
-        operator=(const View &rhs);
+  BandStorageView<T, Order>& operator=(const ConstView& rhs);
 
-        BandStorageView<T, Order> &
-        operator=(const ConstView &rhs);
+  const T&                   operator()(int row, int col) const;
 
-        const T &
-        operator()(int row, int col) const;
+  T&                         operator()(int row, int col);
 
-        T &
-        operator()(int row, int col);
+                             operator ConstView() const;
 
-        operator ConstView() const;
+  //-- methods -----------------------------------------------------------
 
-        //-- methods -----------------------------------------------------------
+  int                        firstRow() const;
 
-        int
-        firstRow() const;
+  int                        lastRow() const;
 
-        int
-        lastRow() const;
+  int                        firstCol() const;
 
-        int
-        firstCol() const;
+  int                        lastCol() const;
 
-        int
-        lastCol() const;
+  int                        numRows() const;
 
-        int
-        numRows() const;
+  int                        numCols() const;
 
-        int
-        numCols() const;
+  int                        numSubDiags() const;
 
-        int
-        numSubDiags() const;
+  int                        numSuperDiags() const;
 
-        int
-        numSuperDiags() const;
+  int                        leadingDimension() const;
 
-        int
-        leadingDimension() const;
+  const T*                   data() const;
 
-        const T *
-        data() const;
+  T*                         data();
 
-        T *
-        data();
+  void resize(int numRows, int numCols, int numSubDiags, int numSuperDiags, int indexBase = FLENS_FIRST_INDEX);
 
-        void
-        resize(int numRows, int numCols, int numSubDiags, int numSuperDiags,
-               int indexBase=FLENS_FIRST_INDEX);
+  ConstVectorView viewDiag(int diag, int viewIndexBase = FLENS_FIRST_INDEX) const;
 
-        ConstVectorView
-        viewDiag(int diag, int viewIndexBase=FLENS_FIRST_INDEX) const;
+  VectorView      viewDiag(int diag, int viewIndexBase = FLENS_FIRST_INDEX);
 
-        VectorView
-        viewDiag(int diag, int viewIndexBase=FLENS_FIRST_INDEX);
+  ConstView       viewDiags(int fromDiag, int toDiag, int viewIndexBase = FLENS_FIRST_INDEX) const;
 
-        ConstView
-        viewDiags(int fromDiag, int toDiag, int viewIndexBase=FLENS_FIRST_INDEX) const;
+  View            viewDiags(int fromDiag, int toDiag, int viewIndexBase = FLENS_FIRST_INDEX);
 
-        View
-        viewDiags(int fromDiag, int toDiag, int viewIndexBase=FLENS_FIRST_INDEX);
-
-    private:
-        int _numRows, _numCols, _indexBase;
-        FullStorageView<T, ColMajor> _data;
+ private:
+  int                          _numRows, _numCols, _indexBase;
+  FullStorageView<T, ColMajor> _data;
 };
 
 //------------------------------------------------------------------------------
 
 template <typename T, StorageOrder Order>
-struct StorageInfo<BandStorageView<T, Order> >
-{
-    static const StorageOrder order = Order;
+struct StorageInfo<BandStorageView<T, Order> > {
+  static const StorageOrder order = Order;
 };
 
 //==============================================================================
 
 template <typename T, StorageOrder Order>
-class BandStorage
-{
-    public:
-        typedef T                              ElementType;
-        typedef ConstBandStorageView<T, Order> ConstView;
-        typedef BandStorageView<T, Order>      View;
-        typedef BandStorage                    NoView;
+class BandStorage {
+ public:
+  typedef T                              ElementType;
+  typedef ConstBandStorageView<T, Order> ConstView;
+  typedef BandStorageView<T, Order>      View;
+  typedef BandStorage                    NoView;
 
-        typedef ConstArrayView<T>              ConstVectorView;
-        typedef ArrayView<T>                   VectorView;
-        typedef Array<T>                       VectorNoView;
+  typedef ConstArrayView<T>              ConstVectorView;
+  typedef ArrayView<T>                   VectorView;
+  typedef Array<T>                       VectorNoView;
 
-        BandStorage();
+  BandStorage();
 
-        BandStorage(int numRows, int numCols,
-                    int numSubDiags, int numSuperDiags,
-                    int indexBase=FLENS_FIRST_INDEX);
+  BandStorage(int numRows, int numCols, int numSubDiags, int numSuperDiags, int indexBase = FLENS_FIRST_INDEX);
 
-        BandStorage(const BandStorage<T, Order> &rhs);
+  BandStorage(const BandStorage<T, Order>& rhs);
 
-        ~BandStorage();
+  ~BandStorage();
 
-        //-- operators ---------------------------------------------------------
+  //-- operators ---------------------------------------------------------
 
-        BandStorage<T, Order> &
-        operator=(const NoView &rhs);
+  BandStorage<T, Order>& operator=(const NoView& rhs);
 
-        BandStorage<T, Order> &
-        operator=(const View &rhs);
+  BandStorage<T, Order>& operator=(const View& rhs);
 
-        BandStorage<T, Order> &
-        operator=(const ConstView &rhs);
+  BandStorage<T, Order>& operator=(const ConstView& rhs);
 
-        const T &
-        operator()(int row, int col) const;
+  const T&               operator()(int row, int col) const;
 
-        T &
-        operator()(int row, int col);
+  T&                     operator()(int row, int col);
 
-        //-- methods -----------------------------------------------------------
+  //-- methods -----------------------------------------------------------
 
-        int
-        firstRow() const;
+  int                    firstRow() const;
 
-        int
-        lastRow() const;
+  int                    lastRow() const;
 
-        int
-        firstCol() const;
+  int                    firstCol() const;
 
-        int
-        lastCol() const;
+  int                    lastCol() const;
 
-        int
-        numRows() const;
+  int                    numRows() const;
 
-        int
-        numCols() const;
+  int                    numCols() const;
 
-        int
-        numSubDiags() const;
+  int                    numSubDiags() const;
 
-        int
-        numSuperDiags() const;
+  int                    numSuperDiags() const;
 
-        int
-        leadingDimension() const;
+  int                    leadingDimension() const;
 
-        const T *
-        data() const;
+  const T*               data() const;
 
-        T *
-        data();
+  T*                     data();
 
-        void
-        resize(int numRows, int numCols, int numSubDiags, int numSuperDiags,
-               int indexBase=FLENS_FIRST_INDEX);
+  void resize(int numRows, int numCols, int numSubDiags, int numSuperDiags, int indexBase = FLENS_FIRST_INDEX);
 
-        ConstVectorView
-        viewDiag(int diag, int viewIndexBase=FLENS_FIRST_INDEX) const;
+  ConstVectorView viewDiag(int diag, int viewIndexBase = FLENS_FIRST_INDEX) const;
 
-        VectorView
-        viewDiag(int diag, int viewIndexBase=FLENS_FIRST_INDEX);
+  VectorView      viewDiag(int diag, int viewIndexBase = FLENS_FIRST_INDEX);
 
-        ConstView
-        viewDiags(int fromDiag, int toDiag, int viewIndexBase=FLENS_FIRST_INDEX) const;
+  ConstView       viewDiags(int fromDiag, int toDiag, int viewIndexBase = FLENS_FIRST_INDEX) const;
 
-        View
-        viewDiags(int fromDiag, int toDiag, int viewIndexBase=FLENS_FIRST_INDEX);
+  View            viewDiags(int fromDiag, int toDiag, int viewIndexBase = FLENS_FIRST_INDEX);
 
-    private:
-        int _numRows, _numCols, _indexBase;
-        FullStorage<T, ColMajor> _data;
+ private:
+  int                      _numRows, _numCols, _indexBase;
+  FullStorage<T, ColMajor> _data;
 };
 
 //------------------------------------------------------------------------------
 
 template <typename T, StorageOrder Order>
-struct StorageInfo<BandStorage<T, Order> >
-{
-    static const StorageOrder order = Order;
+struct StorageInfo<BandStorage<T, Order> > {
+  static const StorageOrder order = Order;
 };
 
-} // namespace flens
+}  // namespace flens
 
-#include <flens/bandstorage.tcc>
+#  include <flens/bandstorage.tcc>
 
-#endif // FLENS_BANDSTORAGE_H
+#endif  // FLENS_BANDSTORAGE_H

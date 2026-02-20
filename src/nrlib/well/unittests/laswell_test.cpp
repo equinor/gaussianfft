@@ -2,18 +2,17 @@
 
 /// \file Unit tests testing reading LAS well.
 
-#include <nrlib/well/laswell.hpp>
-#include <boost/test/unit_test.hpp>
 #include <boost/filesystem.hpp>
+#include <boost/test/unit_test.hpp>
+#include <nrlib/well/laswell.hpp>
 
 #include <unittests/util.hpp>
 
 using namespace boost::filesystem;
 using namespace NRLib;
 
-BOOST_AUTO_TEST_CASE(LASWellReadTest)
-{
-  path filename = GetTestDir() / "wells" / "example_3_0.las";
+BOOST_AUTO_TEST_CASE(LASWellReadTest) {
+  path    filename = GetTestDir() / "wells" / "example_3_0.las";
 
   LasWell well(filename.string());
 

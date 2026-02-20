@@ -30,16 +30,16 @@
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <cassert>
 #include <flens/sparse_blas.h>
+#include <cassert>
 #include <iostream>
 
 #ifdef MKL
-#    ifdef MAC
-#        include <Intel_MKL/mkl_spblas.h>
-#    else
-#        include <mkl_spblas.h>
-#    endif
+#  ifdef MAC
+#    include <Intel_MKL/mkl_spblas.h>
+#  else
+#    include <mkl_spblas.h>
+#  endif
 #endif
 
 namespace flens {
@@ -47,65 +47,83 @@ namespace flens {
 //-- csr - compressed sparse row - (the Intel variant for crs) -----------------
 
 #ifdef MKL_SCS
-void
-csrmv(Transpose Trans, int m, int k, float alpha, char *matdescra,
-      float  *values, int *columns,  int *pointerB, int *pointerE,
-      float *x, float beta, float *y)
-{
-        char trans = (Trans==NoTrans) ? 'N' : 'T';
+void csrmv(Transpose Trans,
+           int       m,
+           int       k,
+           float     alpha,
+           char*     matdescra,
+           float*    values,
+           int*      columns,
+           int*      pointerB,
+           int*      pointerE,
+           float*    x,
+           float     beta,
+           float*    y) {
+  char trans = (Trans == NoTrans) ? 'N' : 'T';
 
-        mkl_scsrmv (&trans, &m, &k, &alpha, matdescra,
-                    values, columns, pointerB, pointerE,
-                    x, &beta, y);
+  mkl_scsrmv(&trans, &m, &k, &alpha, matdescra, values, columns, pointerB, pointerE, x, &beta, y);
 }
 
-void
-csrmv(Transpose Trans, int m, int k, double alpha, char *matdescra,
-      double  *values, int *columns,  int *pointerB, int *pointerE,
-      double *x, double beta, double *y)
-{
-        char trans = (Trans==NoTrans) ? 'N' : 'T';
+void csrmv(Transpose Trans,
+           int       m,
+           int       k,
+           double    alpha,
+           char*     matdescra,
+           double*   values,
+           int*      columns,
+           int*      pointerB,
+           int*      pointerE,
+           double*   x,
+           double    beta,
+           double*   y) {
+  char trans = (Trans == NoTrans) ? 'N' : 'T';
 
-        mkl_dcsrmv (&trans, &m, &k, &alpha, matdescra,
-                    values, columns, pointerB, pointerE,
-                    x, &beta, y);
+  mkl_dcsrmv(&trans, &m, &k, &alpha, matdescra, values, columns, pointerB, pointerE, x, &beta, y);
 }
 
-void
-csrmm(Transpose transA, int m, int n, int k, float alpha, char *matdescrA,
-      const float *values, const int *columns, const int *pointerB,
-      const int *pointerE, const float *B, int ldb,
-      float beta, float *C, int ldc)
-{
-        char trans = (transA==NoTrans) ? 'N' : 'T';
+void csrmm(Transpose    transA,
+           int          m,
+           int          n,
+           int          k,
+           float        alpha,
+           char*        matdescrA,
+           const float* values,
+           const int*   columns,
+           const int*   pointerB,
+           const int*   pointerE,
+           const float* B,
+           int          ldb,
+           float        beta,
+           float*       C,
+           int          ldc) {
+  char trans = (transA == NoTrans) ? 'N' : 'T';
 
-        // TODO: what about constness?
-        mkl_scsrmm(&trans, &m, &n, &k, &alpha, matdescrA,
-                   const_cast<float *>(values),
-                   const_cast<int *>(columns),
-                   const_cast<int *>(pointerB),
-                   const_cast<int *>(pointerE),
-                   const_cast<float *>(B),
-                   &ldb, &beta, C, &ldc);
+  // TODO: what about constness?
+  mkl_scsrmm(&trans, &m, &n, &k, &alpha, matdescrA, const_cast<float*>(values), const_cast<int*>(columns),
+             const_cast<int*>(pointerB), const_cast<int*>(pointerE), const_cast<float*>(B), &ldb, &beta, C, &ldc);
 }
 
-void
-csrmm(Transpose transA, int m, int n, int k, double alpha, char *matdescrA,
-      const double *values, const int *columns, const int *pointerB,
-      const int *pointerE, const double *B, int ldb,
-      double beta, double *C, int ldc)
-{
-    char trans = (transA==NoTrans) ? 'N' : 'T';
+void csrmm(Transpose     transA,
+           int           m,
+           int           n,
+           int           k,
+           double        alpha,
+           char*         matdescrA,
+           const double* values,
+           const int*    columns,
+           const int*    pointerB,
+           const int*    pointerE,
+           const double* B,
+           int           ldb,
+           double        beta,
+           double*       C,
+           int           ldc) {
+  char trans = (transA == NoTrans) ? 'N' : 'T';
 
-    // TODO: what about constness?
-    mkl_dcsrmm(&trans, &m, &n, &k, &alpha, matdescrA,
-               const_cast<double *>(values),
-               const_cast<int *>(columns),
-               const_cast<int *>(pointerB),
-               const_cast<int *>(pointerE),
-               const_cast<double *>(B),
-               &ldb, &beta, C, &ldc);
+  // TODO: what about constness?
+  mkl_dcsrmm(&trans, &m, &n, &k, &alpha, matdescrA, const_cast<double*>(values), const_cast<int*>(columns),
+             const_cast<int*>(pointerB), const_cast<int*>(pointerE), const_cast<double*>(B), &ldb, &beta, C, &ldc);
 }
-#endif // MKL
+#endif  // MKL
 
-} // namespace flens
+}  // namespace flens

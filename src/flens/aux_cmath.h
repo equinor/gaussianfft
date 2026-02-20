@@ -31,24 +31,23 @@
  */
 
 #ifndef FLENS_AUX_CMATH_H
-#define FLENS_AUX_CMATH_H 1
+#  define FLENS_AUX_CMATH_H 1
 
-#include <cmath>
+#  include <cmath>
 
 namespace flens {
 
-#ifdef _MSC_VER
-#  define AUX_ROUND
-#endif
+#  ifdef _MSC_VER
+#    define AUX_ROUND
+#  endif
 
-#ifdef AUX_ROUND
+#  ifdef AUX_ROUND
 template <typename T>
-T
-round(T x);
-#endif // AUX_ROUND
+T round(T x);
+#  endif  // AUX_ROUND
 
-} // namespace flens
+}  // namespace flens
 
-#include <flens/aux_cmath.tcc>
+#  include <flens/aux_cmath.tcc>
 
-#endif // FLENS_AUX_CMATH_H
+#endif  // FLENS_AUX_CMATH_H

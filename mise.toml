@@ -1,0 +1,5 @@
+[tools]
+python =  "3.11.7"
+cmake = "4.2.3"
+shellcheck = "0.11.0"
+clang-format = "21.1.8"

@@ -31,44 +31,36 @@
  */
 
 #ifndef FLENS_UPLO_H
-#define FLENS_UPLO_H 1
+#  define FLENS_UPLO_H 1
 
 namespace flens {
 
 template <typename I>
-    typename Matrix<I>::Impl::ConstTriangularView
-    upper(const Matrix<I> &A);
+typename Matrix<I>::Impl::ConstTriangularView upper(const Matrix<I>& A);
 
 template <typename I>
-    typename Matrix<I>::Impl::TriangularView
-    upper(Matrix<I> &A);
+typename Matrix<I>::Impl::TriangularView upper(Matrix<I>& A);
 
 template <typename I>
-    typename Matrix<I>::Impl::ConstTriangularView
-    upperUnit(const Matrix<I> &A);
+typename Matrix<I>::Impl::ConstTriangularView upperUnit(const Matrix<I>& A);
 
 template <typename I>
-    typename Matrix<I>::Impl::TriangularView
-    upperUnit(Matrix<I> &A);
+typename Matrix<I>::Impl::TriangularView upperUnit(Matrix<I>& A);
 
 template <typename I>
-    typename Matrix<I>::Impl::ConstTriangularView
-    lower(const Matrix<I> &A);
+typename Matrix<I>::Impl::ConstTriangularView lower(const Matrix<I>& A);
 
 template <typename I>
-    typename Matrix<I>::Impl::TriangularView
-    lower(Matrix<I> &A);
+typename Matrix<I>::Impl::TriangularView lower(Matrix<I>& A);
 
 template <typename I>
-    typename Matrix<I>::Impl::ConstTriangularView
-    lowerUnit(const Matrix<I> &A);
+typename Matrix<I>::Impl::ConstTriangularView lowerUnit(const Matrix<I>& A);
 
 template <typename I>
-    typename Matrix<I>::Impl::TriangularView
-    lowerUnit( Matrix<I> &A);
+typename Matrix<I>::Impl::TriangularView lowerUnit(Matrix<I>& A);
 
-} // namespace flens
+}  // namespace flens
 
-#include <flens/uplo.tcc>
+#  include <flens/uplo.tcc>
 
-#endif // FLENS_UPLO_H
+#endif  // FLENS_UPLO_H

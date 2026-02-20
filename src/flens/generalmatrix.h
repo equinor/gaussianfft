@@ -31,510 +31,405 @@
  */
 
 #ifndef FLENS_GENERALMATRIX_H
-#define FLENS_GENERALMATRIX_H 1
+#  define FLENS_GENERALMATRIX_H 1
 
-#include <flens/array.h>
-#include <flens/densevector.h>
-#include <flens/hermitianmatrix.h>
-#include <flens/listinitializer.h>
-#include <flens/matvec.h>
-#include <flens/range.h>
-#include <flens/scalarclosures.h>
-#include <flens/symmetricmatrix.h>
-#include <flens/triangularmatrix.h>
-#include <flens/sparsematrix.h>
-#include <flens/underscore.h>
+#  include <flens/array.h>
+#  include <flens/densevector.h>
+#  include <flens/hermitianmatrix.h>
+#  include <flens/listinitializer.h>
+#  include <flens/matvec.h>
+#  include <flens/range.h>
+#  include <flens/scalarclosures.h>
+#  include <flens/sparsematrix.h>
+#  include <flens/symmetricmatrix.h>
+#  include <flens/triangularmatrix.h>
+#  include <flens/underscore.h>
 
-#ifndef FLENS_FIRST_INDEX
+#  ifndef FLENS_FIRST_INDEX
 #    define FLENS_FIRST_INDEX 1
-#endif
+#  endif
 
 namespace flens {
 
 // == GeMatrix =================================================================
 
 template <typename FS>
-class GeMatrix
-    : public GeneralMatrix<GeMatrix<FS> >
-{
-    public:
-        // shortcut for element type
-        typedef typename GeMatrix<FS>::ElementType  T;
+class GeMatrix : public GeneralMatrix<GeMatrix<FS> > {
+ public:
+  // shortcut for element type
+  typedef typename GeMatrix<FS>::ElementType   T;
 
-        // view types from FS
-        typedef typename FS::ConstView          ConstFSView;
-        typedef typename FS::View               FSView;
-        typedef typename FS::NoView             FSNoView;
+  // view types from FS
+  typedef typename FS::ConstView               ConstFSView;
+  typedef typename FS::View                    FSView;
+  typedef typename FS::NoView                  FSNoView;
 
-        typedef typename FS::ConstVectorView    ConstFSVectorView;
-        typedef typename FS::VectorView         FSVectorView;
-        typedef typename FS::VectorNoView       FSVectorNoView;
+  typedef typename FS::ConstVectorView         ConstFSVectorView;
+  typedef typename FS::VectorView              FSVectorView;
+  typedef typename FS::VectorNoView            FSVectorNoView;
 
-        // view types for GeMatrix
-        typedef const DenseVector<ConstFSVectorView> ConstVectorView;
-        typedef DenseVector<FSVectorView>       VectorView;
-        typedef DenseVector<FSVectorNoView>     VectorNoView;
+  // view types for GeMatrix
+  typedef const DenseVector<ConstFSVectorView> ConstVectorView;
+  typedef DenseVector<FSVectorView>            VectorView;
+  typedef DenseVector<FSVectorNoView>          VectorNoView;
 
-        typedef GeMatrix<ConstFSView>           ConstView;
-        typedef GeMatrix<FSView>                View;
-        typedef GeMatrix<FSNoView>              NoView;
+  typedef GeMatrix<ConstFSView>                ConstView;
+  typedef GeMatrix<FSView>                     View;
+  typedef GeMatrix<FSNoView>                   NoView;
 
-        typedef TrMatrix<ConstFSView>           ConstTriangularView;
-        typedef TrMatrix<FSView>                TriangularView;
-        typedef TrMatrix<FSNoView>              TriangularNoView;
+  typedef TrMatrix<ConstFSView>                ConstTriangularView;
+  typedef TrMatrix<FSView>                     TriangularView;
+  typedef TrMatrix<FSNoView>                   TriangularNoView;
 
-        typedef SyMatrix<ConstFSView>           ConstSymmetricView;
-        typedef SyMatrix<FSView>                SymmetricView;
-        typedef SyMatrix<FSNoView>              SymmetricNoView;
+  typedef SyMatrix<ConstFSView>                ConstSymmetricView;
+  typedef SyMatrix<FSView>                     SymmetricView;
+  typedef SyMatrix<FSNoView>                   SymmetricNoView;
 
-        typedef HeMatrix<ConstFSView>           ConstHermitianView;
-        typedef HeMatrix<FSView>                HermitianView;
-        typedef HeMatrix<FSNoView>              HermitianNoView;
+  typedef HeMatrix<ConstFSView>                ConstHermitianView;
+  typedef HeMatrix<FSView>                     HermitianView;
+  typedef HeMatrix<FSNoView>                   HermitianNoView;
 
-        // -- constructors -----------------------------------------------------
-        GeMatrix();
+  // -- constructors -----------------------------------------------------
+  GeMatrix();
 
-        GeMatrix(int numRows, int numCols, int firstRow=FLENS_FIRST_INDEX, int firstCol=FLENS_FIRST_INDEX);
+  GeMatrix(int numRows, int numCols, int firstRow = FLENS_FIRST_INDEX, int firstCol = FLENS_FIRST_INDEX);
 
-        GeMatrix(const Range &rows, const Range &cols);
+  GeMatrix(const Range& rows, const Range& cols);
 
-        GeMatrix(const FS &fs);
+  GeMatrix(const FS& fs);
 
-        GeMatrix(const GeMatrix<FS> &rhs);
+  GeMatrix(const GeMatrix<FS>& rhs);
 
-        template <typename RHS>
-            GeMatrix(const GeMatrix<RHS> &fs);
+  template <typename RHS>
+  GeMatrix(const GeMatrix<RHS>& fs);
 
-        template <typename RHS>
-            GeMatrix(const Matrix<RHS> &fs);
+  template <typename RHS>
+  GeMatrix(const Matrix<RHS>& fs);
 
-        // -- operators --------------------------------------------------------
-        ListInitializerSwitch<GeMatrix<FS> >
-        operator=(const T &value);
+  // -- operators --------------------------------------------------------
+  ListInitializerSwitch<GeMatrix<FS> > operator=(const T& value);
 
-        GeMatrix<FS> &
-        operator=(const GeMatrix<FS> &rhs);
+  GeMatrix<FS>&                        operator=(const GeMatrix<FS>& rhs);
 
-        template <typename RHS>
-            GeMatrix<FS> &
-            operator=(const Matrix<RHS> &rhs);
+  template <typename RHS>
+  GeMatrix<FS>& operator=(const Matrix<RHS>& rhs);
 
-        template <typename SP>
-            GeMatrix<FS> &
-            operator=(const SparseGeMatrix<SP> &sp);
+  template <typename SP>
+  GeMatrix<FS>& operator=(const SparseGeMatrix<SP>& sp);
 
-        GeMatrix<FS> &
-        operator+=(const GeMatrix<FS> &rhs);
+  GeMatrix<FS>& operator+=(const GeMatrix<FS>& rhs);
 
-        template <typename RHS>
-            GeMatrix<FS> &
-            operator+=(const Matrix<RHS> &rhs);
+  template <typename RHS>
+  GeMatrix<FS>& operator+=(const Matrix<RHS>& rhs);
 
-        GeMatrix<FS> &
-        operator-=(const GeMatrix<FS> &rhs);
+  GeMatrix<FS>& operator-=(const GeMatrix<FS>& rhs);
 
-        template <typename RHS>
-            GeMatrix<FS> &
-            operator-=(const Matrix<RHS> &rhs);
+  template <typename RHS>
+  GeMatrix<FS>&                                operator-=(const Matrix<RHS>& rhs);
 
-        GeMatrix<FS> &
-        operator+=(T alpha);
+  GeMatrix<FS>&                                operator+=(T alpha);
 
-        GeMatrix<FS> &
-        operator-=(T alpha);
+  GeMatrix<FS>&                                operator-=(T alpha);
 
-        GeMatrix<FS> &
-        operator*=(T alpha);
+  GeMatrix<FS>&                                operator*=(T alpha);
 
-        GeMatrix<FS> &
-        operator/=(T alpha);
+  GeMatrix<FS>&                                operator/=(T alpha);
 
-        const T &
-        operator()(int row, int col) const;
+  const T&                                     operator()(int row, int col) const;
 
-        T &
-        operator()(int row, int col);
+  T&                                           operator()(int row, int col);
 
-        // -- support for summation convention ---------------------------------
+  // -- support for summation convention ---------------------------------
 
-        ScalarClosure<MatrixElement<GeMatrix<FS> > >
-        operator()(Index &i, Index &j);
+  ScalarClosure<MatrixElement<GeMatrix<FS> > > operator()(Index& i, Index& j);
 
-        // -- views ------------------------------------------------------------
+  // -- views ------------------------------------------------------------
 
-        // rectangular view
-        const ConstView
-        operator()(const Range &rows, const Range &cols,
-                   int firstViewRow=FLENS_FIRST_INDEX, int firstViewCol=FLENS_FIRST_INDEX) const;
+  // rectangular view
+  const ConstView                              operator()(const Range& rows,
+                             const Range& cols,
+                             int          firstViewRow = FLENS_FIRST_INDEX,
+                             int          firstViewCol = FLENS_FIRST_INDEX) const;
 
-        View
-        operator()(const Range &rows, const Range &cols,
-                   int firstViewRow=FLENS_FIRST_INDEX, int firstViewCol=FLENS_FIRST_INDEX);
+  View                                         operator()(const Range& rows,
+                  const Range& cols,
+                  int          firstViewRow = FLENS_FIRST_INDEX,
+                  int          firstViewCol = FLENS_FIRST_INDEX);
 
-        const ConstView
-        operator()(const Range &rows, const Underscore &allCols,
-                   int firstViewRow=FLENS_FIRST_INDEX, int firstViewCol=FLENS_FIRST_INDEX) const;
+  const ConstView                              operator()(const Range&      rows,
+                             const Underscore& allCols,
+                             int               firstViewRow = FLENS_FIRST_INDEX,
+                             int               firstViewCol = FLENS_FIRST_INDEX) const;
 
-        View
-        operator()(const Range &rows, const Underscore &allCols,
-                   int firstViewRow=FLENS_FIRST_INDEX, int firstViewCol=FLENS_FIRST_INDEX);
+  View                                         operator()(const Range&      rows,
+                  const Underscore& allCols,
+                  int               firstViewRow = FLENS_FIRST_INDEX,
+                  int               firstViewCol = FLENS_FIRST_INDEX);
 
-        const ConstView
-        operator()(const Underscore &allRows, const Range &cols,
-                   int firstViewRow=FLENS_FIRST_INDEX, int firstViewCol=FLENS_FIRST_INDEX) const;
+  const ConstView                              operator()(const Underscore& allRows,
+                             const Range&      cols,
+                             int               firstViewRow = FLENS_FIRST_INDEX,
+                             int               firstViewCol = FLENS_FIRST_INDEX) const;
 
-        View
-        operator()(const Underscore &allRows, const Range &cols,
-                   int firstViewRow=FLENS_FIRST_INDEX, int firstViewCol=FLENS_FIRST_INDEX);
+  View                                         operator()(const Underscore& allRows,
+                  const Range&      cols,
+                  int               firstViewRow = FLENS_FIRST_INDEX,
+                  int               firstViewCol = FLENS_FIRST_INDEX);
 
-        // row views
-        const ConstVectorView
-        operator()(int row, const Range &cols,
-                   int firstViewIndex=FLENS_FIRST_INDEX) const;
+  // row views
+  const ConstVectorView operator()(int row, const Range& cols, int firstViewIndex = FLENS_FIRST_INDEX) const;
 
-        VectorView
-        operator()(int row, const Range &cols,
-                   int firstViewIndex=FLENS_FIRST_INDEX);
+  VectorView            operator()(int row, const Range& cols, int firstViewIndex = FLENS_FIRST_INDEX);
 
-        const ConstVectorView
-        operator()(int row, const Underscore &allCols,
-                   int firstViewIndex=FLENS_FIRST_INDEX) const;
+  const ConstVectorView operator()(int row, const Underscore& allCols, int firstViewIndex = FLENS_FIRST_INDEX) const;
 
-        VectorView
-        operator()(int row, const Underscore &allCols,
-                   int firstViewIndex=FLENS_FIRST_INDEX);
+  VectorView            operator()(int row, const Underscore& allCols, int firstViewIndex = FLENS_FIRST_INDEX);
 
-        // col views
-        const ConstVectorView
-        operator()(const Range &rows, int col,
-                   int firstViewIndex=FLENS_FIRST_INDEX) const;
+  // col views
+  const ConstVectorView operator()(const Range& rows, int col, int firstViewIndex = FLENS_FIRST_INDEX) const;
 
-        VectorView
-        operator()(const Range &rows, int col,
-                   int firstViewIndex=FLENS_FIRST_INDEX);
+  VectorView            operator()(const Range& rows, int col, int firstViewIndex = FLENS_FIRST_INDEX);
 
-        const ConstVectorView
-        operator()(const Underscore &allRows, int col,
-                   int firstViewIndex=FLENS_FIRST_INDEX) const;
+  const ConstVectorView operator()(const Underscore& allRows, int col, int firstViewIndex = FLENS_FIRST_INDEX) const;
 
-        VectorView
-        operator()(const Underscore &allRows, int col,
-                   int firstViewIndex=FLENS_FIRST_INDEX);
+  VectorView            operator()(const Underscore& allRows, int col, int firstViewIndex = FLENS_FIRST_INDEX);
 
-        // diag views
-        const ConstVectorView
-        diag(int d, int firstIndex=FLENS_FIRST_INDEX) const;
+  // diag views
+  const ConstVectorView diag(int d, int firstIndex = FLENS_FIRST_INDEX) const;
 
-        VectorView
-        diag(int d, int firstIndex=FLENS_FIRST_INDEX);
+  VectorView            diag(int d, int firstIndex = FLENS_FIRST_INDEX);
 
-        // triangular views
-        ConstTriangularView
-        upper(int firstViewRow=FLENS_FIRST_INDEX, int firstViewCol=FLENS_FIRST_INDEX) const;
+  // triangular views
+  ConstTriangularView   upper(int firstViewRow = FLENS_FIRST_INDEX, int firstViewCol = FLENS_FIRST_INDEX) const;
 
-        TriangularView
-        upper(int firstViewRow=FLENS_FIRST_INDEX, int firstViewCol=FLENS_FIRST_INDEX);
+  TriangularView        upper(int firstViewRow = FLENS_FIRST_INDEX, int firstViewCol = FLENS_FIRST_INDEX);
 
-        ConstTriangularView
-        upperUnit(int firstViewRow=FLENS_FIRST_INDEX, int firstViewCol=FLENS_FIRST_INDEX) const;
+  ConstTriangularView   upperUnit(int firstViewRow = FLENS_FIRST_INDEX, int firstViewCol = FLENS_FIRST_INDEX) const;
 
-        TriangularView
-        upperUnit(int firstViewRow=FLENS_FIRST_INDEX, int firstViewCol=FLENS_FIRST_INDEX);
+  TriangularView        upperUnit(int firstViewRow = FLENS_FIRST_INDEX, int firstViewCol = FLENS_FIRST_INDEX);
 
-        ConstTriangularView
-        lower(int firstViewRow=FLENS_FIRST_INDEX, int firstViewCol=FLENS_FIRST_INDEX) const;
+  ConstTriangularView   lower(int firstViewRow = FLENS_FIRST_INDEX, int firstViewCol = FLENS_FIRST_INDEX) const;
 
-        TriangularView
-        lower(int firstViewRow=FLENS_FIRST_INDEX, int firstViewCol=FLENS_FIRST_INDEX);
+  TriangularView        lower(int firstViewRow = FLENS_FIRST_INDEX, int firstViewCol = FLENS_FIRST_INDEX);
 
-        ConstTriangularView
-        lowerUnit(int firstViewRow=FLENS_FIRST_INDEX, int firstViewCol=FLENS_FIRST_INDEX) const;
+  ConstTriangularView   lowerUnit(int firstViewRow = FLENS_FIRST_INDEX, int firstViewCol = FLENS_FIRST_INDEX) const;
 
-        TriangularView
-        lowerUnit(int firstViewRow=FLENS_FIRST_INDEX, int firstViewCol=FLENS_FIRST_INDEX);
+  TriangularView        lowerUnit(int firstViewRow = FLENS_FIRST_INDEX, int firstViewCol = FLENS_FIRST_INDEX);
 
-        // -- methods ----------------------------------------------------------
+  // -- methods ----------------------------------------------------------
 
-        // for BLAS/LAPACK
-        int
-        numRows() const;
+  // for BLAS/LAPACK
+  int                   numRows() const;
 
-        int
-        numCols() const;
+  int                   numCols() const;
 
-        int
-        leadingDimension() const;
+  int                   leadingDimension() const;
 
-        const T *
-        data() const;
+  const T*              data() const;
 
-        T *
-        data();
+  T*                    data();
 
-        // for element access
-        int
-        firstRow() const;
+  // for element access
+  int                   firstRow() const;
 
-        int
-        lastRow() const;
+  int                   lastRow() const;
 
-        int
-        firstCol() const;
+  int                   firstCol() const;
 
-        int
-        lastCol() const;
+  int                   lastCol() const;
 
-        Range
-        rows() const;
+  Range                 rows() const;
 
-        Range
-        cols() const;
+  Range                 cols() const;
 
-        void
-        resize(int numRows, int numCols);
+  void                  resize(int numRows, int numCols);
 
-        void
-        resize(int numRows, int numCols, int firstRow, int firstCol);
+  void                  resize(int numRows, int numCols, int firstRow, int firstCol);
 
-        void
-        resize(const Range &rows, const Range &cols);
+  void                  resize(const Range& rows, const Range& cols);
 
-        void
-        resizeOrClear(int numRows, int numCols, int firstRow=FLENS_FIRST_INDEX, int firstCol=FLENS_FIRST_INDEX);
+  void resizeOrClear(int numRows, int numCols, int firstRow = FLENS_FIRST_INDEX, int firstCol = FLENS_FIRST_INDEX);
 
-        void
-        shiftIndex(int rowAmount, int colAmount);
+  void shiftIndex(int rowAmount, int colAmount);
 
-        void
-        shiftIndexTo(int firstRow, int firstCol);
+  void shiftIndexTo(int firstRow, int firstCol);
 
-        // -- implementation ---------------------------------------------------
+  // -- implementation ---------------------------------------------------
 
-        const FS &
-        engine() const;
+  const FS& engine() const;
 
-        FS &
-        engine();
+  FS&       engine();
 
-    private:
-        FS _fs;
+ private:
+  FS _fs;
 };
 
 template <typename FS>
-struct TypeInfo<GeMatrix<FS> >
-{
-    typedef GeMatrix<FS> Impl;
-    typedef typename FS::ElementType ElementType;
+struct TypeInfo<GeMatrix<FS> > {
+  typedef GeMatrix<FS>             Impl;
+  typedef typename FS::ElementType ElementType;
 };
 
 // == GbMatrix =================================================================
 
 template <typename BS>
-class GbMatrix
-    : public GeneralMatrix<GbMatrix<BS> >
-{
-    public:
-        // shortcut for element type
-        typedef typename GbMatrix<BS>::ElementType  T;
+class GbMatrix : public GeneralMatrix<GbMatrix<BS> > {
+ public:
+  // shortcut for element type
+  typedef typename GbMatrix<BS>::ElementType T;
 
-        // view types from BS
-        typedef typename BS::ConstView          ConstBSView;
-        typedef typename BS::View               BSView;
-        typedef typename BS::NoView             BSNoView;
+  // view types from BS
+  typedef typename BS::ConstView             ConstBSView;
+  typedef typename BS::View                  BSView;
+  typedef typename BS::NoView                BSNoView;
 
-        typedef typename BS::ConstVectorView    ConstBSVectorView;
-        typedef typename BS::VectorView         BSVectorView;
-        typedef typename BS::VectorNoView       BSVectorNoView;
+  typedef typename BS::ConstVectorView       ConstBSVectorView;
+  typedef typename BS::VectorView            BSVectorView;
+  typedef typename BS::VectorNoView          BSVectorNoView;
 
-        // view types for GeMatrix
-        typedef DenseVector<ConstBSVectorView>  ConstVectorView;
-        typedef DenseVector<BSVectorView>       VectorView;
-        typedef DenseVector<BSVectorNoView>     VectorNoView;
+  // view types for GeMatrix
+  typedef DenseVector<ConstBSVectorView>     ConstVectorView;
+  typedef DenseVector<BSVectorView>          VectorView;
+  typedef DenseVector<BSVectorNoView>        VectorNoView;
 
-        typedef GbMatrix<ConstBSView>           ConstView;
-        typedef GbMatrix<BSView>                View;
-        typedef GbMatrix<BSNoView>              NoView;
+  typedef GbMatrix<ConstBSView>              ConstView;
+  typedef GbMatrix<BSView>                   View;
+  typedef GbMatrix<BSNoView>                 NoView;
 
-        typedef TbMatrix<ConstBSView>           ConstTriangularView;
-        typedef TbMatrix<BSView>                TriangularView;
-        typedef TbMatrix<BSNoView>              TriangularNoView;
+  typedef TbMatrix<ConstBSView>              ConstTriangularView;
+  typedef TbMatrix<BSView>                   TriangularView;
+  typedef TbMatrix<BSNoView>                 TriangularNoView;
 
-        typedef SbMatrix<ConstBSView>           ConstSymmetricView;
-        typedef SbMatrix<BSView>                SymmetricView;
-        typedef SbMatrix<BSNoView>              SymmetricNoView;
+  typedef SbMatrix<ConstBSView>              ConstSymmetricView;
+  typedef SbMatrix<BSView>                   SymmetricView;
+  typedef SbMatrix<BSNoView>                 SymmetricNoView;
 
-        typedef HbMatrix<ConstBSView>           ConstHermitianView;
-        typedef HbMatrix<BSView>                HermitianView;
-        typedef HbMatrix<BSNoView>              HermitianNoView;
+  typedef HbMatrix<ConstBSView>              ConstHermitianView;
+  typedef HbMatrix<BSView>                   HermitianView;
+  typedef HbMatrix<BSNoView>                 HermitianNoView;
 
-        // -- constructors -----------------------------------------------------
-        GbMatrix();
+  // -- constructors -----------------------------------------------------
+  GbMatrix();
 
-        GbMatrix(int numRows, int numCols, int numSubDiags, int numSuperDiags,
-                 int indexBase=FLENS_FIRST_INDEX);
+  GbMatrix(int numRows, int numCols, int numSubDiags, int numSuperDiags, int indexBase = FLENS_FIRST_INDEX);
 
-        GbMatrix(const BS &bs);
+  GbMatrix(const BS& bs);
 
-        GbMatrix(const GbMatrix<BS> &rhs);
+  GbMatrix(const GbMatrix<BS>& rhs);
 
-        template <typename RHS>
-            GbMatrix(const GbMatrix<RHS> &rhs);
+  template <typename RHS>
+  GbMatrix(const GbMatrix<RHS>& rhs);
 
-        // -- operators --------------------------------------------------------
-        GbMatrix<BS> &
-        operator=(const GbMatrix<BS> &rhs);
+  // -- operators --------------------------------------------------------
+  GbMatrix<BS>& operator=(const GbMatrix<BS>& rhs);
 
-        template <typename RHS>
-            GbMatrix<BS> &
-            operator=(const Matrix<RHS> &rhs);
+  template <typename RHS>
+  GbMatrix<BS>& operator=(const Matrix<RHS>& rhs);
 
-        GbMatrix<BS> &
-        operator+=(const GbMatrix<BS> &rhs);
+  GbMatrix<BS>& operator+=(const GbMatrix<BS>& rhs);
 
-        template <typename RHS>
-            GbMatrix<BS> &
-            operator+=(const Matrix<RHS> &rhs);
+  template <typename RHS>
+  GbMatrix<BS>& operator+=(const Matrix<RHS>& rhs);
 
-        GbMatrix<BS> &
-        operator-=(const GbMatrix<BS> &rhs);
+  GbMatrix<BS>& operator-=(const GbMatrix<BS>& rhs);
 
-        template <typename RHS>
-            GbMatrix<BS> &
-            operator-=(const Matrix<RHS> &rhs);
+  template <typename RHS>
+  GbMatrix<BS>&       operator-=(const Matrix<RHS>& rhs);
 
-        GbMatrix<BS> &
-        operator*=(T alpha);
+  GbMatrix<BS>&       operator*=(T alpha);
 
-        GbMatrix<BS> &
-        operator/=(T alpha);
+  GbMatrix<BS>&       operator/=(T alpha);
 
-        const T &
-        operator()(int row, int col) const;
+  const T&            operator()(int row, int col) const;
 
-        T &
-        operator()(int row, int col);
+  T&                  operator()(int row, int col);
 
-        // -- views ------------------------------------------------------------
+  // -- views ------------------------------------------------------------
 
-        // view of one diagonal
-        ConstVectorView
-        diag(int d) const;
+  // view of one diagonal
+  ConstVectorView     diag(int d) const;
 
-        VectorView
-        diag(int d);
+  VectorView          diag(int d);
 
-        // view of bands of diagonal
-        ConstView
-        diags(int fromDiag, int toDiag) const;
+  // view of bands of diagonal
+  ConstView           diags(int fromDiag, int toDiag) const;
 
-        View
-        diags(int fromDiag, int toDiag);
+  View                diags(int fromDiag, int toDiag);
 
-        ConstView
-        diags(const Range &range) const;
+  ConstView           diags(const Range& range) const;
 
-        View
-        diags(const Range &range);
+  View                diags(const Range& range);
 
-        // triangular views
-        ConstTriangularView
-        upper(int viewIndex=FLENS_FIRST_INDEX) const;
+  // triangular views
+  ConstTriangularView upper(int viewIndex = FLENS_FIRST_INDEX) const;
 
-        TriangularView
-        upper(int viewIndex=FLENS_FIRST_INDEX);
+  TriangularView      upper(int viewIndex = FLENS_FIRST_INDEX);
 
-        ConstTriangularView
-        upperUnit(int viewIndex=FLENS_FIRST_INDEX) const;
+  ConstTriangularView upperUnit(int viewIndex = FLENS_FIRST_INDEX) const;
 
-        TriangularView
-        upperUnit(int viewIndex=FLENS_FIRST_INDEX);
+  TriangularView      upperUnit(int viewIndex = FLENS_FIRST_INDEX);
 
-        ConstTriangularView
-        lower(int viewIndex=FLENS_FIRST_INDEX) const;
+  ConstTriangularView lower(int viewIndex = FLENS_FIRST_INDEX) const;
 
-        TriangularView
-        lower(int viewIndex=FLENS_FIRST_INDEX);
+  TriangularView      lower(int viewIndex = FLENS_FIRST_INDEX);
 
-        ConstTriangularView
-        lowerUnit(int viewIndex=FLENS_FIRST_INDEX) const;
+  ConstTriangularView lowerUnit(int viewIndex = FLENS_FIRST_INDEX) const;
 
-        TriangularView
-        lowerUnit(int viewIndex=FLENS_FIRST_INDEX);
+  TriangularView      lowerUnit(int viewIndex = FLENS_FIRST_INDEX);
 
+  // -- methods ----------------------------------------------------------
 
-        // -- methods ----------------------------------------------------------
+  // for BLAS/LAPACK
+  int                 numRows() const;
 
-        // for BLAS/LAPACK
-        int
-        numRows() const;
+  int                 numCols() const;
 
-        int
-        numCols() const;
+  int                 numSubDiags() const;
 
-        int
-        numSubDiags() const;
+  int                 numSuperDiags() const;
 
-        int
-        numSuperDiags() const;
+  int                 leadingDimension() const;
 
-        int
-        leadingDimension() const;
+  const T*            data() const;
 
-        const T *
-        data() const;
+  T*                  data();
 
-        T *
-        data();
+  // for element access
+  int                 firstRow() const;
 
-        // for element access
-        int
-        firstRow() const;
+  int                 lastRow() const;
 
-        int
-        lastRow() const;
+  int                 firstCol() const;
 
-        int
-        firstCol() const;
+  int                 lastCol() const;
 
-        int
-        lastCol() const;
+  Range               rowIndices() const;
 
-        Range
-        rowIndices() const;
+  Range               colIndices() const;
 
-        Range
-        colIndices() const;
+  Range               diags() const;
 
-        Range
-        diags() const;
+  void                resize(int numRows, int numCols, int numSubDiags, int numSuperDiags);
 
-        void
-        resize(int numRows, int numCols, int numSubDiags, int numSuperDiags);
+  void                resize(int numRows, int numCols, int numSubDiags, int numSuperDiags, int indexBase);
 
-        void
-        resize(int numRows, int numCols, int numSubDiags, int numSuperDiags,
-               int indexBase);
+  // -- implementation ---------------------------------------------------
+  const BS&           engine() const;
 
-        // -- implementation ---------------------------------------------------
-        const BS &
-        engine() const;
+  BS&                 engine();
 
-        BS &
-        engine();
-
-    private:
-        BS _bs;
+ private:
+  BS _bs;
 };
 
 template <typename BS>
-struct TypeInfo<GbMatrix<BS> >
-{
-    typedef GbMatrix<BS> Impl;
-    typedef typename BS::ElementType ElementType;
+struct TypeInfo<GbMatrix<BS> > {
+  typedef GbMatrix<BS>             Impl;
+  typedef typename BS::ElementType ElementType;
 };
 
-} // namespace flens
+}  // namespace flens
 
-#include <flens/generalmatrix.tcc>
+#  include <flens/generalmatrix.tcc>
 
-#endif // FLENS_GENERALMATRIX_H
+#endif  // FLENS_GENERALMATRIX_H

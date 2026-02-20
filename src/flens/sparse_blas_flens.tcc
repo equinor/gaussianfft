@@ -30,113 +30,97 @@
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <cassert>
 #include <flens/sparse_blas.h>
 #include <flens/sparse_blas_flens.h>
+#include <cassert>
 
 namespace flens {
 
 template <typename T, typename VX, typename VY>
-void
-mv(Transpose trans, T alpha, const SparseGeMatrix<CRS<T> > &A,
-   const DenseVector<VX> &x,
-   typename DenseVector<VY>::T beta, DenseVector<VY> &y)
-{
-    assert(ADDRESS(y)!=ADDRESS(x));
-    if (trans==NoTrans) {
-        assert(A.numCols()==x.length());
-    }
-    if (trans==Trans) {
-        assert(A.numRows()==x.length());
-    }
-    int yLength = (trans==NoTrans) ? A.numRows()
-                                   : A.numCols();
+void mv(Transpose                      trans,
+        T                              alpha,
+        const SparseGeMatrix<CRS<T> >& A,
+        const DenseVector<VX>&         x,
+        typename DenseVector<VY>::T    beta,
+        DenseVector<VY>&               y) {
+  assert(ADDRESS(y) != ADDRESS(x));
+  if (trans == NoTrans) {
+    assert(A.numCols() == x.length());
+  }
+  if (trans == Trans) {
+    assert(A.numRows() == x.length());
+  }
+  int yLength = (trans == NoTrans) ? A.numRows() : A.numCols();
 
-    assert((beta==0) || (y.length()==yLength));
+  assert((beta == 0) || (y.length() == yLength));
 
-    if (y.length()!=yLength) {
-        y.resize(yLength);
-    }
+  if (y.length() != yLength) {
+    y.resize(yLength);
+  }
 
-    assert(x.stride()==1);
-    assert(y.stride()==1);
+  assert(x.stride() == 1);
+  assert(y.stride() == 1);
 
-    crs_gemv(trans, A.numRows(), A.numCols(),
-             alpha,
-             A.engine().values.data(),
-             A.engine().rows.data(),
-             A.engine().columns.data(),
-             x.data(),
-             beta, y.data());
+  crs_gemv(trans, A.numRows(), A.numCols(), alpha, A.engine().values.data(), A.engine().rows.data(),
+           A.engine().columns.data(), x.data(), beta, y.data());
 }
 
 // sparse_symv
 template <typename T, CRS_Storage Storage, typename VX, typename VY>
-void
-mv(T alpha, const SparseSyMatrix<CRS<T, Storage> > &A,
-   const DenseVector<VX> &x,
-   typename DenseVector<VY>::T beta, DenseVector<VY> &y)
-{
-    assert(A.dim()==x.length());
-    assert((beta==0) || (A.dim()==y.length()));
+void mv(T                                       alpha,
+        const SparseSyMatrix<CRS<T, Storage> >& A,
+        const DenseVector<VX>&                  x,
+        typename DenseVector<VY>::T             beta,
+        DenseVector<VY>&                        y) {
+  assert(A.dim() == x.length());
+  assert((beta == 0) || (A.dim() == y.length()));
 
-    if (y.length()!=A.dim()) {
-        y.resize(A.dim());
-    }
+  if (y.length() != A.dim()) {
+    y.resize(A.dim());
+  }
 
-    assert(x.stride()==1);
-    assert(y.stride()==1);
+  assert(x.stride() == 1);
+  assert(y.stride() == 1);
 
-    if (Storage==CRS_General) {
-        crs_gemv(NoTrans, A.dim(), A.dim(),
-                 alpha,
-                 A.engine().values.data(),
-                 A.engine().rows.data(),
-                 A.engine().columns.data(),
-                 x.data(),
-                 beta, y.data());
-    } else {
-        StorageUpLo upLo = (Storage==CRS_UpperTriangular) ? Upper : Lower;
-        crs_symv(upLo, A.dim(), alpha,
-                 A.engine().values.data(),
-                 A.engine().rows.data(),
-                 A.engine().columns.data(),
-                 x.data(),
-                 beta, y.data());
-    }
+  if (Storage == CRS_General) {
+    crs_gemv(NoTrans, A.dim(), A.dim(), alpha, A.engine().values.data(), A.engine().rows.data(),
+             A.engine().columns.data(), x.data(), beta, y.data());
+  } else {
+    StorageUpLo upLo = (Storage == CRS_UpperTriangular) ? Upper : Lower;
+    crs_symv(upLo, A.dim(), alpha, A.engine().values.data(), A.engine().rows.data(), A.engine().columns.data(),
+             x.data(), beta, y.data());
+  }
 }
 
 // sparse_gemm (matrix B dense!)
 template <typename T, CRS_Storage Storage>
-void
-mm(Transpose transA,
-   Transpose transB,
-   T alpha,
-   const SparseGeMatrix<CRS<T, Storage> > &A,
-   const GeMatrix<FullStorage<T, ColMajor> > &B,
-   T beta, GeMatrix<FullStorage<T, ColMajor> > &C)
-{
-    assert(Storage==CRS_General);
-    assert(transB==NoTrans); // Transposition not provided for B.
-    int m = (transA==NoTrans) ? A.numRows() : A.numCols();
-    int n = B.numCols();
+void mm(Transpose                                  transA,
+        Transpose                                  transB,
+        T                                          alpha,
+        const SparseGeMatrix<CRS<T, Storage> >&    A,
+        const GeMatrix<FullStorage<T, ColMajor> >& B,
+        T                                          beta,
+        GeMatrix<FullStorage<T, ColMajor> >&       C) {
+  assert(Storage == CRS_General);
+  assert(transB == NoTrans);  // Transposition not provided for B.
+  int m = (transA == NoTrans) ? A.numRows() : A.numCols();
+  int n = B.numCols();
 
-    assert((beta==0) || (C.numRows()==m));
-    assert((beta==0) || (C.numCols()==n));
+  assert((beta == 0) || (C.numRows() == m));
+  assert((beta == 0) || (C.numCols() == n));
 
-    C.resize(m,n);
+  C.resize(m, n);
 
-    int r = A.numRows();
-    DenseVector<Array<int> > pointerE(r,1);
-    pointerE(_(1,r-1)) = A.engine().rows(_(2,r));
-    pointerE(r) = A.engine().values.length()+1;
+  int                      r = A.numRows();
+  DenseVector<Array<int> > pointerE(r, 1);
+  pointerE(_(1, r - 1)) = A.engine().rows(_(2, r));
+  pointerE(r)           = A.engine().values.length() + 1;
 
-    char matdescra[] = {'G', 'U', 'N', 'F', ' ', ' '};
+  char matdescra[]      = {'G', 'U', 'N', 'F', ' ', ' '};
 
-    csrmm(transA, A.numRows(), C.numCols(), A.numCols(), alpha, matdescra,
-          A.engine().values.data(), A.engine().columns.data(),
-          A.engine().rows.data(), pointerE.data(),
-          B.data(), B.leadingDimension(), beta, C.data(), C.leadingDimension());
+  csrmm(transA, A.numRows(), C.numCols(), A.numCols(), alpha, matdescra, A.engine().values.data(),
+        A.engine().columns.data(), A.engine().rows.data(), pointerE.data(), B.data(), B.leadingDimension(), beta,
+        C.data(), C.leadingDimension());
 }
 
-} // namespase flens
+}  // namespace flens

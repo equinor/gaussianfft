@@ -31,70 +31,57 @@
  */
 
 #ifndef FLENS_RANGE_H
-#define FLENS_RANGE_H 1
+#  define FLENS_RANGE_H 1
 
-#include <iostream>
+#  include <iostream>
 
 namespace flens {
 
 template <typename T>
-    class DenseVector;
+class DenseVector;
 
-class Range
-{
-    public:
-        Range();
+class Range {
+ public:
+  Range();
 
-        Range(int firstIndex, int lastIndex);
+  Range(int firstIndex, int lastIndex);
 
-        Range(int firstIndex, int stride, int lastIndex);
+  Range(int firstIndex, int stride, int lastIndex);
 
-        Range
-        operator()(int firstIndex, int lastIndex) const;
+  Range  operator()(int firstIndex, int lastIndex) const;
 
-        Range
-        operator()(int firstIndex, int stride, int lastIndex) const;
+  Range  operator()(int firstIndex, int stride, int lastIndex) const;
 
-        // THINKABOUT: linspace and ranges with arbitrary stride like _(.0,.1,1.)
-//        template <typename T>
-//            operator const DenseVector<T>() const;
+  // THINKABOUT: linspace and ranges with arbitrary stride like _(.0,.1,1.)
+  //        template <typename T>
+  //            operator const DenseVector<T>() const;
 
-        Range &
-        operator+=(int shift);
+  Range& operator+=(int shift);
 
-        int
-        firstIndex() const;
+  int    firstIndex() const;
 
-        int
-        stride() const;
+  int    stride() const;
 
-        int
-        lastIndex() const;
+  int    lastIndex() const;
 
-        int
-        length() const;
+  int    length() const;
 
-        int
-        numTicks() const;
+  int    numTicks() const;
 
-    private:
-        int _firstIndex, _stride, _lastIndex, _length;
+ private:
+  int _firstIndex, _stride, _lastIndex, _length;
 };
 
-std::ostream &
-operator<<(std::ostream &out, const Range &rhs);
+std::ostream&  operator<<(std::ostream& out, const Range& rhs);
 
-std::ifstream &
-operator>>(std::ifstream &in, Range &rhs);
+std::ifstream& operator>>(std::ifstream& in, Range& rhs);
 
-bool
-operator==(const Range &lhs, const Range &rhs);
+bool           operator==(const Range& lhs, const Range& rhs);
 
-Range
-intersect(const Range &a, const Range &b);
+Range          intersect(const Range& a, const Range& b);
 
-} // namespace flens
+}  // namespace flens
 
-#include <flens/range.tcc>
+#  include <flens/range.tcc>
 
-#endif // FLENS_RANGE_H
+#endif  // FLENS_RANGE_H

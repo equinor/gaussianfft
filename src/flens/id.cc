@@ -2,15 +2,10 @@
 
 namespace flens {
 
-Id::Id(int dim)
-    : _dim(dim)
-{
+Id::Id(int dim) : _dim(dim) {}
+
+int Id::dim() const {
+  return _dim;
 }
 
-int
-Id::dim() const
-{
-    return _dim;
-}
-
-} // namespace flens
+}  // namespace flens

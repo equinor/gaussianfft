@@ -43,4 +43,4 @@ Range::operator const DenseVector<T>() const
 }
 */
 
-} // namespace flens
+}  // namespace flens

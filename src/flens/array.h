@@ -31,246 +31,194 @@
  */
 
 #ifndef FLENS_ARRAY_H
-#define FLENS_ARRAY_H 1
+#  define FLENS_ARRAY_H 1
 
-#include <flens/listinitializer.h>
+#  include <flens/listinitializer.h>
 
-#ifndef FLENS_FIRST_INDEX
+#  ifndef FLENS_FIRST_INDEX
 #    define FLENS_FIRST_INDEX 1
-#endif
+#  endif
 
 namespace flens {
 
 // forward decalarations
 template <typename T>
-    class ArrayView;
+class ArrayView;
 
 template <typename T>
-    class Array;
-
+class Array;
 
 template <typename T>
-class ConstArrayView
-{
-    public:
-        typedef T               ElementType;
-        typedef ConstArrayView  ConstView;
-        typedef ArrayView<T>    View;
-        typedef Array<T>        NoView;
+class ConstArrayView {
+ public:
+  typedef T              ElementType;
+  typedef ConstArrayView ConstView;
+  typedef ArrayView<T>   View;
+  typedef Array<T>       NoView;
 
-        ConstArrayView(const T *data,
-                       int length, int stride=1, int firstIndex=FLENS_FIRST_INDEX);
+  ConstArrayView(const T* data, int length, int stride = 1, int firstIndex = FLENS_FIRST_INDEX);
 
-        ConstArrayView(const NoView &rhs);
+  ConstArrayView(const NoView& rhs);
 
-        ConstArrayView(const ConstArrayView &rhs);
+  ConstArrayView(const ConstArrayView& rhs);
 
-        ConstArrayView(const View &rhs);
+  ConstArrayView(const View& rhs);
 
-        ~ConstArrayView();
+  ~ConstArrayView();
 
-        //-- operators ---------------------------------------------------------
+  //-- operators ---------------------------------------------------------
 
-        inline const T &
-        operator()(int index) const;
+  inline const T&   operator()(int index) const;
 
-        //-- methods -----------------------------------------------------------
+  //-- methods -----------------------------------------------------------
 
-        int
-        firstIndex() const;
+  int               firstIndex() const;
 
-        int
-        lastIndex() const;
+  int               lastIndex() const;
 
-        int
-        length() const;
+  int               length() const;
 
-        int
-        stride() const;
+  int               stride() const;
 
-        const T *
-        data() const;
+  const T*          data() const;
 
-        ConstArrayView<T>
-        view(int from, int to, int stride=1, int firstViewIndex=FLENS_FIRST_INDEX) const;
+  ConstArrayView<T> view(int from, int to, int stride = 1, int firstViewIndex = FLENS_FIRST_INDEX) const;
 
-    private:
-        ConstArrayView<T> &
-        operator=(const ConstArrayView<T> &rhs);
+ private:
+  ConstArrayView<T>& operator=(const ConstArrayView<T>& rhs);
 
-        const T *_data;
-        int _length, _stride, _firstIndex;
+  const T*           _data;
+  int                _length, _stride, _firstIndex;
 };
 
 template <typename T>
-class ArrayView
-{
-    public:
-        typedef T                 ElementType;
-        typedef ConstArrayView<T> ConstView;
-        typedef ArrayView         View;
-        typedef Array<T>          NoView;
+class ArrayView {
+ public:
+  typedef T                 ElementType;
+  typedef ConstArrayView<T> ConstView;
+  typedef ArrayView         View;
+  typedef Array<T>          NoView;
 
-        ArrayView(T *data,
-                  int length, int stride=1, int firstIndex=FLENS_FIRST_INDEX);
+  ArrayView(T* data, int length, int stride = 1, int firstIndex = FLENS_FIRST_INDEX);
 
-        ArrayView(const ArrayView &rhs);
+  ArrayView(const ArrayView& rhs);
 
-        ~ArrayView();
+  ~ArrayView();
 
-        //-- operators ---------------------------------------------------------
+  //-- operators ---------------------------------------------------------
 
-        ArrayView<T> &
-        operator=(const ArrayView<T> &rhs);
+  ArrayView<T>&                  operator=(const ArrayView<T>& rhs);
 
-        ArrayView<T> &
-        operator=(const Array<T> &rhs);
+  ArrayView<T>&                  operator=(const Array<T>& rhs);
 
-        ArrayView<T> &
-        operator=(const ConstArrayView<T> &rhs);
+  ArrayView<T>&                  operator=(const ConstArrayView<T>& rhs);
 
-        ListInitializer<ArrayView<T> >
-        operator=(const T &value);
+  ListInitializer<ArrayView<T> > operator=(const T& value);
 
-        const T &
-        operator()(int index) const;
+  const T&                       operator()(int index) const;
 
-        T &
-        operator()(int index);
+  T&                             operator()(int index);
 
-        //-- methods -----------------------------------------------------------
+  //-- methods -----------------------------------------------------------
 
-        int
-        firstIndex() const;
+  int                            firstIndex() const;
 
-        int
-        lastIndex() const;
+  int                            lastIndex() const;
 
-        int
-        length() const;
+  int                            length() const;
 
-        int
-        stride() const;
+  int                            stride() const;
 
-        const T *
-        data() const;
+  const T*                       data() const;
 
-        T *
-        data();
+  T*                             data();
 
-        void
-        resize(int length, int firstIndex=FLENS_FIRST_INDEX);
+  void                           resize(int length, int firstIndex = FLENS_FIRST_INDEX);
 
-        void
-        resizeOrClear(int length, int firstIndex=FLENS_FIRST_INDEX);
+  void                           resizeOrClear(int length, int firstIndex = FLENS_FIRST_INDEX);
 
-        ConstArrayView<T>
-        view(int from, int to, int stride=1, int firstViewIndex=FLENS_FIRST_INDEX) const;
+  ConstArrayView<T>              view(int from, int to, int stride = 1, int firstViewIndex = FLENS_FIRST_INDEX) const;
 
-        ArrayView<T>
-        view(int from, int to, int stride=1, int firstViewIndex=FLENS_FIRST_INDEX);
+  ArrayView<T>                   view(int from, int to, int stride = 1, int firstViewIndex = FLENS_FIRST_INDEX);
 
-        void
-        shiftIndexTo(int firstIndex);
+  void                           shiftIndexTo(int firstIndex);
 
-    private:
-        T *_data;
-        int _length, _stride, _firstIndex;
+ private:
+  T*  _data;
+  int _length, _stride, _firstIndex;
 };
-
 
 template <typename T>
-class Array
-{
-    public:
-        typedef T                 ElementType;
-        typedef ConstArrayView<T> ConstView;
-        typedef ArrayView<T>      View;
-        typedef Array             NoView;
+class Array {
+ public:
+  typedef T                 ElementType;
+  typedef ConstArrayView<T> ConstView;
+  typedef ArrayView<T>      View;
+  typedef Array             NoView;
 
-        Array();
+  Array();
 
-        Array(int length, int firstIndex=FLENS_FIRST_INDEX);
+  Array(int length, int firstIndex = FLENS_FIRST_INDEX);
 
-        Array(const Array<T> &rhs);
+  Array(const Array<T>& rhs);
 
-        Array(const ArrayView<T> &rhs);
+  Array(const ArrayView<T>& rhs);
 
-        Array(const ConstArrayView<T> &rhs);
+  Array(const ConstArrayView<T>& rhs);
 
-        ~Array();
+  ~Array();
 
-        //-- operators ---------------------------------------------------------
+  //-- operators ---------------------------------------------------------
 
-        Array<T> &
-        operator=(const Array<T> &rhs);
+  Array<T>&                  operator=(const Array<T>& rhs);
 
-        Array<T> &
-        operator=(const ArrayView<T> &rhs);
+  Array<T>&                  operator=(const ArrayView<T>& rhs);
 
-        Array<T> &
-        operator=(const ConstArrayView<T> &rhs);
+  Array<T>&                  operator=(const ConstArrayView<T>& rhs);
 
-        ListInitializer<Array<T> >
-        operator=(const T &value);
+  ListInitializer<Array<T> > operator=(const T& value);
 
-        const T &
-        operator()(int index) const;
+  const T&                   operator()(int index) const;
 
-        T &
-        operator()(int index);
+  T&                         operator()(int index);
 
-        //-- methods -----------------------------------------------------------
+  //-- methods -----------------------------------------------------------
 
-        int
-        firstIndex() const;
+  int                        firstIndex() const;
 
-        int
-        lastIndex() const;
+  int                        lastIndex() const;
 
-        int
-        length() const;
+  int                        length() const;
 
-        int
-        stride() const;
+  int                        stride() const;
 
-        const T *
-        data() const;
+  const T*                   data() const;
 
-        T *
-        data();
+  T*                         data();
 
-        void
-        resize(int length, int firstIndex=FLENS_FIRST_INDEX);
+  void                       resize(int length, int firstIndex = FLENS_FIRST_INDEX);
 
-        void
-        initialize(T val);
+  void                       initialize(T val);
 
-        void
-        resizeOrClear(int length, int firstIndex=FLENS_FIRST_INDEX);
+  void                       resizeOrClear(int length, int firstIndex = FLENS_FIRST_INDEX);
 
-        ConstArrayView<T>
-        view(int from, int to, int stride=1, int firstViewIndex=FLENS_FIRST_INDEX) const;
+  ConstArrayView<T>          view(int from, int to, int stride = 1, int firstViewIndex = FLENS_FIRST_INDEX) const;
 
-        ArrayView<T>
-        view(int from, int to, int stride=1, int firstViewIndex=FLENS_FIRST_INDEX);
+  ArrayView<T>               view(int from, int to, int stride = 1, int firstViewIndex = FLENS_FIRST_INDEX);
 
-        void
-        shiftIndexTo(int firstIndex);
+  void                       shiftIndexTo(int firstIndex);
 
-    private:
-        void
-        _allocate();
+ private:
+  void _allocate();
 
-        void
-        _release();
+  void _release();
 
-        int _length, _firstIndex;
-        T *_data;
+  int  _length, _firstIndex;
+  T*   _data;
 };
 
-} // namespace flens
+}  // namespace flens
 
-#include <flens/array.tcc>
+#  include <flens/array.tcc>
 
-#endif // FLENS_ARRAY_H
+#endif  // FLENS_ARRAY_H

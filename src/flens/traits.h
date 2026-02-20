@@ -31,101 +31,87 @@
  */
 
 #ifndef FLENS_TRAITS_H
-#define FLENS_TRAITS_H 1
+#  define FLENS_TRAITS_H 1
 
-#include <complex>
+#  include <complex>
 
-#ifdef GMP
-#include <gmp/gmpfrxx.h>
-#endif
+#  ifdef GMP
+#    include <gmp/gmpfrxx.h>
+#  endif
 
 namespace flens {
 
 //== Auxiliary Traits ==========================================================
 
 template <typename A, typename B>
-struct IsSame
-{
-    static const bool value = false;
+struct IsSame {
+  static const bool value = false;
 };
 
 template <typename A>
-struct IsSame<A, A>
-{
-    static const bool value = true;
+struct IsSame<A, A> {
+  static const bool value = true;
 };
 
 //== Reference traits ==========================================================
 
 template <typename A>
-struct Ref
-{
-    typedef const A &Type;
+struct Ref {
+  typedef const A& Type;
 };
 
 template <>
-struct Ref<void>
-{
-    typedef void Type;
+struct Ref<void> {
+  typedef void Type;
 };
 
 template <>
-struct Ref<float>
-{
-    typedef float Type;
+struct Ref<float> {
+  typedef float Type;
 };
 
 template <>
-struct Ref<double>
-{
-    typedef double Type;
+struct Ref<double> {
+  typedef double Type;
 };
 
 template <typename T>
-struct Ref<std::complex<T> >
-{
-    typedef std::complex<T> Type;
+struct Ref<std::complex<T> > {
+  typedef std::complex<T> Type;
 };
 
-#ifdef GMP
+#  ifdef GMP
 template <typename T, typename U>
-struct Ref<__gmp_expr<T,U> >
-{
-    typedef __gmp_expr<T,U> Type;
+struct Ref<__gmp_expr<T, U> > {
+  typedef __gmp_expr<T, U> Type;
 };
-#endif
+#  endif
 
 //== Promotion traits ==========================================================
 
 template <typename A, typename B>
-struct Promotion
-{
-};
+struct Promotion {};
 
 template <typename A>
-struct Promotion<A, A>
-{
-    typedef A Type;
+struct Promotion<A, A> {
+  typedef A Type;
 };
 
 template <>
-struct Promotion<int, double>
-{
-    typedef double Type;
+struct Promotion<int, double> {
+  typedef double Type;
 };
 
 template <>
-struct Promotion<double, int>
-{
-    typedef double Type;
+struct Promotion<double, int> {
+  typedef double Type;
 };
 
 template <>
-struct Promotion<double, float>
-{
-    typedef double Type;
+struct Promotion<double, float> {
+  typedef double Type;
 };
 
-} // namespace flens
+}  // namespace flens
 
-#endif // TRAITS_H
+#endif  // TRAITS_H

@@ -31,54 +31,54 @@
  */
 
 #ifndef FLENS_FLENS_H
-#define FLENS_FLENS_H 1
+#  define FLENS_FLENS_H 1
 
-#define ADDRESS(x) reinterpret_cast<const void *>(&x)
+#  define ADDRESS(x) reinterpret_cast<const void*>(&x)
 
-#ifndef ASSERT
-#define ASSERT(x) assert(x)
-#endif //ASSERT
+#  ifndef ASSERT
+#    define ASSERT(x) assert(x)
+#  endif  // ASSERT
 
-#include <flens/aux_cmath.h>
-#include <flens/aux_complex.h>
-#include <flens/array.h>
-#include <flens/bandstorage.h>
-#include <flens/blas.h>
-#include <flens/blas_flens.h>
-#include <flens/cg.h>
-#include <flens/crs.h>
-#include <flens/densevector.h>
-#include <flens/evalclosure.h>
-#include <flens/fixedsizearray.h>
-#include <flens/fullstorage.h>
-#include <flens/generalmatrix.h>
-#include <flens/hermitianmatrix.h>
-#include <flens/lapack.h>
-#include <flens/lapack_flens.h>
-#include <flens/lapack_flens_aux.h>
-#include <flens/listinitializer.h>
-#include <flens/matvec.h>
-#include <flens/matvecclosures.h>
-#include <flens/matvecio.h>
-#include <flens/matvecoperations.h>
-#include <flens/multigrid.h>
-#include <flens/operationtypes.h>
-#include <flens/packedstorage.h>
-#include <flens/polynom.h>
-#include <flens/range.h>
-#include <flens/scalarclosures.h>
-#include <flens/snapshot.h>
-#include <flens/storage.h>
-#include <flens/sparsematrix.h>
-#include <flens/sparse_blas.h>
-#include <flens/sparse_blas_flens.h>
-#include <flens/symmetricmatrix.h>
-#include <flens/tiny_blas.h>
-#include <flens/tinymatrix.h>
-#include <flens/tinyvector.h>
-#include <flens/traits.h>
-#include <flens/triangularmatrix.h>
-#include <flens/underscore.h>
-#include <flens/uplo.h>
+#  include <flens/array.h>
+#  include <flens/aux_cmath.h>
+#  include <flens/aux_complex.h>
+#  include <flens/bandstorage.h>
+#  include <flens/blas.h>
+#  include <flens/blas_flens.h>
+#  include <flens/cg.h>
+#  include <flens/crs.h>
+#  include <flens/densevector.h>
+#  include <flens/evalclosure.h>
+#  include <flens/fixedsizearray.h>
+#  include <flens/fullstorage.h>
+#  include <flens/generalmatrix.h>
+#  include <flens/hermitianmatrix.h>
+#  include <flens/lapack.h>
+#  include <flens/lapack_flens.h>
+#  include <flens/lapack_flens_aux.h>
+#  include <flens/listinitializer.h>
+#  include <flens/matvec.h>
+#  include <flens/matvecclosures.h>
+#  include <flens/matvecio.h>
+#  include <flens/matvecoperations.h>
+#  include <flens/multigrid.h>
+#  include <flens/operationtypes.h>
+#  include <flens/packedstorage.h>
+#  include <flens/polynom.h>
+#  include <flens/range.h>
+#  include <flens/scalarclosures.h>
+#  include <flens/snapshot.h>
+#  include <flens/sparse_blas.h>
+#  include <flens/sparse_blas_flens.h>
+#  include <flens/sparsematrix.h>
+#  include <flens/storage.h>
+#  include <flens/symmetricmatrix.h>
+#  include <flens/tiny_blas.h>
+#  include <flens/tinymatrix.h>
+#  include <flens/tinyvector.h>
+#  include <flens/traits.h>
+#  include <flens/triangularmatrix.h>
+#  include <flens/underscore.h>
+#  include <flens/uplo.h>
 
-#endif // FLENS_FLENS_H
+#endif  // FLENS_FLENS_H

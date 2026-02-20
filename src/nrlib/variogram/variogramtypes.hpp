@@ -2,22 +2,26 @@
 
 // Copyright (c)  2011, Norwegian Computing Center
 // All rights reserved.
-// Redistribution and use in source and binary forms, with or without modification,
-// are permitted provided that the following conditions are met:
-// •  Redistributions of source code must retain the above copyright notice, this
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+// •  Redistributions of source code must retain the above copyright notice,
+// this
 //    list of conditions and the following disclaimer.
-// •  Redistributions in binary form must reproduce the above copyright notice, this list of
-//    conditions and the following disclaimer in the documentation and/or other materials
-//    provided with the distribution.
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
-// EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-// OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
-// SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
-// OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-// HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-// OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
-// EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+// •  Redistributions in binary form must reproduce the above copyright notice,
+// this list of
+//    conditions and the following disclaimer in the documentation and/or other
+//    materials provided with the distribution.
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE.
 
 #ifndef NRLIB_VARIOGRAM_VARIOGRAMTYPES_HPP
 #define NRLIB_VARIOGRAM_VARIOGRAMTYPES_HPP
@@ -27,10 +31,8 @@
 #include "variogram.hpp"
 
 namespace NRLib {
-class ConstVario : public Variogram
-{
-
-public:
+class ConstVario : public Variogram {
+ public:
   /// \param[in] range_x
   /// \param[in] range_y
   /// \param[in] range_z
@@ -40,28 +42,28 @@ public:
   /// This class is very little tested.
   /// Can be used in 1D, 2D and 3D
   ConstVario(const double range_x,
-       const double range_y = 1.0,
-       const double range_z = 1.0,
-       const double azimuth_angle = 0.0,
-       const double dip_angle = 0.0,
-       const double std_dev = 1.0);
+             const double range_y       = 1.0,
+             const double range_z       = 1.0,
+             const double azimuth_angle = 0.0,
+             const double dip_angle     = 0.0,
+             const double std_dev       = 1.0);
   ConstVario();
-  ConstVario(const ConstVario &vario) : Variogram(vario) {}
+  ConstVario(const ConstVario& vario) : Variogram(vario) {}
   // ~ConstVario();
 
   /// This is not tested
-  virtual Variogram *Clone() const {return new ConstVario(*this);}
-  virtual std::string    GetName()         const {return "constant";}
+  virtual Variogram*  Clone() const { return new ConstVario(*this); }
+  virtual std::string GetName() const { return "constant"; }
 
-  virtual double GetMinimumRangeToGridRatio() const { return 1.0; }
-protected:
-  double Corr1D(double) const {return 1.0;}
+  virtual double      GetMinimumRangeToGridRatio() const { return 1.0; }
+
+ protected:
+  double Corr1D(double) const { return 1.0; }
 };
 
-class ExpVario : public Variogram
-{
-public:
-/// \param[in] range_x
+class ExpVario : public Variogram {
+ public:
+  /// \param[in] range_x
   /// \param[in] range_y
   /// \param[in] range_z
   /// \param[in] azimuth_angle
@@ -70,27 +72,25 @@ public:
   /// This class is very little tested.
   /// Can be used in 1D, 2D and 3D
   ExpVario(const double range_x,
-     const double range_y = 1.0,
-     const double range_z = 1.0,
-     const double azimuth_angle = 0.0,
-     const double dip_angle = 0.0,
-     const double std_dev = 1.0);
+           const double range_y       = 1.0,
+           const double range_z       = 1.0,
+           const double azimuth_angle = 0.0,
+           const double dip_angle     = 0.0,
+           const double std_dev       = 1.0);
   ExpVario();
-  ExpVario(const ExpVario &vario) : Variogram(vario) {}
+  ExpVario(const ExpVario& vario) : Variogram(vario) {}
 
+  virtual Variogram*  Clone() const { return new ExpVario(*this); }
+  virtual std::string GetName() const { return "exponential"; }
 
-  virtual Variogram *Clone() const {return new ExpVario(*this);}
-  virtual std::string    GetName()         const {return "exponential";}
+  virtual double      GetMinimumRangeToGridRatio() const { return 2.33; }
 
-  virtual double GetMinimumRangeToGridRatio() const { return 2.33; }
-protected:
-  virtual double Corr1D(double dist) const {
-                         return exp(-3.0*dist);}
+ protected:
+  virtual double Corr1D(double dist) const { return exp(-3.0 * dist); }
 };
 
-class SphVario : public Variogram
-{
-public:
+class SphVario : public Variogram {
+ public:
   /// \param[in] range_x
   /// \param[in] range_y
   /// \param[in] range_z
@@ -100,29 +100,30 @@ public:
   /// This class is very little tested.
   /// Can be used in 1D, 2D and 3D
   SphVario(const double range_x,
-     const double range_y = 1.0,
-     const double range_z = 1.0,
-     const double azimuth_angle = 0.0,
-     const double dip_angle = 0.0,
-     const double std_dev = 1.0);
-  SphVario(const SphVario &vario) : Variogram(vario) {}
+           const double range_y       = 1.0,
+           const double range_z       = 1.0,
+           const double azimuth_angle = 0.0,
+           const double dip_angle     = 0.0,
+           const double std_dev       = 1.0);
+  SphVario(const SphVario& vario) : Variogram(vario) {}
   SphVario();
 
-  virtual Variogram *Clone() const {return new SphVario(*this);}
-  virtual std::string    GetName()      const {return "spherical";}
+  virtual Variogram*  Clone() const { return new SphVario(*this); }
+  virtual std::string GetName() const { return "spherical"; }
 
-  virtual double GetMinimumRangeToGridRatio() const { return 1.92; }
-protected:
-  virtual double Corr1D(double dist) const
-  {
-    if(dist<1.0) return(1.0-dist*(1.5-(0.5*dist*dist)));
-    else return 0.0;
+  virtual double      GetMinimumRangeToGridRatio() const { return 1.92; }
+
+ protected:
+  virtual double Corr1D(double dist) const {
+    if (dist < 1.0)
+      return (1.0 - dist * (1.5 - (0.5 * dist * dist)));
+    else
+      return 0.0;
   }
 };
 
-class GauVario : public Variogram
-{
-public:
+class GauVario : public Variogram {
+ public:
   /// \param[in] range_x
   /// \param[in] range_y
   /// \param[in] range_z
@@ -132,27 +133,25 @@ public:
   /// This class is very little tested.
   /// Can be used in 1D, 2D and 3D
   GauVario(const double range_x,
-     const double range_y = 1.0,
-     const double range_z = 1.0,
-     const double azimuth_angle = 0.0,
-     const double dip_angle = 0.0,
-     const double std_dev = 1.0);
+           const double range_y       = 1.0,
+           const double range_z       = 1.0,
+           const double azimuth_angle = 0.0,
+           const double dip_angle     = 0.0,
+           const double std_dev       = 1.0);
   GauVario();
-  GauVario(const GauVario &vario) : Variogram(vario) {}
+  GauVario(const GauVario& vario) : Variogram(vario) {}
 
+  virtual Variogram*  Clone() const { return new GauVario(*this); }
+  virtual std::string GetName() const { return "Gaussian"; }
 
-  virtual Variogram *Clone() const {return new GauVario(*this);}
-  virtual std::string    GetName()      const {return "Gaussian";}
+  virtual double      GetMinimumRangeToGridRatio() const { return 6.67; }
 
-  virtual double GetMinimumRangeToGridRatio() const { return 6.67; }
-protected:
-  virtual double Corr1D(double dist) const
-  { return std::exp(-3.0*dist*dist); }
+ protected:
+  virtual double Corr1D(double dist) const { return std::exp(-3.0 * dist * dist); }
 };
 
-class GenExpVario : public Variogram
-{
-public:
+class GenExpVario : public Variogram {
+ public:
   /// \param[in] range_x
   /// \param[in] range_y
   /// \param[in] range_z
@@ -162,33 +161,32 @@ public:
   /// This class is very little tested.
   /// Can be used in 1D, 2D and 3D
   GenExpVario(const double power,
-    const double range_x,
-    const double range_y = 1.0,
-    const double range_z = 1.0,
-    const double azimuth_angle = 0.0,
-    const double dip_angle = 0.0,
-    const double std_dev = 1.0);
+              const double range_x,
+              const double range_y       = 1.0,
+              const double range_z       = 1.0,
+              const double azimuth_angle = 0.0,
+              const double dip_angle     = 0.0,
+              const double std_dev       = 1.0);
   GenExpVario();
-  GenExpVario(const GenExpVario &vario) : Variogram(vario) {power_ = vario.power_;}
-  virtual std::string  GetName()      const {return "general exponential";}
-  virtual Variogram *Clone() const {return new GenExpVario(*this);}
+  GenExpVario(const GenExpVario& vario) : Variogram(vario) { power_ = vario.power_; }
+  virtual std::string GetName() const { return "general exponential"; }
+  virtual Variogram*  Clone() const { return new GenExpVario(*this); }
 
   /// If power == 1.5, the ratio is 3.23, and power == 2 is the same
   /// as Gaussian (6.67). For simplicity, perform linear interpolation
   /// if power is between these two. Also, 3.23 is raised to 4.0 in
   /// case linear interpolation is too optimistic.
-  virtual double GetMinimumRangeToGridRatio() const { return 4.0 + (power_ - 1.5) * 5.34; }
-protected:
-  virtual double Corr1D(double dist) const {
-    return std::exp(-3.0 * std::pow(dist,power_));}
+  virtual double      GetMinimumRangeToGridRatio() const { return 4.0 + (power_ - 1.5) * 5.34; }
 
-private:
-  double      power_;
+ protected:
+  virtual double Corr1D(double dist) const { return std::exp(-3.0 * std::pow(dist, power_)); }
+
+ private:
+  double power_;
 };
 
-class Matern32Vario : public Variogram
-{
-public:
+class Matern32Vario : public Variogram {
+ public:
   /// \param[in] range_x
   /// \param[in] range_y
   /// \param[in] range_z
@@ -197,29 +195,29 @@ public:
   /// \param[in] std_dev Standard deviation
   /// This class is not tested.
   Matern32Vario(const double range_x,
-    const double range_y = 1.0,
-    const double range_z = 1.0,
-    const double azimuth_angle = 0.0,
-    const double dip_angle = 0.0,
-    const double std_dev = 1.0);
+                const double range_y       = 1.0,
+                const double range_z       = 1.0,
+                const double azimuth_angle = 0.0,
+                const double dip_angle     = 0.0,
+                const double std_dev       = 1.0);
   Matern32Vario();
-  Matern32Vario(const Matern32Vario &vario) : Variogram(vario) {}
-  virtual std::string  GetName()      const { return "matern 3/2"; }
-  virtual Variogram *Clone() const { return new Matern32Vario(*this); }
+  Matern32Vario(const Matern32Vario& vario) : Variogram(vario) {}
+  virtual std::string GetName() const { return "matern 3/2"; }
+  virtual Variogram*  Clone() const { return new Matern32Vario(*this); }
 
-  virtual double GetMinimumRangeToGridRatio() const { return 4.0; }
-protected:
+  virtual double      GetMinimumRangeToGridRatio() const { return 4.0; }
+
+ protected:
   virtual double Corr1D(double dist) const {
-    const double sd = 4.744 * dist; // distance to ensure 0.05 correlation at range
+    const double sd = 4.744 * dist;  // distance to ensure 0.05 correlation at range
     return std::exp(-sd) * (1.0 + sd);
   }
 
-private:
+ private:
 };
 
-class Matern52Vario : public Variogram
-{
-public:
+class Matern52Vario : public Variogram {
+ public:
   /// \param[in] range_x
   /// \param[in] range_y
   /// \param[in] range_z
@@ -228,29 +226,29 @@ public:
   /// \param[in] std_dev Standard deviation
   /// This class is not tested.
   Matern52Vario(const double range_x,
-    const double range_y = 1.0,
-    const double range_z = 1.0,
-    const double azimuth_angle = 0.0,
-    const double dip_angle = 0.0,
-    const double std_dev = 1.0);
+                const double range_y       = 1.0,
+                const double range_z       = 1.0,
+                const double azimuth_angle = 0.0,
+                const double dip_angle     = 0.0,
+                const double std_dev       = 1.0);
   Matern52Vario();
-  Matern52Vario(const Matern52Vario &vario) : Variogram(vario) {}
-  virtual std::string  GetName()      const { return "matern 5/2"; }
-  virtual Variogram *Clone() const { return new Matern52Vario(*this); }
+  Matern52Vario(const Matern52Vario& vario) : Variogram(vario) {}
+  virtual std::string GetName() const { return "matern 5/2"; }
+  virtual Variogram*  Clone() const { return new Matern52Vario(*this); }
 
-  virtual double GetMinimumRangeToGridRatio() const { return 4.76; }
-protected:
+  virtual double      GetMinimumRangeToGridRatio() const { return 4.76; }
+
+ protected:
   virtual double Corr1D(double dist) const {
-    const double sd = 5.918 * dist; // distance to ensure 0.05 correlation at range
+    const double sd = 5.918 * dist;  // distance to ensure 0.05 correlation at range
     return std::exp(-sd) * (1.0 + sd + sd * sd / 3.0);
   }
 
-private:
+ private:
 };
 
-class Matern72Vario : public Variogram
-{
-public:
+class Matern72Vario : public Variogram {
+ public:
   /// \param[in] range_x
   /// \param[in] range_y
   /// \param[in] range_z
@@ -259,27 +257,27 @@ public:
   /// \param[in] std_dev Standard deviation
   /// This class is not tested.
   Matern72Vario(const double range_x,
-    const double range_y = 1.0,
-    const double range_z = 1.0,
-    const double azimuth_angle = 0.0,
-    const double dip_angle = 0.0,
-    const double std_dev = 1.0);
+                const double range_y       = 1.0,
+                const double range_z       = 1.0,
+                const double azimuth_angle = 0.0,
+                const double dip_angle     = 0.0,
+                const double std_dev       = 1.0);
   Matern72Vario();
-  Matern72Vario(const Matern72Vario &vario) : Variogram(vario) {}
-  virtual std::string  GetName()      const { return "matern 7/2"; }
-  virtual Variogram *Clone() const { return new Matern72Vario(*this); }
+  Matern72Vario(const Matern72Vario& vario) : Variogram(vario) {}
+  virtual std::string GetName() const { return "matern 7/2"; }
+  virtual Variogram*  Clone() const { return new Matern72Vario(*this); }
 
-  virtual double GetMinimumRangeToGridRatio() const { return 5.26; }
-protected:
+  virtual double      GetMinimumRangeToGridRatio() const { return 5.26; }
+
+ protected:
   virtual double Corr1D(double dist) const {
-    const double sd = 6.877 * dist; // distance to ensure 0.05 correlation at range
-    return std::exp(-sd) * (1.0 + sd + 2.0/5.0 * std::pow(sd, 2) + std::pow(sd, 3) / 15.0);
+    const double sd = 6.877 * dist;  // distance to ensure 0.05 correlation at range
+    return std::exp(-sd) * (1.0 + sd + 2.0 / 5.0 * std::pow(sd, 2) + std::pow(sd, 3) / 15.0);
   }
 
-private:
+ private:
 };
 
+}  // namespace NRLib
 
-}
-
-#endif // NRLIB_VARIOGRAM_VARIOGRAMTYPES_HPP
+#endif  // NRLIB_VARIOGRAM_VARIOGRAMTYPES_HPP

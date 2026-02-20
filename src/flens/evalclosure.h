@@ -31,176 +31,174 @@
  */
 
 #ifndef FLENS_EVALCLOSURE_H
-#define FLENS_EVALCLOSURE_H 1
+#  define FLENS_EVALCLOSURE_H 1
 
-#include <flens/matvecclosures.h>
+#  include <flens/matvecclosures.h>
 
 namespace flens {
 
 //-- mv:  y = x*A -> y = A'*x --------------------------------------------------
 
 template <typename ALPHA, typename MA, typename VX, typename BETA, typename VY>
-void
-mv(Transpose trans,
-   ALPHA alpha, const Vector<VX> &x, const Matrix<MA> &A,
-   BETA beta, Vector<VY> &y);
+void mv(Transpose trans, ALPHA alpha, const Vector<VX>& x, const Matrix<MA>& A, BETA beta, Vector<VY>& y);
 
-template <typename ALPHA, typename MA, typename T, typename VX,
-          typename BETA, typename VY>
-void
-mv(Transpose trans, ALPHA alpha,
-   const MatrixClosure<OpMult, MA, Scalar<T> > &As,
-   const Vector<VX> &x,
-   BETA beta, Vector<VY> &y);
+template <typename ALPHA, typename MA, typename T, typename VX, typename BETA, typename VY>
+void mv(Transpose                                    trans,
+        ALPHA                                        alpha,
+        const MatrixClosure<OpMult, MA, Scalar<T> >& As,
+        const Vector<VX>&                            x,
+        BETA                                         beta,
+        Vector<VY>&                                  y);
 
-template <typename ALPHA, typename MA, typename VX,
-          typename BETA, typename VY>
-void
-mv(Transpose trans, ALPHA alpha,
-   const MatrixClosure<OpTrans, MA, MA> &As,
-   const Vector<VX> &x,
-   BETA beta, Vector<VY> &y);
+template <typename ALPHA, typename MA, typename VX, typename BETA, typename VY>
+void mv(Transpose                             trans,
+        ALPHA                                 alpha,
+        const MatrixClosure<OpTrans, MA, MA>& As,
+        const Vector<VX>&                     x,
+        BETA                                  beta,
+        Vector<VY>&                           y);
 
-template <typename ALPHA, typename MA, typename T, typename VX,
-          typename BETA, typename VY>
-void
-mv(Transpose trans, ALPHA alpha,
-   const Matrix<MA> &A,
-   const VectorClosure<OpMult, VX, Scalar<T> > &x,
-   BETA beta, Vector<VY> &y);
+template <typename ALPHA, typename MA, typename T, typename VX, typename BETA, typename VY>
+void mv(Transpose                                    trans,
+        ALPHA                                        alpha,
+        const Matrix<MA>&                            A,
+        const VectorClosure<OpMult, VX, Scalar<T> >& x,
+        BETA                                         beta,
+        Vector<VY>&                                  y);
 
-template <typename ALPHA, typename MA, typename TA, typename TX, typename VX,
-          typename BETA, typename VY>
-void
-mv(Transpose trans, ALPHA alpha,
-   const MatrixClosure<OpMult, MA, Scalar<TA> > &As,
-   const VectorClosure<OpMult, VX, Scalar<TX> > &x,
-   BETA beta, Vector<VY> &y);
+template <typename ALPHA, typename MA, typename TA, typename TX, typename VX, typename BETA, typename VY>
+void mv(Transpose                                     trans,
+        ALPHA                                         alpha,
+        const MatrixClosure<OpMult, MA, Scalar<TA> >& As,
+        const VectorClosure<OpMult, VX, Scalar<TX> >& x,
+        BETA                                          beta,
+        Vector<VY>&                                   y);
 
-template <typename ALPHA, typename MA, typename VX, typename T,
-          typename BETA, typename VY>
-void
-mv(Transpose trans, ALPHA alpha,
-   const MatrixClosure<OpTrans, MA, MA> &As,
-   const VectorClosure<OpMult, VX, Scalar<T> > &x,
-   BETA beta, Vector<VY> &y);
+template <typename ALPHA, typename MA, typename VX, typename T, typename BETA, typename VY>
+void mv(Transpose                                    trans,
+        ALPHA                                        alpha,
+        const MatrixClosure<OpTrans, MA, MA>&        As,
+        const VectorClosure<OpMult, VX, Scalar<T> >& x,
+        BETA                                         beta,
+        Vector<VY>&                                  y);
 
 //-- mv for symmetric matrices -------------------------------------------------
 
 template <typename I>
-    class SymmetricMatrix;
+class SymmetricMatrix;
 
 template <typename ALPHA, typename MA, typename VX, typename BETA, typename VY>
-void
-mv(Transpose trans, ALPHA alpha,
-   const SymmetricMatrix<MA> &A, const Vector<VX> &x,
-   BETA beta, Vector<VY> &y);
+void mv(Transpose trans, ALPHA alpha, const SymmetricMatrix<MA>& A, const Vector<VX>& x, BETA beta, Vector<VY>& y);
 
 //-- mv for triangular matrices ------------------------------------------------
 
 template <typename I>
-    class TriangularMatrix;
+class TriangularMatrix;
 
 template <typename ALPHA, typename MA, typename VX, typename BETA, typename VY>
-void
-mv(Transpose trans, ALPHA alpha,
-   const TriangularMatrix<MA> &A, const Vector<VX> &x,
-   BETA beta, Vector<VY> &y);
+void mv(Transpose trans, ALPHA alpha, const TriangularMatrix<MA>& A, const Vector<VX>& x, BETA beta, Vector<VY>& y);
 
 //-- mm ------------------------------------------------------------------------
 
 // C = (a*A)*B
-template <typename ALPHA, typename MA, typename T, typename MB,
-          typename BETA, typename MC>
-    void
-    mm(Transpose transA, Transpose transB, ALPHA alpha,
-       const MatrixClosure<OpMult, MA, Scalar<T> > &A,
-       const Matrix<MB> &B,
-       BETA beta, Matrix<MC> &C);
+template <typename ALPHA, typename MA, typename T, typename MB, typename BETA, typename MC>
+void mm(Transpose                                    transA,
+        Transpose                                    transB,
+        ALPHA                                        alpha,
+        const MatrixClosure<OpMult, MA, Scalar<T> >& A,
+        const Matrix<MB>&                            B,
+        BETA                                         beta,
+        Matrix<MC>&                                  C);
 
 // C = A'*B
 template <typename ALPHA, typename MA, typename MB, typename BETA, typename MC>
-    void
-    mm(Transpose transA, Transpose transB, ALPHA alpha,
-       const MatrixClosure<OpTrans, MA, MA> &A,
-       const Matrix<MB> &B,
-       BETA beta, Matrix<MC> &C);
-
+void mm(Transpose                             transA,
+        Transpose                             transB,
+        ALPHA                                 alpha,
+        const MatrixClosure<OpTrans, MA, MA>& A,
+        const Matrix<MB>&                     B,
+        BETA                                  beta,
+        Matrix<MC>&                           C);
 
 // C = A*(b*B)
-template <typename ALPHA, typename MA, typename MB, typename T,
-          typename BETA, typename MC>
-    void
-    mm(Transpose transA, Transpose transB, ALPHA alpha,
-       const Matrix<MA> &A,
-       const MatrixClosure<OpMult, MB, Scalar<T> > &B,
-       BETA beta, Matrix<MC> &C);
+template <typename ALPHA, typename MA, typename MB, typename T, typename BETA, typename MC>
+void mm(Transpose                                    transA,
+        Transpose                                    transB,
+        ALPHA                                        alpha,
+        const Matrix<MA>&                            A,
+        const MatrixClosure<OpMult, MB, Scalar<T> >& B,
+        BETA                                         beta,
+        Matrix<MC>&                                  C);
 
 // C = A*B'
 template <typename ALPHA, typename MA, typename MB, typename BETA, typename MC>
-    void
-    mm(Transpose transA, Transpose transB, ALPHA alpha,
-       const Matrix<MA> &A,
-       const MatrixClosure<OpTrans, MB, MB> &B,
-       BETA beta, Matrix<MC> &C);
+void mm(Transpose                             transA,
+        Transpose                             transB,
+        ALPHA                                 alpha,
+        const Matrix<MA>&                     A,
+        const MatrixClosure<OpTrans, MB, MB>& B,
+        BETA                                  beta,
+        Matrix<MC>&                           C);
 
 // C = (a*A)*(b*B)
-template <typename ALPHA,
-          typename MA, typename TA,
-          typename MB, typename TB,
-          typename BETA, typename MC>
-    void
-    mm(Transpose transA, Transpose transB, ALPHA alpha,
-       const MatrixClosure<OpMult, MA, Scalar<TA> > &A,
-       const MatrixClosure<OpMult, MB, Scalar<TB> > &B,
-       BETA beta, Matrix<MC> &C);
+template <typename ALPHA, typename MA, typename TA, typename MB, typename TB, typename BETA, typename MC>
+void mm(Transpose                                     transA,
+        Transpose                                     transB,
+        ALPHA                                         alpha,
+        const MatrixClosure<OpMult, MA, Scalar<TA> >& A,
+        const MatrixClosure<OpMult, MB, Scalar<TB> >& B,
+        BETA                                          beta,
+        Matrix<MC>&                                   C);
 
 // C = (a*A)*(B')
-template <typename ALPHA,
-          typename MA, typename T,
-          typename MB,
-          typename BETA, typename MC>
-    void
-    mm(Transpose transA, Transpose transB, ALPHA alpha,
-       const MatrixClosure<OpMult, MA, Scalar<T> > &A,
-       const MatrixClosure<OpTrans, MB, MB> &B,
-       BETA beta, Matrix<MC> &C);
+template <typename ALPHA, typename MA, typename T, typename MB, typename BETA, typename MC>
+void mm(Transpose                                    transA,
+        Transpose                                    transB,
+        ALPHA                                        alpha,
+        const MatrixClosure<OpMult, MA, Scalar<T> >& A,
+        const MatrixClosure<OpTrans, MB, MB>&        B,
+        BETA                                         beta,
+        Matrix<MC>&                                  C);
 
 // C = (A')*(b*B)
-template <typename ALPHA,
-          typename MA,
-          typename MB, typename T,
-          typename BETA, typename MC>
-    void
-    mm(Transpose transA, Transpose transB, ALPHA alpha,
-       const MatrixClosure<OpTrans, MA, MA> &A,
-       const MatrixClosure<OpMult, MB, Scalar<T> > &B,
-       BETA beta, Matrix<MC> &C);
+template <typename ALPHA, typename MA, typename MB, typename T, typename BETA, typename MC>
+void mm(Transpose                                    transA,
+        Transpose                                    transB,
+        ALPHA                                        alpha,
+        const MatrixClosure<OpTrans, MA, MA>&        A,
+        const MatrixClosure<OpMult, MB, Scalar<T> >& B,
+        BETA                                         beta,
+        Matrix<MC>&                                  C);
 
 // C = (A')*(B')
-template <typename ALPHA,
-          typename MA,
-          typename MB,
-          typename BETA, typename MC>
-    void
-    mm(Transpose transA, Transpose transB, ALPHA alpha,
-       const MatrixClosure<OpTrans, MA, MA> &A,
-       const MatrixClosure<OpTrans, MB, MB> &B,
-       BETA beta, Matrix<MC> &C);
+template <typename ALPHA, typename MA, typename MB, typename BETA, typename MC>
+void mm(Transpose                             transA,
+        Transpose                             transB,
+        ALPHA                                 alpha,
+        const MatrixClosure<OpTrans, MA, MA>& A,
+        const MatrixClosure<OpTrans, MB, MB>& B,
+        BETA                                  beta,
+        Matrix<MC>&                           C);
 
 //-- mm for symmetric matrices -------------------------------------------------
 
 template <typename ALPHA, typename MA, typename MB, typename BETA, typename MC>
-void
-mm(Transpose transA, Transpose transB, ALPHA alpha,
-   const SymmetricMatrix<MA> &A, const Matrix<MB> &B,
-   BETA beta, Matrix<MC> &C);
+void mm(Transpose                  transA,
+        Transpose                  transB,
+        ALPHA                      alpha,
+        const SymmetricMatrix<MA>& A,
+        const Matrix<MB>&          B,
+        BETA                       beta,
+        Matrix<MC>&                C);
 
 template <typename ALPHA, typename MA, typename MB, typename BETA, typename MC>
-void
-mm(Transpose transA, Transpose transB, ALPHA alpha,
-   const Matrix<MA> &A, const SymmetricMatrix<MB> &B,
-   BETA beta, Matrix<MC> &C);
+void mm(Transpose                  transA,
+        Transpose                  transB,
+        ALPHA                      alpha,
+        const Matrix<MA>&          A,
+        const SymmetricMatrix<MB>& B,
+        BETA                       beta,
+        Matrix<MC>&                C);
 
 //-- copy for closures -------------------------------------------------------
 
@@ -208,49 +206,40 @@ mm(Transpose transA, Transpose transB, ALPHA alpha,
 
 // y = alpha*x
 template <typename VX, typename T, typename VY>
-void
-copy(const VectorClosure<OpMult, VX, Scalar<T> > &ax, Vector<VY> &y);
+void copy(const VectorClosure<OpMult, VX, Scalar<T> >& ax, Vector<VY>& y);
 
 // y = x1 + x2
 template <typename VL, typename VR, typename VY>
-void
-copy(const VectorClosure<OpAdd, VL, VR> &x, Vector<VY> &y);
+void copy(const VectorClosure<OpAdd, VL, VR>& x, Vector<VY>& y);
 
 // y = x1 - x2
 template <typename VL, typename VR, typename VY>
-void
-copy(const VectorClosure<OpSub, VL, VR> &x, Vector<VY> &y);
+void copy(const VectorClosure<OpSub, VL, VR>& x, Vector<VY>& y);
 
 // y = A*x
 template <typename MA, typename VX, typename VY>
-void
-copy(const VectorClosure<OpMult, MA, VX> &Ax, Vector<VY> &y);
+void copy(const VectorClosure<OpMult, MA, VX>& Ax, Vector<VY>& y);
 
 //-- matrix closures
 
 template <typename MX, typename MY>
-void
-copy(const MatrixClosure<OpTrans, MX, MX> &X, Matrix<MY> &Y);
+void copy(const MatrixClosure<OpTrans, MX, MX>& X, Matrix<MY>& Y);
 
 // Y = alpha*X
 template <typename MX, typename T, typename MY>
-void
-copy(const MatrixClosure<OpMult, MX, Scalar<T> > &aX, Matrix<MY> &Y);
+void copy(const MatrixClosure<OpMult, MX, Scalar<T> >& aX, Matrix<MY>& Y);
 
 // Y = X1 + X2
 template <typename ML, typename MR, typename MY>
-void
-copy(const MatrixClosure<OpAdd, ML, MR> &X, Matrix<MY> &Y);
+void copy(const MatrixClosure<OpAdd, ML, MR>& X, Matrix<MY>& Y);
 
 // Y = X1 - X2
 template <typename ML, typename MR, typename MY>
-void
-copy(const MatrixClosure<OpSub, ML, MR> &X, Matrix<MY> &Y);
+void copy(const MatrixClosure<OpSub, ML, MR>& X, Matrix<MY>& Y);
 
 // Y = A*B
 template <typename MA, typename MB, typename MC>
-void
-copy(const MatrixClosure<OpMult, MA, MB> &AB, Matrix<MC> &Y);
+void copy(const MatrixClosure<OpMult, MA, MB>& AB, Matrix<MC>& Y);
 
 //-- axpy for closures ---------------------------------------------------------
 
@@ -258,56 +247,40 @@ copy(const MatrixClosure<OpMult, MA, MB> &AB, Matrix<MC> &Y);
 
 // y += alpha*x
 template <typename VX, typename T, typename VY>
-void
-axpy(typename VY::ElementType alpha,
-     const VectorClosure<OpMult, VX, Scalar<T> > &ax, Vector<VY> &y);
+void axpy(typename VY::ElementType alpha, const VectorClosure<OpMult, VX, Scalar<T> >& ax, Vector<VY>& y);
 
 // y += x1 + x2
 template <typename VL, typename VR, typename VY>
-void
-axpy(typename VY::ElementType alpha,
-     const VectorClosure<OpAdd, VL, VR> &x, Vector<VY> &y);
+void axpy(typename VY::ElementType alpha, const VectorClosure<OpAdd, VL, VR>& x, Vector<VY>& y);
 
 // y += x1 - x2
 template <typename VL, typename VR, typename VY>
-void
-axpy(typename VY::ElementType alpha,
-     const VectorClosure<OpSub, VL, VR> &x, Vector<VY> &y);
+void axpy(typename VY::ElementType alpha, const VectorClosure<OpSub, VL, VR>& x, Vector<VY>& y);
 
 // y += A*x
 template <typename MA, typename VX, typename VY>
-void
-axpy(typename VY::ElementType alpha,
-     const VectorClosure<OpMult, MA, VX> &Ax, Vector<VY> &y);
+void axpy(typename VY::ElementType alpha, const VectorClosure<OpMult, MA, VX>& Ax, Vector<VY>& y);
 
 //-- matrix closures
 
 // Y += alpha*X
 template <typename MX, typename T, typename MY>
-void
-axpy(typename MY::ElementType alpha,
-     const MatrixClosure<OpMult, MX, Scalar<T> > &aX, Matrix<MY> &Y);
+void axpy(typename MY::ElementType alpha, const MatrixClosure<OpMult, MX, Scalar<T> >& aX, Matrix<MY>& Y);
 
 // Y += X1 + X2
 template <typename ML, typename MR, typename MY>
-void
-axpy(typename MY::ElementType alpha,
-     const MatrixClosure<OpAdd, ML, MR> &X, Matrix<MY> &Y);
+void axpy(typename MY::ElementType alpha, const MatrixClosure<OpAdd, ML, MR>& X, Matrix<MY>& Y);
 
 // Y += X1 - X2
 template <typename ML, typename MR, typename MY>
-void
-axpy(typename MY::ElementType alpha,
-     const MatrixClosure<OpSub, ML, MR> &X, Matrix<MY> &Y);
+void axpy(typename MY::ElementType alpha, const MatrixClosure<OpSub, ML, MR>& X, Matrix<MY>& Y);
 
 // Y += A*B
 template <typename MA, typename MB, typename MY>
-void
-axpy(typename MY::ElementType alpha,
-     const MatrixClosure<OpMult, MA, MB> &AB, Matrix<MY> &Y);
+void axpy(typename MY::ElementType alpha, const MatrixClosure<OpMult, MA, MB>& AB, Matrix<MY>& Y);
 
-} // namespace flens
+}  // namespace flens
 
-#include <flens/evalclosure.tcc>
+#  include <flens/evalclosure.tcc>
 
-#endif // FLENS_EVALCLOSURE_H
+#endif  // FLENS_EVALCLOSURE_H

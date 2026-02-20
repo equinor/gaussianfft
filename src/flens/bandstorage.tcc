@@ -33,698 +33,530 @@
 namespace flens {
 
 template <typename T, StorageOrder Order>
-ConstBandStorageView<T,Order>::ConstBandStorageView(
-                                  const ConstFullStorageView<T, ColMajor> &data,
-                                  int numRows, int numCols, int indexBase)
-    : _numRows(numRows), _numCols(numCols), _indexBase(indexBase), _data(data)
-{
+ConstBandStorageView<T, Order>::ConstBandStorageView(const ConstFullStorageView<T, ColMajor>& data,
+                                                     int                                      numRows,
+                                                     int                                      numCols,
+                                                     int                                      indexBase)
+    : _numRows(numRows), _numCols(numCols), _indexBase(indexBase), _data(data) {}
+
+template <typename T, StorageOrder Order>
+ConstBandStorageView<T, Order>::ConstBandStorageView(const ConstView& rhs)
+    : _numRows(rhs._numRows), _numCols(rhs._numCols), _indexBase(rhs._indexBase), _data(rhs._data) {}
+
+template <typename T, StorageOrder Order>
+ConstBandStorageView<T, Order>::~ConstBandStorageView() {}
+
+template <typename T, StorageOrder Order>
+const T& ConstBandStorageView<T, Order>::operator()(int row, int col) const {
+  if (Order == RowMajor) {
+    return _data(col - row, row);
+  }
+  return _data(row - col, col);
 }
 
 template <typename T, StorageOrder Order>
-ConstBandStorageView<T,Order>::ConstBandStorageView(const ConstView &rhs)
-    : _numRows(rhs._numRows), _numCols(rhs._numCols),
-      _indexBase(rhs._indexBase), _data(rhs._data)
-{
+int ConstBandStorageView<T, Order>::firstRow() const {
+  return _indexBase;
 }
 
 template <typename T, StorageOrder Order>
-ConstBandStorageView<T,Order>::~ConstBandStorageView()
-{
+int ConstBandStorageView<T, Order>::lastRow() const {
+  return _indexBase + _numRows - 1;
 }
 
 template <typename T, StorageOrder Order>
-const T &
-ConstBandStorageView<T,Order>::operator()(int row, int col) const
-{
-    if (Order==RowMajor) {
-        return _data(col-row, row);
-    }
-    return _data(row-col, col);
+int ConstBandStorageView<T, Order>::firstCol() const {
+  return _indexBase;
 }
 
 template <typename T, StorageOrder Order>
-int
-ConstBandStorageView<T,Order>::firstRow() const
-{
-    return _indexBase;
+int ConstBandStorageView<T, Order>::lastCol() const {
+  return _indexBase + _numCols - 1;
 }
 
 template <typename T, StorageOrder Order>
-int
-ConstBandStorageView<T,Order>::lastRow() const
-{
-    return _indexBase+_numRows-1;
+int ConstBandStorageView<T, Order>::numRows() const {
+  return _numRows;
 }
 
 template <typename T, StorageOrder Order>
-int
-ConstBandStorageView<T,Order>::firstCol() const
-{
-    return _indexBase;
+int ConstBandStorageView<T, Order>::numCols() const {
+  return _numCols;
 }
 
 template <typename T, StorageOrder Order>
-int
-ConstBandStorageView<T,Order>::lastCol() const
-{
-    return _indexBase+_numCols-1;
-}
-
-template <typename T, StorageOrder Order>
-int
-ConstBandStorageView<T,Order>::numRows() const
-{
-    return _numRows;
-}
-
-template <typename T, StorageOrder Order>
-int
-ConstBandStorageView<T,Order>::numCols() const
-{
-    return _numCols;
-}
-
-template <typename T, StorageOrder Order>
-int
-ConstBandStorageView<T,Order>::numSubDiags() const
-{
-    if (Order==RowMajor) {
-        return -_data.firstRow();
-    }
-    return _data.lastRow();
-}
-
-template <typename T, StorageOrder Order>
-int
-ConstBandStorageView<T,Order>::numSuperDiags() const
-{
-    if (Order==RowMajor) {
-        return _data.lastRow();
-    }
+int ConstBandStorageView<T, Order>::numSubDiags() const {
+  if (Order == RowMajor) {
     return -_data.firstRow();
+  }
+  return _data.lastRow();
 }
 
 template <typename T, StorageOrder Order>
-int
-ConstBandStorageView<T,Order>::leadingDimension() const
-{
-    return _data.leadingDimension();
+int ConstBandStorageView<T, Order>::numSuperDiags() const {
+  if (Order == RowMajor) {
+    return _data.lastRow();
+  }
+  return -_data.firstRow();
 }
 
 template <typename T, StorageOrder Order>
-const T *
-ConstBandStorageView<T,Order>::data() const
-{
-    return _data.data();
+int ConstBandStorageView<T, Order>::leadingDimension() const {
+  return _data.leadingDimension();
 }
 
 template <typename T, StorageOrder Order>
-typename ConstBandStorageView<T,Order>::ConstVectorView
-ConstBandStorageView<T,Order>::viewDiag(int diag, int viewIndexBase) const
-{
-    if (Order==RowMajor) {
-        int from = std::max(0,diag) + _data.firstCol();
-        int length = (diag<=0) ? std::min(_numCols, _numRows+diag)
-                               : std::min(_numCols-diag, _numRows);
-
-        return _data.viewRow(diag, from, from+length-1, viewIndexBase);
-    }
-
-    int from = std::max(0,diag) + _data.firstCol();
-    int length = (diag>=0) ? std::min(_numRows, _numCols-diag)
-                           : std::min(_numRows+diag, _numCols);
-
-    return _data.viewRow(-diag, from, from+length-1, viewIndexBase);
+const T* ConstBandStorageView<T, Order>::data() const {
+  return _data.data();
 }
 
 template <typename T, StorageOrder Order>
-typename ConstBandStorageView<T,Order>::ConstView
-ConstBandStorageView<T, Order>::viewDiags(int fromDiag, int toDiag,
-                                          int viewIndexBase) const
-{
-    assert(fromDiag<=0);
-    assert(toDiag>=0);
+typename ConstBandStorageView<T, Order>::ConstVectorView ConstBandStorageView<T, Order>::viewDiag(
+    int diag,
+    int viewIndexBase) const {
+  if (Order == RowMajor) {
+    int from   = std::max(0, diag) + _data.firstCol();
+    int length = (diag <= 0) ? std::min(_numCols, _numRows + diag) : std::min(_numCols - diag, _numRows);
 
-    if (Order==RowMajor) {
-        return ConstBandStorageView<T, Order>(
-                          _data.view(fromDiag, _data.firstCol(),
-                                     toDiag, _data.lastCol(),
-                                     fromDiag, viewIndexBase),
-                          _numRows, _numCols, viewIndexBase);
-    }
+    return _data.viewRow(diag, from, from + length - 1, viewIndexBase);
+  }
+
+  int from   = std::max(0, diag) + _data.firstCol();
+  int length = (diag >= 0) ? std::min(_numRows, _numCols - diag) : std::min(_numRows + diag, _numCols);
+
+  return _data.viewRow(-diag, from, from + length - 1, viewIndexBase);
+}
+
+template <typename T, StorageOrder Order>
+typename ConstBandStorageView<T, Order>::ConstView ConstBandStorageView<T, Order>::viewDiags(int fromDiag,
+                                                                                             int toDiag,
+                                                                                             int viewIndexBase) const {
+  assert(fromDiag <= 0);
+  assert(toDiag >= 0);
+
+  if (Order == RowMajor) {
     return ConstBandStorageView<T, Order>(
-                          _data.view(-toDiag, _data.firstCol(),
-                                     -fromDiag, _data.lastCol(),
-                                     -toDiag, viewIndexBase),
-                          _numRows, _numCols, viewIndexBase);
+        _data.view(fromDiag, _data.firstCol(), toDiag, _data.lastCol(), fromDiag, viewIndexBase), _numRows, _numCols,
+        viewIndexBase);
+  }
+  return ConstBandStorageView<T, Order>(
+      _data.view(-toDiag, _data.firstCol(), -fromDiag, _data.lastCol(), -toDiag, viewIndexBase), _numRows, _numCols,
+      viewIndexBase);
 }
 
 //==============================================================================
 
 template <typename T, StorageOrder Order>
-BandStorageView<T,Order>::BandStorageView(
-                                      const FullStorageView<T, ColMajor> &data,
-                                      int numRows, int numCols, int indexBase)
-    : _numRows(numRows), _numCols(numCols), _indexBase(indexBase), _data(data)
-{
+BandStorageView<T, Order>::BandStorageView(const FullStorageView<T, ColMajor>& data,
+                                           int                                 numRows,
+                                           int                                 numCols,
+                                           int                                 indexBase)
+    : _numRows(numRows), _numCols(numCols), _indexBase(indexBase), _data(data) {}
+
+template <typename T, StorageOrder Order>
+BandStorageView<T, Order>::BandStorageView(const BandStorageView<T, Order>& rhs)
+    : _numRows(rhs._numRows), _numCols(rhs._numCols), _indexBase(rhs._indexBase), _data(rhs._data) {}
+
+template <typename T, StorageOrder Order>
+BandStorageView<T, Order>::~BandStorageView() {}
+
+template <typename T, StorageOrder Order>
+BandStorageView<T, Order>& BandStorageView<T, Order>::operator=(const NoView& rhs) {
+  assert(_numRows == rhs._numRows);
+  assert(_numCols == rhs._numCols);
+  assert(numSubDiags() == rhs.numSubDiags());
+  assert(numSuperDiags() == rhs.numSuperDiags());
+
+  _data = rhs.data;
+  return *this;
 }
 
 template <typename T, StorageOrder Order>
-BandStorageView<T,Order>::BandStorageView(const BandStorageView<T, Order> &rhs)
-    : _numRows(rhs._numRows), _numCols(rhs._numCols),
-      _indexBase(rhs._indexBase), _data(rhs._data)
-{
+BandStorageView<T, Order>& BandStorageView<T, Order>::operator=(const View& rhs) {
+  assert(_numRows == rhs._numRows);
+  assert(_numCols == rhs._numCols);
+  assert(numSubDiags() == rhs.numSubDiags());
+  assert(numSuperDiags() == rhs.numSuperDiags());
+
+  if (this != &rhs) {
+    _data = rhs._data;
+  }
+  return *this;
 }
 
 template <typename T, StorageOrder Order>
-BandStorageView<T,Order>::~BandStorageView()
-{
+BandStorageView<T, Order>& BandStorageView<T, Order>::operator=(const ConstView& rhs) {
+  assert(_numRows == rhs._numRows);
+  assert(_numCols == rhs._numCols);
+  assert(numSubDiags() == rhs.numSubDiags());
+  assert(numSuperDiags() == rhs.numSuperDiags());
+
+  _data = rhs.data;
+  return *this;
 }
 
 template <typename T, StorageOrder Order>
-BandStorageView<T, Order> &
-BandStorageView<T,Order>::operator=(const NoView &rhs)
-{
-    assert(_numRows==rhs._numRows);
-    assert(_numCols==rhs._numCols);
-    assert(numSubDiags()==rhs.numSubDiags());
-    assert(numSuperDiags()==rhs.numSuperDiags());
-
-    _data = rhs.data;
-    return *this;
+const T& BandStorageView<T, Order>::operator()(int row, int col) const {
+  if (Order == RowMajor) {
+    return _data(col - row, row);
+  }
+  return _data(row - col, col);
 }
 
 template <typename T, StorageOrder Order>
-BandStorageView<T, Order> &
-BandStorageView<T,Order>::operator=(const View &rhs)
-{
-    assert(_numRows==rhs._numRows);
-    assert(_numCols==rhs._numCols);
-    assert(numSubDiags()==rhs.numSubDiags());
-    assert(numSuperDiags()==rhs.numSuperDiags());
-
-    if (this!=&rhs) {
-        _data = rhs._data;
-    }
-    return *this;
+T& BandStorageView<T, Order>::operator()(int row, int col) {
+  if (Order == RowMajor) {
+    return _data(col - row, row);
+  }
+  return _data(row - col, col);
 }
 
 template <typename T, StorageOrder Order>
-BandStorageView<T, Order> &
-BandStorageView<T,Order>::operator=(const ConstView &rhs)
-{
-    assert(_numRows==rhs._numRows);
-    assert(_numCols==rhs._numCols);
-    assert(numSubDiags()==rhs.numSubDiags());
-    assert(numSuperDiags()==rhs.numSuperDiags());
+BandStorageView<T, Order>::operator ConstView() const {
+  int fromDiag = -numSubDiags(), toDiag = numSuperDiags(), viewIndexBase = _indexBase;
 
-    _data = rhs.data;
-    return *this;
-}
-
-template <typename T, StorageOrder Order>
-const T &
-BandStorageView<T,Order>::operator()(int row, int col) const
-{
-    if (Order==RowMajor) {
-        return _data(col-row, row);
-    }
-    return _data(row-col, col);
-}
-
-template <typename T, StorageOrder Order>
-T &
-BandStorageView<T,Order>::operator()(int row, int col)
-{
-    if (Order==RowMajor) {
-        return _data(col-row, row);
-    }
-    return _data(row-col, col);
-}
-
-template <typename T, StorageOrder Order>
-BandStorageView<T,Order>::operator ConstView() const
-{
-    int fromDiag = -numSubDiags(),
-        toDiag = numSuperDiags(),
-        viewIndexBase = _indexBase;
-
-    if (Order==RowMajor) {
-        return ConstBandStorageView<T, Order>(
-                          _data.view(fromDiag, _data.firstCol(),
-                                     toDiag, _data.lastCol(),
-                                     fromDiag, viewIndexBase),
-                          _numRows, _numCols, viewIndexBase);
-    }
+  if (Order == RowMajor) {
     return ConstBandStorageView<T, Order>(
-                          _data.view(-toDiag, _data.firstCol(),
-                                     -fromDiag, _data.lastCol(),
-                                     -toDiag, viewIndexBase),
-                          _numRows, _numCols, viewIndexBase);
+        _data.view(fromDiag, _data.firstCol(), toDiag, _data.lastCol(), fromDiag, viewIndexBase), _numRows, _numCols,
+        viewIndexBase);
+  }
+  return ConstBandStorageView<T, Order>(
+      _data.view(-toDiag, _data.firstCol(), -fromDiag, _data.lastCol(), -toDiag, viewIndexBase), _numRows, _numCols,
+      viewIndexBase);
 }
 
 template <typename T, StorageOrder Order>
-int
-BandStorageView<T,Order>::firstRow() const
-{
-    return _indexBase;
+int BandStorageView<T, Order>::firstRow() const {
+  return _indexBase;
 }
 
 template <typename T, StorageOrder Order>
-int
-BandStorageView<T,Order>::lastRow() const
-{
-    return _indexBase+_numRows-1;
+int BandStorageView<T, Order>::lastRow() const {
+  return _indexBase + _numRows - 1;
 }
 
 template <typename T, StorageOrder Order>
-int
-BandStorageView<T,Order>::firstCol() const
-{
-    return _indexBase;
+int BandStorageView<T, Order>::firstCol() const {
+  return _indexBase;
 }
 
 template <typename T, StorageOrder Order>
-int
-BandStorageView<T,Order>::lastCol() const
-{
-    return _indexBase+_numCols-1;
+int BandStorageView<T, Order>::lastCol() const {
+  return _indexBase + _numCols - 1;
 }
 
 template <typename T, StorageOrder Order>
-int
-BandStorageView<T,Order>::numRows() const
-{
-    return _numRows;
+int BandStorageView<T, Order>::numRows() const {
+  return _numRows;
 }
 
 template <typename T, StorageOrder Order>
-int
-BandStorageView<T,Order>::numCols() const
-{
-    return _numCols;
+int BandStorageView<T, Order>::numCols() const {
+  return _numCols;
 }
 
 template <typename T, StorageOrder Order>
-int
-BandStorageView<T,Order>::numSubDiags() const
-{
-    if (Order==RowMajor) {
-        return -_data.firstRow();
-    }
-    return _data.lastRow();
-}
-
-template <typename T, StorageOrder Order>
-int
-BandStorageView<T,Order>::numSuperDiags() const
-{
-    if (Order==RowMajor) {
-        return _data.lastRow();
-    }
+int BandStorageView<T, Order>::numSubDiags() const {
+  if (Order == RowMajor) {
     return -_data.firstRow();
+  }
+  return _data.lastRow();
 }
 
 template <typename T, StorageOrder Order>
-int
-BandStorageView<T,Order>::leadingDimension() const
-{
-    return _data.leadingDimension();
+int BandStorageView<T, Order>::numSuperDiags() const {
+  if (Order == RowMajor) {
+    return _data.lastRow();
+  }
+  return -_data.firstRow();
 }
 
 template <typename T, StorageOrder Order>
-const T *
-BandStorageView<T,Order>::data() const
-{
-    return _data.data();
+int BandStorageView<T, Order>::leadingDimension() const {
+  return _data.leadingDimension();
 }
 
 template <typename T, StorageOrder Order>
-T *
-BandStorageView<T,Order>::data()
-{
-    return _data.data();
+const T* BandStorageView<T, Order>::data() const {
+  return _data.data();
 }
 
 template <typename T, StorageOrder Order>
-void
-BandStorageView<T,Order>::resize(int numRows, int numCols,
-                                 int numSubDiags, int numSuperDiags,
-                                 int indexBase)
-{
-    assert(numRows==this->numRows());
-    assert(numCols==this->numCols());
-    assert(numSubDiags==this->numSubDiags());
-    assert(numSuperDiags==this->numSuperDiags());
-    _indexBase = indexBase;
+T* BandStorageView<T, Order>::data() {
+  return _data.data();
 }
 
 template <typename T, StorageOrder Order>
-typename BandStorageView<T,Order>::ConstVectorView
-BandStorageView<T,Order>::viewDiag(int diag, int viewIndexBase) const
-{
-    if (Order==RowMajor) {
-        int from = std::max(0,diag) + _data.firstCol();
-        int length = (diag<=0) ? std::min(_numCols, _numRows+diag)
-                               : std::min(_numCols-diag, _numRows);
-
-        return _data.viewRow(diag, from, from+length-1, viewIndexBase);
-    }
-
-    int from = std::max(0,diag) + _data.firstCol();
-    int length = (diag>=0) ? std::min(_numRows, _numCols-diag)
-                           : std::min(_numRows+diag, _numCols);
-
-    return _data.viewRow(-diag, from, from+length-1, viewIndexBase);
+void BandStorageView<T, Order>::resize(int numRows, int numCols, int numSubDiags, int numSuperDiags, int indexBase) {
+  assert(numRows == this->numRows());
+  assert(numCols == this->numCols());
+  assert(numSubDiags == this->numSubDiags());
+  assert(numSuperDiags == this->numSuperDiags());
+  _indexBase = indexBase;
 }
 
 template <typename T, StorageOrder Order>
-typename BandStorageView<T,Order>::VectorView
-BandStorageView<T,Order>::viewDiag(int diag, int viewIndexBase)
-{
-    if (Order==RowMajor) {
-        int from = std::max(0,diag) + _data.firstCol();
-        int length = (diag<=0) ? std::min(_numCols, _numRows+diag)
-                               : std::min(_numCols-diag, _numRows);
+typename BandStorageView<T, Order>::ConstVectorView BandStorageView<T, Order>::viewDiag(int diag,
+                                                                                        int viewIndexBase) const {
+  if (Order == RowMajor) {
+    int from   = std::max(0, diag) + _data.firstCol();
+    int length = (diag <= 0) ? std::min(_numCols, _numRows + diag) : std::min(_numCols - diag, _numRows);
 
-        return _data.viewRow(diag, from, from+length-1, viewIndexBase);
-    }
+    return _data.viewRow(diag, from, from + length - 1, viewIndexBase);
+  }
 
-    int from = std::max(0,diag) + _data.firstCol();
-    int length = (diag>=0) ? std::min(_numRows, _numCols-diag)
-                           : std::min(_numRows+diag, _numCols);
+  int from   = std::max(0, diag) + _data.firstCol();
+  int length = (diag >= 0) ? std::min(_numRows, _numCols - diag) : std::min(_numRows + diag, _numCols);
 
-    return _data.viewRow(-diag, from, from+length-1, viewIndexBase);
+  return _data.viewRow(-diag, from, from + length - 1, viewIndexBase);
 }
 
 template <typename T, StorageOrder Order>
-typename BandStorageView<T, Order>::ConstView
-BandStorageView<T, Order>::viewDiags(int fromDiag, int toDiag,
-                                     int viewIndexBase) const
-{
-    assert(fromDiag<=0);
-    assert(toDiag>=0);
+typename BandStorageView<T, Order>::VectorView BandStorageView<T, Order>::viewDiag(int diag, int viewIndexBase) {
+  if (Order == RowMajor) {
+    int from   = std::max(0, diag) + _data.firstCol();
+    int length = (diag <= 0) ? std::min(_numCols, _numRows + diag) : std::min(_numCols - diag, _numRows);
 
-    if (Order==RowMajor) {
-        return ConstBandStorageView<T, Order>(
-                          _data.view(fromDiag, _data.firstCol(),
-                                     toDiag, _data.lastCol(),
-                                     fromDiag, viewIndexBase),
-                          _numRows, _numCols, viewIndexBase);
-    }
+    return _data.viewRow(diag, from, from + length - 1, viewIndexBase);
+  }
+
+  int from   = std::max(0, diag) + _data.firstCol();
+  int length = (diag >= 0) ? std::min(_numRows, _numCols - diag) : std::min(_numRows + diag, _numCols);
+
+  return _data.viewRow(-diag, from, from + length - 1, viewIndexBase);
+}
+
+template <typename T, StorageOrder Order>
+typename BandStorageView<T, Order>::ConstView BandStorageView<T, Order>::viewDiags(int fromDiag,
+                                                                                   int toDiag,
+                                                                                   int viewIndexBase) const {
+  assert(fromDiag <= 0);
+  assert(toDiag >= 0);
+
+  if (Order == RowMajor) {
     return ConstBandStorageView<T, Order>(
-                          _data.view(-toDiag, _data.firstCol(),
-                                     -fromDiag, _data.lastCol(),
-                                     -toDiag, viewIndexBase),
-                          _numRows, _numCols, viewIndexBase);
+        _data.view(fromDiag, _data.firstCol(), toDiag, _data.lastCol(), fromDiag, viewIndexBase), _numRows, _numCols,
+        viewIndexBase);
+  }
+  return ConstBandStorageView<T, Order>(
+      _data.view(-toDiag, _data.firstCol(), -fromDiag, _data.lastCol(), -toDiag, viewIndexBase), _numRows, _numCols,
+      viewIndexBase);
 }
 
 template <typename T, StorageOrder Order>
-typename BandStorageView<T, Order>::View
-BandStorageView<T, Order>::viewDiags(int fromDiag, int toDiag,
-                                     int viewIndexBase)
-{
-    assert(fromDiag<=0);
-    assert(toDiag>=0);
+typename BandStorageView<T, Order>::View BandStorageView<T, Order>::viewDiags(int fromDiag,
+                                                                              int toDiag,
+                                                                              int viewIndexBase) {
+  assert(fromDiag <= 0);
+  assert(toDiag >= 0);
 
-    if (Order==RowMajor) {
-        return BandStorageView<T, Order>(
-                          _data.view(fromDiag, _data.firstCol(),
-                                     toDiag, _data.lastCol(),
-                                     fromDiag, viewIndexBase),
-                          _numRows, _numCols, viewIndexBase);
-    }
+  if (Order == RowMajor) {
     return BandStorageView<T, Order>(
-                          _data.view(-toDiag, _data.firstCol(),
-                                     -fromDiag, _data.lastCol(),
-                                     -toDiag, viewIndexBase),
-                          _numRows, _numCols, viewIndexBase);
+        _data.view(fromDiag, _data.firstCol(), toDiag, _data.lastCol(), fromDiag, viewIndexBase), _numRows, _numCols,
+        viewIndexBase);
+  }
+  return BandStorageView<T, Order>(
+      _data.view(-toDiag, _data.firstCol(), -fromDiag, _data.lastCol(), -toDiag, viewIndexBase), _numRows, _numCols,
+      viewIndexBase);
 }
 
 //==============================================================================
 
 template <typename T, StorageOrder Order>
-BandStorage<T, Order>::BandStorage()
-    : _numRows(0), _numCols(0), _indexBase(1)
-{
-}
+BandStorage<T, Order>::BandStorage() : _numRows(0), _numCols(0), _indexBase(1) {}
 
 template <typename T, StorageOrder Order>
-BandStorage<T, Order>::BandStorage(int numRows, int numCols,
-                                   int numSubDiags, int numSuperDiags,
-                                   int indexBase)
-    : _numRows(numRows), _numCols(numCols), _indexBase(indexBase),
-      _data(numSubDiags+numSuperDiags+1,
-            (Order==ColMajor) ? numCols : numRows,
-            (Order==ColMajor) ? -numSuperDiags : -numSubDiags,
-            indexBase)
-{
-}
+BandStorage<T, Order>::BandStorage(int numRows, int numCols, int numSubDiags, int numSuperDiags, int indexBase)
+    : _numRows(numRows),
+      _numCols(numCols),
+      _indexBase(indexBase),
+      _data(numSubDiags + numSuperDiags + 1,
+            (Order == ColMajor) ? numCols : numRows,
+            (Order == ColMajor) ? -numSuperDiags : -numSubDiags,
+            indexBase) {}
 
 template <typename T, StorageOrder Order>
-BandStorage<T, Order>::BandStorage(const BandStorage<T, Order> &rhs)
-    : _numRows(rhs._numRows), _numCols(rhs._numCols),_indexBase(rhs._indexBase),
-      _data(rhs._data)
-{
-}
+BandStorage<T, Order>::BandStorage(const BandStorage<T, Order>& rhs)
+    : _numRows(rhs._numRows), _numCols(rhs._numCols), _indexBase(rhs._indexBase), _data(rhs._data) {}
 
 template <typename T, StorageOrder Order>
-BandStorage<T, Order>::~BandStorage()
-{
-}
+BandStorage<T, Order>::~BandStorage() {}
 
 template <typename T, StorageOrder Order>
-BandStorage<T, Order> &
-BandStorage<T, Order>::operator=(const NoView &rhs)
-{
-    if (this!=&rhs) {
-        _numRows = rhs._numRows;
-        _numCols = rhs._numCols;
-        _indexBase = rhs._indexBase;
-        _data = rhs._data;
-    }
-    return *this;
-}
-
-template <typename T, StorageOrder Order>
-BandStorage<T, Order> &
-BandStorage<T, Order>::operator=(const View &rhs)
-{
-    _numRows = rhs._numRows;
-    _numCols = rhs._numCols;
+BandStorage<T, Order>& BandStorage<T, Order>::operator=(const NoView& rhs) {
+  if (this != &rhs) {
+    _numRows   = rhs._numRows;
+    _numCols   = rhs._numCols;
     _indexBase = rhs._indexBase;
-    _data = rhs._data;
-    return *this;
+    _data      = rhs._data;
+  }
+  return *this;
 }
 
 template <typename T, StorageOrder Order>
-BandStorage<T, Order> &
-BandStorage<T, Order>::operator=(const ConstView &rhs)
-{
-    _numRows = rhs._numRows;
-    _numCols = rhs._numCols;
-    _indexBase = rhs._indexBase;
-    _data = rhs._data;
-    return *this;
+BandStorage<T, Order>& BandStorage<T, Order>::operator=(const View& rhs) {
+  _numRows   = rhs._numRows;
+  _numCols   = rhs._numCols;
+  _indexBase = rhs._indexBase;
+  _data      = rhs._data;
+  return *this;
 }
 
 template <typename T, StorageOrder Order>
-const T &
-BandStorage<T, Order>::operator()(int row, int col) const
-{
-    if (Order==RowMajor) {
-        return _data(col-row, row);
-    }
-    return _data(row-col, col);
+BandStorage<T, Order>& BandStorage<T, Order>::operator=(const ConstView& rhs) {
+  _numRows   = rhs._numRows;
+  _numCols   = rhs._numCols;
+  _indexBase = rhs._indexBase;
+  _data      = rhs._data;
+  return *this;
 }
 
 template <typename T, StorageOrder Order>
-T &
-BandStorage<T, Order>::operator()(int row, int col)
-{
-    if (Order==RowMajor) {
-        return _data(col-row, row);
-    }
-    return _data(row-col, col);
+const T& BandStorage<T, Order>::operator()(int row, int col) const {
+  if (Order == RowMajor) {
+    return _data(col - row, row);
+  }
+  return _data(row - col, col);
 }
 
 template <typename T, StorageOrder Order>
-int
-BandStorage<T,Order>::firstRow() const
-{
-    return _indexBase;
+T& BandStorage<T, Order>::operator()(int row, int col) {
+  if (Order == RowMajor) {
+    return _data(col - row, row);
+  }
+  return _data(row - col, col);
 }
 
 template <typename T, StorageOrder Order>
-int
-BandStorage<T,Order>::lastRow() const
-{
-    return _indexBase+_numRows-1;
+int BandStorage<T, Order>::firstRow() const {
+  return _indexBase;
 }
 
 template <typename T, StorageOrder Order>
-int
-BandStorage<T,Order>::firstCol() const
-{
-    return _indexBase;
+int BandStorage<T, Order>::lastRow() const {
+  return _indexBase + _numRows - 1;
 }
 
 template <typename T, StorageOrder Order>
-int
-BandStorage<T,Order>::lastCol() const
-{
-    return _indexBase+_numCols-1;
+int BandStorage<T, Order>::firstCol() const {
+  return _indexBase;
 }
 
 template <typename T, StorageOrder Order>
-int
-BandStorage<T, Order>::numRows() const
-{
-    return _numRows;
+int BandStorage<T, Order>::lastCol() const {
+  return _indexBase + _numCols - 1;
 }
 
 template <typename T, StorageOrder Order>
-int
-BandStorage<T, Order>::numCols() const
-{
-    return _numCols;
+int BandStorage<T, Order>::numRows() const {
+  return _numRows;
 }
 
 template <typename T, StorageOrder Order>
-int
-BandStorage<T, Order>::numSubDiags() const
-{
-    if (Order==RowMajor) {
-        return -_data.firstRow();
-    }
-    return _data.lastRow();
+int BandStorage<T, Order>::numCols() const {
+  return _numCols;
 }
 
 template <typename T, StorageOrder Order>
-int
-BandStorage<T, Order>::numSuperDiags() const
-{
-    if (Order==RowMajor) {
-        return _data.lastRow();
-    }
+int BandStorage<T, Order>::numSubDiags() const {
+  if (Order == RowMajor) {
     return -_data.firstRow();
+  }
+  return _data.lastRow();
 }
 
 template <typename T, StorageOrder Order>
-int
-BandStorage<T, Order>::leadingDimension() const
-{
-    return _data.leadingDimension();
+int BandStorage<T, Order>::numSuperDiags() const {
+  if (Order == RowMajor) {
+    return _data.lastRow();
+  }
+  return -_data.firstRow();
 }
 
 template <typename T, StorageOrder Order>
-const T *
-BandStorage<T, Order>::data() const
-{
-    return _data.data();
+int BandStorage<T, Order>::leadingDimension() const {
+  return _data.leadingDimension();
 }
 
 template <typename T, StorageOrder Order>
-T *
-BandStorage<T, Order>::data()
-{
-    return _data.data();
+const T* BandStorage<T, Order>::data() const {
+  return _data.data();
 }
 
 template <typename T, StorageOrder Order>
-void
-BandStorage<T, Order>::resize(int numRows, int numCols,
-                              int numSubDiags, int numSuperDiags,
-                                 int indexBase)
-{
-    _numRows = numRows;
-    _numCols = numCols;
-    _indexBase = indexBase;
-    if (Order==RowMajor) {
-        return _data.resize(numSubDiags+numSuperDiags+1, numRows,
-                            -numSubDiags, indexBase);
-    }
-    return _data.resize(numSubDiags+numSuperDiags+1, numCols,
-                        -numSuperDiags, indexBase);
+T* BandStorage<T, Order>::data() {
+  return _data.data();
 }
 
 template <typename T, StorageOrder Order>
-typename BandStorage<T, Order>::ConstVectorView
-BandStorage<T, Order>::viewDiag(int diag, int viewIndexBase) const
-{
-    if (Order==RowMajor) {
-        int from = std::max(0,-diag) + _data.firstCol();
-        int length = (diag<=0) ? std::min(_numCols, _numRows+diag)
-                               : std::min(_numCols-diag, _numRows);
-
-        return _data.viewRow(diag, from, from+length-1, viewIndexBase);
-    }
-
-    int from = -std::min(0,-diag) + _data.firstCol();
-    int length = (diag>=0) ? std::min(_numRows, _numCols-diag)
-                           : std::min(_numRows+diag, _numCols);
-    return _data.viewRow(-diag, from, from+length-1, viewIndexBase);
+void BandStorage<T, Order>::resize(int numRows, int numCols, int numSubDiags, int numSuperDiags, int indexBase) {
+  _numRows   = numRows;
+  _numCols   = numCols;
+  _indexBase = indexBase;
+  if (Order == RowMajor) {
+    return _data.resize(numSubDiags + numSuperDiags + 1, numRows, -numSubDiags, indexBase);
+  }
+  return _data.resize(numSubDiags + numSuperDiags + 1, numCols, -numSuperDiags, indexBase);
 }
 
 template <typename T, StorageOrder Order>
-typename BandStorage<T, Order>::VectorView
-BandStorage<T, Order>::viewDiag(int diag, int viewIndexBase)
-{
-    if (Order==RowMajor) {
-        int from = std::max(0,-diag) + _data.firstCol();
-        int length = (diag<=0) ? std::min(_numCols, _numRows+diag)
-                               : std::min(_numCols-diag, _numRows);
+typename BandStorage<T, Order>::ConstVectorView BandStorage<T, Order>::viewDiag(int diag, int viewIndexBase) const {
+  if (Order == RowMajor) {
+    int from   = std::max(0, -diag) + _data.firstCol();
+    int length = (diag <= 0) ? std::min(_numCols, _numRows + diag) : std::min(_numCols - diag, _numRows);
 
-        return _data.viewRow(diag, from, from+length-1, viewIndexBase);
-    }
+    return _data.viewRow(diag, from, from + length - 1, viewIndexBase);
+  }
 
-    int from = -std::min(0,-diag) + _data.firstCol();
-    int length = (diag>=0) ? std::min(_numRows, _numCols-diag)
-                           : std::min(_numRows+diag, _numCols);
-    return _data.viewRow(-diag, from, from+length-1, viewIndexBase);
+  int from   = -std::min(0, -diag) + _data.firstCol();
+  int length = (diag >= 0) ? std::min(_numRows, _numCols - diag) : std::min(_numRows + diag, _numCols);
+  return _data.viewRow(-diag, from, from + length - 1, viewIndexBase);
 }
 
 template <typename T, StorageOrder Order>
-typename BandStorage<T, Order>::ConstView
-BandStorage<T, Order>::viewDiags(int fromDiag, int toDiag,
-                                 int viewIndexBase) const
-{
-    assert(fromDiag<=0);
-    assert(toDiag>=0);
+typename BandStorage<T, Order>::VectorView BandStorage<T, Order>::viewDiag(int diag, int viewIndexBase) {
+  if (Order == RowMajor) {
+    int from   = std::max(0, -diag) + _data.firstCol();
+    int length = (diag <= 0) ? std::min(_numCols, _numRows + diag) : std::min(_numCols - diag, _numRows);
 
-    if (Order==RowMajor) {
-        return ConstBandStorageView<T, Order>(
-                          _data.view(fromDiag, _data.firstCol(),
-                                     toDiag, _data.lastCol(),
-                                     fromDiag, viewIndexBase),
-                          _numRows, _numCols, viewIndexBase);
-    }
+    return _data.viewRow(diag, from, from + length - 1, viewIndexBase);
+  }
+
+  int from   = -std::min(0, -diag) + _data.firstCol();
+  int length = (diag >= 0) ? std::min(_numRows, _numCols - diag) : std::min(_numRows + diag, _numCols);
+  return _data.viewRow(-diag, from, from + length - 1, viewIndexBase);
+}
+
+template <typename T, StorageOrder Order>
+typename BandStorage<T, Order>::ConstView BandStorage<T, Order>::viewDiags(int fromDiag,
+                                                                           int toDiag,
+                                                                           int viewIndexBase) const {
+  assert(fromDiag <= 0);
+  assert(toDiag >= 0);
+
+  if (Order == RowMajor) {
     return ConstBandStorageView<T, Order>(
-                          _data.view(-toDiag, _data.firstCol(),
-                                     -fromDiag, _data.lastCol(),
-                                     -toDiag, viewIndexBase),
-                          _numRows, _numCols, viewIndexBase);
+        _data.view(fromDiag, _data.firstCol(), toDiag, _data.lastCol(), fromDiag, viewIndexBase), _numRows, _numCols,
+        viewIndexBase);
+  }
+  return ConstBandStorageView<T, Order>(
+      _data.view(-toDiag, _data.firstCol(), -fromDiag, _data.lastCol(), -toDiag, viewIndexBase), _numRows, _numCols,
+      viewIndexBase);
 }
 
 template <typename T, StorageOrder Order>
-typename BandStorage<T, Order>::View
-BandStorage<T, Order>::viewDiags(int fromDiag, int toDiag, int viewIndexBase)
-{
-    assert(fromDiag<=0);
-    assert(toDiag>=0);
+typename BandStorage<T, Order>::View BandStorage<T, Order>::viewDiags(int fromDiag, int toDiag, int viewIndexBase) {
+  assert(fromDiag <= 0);
+  assert(toDiag >= 0);
 
-    if (Order==RowMajor) {
-        return BandStorageView<T, Order>(
-                          _data.view(fromDiag, _data.firstCol(),
-                                     toDiag, _data.lastCol(),
-                                     fromDiag, viewIndexBase),
-                          _numRows, _numCols, viewIndexBase);
-    }
+  if (Order == RowMajor) {
     return BandStorageView<T, Order>(
-                          _data.view(-toDiag, _data.firstCol(),
-                                     -fromDiag, _data.lastCol(),
-                                     -toDiag, viewIndexBase),
-                          _numRows, _numCols, viewIndexBase);
+        _data.view(fromDiag, _data.firstCol(), toDiag, _data.lastCol(), fromDiag, viewIndexBase), _numRows, _numCols,
+        viewIndexBase);
+  }
+  return BandStorageView<T, Order>(
+      _data.view(-toDiag, _data.firstCol(), -fromDiag, _data.lastCol(), -toDiag, viewIndexBase), _numRows, _numCols,
+      viewIndexBase);
 }
 
-} // namespace flens
+}  // namespace flens

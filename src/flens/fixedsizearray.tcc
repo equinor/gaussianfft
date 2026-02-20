@@ -37,236 +37,179 @@ namespace flens {
 //== FixedSizeArray1D ==========================================================
 
 template <typename T, int N>
-FixedSizeArray1D<T,N>::FixedSizeArray1D()
-{
+FixedSizeArray1D<T, N>::FixedSizeArray1D() {}
+
+template <typename T, int N>
+FixedSizeArray1D<T, N>::FixedSizeArray1D(const FixedSizeArray1D<T, N>& rhs) {
+  copy<N, T, 1, T, 1>(rhs._data, _data);
 }
 
 template <typename T, int N>
-FixedSizeArray1D<T,N>::FixedSizeArray1D(const FixedSizeArray1D<T,N> &rhs)
-{
-    copy<N,T,1,T,1>(rhs._data, _data);
-}
-
-template <typename T, int N>
-FixedSizeArray1D<T,N>::~FixedSizeArray1D()
-{
-}
+FixedSizeArray1D<T, N>::~FixedSizeArray1D() {}
 
 // -- operators --------------------------------------------------------
 
 template <typename T, int N>
-ListInitializer<FixedSizeArray1D<T,N> >
-FixedSizeArray1D<T,N>::operator=(const T &value)
-{
-    return ListInitializer<FixedSizeArray1D<T,N> >(_data, value);
+ListInitializer<FixedSizeArray1D<T, N> > FixedSizeArray1D<T, N>::operator=(const T& value) {
+  return ListInitializer<FixedSizeArray1D<T, N> >(_data, value);
 }
 
 template <typename T, int N>
-FixedSizeArray1D<T, N>
-FixedSizeArray1D<T,N>::operator=(const FixedSizeArray1D<T, N> &rhs)
-{
-    copy<N,T,1,T,1>(rhs._data, _data);
-    return *this;
+FixedSizeArray1D<T, N> FixedSizeArray1D<T, N>::operator=(const FixedSizeArray1D<T, N>& rhs) {
+  copy<N, T, 1, T, 1>(rhs._data, _data);
+  return *this;
 }
 
 template <typename T, int N>
-const T &
-FixedSizeArray1D<T,N>::operator()(int index) const
-{
-    assert(index>=0);
-    assert(index<N);
-    return _data[index];
+const T& FixedSizeArray1D<T, N>::operator()(int index) const {
+  assert(index >= 0);
+  assert(index < N);
+  return _data[index];
 }
 
 template <typename T, int N>
-T &
-FixedSizeArray1D<T,N>::operator()(int index)
-{
-    assert(index>=0);
-    assert(index<N);
-    return _data[index];
+T& FixedSizeArray1D<T, N>::operator()(int index) {
+  assert(index >= 0);
+  assert(index < N);
+  return _data[index];
 }
 
 // -- methods ----------------------------------------------------------
 
 template <typename T, int N>
-int
-FixedSizeArray1D<T,N>::firstIndex() const
-{
-    return TypeInfo<FixedSizeArray1D<T,N> >::firstIndex;
+int FixedSizeArray1D<T, N>::firstIndex() const {
+  return TypeInfo<FixedSizeArray1D<T, N> >::firstIndex;
 }
 
 template <typename T, int N>
-int
-FixedSizeArray1D<T,N>::lastIndex() const
-{
-    return TypeInfo<FixedSizeArray1D<T,N> >::lastIndex;
+int FixedSizeArray1D<T, N>::lastIndex() const {
+  return TypeInfo<FixedSizeArray1D<T, N> >::lastIndex;
 }
 
 template <typename T, int N>
-int
-FixedSizeArray1D<T,N>::length() const
-{
-    return TypeInfo<FixedSizeArray1D<T,N> >::length;
+int FixedSizeArray1D<T, N>::length() const {
+  return TypeInfo<FixedSizeArray1D<T, N> >::length;
 }
 
 template <typename T, int N>
-int
-FixedSizeArray1D<T,N>::stride() const
-{
-    return TypeInfo<FixedSizeArray1D<T,N> >::stride;
+int FixedSizeArray1D<T, N>::stride() const {
+  return TypeInfo<FixedSizeArray1D<T, N> >::stride;
 }
 
 template <typename T, int N>
-const T *
-FixedSizeArray1D<T,N>::data() const
-{
-    return _data;
+const T* FixedSizeArray1D<T, N>::data() const {
+  return _data;
 }
 
 template <typename T, int N>
-T *
-FixedSizeArray1D<T,N>::data()
-{
-    return _data;
+T* FixedSizeArray1D<T, N>::data() {
+  return _data;
 }
 
 //== FixedSizeArray2D ==========================================================
 
 template <typename T, int M, int N>
-FixedSizeArray2D<T,M,N>::FixedSizeArray2D()
-{
+FixedSizeArray2D<T, M, N>::FixedSizeArray2D() {}
+
+template <typename T, int M, int N>
+FixedSizeArray2D<T, M, N>::FixedSizeArray2D(const FixedSizeArray2D<T, M, N>& rhs) {
+  copy<M, N, T, T>(rhs._data, _data);
 }
 
 template <typename T, int M, int N>
-FixedSizeArray2D<T,M,N>::FixedSizeArray2D(const FixedSizeArray2D<T,M,N> &rhs)
-{
-    copy<M,N,T,T>(rhs._data, _data);
-}
-
-template <typename T, int M, int N>
-FixedSizeArray2D<T,M,N>::~FixedSizeArray2D()
-{
-}
+FixedSizeArray2D<T, M, N>::~FixedSizeArray2D() {}
 
 // -- operators --------------------------------------------------------
 
 template <typename T, int M, int N>
-ListInitializer<FixedSizeArray2D<T,M,N> >
-FixedSizeArray2D<T,M,N>::operator=(const T &value)
-{
-    return ListInitializer<FixedSizeArray2D<T,M,N> >(0, 0, *this, value);
+ListInitializer<FixedSizeArray2D<T, M, N> > FixedSizeArray2D<T, M, N>::operator=(const T& value) {
+  return ListInitializer<FixedSizeArray2D<T, M, N> >(0, 0, *this, value);
 }
 
 template <typename T, int M, int N>
-FixedSizeArray2D<T,M,N>
-FixedSizeArray2D<T,M,N>::operator=(const FixedSizeArray2D<T,M,N> &rhs)
-{
-    copy<M,N,T,T>(rhs._data, _data);
-    return *this;
+FixedSizeArray2D<T, M, N> FixedSizeArray2D<T, M, N>::operator=(const FixedSizeArray2D<T, M, N>& rhs) {
+  copy<M, N, T, T>(rhs._data, _data);
+  return *this;
 }
 
 template <typename T, int M, int N>
-const T &
-FixedSizeArray2D<T,M,N>::operator()(int row, int col) const
-{
-    assert(row>=0);
-    assert(row<M);
-    assert(col>=0);
-    assert(col<N);
-    return _data[row][col];
+const T& FixedSizeArray2D<T, M, N>::operator()(int row, int col) const {
+  assert(row >= 0);
+  assert(row < M);
+  assert(col >= 0);
+  assert(col < N);
+  return _data[row][col];
 }
 
 template <typename T, int M, int N>
-T &
-FixedSizeArray2D<T,M,N>::operator()(int row, int col)
-{
-    assert(row>=0);
-    assert(row<M);
-    assert(col>=0);
-    assert(col<N);
-    return _data[row][col];
+T& FixedSizeArray2D<T, M, N>::operator()(int row, int col) {
+  assert(row >= 0);
+  assert(row < M);
+  assert(col >= 0);
+  assert(col < N);
+  return _data[row][col];
 }
 
 // -- methods ----------------------------------------------------------
 
 template <typename T, int M, int N>
-int
-FixedSizeArray2D<T,M,N>::firstRow() const
-{
-    return TypeInfo<FixedSizeArray2D<T,M,N> >::firstRow;
+int FixedSizeArray2D<T, M, N>::firstRow() const {
+  return TypeInfo<FixedSizeArray2D<T, M, N> >::firstRow;
 }
 
 template <typename T, int M, int N>
-int
-FixedSizeArray2D<T,M,N>::lastRow() const
-{
-    return TypeInfo<FixedSizeArray2D<T,M,N> >::lastRow;
+int FixedSizeArray2D<T, M, N>::lastRow() const {
+  return TypeInfo<FixedSizeArray2D<T, M, N> >::lastRow;
 }
 
 template <typename T, int M, int N>
-int
-FixedSizeArray2D<T,M,N>::firstCol() const
-{
-    return TypeInfo<FixedSizeArray2D<T,M,N> >::firstCol;
+int FixedSizeArray2D<T, M, N>::firstCol() const {
+  return TypeInfo<FixedSizeArray2D<T, M, N> >::firstCol;
 }
 
 template <typename T, int M, int N>
-int
-FixedSizeArray2D<T,M,N>::lastCol() const
-{
-    return TypeInfo<FixedSizeArray2D<T,M,N> >::lastCol;
+int FixedSizeArray2D<T, M, N>::lastCol() const {
+  return TypeInfo<FixedSizeArray2D<T, M, N> >::lastCol;
 }
 
 template <typename T, int M, int N>
-int
-FixedSizeArray2D<T,M,N>::numRows() const
-{
-    return TypeInfo<FixedSizeArray2D<T,M,N> >::numRows;
+int FixedSizeArray2D<T, M, N>::numRows() const {
+  return TypeInfo<FixedSizeArray2D<T, M, N> >::numRows;
 }
 
 template <typename T, int M, int N>
-int
-FixedSizeArray2D<T,M,N>::numCols() const
-{
-    return TypeInfo<FixedSizeArray2D<T,M,N> >::numCols;
+int FixedSizeArray2D<T, M, N>::numCols() const {
+  return TypeInfo<FixedSizeArray2D<T, M, N> >::numCols;
 }
 
 template <typename T, int M, int N>
-int
-FixedSizeArray2D<T,M,N>::leadingDimension() const
-{
-    return TypeInfo<FixedSizeArray2D<T,M,N> >::leadingDimension;
+int FixedSizeArray2D<T, M, N>::leadingDimension() const {
+  return TypeInfo<FixedSizeArray2D<T, M, N> >::leadingDimension;
 }
 
 //== IO ========================================================================
 
 template <typename T, int N>
-std::ostream &
-operator<<(std::ostream &out, const FixedSizeArray1D<T,N> &x)
-{
-    for (int i=0; i<N; ++i) {
-        out << x(i) << " ";
-    }
-    out << std::endl;
-    return out;
+std::ostream& operator<<(std::ostream& out, const FixedSizeArray1D<T, N>& x) {
+  for (int i = 0; i < N; ++i) {
+    out << x(i) << " ";
+  }
+  out << std::endl;
+  return out;
 }
 
 template <typename T, int M, int N>
-std::ostream &
-operator<<(std::ostream &out, const FixedSizeArray2D<T,M,N> &x)
-{
-    for (int i=0; i<M; ++i) {
-        for (int j=0; j<N; ++j) {
-            out.width(11);
-            out.setf(std::ios::fixed);
-            out << x(i,j) << " ";
-        }
-        out << ";" << std::endl << "    ";
+std::ostream& operator<<(std::ostream& out, const FixedSizeArray2D<T, M, N>& x) {
+  for (int i = 0; i < M; ++i) {
+    for (int j = 0; j < N; ++j) {
+      out.width(11);
+      out.setf(std::ios::fixed);
+      out << x(i, j) << " ";
     }
-    out << std::endl;
-    return out;
+    out << ";" << std::endl << "    ";
+  }
+  out << std::endl;
+  return out;
 }
 
-
-} // namespace flens
+}  // namespace flens

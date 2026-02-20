@@ -30,57 +30,54 @@
 #define DSFMT_PCV2        UINT64_C(0x00000000)
 */
 
-#define DSFMT_LOW_MASK  UINT64_C(0x000FFFFFFFFFFFFF)
+#define DSFMT_LOW_MASK UINT64_C(0x000FFFFFFFFFFFFF)
 #define DSFMT_HIGH_CONST UINT64_C(0x3FF0000000000000)
-#define DSFMT_SR        12
+#define DSFMT_SR 12
 
 /* for sse2 */
 #if defined(HAVE_SSE2)
-  #define SSE2_SHUFF 0x1b
+#  define SSE2_SHUFF 0x1b
 #elif defined(HAVE_ALTIVEC)
-  #if defined(__APPLE__)  /* For OSX */
-    #define ALTI_SR (vector unsigned char)(4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4)
-    #define ALTI_SR_PERM \
-        (vector unsigned char)(15,0,1,2,3,4,5,6,15,8,9,10,11,12,13,14)
-    #define ALTI_SR_MSK \
-        (vector unsigned int)(0x000fffffU,0xffffffffU,0x000fffffU,0xffffffffU)
-    #define ALTI_PERM \
-        (vector unsigned char)(12,13,14,15,8,9,10,11,4,5,6,7,0,1,2,3)
-  #else
-    #define ALTI_SR      {4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4}
-    #define ALTI_SR_PERM {15,0,1,2,3,4,5,6,15,8,9,10,11,12,13,14}
-    #define ALTI_SR_MSK  {0x000fffffU,0xffffffffU,0x000fffffU,0xffffffffU}
-    #define ALTI_PERM    {12,13,14,15,8,9,10,11,4,5,6,7,0,1,2,3}
-  #endif
+#  if defined(__APPLE__) /* For OSX */
+#    define ALTI_SR (vector unsigned char)(4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4)
+#    define ALTI_SR_PERM (vector unsigned char)(15, 0, 1, 2, 3, 4, 5, 6, 15, 8, 9, 10, 11, 12, 13, 14)
+#    define ALTI_SR_MSK (vector unsigned int)(0x000fffffU, 0xffffffffU, 0x000fffffU, 0xffffffffU)
+#    define ALTI_PERM (vector unsigned char)(12, 13, 14, 15, 8, 9, 10, 11, 4, 5, 6, 7, 0, 1, 2, 3)
+#  else
+#    define ALTI_SR {4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4}
+#    define ALTI_SR_PERM {15, 0, 1, 2, 3, 4, 5, 6, 15, 8, 9, 10, 11, 12, 13, 14}
+#    define ALTI_SR_MSK {0x000fffffU, 0xffffffffU, 0x000fffffU, 0xffffffffU}
+#    define ALTI_PERM {12, 13, 14, 15, 8, 9, 10, 11, 4, 5, 6, 7, 0, 1, 2, 3}
+#  endif
 #endif
 
 #if DSFMT_MEXP == 521
-  #include "dSFMT-params521.h"
+#  include "dSFMT-params521.h"
 #elif DSFMT_MEXP == 1279
-  #include "dSFMT-params1279.h"
+#  include "dSFMT-params1279.h"
 #elif DSFMT_MEXP == 2203
-  #include "dSFMT-params2203.h"
+#  include "dSFMT-params2203.h"
 #elif DSFMT_MEXP == 4253
-  #include "dSFMT-params4253.h"
+#  include "dSFMT-params4253.h"
 #elif DSFMT_MEXP == 11213
-  #include "dSFMT-params11213.h"
+#  include "dSFMT-params11213.h"
 #elif DSFMT_MEXP == 19937
-  #include "dSFMT-params19937.h"
+#  include "dSFMT-params19937.h"
 #elif DSFMT_MEXP == 44497
-  #include "dSFMT-params44497.h"
+#  include "dSFMT-params44497.h"
 #elif DSFMT_MEXP == 86243
-  #include "dSFMT-params86243.h"
+#  include "dSFMT-params86243.h"
 #elif DSFMT_MEXP == 132049
-  #include "dSFMT-params132049.h"
+#  include "dSFMT-params132049.h"
 #elif DSFMT_MEXP == 216091
-  #include "dSFMT-params216091.h"
+#  include "dSFMT-params216091.h"
 #else
-#ifdef __GNUC__
-  #error "DSFMT_MEXP is not valid."
-  #undef DSFMT_MEXP
-#else
-  #undef DSFMT_MEXP
-#endif
+#  ifdef __GNUC__
+#    error "DSFMT_MEXP is not valid."
+#    undef DSFMT_MEXP
+#  else
+#    undef DSFMT_MEXP
+#  endif
 
 #endif
 

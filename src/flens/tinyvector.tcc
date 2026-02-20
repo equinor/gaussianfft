@@ -35,139 +35,103 @@ namespace flens {
 // == TinyVector ==============================================================
 
 template <typename A>
-TinyVector<A>::TinyVector()
-{
-}
+TinyVector<A>::TinyVector() {}
 
 // -- operators ----------------------------------------------------------------
 
 template <typename A>
-ListInitializer<A>
-TinyVector<A>::operator=(const T &value)
-{
-    return ListInitializer<A>(_engine._data, value);
+ListInitializer<A> TinyVector<A>::operator=(const T& value) {
+  return ListInitializer<A>(_engine._data, value);
 }
 
 template <typename A>
-TinyVector<A> &
-TinyVector<A>::operator=(const TinyVector<A> &rhs)
-{
-    copy(rhs, *this);
-    return *this;
+TinyVector<A>& TinyVector<A>::operator=(const TinyVector<A>& rhs) {
+  copy(rhs, *this);
+  return *this;
 }
 
 template <typename A>
 template <typename RHS>
-TinyVector<A> &
-TinyVector<A>::operator=(const Vector<RHS> &rhs)
-{
-    copy(rhs.impl(), *this);
-    return *this;
+TinyVector<A>& TinyVector<A>::operator=(const Vector<RHS>& rhs) {
+  copy(rhs.impl(), *this);
+  return *this;
 }
 
 template <typename A>
 template <typename RHS>
-TinyVector<A> &
-TinyVector<A>::operator+=(const Vector<RHS> &rhs)
-{
-    axpy(T(1), rhs.impl(), *this);
-    return *this;
+TinyVector<A>& TinyVector<A>::operator+=(const Vector<RHS>& rhs) {
+  axpy(T(1), rhs.impl(), *this);
+  return *this;
 }
 
 template <typename A>
 template <typename RHS>
-TinyVector<A> &
-TinyVector<A>::operator-=(const Vector<RHS> &rhs)
-{
-    axpy(T(-1), rhs.impl(), *this);
-    return *this;
+TinyVector<A>& TinyVector<A>::operator-=(const Vector<RHS>& rhs) {
+  axpy(T(-1), rhs.impl(), *this);
+  return *this;
 }
 
 template <typename A>
-const typename TinyVector<A>::T &
-TinyVector<A>::operator()(int index) const
-{
-    return _engine(index);
+const typename TinyVector<A>::T& TinyVector<A>::operator()(int index) const {
+  return _engine(index);
 }
 
 template <typename A>
-typename TinyVector<A>::T &
-TinyVector<A>::operator()(int index)
-{
-    return _engine(index);
+typename TinyVector<A>::T& TinyVector<A>::operator()(int index) {
+  return _engine(index);
 }
 
 //-- methods -----------------------------------------------------------
 
 template <typename A>
-void
-TinyVector<A>::resize(int length)
-{
-    assert(length==this->length());
+void TinyVector<A>::resize(int length) {
+  assert(length == this->length());
 }
 
 template <typename A>
-void
-TinyVector<A>::resize(int length, int firstIndex)
-{
-    assert(length==this->length());
-    assert(firstIndex==this->firstIndex());
+void TinyVector<A>::resize(int length, int firstIndex) {
+  assert(length == this->length());
+  assert(firstIndex == this->firstIndex());
 }
 
 template <typename A>
-int
-TinyVector<A>::length() const
-{
-    return _engine.length();
+int TinyVector<A>::length() const {
+  return _engine.length();
 }
 
 template <typename A>
-int
-TinyVector<A>::firstIndex() const
-{
-    return _engine.firstIndex();
+int TinyVector<A>::firstIndex() const {
+  return _engine.firstIndex();
 }
 
 template <typename A>
-int
-TinyVector<A>::lastIndex() const
-{
-    return _engine.lastIndex();
+int TinyVector<A>::lastIndex() const {
+  return _engine.lastIndex();
 }
 
 template <typename A>
-int
-TinyVector<A>::stride() const
-{
-    return _engine.stride();
+int TinyVector<A>::stride() const {
+  return _engine.stride();
 }
 
 template <typename A>
-const typename TinyVector<A>::T *
-TinyVector<A>::data() const
-{
-    return _engine.data();
+const typename TinyVector<A>::T* TinyVector<A>::data() const {
+  return _engine.data();
 }
 
 template <typename A>
-typename TinyVector<A>::T *
-TinyVector<A>::data()
-{
-    return _engine.data();
+typename TinyVector<A>::T* TinyVector<A>::data() {
+  return _engine.data();
 }
 
 template <typename A>
-const A &
-TinyVector<A>::engine() const
-{
-    return _engine;
+const A& TinyVector<A>::engine() const {
+  return _engine;
 }
 
 template <typename A>
-A &
-TinyVector<A>::engine()
-{
-    return _engine;
+A& TinyVector<A>::engine() {
+  return _engine;
 }
 
-} // namespace flens
+}  // namespace flens

@@ -31,94 +31,82 @@
  */
 
 #ifndef FLENS_LISTINITIALIZER_H
-#define FLENS_LISTINITIALIZER_H 1
+#  define FLENS_LISTINITIALIZER_H 1
 
 namespace flens {
 
 template <typename Container>
-class ListInitializer
-{
-};
+class ListInitializer {};
 
 template <typename I>
-class ListInitializerSwitch
-{
-};
+class ListInitializerSwitch {};
 
 //== Array =====================================================================
 
 template <typename T>
-    class Array;
+class Array;
 
 template <typename T>
-class ListInitializer<Array<T> >
-{
-    public:
-        ListInitializer(T *begin, int length, T value);
+class ListInitializer<Array<T> > {
+ public:
+  ListInitializer(T* begin, int length, T value);
 
-        ListInitializer<Array<T> >
-        operator,(T value);
+  ListInitializer<Array<T> > operator,(T value);
 
-    private:
-        ListInitializer(T *begin, T *end, T value);
+ private:
+  ListInitializer(T* begin, T* end, T value);
 
-        T *_it;
-        T *_end;
+  T* _it;
+  T* _end;
 };
 
 //== DenseVector ===============================================================
 
 template <typename Engine>
-    class DenseVector;
+class DenseVector;
 
 template <typename Engine>
-class ListInitializer<DenseVector<Engine> >
-{
-    public:
-        typedef typename Engine::ElementType T;
+class ListInitializer<DenseVector<Engine> > {
+ public:
+  typedef typename Engine::ElementType T;
 
-        ListInitializer(T *begin, int stride, int length, T value);
+  ListInitializer(T* begin, int stride, int length, T value);
 
-        ListInitializer<DenseVector<Engine> >
-        operator,(T value);
+  ListInitializer<DenseVector<Engine> > operator,(T value);
 
-        ListInitializer(T *begin, int stride, T *end, T value);
+  ListInitializer(T* begin, int stride, T* end, T value);
 
-    private:
-        // No assignment operator
-        ListInitializer<DenseVector<Engine> >&
-          operator=(ListInitializer<DenseVector<Engine> >&);
+ private:
+  // No assignment operator
+  ListInitializer<DenseVector<Engine> >& operator=(ListInitializer<DenseVector<Engine> >&);
 
-        T *_it;
-        int _stride;
-        T *_end;
+  T*                                     _it;
+  int                                    _stride;
+  T*                                     _end;
 };
 
 template <typename I>
-class ListInitializerSwitch<DenseVector<I> >
-{
-    public:
-        typedef typename I::ElementType T;
+class ListInitializerSwitch<DenseVector<I> > {
+ public:
+  typedef typename I::ElementType T;
 
-        ListInitializerSwitch(T *it, int stride, int length, T value);
+  ListInitializerSwitch(T* it, int stride, int length, T value);
 
-        ListInitializerSwitch(const ListInitializerSwitch<DenseVector<I> > &l);
+  ListInitializerSwitch(const ListInitializerSwitch<DenseVector<I> >& l);
 
-        ~ListInitializerSwitch();
+  ~ListInitializerSwitch();
 
-        ListInitializer<DenseVector<I> >
-        operator,(T x);
+  ListInitializer<DenseVector<I> > operator,(T x);
 
-    private:
-        // No assignment operator
-        ListInitializerSwitch<DenseVector<I> >&
-          operator=(ListInitializerSwitch<DenseVector<I> >&);
+ private:
+  // No assignment operator
+  ListInitializerSwitch<DenseVector<I> >& operator=(ListInitializerSwitch<DenseVector<I> >&);
 
-        T *_it;
-        int _stride;
-        T *_end;
-        T _value;
-        mutable bool _wipeOnDestruct;
+  T*                                      _it;
+  int                                     _stride;
+  T*                                      _end;
+  T                                       _value;
+  mutable bool                            _wipeOnDestruct;
 };
 
 //== GeMatrix ==================================================================
@@ -127,95 +115,85 @@ template <typename Engine>
 class GeMatrix;
 
 template <typename Engine>
-class ListInitializer<GeMatrix<Engine> >
-{
-    public:
-        typedef typename Engine::ElementType T;
+class ListInitializer<GeMatrix<Engine> > {
+ public:
+  typedef typename Engine::ElementType T;
 
-        ListInitializer(GeMatrix<Engine> &A, int row, int col, T value);
+  ListInitializer(GeMatrix<Engine>& A, int row, int col, T value);
 
-        ListInitializer<GeMatrix<Engine> >
-        operator,(T value);
+  ListInitializer<GeMatrix<Engine> > operator,(T value);
 
-    private:
-     // No assignment operator
-        ListInitializer<GeMatrix<Engine> >&
-          operator=(ListInitializer<GeMatrix<Engine> >&);
+ private:
+  // No assignment operator
+  ListInitializer<GeMatrix<Engine> >& operator=(ListInitializer<GeMatrix<Engine> >&);
 
-        GeMatrix<Engine> &_A;
-        int _row, _col;
+  GeMatrix<Engine>&                   _A;
+  int                                 _row, _col;
 };
 
 template <typename I>
-class ListInitializerSwitch<GeMatrix<I> >
-{
-    public:
-        typedef typename I::ElementType T;
+class ListInitializerSwitch<GeMatrix<I> > {
+ public:
+  typedef typename I::ElementType T;
 
-        ListInitializerSwitch(GeMatrix<I> &A, int row, int col, T value);
+  ListInitializerSwitch(GeMatrix<I>& A, int row, int col, T value);
 
-        ListInitializerSwitch(const ListInitializerSwitch<GeMatrix<I> > &l);
+  ListInitializerSwitch(const ListInitializerSwitch<GeMatrix<I> >& l);
 
-        ~ListInitializerSwitch();
+  ~ListInitializerSwitch();
 
-        ListInitializer<GeMatrix<I> >
-        operator,(T x);
+  ListInitializer<GeMatrix<I> > operator,(T x);
 
-    private:
-        // No assigmnment operator
-        ListInitializerSwitch<GeMatrix<I> >&
-          operator=(const ListInitializerSwitch<GeMatrix<I> >);
+ private:
+  // No assigmnment operator
+  ListInitializerSwitch<GeMatrix<I> >& operator=(const ListInitializerSwitch<GeMatrix<I> >);
 
-        GeMatrix<I> &_A;
-        int _row, _col;
-        T _value;
-        mutable bool _wipeOnDestruct;
+  GeMatrix<I>&                         _A;
+  int                                  _row, _col;
+  T                                    _value;
+  mutable bool                         _wipeOnDestruct;
 };
 
 //== FixedSizeArray1D ==========================================================
 
 template <typename T, int N>
-    class FixedSizeArray1D;
+class FixedSizeArray1D;
 
 template <typename T, int N>
-class ListInitializer<FixedSizeArray1D<T,N> >
-{
-    public:
-        ListInitializer(T *begin, T value);
+class ListInitializer<FixedSizeArray1D<T, N> > {
+ public:
+  ListInitializer(T* begin, T value);
 
-        ListInitializer<FixedSizeArray1D<T,N> >
-        operator,(T value);
+  ListInitializer<FixedSizeArray1D<T, N> > operator,(T value);
 
-    private:
-        ListInitializer(T *begin, T *end, T value);
+ private:
+  ListInitializer(T* begin, T* end, T value);
 
-        T *_it;
-        T *_end;
+  T* _it;
+  T* _end;
 };
 
 //== FixedSizeArray2D ==========================================================
 
 template <typename T, int M, int N>
-    class FixedSizeArray2D;
+class FixedSizeArray2D;
 
 template <typename T, int M, int N>
-class ListInitializer<FixedSizeArray2D<T,M,N> >
-{
-    public:
-        typedef FixedSizeArray2D<T,M,N> Data;
+class ListInitializer<FixedSizeArray2D<T, M, N> > {
+ public:
+  typedef FixedSizeArray2D<T, M, N> Data;
 
-        ListInitializer(int i, int j, Data &data, T value);
+  ListInitializer(int i, int j, Data& data, T value);
 
-        ListInitializer<FixedSizeArray2D<T,M,N> >
-        operator,(T value);
+  ListInitializer<FixedSizeArray2D<T, M, N> > operator,(T value);
 
-    private:
-        int i, j;
-        Data &data;
+ private:
+  int   i, j;
+  Data& data;
 };
 
-} // namespace flens
+}  // namespace flens
 
-#include <flens/listinitializer.tcc>
+#  include <flens/listinitializer.tcc>
 
-#endif // FLENS_LISTINITIALIZER_H
+#endif  // FLENS_LISTINITIALIZER_H

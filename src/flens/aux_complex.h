@@ -30,28 +30,23 @@
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #ifndef FLENS_COMPLEX_HELPER_H
-#define FLENS_COMPLEX_HELPER_H 1
+#  define FLENS_COMPLEX_HELPER_H 1
 
-#include <complex>
-#include <flens/traits.h>
+#  include <flens/traits.h>
+#  include <complex>
 
 namespace flens {
 
-int
-iabsround(const double &x);
+int                  iabsround(const double& x);
 
-int
-iabsround(const std::complex<double> &x);
+int                  iabsround(const std::complex<double>& x);
 
-double
-conjugate(const double &x);
+double               conjugate(const double& x);
 
-std::complex<double>
-conjugate(const std::complex<double> &x);
+std::complex<double> conjugate(const std::complex<double>& x);
 
-bool
-operator==(const std::complex<double> &lhs, int rhs);
+bool                 operator==(const std::complex<double>& lhs, int rhs);
 
-} // namespace flens
+}  // namespace flens
 
-#endif // FLENS_COMPLEX_HELPER_H
+#endif  // FLENS_COMPLEX_HELPER_H

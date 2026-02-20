@@ -31,9 +31,9 @@
  */
 
 #ifndef FLENS_AUX_MALLOC_H
-#define FLENS_AUX_MALLOC_H 1
+#  define FLENS_AUX_MALLOC_H 1
 
 void* flens_malloc(size_t size);
 void  flens_free(void* p);
 
-#endif // FLENS_AUX_MALLOC_H
+#endif  // FLENS_AUX_MALLOC_H

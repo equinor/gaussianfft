@@ -34,46 +34,30 @@ namespace flens {
 
 //== VectorClosure =============================================================
 template <typename Op, typename L, typename R>
-VectorClosure<Op, L, R>::VectorClosure(typename Ref<L>::Type l,
-                                       typename Ref<R>::Type r)
-    : _left(l), _right(r)
-{
+VectorClosure<Op, L, R>::VectorClosure(typename Ref<L>::Type l, typename Ref<R>::Type r) : _left(l), _right(r) {}
+
+template <typename Op, typename L, typename R>
+typename Ref<L>::Type VectorClosure<Op, L, R>::left() const {
+  return _left;
 }
 
 template <typename Op, typename L, typename R>
-typename Ref<L>::Type
-VectorClosure<Op, L, R>::left() const
-{
-    return _left;
-}
-
-template <typename Op, typename L, typename R>
-typename Ref<R>::Type
-VectorClosure<Op, L, R>::right() const
-{
-    return _right;
+typename Ref<R>::Type VectorClosure<Op, L, R>::right() const {
+  return _right;
 }
 
 //== MatrixClosure =============================================================
 template <typename Op, typename L, typename R>
-MatrixClosure<Op, L, R>::MatrixClosure(typename Ref<L>::Type l,
-                                       typename Ref<R>::Type r)
-    : _left(l), _right(r)
-{
+MatrixClosure<Op, L, R>::MatrixClosure(typename Ref<L>::Type l, typename Ref<R>::Type r) : _left(l), _right(r) {}
+
+template <typename Op, typename L, typename R>
+typename Ref<L>::Type MatrixClosure<Op, L, R>::left() const {
+  return _left;
 }
 
 template <typename Op, typename L, typename R>
-typename Ref<L>::Type
-MatrixClosure<Op, L, R>::left() const
-{
-    return _left;
+typename Ref<R>::Type MatrixClosure<Op, L, R>::right() const {
+  return _right;
 }
 
-template <typename Op, typename L, typename R>
-typename Ref<R>::Type
-MatrixClosure<Op, L, R>::right() const
-{
-    return _right;
-}
-
-} // namespace flens
+}  // namespace flens

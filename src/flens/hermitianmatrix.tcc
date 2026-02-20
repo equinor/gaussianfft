@@ -35,611 +35,445 @@ namespace flens {
 // == SyMatrix =================================================================
 
 template <typename FS>
-HeMatrix<FS>::HeMatrix()
-{
-}
+HeMatrix<FS>::HeMatrix() {}
 
 template <typename FS>
 HeMatrix<FS>::HeMatrix(int dim, StorageUpLo upLo, int firstIndex)
-    : _fs(dim, dim, firstIndex, firstIndex), _upLo(upLo)
-{
-}
+    : _fs(dim, dim, firstIndex, firstIndex), _upLo(upLo) {}
 
 template <typename FS>
-HeMatrix<FS>::HeMatrix(const FS &fs, StorageUpLo upLo)
-    : _fs(fs), _upLo(upLo)
-{
-}
+HeMatrix<FS>::HeMatrix(const FS& fs, StorageUpLo upLo) : _fs(fs), _upLo(upLo) {}
 
 template <typename FS>
-HeMatrix<FS>::HeMatrix(const HeMatrix<FS> &rhs)
-    : HermitianMatrix<HeMatrix<FS> >(),
-      _fs(rhs.engine()), _upLo(rhs.upLo())
-{
+HeMatrix<FS>::HeMatrix(const HeMatrix<FS>& rhs)
+    : HermitianMatrix<HeMatrix<FS> >(), _fs(rhs.engine()), _upLo(rhs.upLo()) {}
+
+template <typename FS>
+template <typename RHS>
+HeMatrix<FS>::HeMatrix(const HeMatrix<RHS>& rhs) : _fs(rhs.engine()), _upLo(rhs.upLo()) {}
+
+template <typename FS>
+HeMatrix<FS>::HeMatrix(const TrMatrix<FS>& rhs) : _fs(rhs.engine()), _upLo(rhs.upLo()) {
+  assert(rhs.unitDiag() == NonUnit);
 }
 
 template <typename FS>
 template <typename RHS>
-HeMatrix<FS>::HeMatrix(const HeMatrix<RHS> &rhs)
-    : _fs(rhs.engine()), _upLo(rhs.upLo())
-{
-}
-
-template <typename FS>
-HeMatrix<FS>::HeMatrix(const TrMatrix<FS> &rhs)
-    : _fs(rhs.engine()), _upLo(rhs.upLo())
-{
-    assert(rhs.unitDiag()==NonUnit);
-}
-
-template <typename FS>
-template <typename RHS>
-HeMatrix<FS>::HeMatrix(const TrMatrix<RHS> &rhs)
-    : _fs(rhs.engine()), _upLo(rhs.upLo())
-{
-    assert(rhs.unitDiag()==NonUnit);
+HeMatrix<FS>::HeMatrix(const TrMatrix<RHS>& rhs) : _fs(rhs.engine()), _upLo(rhs.upLo()) {
+  assert(rhs.unitDiag() == NonUnit);
 }
 
 // -- operators ----------------------------------------------------------------
 
 template <typename FS>
-HeMatrix<FS> &
-HeMatrix<FS>::operator*=(T alpha)
-{
-    scal(alpha, *this);
-    return *this;
+HeMatrix<FS>& HeMatrix<FS>::operator*=(T alpha) {
+  scal(alpha, *this);
+  return *this;
 }
 
 template <typename FS>
-HeMatrix<FS> &
-HeMatrix<FS>::operator/=(T alpha)
-{
-    scal(T(1)/alpha, *this);
-    return *this;
+HeMatrix<FS>& HeMatrix<FS>::operator/=(T alpha) {
+  scal(T(1) / alpha, *this);
+  return *this;
 }
 
 template <typename FS>
-const typename HeMatrix<FS>::T &
-HeMatrix<FS>::operator()(int row, int col) const
-{
+const typename HeMatrix<FS>::T& HeMatrix<FS>::operator()(int row, int col) const {
 #ifndef NDEBUG
-    if (_upLo==Upper) {
-        assert(col>=row);
-    } else {
-        assert(col<=row);
-    }
+  if (_upLo == Upper) {
+    assert(col >= row);
+  } else {
+    assert(col <= row);
+  }
 #endif
-    return _fs(row, col);
+  return _fs(row, col);
 }
 
 template <typename FS>
-typename HeMatrix<FS>::T &
-HeMatrix<FS>::operator()(int row, int col)
-{
+typename HeMatrix<FS>::T& HeMatrix<FS>::operator()(int row, int col) {
 #ifndef NDEBUG
-    if (_upLo==Upper) {
-        assert(col>=row);
-    } else {
-        assert(col<=row);
-    }
+  if (_upLo == Upper) {
+    assert(col >= row);
+  } else {
+    assert(col <= row);
+  }
 #endif
-    return _fs(row, col);
+  return _fs(row, col);
 }
 
 // -- views --------------------------------------------------------------------
 
 // general views
 template <typename FS>
-typename HeMatrix<FS>::ConstGeneralView
-HeMatrix<FS>::general() const
-{
-    return ConstGeneralView(_fs.view(_fs.firstRow(), _fs.firstCol(),
-                            _fs.lastCol(), _fs.lastRow(),
-                            firstRow(), firstCol()));
+typename HeMatrix<FS>::ConstGeneralView HeMatrix<FS>::general() const {
+  return ConstGeneralView(
+      _fs.view(_fs.firstRow(), _fs.firstCol(), _fs.lastCol(), _fs.lastRow(), firstRow(), firstCol()));
 }
 
 template <typename FS>
-typename HeMatrix<FS>::GeneralView
-HeMatrix<FS>::general()
-{
-    return GeneralView(_fs.view(_fs.firstRow(), _fs.firstCol(),
-                       _fs.lastCol(), _fs.lastRow(),
-                       firstRow(), firstCol()));
+typename HeMatrix<FS>::GeneralView HeMatrix<FS>::general() {
+  return GeneralView(_fs.view(_fs.firstRow(), _fs.firstCol(), _fs.lastCol(), _fs.lastRow(), firstRow(), firstCol()));
 }
 
 // triangular views
 template <typename FS>
-typename HeMatrix<FS>::ConstTriangularView
-HeMatrix<FS>::triangular() const
-{
-    return ConstTriangularView(_fs.view(_fs.firstRow(), _fs.firstCol(),
-                               _fs.lastCol(), _fs.lastRow(),
-                               firstRow(), firstCol()), upLo(), NonUnit);
+typename HeMatrix<FS>::ConstTriangularView HeMatrix<FS>::triangular() const {
+  return ConstTriangularView(
+      _fs.view(_fs.firstRow(), _fs.firstCol(), _fs.lastCol(), _fs.lastRow(), firstRow(), firstCol()), upLo(), NonUnit);
 }
 
 template <typename FS>
-typename HeMatrix<FS>::TriangularView
-HeMatrix<FS>::triangular()
-{
-    return TriangularView(_fs.view(_fs.firstRow(), _fs.firstCol(),
-                          _fs.lastCol(), _fs.lastRow(),
-                          firstRow(), firstCol()), upLo(), NonUnit);
+typename HeMatrix<FS>::TriangularView HeMatrix<FS>::triangular() {
+  return TriangularView(_fs.view(_fs.firstRow(), _fs.firstCol(), _fs.lastCol(), _fs.lastRow(), firstRow(), firstCol()),
+                        upLo(), NonUnit);
 }
 
 // -- methods ------------------------------------------------------------------
 
 // for BLAS/LAPACK
 template <typename FS>
-StorageUpLo
-HeMatrix<FS>::upLo() const
-{
-    return _upLo;
+StorageUpLo HeMatrix<FS>::upLo() const {
+  return _upLo;
 }
 
 template <typename FS>
-int
-HeMatrix<FS>::dim() const
-{
-    assert(_fs.numRows()==_fs.numCols());
+int HeMatrix<FS>::dim() const {
+  assert(_fs.numRows() == _fs.numCols());
 
-    return _fs.numRows();
+  return _fs.numRows();
 }
 
 template <typename FS>
-int
-HeMatrix<FS>::leadingDimension() const
-{
-    return _fs.leadingDimension();
+int HeMatrix<FS>::leadingDimension() const {
+  return _fs.leadingDimension();
 }
 
 template <typename FS>
-const typename HeMatrix<FS>::T *
-HeMatrix<FS>::data() const
-{
-    return _fs.data();
+const typename HeMatrix<FS>::T* HeMatrix<FS>::data() const {
+  return _fs.data();
 }
 
 template <typename FS>
-typename HeMatrix<FS>::T *
-HeMatrix<FS>::data()
-{
-    return _fs.data();
+typename HeMatrix<FS>::T* HeMatrix<FS>::data() {
+  return _fs.data();
 }
 
 // for element access
 template <typename FS>
-int
-HeMatrix<FS>::firstRow() const
-{
-    return _fs.firstRow();
+int HeMatrix<FS>::firstRow() const {
+  return _fs.firstRow();
 }
 
 template <typename FS>
-int
-HeMatrix<FS>::lastRow() const
-{
-    return _fs.lastRow();
+int HeMatrix<FS>::lastRow() const {
+  return _fs.lastRow();
 }
 
 template <typename FS>
-int
-HeMatrix<FS>::firstCol() const
-{
-    return _fs.firstCol();
+int HeMatrix<FS>::firstCol() const {
+  return _fs.firstCol();
 }
 
 template <typename FS>
-int
-HeMatrix<FS>::lastCol() const
-{
-    return _fs.lastCol();
+int HeMatrix<FS>::lastCol() const {
+  return _fs.lastCol();
 }
 
 template <typename FS>
-Range
-HeMatrix<FS>::rows()  const
-{
-    return _(firstRow(), lastRow());
+Range HeMatrix<FS>::rows() const {
+  return _(firstRow(), lastRow());
 }
 
 template <typename FS>
-Range
-HeMatrix<FS>::cols() const
-{
-    return _(firstCol(), lastCol());
+Range HeMatrix<FS>::cols() const {
+  return _(firstCol(), lastCol());
 }
 
 // -- implementation -----------------------------------------------------------
 
 template <typename FS>
-const FS &
-HeMatrix<FS>::engine() const
-{
-    return _fs;
+const FS& HeMatrix<FS>::engine() const {
+  return _fs;
 }
 
 template <typename FS>
-FS &
-HeMatrix<FS>::engine()
-{
-    return _fs;
+FS& HeMatrix<FS>::engine() {
+  return _fs;
 }
 
 // == HbMatrix =================================================================
 
 template <typename BS>
-HbMatrix<BS>::HbMatrix()
-{
-}
+HbMatrix<BS>::HbMatrix() {}
 
 template <typename BS>
-HbMatrix<BS>::HbMatrix(int dim, StorageUpLo upLo, int numOffDiags,
-                       int firstIndex)
-    : _bs(dim, dim,
-          (upLo==Lower) ? numOffDiags : 0,
-          (upLo==Upper) ? numOffDiags : 0,
-          firstIndex),
-      _upLo(upLo)
-{
-}
+HbMatrix<BS>::HbMatrix(int dim, StorageUpLo upLo, int numOffDiags, int firstIndex)
+    : _bs(dim, dim, (upLo == Lower) ? numOffDiags : 0, (upLo == Upper) ? numOffDiags : 0, firstIndex), _upLo(upLo) {}
 
 template <typename BS>
-HbMatrix<BS>::HbMatrix(const BS &bs, StorageUpLo upLo)
-    : _bs(bs), _upLo(upLo)
-{
-}
+HbMatrix<BS>::HbMatrix(const BS& bs, StorageUpLo upLo) : _bs(bs), _upLo(upLo) {}
 
 template <typename BS>
-HbMatrix<BS>::HbMatrix(const HbMatrix<BS> &rhs)
-    : HermitianMatrix<HbMatrix<BS> >(),
-      _bs(rhs.engine()), _upLo(rhs.upLo())
-{
+HbMatrix<BS>::HbMatrix(const HbMatrix<BS>& rhs)
+    : HermitianMatrix<HbMatrix<BS> >(), _bs(rhs.engine()), _upLo(rhs.upLo()) {}
+
+template <typename BS>
+template <typename RHS>
+HbMatrix<BS>::HbMatrix(const HbMatrix<RHS>& rhs) : _bs(rhs.engine()), _upLo(rhs.upLo()) {}
+
+template <typename BS>
+HbMatrix<BS>::HbMatrix(const TbMatrix<BS>& rhs) : _bs(rhs.engine()), _upLo(rhs.upLo()) {
+  assert(rhs.unitDiag() == NonUnit);
 }
 
 template <typename BS>
 template <typename RHS>
-HbMatrix<BS>::HbMatrix(const HbMatrix<RHS> &rhs)
-    : _bs(rhs.engine()), _upLo(rhs.upLo())
-{
-}
-
-template <typename BS>
-HbMatrix<BS>::HbMatrix(const TbMatrix<BS> &rhs)
-    : _bs(rhs.engine()), _upLo(rhs.upLo())
-{
-    assert(rhs.unitDiag()==NonUnit);
-}
-
-template <typename BS>
-template <typename RHS>
-HbMatrix<BS>::HbMatrix(const TbMatrix<RHS> &rhs)
-    : _bs(rhs.engine()), _upLo(rhs.upLo())
-{
-    assert(rhs.unitDiag()==NonUnit);
+HbMatrix<BS>::HbMatrix(const TbMatrix<RHS>& rhs) : _bs(rhs.engine()), _upLo(rhs.upLo()) {
+  assert(rhs.unitDiag() == NonUnit);
 }
 
 // -- operators ----------------------------------------------------------------
 
 template <typename BS>
-HbMatrix<BS> &
-HbMatrix<BS>::operator*=(T alpha)
-{
-    scal(alpha, *this);
-    return *this;
+HbMatrix<BS>& HbMatrix<BS>::operator*=(T alpha) {
+  scal(alpha, *this);
+  return *this;
 }
 
 template <typename BS>
-HbMatrix<BS> &
-HbMatrix<BS>::operator/=(T alpha)
-{
-    scal(T(1)/alpha, *this);
-    return *this;
+HbMatrix<BS>& HbMatrix<BS>::operator/=(T alpha) {
+  scal(T(1) / alpha, *this);
+  return *this;
 }
 
 template <typename BS>
-const typename HbMatrix<BS>::T &
-HbMatrix<BS>::operator()(int row, int col) const
-{
+const typename HbMatrix<BS>::T& HbMatrix<BS>::operator()(int row, int col) const {
 #ifndef NDEBUG
-    if (_upLo==Upper) {
-        assert(col>=row);
-        assert(col-row<=numOffDiags());
-    } else {
-        assert(col<=row);
-        assert(row-col<=numOffDiags());
-    }
+  if (_upLo == Upper) {
+    assert(col >= row);
+    assert(col - row <= numOffDiags());
+  } else {
+    assert(col <= row);
+    assert(row - col <= numOffDiags());
+  }
 #endif
-    return _bs(row, col);
+  return _bs(row, col);
 }
 
 template <typename BS>
-typename HbMatrix<BS>::T &
-HbMatrix<BS>::operator()(int row, int col)
-{
+typename HbMatrix<BS>::T& HbMatrix<BS>::operator()(int row, int col) {
 #ifndef NDEBUG
-    if (_upLo==Upper) {
-        assert(col>=row);
-        assert(col-row<=numOffDiags());
-    } else {
-        assert(col<=row);
-        assert(row-col<=numOffDiags());
-    }
+  if (_upLo == Upper) {
+    assert(col >= row);
+    assert(col - row <= numOffDiags());
+  } else {
+    assert(col <= row);
+    assert(row - col <= numOffDiags());
+  }
 #endif
-    return _bs(row, col);
+  return _bs(row, col);
 }
 
 // -- views --------------------------------------------------------------------
 
 template <typename BS>
-typename HbMatrix<BS>::ConstVectorView
-HbMatrix<BS>::diag(int d) const
-{
-    return _bs.viewDiag(d);
+typename HbMatrix<BS>::ConstVectorView HbMatrix<BS>::diag(int d) const {
+  return _bs.viewDiag(d);
 }
 
 template <typename BS>
-typename HbMatrix<BS>::VectorView
-HbMatrix<BS>::diag(int d)
-{
-    return _bs.viewDiag(d);
+typename HbMatrix<BS>::VectorView HbMatrix<BS>::diag(int d) {
+  return _bs.viewDiag(d);
 }
 
 // general views
 template <typename BS>
-typename HbMatrix<BS>::ConstGeneralView
-HbMatrix<BS>::general() const
-{
-    int firstDiag = -engine().numSubDiags();
-    int lastDiag = engine().numSuperDiags();
-    BSView view = engine().viewDiags(firstDiag, lastDiag, firstIndex());
-    return ConstGeneralView(view);
+typename HbMatrix<BS>::ConstGeneralView HbMatrix<BS>::general() const {
+  int    firstDiag = -engine().numSubDiags();
+  int    lastDiag  = engine().numSuperDiags();
+  BSView view      = engine().viewDiags(firstDiag, lastDiag, firstIndex());
+  return ConstGeneralView(view);
 }
 
 template <typename BS>
-typename HbMatrix<BS>::GeneralView
-HbMatrix<BS>::general()
-{
-    int firstDiag = -engine().numSubDiags();
-    int lastDiag = engine().numSuperDiags();
-    BSView view = engine().viewDiags(firstDiag, lastDiag, firstIndex());
-    return GeneralView(view);
+typename HbMatrix<BS>::GeneralView HbMatrix<BS>::general() {
+  int    firstDiag = -engine().numSubDiags();
+  int    lastDiag  = engine().numSuperDiags();
+  BSView view      = engine().viewDiags(firstDiag, lastDiag, firstIndex());
+  return GeneralView(view);
 }
 
 // triangular views
 template <typename BS>
-typename HbMatrix<BS>::ConstTriangularView
-HbMatrix<BS>::triangular() const
-{
-    int firstDiag = -engine().numSubDiags();
-    int lastDiag = engine().numSuperDiags();
-    BSView view = engine().viewDiags(firstDiag, lastDiag, firstIndex());
-    return ConstTriangularView(view, upLo());
+typename HbMatrix<BS>::ConstTriangularView HbMatrix<BS>::triangular() const {
+  int    firstDiag = -engine().numSubDiags();
+  int    lastDiag  = engine().numSuperDiags();
+  BSView view      = engine().viewDiags(firstDiag, lastDiag, firstIndex());
+  return ConstTriangularView(view, upLo());
 }
 
 template <typename BS>
-typename HbMatrix<BS>::TriangularView
-HbMatrix<BS>::triangular()
-{
-    int firstDiag = -engine().numSubDiags();
-    int lastDiag = engine().numSuperDiags();
-    BSView view = engine().viewDiags(firstDiag, lastDiag, firstIndex());
-    return TriangularView(view, upLo());
+typename HbMatrix<BS>::TriangularView HbMatrix<BS>::triangular() {
+  int    firstDiag = -engine().numSubDiags();
+  int    lastDiag  = engine().numSuperDiags();
+  BSView view      = engine().viewDiags(firstDiag, lastDiag, firstIndex());
+  return TriangularView(view, upLo());
 }
 
 // -- methods ------------------------------------------------------------------
 
 // for BLAS/LAPACK
 template <typename BS>
-StorageUpLo
-HbMatrix<BS>::upLo() const
-{
-    return _upLo;
+StorageUpLo HbMatrix<BS>::upLo() const {
+  return _upLo;
 }
 
 template <typename BS>
-int
-HbMatrix<BS>::dim() const
-{
-    assert (_bs.numRows()==_bs.numCols());
+int HbMatrix<BS>::dim() const {
+  assert(_bs.numRows() == _bs.numCols());
 
-    return _bs.numRows();
+  return _bs.numRows();
 }
 
 template <typename BS>
-int
-HbMatrix<BS>::numOffDiags() const
-{
-    return (_upLo==Upper) ? _bs.numSuperDiags()
-                          : _bs.numSubDiags();
+int HbMatrix<BS>::numOffDiags() const {
+  return (_upLo == Upper) ? _bs.numSuperDiags() : _bs.numSubDiags();
 }
 
 template <typename BS>
-int
-HbMatrix<BS>::leadingDimension() const
-{
-    return _bs.leadingDimension();
+int HbMatrix<BS>::leadingDimension() const {
+  return _bs.leadingDimension();
 }
 
 template <typename BS>
-const typename HbMatrix<BS>::T *
-HbMatrix<BS>::data() const
-{
-    return _bs.data();
+const typename HbMatrix<BS>::T* HbMatrix<BS>::data() const {
+  return _bs.data();
 }
 
 template <typename BS>
-typename HbMatrix<BS>::T *
-HbMatrix<BS>::data()
-{
-    return _bs.data();
+typename HbMatrix<BS>::T* HbMatrix<BS>::data() {
+  return _bs.data();
 }
 
 // for element access
 template <typename BS>
-int
-HbMatrix<BS>::firstIndex() const
-{
-    return _bs.firstRow();
+int HbMatrix<BS>::firstIndex() const {
+  return _bs.firstRow();
 }
 
 template <typename BS>
-int
-HbMatrix<BS>::lastIndex() const
-{
-    assert(_bs.lastRow()==_bs.lastCol());
-    return _bs.lastRow();
+int HbMatrix<BS>::lastIndex() const {
+  assert(_bs.lastRow() == _bs.lastCol());
+  return _bs.lastRow();
 }
 
 template <typename BS>
-Range
-HbMatrix<BS>::indices()  const
-{
-    return _(firstIndex(), lastIndex());
+Range HbMatrix<BS>::indices() const {
+  return _(firstIndex(), lastIndex());
 }
 
 template <typename BS>
-Range
-HbMatrix<BS>::diags() const
-{
-    return (_upLo==Upper) ? _(0, numOffDiags())
-                          : _(-numOffDiags(),0);
+Range HbMatrix<BS>::diags() const {
+  return (_upLo == Upper) ? _(0, numOffDiags()) : _(-numOffDiags(), 0);
 }
 
 // -- implementation -----------------------------------------------------------
 
 template <typename BS>
-const BS &
-HbMatrix<BS>::engine() const
-{
-    return _bs;
+const BS& HbMatrix<BS>::engine() const {
+  return _bs;
 }
 
 template <typename BS>
-BS &
-HbMatrix<BS>::engine()
-{
-    return _bs;
+BS& HbMatrix<BS>::engine() {
+  return _bs;
 }
 
 // == HpMatrix =================================================================
 
 template <typename PS>
-HpMatrix<PS>::HpMatrix()
-{
-}
+HpMatrix<PS>::HpMatrix() {}
 
 template <typename PS>
-HpMatrix<PS>::HpMatrix(int dim, int firstIndex)
-    : _ps(dim, firstIndex)
-{
-}
+HpMatrix<PS>::HpMatrix(int dim, int firstIndex) : _ps(dim, firstIndex) {}
 
 template <typename PS>
-HpMatrix<PS>::HpMatrix(const PS &ps)
-    : _ps(ps)
-{
-}
+HpMatrix<PS>::HpMatrix(const PS& ps) : _ps(ps) {}
 
 // -- operators ----------------------------------------------------------------
 
 template <typename PS>
-const typename HpMatrix<PS>::T &
-HpMatrix<PS>::operator()(int row, int col) const
-{
-    return _ps(row, col);
+const typename HpMatrix<PS>::T& HpMatrix<PS>::operator()(int row, int col) const {
+  return _ps(row, col);
 }
 
 template <typename PS>
-typename HpMatrix<PS>::T &
-HpMatrix<PS>::operator()(int row, int col)
-{
-    return _ps(row, col);
+typename HpMatrix<PS>::T& HpMatrix<PS>::operator()(int row, int col) {
+  return _ps(row, col);
 }
 
 // -- views --------------------------------------------------------------------
 
 // triangular views
 template <typename PS>
-typename HpMatrix<PS>::ConstTriangularView
-HpMatrix<PS>::triangular(UnitDiag unitDiag) const
-{
-    return ConstTriangularView(_ps.view(), unitDiag);
+typename HpMatrix<PS>::ConstTriangularView HpMatrix<PS>::triangular(UnitDiag unitDiag) const {
+  return ConstTriangularView(_ps.view(), unitDiag);
 }
 
 template <typename PS>
-typename HpMatrix<PS>::TriangularView
-HpMatrix<PS>::triangular(UnitDiag unitDiag)
-{
-    return TriangularView(_ps.view(), unitDiag);
+typename HpMatrix<PS>::TriangularView HpMatrix<PS>::triangular(UnitDiag unitDiag) {
+  return TriangularView(_ps.view(), unitDiag);
 }
 
 // -- methods ------------------------------------------------------------------
 
 // for BLAS/LAPACK
 template <typename PS>
-StorageUpLo
-HpMatrix<PS>::upLo() const
-{
-    return StorageInfo<PS>::upLo;
+StorageUpLo HpMatrix<PS>::upLo() const {
+  return StorageInfo<PS>::upLo;
 }
 
 template <typename PS>
-int
-HpMatrix<PS>::dim() const
-{
-    return _ps.dim();
+int HpMatrix<PS>::dim() const {
+  return _ps.dim();
 }
 
 template <typename PS>
-const typename HpMatrix<PS>::T *
-HpMatrix<PS>::data() const
-{
-    return _ps.data();
+const typename HpMatrix<PS>::T* HpMatrix<PS>::data() const {
+  return _ps.data();
 }
 
 template <typename PS>
-typename HpMatrix<PS>::T *
-HpMatrix<PS>::data()
-{
-    return _ps.data();
+typename HpMatrix<PS>::T* HpMatrix<PS>::data() {
+  return _ps.data();
 }
 
 // for element access
 template <typename PS>
-int
-HpMatrix<PS>::firstIndex() const
-{
-    return _ps.firstIndex();
+int HpMatrix<PS>::firstIndex() const {
+  return _ps.firstIndex();
 }
 
 template <typename PS>
-int
-HpMatrix<PS>::lastIndex() const
-{
-    return _ps.lastIndex();
+int HpMatrix<PS>::lastIndex() const {
+  return _ps.lastIndex();
 }
 
 template <typename PS>
-Range
-HpMatrix<PS>::indices() const
-{
-    return _(firstIndex(), lastIndex());
+Range HpMatrix<PS>::indices() const {
+  return _(firstIndex(), lastIndex());
 }
 
 // -- implementation -----------------------------------------------------------
 
 template <typename PS>
-const PS &
-HpMatrix<PS>::engine() const
-{
-    return _ps;
+const PS& HpMatrix<PS>::engine() const {
+  return _ps;
 }
 
 template <typename PS>
-PS &
-HpMatrix<PS>::engine()
-{
-    return _ps;
+PS& HpMatrix<PS>::engine() {
+  return _ps;
 }
 
-} // namespace flens
+}  // namespace flens

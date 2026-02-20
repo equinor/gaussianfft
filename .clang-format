@@ -1,0 +1,17 @@
+BasedOnStyle: Chromium
+ColumnLimit: 119
+IndentPPDirectives: AfterHash
+AlignConsecutiveAssignments:
+  Enabled: true
+  AcrossComments: true
+  AcrossEmptyLines: true
+  AlignCompound: true
+  AlignFunctionPointers: true
+  PadOperators: true
+AlignConsecutiveDeclarations:
+  Enabled: true
+  AlignCompound: true
+  AlignFunctionPointers: true
+  PadOperators: true
+  AcrossEmptyLines: true
+  AcrossComments: true

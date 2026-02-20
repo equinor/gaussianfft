@@ -31,14 +31,14 @@
  */
 
 #ifndef FLENS_TRIANGULARMATRIX_H
-#define FLENS_TRIANGULARMATRIX_H 1
+#  define FLENS_TRIANGULARMATRIX_H 1
 
-#include <flens/matvec.h>
-#include <flens/storage.h>
+#  include <flens/matvec.h>
+#  include <flens/storage.h>
 
-#ifndef FLENS_FIRST_INDEX
+#  ifndef FLENS_FIRST_INDEX
 #    define FLENS_FIRST_INDEX 1
-#endif
+#  endif
 
 namespace flens {
 
@@ -51,282 +51,229 @@ template <typename FS>
 class SyMatrix;
 
 template <typename FS>
-class TrMatrix
-    : public TriangularMatrix<TrMatrix<FS> >
-{
-    public:
-        // shortcut for element type
-        typedef typename TrMatrix<FS>::ElementType T;
+class TrMatrix : public TriangularMatrix<TrMatrix<FS> > {
+ public:
+  // shortcut for element type
+  typedef typename TrMatrix<FS>::ElementType T;
 
-        // view types from FS
-        typedef typename FS::ConstView          ConstFSView;
-        typedef typename FS::View               FSView;
-        typedef typename FS::NoView             FSNoView;
+  // view types from FS
+  typedef typename FS::ConstView             ConstFSView;
+  typedef typename FS::View                  FSView;
+  typedef typename FS::NoView                FSNoView;
 
-        // view types for TrMatrix
-        typedef GeMatrix<ConstFSView>           ConstGeneralView;
-        typedef GeMatrix<FSView>                GeneralView;
-        typedef GeMatrix<FSNoView>              GeneralNoView;
+  // view types for TrMatrix
+  typedef GeMatrix<ConstFSView>              ConstGeneralView;
+  typedef GeMatrix<FSView>                   GeneralView;
+  typedef GeMatrix<FSNoView>                 GeneralNoView;
 
-        typedef SyMatrix<ConstFSView>           ConstSymmetricView;
-        typedef SyMatrix<FSView>                SymmetricView;
-        typedef SyMatrix<FSNoView>              SymmetricNoView;
+  typedef SyMatrix<ConstFSView>              ConstSymmetricView;
+  typedef SyMatrix<FSView>                   SymmetricView;
+  typedef SyMatrix<FSNoView>                 SymmetricNoView;
 
-        typedef HeMatrix<ConstFSView>           ConstHermitianView;
-        typedef HeMatrix<FSView>                HermitianView;
-        typedef HeMatrix<FSNoView>              HermitianNoView;
+  typedef HeMatrix<ConstFSView>              ConstHermitianView;
+  typedef HeMatrix<FSView>                   HermitianView;
+  typedef HeMatrix<FSNoView>                 HermitianNoView;
 
-        TrMatrix();
+  TrMatrix();
 
-        TrMatrix(int dim, StorageUpLo upLo, UnitDiag unitDiag=NonUnit,
-                 int firstIndex=FLENS_FIRST_INDEX);
+  TrMatrix(int dim, StorageUpLo upLo, UnitDiag unitDiag = NonUnit, int firstIndex = FLENS_FIRST_INDEX);
 
-        TrMatrix(const FS &fs, StorageUpLo upLo, UnitDiag unitDiag=NonUnit);
+  TrMatrix(const FS& fs, StorageUpLo upLo, UnitDiag unitDiag = NonUnit);
 
-        TrMatrix(const TrMatrix<FS> &rhs);
+  TrMatrix(const TrMatrix<FS>& rhs);
 
-        template <typename RHS>
-            TrMatrix(const TrMatrix<RHS> &rhs);
+  template <typename RHS>
+  TrMatrix(const TrMatrix<RHS>& rhs);
 
-        // -- operators --------------------------------------------------------
-        const T &
-        operator()(int row, int col) const;
+  // -- operators --------------------------------------------------------
+  const T&           operator()(int row, int col) const;
 
-        T &
-        operator()(int row, int col);
+  T&                 operator()(int row, int col);
 
-        // -- views ------------------------------------------------------------
+  // -- views ------------------------------------------------------------
 
-        // general views
-        ConstGeneralView
-        general() const;
+  // general views
+  ConstGeneralView   general() const;
 
-        GeneralView
-        general();
+  GeneralView        general();
 
-        // hermitian views
-        ConstHermitianView
-        hermitian() const;
+  // hermitian views
+  ConstHermitianView hermitian() const;
 
-        HermitianView
-        hermitian();
+  HermitianView      hermitian();
 
-        // symmetric views
-        ConstSymmetricView
-        symmetric() const;
+  // symmetric views
+  ConstSymmetricView symmetric() const;
 
-        SymmetricView
-        symmetric();
+  SymmetricView      symmetric();
 
-        // -- methods ----------------------------------------------------------
+  // -- methods ----------------------------------------------------------
 
-        // for BLAS/LAPACK
-        StorageUpLo
-        upLo() const;
+  // for BLAS/LAPACK
+  StorageUpLo        upLo() const;
 
-        UnitDiag
-        unitDiag() const;
+  UnitDiag           unitDiag() const;
 
-        int
-        dim() const;
+  int                dim() const;
 
-        int
-        leadingDimension() const;
+  int                leadingDimension() const;
 
-        const T *
-        data() const;
+  const T*           data() const;
 
-        T *
-        data();
+  T*                 data();
 
-        // for element access
-        int
-        firstRow() const;
+  // for element access
+  int                firstRow() const;
 
-        int
-        lastRow() const;
+  int                lastRow() const;
 
-        int
-        firstCol() const;
+  int                firstCol() const;
 
-        int
-        lastCol() const;
+  int                lastCol() const;
 
-        Range
-        rows() const;
+  Range              rows() const;
 
-        Range
-        cols() const;
+  Range              cols() const;
 
-        // -- implementation ---------------------------------------------------
-        const FS &
-        engine() const;
+  // -- implementation ---------------------------------------------------
+  const FS&          engine() const;
 
-        FS &
-        engine();
+  FS&                engine();
 
-    private:
-        FS _fs;
-        StorageUpLo _upLo;
-        UnitDiag _unitDiag;
+ private:
+  FS          _fs;
+  StorageUpLo _upLo;
+  UnitDiag    _unitDiag;
 };
 
 template <typename FS>
-struct TypeInfo<TrMatrix<FS> >
-{
-    typedef TrMatrix<FS> Impl;
-    typedef typename FS::ElementType ElementType;
+struct TypeInfo<TrMatrix<FS> > {
+  typedef TrMatrix<FS>             Impl;
+  typedef typename FS::ElementType ElementType;
 };
 
 // == TbMatrix =================================================================
 
 template <typename FS>
-    class GbMatrix;
+class GbMatrix;
 
 template <typename FS>
-    class HbMatrix;
+class HbMatrix;
 
 template <typename FS>
-    class SbMatrix;
+class SbMatrix;
 
 template <typename BS>
-class TbMatrix
-    : public TriangularMatrix<TbMatrix<BS> >
-{
-    public:
-        typedef typename TbMatrix<BS>::ElementType  T;
+class TbMatrix : public TriangularMatrix<TbMatrix<BS> > {
+ public:
+  typedef typename TbMatrix<BS>::ElementType T;
 
-        // view types from BS
-        typedef typename BS::ConstView          ConstBSView;
-        typedef typename BS::View               BSView;
-        typedef typename BS::View               BSNoView;
+  // view types from BS
+  typedef typename BS::ConstView             ConstBSView;
+  typedef typename BS::View                  BSView;
+  typedef typename BS::View                  BSNoView;
 
-        typedef typename BS::ConstVectorView    ConstBSVectorView;
-        typedef typename BS::VectorView         BSVectorView;
-        typedef typename BS::VectorNoView       BSVectorNoView;
+  typedef typename BS::ConstVectorView       ConstBSVectorView;
+  typedef typename BS::VectorView            BSVectorView;
+  typedef typename BS::VectorNoView          BSVectorNoView;
 
-        // vector view types for TbMatrix
-        typedef DenseVector<ConstBSVectorView>  ConstVectorView;
-        typedef DenseVector<BSVectorView>       VectorView;
-        typedef DenseVector<BSVectorNoView>     VectorNoView;
+  // vector view types for TbMatrix
+  typedef DenseVector<ConstBSVectorView>     ConstVectorView;
+  typedef DenseVector<BSVectorView>          VectorView;
+  typedef DenseVector<BSVectorNoView>        VectorNoView;
 
-        // matrix-view types for TbMatrix
-        typedef GbMatrix<ConstBSView>           ConstGeneralView;
-        typedef GbMatrix<BSView>                GeneralView;
-        typedef GbMatrix<BSNoView>              GeneralNoView;
+  // matrix-view types for TbMatrix
+  typedef GbMatrix<ConstBSView>              ConstGeneralView;
+  typedef GbMatrix<BSView>                   GeneralView;
+  typedef GbMatrix<BSNoView>                 GeneralNoView;
 
-        typedef SbMatrix<ConstBSView>           ConstSymmetricView;
-        typedef SbMatrix<BSView>                SymmetricView;
-        typedef SbMatrix<BSNoView>              SymmetricNoView;
+  typedef SbMatrix<ConstBSView>              ConstSymmetricView;
+  typedef SbMatrix<BSView>                   SymmetricView;
+  typedef SbMatrix<BSNoView>                 SymmetricNoView;
 
-        typedef HbMatrix<ConstBSView>           ConstHermitianView;
-        typedef HbMatrix<BSView>                HermitianView;
-        typedef HbMatrix<BSNoView>              HermitianNoView;
+  typedef HbMatrix<ConstBSView>              ConstHermitianView;
+  typedef HbMatrix<BSView>                   HermitianView;
+  typedef HbMatrix<BSNoView>                 HermitianNoView;
 
-        TbMatrix();
+  TbMatrix();
 
-        TbMatrix(int dim, StorageUpLo upLo, int numDiags,
-                 UnitDiag unitDiag=NonUnit, int firstIndex=FLENS_FIRST_INDEX);
+  TbMatrix(int dim, StorageUpLo upLo, int numDiags, UnitDiag unitDiag = NonUnit, int firstIndex = FLENS_FIRST_INDEX);
 
-        TbMatrix(const BS &bs, StorageUpLo upLo, UnitDiag unitDiag=NonUnit);
+  TbMatrix(const BS& bs, StorageUpLo upLo, UnitDiag unitDiag = NonUnit);
 
-        TbMatrix(const TbMatrix<BS> &rhs);
+  TbMatrix(const TbMatrix<BS>& rhs);
 
-        template <typename RHS>
-            TbMatrix(const TbMatrix<RHS> &rhs);
+  template <typename RHS>
+  TbMatrix(const TbMatrix<RHS>& rhs);
 
-        // -- operators --------------------------------------------------------
-        const T &
-        operator()(int row, int col) const;
+  // -- operators --------------------------------------------------------
+  const T&           operator()(int row, int col) const;
 
-        T &
-        operator()(int row, int col);
+  T&                 operator()(int row, int col);
 
-        // -- views ------------------------------------------------------------
+  // -- views ------------------------------------------------------------
 
-        // diag views
-        ConstVectorView
-        diag(int d, int firstIndex=FLENS_FIRST_INDEX) const;
+  // diag views
+  ConstVectorView    diag(int d, int firstIndex = FLENS_FIRST_INDEX) const;
 
-        VectorView
-        diag(int d, int firstIndex=FLENS_FIRST_INDEX);
+  VectorView         diag(int d, int firstIndex = FLENS_FIRST_INDEX);
 
-        // general views
-        ConstGeneralView
-        general() const;
+  // general views
+  ConstGeneralView   general() const;
 
-        GeneralView
-        general();
+  GeneralView        general();
 
-        // symmetric views
-        ConstSymmetricView
-        symmetric() const;
+  // symmetric views
+  ConstSymmetricView symmetric() const;
 
-        SymmetricView
-        symmetric();
+  SymmetricView      symmetric();
 
-        // hermitian views
-        ConstHermitianView
-        hermitian() const;
+  // hermitian views
+  ConstHermitianView hermitian() const;
 
-        HermitianView
-        hermitian();
+  HermitianView      hermitian();
 
-        // -- methods ----------------------------------------------------------
+  // -- methods ----------------------------------------------------------
 
-        // for BLAS/LAPACK
-        StorageUpLo
-        upLo() const;
+  // for BLAS/LAPACK
+  StorageUpLo        upLo() const;
 
-        UnitDiag
-        unitDiag() const;
+  UnitDiag           unitDiag() const;
 
-        int
-        dim() const;
+  int                dim() const;
 
-        int
-        numOffDiags() const;
+  int                numOffDiags() const;
 
-        int
-        leadingDimension() const;
+  int                leadingDimension() const;
 
-        const T *
-        data() const;
+  const T*           data() const;
 
-        T *
-        data();
+  T*                 data();
 
-        // for element accesss
-        int
-        firstIndex() const;
+  // for element accesss
+  int                firstIndex() const;
 
-        int
-        lastIndex() const;
+  int                lastIndex() const;
 
-        Range
-        indices() const;
+  Range              indices() const;
 
-        Range
-        diags() const;
+  Range              diags() const;
 
-        // -- implementation ---------------------------------------------------
-        const BS &
-        engine() const;
+  // -- implementation ---------------------------------------------------
+  const BS&          engine() const;
 
-        BS &
-        engine();
+  BS&                engine();
 
-    private:
-        BS _bs;
-        StorageUpLo _upLo;
-        UnitDiag _unitDiag;
+ private:
+  BS          _bs;
+  StorageUpLo _upLo;
+  UnitDiag    _unitDiag;
 };
 
 template <typename BS>
-struct TypeInfo<TbMatrix<BS> >
-{
-    typedef TbMatrix<BS> Impl;
-    typedef typename BS::ElementType ElementType;
+struct TypeInfo<TbMatrix<BS> > {
+  typedef TbMatrix<BS>             Impl;
+  typedef typename BS::ElementType ElementType;
 };
 
 // == TpMatrix =================================================================
@@ -338,105 +285,85 @@ template <typename FS>
 class SpMatrix;
 
 template <typename PS>
-class TpMatrix
-    : public TriangularMatrix<TpMatrix<PS> >
-{
-    public:
-        typedef typename TpMatrix<PS>::ElementType T;
+class TpMatrix : public TriangularMatrix<TpMatrix<PS> > {
+ public:
+  typedef typename TpMatrix<PS>::ElementType T;
 
-        // view types from PS
-        typedef typename PS::ConstView          ConstPSView;
-        typedef typename PS::View               PSView;
-        typedef typename PS::View               PSNoView;
+  // view types from PS
+  typedef typename PS::ConstView             ConstPSView;
+  typedef typename PS::View                  PSView;
+  typedef typename PS::View                  PSNoView;
 
-        // matrix-view types for TpMatrix
-        typedef SpMatrix<ConstPSView>           ConstSymmetricView;
-        typedef SpMatrix<PSView>                SymmetricView;
-        typedef SpMatrix<PSNoView>              SymmetricNoView;
+  // matrix-view types for TpMatrix
+  typedef SpMatrix<ConstPSView>              ConstSymmetricView;
+  typedef SpMatrix<PSView>                   SymmetricView;
+  typedef SpMatrix<PSNoView>                 SymmetricNoView;
 
-        typedef HpMatrix<ConstPSView>           ConstHermitianView;
-        typedef HpMatrix<PSView>                HermitianView;
-        typedef HpMatrix<PSNoView>              HermitianNoView;
+  typedef HpMatrix<ConstPSView>              ConstHermitianView;
+  typedef HpMatrix<PSView>                   HermitianView;
+  typedef HpMatrix<PSNoView>                 HermitianNoView;
 
-        TpMatrix();
+  TpMatrix();
 
-        TpMatrix(int dim, UnitDiag unitDiag=NonUnit, int firstIndex=FLENS_FIRST_INDEX);
+  TpMatrix(int dim, UnitDiag unitDiag = NonUnit, int firstIndex = FLENS_FIRST_INDEX);
 
-        TpMatrix(const PS &ps, UnitDiag unitDiag=NonUnit);
+  TpMatrix(const PS& ps, UnitDiag unitDiag = NonUnit);
 
-        // -- operators --------------------------------------------------------
-        const T &
-        operator()(int row, int col) const;
+  // -- operators --------------------------------------------------------
+  const T&           operator()(int row, int col) const;
 
-        T &
-        operator()(int row, int col);
+  T&                 operator()(int row, int col);
 
-        // -- views ------------------------------------------------------------
+  // -- views ------------------------------------------------------------
 
-        // symmetric views
-        ConstSymmetricView
-        symmetric() const;
+  // symmetric views
+  ConstSymmetricView symmetric() const;
 
-        SymmetricView
-        symmetric();
+  SymmetricView      symmetric();
 
-        // hermitian views
-        ConstHermitianView
-        hermitian() const;
+  // hermitian views
+  ConstHermitianView hermitian() const;
 
-        HermitianView
-        hermitian();
+  HermitianView      hermitian();
 
-        // -- methods ----------------------------------------------------------
+  // -- methods ----------------------------------------------------------
 
-        // for BLAS/LAPACK
-        StorageUpLo
-        upLo() const;
+  // for BLAS/LAPACK
+  StorageUpLo        upLo() const;
 
-        UnitDiag
-        unitDiag() const;
+  UnitDiag           unitDiag() const;
 
-        int
-        dim() const;
+  int                dim() const;
 
-        const T *
-        data() const;
+  const T*           data() const;
 
-        T *
-        data();
+  T*                 data();
 
-        // for element access
-        int
-        firstIndex() const;
+  // for element access
+  int                firstIndex() const;
 
-        int
-        lastIndex() const;
+  int                lastIndex() const;
 
-        Range
-        indices() const;
+  Range              indices() const;
 
-        // -- implementation ---------------------------------------------------
-        const PS &
-        engine() const;
+  // -- implementation ---------------------------------------------------
+  const PS&          engine() const;
 
-        PS &
-        engine();
+  PS&                engine();
 
-    private:
-        PS _ps;
-        UnitDiag _unitDiag;
+ private:
+  PS       _ps;
+  UnitDiag _unitDiag;
 };
 
 template <typename PS>
-struct TypeInfo<TpMatrix<PS> >
-{
-    typedef TpMatrix<PS> Impl;
-    typedef typename PS::ElementType ElementType;
+struct TypeInfo<TpMatrix<PS> > {
+  typedef TpMatrix<PS>             Impl;
+  typedef typename PS::ElementType ElementType;
 };
 
+}  // namespace flens
 
-} // namespace flens
+#  include <flens/triangularmatrix.tcc>
 
-#include <flens/triangularmatrix.tcc>
-
-#endif // FLENS_TRIANGULARMATRIX_H
+#endif  // FLENS_TRIANGULARMATRIX_H

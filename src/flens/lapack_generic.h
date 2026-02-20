@@ -1,13 +1,11 @@
 #ifndef FLENS_LAPACK_GENERIC_H
-#define FLENS_LAPACK_GENERIC_H 1
+#  define FLENS_LAPACK_GENERIC_H 1
 
-#include <flens/densevector.h>
-#include <flens/generalmatrix.h>
+#  include <flens/densevector.h>
+#  include <flens/generalmatrix.h>
 
-namespace flens {
+namespace flens {}  // namespace flens
 
-} // namespace flens
+#  include <flens/lapack_generic.tcc>
 
-#include <flens/lapack_generic.tcc>
-
-#endif // FLENS_LAPACK_GENERIC_H
+#endif  // FLENS_LAPACK_GENERIC_H

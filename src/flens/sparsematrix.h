@@ -31,221 +31,176 @@
  */
 
 #ifndef FLENS_SPARSEMATRIX_H
-#define FLENS_SPARSEMATRIX_H 1
+#  define FLENS_SPARSEMATRIX_H 1
 
 namespace flens {
 
 //== SparseGeMatrix ============================================================
 
 template <typename Engine>
-class SparseGeMatrix
-    : public GeneralMatrix<SparseGeMatrix<Engine> >
-{
-    public:
-        // shortcut for element type
-        typedef typename SparseGeMatrix<Engine>::ElementType  T;
+class SparseGeMatrix : public GeneralMatrix<SparseGeMatrix<Engine> > {
+ public:
+  // shortcut for element type
+  typedef typename SparseGeMatrix<Engine>::ElementType T;
 
-        typedef typename Engine::Initializer     Initializer;
-        typedef typename Engine::const_iterator  const_iterator;
-        typedef typename Engine::iterator        iterator;
+  typedef typename Engine::Initializer                 Initializer;
+  typedef typename Engine::const_iterator              const_iterator;
+  typedef typename Engine::iterator                    iterator;
 
-        // -- constructors -----------------------------------------------------
-        SparseGeMatrix();
+  // -- constructors -----------------------------------------------------
+  SparseGeMatrix();
 
-        SparseGeMatrix(int numRows, int numCols, int k=1);
+  SparseGeMatrix(int numRows, int numCols, int k = 1);
 
-        // -- operators --------------------------------------------------------
-        template <typename RHS>
-            SparseGeMatrix<Engine> &
-            operator=(const Matrix<RHS> &rhs);
+  // -- operators --------------------------------------------------------
+  template <typename RHS>
+  SparseGeMatrix<Engine>& operator=(const Matrix<RHS>& rhs);
 
-        SparseGeMatrix &
-        operator*=(T alpha);
+  SparseGeMatrix&         operator*=(T alpha);
 
-        SparseGeMatrix &
-        operator/=(T alpha);
+  SparseGeMatrix&         operator/=(T alpha);
 
-        T &
-        operator()(int row, int col);
+  T&                      operator()(int row, int col);
 
-        // -- methods ----------------------------------------------------------
-        void
-        finalize();
+  // -- methods ----------------------------------------------------------
+  void                    finalize();
 
-        int
-        numRows() const;
+  int                     numRows() const;
 
-        int
-        numCols() const;
+  int                     numCols() const;
 
-        int
-        numNonZeros() const;
+  int                     numNonZeros() const;
 
-        const_iterator
-        begin() const;
+  const_iterator          begin() const;
 
-        iterator
-        begin();
+  iterator                begin();
 
-        const_iterator
-        end() const;
+  const_iterator          end() const;
 
-        iterator
-        end();
+  iterator                end();
 
-        // TODO: discuss with Michael
-        void
-        resize(int m, int n, int k=1);
+  // TODO: discuss with Michael
+  void                    resize(int m, int n, int k = 1);
 
-        // TODO: discuss with Michael
-        //template <typename RHS>
-        //void initWith(const Matrix<RHS> &rhs, double eps=0.);
+  // TODO: discuss with Michael
+  // template <typename RHS>
+  // void initWith(const Matrix<RHS> &rhs, double eps=0.);
 
-        // -- implementation ---------------------------------------------------
-        const Engine &
-        engine() const;
+  // -- implementation ---------------------------------------------------
+  const Engine&           engine() const;
 
-        Engine &
-        engine();
+  Engine&                 engine();
 
-    private:
-        Engine       _engine;
-        Initializer *_initializer;
+ private:
+  Engine       _engine;
+  Initializer* _initializer;
 };
 
 template <typename I>
-struct TypeInfo<SparseGeMatrix<I> >
-{
-    typedef SparseGeMatrix<I> Impl;
-    typedef typename I::ElementType ElementType;
+struct TypeInfo<SparseGeMatrix<I> > {
+  typedef SparseGeMatrix<I>       Impl;
+  typedef typename I::ElementType ElementType;
 };
 
 //== SparseSyMatrix ============================================================
 
 template <typename Engine>
-class SparseSyMatrix
-    : public SymmetricMatrix<SparseSyMatrix<Engine> >
-{
-    public:
-        // shortcut for element type
-        typedef typename SparseSyMatrix<Engine>::ElementType  T;
+class SparseSyMatrix : public SymmetricMatrix<SparseSyMatrix<Engine> > {
+ public:
+  // shortcut for element type
+  typedef typename SparseSyMatrix<Engine>::ElementType T;
 
-        typedef typename Engine::Initializer     Initializer;
-        typedef typename Engine::const_iterator  const_iterator;
-        typedef typename Engine::iterator        iterator;
+  typedef typename Engine::Initializer                 Initializer;
+  typedef typename Engine::const_iterator              const_iterator;
+  typedef typename Engine::iterator                    iterator;
 
-        // -- constructors -----------------------------------------------------
-        SparseSyMatrix(int dim, int k=1);
+  // -- constructors -----------------------------------------------------
+  SparseSyMatrix(int dim, int k = 1);
 
-        // -- operators --------------------------------------------------------
-        SparseSyMatrix &
-        operator*=(T alpha);
+  // -- operators --------------------------------------------------------
+  SparseSyMatrix& operator*=(T alpha);
 
-        SparseSyMatrix &
-        operator/=(T alpha);
+  SparseSyMatrix& operator/=(T alpha);
 
-        T &
-        operator()(int row, int col);
+  T&              operator()(int row, int col);
 
-        // -- methods ----------------------------------------------------------
-        void
-        finalize();
+  // -- methods ----------------------------------------------------------
+  void            finalize();
 
-        int
-        dim() const;
+  int             dim() const;
 
-        int
-        numNonZeros() const;
+  int             numNonZeros() const;
 
-        const_iterator
-        begin() const;
+  const_iterator  begin() const;
 
-        iterator
-        begin();
+  iterator        begin();
 
-        const_iterator
-        end() const;
+  const_iterator  end() const;
 
-        iterator
-        end();
+  iterator        end();
 
-        // -- implementation ---------------------------------------------------
-        const Engine &
-        engine() const;
+  // -- implementation ---------------------------------------------------
+  const Engine&   engine() const;
 
-        Engine &
-        engine();
+  Engine&         engine();
 
-    private:
-        Engine       _engine;
-        Initializer *_initializer;
+ private:
+  Engine       _engine;
+  Initializer* _initializer;
 };
 
 template <typename I>
-struct TypeInfo<SparseSyMatrix<I> >
-{
-    typedef SparseSyMatrix<I> Impl;
-    typedef typename I::ElementType ElementType;
+struct TypeInfo<SparseSyMatrix<I> > {
+  typedef SparseSyMatrix<I>       Impl;
+  typedef typename I::ElementType ElementType;
 };
 
 //== SparseSymmertricMatrix ====================================================
 
 template <typename Engine>
-class SparseSymmetricMatrix
-    : public Matrix<SparseSymmetricMatrix<Engine> >
-{
-    public:
-        typedef typename Engine::ElementType     T;
-        typedef typename Engine::Initializer     Initializer;
-        typedef typename Engine::const_iterator  const_iterator;
+class SparseSymmetricMatrix : public Matrix<SparseSymmetricMatrix<Engine> > {
+ public:
+  typedef typename Engine::ElementType    T;
+  typedef typename Engine::Initializer    Initializer;
+  typedef typename Engine::const_iterator const_iterator;
 
-        // -- constructors -----------------------------------------------------
-        SparseSymmetricMatrix(int numRows, int numCols);
+  // -- constructors -----------------------------------------------------
+  SparseSymmetricMatrix(int numRows, int numCols);
 
-        // -- operators --------------------------------------------------------
-        T &
-        operator()(int row, int col);
+  // -- operators --------------------------------------------------------
+  T&             operator()(int row, int col);
 
-        // -- methods ----------------------------------------------------------
-        void
-        finalize();
+  // -- methods ----------------------------------------------------------
+  void           finalize();
 
-        int
-        numRows() const;
+  int            numRows() const;
 
-        int
-        numCols() const;
+  int            numCols() const;
 
-        int
-        numNonZeros() const;
+  int            numNonZeros() const;
 
-        const_iterator
-        begin() const;
+  const_iterator begin() const;
 
-        const_iterator
-        end() const;
+  const_iterator end() const;
 
-        // -- implementation ---------------------------------------------------
-        const Engine &
-        engine() const;
+  // -- implementation ---------------------------------------------------
+  const Engine&  engine() const;
 
-        Engine &
-        engine();
+  Engine&        engine();
 
-    private:
-        Engine       _engine;
-        Initializer *_initializer;
+ private:
+  Engine       _engine;
+  Initializer* _initializer;
 };
 
 template <typename I>
-struct TypeInfo<SparseSymmetricMatrix<I> >
-{
-    typedef SparseSymmetricMatrix<I> Impl;
-    typedef typename I::ElementType ElementType;
+struct TypeInfo<SparseSymmetricMatrix<I> > {
+  typedef SparseSymmetricMatrix<I> Impl;
+  typedef typename I::ElementType  ElementType;
 };
 
-} // namespace flens
+}  // namespace flens
 
-#include <flens/sparsematrix.tcc>
+#  include <flens/sparsematrix.tcc>
 
-#endif // FLENS_SPARSEMATRIX_H
+#endif  // FLENS_SPARSEMATRIX_H

@@ -39,86 +39,71 @@ namespace flens {
 //-- Level 1 -------------------------------------------------------------------
 
 template <int N, typename TX, int incX, typename TY, int incY>
-void
-copy(const TX *x, TY *y)
-{
-    for (int i=0, j=0; i<N; i+=incX, j+=incY) {
-        y[j] = x[i];
-    }
+void copy(const TX* x, TY* y) {
+  for (int i = 0, j = 0; i < N; i += incX, j += incY) {
+    y[j] = x[i];
+  }
 }
 
 template <int M, int N, typename TX, typename TY>
-void
-copy(const TX x[M][N], TY y[M][N])
-{
-    for (int i=0; i<M; ++i) {
-        for (int j=0; j<N; ++j) {
-            y[i][j] = x[i][j];
-        }
+void copy(const TX x[M][N], TY y[M][N]) {
+  for (int i = 0; i < M; ++i) {
+    for (int j = 0; j < N; ++j) {
+      y[i][j] = x[i][j];
     }
+  }
 }
 
 template <int N, typename T, typename TX, int incX, typename TY, int incY>
-void
-axpy(T alpha, const TX *x, TY *y)
-{
-    for (int i=0, j=0; i<N; i+=incX, j+=incY) {
-        y[j] += alpha*x[i];
-    }
+void axpy(T alpha, const TX* x, TY* y) {
+  for (int i = 0, j = 0; i < N; i += incX, j += incY) {
+    y[j] += alpha * x[i];
+  }
 }
 
 template <int M, int N, typename T, typename TX, typename TY>
-void
-axpy(T alpha, const TX x[M][N], TY y[M][N])
-{
-    for (int i=0; i<M; ++i) {
-        for (int j=0; j<N; ++j) {
-            y[i][j] += alpha*x[i][j];
-        }
+void axpy(T alpha, const TX x[M][N], TY y[M][N]) {
+  for (int i = 0; i < M; ++i) {
+    for (int j = 0; j < N; ++j) {
+      y[i][j] += alpha * x[i][j];
     }
+  }
 }
 
 template <int N, typename TX, int incX, typename TY, int incY>
-typename Promotion<TX, TY>::Type
-dot(const TX *x, const TY *y)
-{
-    typedef typename Promotion<TX, TY>::Type Result;
+typename Promotion<TX, TY>::Type dot(const TX* x, const TY* y) {
+  typedef typename Promotion<TX, TY>::Type Result;
 
-    Result result = Result(0);
-    for (int i=0, j=0; i<N; i+=incX, j+=incY) {
-        result += x[i]*y[j];
-    }
-    return result;
+  Result                                   result = Result(0);
+  for (int i = 0, j = 0; i < N; i += incX, j += incY) {
+    result += x[i] * y[j];
+  }
+  return result;
 }
 
 //-- Level 2 -------------------------------------------------------------------
 
-template <typename ALPHA, typename TA, int M, int N, typename TX, int NX,
-          typename BETA, typename TY, int NY>
-void
-gemv(Transpose trans, ALPHA alpha, const TA A[M][N], const TX x[NX],
-     BETA beta, TY y[NY])
-{
-    assert(((trans==NoTrans) && (N==NX) && (M==NY))
-        || ((trans==Trans) && (N==NY) && (M==NX)));
+template <typename ALPHA, typename TA, int M, int N, typename TX, int NX, typename BETA, typename TY, int NY>
+void gemv(Transpose trans, ALPHA alpha, const TA A[M][N], const TX x[NX], BETA beta, TY y[NY]) {
+  assert(((trans == NoTrans) && (N == NX) && (M == NY)) || ((trans == Trans) && (N == NY) && (M == NX)));
 
-    if (trans==NoTrans) {
-        for (int i=0; i<M; ++i) {
-            TY sum = beta*y[i];
-            for (int j=0; j<N; ++j) {
-                sum += alpha * A[i][j] * x[j];
-            }
-            y[i] = sum;
-        }
-    } else {
-        for (int j=0; j<N; ++j) {
-            TY sum = beta*y[j];
-            for (int i=0; i<M; ++i) {
-                sum += alpha * A[i][j] * x[i];
-            }
-            y[j] = sum;
-        }
+  if (trans == NoTrans) {
+    for (int i = 0; i < M; ++i) {
+      TY sum = beta * y[i];
+      for (int j = 0; j < N; ++j) {
+        sum += alpha * A[i][j] * x[j];
+      }
+      y[i] = sum;
     }
+  } else {
+    for (int j = 0; j < N; ++j) {
+      TY sum = beta * y[j];
+      for (int i = 0; i < M; ++i) {
+        sum += alpha * A[i][j] * x[i];
+      }
+      y[j] = sum;
+    }
+  }
 }
 
 //== High-Level BLAS: Tiny Types ===============================================
@@ -126,154 +111,131 @@ gemv(Transpose trans, ALPHA alpha, const TA A[M][N], const TX x[NX],
 //-- Level 1 -------------------------------------------------------------------
 
 template <typename X, typename Y>
-typename Promotion<typename TypeInfo<X>::ElementType,
-                   typename TypeInfo<Y>::ElementType>::Type
-dot(const TinyVector<X> &x, const TinyVector<Y> &y)
-{
-    assert(TypeInfo<X>::length==TypeInfo<Y>::length);
+typename Promotion<typename TypeInfo<X>::ElementType, typename TypeInfo<Y>::ElementType>::Type dot(
+    const TinyVector<X>& x,
+    const TinyVector<Y>& y) {
+  assert(TypeInfo<X>::length == TypeInfo<Y>::length);
 
-    typedef typename TypeInfo<X>::ElementType TX;
-    typedef typename TypeInfo<Y>::ElementType TY;
+  typedef typename TypeInfo<X>::ElementType TX;
+  typedef typename TypeInfo<Y>::ElementType TY;
 
-    return dot<TypeInfo<X>::length,
-              TX, TypeInfo<X>::stride,
-              TY, TypeInfo<Y>::stride>(x.engine()._data, y.engine()._data);
+  return dot<TypeInfo<X>::length, TX, TypeInfo<X>::stride, TY, TypeInfo<Y>::stride>(x.engine()._data,
+                                                                                    y.engine()._data);
 }
 
 template <typename X, typename Y>
-void
-copy(const TinyVector<X> &x, TinyVector<Y> &y)
-{
-    assert(TypeInfo<X>::length==TypeInfo<Y>::length);
+void copy(const TinyVector<X>& x, TinyVector<Y>& y) {
+  assert(TypeInfo<X>::length == TypeInfo<Y>::length);
 
-    typedef typename TypeInfo<X>::ElementType TX;
-    typedef typename TypeInfo<Y>::ElementType TY;
+  typedef typename TypeInfo<X>::ElementType TX;
+  typedef typename TypeInfo<Y>::ElementType TY;
 
-    copy<TypeInfo<X>::length,
-         TX, TypeInfo<X>::stride,
-         TY, TypeInfo<Y>::stride>(x.engine()._data, y.engine()._data);
+  copy<TypeInfo<X>::length, TX, TypeInfo<X>::stride, TY, TypeInfo<Y>::stride>(x.engine()._data, y.engine()._data);
 }
 
 template <typename X, typename Y>
-void
-copy(const TinyVector<X> &x, DenseVector<Y> &y)
-{
-    if (x.length()!=y.length()) {
-        y.resize(x.length());
-    }
+void copy(const TinyVector<X>& x, DenseVector<Y>& y) {
+  if (x.length() != y.length()) {
+    y.resize(x.length());
+  }
 
-    copy(x.length(), x.data(), x.stride(), y.data(), y.stride());
+  copy(x.length(), x.data(), x.stride(), y.data(), y.stride());
 }
 
 template <typename X, typename Y>
-void
-copy(const DenseVector<X> &x, TinyVector<Y> &y)
-{
-    if (x.length()!=y.length()) {
-        y.resize(x.length());
-    }
+void copy(const DenseVector<X>& x, TinyVector<Y>& y) {
+  if (x.length() != y.length()) {
+    y.resize(x.length());
+  }
 
-    copy(x.length(), x.data(), x.stride(), y.data(), y.stride());
+  copy(x.length(), x.data(), x.stride(), y.data(), y.stride());
 }
 
 template <typename X, typename Y>
-void
-copy(const TinyGeMatrix<X> &x, TinyGeMatrix<Y> &y)
-{
-    assert(TypeInfo<X>::numRows==TypeInfo<Y>::numRows);
-    assert(TypeInfo<X>::numCols==TypeInfo<Y>::numCols);
+void copy(const TinyGeMatrix<X>& x, TinyGeMatrix<Y>& y) {
+  assert(TypeInfo<X>::numRows == TypeInfo<Y>::numRows);
+  assert(TypeInfo<X>::numCols == TypeInfo<Y>::numCols);
 
-    typedef typename TypeInfo<X>::ElementType TX;
-    typedef typename TypeInfo<Y>::ElementType TY;
+  typedef typename TypeInfo<X>::ElementType TX;
+  typedef typename TypeInfo<Y>::ElementType TY;
 
-    static const int M = TypeInfo<X>::numRows;
-    static const int N = TypeInfo<X>::numCols;
+  static const int                          M = TypeInfo<X>::numRows;
+  static const int                          N = TypeInfo<X>::numCols;
 
-    copy<M, N, TX, TY>(x.engine()._data, y.engine()._data);
+  copy<M, N, TX, TY>(x.engine()._data, y.engine()._data);
 }
 
 template <typename X, typename Y>
-void
-copy(const TinyGeMatrix<X> &x, GeMatrix<Y> &y)
-{
-    if ((y.numRows()!=x.numRows()) || (y.numCols()!=x.numCols())) {
-        y.resize(x.numRows(), x.numCols(),
-                 x.firstRow(), x.firstCol());
-    }
+void copy(const TinyGeMatrix<X>& x, GeMatrix<Y>& y) {
+  if ((y.numRows() != x.numRows()) || (y.numCols() != x.numCols())) {
+    y.resize(x.numRows(), x.numCols(), x.firstRow(), x.firstCol());
+  }
 
-    for (int i=x.firstRow(), I=y.firstRow(); i<=x.lastRow(); ++i, ++I) {
-        for (int j=x.firstCol(), J=y.firstCol(); j<=x.lastCol(); ++j, ++J) {
-            y(I,J) = x(i,j);
-        }
+  for (int i = x.firstRow(), I = y.firstRow(); i <= x.lastRow(); ++i, ++I) {
+    for (int j = x.firstCol(), J = y.firstCol(); j <= x.lastCol(); ++j, ++J) {
+      y(I, J) = x(i, j);
     }
+  }
 }
 
 template <typename X, typename Y>
-void
-copy(const GeMatrix<X> &x, TinyGeMatrix<Y> &y)
-{
-    if ((y.numRows()!=x.numRows()) || (y.numCols()!=x.numCols())) {
-        y.resize(x.numRows(), x.numCols(),
-                 x.firstRow(), x.firstCol());
-    }
+void copy(const GeMatrix<X>& x, TinyGeMatrix<Y>& y) {
+  if ((y.numRows() != x.numRows()) || (y.numCols() != x.numCols())) {
+    y.resize(x.numRows(), x.numCols(), x.firstRow(), x.firstCol());
+  }
 
-    for (int i=x.firstRow(), I=y.firstRow(); i<=x.lastRow(); ++i, ++I) {
-        for (int j=x.firstCol(), J=y.firstCol(); j<=x.lastCol(); ++j, ++J) {
-            y(I,J) = x(i,j);
-        }
+  for (int i = x.firstRow(), I = y.firstRow(); i <= x.lastRow(); ++i, ++I) {
+    for (int j = x.firstCol(), J = y.firstCol(); j <= x.lastCol(); ++j, ++J) {
+      y(I, J) = x(i, j);
     }
+  }
 }
 
 template <typename T, typename X, typename Y>
-void
-axpy(T alpha, const TinyVector<X> &x, TinyVector<Y> &y)
-{
-    assert(TypeInfo<X>::length==TypeInfo<Y>::length);
+void axpy(T alpha, const TinyVector<X>& x, TinyVector<Y>& y) {
+  assert(TypeInfo<X>::length == TypeInfo<Y>::length);
 
-    typedef typename TypeInfo<X>::ElementType TX;
-    typedef typename TypeInfo<Y>::ElementType TY;
+  typedef typename TypeInfo<X>::ElementType TX;
+  typedef typename TypeInfo<Y>::ElementType TY;
 
-    axpy<TypeInfo<X>::length, T,
-         TX, TypeInfo<X>::stride,
-         TY, TypeInfo<Y>::stride>(alpha, x.engine()._data, y.engine()._data);
+  axpy<TypeInfo<X>::length, T, TX, TypeInfo<X>::stride, TY, TypeInfo<Y>::stride>(alpha, x.engine()._data,
+                                                                                 y.engine()._data);
 }
 
 template <typename T, typename X, typename Y>
-void
-axpy(T alpha, const TinyGeMatrix<X> &x, TinyGeMatrix<Y> &y)
-{
-    assert(TypeInfo<X>::numRows==TypeInfo<Y>::numRows);
-    assert(TypeInfo<X>::numCols==TypeInfo<Y>::numCols);
+void axpy(T alpha, const TinyGeMatrix<X>& x, TinyGeMatrix<Y>& y) {
+  assert(TypeInfo<X>::numRows == TypeInfo<Y>::numRows);
+  assert(TypeInfo<X>::numCols == TypeInfo<Y>::numCols);
 
-    typedef typename TypeInfo<X>::ElementType TX;
-    typedef typename TypeInfo<Y>::ElementType TY;
+  typedef typename TypeInfo<X>::ElementType TX;
+  typedef typename TypeInfo<Y>::ElementType TY;
 
-    static const int M = TypeInfo<X>::numRows;
-    static const int N = TypeInfo<X>::numCols;
+  static const int                          M = TypeInfo<X>::numRows;
+  static const int                          N = TypeInfo<X>::numCols;
 
-    axpy<M, N, T, TX, TY>(alpha, x.engine()._data, y.engine()._data);
+  axpy<M, N, T, TX, TY>(alpha, x.engine()._data, y.engine()._data);
 }
 
 //-- Level 2 -------------------------------------------------------------------
 
 template <typename ALPHA, typename MA, typename VX, typename BETA, typename VY>
-void
-mv(Transpose trans,
-   ALPHA alpha, const TinyGeMatrix<MA> &A, const TinyVector<VX> &x,
-   BETA beta, TinyVector<VY> &y)
-{
-    typedef typename TypeInfo<MA>::ElementType TA;
-    typedef typename TypeInfo<VX>::ElementType TX;
-    typedef typename TypeInfo<VY>::ElementType TY;
+void mv(Transpose               trans,
+        ALPHA                   alpha,
+        const TinyGeMatrix<MA>& A,
+        const TinyVector<VX>&   x,
+        BETA                    beta,
+        TinyVector<VY>&         y) {
+  typedef typename TypeInfo<MA>::ElementType TA;
+  typedef typename TypeInfo<VX>::ElementType TX;
+  typedef typename TypeInfo<VY>::ElementType TY;
 
-    static const int M = TypeInfo<MA>::numRows;
-    static const int N = TypeInfo<MA>::numCols;
-    static const int NX = TypeInfo<VX>::length;
-    static const int NY = TypeInfo<VY>::length;
+  static const int                           M  = TypeInfo<MA>::numRows;
+  static const int                           N  = TypeInfo<MA>::numCols;
+  static const int                           NX = TypeInfo<VX>::length;
+  static const int                           NY = TypeInfo<VY>::length;
 
-    gemv<ALPHA, TA, M, N, TX, NX, BETA, TY, NY>(trans, alpha, A.engine()._data,
-                                                x.engine()._data, beta,
-                                                y.engine()._data);
+  gemv<ALPHA, TA, M, N, TX, NX, BETA, TY, NY>(trans, alpha, A.engine()._data, x.engine()._data, beta,
+                                              y.engine()._data);
 }
 
-} // namespace flens
+}  // namespace flens

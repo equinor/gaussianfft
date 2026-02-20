@@ -32,16 +32,24 @@
 
 #ifdef MKL
 
-#include <mkl.h>
+#  include <mkl.h>
 
-void* flens_malloc(size_t size) { return mkl_malloc(size, 64); }
-void  flens_free(void* p)       { mkl_free(p); }
+void* flens_malloc(size_t size) {
+  return mkl_malloc(size, 64);
+}
+void flens_free(void* p) {
+  mkl_free(p);
+}
 
 #else
 
-#include <cstdlib>
+#  include <cstdlib>
 
-void* flens_malloc(size_t size) { return malloc(size); }
-void  flens_free(void* p)       { free(p); }
+void* flens_malloc(size_t size) {
+  return malloc(size);
+}
+void flens_free(void* p) {
+  free(p);
+}
 
-#endif // MKL
+#endif  // MKL

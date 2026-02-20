@@ -31,32 +31,21 @@
  */
 
 #ifndef FLENS_STORAGE_H
-#define FLENS_STORAGE_H 1
+#  define FLENS_STORAGE_H 1
 
 namespace flens {
 
-enum StorageOrder {
-    RowMajor,
-    ColMajor
-};
+enum StorageOrder { RowMajor, ColMajor };
 
-enum StorageUpLo {
-    Upper,
-    Lower
-};
+enum StorageUpLo { Upper, Lower };
 
-enum UnitDiag {
-    Unit,
-    NonUnit
-};
+enum UnitDiag { Unit, NonUnit };
 
 template <typename A>
-struct StorageInfo
-{
-};
+struct StorageInfo {};
 
-enum Transpose {NoTrans=0, Conj=1, Trans=2, ConjTrans=3};
+enum Transpose { NoTrans = 0, Conj = 1, Trans = 2, ConjTrans = 3 };
 
-} // namespace flens
+}  // namespace flens
 
-#endif // FLENS_STORAGE_H
+#endif  // FLENS_STORAGE_H

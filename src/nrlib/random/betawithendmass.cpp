@@ -2,33 +2,42 @@
 
 // Copyright (c)  2011, Norwegian Computing Center
 // All rights reserved.
-// Redistribution and use in source and binary forms, with or without modification,
-// are permitted provided that the following conditions are met:
-// •  Redistributions of source code must retain the above copyright notice, this
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+// •  Redistributions of source code must retain the above copyright notice,
+// this
 //    list of conditions and the following disclaimer.
-// •  Redistributions in binary form must reproduce the above copyright notice, this list of
-//    conditions and the following disclaimer in the documentation and/or other materials
-//    provided with the distribution.
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
-// EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-// OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
-// SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
-// OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-// HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-// OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
-// EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+// •  Redistributions in binary form must reproduce the above copyright notice,
+// this list of
+//    conditions and the following disclaimer in the documentation and/or other
+//    materials provided with the distribution.
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE.
 
 #include "betawithendmass.hpp"
-#include "beta.hpp"
+#include <cassert>
 #include <cmath>
 #include <cstdio>
-#include <cassert>
+#include "beta.hpp"
 
 namespace NRLib {
 
-BetaWithEndMass::BetaWithEndMass(double min_val, double max_val, double p_min, double p_max, double a, double b, int nx)
-{
+BetaWithEndMass::BetaWithEndMass(double min_val,
+                                 double max_val,
+                                 double p_min,
+                                 double p_max,
+                                 double a,
+                                 double b,
+                                 int    nx) {
   assert(a > 0.0);
   assert(b > 0.0);
   assert(max_val > min_val);
@@ -38,22 +47,16 @@ BetaWithEndMass::BetaWithEndMass(double min_val, double max_val, double p_min, d
   p_max_ = p_max;
   nx_    = nx;
 
-  beta_ = NRLib::Beta(min_val, max_val, a, b, nx);
-  //Implicitt call of beta_.ComputePdfAndCdf() and beta_.ComputeQuantile();
+  beta_  = NRLib::Beta(min_val, max_val, a, b, nx);
+  // Implicitt call of beta_.ComputePdfAndCdf() and beta_.ComputeQuantile();
 }
 
-BetaWithEndMass::BetaWithEndMass()
-{
-}
+BetaWithEndMass::BetaWithEndMass() {}
 
-BetaWithEndMass::~BetaWithEndMass()
-{
-}
+BetaWithEndMass::~BetaWithEndMass() {}
 
-Distribution<double>*
-BetaWithEndMass::Clone() const
-{
+Distribution<double>* BetaWithEndMass::Clone() const {
   return new BetaWithEndMass(*this);
 }
 
-} // namespace NRLib
+}  // namespace NRLib

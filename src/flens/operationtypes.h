@@ -31,56 +31,56 @@
  */
 
 #ifndef FLENS_OPERATIONTYPES_H
-#define FLENS_OPERATIONTYPES_H 1
+#  define FLENS_OPERATIONTYPES_H 1
 
 namespace flens {
 
 // == Operation types ==========================================================
 
 //-- used by matvec-closures (and scalar closures) -----------------------------
-struct OpAdd {};              // x+y, A+B
-struct OpSub {};              // x-y, A-B
-struct OpMult {};             // alpha*x, alpha*A, x*y = x^T*y, A*x, A*B
+struct OpAdd {};   // x+y, A+B
+struct OpSub {};   // x-y, A-B
+struct OpMult {};  // alpha*x, alpha*A, x*y = x^T*y, A*x, A*B
 
-struct OpTrans {};            // transpose(A) = A^T
-struct OpConjTrans {};        // conjugateTranspose(A) = A^H
+struct OpTrans {};      // transpose(A) = A^T
+struct OpConjTrans {};  // conjugateTranspose(A) = A^H
 
 //-- used by scalarclosures-----------------------------------------------------
 
 //-- binary and unary operations
-struct OpMinus {};              //  x-y, -x
+struct OpMinus {};  //  x-y, -x
 
 //-- binary operations
-struct OpDiv {};                //  x / y
-struct OpMod {};                //  x % y
-struct OpMax {};                //  max(x,y)
-struct OpMin {};                //  min(x,y)
-struct OpPow {};                //  x^y
+struct OpDiv {};  //  x / y
+struct OpMod {};  //  x % y
+struct OpMax {};  //  max(x,y)
+struct OpMin {};  //  min(x,y)
+struct OpPow {};  //  x^y
 
 //-- unary operations
-struct OpConj {};               //  conj(x)
-struct OpCeil {};               //  ceil(x)
-struct OpFloor {};              //  floor(x)
-struct OpAbs {};                //  abs(x) = |x|
-struct OpSqrt {};               //  sqrt(x)
-struct OpExp {};                //  exp(x) = e^x
-struct OpExp2 {};               //  exp2(x) = 2^x
-struct OpLog {};                //  log(x) = ln(x)
-struct OpLog2 {};               //  log2(x) = log_2(x)
-struct OpLog10 {};              //  log10(x) = log_10(x)
-struct OpCos {};                //  cos(x)
-struct OpSin {};                //  sin(x)
-struct OpTan {};                //  tan(x)
-struct OpCosh {};               //  cosh(x)
-struct OpSinh {};               //  sinh(x)
-struct OpTanh {};               //  tanh(x)
-struct OpArccos {};             //  acos(x) = arccos(x)
-struct OpArcsin {};             //  asin(x) = arcsin(x)
-struct OpArctan {};             //  atan(x) = arctan(x)
-struct OpArcosh {};             //  acosh(x) = arcosh(x)
-struct OpArsinh {};             //  asinh(x) = arsinh(x)
-struct OpArtanh {};             //  atanh(x) = artanh(x)
+struct OpConj {};    //  conj(x)
+struct OpCeil {};    //  ceil(x)
+struct OpFloor {};   //  floor(x)
+struct OpAbs {};     //  abs(x) = |x|
+struct OpSqrt {};    //  sqrt(x)
+struct OpExp {};     //  exp(x) = e^x
+struct OpExp2 {};    //  exp2(x) = 2^x
+struct OpLog {};     //  log(x) = ln(x)
+struct OpLog2 {};    //  log2(x) = log_2(x)
+struct OpLog10 {};   //  log10(x) = log_10(x)
+struct OpCos {};     //  cos(x)
+struct OpSin {};     //  sin(x)
+struct OpTan {};     //  tan(x)
+struct OpCosh {};    //  cosh(x)
+struct OpSinh {};    //  sinh(x)
+struct OpTanh {};    //  tanh(x)
+struct OpArccos {};  //  acos(x) = arccos(x)
+struct OpArcsin {};  //  asin(x) = arcsin(x)
+struct OpArctan {};  //  atan(x) = arctan(x)
+struct OpArcosh {};  //  acosh(x) = arcosh(x)
+struct OpArsinh {};  //  asinh(x) = arsinh(x)
+struct OpArtanh {};  //  atanh(x) = artanh(x)
 
-} // namespace flens
+}  // namespace flens
 
-#endif // FLENS_OPERATIONTYPES_H
+#endif  // FLENS_OPERATIONTYPES_H

@@ -31,11 +31,11 @@
  */
 
 #ifndef FLENS_LAPACK_FLENS_AUX_H
-#define FLENS_LAPACK_FLENS_AUX_H 1
+#  define FLENS_LAPACK_FLENS_AUX_H 1
 
-#include <flens/densevector.h>
-#include <flens/generalmatrix.h>
-#include <flens/lapack_flens.h>
+#  include <flens/densevector.h>
+#  include <flens/generalmatrix.h>
+#  include <flens/lapack_flens.h>
 
 namespace flens {
 
@@ -43,40 +43,28 @@ template <typename Mat, typename Vec>
 class OrthMatrixQR;
 
 template <typename Mat, typename Vec>
-struct TypeInfo<OrthMatrixQR<Mat,Vec> >
-{
-    typedef OrthMatrixQR<Mat, Vec>  Impl;
-    typedef double                  ElementType;
+struct TypeInfo<OrthMatrixQR<Mat, Vec> > {
+  typedef OrthMatrixQR<Mat, Vec> Impl;
+  typedef double                 ElementType;
 };
 
 template <typename Mat, typename Vec>
-class OrthMatrixQR
-    : public GeneralMatrix<OrthMatrixQR<Mat, Vec> >
-{
-    public:
-        OrthMatrixQR(const Mat &_QR, const Vec &_tau)
-            : QR(_QR), tau(_tau)
-        {
-        }
+class OrthMatrixQR : public GeneralMatrix<OrthMatrixQR<Mat, Vec> > {
+ public:
+  OrthMatrixQR(const Mat& _QR, const Vec& _tau) : QR(_QR), tau(_tau) {}
 
-        const Mat &QR;
-        const Vec &tau;
+  const Mat& QR;
+  const Vec& tau;
 };
 
 template <typename ALPHA, typename M, typename V, typename Mat, typename BETA>
-void
-mm(Transpose transA, Transpose transB, ALPHA alpha,
-   const OrthMatrixQR<M,V> &A, const Mat &X,
-   BETA beta, Mat &B);
+void mm(Transpose transA, Transpose transB, ALPHA alpha, const OrthMatrixQR<M, V>& A, const Mat& X, BETA beta, Mat& B);
 
 template <typename ALPHA, typename M, typename V, typename Mat, typename BETA>
-void
-mm(Transpose transB, Transpose transA, ALPHA alpha,
-   const Mat &X, const OrthMatrixQR<M,V> &A,
-   BETA beta, Mat &B);
+void mm(Transpose transB, Transpose transA, ALPHA alpha, const Mat& X, const OrthMatrixQR<M, V>& A, BETA beta, Mat& B);
 
-} // namespace flens
+}  // namespace flens
 
-#include <flens/lapack_flens_aux.tcc>
+#  include <flens/lapack_flens_aux.tcc>
 
-#endif // FLENS_LAPACK_FLENS_AUX_H
+#endif  // FLENS_LAPACK_FLENS_AUX_H

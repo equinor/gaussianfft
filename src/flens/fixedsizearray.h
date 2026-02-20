@@ -31,155 +31,127 @@
  */
 
 #ifndef FLENS_FIXEDSIZEARRAY_H
-#define FLENS_FIXEDSIZEARRAY_H 1
+#  define FLENS_FIXEDSIZEARRAY_H 1
 
-#include <flens/listinitializer.h>
+#  include <flens/listinitializer.h>
 
 namespace flens {
-
 
 //== FixedSizeArray1D ==========================================================
 
 template <typename T, int N>
-class FixedSizeArray1D
-{
-    public:
-        typedef T ElementType;
+class FixedSizeArray1D {
+ public:
+  typedef T ElementType;
 
-        FixedSizeArray1D();
+  FixedSizeArray1D();
 
-        FixedSizeArray1D(const FixedSizeArray1D<T,N> &rhs);
+  FixedSizeArray1D(const FixedSizeArray1D<T, N>& rhs);
 
-        ~FixedSizeArray1D();
+  ~FixedSizeArray1D();
 
-        // -- operators --------------------------------------------------------
+  // -- operators --------------------------------------------------------
 
-        ListInitializer<FixedSizeArray1D<T,N> >
-        operator=(const T &value);
+  ListInitializer<FixedSizeArray1D<T, N> > operator=(const T& value);
 
-        FixedSizeArray1D<T, N>
-        operator=(const FixedSizeArray1D<T, N> &rhs);
+  FixedSizeArray1D<T, N>                   operator=(const FixedSizeArray1D<T, N>& rhs);
 
-        const T &
-        operator()(int index) const;
+  const T&                                 operator()(int index) const;
 
-        T &
-        operator()(int index);
+  T&                                       operator()(int index);
 
-        // -- methods ----------------------------------------------------------
+  // -- methods ----------------------------------------------------------
 
-        int
-        firstIndex() const;
+  int                                      firstIndex() const;
 
-        int
-        lastIndex() const;
+  int                                      lastIndex() const;
 
-        int
-        length() const;
+  int                                      length() const;
 
-        int
-        stride() const;
+  int                                      stride() const;
 
-        const T *
-        data() const;
+  const T*                                 data() const;
 
-        T *
-        data();
+  T*                                       data();
 
-        T _data[N];
+  T                                        _data[N];
 };
 
 template <typename T, int N>
-struct TypeInfo<FixedSizeArray1D<T,N> >
-{
-    typedef T ElementType;
+struct TypeInfo<FixedSizeArray1D<T, N> > {
+  typedef T        ElementType;
 
-    static const int length = N;
-    static const int stride = 1;
-    static const int firstIndex = 0;
-    static const int lastIndex = N-1;
+  static const int length     = N;
+  static const int stride     = 1;
+  static const int firstIndex = 0;
+  static const int lastIndex  = N - 1;
 };
 
 //== FixedSizeArray2D ==========================================================
 
 template <typename T, int M, int N>
-class FixedSizeArray2D
-{
-    public:
-        typedef T ElementType;
+class FixedSizeArray2D {
+ public:
+  typedef T ElementType;
 
-        FixedSizeArray2D();
+  FixedSizeArray2D();
 
-        FixedSizeArray2D(const FixedSizeArray2D<T,M,N> &rhs);
+  FixedSizeArray2D(const FixedSizeArray2D<T, M, N>& rhs);
 
-        ~FixedSizeArray2D();
+  ~FixedSizeArray2D();
 
-        // -- operators --------------------------------------------------------
+  // -- operators --------------------------------------------------------
 
-        ListInitializer<FixedSizeArray2D<T,M,N> >
-        operator=(const T &value);
+  ListInitializer<FixedSizeArray2D<T, M, N> > operator=(const T& value);
 
-        FixedSizeArray2D<T,M,N>
-        operator=(const FixedSizeArray2D<T,M,N> &rhs);
+  FixedSizeArray2D<T, M, N>                   operator=(const FixedSizeArray2D<T, M, N>& rhs);
 
-        const T &
-        operator()(int row, int col) const;
+  const T&                                    operator()(int row, int col) const;
 
-        T &
-        operator()(int row, int col);
+  T&                                          operator()(int row, int col);
 
-        // -- methods ----------------------------------------------------------
+  // -- methods ----------------------------------------------------------
 
-        int
-        firstRow() const;
+  int                                         firstRow() const;
 
-        int
-        lastRow() const;
+  int                                         lastRow() const;
 
-        int
-        firstCol() const;
+  int                                         firstCol() const;
 
-        int
-        lastCol() const;
+  int                                         lastCol() const;
 
-        int
-        numRows() const;
+  int                                         numRows() const;
 
-        int
-        numCols() const;
+  int                                         numCols() const;
 
-        int
-        leadingDimension() const;
+  int                                         leadingDimension() const;
 
-        T _data[M][N];
+  T                                           _data[M][N];
 };
 
 template <typename T, int M, int N>
-struct TypeInfo<FixedSizeArray2D<T,M,N> >
-{
-    typedef T ElementType;
+struct TypeInfo<FixedSizeArray2D<T, M, N> > {
+  typedef T        ElementType;
 
-    static const int numRows = M;
-    static const int numCols = N;
-    static const int leadingDimension = N;
-    static const int firstRow = 0;
-    static const int lastRow = M-1;
-    static const int firstCol = 0;
-    static const int lastCol = N-1;
+  static const int numRows          = M;
+  static const int numCols          = N;
+  static const int leadingDimension = N;
+  static const int firstRow         = 0;
+  static const int lastRow          = M - 1;
+  static const int firstCol         = 0;
+  static const int lastCol          = N - 1;
 };
 
 //== IO ========================================================================
 
 template <typename T, int N>
-std::ostream &
-operator<<(std::ostream &out, const FixedSizeArray1D<T,N> &x);
+std::ostream& operator<<(std::ostream& out, const FixedSizeArray1D<T, N>& x);
 
 template <typename T, int M, int N>
-std::ostream &
-operator<<(std::ostream &out, const FixedSizeArray2D<T,M,N> &x);
+std::ostream& operator<<(std::ostream& out, const FixedSizeArray2D<T, M, N>& x);
 
-} // namespace flens
+}  // namespace flens
 
-#include <flens/fixedsizearray.tcc>
+#  include <flens/fixedsizearray.tcc>
 
-#endif // FLENS_FIXEDSIZEARRAY_H
+#endif  // FLENS_FIXEDSIZEARRAY_H

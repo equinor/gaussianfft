@@ -37,23 +37,19 @@
 
 namespace flens {
 
-Range
-Underscore::operator()(int firstIndex, int lastIndex)
-{
-    assert(firstIndex<=lastIndex);
+Range Underscore::operator()(int firstIndex, int lastIndex) {
+  assert(firstIndex <= lastIndex);
 
-    return Range(firstIndex, 1, lastIndex);
+  return Range(firstIndex, 1, lastIndex);
 }
 
-Range
-Underscore::operator()(int firstIndex, int stride, int lastIndex)
-{
-    assert(lastIndex>=firstIndex);
-    assert(stride>0);
+Range Underscore::operator()(int firstIndex, int stride, int lastIndex) {
+  assert(lastIndex >= firstIndex);
+  assert(stride > 0);
 
-    return Range(firstIndex, stride, lastIndex);
+  return Range(firstIndex, stride, lastIndex);
 }
 
 Underscore _;
 
-} // namespace flens
+}  // namespace flens

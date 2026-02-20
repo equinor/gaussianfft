@@ -31,40 +31,43 @@
  */
 
 #ifndef FLENS_SPARSE_BLAS_FLENS_H
-#define FLENS_SPARSE_BLAS_FLENS_H 1
+#  define FLENS_SPARSE_BLAS_FLENS_H 1
 
-#include <flens/crs.h>
-#include <flens/densevector.h>
-#include <flens/sparsematrix.h>
+#  include <flens/crs.h>
+#  include <flens/densevector.h>
+#  include <flens/sparsematrix.h>
 
 namespace flens {
 
 // sparse_gemv
 template <typename T, typename VX, typename VY>
-void
-mv(Transpose trans, T alpha, const SparseGeMatrix<CRS<T> > &A,
-   const DenseVector<VX> &x,
-   typename DenseVector<VY>::T beta, DenseVector<VY> &y);
+void mv(Transpose                      trans,
+        T                              alpha,
+        const SparseGeMatrix<CRS<T> >& A,
+        const DenseVector<VX>&         x,
+        typename DenseVector<VY>::T    beta,
+        DenseVector<VY>&               y);
 
 // sparse_symv
 template <typename T, CRS_Storage Storage, typename VX, typename VY>
-void
-mv(T alpha, const SparseSyMatrix<CRS<T, Storage> > &A,
-   const DenseVector<VX> &x,
-   typename DenseVector<VY>::T beta, DenseVector<VY> &y);
+void mv(T                                       alpha,
+        const SparseSyMatrix<CRS<T, Storage> >& A,
+        const DenseVector<VX>&                  x,
+        typename DenseVector<VY>::T             beta,
+        DenseVector<VY>&                        y);
 
 // sparse_gemm (sparse x dense)
 template <typename T, CRS_Storage Storage>
-void
-mm(Transpose transA,
-   Transpose transB,
-   T alpha,
-   const SparseGeMatrix<CRS<T, Storage> > &A,
-   const GeMatrix<FullStorage<T, ColMajor> > &B,
-   T beta, GeMatrix<FullStorage<T, ColMajor> > &C);
+void mm(Transpose                                  transA,
+        Transpose                                  transB,
+        T                                          alpha,
+        const SparseGeMatrix<CRS<T, Storage> >&    A,
+        const GeMatrix<FullStorage<T, ColMajor> >& B,
+        T                                          beta,
+        GeMatrix<FullStorage<T, ColMajor> >&       C);
 
-} // namespace flens
+}  // namespace flens
 
-#include <flens/sparse_blas_flens.tcc>
+#  include <flens/sparse_blas_flens.tcc>
 
-#endif // FLENS_SPARSE_BLAS_FLENS_H
+#endif  // FLENS_SPARSE_BLAS_FLENS_H

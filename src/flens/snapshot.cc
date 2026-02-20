@@ -30,41 +30,34 @@
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <iostream>
 #include <iomanip>
+#include <iostream>
 #include <sstream>
 
 #include <flens/snapshot.h>
 
 namespace flens {
 
-SnapShot::SnapShot(const char *name)
-    : _name(name), _stream(0)
-{
+SnapShot::SnapShot(const char* name) : _name(name), _stream(0) {}
+
+SnapShot::~SnapShot() {
+  if (_stream) {
+    delete _stream;
+    _stream = 0;
+  }
 }
 
-SnapShot::~SnapShot()
-{
-    if (_stream) {
-        delete _stream;
-        _stream = 0;
-    }
+std::ofstream& SnapShot::operator()(int n) {
+  if (_stream) {
+    delete _stream;
+    _stream = 0;
+  }
+
+  std::ostringstream s;
+  s << _name << "_" << std::setw(3) << std::setfill('0') << n << ".dat";
+
+  _stream = new std::ofstream(s.str().c_str());
+  return *_stream;
 }
 
-
-std::ofstream &
-SnapShot::operator()(int n)
-{
-    if (_stream) {
-        delete _stream;
-        _stream = 0;
-    }
-
-    std::ostringstream s;
-    s << _name << "_" << std::setw(3) << std::setfill('0') << n << ".dat";
-
-    _stream = new std::ofstream(s.str().c_str());
-    return *_stream;
-}
-
-} // namespace flens
+}  // namespace flens

@@ -34,6 +34,14 @@ repos:
       - id: conventional-pre-commit
         stages: [commit-msg]
 
+  - repo: local
+    hooks:
+      - id: clang-format
+        name: Format C/C++ code
+        entry: clang-format -i
+        files: ^src/.*\.(cpp|hpp|cc?|h|tcc)$
+        language: system
+
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: "v0.15.1"
     hooks:

@@ -35,20 +35,17 @@
 
 namespace flens {
 
-class SnapShot
-{
-    public:
-        SnapShot(const char *name);
+class SnapShot {
+ public:
+  SnapShot(const char* name);
 
-        ~SnapShot();
+  ~SnapShot();
 
-        std::ofstream &
-        operator()(int n);
+  std::ofstream& operator()(int n);
 
-    private:
-        std::string   _name;
-        std::ofstream *_stream;
+ private:
+  std::string    _name;
+  std::ofstream* _stream;
 };
 
-
-} // namespace flens
+}  // namespace flens

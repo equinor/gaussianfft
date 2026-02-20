@@ -31,14 +31,14 @@
  */
 
 #ifndef FLENS_MATVECCLOSURES_H
-#define FLENS_MATVECCLOSURES_H 1
+#  define FLENS_MATVECCLOSURES_H 1
 
-#include <flens/macros.h>
-#include <flens/matvec.h>
-#include <flens/operationtypes.h>
-#include <flens/traits.h>
-#include <flens/scalarclosures.h>
-#include <flens/storage.h>
+#  include <flens/macros.h>
+#  include <flens/matvec.h>
+#  include <flens/operationtypes.h>
+#  include <flens/scalarclosures.h>
+#  include <flens/storage.h>
+#  include <flens/traits.h>
 
 namespace flens {
 
@@ -46,98 +46,77 @@ namespace flens {
 
 //-- defined in flens/scalarclosures.h --
 template <typename T>
-    class Scalar;
+class Scalar;
 
 //== VectorClosure =============================================================
 template <typename Op, typename L, typename R>
-class VectorClosure
-    : public Vector<VectorClosure<Op, L, R> >
-{
-    public:
-        VectorClosure(typename Ref<L>::Type l,
-                      typename Ref<R>::Type r);
+class VectorClosure : public Vector<VectorClosure<Op, L, R> > {
+ public:
+  VectorClosure(typename Ref<L>::Type l, typename Ref<R>::Type r);
 
-        typename Ref<L>::Type
-        left() const;
+  typename Ref<L>::Type left() const;
 
-        typename Ref<R>::Type
-        right() const;
+  typename Ref<R>::Type right() const;
 
-    private:
-        // No assigmnment operator
-        VectorClosure<Op, L, R>& operator=(VectorClosure<Op, L, R>);
+ private:
+  // No assigmnment operator
+  VectorClosure<Op, L, R>& operator=(VectorClosure<Op, L, R>);
 
-        typename Ref<L>::Type _left;
-        typename Ref<R>::Type _right;
+  typename Ref<L>::Type _left;
+  typename Ref<R>::Type _right;
 };
 
 template <typename Op, typename L, typename R>
-struct TypeInfo<VectorClosure<Op, L, R> >
-{
-    typedef VectorClosure<Op, L, R> Impl;
-    typedef typename Promotion<typename L::ElementType,
-                               typename R::ElementType>::Type ElementType;
+struct TypeInfo<VectorClosure<Op, L, R> > {
+  typedef VectorClosure<Op, L, R>                                                    Impl;
+  typedef typename Promotion<typename L::ElementType, typename R::ElementType>::Type ElementType;
 };
 
 //== MatrixClosure =============================================================
 template <typename Op, typename L, typename R>
-class MatrixClosure
-    : public Matrix<MatrixClosure<Op, L, R> >
-{
-    public:
-        MatrixClosure(typename Ref<L>::Type l,
-                      typename Ref<R>::Type r);
+class MatrixClosure : public Matrix<MatrixClosure<Op, L, R> > {
+ public:
+  MatrixClosure(typename Ref<L>::Type l, typename Ref<R>::Type r);
 
-        typename Ref<L>::Type
-        left() const;
+  typename Ref<L>::Type left() const;
 
-        typename Ref<R>::Type
-        right() const;
+  typename Ref<R>::Type right() const;
 
-    private:
-        // No assignment operator.
-        MatrixClosure<Op, L, R>& operator=(MatrixClosure<Op, L, R>&);
+ private:
+  // No assignment operator.
+  MatrixClosure<Op, L, R>& operator=(MatrixClosure<Op, L, R>&);
 
-        typename Ref<L>::Type _left;
-        typename Ref<R>::Type _right;
+  typename Ref<L>::Type    _left;
+  typename Ref<R>::Type    _right;
 };
 
 template <typename Op, typename L, typename R>
-struct TypeInfo<MatrixClosure<Op, L, R> >
-{
-    typedef MatrixClosure<Op, L, R> Impl;
-    typedef typename Promotion<typename L::ElementType,
-                               typename R::ElementType>::Type ElementType;
+struct TypeInfo<MatrixClosure<Op, L, R> > {
+  typedef MatrixClosure<Op, L, R>                                                    Impl;
+  typedef typename Promotion<typename L::ElementType, typename R::ElementType>::Type ElementType;
 };
 
 //== DebugClosure ==============================================================
 
-struct DebugClosure
-{
-    template <typename A>
-    static bool
-    search(const A &any, const void *addr)
-    {
-        return ADDRESS(any)==addr;
-    }
+struct DebugClosure {
+  template <typename A>
+  static bool search(const A& any, const void* addr) {
+    return ADDRESS(any) == addr;
+  }
 
-    template <typename Op, typename L, typename R>
-    static bool
-    search(const VectorClosure<Op, L, R> &closure, const void *addr)
-    {
-        return search(closure.left(), addr) || search(closure.right(), addr);
-    }
+  template <typename Op, typename L, typename R>
+  static bool search(const VectorClosure<Op, L, R>& closure, const void* addr) {
+    return search(closure.left(), addr) || search(closure.right(), addr);
+  }
 
-    template <typename Op, typename L, typename R>
-    static bool
-    search(const MatrixClosure<Op, L, R> &closure, const void *addr)
-    {
-        return search(closure.left(), addr) || search(closure.right(), addr);
-    }
+  template <typename Op, typename L, typename R>
+  static bool search(const MatrixClosure<Op, L, R>& closure, const void* addr) {
+    return search(closure.left(), addr) || search(closure.right(), addr);
+  }
 };
 
-} // namespace flens
+}  // namespace flens
 
-#include <flens/matvecclosures.tcc>
+#  include <flens/matvecclosures.tcc>
 
-#endif // FLENS_MATVECCLOSURES_H
+#endif  // FLENS_MATVECCLOSURES_H

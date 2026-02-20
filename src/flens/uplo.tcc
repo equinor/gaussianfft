@@ -33,59 +33,43 @@
 namespace flens {
 
 template <typename I>
-typename Matrix<I>::Impl::ConstTriangularView
-upper(const Matrix<I> &A)
-{
-    return A.impl().upper();
+typename Matrix<I>::Impl::ConstTriangularView upper(const Matrix<I>& A) {
+  return A.impl().upper();
 }
 
 template <typename I>
-typename Matrix<I>::Impl::TriangularView
-upper(Matrix<I> &A)
-{
-    return A.impl().upper();
+typename Matrix<I>::Impl::TriangularView upper(Matrix<I>& A) {
+  return A.impl().upper();
 }
 
 template <typename I>
-typename Matrix<I>::Impl::ConstTriangularView
-upperUnit(const Matrix<I> &A)
-{
-    return A.impl().upperUnit();
+typename Matrix<I>::Impl::ConstTriangularView upperUnit(const Matrix<I>& A) {
+  return A.impl().upperUnit();
 }
 
 template <typename I>
-typename Matrix<I>::Impl::TriangularView
-upperUnit(Matrix<I> &A)
-{
-    return A.impl().upperUnit();
+typename Matrix<I>::Impl::TriangularView upperUnit(Matrix<I>& A) {
+  return A.impl().upperUnit();
 }
 
 template <typename I>
-typename Matrix<I>::Impl::ConstTriangularView
-lower(const Matrix<I> &A)
-{
-    return A.impl().lower();
+typename Matrix<I>::Impl::ConstTriangularView lower(const Matrix<I>& A) {
+  return A.impl().lower();
 }
 
 template <typename I>
-typename Matrix<I>::Impl::TriangularView
-lower(Matrix<I> &A)
-{
-    return A.impl().lower();
+typename Matrix<I>::Impl::TriangularView lower(Matrix<I>& A) {
+  return A.impl().lower();
 }
 
 template <typename I>
-typename Matrix<I>::Impl::ConstTriangularView
-lowerUnit(const Matrix<I> &A)
-{
-    return A.impl().lowerUnit();
+typename Matrix<I>::Impl::ConstTriangularView lowerUnit(const Matrix<I>& A) {
+  return A.impl().lowerUnit();
 }
 
 template <typename I>
-typename Matrix<I>::Impl::TriangularView
-lowerUnit(Matrix<I> &A)
-{
-    return A.impl().lowerUnit();
+typename Matrix<I>::Impl::TriangularView lowerUnit(Matrix<I>& A) {
+  return A.impl().lowerUnit();
 }
 
-} // namespace flens
+}  // namespace flens

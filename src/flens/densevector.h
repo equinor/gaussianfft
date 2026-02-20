@@ -31,203 +31,156 @@
  */
 
 #ifndef FLENS_DENSEVECTOR_H
-#define FLENS_DENSEVECTOR_H 1
+#  define FLENS_DENSEVECTOR_H 1
 
-#include <flens/listinitializer.h>
-#include <flens/matvec.h>
-#include <flens/range.h>
-#include <flens/scalarclosures.h>
-#include <flens/traits.h>
+#  include <flens/listinitializer.h>
+#  include <flens/matvec.h>
+#  include <flens/range.h>
+#  include <flens/scalarclosures.h>
+#  include <flens/traits.h>
 
-#ifndef FLENS_FIRST_INDEX
+#  ifndef FLENS_FIRST_INDEX
 #    define FLENS_FIRST_INDEX 1
-#endif
+#  endif
 
 namespace flens {
 
 // == DenseVector ==============================================================
 
 template <typename A>
-class DenseVector
-    : public Vector<DenseVector<A> >
-{
-    public:
-        typedef typename DenseVector<A>::ElementType   T;
+class DenseVector : public Vector<DenseVector<A> > {
+ public:
+  typedef typename DenseVector<A>::ElementType T;
 
-        typedef typename A::ConstView                  ConstAView;
-        typedef typename A::View                       AView;
-        typedef typename A::NoView                     ANoView;
+  typedef typename A::ConstView                ConstAView;
+  typedef typename A::View                     AView;
+  typedef typename A::NoView                   ANoView;
 
-        typedef DenseVector<ConstAView>                ConstView;
-        typedef DenseVector<AView>                     View;
-        typedef DenseVector<ANoView>                   NoView;
+  typedef DenseVector<ConstAView>              ConstView;
+  typedef DenseVector<AView>                   View;
+  typedef DenseVector<ANoView>                 NoView;
 
-        DenseVector();
+  DenseVector();
 
-        DenseVector(const A &engine);
+  DenseVector(const A& engine);
 
-        DenseVector(int length, int firstIndex = FLENS_FIRST_INDEX);
+  DenseVector(int length, int firstIndex = FLENS_FIRST_INDEX);
 
-        explicit
-        DenseVector(const Range r);
+  explicit DenseVector(const Range r);
 
-        DenseVector(const DenseVector<A> &rhs);
+  DenseVector(const DenseVector<A>& rhs);
 
-        template <typename E>
-            DenseVector(const DenseVector<E> &rhs);
+  template <typename E>
+  DenseVector(const DenseVector<E>& rhs);
 
-        template <typename E>
-            DenseVector(const Vector<E> &rhs);
+  template <typename E>
+  DenseVector(const Vector<E>& rhs);
 
-        // -- operators --------------------------------------------------------
+  // -- operators --------------------------------------------------------
 
-        ListInitializerSwitch<DenseVector<A> >
-        operator=(const T &value);
+  ListInitializerSwitch<DenseVector<A> > operator=(const T& value);
 
-        DenseVector<A> &
-        operator=(const DenseVector<A> &rhs);
+  DenseVector<A>&                        operator=(const DenseVector<A>& rhs);
 
-        template <typename RHS>
-            DenseVector<A> &
-            operator=(const Vector<RHS> &rhs);
+  template <typename RHS>
+  DenseVector<A>& operator=(const Vector<RHS>& rhs);
 
-        DenseVector<A> &
-        operator=(const Range &r);
+  DenseVector<A>& operator=(const Range& r);
 
-        template <typename RHS>
-            DenseVector<A> &
-            operator+=(const Vector<RHS> &rhs);
+  template <typename RHS>
+  DenseVector<A>& operator+=(const Vector<RHS>& rhs);
 
-        template <typename RHS>
-            DenseVector<A> &
-            operator-=(const Vector<RHS> &rhs);
+  template <typename RHS>
+  DenseVector<A>& operator-=(const Vector<RHS>& rhs);
 
-        DenseVector<A> &
-        operator+=(T alpha);
+  DenseVector<A>& operator+=(T alpha);
 
-        DenseVector<A> &
-        operator-=(T alpha);
+  DenseVector<A>& operator-=(T alpha);
 
-        DenseVector<A> &
-        operator*=(T alpha);
+  DenseVector<A>& operator*=(T alpha);
 
-        DenseVector<A> &
-        operator/=(T alpha);
+  DenseVector<A>& operator/=(T alpha);
 
-        inline const T &
-        operator()(int index) const;
+  inline const T& operator()(int index) const;
 
-        inline T &
-        operator()(int index);
+  inline T&       operator()(int index);
 
-        ConstView
-        operator()(const Range &r) const;
+  ConstView       operator()(const Range& r) const;
 
-        ConstView
-        operator()(const Range &r, int startIndex) const;
+  ConstView       operator()(const Range& r, int startIndex) const;
 
-        View
-        operator()(const Range &r);
+  View            operator()(const Range& r);
 
-        View
-        operator()(const Range &r, int startIndex);
+  View            operator()(const Range& r, int startIndex);
 
-        ConstView
-        operator()(int firstIndex, int stride, int lastIndex) const;
+  ConstView       operator()(int firstIndex, int stride, int lastIndex) const;
 
-        ConstView
-        operator()(int firstIndex, int stride, int lastIndex,
-                   int startIndex) const;
+  ConstView       operator()(int firstIndex, int stride, int lastIndex, int startIndex) const;
 
-        View
-        operator()(int firstIndex, int stride, int lastIndex);
+  View            operator()(int firstIndex, int stride, int lastIndex);
 
-        View
-        operator()(int firstIndex, int stride, int lastIndex, int startIndex);
+  View            operator()(int firstIndex, int stride, int lastIndex, int startIndex);
 
-        // -- support for summation convention ---------------------------------
+  // -- support for summation convention ---------------------------------
 
-        ScalarClosure<VectorElement<DenseVector<A> > >
-        operator()(Index &index);
+  ScalarClosure<VectorElement<DenseVector<A> > > operator()(Index& index);
 
-        // -- methods ----------------------------------------------------------
-        int
-        firstIndex() const;
+  // -- methods ----------------------------------------------------------
+  int                                            firstIndex() const;
 
-        int
-        lastIndex() const;
+  int                                            lastIndex() const;
 
-        int
-        length() const;
+  int                                            length() const;
 
-        int
-        stride() const;
+  int                                            stride() const;
 
-        Range
-        range() const;
+  Range                                          range() const;
 
-        const T *
-        data() const;
+  const T*                                       data() const;
 
-        T *
-        data();
+  T*                                             data();
 
-        const T *
-        begin() const;
+  const T*                                       begin() const;
 
-        T *
-        begin();
+  T*                                             begin();
 
-        const T *
-        end() const;
+  const T*                                       end() const;
 
-        T *
-        end();
+  T*                                             end();
 
-        const A &
-        engine() const;
+  const A&                                       engine() const;
 
-        A &
-        engine();
+  A&                                             engine();
 
-        void
-        resize(int length);
+  void                                           resize(int length);
 
-        void
-        resize(int length, int firstIndex);
+  void                                           resize(int length, int firstIndex);
 
-        void
-        resize(const Range &r);
+  void                                           resize(const Range& r);
 
-        void
-        resizeOrClear(const Range &r);
+  void                                           resizeOrClear(const Range& r);
 
-        void
-        resizeOrClear(int length, int firstIndex=FLENS_FIRST_INDEX);
+  void                                           resizeOrClear(int length, int firstIndex = FLENS_FIRST_INDEX);
 
-        /// Initialize all elements of vector to val.
-        void
-        initialize(T val = T());
+  /// Initialize all elements of vector to val.
+  void                                           initialize(T val = T());
 
-        void
-        shiftIndexTo(int firstIndex);
+  void                                           shiftIndexTo(int firstIndex);
 
-        void
-        shiftIndex(int amount);
+  void                                           shiftIndex(int amount);
 
-    private:
-        A _engine;
+ private:
+  A _engine;
 };
 
 template <typename A>
-struct TypeInfo<DenseVector<A> >
-{
-    typedef DenseVector<A> Impl;
-    typedef typename A::ElementType ElementType;
+struct TypeInfo<DenseVector<A> > {
+  typedef DenseVector<A>          Impl;
+  typedef typename A::ElementType ElementType;
 };
 
-} // namespace flens
+}  // namespace flens
 
-#include <flens/densevector.tcc>
+#  include <flens/densevector.tcc>
 
-#endif // FLENS_DENSEVECTOR_H
+#endif  // FLENS_DENSEVECTOR_H

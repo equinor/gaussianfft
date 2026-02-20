@@ -31,233 +31,192 @@
  */
 
 #ifndef FLENS_LAPACK_FLENS_H
-#define FLENS_LAPACK_FLENS_H 1
+#  define FLENS_LAPACK_FLENS_H 1
 
-#include <complex>
-#include <flens/densevector.h>
-#include <flens/generalmatrix.h>
+#  include <flens/densevector.h>
+#  include <flens/generalmatrix.h>
+#  include <complex>
 
 namespace flens {
 
 //== getrf ---------------------------------------------------------------------
 template <typename FS>
-    int
-    trf(GeMatrix<FS> &A, DenseVector<Array<int> > &P);
+int trf(GeMatrix<FS>& A, DenseVector<Array<int> >& P);
 
 //== getri ---------------------------------------------------------------------
 template <typename FS>
-    int
-    tri(GeMatrix<FS> &A, DenseVector<Array<int> > &P);
+int tri(GeMatrix<FS>& A, DenseVector<Array<int> >& P);
 
 //== gbtrf ---------------------------------------------------------------------
 template <typename BS>
-    int
-    trf(GbMatrix<BS> &A, DenseVector<Array<int> > &P);
-
+int trf(GbMatrix<BS>& A, DenseVector<Array<int> >& P);
 
 //== getrs ---------------------------------------------------------------------
 template <typename MA, typename MB>
-    int
-    trs(Transpose trans, const GeMatrix<MA> &A,
-        const DenseVector<Array<int> > &P, GeMatrix<MB> &B);
+int trs(Transpose trans, const GeMatrix<MA>& A, const DenseVector<Array<int> >& P, GeMatrix<MB>& B);
 
 template <typename MA, typename VB>
-    int
-    trs(Transpose trans, const GeMatrix<MA> &A,
-        const DenseVector<Array<int> > &P,
-        DenseVector<VB> &B);
+int trs(Transpose trans, const GeMatrix<MA>& A, const DenseVector<Array<int> >& P, DenseVector<VB>& B);
 
 //== gbtrs ---------------------------------------------------------------------
 template <typename MA, typename MB>
-    int
-    trs(Transpose trans, const GbMatrix<MA> &LU,
-        const DenseVector<Array<int> > &P, GeMatrix<MB> &B);
+int trs(Transpose trans, const GbMatrix<MA>& LU, const DenseVector<Array<int> >& P, GeMatrix<MB>& B);
 
 template <typename MA, typename VB>
-    int
-    trs(Transpose trans, const GbMatrix<MA> &LU,
-        const DenseVector<Array<int> > &P,
-        DenseVector<VB> &B);
+int trs(Transpose trans, const GbMatrix<MA>& LU, const DenseVector<Array<int> >& P, DenseVector<VB>& B);
 
 //== gesv ----------------------------------------------------------------------
 template <typename MA, typename MB>
-    int
-    sv(GeMatrix<MA> &A, DenseVector<Array<int> > &P, GeMatrix<MB> &B);
+int sv(GeMatrix<MA>& A, DenseVector<Array<int> >& P, GeMatrix<MB>& B);
 
 template <typename MA, typename VB>
-    int
-    sv(GeMatrix<MA> &A, DenseVector<Array<int> > &P, DenseVector<VB> &B);
+int sv(GeMatrix<MA>& A, DenseVector<Array<int> >& P, DenseVector<VB>& B);
 
 //== gbsv ----------------------------------------------------------------------
 template <typename MA, typename MB>
-    int
-    sv(GbMatrix<MA> &A, DenseVector<Array<int> > &P, GeMatrix<MB> &B);
+int sv(GbMatrix<MA>& A, DenseVector<Array<int> >& P, GeMatrix<MB>& B);
 
 template <typename MA, typename VB>
-    int
-    sv(GbMatrix<MA> &A, DenseVector<Array<int> > &P, DenseVector<VB> &B);
+int sv(GbMatrix<MA>& A, DenseVector<Array<int> >& P, DenseVector<VB>& B);
 
 //== trtrs ---------------------------------------------------------------------
 template <typename MA, typename MB>
-    int
-    trs(Transpose trans, const TrMatrix<MA> &A, GeMatrix<MB> &B);
+int trs(Transpose trans, const TrMatrix<MA>& A, GeMatrix<MB>& B);
 
 template <typename MA, typename VB>
-    int
-    trs(Transpose trans, const TrMatrix<MA> &A, DenseVector<VB> &B);
+int trs(Transpose trans, const TrMatrix<MA>& A, DenseVector<VB>& B);
 
 //== geqrf ---------------------------------------------------------------------
 template <typename MA, typename VT>
-    int
-    qrf(GeMatrix<MA> &A, DenseVector<VT> &tau);
+int qrf(GeMatrix<MA>& A, DenseVector<VT>& tau);
 
 //== orgqr ---------------------------------------------------------------------
 template <typename MA, typename VT>
-    int
-    orgqr(GeMatrix<MA> &A, const DenseVector<VT> &tau);
+int orgqr(GeMatrix<MA>& A, const DenseVector<VT>& tau);
 
 //== ormqr ---------------------------------------------------------------------
 template <typename MA, typename VT, typename MC>
-    int
-    ormqr(BlasSide side, Transpose trans,
-          const GeMatrix<MA> &A, const DenseVector<VT> &tau,
-          GeMatrix<MC> &C);
+int ormqr(BlasSide side, Transpose trans, const GeMatrix<MA>& A, const DenseVector<VT>& tau, GeMatrix<MC>& C);
 
 //== gels ----------------------------------------------------------------------
 template <typename MA, typename MB>
-    int
-    ls(Transpose trans, GeMatrix<MA> &A, GeMatrix<MB> &B);
+int ls(Transpose trans, GeMatrix<MA>& A, GeMatrix<MB>& B);
 
 //== gelss ---------------------------------------------------------------------
 template <typename MA, typename MB>
-    int
-    lss(GeMatrix<MA> &A, GeMatrix<MB> &B);
+int lss(GeMatrix<MA>& A, GeMatrix<MB>& B);
 
 //-- gees ----------------------------------------------------------------------
 template <typename T>
-struct ESSelectInfo
-{
-    typedef int (*pfunc)(T *vr, T *vi);
+struct ESSelectInfo {
+  typedef int (*pfunc)(T* vr, T* vi);
 };
 
 template <typename T>
-struct ESSelectInfo<complex<T> >
-{
-    typedef int (*pfunc)(complex <T> *v);
+struct ESSelectInfo<complex<T> > {
+  typedef int (*pfunc)(complex<T>* v);
 };
 
 // non complex version
 template <typename MA, typename WR, typename WI, typename MVS>
-    int
-    es(bool CalcEv, bool sort,
+int es(bool                                                   CalcEv,
+       bool                                                   sort,
        typename ESSelectInfo<typename MA::ElementType>::pfunc select,
-       GeMatrix<MA> &A, int &sdim,
-       DenseVector<WR> &wr, DenseVector<WI> &wi,
-       GeMatrix<MVS> &VS);
+       GeMatrix<MA>&                                          A,
+       int&                                                   sdim,
+       DenseVector<WR>&                                       wr,
+       DenseVector<WI>&                                       wi,
+       GeMatrix<MVS>&                                         VS);
 
 // complex version
 template <typename MA, typename VW, typename MVS>
-    int
-    es(bool CalcEv, bool sort,
+int es(bool                                                   CalcEv,
+       bool                                                   sort,
        typename ESSelectInfo<typename MA::ElementType>::pfunc select,
-       GeMatrix<MA> &A, int &sdim,
-       DenseVector<VW> &w,
-       GeMatrix<MVS> &VS);
+       GeMatrix<MA>&                                          A,
+       int&                                                   sdim,
+       DenseVector<VW>&                                       w,
+       GeMatrix<MVS>&                                         VS);
 
 //== geev,real -----------------------------------------------------------------
 template <typename MA, typename WR, typename WI, typename VL, typename VR>
-    int
-    ev(bool leftEV, bool rightEV,
-       GeMatrix<MA> &A, DenseVector<WR> &wr, DenseVector<WI> &wi,
-       GeMatrix<VL> &vl, GeMatrix<VR> &vr);
+int ev(bool             leftEV,
+       bool             rightEV,
+       GeMatrix<MA>&    A,
+       DenseVector<WR>& wr,
+       DenseVector<WI>& wi,
+       GeMatrix<VL>&    vl,
+       GeMatrix<VR>&    vr);
 
 //== geev,complex --------------------------------------------------------------
 template <typename MA, typename W, typename VL, typename VR>
-    int
-    ev(bool leftEv, bool rightEv,
-       GeMatrix<MA> &A, DenseVector<W> &w, GeMatrix<VL> &vl, GeMatrix<VR> &vr);
+int ev(bool leftEv, bool rightEv, GeMatrix<MA>& A, DenseVector<W>& w, GeMatrix<VL>& vl, GeMatrix<VR>& vr);
 
 //== syev ----------------------------------------------------------------------
 template <typename MA, typename VW>
-   int
-   ev(bool compEV, SyMatrix<MA> &A, DenseVector<VW> &w);
+int ev(bool compEV, SyMatrix<MA>& A, DenseVector<VW>& w);
 
 //== sbev ----------------------------------------------------------------------
 template <typename MA, typename VW, typename MZ>
-    int
-    ev(bool compEV, SbMatrix<MA> &A, DenseVector<VW> &w, GeMatrix<MZ> &Z);
+int ev(bool compEV, SbMatrix<MA>& A, DenseVector<VW>& w, GeMatrix<MZ>& Z);
 
 //== spev ----------------------------------------------------------------------
 template <typename MA, typename VW, typename MZ>
-    int
-    ev(bool compEV, SpMatrix<MA> &A, DenseVector<VW> &w, GeMatrix<MZ> &Z);
+int ev(bool compEV, SpMatrix<MA>& A, DenseVector<VW>& w, GeMatrix<MZ>& Z);
 
 //== heev ----------------------------------------------------------------------
 template <typename MA, typename VW>
-    int
-    ev(bool compEV, HeMatrix<MA> &A, DenseVector<VW> &w);
+int ev(bool compEV, HeMatrix<MA>& A, DenseVector<VW>& w);
 
 //== hbev ----------------------------------------------------------------------
 template <typename MA, typename VW, typename MZ>
-    int
-    ev(bool compEV, HbMatrix<MA> &A, DenseVector<VW> &w, GeMatrix<MZ> &Z);
+int ev(bool compEV, HbMatrix<MA>& A, DenseVector<VW>& w, GeMatrix<MZ>& Z);
 
 //== hpev ----------------------------------------------------------------------
 template <typename MA, typename VW, typename MZ>
-    int
-    ev(bool compEV, HpMatrix<MA> &A, DenseVector<VW> &w, GeMatrix<MZ> &Z);
+int ev(bool compEV, HpMatrix<MA>& A, DenseVector<VW>& w, GeMatrix<MZ>& Z);
 
 //== gesvd ---------------------------------------------------------------------
 template <typename MA, typename VS, typename VU, typename VVT>
-    int
-    svd(SVectorsJob jobu, SVectorsJob jobvt, GeMatrix<MA> &A,
-        DenseVector<VS> &S, GeMatrix<VU> &U, GeMatrix<VVT> &VT);
+int svd(SVectorsJob jobu, SVectorsJob jobvt, GeMatrix<MA>& A, DenseVector<VS>& S, GeMatrix<VU>& U, GeMatrix<VVT>& VT);
 
 /* calls: svd(All,All,A,s,U,V) */
 template <typename MA, typename VS, typename MU, typename MV>
-    int
-    svd(GeMatrix<MA> &A, DenseVector<VS> &s, GeMatrix<MU> &U, GeMatrix<MV> &VT);
+int svd(GeMatrix<MA>& A, DenseVector<VS>& s, GeMatrix<MU>& U, GeMatrix<MV>& VT);
 
 //-- gesdd ---------------------------------------------------------------------
 template <typename MA, typename VS, typename VU, typename VVT>
-    int
-    sdd(SVectorsJob jobz, GeMatrix<MA> &A,
-        DenseVector<VS> &S, GeMatrix<VU> &U, GeMatrix<VVT> &VT);
+int sdd(SVectorsJob jobz, GeMatrix<MA>& A, DenseVector<VS>& S, GeMatrix<VU>& U, GeMatrix<VVT>& VT);
 
 //-- potrf  (Cholesky) --------------------------------------------------------
 
 /// Returns 0 if A is positive definite, else i > 0 if only submatrix A(1:i-1)
 /// is positive definite
 template <typename MA>
-    int
-    potrf(SyMatrix<MA> &A);
+int potrf(SyMatrix<MA>& A);
 
 //-- potri  -------------------------------------------------------------------
 
 template <typename MA>
-    int
-    potri(SyMatrix<MA> &A);
+int potri(SyMatrix<MA>& A);
 
 //-- potrs  -------------------------------------------------------------------
 
 template <typename MA, typename MB>
-    int
-    potrs(SyMatrix<MA> &A, GeMatrix<MB> &B);
+int potrs(SyMatrix<MA>& A, GeMatrix<MB>& B);
 
 //-- posv  -------------------------------------------------------------------
 
 template <typename MA, typename MB>
-    int
-    posv(SyMatrix<MA> &A, GeMatrix<MB> &B);
+int posv(SyMatrix<MA>& A, GeMatrix<MB>& B);
 
 template <typename MA, typename MB>
-    int
-    posv(HeMatrix<MA> &A, GeMatrix<MB> &B);
+int posv(HeMatrix<MA>& A, GeMatrix<MB>& B);
 
 //------------------------------------------------------------------------------
 
-} // namespace flens
+}  // namespace flens
 
-#include <flens/lapack_flens.tcc>
+#  include <flens/lapack_flens.tcc>
 
-#endif // FLENS_LAPACK_FLENS_H
+#endif  // FLENS_LAPACK_FLENS_H

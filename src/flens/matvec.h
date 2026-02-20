@@ -31,147 +31,120 @@
  */
 
 #ifndef FLENS_MATVEC_H
-#define FLENS_MATVEC_H 1
+#  define FLENS_MATVEC_H 1
 
-#include <flens/traits.h>
+#  include <flens/traits.h>
 
 namespace flens {
 
 // == TypeInfo Trait ===========================================================
 
 template <typename A>
-struct TypeInfo
-{
-    typedef A Impl;
-    typedef typename Impl::ElementType ElementType;
+struct TypeInfo {
+  typedef A                          Impl;
+  typedef typename Impl::ElementType ElementType;
 };
 
-#define DefaultTypeInfo(Type, T) class Type; \
-                                 \
-                                 template <> \
-                                 struct TypeInfo<Type> \
-                                 { \
-                                     typedef Type Impl; \
-                                     typedef T ElementType; \
-                                 };
+#  define DefaultTypeInfo(Type, T) \
+    class Type;                    \
+                                   \
+    template <>                    \
+    struct TypeInfo<Type> {        \
+      typedef Type Impl;           \
+      typedef T    ElementType;    \
+    };
 
 // == Vector ===================================================================
 
 template <typename I>
-class Vector
-{
-    public:
-        typedef typename TypeInfo<I>::ElementType     ElementType;
-        typedef typename Ref<ElementType>::Type       ElementTypeRef;
-        typedef typename TypeInfo<I>::Impl            Impl;
+class Vector {
+ public:
+  typedef typename TypeInfo<I>::ElementType ElementType;
+  typedef typename Ref<ElementType>::Type   ElementTypeRef;
+  typedef typename TypeInfo<I>::Impl        Impl;
 
-        virtual
-        ~Vector();
+  virtual ~Vector();
 
-        const Impl &
-        impl() const;
+  const Impl& impl() const;
 
-        Impl &
-        impl();
+  Impl&       impl();
 };
 
 template <typename I>
-struct TypeInfo<Vector<I> >
-{
-    typedef typename TypeInfo<I>::ElementType ElementType;
-    typedef typename TypeInfo<I>::Impl        Impl;
+struct TypeInfo<Vector<I> > {
+  typedef typename TypeInfo<I>::ElementType ElementType;
+  typedef typename TypeInfo<I>::Impl        Impl;
 };
 
 // == Matrix ===================================================================
 
 template <typename I>
-class Matrix
-{
-    public:
-        typedef typename TypeInfo<I>::ElementType     ElementType;
-        typedef typename Ref<ElementType>::Type       ConstElementTypeRef;
-        typedef typename Ref<ElementType>::Type       ElementTypeRef;
-        typedef typename TypeInfo<I>::Impl            Impl;
+class Matrix {
+ public:
+  typedef typename TypeInfo<I>::ElementType ElementType;
+  typedef typename Ref<ElementType>::Type   ConstElementTypeRef;
+  typedef typename Ref<ElementType>::Type   ElementTypeRef;
+  typedef typename TypeInfo<I>::Impl        Impl;
 
-        virtual
-        ~Matrix();
+  virtual ~Matrix();
 
-        const Impl &
-        impl() const;
+  const Impl& impl() const;
 
-        Impl &
-        impl();
+  Impl&       impl();
 };
 
 template <typename I>
-struct TypeInfo<Matrix<I> >
-{
-    typedef typename TypeInfo<I>::ElementType ElementType;
-    typedef typename TypeInfo<I>::Impl        Impl;
+struct TypeInfo<Matrix<I> > {
+  typedef typename TypeInfo<I>::ElementType ElementType;
+  typedef typename TypeInfo<I>::Impl        Impl;
 };
 
 // == GeneralMatrix ============================================================
 
 template <typename I>
-class GeneralMatrix
-    : public Matrix<GeneralMatrix<I> >
-{
-};
+class GeneralMatrix : public Matrix<GeneralMatrix<I> > {};
 
 template <typename I>
-struct TypeInfo<GeneralMatrix<I> >
-{
-    typedef typename TypeInfo<I>::Impl Impl;
-    typedef typename TypeInfo<I>::ElementType ElementType;
+struct TypeInfo<GeneralMatrix<I> > {
+  typedef typename TypeInfo<I>::Impl        Impl;
+  typedef typename TypeInfo<I>::ElementType ElementType;
 };
 
 // == TriangularMatrix =========================================================
 
 template <typename I>
-class TriangularMatrix
-    : public Matrix<TriangularMatrix<I> >
-{
-};
+class TriangularMatrix : public Matrix<TriangularMatrix<I> > {};
 
 template <typename I>
-struct TypeInfo<TriangularMatrix<I> >
-{
-    typedef typename TypeInfo<I>::Impl Impl;
-    typedef typename TypeInfo<I>::ElementType ElementType;
+struct TypeInfo<TriangularMatrix<I> > {
+  typedef typename TypeInfo<I>::Impl        Impl;
+  typedef typename TypeInfo<I>::ElementType ElementType;
 };
 
 // == SymmetricMatrix ==========================================================
 
 template <typename I>
-class SymmetricMatrix
-    : public Matrix<SymmetricMatrix<I> >
-{
-};
+class SymmetricMatrix : public Matrix<SymmetricMatrix<I> > {};
 
 template <typename I>
-struct TypeInfo<SymmetricMatrix<I> >
-{
-    typedef typename TypeInfo<I>::Impl Impl;
-    typedef typename TypeInfo<I>::ElementType ElementType;
+struct TypeInfo<SymmetricMatrix<I> > {
+  typedef typename TypeInfo<I>::Impl        Impl;
+  typedef typename TypeInfo<I>::ElementType ElementType;
 };
 
 // == HermitianMatrix ==========================================================
 
 template <typename I>
-class HermitianMatrix
-    : public Matrix<HermitianMatrix<I> >
-{
-};
+class HermitianMatrix : public Matrix<HermitianMatrix<I> > {};
 
 template <typename I>
-struct TypeInfo<HermitianMatrix<I> >
-{
-    typedef typename TypeInfo<I>::Impl Impl;
-    typedef typename TypeInfo<I>::ElementType ElementType;
+struct TypeInfo<HermitianMatrix<I> > {
+  typedef typename TypeInfo<I>::Impl        Impl;
+  typedef typename TypeInfo<I>::ElementType ElementType;
 };
 
-} // namespace flens
+}  // namespace flens
 
-#include <flens/matvec.tcc>
+#  include <flens/matvec.tcc>
 
-#endif // FLENS_MATVEC_H
+#endif  // FLENS_MATVEC_H
