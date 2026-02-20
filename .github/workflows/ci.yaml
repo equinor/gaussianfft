@@ -62,7 +62,7 @@ jobs:
           filter: tree:0
 
       - name: Download ARM Performance Libraries
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         if: ${{ matrix.os == 'macos-15' }}
         with:
           pattern: armpl-*
@@ -130,14 +130,14 @@ jobs:
           filter: tree:0
 
       - name: Download compiled wheels
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           pattern: wheels-*
           path: .
           merge-multiple: true
 
       - name: Download source distribution
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: sdist
 
@@ -170,7 +170,7 @@ jobs:
       id-token: write
     steps:
       - name: Download distribution
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: distribution
           path: dist/
