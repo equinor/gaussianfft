@@ -176,9 +176,9 @@ PYBIND11_MODULE(_gaussianfft, m, py::mod_gil_not_used(), py::multiple_interprete
     double(NRLib::Variogram::*ptr2)(double, double)         const = &NRLib::Variogram::GetCorr;
     double(NRLib::Variogram::*ptr3)(double, double, double) const = &NRLib::Variogram::GetCorr;
     py::class_<NRLib::Variogram>(m, "Variogram")
-      .def("corr", ptr1)
-      .def("corr", ptr2)
-      .def("corr", ptr3)
+      .def("corr", ptr1, py::arg("dx"))
+      .def("corr", ptr2, py::arg("dx"), py::arg("dy"))
+      .def("corr", ptr3, py::arg("dx"), py::arg("dy"), py::arg("dz"))
     ;
   }
 
@@ -187,7 +187,7 @@ PYBIND11_MODULE(_gaussianfft, m, py::mod_gil_not_used(), py::multiple_interprete
   //
   {
     void(*ptr)(unsigned long) = &NRLib::Random::Initialize;
-    m.def("seed", ptr,                          set_seed_docstring.c_str());
+    m.def("seed", ptr, py::arg("seed"),         set_seed_docstring.c_str());
     m.def("seed", &NRLib::Random::GetStartSeed, get_seed_docstring.c_str());
   }
 
