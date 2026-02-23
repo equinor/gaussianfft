@@ -10,7 +10,7 @@ class TestVariogram(unittest.TestCase):
 
     def test_missing_args(self):
         # Calls the factory function with only one argument ('exponential')
-        self.assertRaises(Exception, grf.variogram, 'exponential')
+        self.assertRaises(TypeError, grf.variogram, 'exponential')
 
     def test_only_range_args(self):
         grf.variogram('exponential', 1000.0, 1000.0, 1000.0)
@@ -39,9 +39,9 @@ class TestVariogram(unittest.TestCase):
         grf.variogram('exponential', main_range=1000.0, dip=1000.0)
         grf.variogram('exponential', main_range=1000.0, power=1000.0)
         # Invalid keyword
-        self.assertRaises(Exception, grf.variogram, 'exponential', main_range=1000.0, foo=1000.0)
+        self.assertRaises(TypeError, grf.variogram, 'exponential', main_range=1000.0, foo=1000.0)
         # Missing arguments
-        self.assertRaises(Exception, grf.variogram, 'exponential')
+        self.assertRaises(TypeError, grf.variogram, 'exponential')
 
     def test_correlation_function(self):
         v = grf.variogram('exponential', 1000.0, 500.0, 250.0)

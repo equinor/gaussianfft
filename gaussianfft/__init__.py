@@ -1,7 +1,7 @@
 from enum import Enum
 from importlib.util import find_spec
 
-from ._version import __version__
+from gaussianfft._version import __version__
 
 if find_spec('numpy') is None:
     raise ImportError('gaussianfft requires NumPy to be installed')

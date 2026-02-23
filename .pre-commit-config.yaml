@@ -67,7 +67,6 @@ repos:
 
   - repo: local
     hooks:
-      # FIXME: Adjust
       - id: pyrefly-typecheck
         name: Typechecking Python
         entry: pyrefly check

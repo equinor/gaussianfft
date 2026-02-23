@@ -24,16 +24,6 @@ except ImportError:
     # Fall back to generic string
     VARIOGRAM_TYPE = str
 
-class VariogramType(Enum):
-    GAUSSIAN = 'gaussian'
-    EXPONENTIAL = 'exponential'
-    GENERAL_EXPONENTIAL = 'general_exponential'
-    SPHERICAL = 'spherical'
-    MATERN_32 = 'matern32'
-    MATERN_52 = 'matern52'
-    MATERN_72 = 'matern72'
-    CONSTANT = 'constant'
-
 class Variogram:
     @overload
     def corr(self, dx: float, dy: float, dz: float) -> float:
@@ -46,7 +36,7 @@ class Variogram:
     def corr(self, dx: float) -> float: ...
 
 def variogram(
-    type: VARIOGRAM_TYPE | VariogramType,
+    type: VARIOGRAM_TYPE,
     main_range: float,
     perp_range: float = 0.0,
     depth_range: float = 0.0,

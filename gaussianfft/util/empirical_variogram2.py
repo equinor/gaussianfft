@@ -1,8 +1,9 @@
 import numpy as np
+import numpy.typing as npt
 from scipy.sparse.csgraph._traversal import connected_components
 from scipy.spatial.distance import cdist, pdist, squareform
 
-import gaussianfft
+import gaussianfft.advanced
 
 
 class EmpiricalVariogram2:
@@ -48,7 +49,7 @@ class EmpiricalVariogram2:
         self.sample_bins = self._find_distance_bins(self.ix_sample_points)
 
         # For validation
-        self.s = None
+        self.s: npt.NDArray[np.float64] | None = None
 
     """ External function """
 
@@ -153,6 +154,8 @@ if __name__ == '__main__':
 
     plot_method = 2
     if plot_method == 0:
+        if ev.s is None:
+            raise RuntimeError('Variogram is not simulated')
         # Plot empirical variogram, true variogram and realization
 
         plt.subplot(121)

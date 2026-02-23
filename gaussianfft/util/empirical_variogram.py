@@ -5,7 +5,7 @@ import numpy as np
 from scipy.spatial.distance import cdist
 from scipy.stats import binned_statistic
 
-import gaussianfft
+import gaussianfft.advanced
 
 
 class EmpiricalVariogram:
