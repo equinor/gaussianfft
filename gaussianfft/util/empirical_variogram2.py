@@ -81,13 +81,12 @@ class EmpiricalVariogram2:
     """ Estimation, internal functions """
 
     def _simulate(self):
+        # fmt: off
         s = gaussianfft.advanced.simulate(
             self.v,
-            # fmt: off
             self.nx, self.dx,
             self.ny, self.dy,
             self.nz, self.dz,
-            # fmt: on
             padx=self.px,
             pady=self.py,
             padz=self.pz,
@@ -95,6 +94,7 @@ class EmpiricalVariogram2:
             sy=EmpiricalVariogram2.smoothing,
             sz=EmpiricalVariogram2.smoothing,
         )
+        # fmt: on
         self.s = np.array(s).reshape((self.nx, self.ny, self.nz), order='F')
         return self.s
 

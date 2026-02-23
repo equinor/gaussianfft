@@ -138,17 +138,17 @@ class EmpiricalVariogram:
         return edges[:-1] + np.diff(edges)[0]
 
     def simulate(self):
+        # fmt: off
         s = gaussianfft.advanced.simulate(
             self.v,
-            # fmt: off
             self.nx, self.dx,
             self.ny, self.dy,
             self.nz, self.dz,
-            # fmt: on
             padx=self.px,
             pady=self.py,
             padz=self.pz,
         )
+        # fmt: on
         s = np.array(s).reshape((self.nx, self.ny, self.nz), order='F')
         return s
 

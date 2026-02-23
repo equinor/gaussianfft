@@ -3,7 +3,6 @@ import numpy as np
 
 import gaussianfft as grf
 
-
 VTYPES = [
     'spherical',
     'exponential',

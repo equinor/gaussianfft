@@ -705,13 +705,15 @@ def _(mo):
     However, we have not inferred any restrictions on $c$ (other than that it should be a variogram-function).
     When applying the FFT (or perhaps just the convolution),
     we are implicitly adding features to $c$ which can make it non-positive definite.
-    If $c$ is not positive definite, this is not a well-posed problem since the corresponding covariance matrix is not SPD.
+    If $c$ is not positive definite,
+    this is not a well-posed problem since the corresponding covariance matrix is not SPD.
 
     We therefore start by investigating how far from SPD the various functions are.
     According to Wikipedia,
     a function is positive definite if it is the Fourier transform of a function $g$ on the real line,
     with $g > 0$.
-    (Correction: We are primarily interested in positive _semi_-definite function, which only slightly changes the above).
+    (Correction: We are primarily interested in positive _semi_-definite function,
+    which only slightly changes the above).
 
     First, an inspection of the resulting matrix and its positive semi-definiteness.
     """)
@@ -806,7 +808,8 @@ def _(mo):
     ### Re-visiting the analytical solution
 
     The current working hypothesis is that the correlation function becomes problematic when the range increases.
-    One thing that has not been tested, though, is the analytical solution to the Gaussian variogram case for long ranges.
+    One thing that has not been tested, though,
+    is the analytical solution to the Gaussian variogram case for long ranges.
     If the working hypothesis is correct, then using the analytically found filter should also be problematic,
     even if regular convolution is performed.
 
@@ -922,7 +925,8 @@ def _(mo):
     If the required padding makes the grid too large for practical purposes,
     we have a problem. We may argue, however, that if the padded grid is too large (in number of cells),
     then the resolution is too high compared to the expected variation of the data,
-    and resampling the grid before simulation and interpolating afterwards should not alter the results too significantly,
+    and resampling the grid before simulation and
+    interpolating afterwards should not alter the results too significantly,
     assuming a proper interpolation scheme is used.
     """)
     return

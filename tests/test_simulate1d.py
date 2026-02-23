@@ -35,7 +35,8 @@ def test_gradient(simulated_field):
     diffs = np.diff(field)
     assert np.isclose(0.0, np.mean(diffs), atol=1e-2), 'The field should not have any overall directional trend'
     assert np.std(diffs) < 0.1, (
-        'Changes between consecutive points should be small and consistent, indicating a relatively smooth field without large, abrupt changes'
+        'Changes between consecutive points should be small and consistent, '
+        'indicating a relatively smooth field without large, abrupt changes'
     )
     assert np.max(np.abs(diffs)) < 5 * np.std(diffs), 'There should be no large jumps in the field'
 
