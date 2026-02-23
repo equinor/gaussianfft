@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-readonly ROOT_DIR="$(
+ROOT_DIR="$(
   cd "$(dirname -- "$0")/.." >/dev/null
   pwd -P
 )"
+readonly ROOT_DIR
 
 function abort() {
   echo "$1" >/dev/stderr
@@ -17,8 +18,10 @@ if [[ -z $ARMPL_VERSION || "$ARMPL_VERSION" == 'OFF' ]]; then
   abort "No version of RMS Performance Libraries given"
 fi
 
-readonly OS="$(uname -o)"
-readonly ARCH="$(uname -m)"
+OS="$(uname -o)"
+readonly OS
+ARCH="$(uname -m)"
+readonly ARCH
 
 if [[ $ARCH != 'arm64' && $ARCH != 'aarch64' ]]; then
   abort "Can't use ARM libraries on a non-ARM architecture ($ARCH)"
@@ -51,7 +54,8 @@ if [[ $OS == "Darwin" ]]; then
       -y
     diskutil unmount "$VOLUME"
 
-    readonly install_dir=$(find "$ARMPL_SOURCES" -name "armpl_${ARMPL_VERSION}*" -type d)
+    install_dir=$(find "$ARMPL_SOURCES" -name "armpl_${ARMPL_VERSION}*" -type d)
+    readonly install_dir
     if [[ -z $install_dir ]]; then
       abort "Could not find installation directory"
     fi

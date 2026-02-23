@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-readonly ROOT_DIR="$(
+ROOT_DIR="$(
   cd "$(dirname -- "$0")/.." >/dev/null
   pwd -P
 )"
+readonly ROOT_DIR
 
 CHANGED_FILES=$(git -C "$ROOT_DIR" status --untracked-files=no --porcelain | wc -l)
 

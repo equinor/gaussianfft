@@ -14,7 +14,7 @@ def parse_arguments():
     parser.add_argument('source_files', nargs='+', help='List of source files to look through')
     parser.add_argument(
         '--include-directories',
-        help="List of directories to include while preprocessing the file(s), seperated by ';'",
+        help="List of directories to include while preprocessing the file(s), separated by ';'",
     )
     return parser.parse_args()
 
