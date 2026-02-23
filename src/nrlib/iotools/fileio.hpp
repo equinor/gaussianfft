@@ -23,6 +23,7 @@
 #define NRLIB_FILEIO_HPP
 
 #include <cassert>
+#include <cstdint>
 #include <cstdio>
 #include <cstdlib>
 #include <iostream>
@@ -443,10 +444,10 @@ namespace NRLibPrivate {
   inline void WriteIBMFloatLE(char* buffer, float f);
 
   /// Inplace translation from IEEE to IBM 4-byte floating point format.
-  inline void Ieee2Ibm(boost::uint32_t& in);
+  inline void Ieee2Ibm(std::uint32_t& in);
 
   /// Inplace translation from IEEE to IBM 4-byte floating point format.
-  inline void Ibm2Ieee(boost::uint32_t& in);
+  inline void Ibm2Ieee(std::uint32_t& in);
 } // namespace NRLibPrivate
 
 } // namespace NRLib
@@ -610,7 +611,7 @@ void NRLib::WriteBinaryShortArray(F& stream,
 {
   typename I::difference_type n_in = std::distance(begin, end);
 
-  std::vector<boost::uint16_t> buffer(n_in);
+  std::vector<std::uint16_t> buffer(n_in);
   memcpy(&buffer[0], &begin[0], 2 * n_in);
 
   switch (number_representation) {
@@ -639,7 +640,7 @@ I NRLib::ReadBinaryShortArray(F& stream,
                               size_t n,
                               NRLib::Endianess number_representation)
 {
-  std::vector<boost::uint16_t> buffer(n);
+  std::vector<std::uint16_t> buffer(n);
 
   if (!stream.read(reinterpret_cast<char *>(&buffer[0]),
                    static_cast<std::streamsize>(2 * n))) {
@@ -730,7 +731,7 @@ void NRLib::WriteBinaryIntArray(F& stream,
 {
   typename I::difference_type n_in = std::distance(begin, end);
 
-  std::vector<boost::uint32_t> buffer(n_in);
+  std::vector<std::uint32_t> buffer(n_in);
   memcpy(&buffer[0], &begin[0], 4 * n_in);
 
   switch (number_representation) {
@@ -759,7 +760,7 @@ I NRLib::ReadBinaryIntArray(F& stream,
                             size_t n,
                             NRLib::Endianess number_representation)
 {
-  std::vector<boost::uint32_t> buffer(n);
+  std::vector<std::uint32_t> buffer(n);
 
   if (!stream.read(reinterpret_cast<char *>(&buffer[0]),
                    static_cast<std::streamsize>(4 * n))) {
@@ -850,7 +851,7 @@ void NRLib::WriteBinaryFloatArray(F& stream,
 {
   typename I::difference_type n_in = std::distance(begin, end);
 
-  std::vector<boost::uint32_t> buffer(n_in);
+  std::vector<std::uint32_t> buffer(n_in);
 
   memcpy(&buffer[0], &begin[0], 4 * n_in);
 
@@ -880,7 +881,7 @@ I NRLib::ReadBinaryFloatArray(F& stream,
                               size_t n,
                               NRLib::Endianess number_representation)
 {
-  std::vector<boost::uint32_t> buffer(n);
+  std::vector<std::uint32_t> buffer(n);
 
   if (!stream.read(reinterpret_cast<char *>(&buffer[0]), static_cast<std::streamsize>(4*n))) {
     throw Exception("Error reading from stream (h).");
@@ -974,7 +975,7 @@ void NRLib::WriteBinaryDoubleArray(F& stream,
                                    NRLib::Endianess number_representation)
 {
   typename I::difference_type n_in = std::distance(begin, end);
-  std::vector<boost::uint64_t> buffer(n_in);
+  std::vector<std::uint64_t> buffer(n_in);
 
   memcpy(&buffer[0], &begin[0], 8 * n_in);
 
@@ -1004,7 +1005,7 @@ I NRLib::ReadBinaryDoubleArray(F& stream,
                                size_t n,
                                NRLib::Endianess number_representation)
 {
-  std::vector<boost::uint64_t> buffer(n);
+  std::vector<std::uint64_t> buffer(n);
 
   if (!stream.read(reinterpret_cast<char *>(&buffer[0]),
                    static_cast<std::streamsize>(8 * n))) {
@@ -1037,7 +1038,7 @@ void NRLib::WriteBinaryIbmFloatArray(F& stream,
                                      NRLib::Endianess number_representation)
 {
   typename I::difference_type n_in = std::distance(begin, end);
-  std::vector<boost::uint32_t> buffer(n_in);
+  std::vector<std::uint32_t> buffer(n_in);
 
   memcpy(&buffer[0], &begin[0], 4 * n_in);
 
@@ -1070,7 +1071,7 @@ I NRLib::ReadBinaryIbmFloatArray(F& stream,
                                  size_t n,
                                  NRLib::Endianess number_representation)
 {
-  std::vector<boost::uint32_t> buffer(n);
+  std::vector<std::uint32_t> buffer(n);
 
   std::string error;
   if (!stream.read(reinterpret_cast<char *>(&buffer[0]), static_cast<std::streamsize>(4*n))) {
@@ -1409,7 +1410,7 @@ static unsigned int IEMINIB  = 0x21200000;
 
 
 /// Converts IBM float (represented as 32-bit int) to IEEE float.
-void NRLib::NRLibPrivate::Ibm2Ieee(boost::uint32_t& in)
+void NRLib::NRLibPrivate::Ibm2Ieee(std::uint32_t& in)
 {
   static int it[8] = { 0x21800000, 0x21400000, 0x21000000, 0x21000000,
           0x20c00000, 0x20c00000, 0x20c00000, 0x20c00000 };
@@ -1429,7 +1430,7 @@ void NRLib::NRLibPrivate::Ibm2Ieee(boost::uint32_t& in)
 
 
 /// Converts IEEE float (represented as 32-bit int) to IBM float.
-void NRLib::NRLibPrivate::Ieee2Ibm(boost::uint32_t& in)
+void NRLib::NRLibPrivate::Ieee2Ibm(std::uint32_t& in)
 {
   static int it[4] = { 0x21200000, 0x21400000, 0x21800000, 0x22100000 };
   static int mt[4] = { 2, 4, 8, 1 };

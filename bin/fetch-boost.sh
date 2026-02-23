@@ -21,9 +21,10 @@ mkdir -p "$BOOST_DIR"
 cd "$BOOST_DIR"
 
 if [[ ! -f "$BOOST_ARCHIVE" ]]; then
+  # Use official Boost archives (JFrog artifactory no longer works)
   file_name="boost_$(echo "$BOOST_VERSION" | tr '.' '_').tar.gz"
   curl -L --output "$BOOST_VERSION".tar.gz \
-  "https://boostorg.jfrog.io/artifactory/main/release/$BOOST_VERSION/source/$file_name"
+  "https://archives.boost.io/release/$BOOST_VERSION/source/$file_name"
 fi
 
 function extract_files() {
@@ -146,14 +147,14 @@ extract_files_depending_on libs/config/checks/test_case.cpp
 extract_files libs/filesystem/build
 extract_files libs/filesystem/config
 extract_files libs/filesystem/meta
-extract_files_depending_on "libs/filesystem/src/"
+extract_files libs/filesystem/src/
 extract_files_depending_on "libs/filesystem/src/path.cpp"
 
 ## Required in 1.81.0
 extract_files libs/atomic/build
 extract_files libs/atomic/config
 extract_files libs/atomic/meta
-extract_files_depending_on "libs/atomic/src/"
+extract_files libs/atomic/src/
 
 extract_files_depending_on "boost/align/aligned_alloc.hpp"
 # Related to static linking

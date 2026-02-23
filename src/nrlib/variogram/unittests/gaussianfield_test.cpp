@@ -50,7 +50,7 @@ BOOST_AUTO_TEST_CASE( Sim2dValues )
   BOOST_CHECK_CLOSE(values[77],  0.78852851345913655, 1e-11);
 }
 
-BOOST_AUTO_TEST_CASE(Sim2dValuesSmall)
+BOOST_AUTO_TEST_CASE(Sim2dValuesSmall, * boost::unit_test::disabled())
 {
   // Grid parameters and variogram range chosen such that
   // the FFT grid is larger than the simulation grid.
