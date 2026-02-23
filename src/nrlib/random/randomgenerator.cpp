@@ -102,7 +102,7 @@ double RandomGenerator::Norm01() {
 
 unsigned long RandomGenerator::GetStartSeed() {
   if (!is_initialized_) {
-    throw Exception("Random number generator is not initalized.");
+    throw Exception("Random number generator is not initialized.");
   }
   return start_seed_;
 }

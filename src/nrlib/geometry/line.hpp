@@ -85,11 +85,11 @@ class Line {
   /// Get length of line segment, returns infinite for lines and rays. :
   double        GetLength() const;
 
-  /// Calc shortest distance from p_in to def.line (or extention of finite line)
+  /// Calc shortest distance from p_in to def.line (or extension of finite line)
   /// at proj_pt
   double        FindDistance(const Point& p_in) const;
 
-  /// Calc shortest distance from p_in to def.line (or extention of finite line)
+  /// Calc shortest distance from p_in to def.line (or extension of finite line)
   /// at proj_pt and returns true if point is on right or false on left side of
   /// line
   double        FindDistanceAndSide(const Point& p_in, bool& right_side) const;
@@ -98,17 +98,17 @@ class Line {
   inline double FindDistance(const Line& line_in) const;
 
   /// Find shortest distance to line, and give back the two points that are
-  /// nearest eachother.
+  /// nearest each other.
   double        FindDistance(const Line& line_in, NRLib::Point& this_line_point, NRLib::Point& in_line_point) const;
 
-  /// Calc projection_point on def.line from p_in (or extention of finite line
+  /// Calc projection_point on def.line from p_in (or extension of finite line
   /// when proj.pt from p_in is outside)
   Point         FindProjection(const Point& p_in) const;
 
   double        FindParameter(const Point& p_in) const;
 
   /// Returns true if p_in is on the def.line, i.e. shortest distance to line
-  /// (or extention) is less than min_in/0.0
+  /// (or extension) is less than min_in/0.0
   bool          IsPointOnLine(const Point& p_in, double min_in = min_) const;
 
   /// Returns true when line_in and def.line are parallel (closer than min_in)
@@ -119,8 +119,8 @@ class Line {
 
   /// Find intersection between def. line and line_in in 2D (z = 0) using
   /// Cramer's rule. infinite = false (default) return intersect_pt between
-  /// fininte def. line and finite line_in inifite = true return intersect_pt
-  /// between inifinite def. line and fininte line_in
+  /// finite def. line and finite line_in infinite = true return intersect_pt
+  /// between infinite def. line and finite line_in
   /// \returns true when there exists a point of intersection between two lines
   /// in 2D.
   ///          When lines are not intersecting returns false and point (0,0,0)

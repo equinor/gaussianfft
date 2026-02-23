@@ -121,7 +121,7 @@ class EclipseGeometry {
   /// Stores z-values in layer k for a rectangle with a corner in x0,y0 and step
   /// lengths dx and dy, angle indicates rotated angle in the xy-plane
   ///\\param lower_or_upper 0 for upper, 1 for lower
-  ///\\param bilinear_else_triangles true for calulating z-coordinates inside
+  ///\\param bilinear_else_triangles true for calculating z-coordinates inside
   /// corners by bilinear interpolation, false for calculating by intersection of
   /// plane through triangles
   void          FindLayerSurface(NRLib::Grid2D<double>& z_surface,

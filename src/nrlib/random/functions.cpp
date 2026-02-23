@@ -29,7 +29,7 @@
 #include <cmath>
 
 // The implementation of the functions in this file is based on the boost
-// implemenation for 53-bits presision, corresponding to 64-bit double.
+// implementation for 53-bits precision, corresponding to 64-bit double.
 
 namespace NRLib {
 

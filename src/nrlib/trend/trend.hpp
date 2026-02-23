@@ -153,7 +153,7 @@ class Trend2D : public Trend {
 class Trend3D : public Trend {
  public:
   Trend3D(NRLib::Grid<double>& values);
-  Trend3D(const std::string& file_name, bool binary = false, Endianess file_format = END_LITTLE_ENDIAN);
+  Trend3D(const std::string& file_name, bool binary = false, Endianness file_format = END_LITTLE_ENDIAN);
   Trend3D(const Trend3D& trend);
   Trend3D();
 

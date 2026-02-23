@@ -86,7 +86,7 @@ class EmpiricalVariogram:
         of reference points.
         :param strategy: The strategy to use. See below for options
         :param n:        The (approximate) number of points. Valid for 'random' and 'regular' strategies
-        :param offset:   First tupled index to use. Valid for 'regular' stategy
+        :param offset:   First tupled index to use. Valid for 'regular' strategy
         :param seed:     Sets the random seed. Valid for 'random' strategy
         :return:
         """

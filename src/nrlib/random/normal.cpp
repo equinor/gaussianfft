@@ -83,7 +83,7 @@ double Normal::PhiInverse(double y) const {
 /* PHIMinusyAndphi ************************************************************
 
 DESCRIPTION: computes PHI(x) - y and phi(x) with y being a global variable
-             and PHI() and phi() being cummulative
+             and PHI() and phi() being cumulative
              and density of standard Gaussian distribution
 
 

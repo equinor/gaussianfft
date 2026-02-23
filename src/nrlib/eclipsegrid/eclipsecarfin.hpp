@@ -36,10 +36,10 @@ namespace NRLib {
 /// A local cartesian grid refinement in an Eclipse Grid
 class EclipseCarFin {
  public:
-  /// Contructs a non-initialised EclipseCarFin object.
+  /// Constructs a non-initialised EclipseCarFin object.
   EclipseCarFin(const EclipseGrid& mother_grid);
 
-  /// Contructs a EclipseCarFin object initialised with the given input
+  /// Constructs a EclipseCarFin object initialised with the given input
   /// values. The indices start at 0. (0,0,0) is the first cell in the grid.
   /// \param name name of local grid refinement section
   /// \param grid parent grid.
@@ -140,7 +140,7 @@ class EclipseCarFin {
   /// cartesian refinement.
   /// \param carFin  cartesian refinement.
   /// \return true if connected, else false.
-  bool               IsConnected(const EclipseCarFin& refinment) const;
+  bool               IsConnected(const EclipseCarFin& refinement) const;
 
   /// Exports the local grid as an independent ECLIPSE grid. The geometry of
   /// the mother grid is used for the grid if no local geometry is given.

@@ -115,7 +115,7 @@ void binary(std::ostream& out, const DenseVector<I>& x);
 template <typename T>
 void binary(std::ostream& out, const DenseVector<Array<T> >& x);
 
-//-- file stream ouput ---------------------------------------------------------
+//-- file stream output ---------------------------------------------------------
 
 template <typename I>
 std::ofstream& operator<<(std::ofstream& out, const DenseVector<I>& x);

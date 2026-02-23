@@ -50,7 +50,7 @@ class Random {
   /// \return uniform number in (0,1)
   static double        Unif01Open() { return dsfmt_gv_genrand_open_open(); }
 
-  /// \return unsigned 32-bit integer betwen 0 and 0xFFFFFFFF
+  /// \return unsigned 32-bit integer between 0 and 0xFFFFFFFF
   static unsigned long DrawUint32() { return dsfmt_gv_genrand_uint32(); }
 
   /// Marsaglia-Bray's method, see Ripley, p. 84.

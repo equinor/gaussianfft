@@ -74,7 +74,7 @@ double Line::GetLength() const {
   }
 }
 
-// Calc shortest distance from p_in to def.line (or extention of finite line) at
+// Calc shortest distance from p_in to def.line (or extension of finite line) at
 // proj_pt
 double Line::FindDistance(const Point& p_in) const {
   Point proj_pt = FindProjection(p_in);

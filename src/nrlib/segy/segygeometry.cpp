@@ -309,7 +309,7 @@ SegyGeometry::SegyGeometry(std::vector<SegYTrace*>& traces, bool regularize_if_n
             FindIndex(x, y, i, j);
           } catch (NRLib::Exception&) {
             WriteGeometry();
-            // WriteILXL(); ILXL information is not avaialable ass class members
+            // WriteILXL(); ILXL information is not available ass class members
             // at this point
             std::string txt = "In trace " + NRLib::ToString(k) + ", IL=" + NRLib::ToString(til) +
                               " XL=" + NRLib::ToString(txl) + " the trace has coordinates (" + NRLib::ToString(x, 2) +
@@ -728,7 +728,7 @@ void SegyGeometry::SetupGeometry(double xRef,
 }
 
 void SegyGeometry::SetupGeometrySingleTrace(const SegYTrace* trace) {
-  dx_          = 0.1;  // To ensure that transfroms between indexes and coordinates work.
+  dx_          = 0.1;  // To ensure that transforms between indexes and coordinates work.
   dy_          = 0.1;
   x0_          = trace->GetX() - 0.5 * dx_;
   y0_          = trace->GetY() - 0.5 * dy_;
@@ -1252,13 +1252,13 @@ SegyGeometry* SegyGeometry::GetILXLSubGeometry(const std::vector<int>& ilxl, boo
     if (subILStep < ILStep) {
       LogKit::LogFormatted(LogKit::Warning,
                            "\nWARNING: Requested IL-step (%d) is smaller than IL-step in "
-                           "seismic data (%d). Data vill be interpolated.\n",
+                           "seismic data (%d). Data will be interpolated.\n",
                            subILStep, ILStep);
       interpolation = true;
     } else if ((subILStep % ILStep) > 0) {
       LogKit::LogFormatted(LogKit::Warning,
                            "\nWARNING: Requested IL-step (%d) is not a multiple of IL-step in "
-                           "seismic data (%d). Data vill be interpolated.\n",
+                           "seismic data (%d). Data will be interpolated.\n",
                            subILStep, ILStep);
       interpolation = true;
     }
@@ -1270,13 +1270,13 @@ SegyGeometry* SegyGeometry::GetILXLSubGeometry(const std::vector<int>& ilxl, boo
     if (subXLStep < XLStep) {
       LogKit::LogFormatted(LogKit::Warning,
                            "\nWARNING: Requested XL-step (%d) is smaller than XL-step in "
-                           "seismic data (%d). Data vill be interpolated.\n",
+                           "seismic data (%d). Data will be interpolated.\n",
                            subXLStep, XLStep);
       interpolation = true;
     } else if ((subXLStep % XLStep) > 0) {
       LogKit::LogFormatted(LogKit::Warning,
                            "\nWARNING: Requested XL-step (%d) is not a multiple of XL-step in "
-                           "seismic data (%d). Data vill be interpolated.\n",
+                           "seismic data (%d). Data will be interpolated.\n",
                            subXLStep, XLStep);
       interpolation = true;
     }
@@ -1320,7 +1320,7 @@ SegyGeometry* SegyGeometry::GetILXLSubGeometry(const std::vector<int>& ilxl, boo
     }
   }
 
-  // Let last trace fit the inital trace and step.
+  // Let last trace fit the initial trace and step.
   residual = ((maxSubIL - minSubIL) % subILStep);
   if (residual != 0) {  // Move max to fit.
     modified   = true;

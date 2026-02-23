@@ -39,7 +39,7 @@
 #include "stringtools.hpp"
 
 namespace NRLib {
-enum Endianess { END_LITTLE_ENDIAN, END_BIG_ENDIAN };
+enum Endianness { END_LITTLE_ENDIAN, END_BIG_ENDIAN };
 enum GridFileFormat {
   UNKNOWN             = -1,
   STORM_PETRO_BINARY  = 0,
@@ -114,7 +114,7 @@ void               SkipComments(std::istream& stream, char comment_token, int& l
 /// \return True if end of file is reached, else false.
 bool               CheckEndOfFile(std::istream& stream);
 
-/// \brief Read next white-space seperated token from file.
+/// \brief Read next white-space separated token from file.
 ///        Updates line number when new line is read in.
 ///        If end of file is reached the state of stream is set to eof.
 ///        If ReadNextToken is called with a stream that is not good, the state
@@ -171,21 +171,21 @@ I ReadAsciiArrayFastRestOfFile(std::istream& stream, I begin, size_t n);
 
 /// \brief Write a 2-byte integer to a binary file.
 template <typename F>
-void WriteBinaryShort(F& stream, short s, Endianess number_representation = END_BIG_ENDIAN);
+void WriteBinaryShort(F& stream, short s, Endianness number_representation = END_BIG_ENDIAN);
 
 /// \brief Read a 2-byte integer from a binary file.
 template <typename F>
-short ReadBinaryShort(F& stream, Endianess number_representation = END_BIG_ENDIAN);
+short ReadBinaryShort(F& stream, Endianness number_representation = END_BIG_ENDIAN);
 
 /// \brief Write an array of binary 2-byte integers.
 template <typename F, typename I>
-void WriteBinaryShortArray(F& stream, I begin, I end, Endianess number_representation = END_BIG_ENDIAN);
+void WriteBinaryShortArray(F& stream, I begin, I end, Endianness number_representation = END_BIG_ENDIAN);
 
 /// \brief Read an array of binary 2-byte integers.
 /// \note  The container must already be big enough to read all n
 ///        elements.
 template <typename F, typename I>
-I ReadBinaryShortArray(F& stream, I begin, size_t n, Endianess number_representation = END_BIG_ENDIAN);
+I ReadBinaryShortArray(F& stream, I begin, size_t n, Endianness number_representation = END_BIG_ENDIAN);
 
 // ---------------------------------
 // 4-byte integer
@@ -193,21 +193,21 @@ I ReadBinaryShortArray(F& stream, I begin, size_t n, Endianess number_representa
 
 /// \brief Write a 4-byte integer to a binary file.
 template <typename F>
-void WriteBinaryInt(F& stream, int i, Endianess number_representation = END_BIG_ENDIAN);
+void WriteBinaryInt(F& stream, int i, Endianness number_representation = END_BIG_ENDIAN);
 
 /// \brief Read a 4-byte integer from a binary file.
 template <typename F>
-int ReadBinaryInt(F& stream, Endianess number_representation = END_BIG_ENDIAN);
+int ReadBinaryInt(F& stream, Endianness number_representation = END_BIG_ENDIAN);
 
 /// \brief Write an array of binary 4-byte integers.
 template <typename F, typename I>
-void WriteBinaryIntArray(F& stream, I begin, I end, Endianess number_representation = END_BIG_ENDIAN);
+void WriteBinaryIntArray(F& stream, I begin, I end, Endianness number_representation = END_BIG_ENDIAN);
 
 /// \brief Read an array of binary 4-byte integers.
 /// \note  The container must already be big enough to read all n
 ///        elements.
 template <typename F, typename I>
-I ReadBinaryIntArray(F& stream, I begin, size_t n, Endianess number_representation = END_BIG_ENDIAN);
+I ReadBinaryIntArray(F& stream, I begin, size_t n, Endianness number_representation = END_BIG_ENDIAN);
 
 // ---------------------------------
 // 4-byte IEEE floating point number
@@ -215,21 +215,21 @@ I ReadBinaryIntArray(F& stream, I begin, size_t n, Endianess number_representati
 
 /// \brief Write a 4-byte float on standard IEEE format.
 template <typename F>
-void WriteBinaryFloat(F& stream, float f, Endianess number_representation = END_BIG_ENDIAN);
+void WriteBinaryFloat(F& stream, float f, Endianness number_representation = END_BIG_ENDIAN);
 
 /// \brief Read a 4-byte float on standard IEEE format.
 template <typename F>
-float ReadBinaryFloat(F& stream, Endianess number_representation = END_BIG_ENDIAN);
+float ReadBinaryFloat(F& stream, Endianness number_representation = END_BIG_ENDIAN);
 
 /// \brief Write an array of 4-byte floats on standard IEEE format.
 template <typename F, typename I>
-void WriteBinaryFloatArray(F& stream, I begin, I end, Endianess number_representation = END_BIG_ENDIAN);
+void WriteBinaryFloatArray(F& stream, I begin, I end, Endianness number_representation = END_BIG_ENDIAN);
 
 /// \brief Read an array of 4-byte floats on standard IEEE format.
 /// \note  The container must already be big enough to read all n
 ///        elements.
 template <typename F, typename I>
-I ReadBinaryFloatArray(F& stream, I begin, size_t n, Endianess number_representation = END_BIG_ENDIAN);
+I ReadBinaryFloatArray(F& stream, I begin, size_t n, Endianness number_representation = END_BIG_ENDIAN);
 
 // ---------------------------------
 // 8-byte IEEE floating point number
@@ -237,21 +237,21 @@ I ReadBinaryFloatArray(F& stream, I begin, size_t n, Endianess number_representa
 
 /// \brief Write a 8-byte float on standard IEEE format.
 template <typename F>
-void WriteBinaryDouble(F& stream, double d, Endianess number_representation = END_BIG_ENDIAN);
+void WriteBinaryDouble(F& stream, double d, Endianness number_representation = END_BIG_ENDIAN);
 
 /// \brief Read a 8-byte float on standard IEEE format.
 template <typename F>
-double ReadBinaryDouble(F& stream, Endianess number_representation = END_BIG_ENDIAN);
+double ReadBinaryDouble(F& stream, Endianness number_representation = END_BIG_ENDIAN);
 
 /// \brief Write an array of 8-byte floats on standard IEEE format.
 template <typename F, typename I>
-void WriteBinaryDoubleArray(F& stream, I begin, I end, Endianess number_representation = END_BIG_ENDIAN);
+void WriteBinaryDoubleArray(F& stream, I begin, I end, Endianness number_representation = END_BIG_ENDIAN);
 
 /// \brief Read an array of 8-byte floats on standard IEEE format.
 /// \note  The container must already be big enough to read all n
 ///        elements.
 template <typename F, typename I>
-I ReadBinaryDoubleArray(F& stream, I begin, size_t n, Endianess number_representation = END_BIG_ENDIAN);
+I ReadBinaryDoubleArray(F& stream, I begin, size_t n, Endianness number_representation = END_BIG_ENDIAN);
 
 // ---------------------------------
 // 4-byte IBM floating point number
@@ -259,21 +259,21 @@ I ReadBinaryDoubleArray(F& stream, I begin, size_t n, Endianess number_represent
 
 /// \brief Write a 4-byte float on standard IEEE format.
 template <typename F>
-void WriteBinaryIbmFloat(F& stream, float f, Endianess number_representation = END_BIG_ENDIAN);
+void WriteBinaryIbmFloat(F& stream, float f, Endianness number_representation = END_BIG_ENDIAN);
 
 /// \brief Read a 4-byte float on standard IEEE format.
 template <typename F>
-float ReadBinaryIbmFloat(F& stream, Endianess number_representation = END_BIG_ENDIAN);
+float ReadBinaryIbmFloat(F& stream, Endianness number_representation = END_BIG_ENDIAN);
 
 /// \brief Write an array of 4-byte floats on standard IEEE format.
 template <typename F, typename I>
-void WriteBinaryIbmFloatArray(F& stream, I begin, I end, Endianess number_representation = END_BIG_ENDIAN);
+void WriteBinaryIbmFloatArray(F& stream, I begin, I end, Endianness number_representation = END_BIG_ENDIAN);
 
 /// \brief Read an array of 4-byte floats on standard IEEE format.
 /// \note  The container must already be big enough to read all n
 ///        elements.
 template <typename F, typename I>
-I           ReadBinaryIbmFloatArray(F& stream, I begin, size_t n, Endianess number_representation = END_BIG_ENDIAN);
+I           ReadBinaryIbmFloatArray(F& stream, I begin, size_t n, Endianness number_representation = END_BIG_ENDIAN);
 
 bool        IgnoreComment(std::ifstream& file, char chin);
 
@@ -470,7 +470,7 @@ I NRLib::ReadAsciiArrayFastRestOfFile(std::istream& stream, I begin, size_t n) {
 }
 
 template <typename F>
-void NRLib::WriteBinaryShort(F& stream, short s, Endianess file_format) {
+void NRLib::WriteBinaryShort(F& stream, short s, Endianness file_format) {
   using namespace NRLib::NRLibPrivate;
 
   char buffer[2];
@@ -483,7 +483,7 @@ void NRLib::WriteBinaryShort(F& stream, short s, Endianess file_format) {
       NRLibPrivate::WriteUInt16LE(buffer, static_cast<unsigned short>(s));
       break;
     default:
-      assert(false);  // Invalid endianess descriptor
+      assert(false);  // Invalid endianness descriptor
   }
 
   if (!stream.write(buffer, 2)) {
@@ -492,7 +492,7 @@ void NRLib::WriteBinaryShort(F& stream, short s, Endianess file_format) {
 }
 
 template <typename F>
-short NRLib::ReadBinaryShort(F& stream, Endianess file_format) {
+short NRLib::ReadBinaryShort(F& stream, Endianness file_format) {
   using namespace NRLib::NRLibPrivate;
 
   unsigned short us;
@@ -520,7 +520,7 @@ short NRLib::ReadBinaryShort(F& stream, Endianess file_format) {
 }
 
 template <typename F, typename I>
-void NRLib::WriteBinaryShortArray(F& stream, I begin, I end, NRLib::Endianess number_representation) {
+void NRLib::WriteBinaryShortArray(F& stream, I begin, I end, NRLib::Endianness number_representation) {
   typename I::difference_type  n_in = std::distance(begin, end);
 
   std::vector<boost::uint16_t> buffer(n_in);
@@ -536,7 +536,7 @@ void NRLib::WriteBinaryShortArray(F& stream, I begin, I end, NRLib::Endianess nu
         boost::endian::native_to_little_inplace(buffer[i]);
       break;
     default:
-      assert(false);  // Invalid endianess descriptor
+      assert(false);  // Invalid endianness descriptor
   }
 
   if (!stream.write(reinterpret_cast<const char*>(&buffer[0]), static_cast<std::streamsize>(2 * n_in))) {
@@ -545,7 +545,7 @@ void NRLib::WriteBinaryShortArray(F& stream, I begin, I end, NRLib::Endianess nu
 }
 
 template <typename F, typename I>
-I NRLib::ReadBinaryShortArray(F& stream, I begin, size_t n, NRLib::Endianess number_representation) {
+I NRLib::ReadBinaryShortArray(F& stream, I begin, size_t n, NRLib::Endianness number_representation) {
   std::vector<boost::uint16_t> buffer(n);
 
   if (!stream.read(reinterpret_cast<char*>(&buffer[0]), static_cast<std::streamsize>(2 * n))) {
@@ -562,7 +562,7 @@ I NRLib::ReadBinaryShortArray(F& stream, I begin, size_t n, NRLib::Endianess num
         boost::endian::little_to_native_inplace(buffer[i]);
       break;
     default:
-      assert(false);  // Invalid endianess descriptor
+      assert(false);  // Invalid endianness descriptor
   }
 
   std::memcpy(&begin[0], &buffer[0], 2 * n);
@@ -571,7 +571,7 @@ I NRLib::ReadBinaryShortArray(F& stream, I begin, size_t n, NRLib::Endianess num
 }
 
 template <typename F>
-void NRLib::WriteBinaryInt(F& stream, int i, Endianess file_format) {
+void NRLib::WriteBinaryInt(F& stream, int i, Endianness file_format) {
   using namespace NRLib::NRLibPrivate;
 
   char buffer[4];
@@ -593,7 +593,7 @@ void NRLib::WriteBinaryInt(F& stream, int i, Endianess file_format) {
 }
 
 template <typename F>
-int NRLib::ReadBinaryInt(F& stream, Endianess file_format) {
+int NRLib::ReadBinaryInt(F& stream, Endianness file_format) {
   using namespace NRLib::NRLibPrivate;
 
   unsigned int ui;
@@ -621,7 +621,7 @@ int NRLib::ReadBinaryInt(F& stream, Endianess file_format) {
 }
 
 template <typename F, typename I>
-void NRLib::WriteBinaryIntArray(F& stream, I begin, I end, NRLib::Endianess number_representation) {
+void NRLib::WriteBinaryIntArray(F& stream, I begin, I end, NRLib::Endianness number_representation) {
   typename I::difference_type  n_in = std::distance(begin, end);
 
   std::vector<boost::uint32_t> buffer(n_in);
@@ -637,7 +637,7 @@ void NRLib::WriteBinaryIntArray(F& stream, I begin, I end, NRLib::Endianess numb
         boost::endian::native_to_little_inplace(buffer[i]);
       break;
     default:
-      assert(false);  // Invalid endianess descriptor
+      assert(false);  // Invalid endianness descriptor
   }
 
   if (!stream.write(reinterpret_cast<const char*>(&buffer[0]), static_cast<std::streamsize>(4 * n_in))) {
@@ -646,7 +646,7 @@ void NRLib::WriteBinaryIntArray(F& stream, I begin, I end, NRLib::Endianess numb
 }
 
 template <typename F, typename I>
-I NRLib::ReadBinaryIntArray(F& stream, I begin, size_t n, NRLib::Endianess number_representation) {
+I NRLib::ReadBinaryIntArray(F& stream, I begin, size_t n, NRLib::Endianness number_representation) {
   std::vector<boost::uint32_t> buffer(n);
 
   if (!stream.read(reinterpret_cast<char*>(&buffer[0]), static_cast<std::streamsize>(4 * n))) {
@@ -663,7 +663,7 @@ I NRLib::ReadBinaryIntArray(F& stream, I begin, size_t n, NRLib::Endianess numbe
         boost::endian::little_to_native_inplace(buffer[i]);
       break;
     default:
-      assert(false);  // Invalid endianess descriptor
+      assert(false);  // Invalid endianness descriptor
   }
 
   std::memcpy(&begin[0], &buffer[0], 4 * n);
@@ -672,7 +672,7 @@ I NRLib::ReadBinaryIntArray(F& stream, I begin, size_t n, NRLib::Endianess numbe
 }
 
 template <typename F>
-void NRLib::WriteBinaryFloat(F& stream, float f, Endianess file_format) {
+void NRLib::WriteBinaryFloat(F& stream, float f, Endianness file_format) {
   using namespace NRLib::NRLibPrivate;
 
   char buffer[4];
@@ -694,7 +694,7 @@ void NRLib::WriteBinaryFloat(F& stream, float f, Endianess file_format) {
 }
 
 template <typename F>
-float NRLib::ReadBinaryFloat(F& stream, Endianess file_format) {
+float NRLib::ReadBinaryFloat(F& stream, Endianness file_format) {
   using namespace NRLib::NRLibPrivate;
 
   float f;
@@ -722,7 +722,7 @@ float NRLib::ReadBinaryFloat(F& stream, Endianess file_format) {
 }
 
 template <typename F, typename I>
-void NRLib::WriteBinaryFloatArray(F& stream, I begin, I end, NRLib::Endianess number_representation) {
+void NRLib::WriteBinaryFloatArray(F& stream, I begin, I end, NRLib::Endianness number_representation) {
   typename I::difference_type  n_in = std::distance(begin, end);
 
   std::vector<boost::uint32_t> buffer(n_in);
@@ -739,7 +739,7 @@ void NRLib::WriteBinaryFloatArray(F& stream, I begin, I end, NRLib::Endianess nu
         boost::endian::native_to_little_inplace(buffer[i]);
       break;
     default:
-      assert(false);  // Invalid endianess descriptor
+      assert(false);  // Invalid endianness descriptor
   }
 
   if (!stream.write(reinterpret_cast<const char*>(&buffer[0]), static_cast<std::streamsize>(4 * n_in))) {
@@ -748,7 +748,7 @@ void NRLib::WriteBinaryFloatArray(F& stream, I begin, I end, NRLib::Endianess nu
 }
 
 template <typename F, typename I>
-I NRLib::ReadBinaryFloatArray(F& stream, I begin, size_t n, NRLib::Endianess number_representation) {
+I NRLib::ReadBinaryFloatArray(F& stream, I begin, size_t n, NRLib::Endianness number_representation) {
   std::vector<boost::uint32_t> buffer(n);
 
   if (!stream.read(reinterpret_cast<char*>(&buffer[0]), static_cast<std::streamsize>(4 * n))) {
@@ -774,13 +774,13 @@ I NRLib::ReadBinaryFloatArray(F& stream, I begin, size_t n, NRLib::Endianess num
       }
       break;
     default:
-      assert(false);  // Invalid endianess descriptor
+      assert(false);  // Invalid endianness descriptor
   }
   return begin;
 }
 
 template <typename F>
-void NRLib::WriteBinaryDouble(F& stream, double d, Endianess file_format) {
+void NRLib::WriteBinaryDouble(F& stream, double d, Endianness file_format) {
   using namespace NRLib::NRLibPrivate;
 
   char buffer[8];
@@ -802,7 +802,7 @@ void NRLib::WriteBinaryDouble(F& stream, double d, Endianess file_format) {
 }
 
 template <typename F>
-double NRLib::ReadBinaryDouble(F& stream, Endianess file_format) {
+double NRLib::ReadBinaryDouble(F& stream, Endianness file_format) {
   using namespace NRLib::NRLibPrivate;
 
   double d;
@@ -830,7 +830,7 @@ double NRLib::ReadBinaryDouble(F& stream, Endianess file_format) {
 }
 
 template <typename F, typename I>
-void NRLib::WriteBinaryDoubleArray(F& stream, I begin, I end, NRLib::Endianess number_representation) {
+void NRLib::WriteBinaryDoubleArray(F& stream, I begin, I end, NRLib::Endianness number_representation) {
   typename I::difference_type  n_in = std::distance(begin, end);
   std::vector<boost::uint64_t> buffer(n_in);
 
@@ -846,7 +846,7 @@ void NRLib::WriteBinaryDoubleArray(F& stream, I begin, I end, NRLib::Endianess n
         boost::endian::native_to_little_inplace(buffer[i]);
       break;
     default:
-      assert(false);  // Invalid endianess descriptor
+      assert(false);  // Invalid endianness descriptor
   }
 
   if (!stream.write(reinterpret_cast<const char*>(&buffer[0]), static_cast<std::streamsize>(8 * n_in))) {
@@ -855,7 +855,7 @@ void NRLib::WriteBinaryDoubleArray(F& stream, I begin, I end, NRLib::Endianess n
 }
 
 template <typename F, typename I>
-I NRLib::ReadBinaryDoubleArray(F& stream, I begin, size_t n, NRLib::Endianess number_representation) {
+I NRLib::ReadBinaryDoubleArray(F& stream, I begin, size_t n, NRLib::Endianness number_representation) {
   std::vector<boost::uint64_t> buffer(n);
 
   if (!stream.read(reinterpret_cast<char*>(&buffer[0]), static_cast<std::streamsize>(8 * n))) {
@@ -872,7 +872,7 @@ I NRLib::ReadBinaryDoubleArray(F& stream, I begin, size_t n, NRLib::Endianess nu
         boost::endian::little_to_native_inplace(buffer[i]);
       break;
     default:
-      assert(false);  // Invalid endianess descriptor
+      assert(false);  // Invalid endianness descriptor
   }
 
   std::memcpy(&begin[0], &buffer[0], 8 * n);
@@ -881,7 +881,7 @@ I NRLib::ReadBinaryDoubleArray(F& stream, I begin, size_t n, NRLib::Endianess nu
 }
 
 template <typename F, typename I>
-void NRLib::WriteBinaryIbmFloatArray(F& stream, I begin, I end, NRLib::Endianess number_representation) {
+void NRLib::WriteBinaryIbmFloatArray(F& stream, I begin, I end, NRLib::Endianness number_representation) {
   typename I::difference_type  n_in = std::distance(begin, end);
   std::vector<boost::uint32_t> buffer(n_in);
 
@@ -900,7 +900,7 @@ void NRLib::WriteBinaryIbmFloatArray(F& stream, I begin, I end, NRLib::Endianess
         boost::endian::native_to_little_inplace(buffer[i]);
       break;
     default:
-      assert(false);  // Invalid endianess descriptor
+      assert(false);  // Invalid endianness descriptor
   }
 
   if (!stream.write(reinterpret_cast<const char*>(&buffer[0]), static_cast<std::streamsize>(4 * n_in))) {
@@ -909,7 +909,7 @@ void NRLib::WriteBinaryIbmFloatArray(F& stream, I begin, I end, NRLib::Endianess
 }
 
 template <typename F, typename I>
-I NRLib::ReadBinaryIbmFloatArray(F& stream, I begin, size_t n, NRLib::Endianess number_representation) {
+I NRLib::ReadBinaryIbmFloatArray(F& stream, I begin, size_t n, NRLib::Endianness number_representation) {
   std::vector<boost::uint32_t> buffer(n);
 
   std::string                  error;
@@ -932,7 +932,7 @@ I NRLib::ReadBinaryIbmFloatArray(F& stream, I begin, size_t n, NRLib::Endianess 
         boost::endian::little_to_native_inplace(buffer[i]);
       break;
     default:
-      assert(false);  // Invalid endianess descriptor
+      assert(false);  // Invalid endianness descriptor
   }
 
   for (size_t i = 0; i < n; ++i)
@@ -948,7 +948,7 @@ I NRLib::ReadBinaryIbmFloatArray(F& stream, I begin, size_t n, NRLib::Endianess 
 }
 
 template <typename F>
-void NRLib::WriteBinaryIbmFloat(F& stream, float f, Endianess file_format) {
+void NRLib::WriteBinaryIbmFloat(F& stream, float f, Endianness file_format) {
   char buffer[4];
 
   switch (file_format) {
@@ -959,7 +959,7 @@ void NRLib::WriteBinaryIbmFloat(F& stream, float f, Endianess file_format) {
       NRLibPrivate::WriteIBMFloatLE(buffer, f);
       break;
     default:
-      assert(false);  // Invalid endianess descriptor
+      assert(false);  // Invalid endianness descriptor
   }
 
   if (!stream.write(buffer, 4)) {
@@ -968,7 +968,7 @@ void NRLib::WriteBinaryIbmFloat(F& stream, float f, Endianess file_format) {
 }
 
 template <typename F>
-float NRLib::ReadBinaryIbmFloat(F& stream, Endianess file_format) {
+float NRLib::ReadBinaryIbmFloat(F& stream, Endianness file_format) {
   float f = 0.0;
   char  buffer[4];
 
@@ -987,7 +987,7 @@ float NRLib::ReadBinaryIbmFloat(F& stream, Endianess file_format) {
       NRLibPrivate::ParseIBMFloatLE(buffer, f);
       break;
     default:
-      assert(false);  // Invalid endianess descriptor
+      assert(false);  // Invalid endianness descriptor
   }
 
   return f;

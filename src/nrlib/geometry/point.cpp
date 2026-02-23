@@ -59,7 +59,7 @@ double Point::GetAngle(const Point& p_in) const {
     loc = this->Dot(p_in) / norm;
     return std::acos(loc);
   } else
-    return 0.0;  // returning unvalid value
+    return 0.0;  // returning invalid value
 }
 
 std::ostream& NRLib::operator<<(std::ostream& out, const Point& p) {

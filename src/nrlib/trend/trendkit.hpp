@@ -255,7 +255,7 @@ void   ReadTrend2DPlainAscii(const std::string& file_name, std::string& /*errTex
 void   ReadTrend3DPlainAscii(const std::string& file_name, std::string& /*err_txt*/, NRLib::Grid<double>& trend3d);
 
 void   ReadTrend3DBinary(const std::string&   file_name,
-                         Endianess            file_format,
+                         Endianness           file_format,
                          std::string          err_txt,
                          NRLib::Grid<double>& trend_);
 

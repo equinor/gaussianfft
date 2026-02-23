@@ -188,8 +188,8 @@ double BilinearSurface::Compute_T(const Point& r_in, const Point& q_in, const Po
 // inside), the other intersec is intersec2_out. num=1: intersec1_out is only
 // intersection point
 int BilinearSurface::FindIntersections(const Line& line_in, Point& intersec1_out, Point& intersec2_out) {
-  intersec1_out.x = intersec1_out.y = intersec1_out.z = 0.0;  // define unvalid default-value
-  intersec2_out.x = intersec2_out.y = intersec2_out.z = 0.0;  // define unvalid default-value
+  intersec1_out.x = intersec1_out.y = intersec1_out.z = 0.0;  // define invalid default-value
+  intersec2_out.x = intersec2_out.y = intersec2_out.z = 0.0;  // define invalid default-value
 
   // Any pt on surface is def by p = u*v*a + u*b + v*c + d. (u,v) in [0,1]:
   Point a(pt00_ - pt10_ - pt01_ + pt11_);
@@ -320,19 +320,19 @@ int BilinearSurface::FindIntersections(const Line& line_in, Point& intersec1_out
       return 2;
     } else if (valid_1) {
       intersec1_out = p1;
-      intersec2_out = p2;  // unvalid p2-value given to intersec_out
+      intersec2_out = p2;  // invalid p2-value given to intersec_out
       return 1;
     } else if (valid_2) {
       intersec1_out = p2;
-      intersec2_out = p1;  // unvalid p1-value given to intersec_out
+      intersec2_out = p1;  // invalid p1-value given to intersec_out
       return 1;
     }
-    // else unvalid (valid_1 and valid_2) : intersec1_out/intersec2_out is
+    // else invalid (valid_1 and valid_2) : intersec1_out/intersec2_out is
     // init-value =0
 
     return 0;
   }  // end of (num==2)
 
-  // must have been unvalid num-value from QuadraticSol(), not inside (0,1,2):
+  // must have been invalid num-value from QuadraticSol(), not inside (0,1,2):
   return (-1);
 }

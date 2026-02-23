@@ -114,7 +114,7 @@ class Volume {
   void WriteVolumeToFile(std::ofstream& file, const std::string& filename, bool remove_path = true) const;
   void ReadVolumeFromFile(std::ifstream& file, int line, const std::string& path);
 
-  /// \brief The local coorinates are (0,0) in (x_min, y_min), and
+  /// \brief The local coordinates are (0,0) in (x_min, y_min), and
   ///        have the same orientation as the volume.
   void GlobalToLocalCoord(double global_x, double global_y, double& local_x, double& local_y) const;
 

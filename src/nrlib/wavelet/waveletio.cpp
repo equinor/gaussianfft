@@ -428,7 +428,7 @@ std::string JasonGetFirstNonCommentLine(std::ifstream& infile, int& line_number)
     std::string            strippedLine = line.substr(start, end - start + 1);
     return strippedLine;
   }
-  // End of file reached, or something bad happend while reading
+  // End of file reached, or something bad happened while reading
   // from file.
   throw EndOfFile();
 }

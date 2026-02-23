@@ -52,7 +52,7 @@ bool SecondayCondDistrMultiNormal2D(
     const std::vector<double>&       known_values,
     const std::vector<double>&       local_corr,  // Allows secondary observations. Must have same
                                                   // correlation with unknown. A value of 1 indicates primary
-                                                  // observation, lower value seconday.
+                                                  // observation, lower value secondary.
     const std::vector<NRLib::Point>& pos_unknown,
     const std::vector<double>&       exp_known,
     const std::vector<double>&       exp_unknown,

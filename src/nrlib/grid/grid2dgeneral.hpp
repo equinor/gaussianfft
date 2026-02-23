@@ -42,7 +42,7 @@ class Grid2DGeneral {
   typedef typename std::vector<A>::reference       reference;
   typedef typename std::vector<A>::const_reference const_reference;
 
-  // Constructor with no parameters: Initilizing size and data to 0.
+  // Constructor with no parameters: Initializing size and data to 0.
   Grid2DGeneral();
 
   // Constructor with indices defining the grid

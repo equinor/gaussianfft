@@ -125,7 +125,7 @@ void NRLib::NRLibPrivate::ComputeFFTInv1D<double>(size_t n, std::complex<double>
                         DFTI_NOT_INPLACE);  // Out of place FFT
   // status = DftiSetValue(descriptor, DFTI_BACKWARD_SCALE, 1.0 / n); //Scale
   // down the output
-  std::cout << "Committing inv desciptor\n";
+  std::cout << "Committing inv descriptor\n";
   status = DftiCommitDescriptor(descriptor);  // Finalize the descriptor
   std::cout << "Computing backward\n";
   status = DftiComputeBackward(descriptor, in, out);  // Compute the Backward

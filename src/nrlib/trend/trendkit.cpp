@@ -175,7 +175,7 @@ int GetTrend1DFileFormat(const std::string& file_name, std::string& errText) {
     }
   }
   file.close();
-  if (IsNumber(dummyStr) && commentFound == true)  // not convertable number
+  if (IsNumber(dummyStr) && commentFound == true)  // not convertible number
     fileformat = 0;                                // Same file format as WAVELET::JASON
   else
     fileformat = 1;  // plain ascii file
@@ -542,7 +542,7 @@ void LocalLinearRegression1D(const std::vector<double>& x,
       }
 
       if (weight_i > effective_sample_size) {
-        // calcualte (X^{t}WX) = A and X^{t}Wy = c
+        // calculate (X^{t}WX) = A and X^{t}Wy = c
         double a00 = 0.0;
         double a01 = 0.0;
         double a11 = 0.0;
@@ -564,7 +564,7 @@ void LocalLinearRegression1D(const std::vector<double>& x,
         // a00                   = a00*(1 + 1e-4);
         a11          = a11 * (1 + 1e-4);
 
-        // calcualte B = A^{-1}
+        // calculate B = A^{-1}
         double b00   = a11;
         double b01   = -a01;
         double b11   = a00;
@@ -1277,7 +1277,7 @@ void LocalLinearRegression2DSurface(const std::vector<double>&         x,
             c3            = c3 + y[m] * z[m] * weight;
           }
 
-          // add a smll number to the diagonal in case the matrix is singular.
+          // add a small number to the diagonal in case the matrix is singular.
           // a11        = a11*(1 + epsilon);
           a22          = a22 * (1 + epsilon);
           a33          = a33 * (1 + epsilon);
@@ -1721,7 +1721,7 @@ void ReadTrend3DPlainAscii(const std::string& file_name, std::string& /*err_txt*
 }
 
 void ReadTrend3DBinary(const std::string& file_name,
-                       Endianess          file_format,
+                       Endianness         file_format,
                        std::string /*err_txt*/,
                        NRLib::Grid<double>& trend3d) {
   std::ifstream file;

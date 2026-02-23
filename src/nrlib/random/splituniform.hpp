@@ -32,7 +32,7 @@
 
 namespace NRLib {
 
-/// Discontinous uniform distribution.
+/// Discontinuous uniform distribution.
 class SplitUniform : public Distribution<double> {
  public:
   SplitUniform();

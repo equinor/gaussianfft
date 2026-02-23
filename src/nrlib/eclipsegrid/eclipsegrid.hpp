@@ -158,19 +158,19 @@ class EclipseGrid {
   // ==============================
 
   /// Constant access operator - general parameter.
-  /// Fails with assert if paramter does not exist - check with HasParameter
+  /// Fails with assert if parameter does not exist - check with HasParameter
   /// first!
   inline const Grid<double>& operator()(const std::string& parameter_name) const;
 
   inline bool                HasParameter(const std::string& parameter_name) const;
 
   /// Get general parameter - same as constant variant of access operator.
-  /// Fails with assert if paramter does not exist - check with HasParameter
+  /// Fails with assert if parameter does not exist - check with HasParameter
   /// first!
   const Grid<double>&        GetParameter(const std::string& parameter_name) const { return (*this)(parameter_name); }
 
   /// Get general parameter
-  /// Fails with assert if paramter does not exist - check with HasParameter
+  /// Fails with assert if parameter does not exist - check with HasParameter
   /// first!
   Grid<double>& GetParameter(const std::string& parameter_name) { return continuous_parameters_[parameter_name]; }
 

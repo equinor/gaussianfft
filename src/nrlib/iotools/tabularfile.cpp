@@ -55,7 +55,7 @@ bool TabularFile::CheckFile(const std::string& filename,
                             bool&              read_last_line,
                             std::string&       last_line) {
   // Check if the last line of the file consists of data
-  // and make initial guess if the last line shoud be read (not reading when
+  // and make initial guess if the last line should be read (not reading when
   // equal to 0 or -999)
   std::ifstream in_file0;
   OpenRead(in_file0, filename);

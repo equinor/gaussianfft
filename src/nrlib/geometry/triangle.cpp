@@ -55,8 +55,8 @@ bool Triangle::FindIntersection(const Line& line, Point& intersec_pt, bool inclu
   double b        = NRLib::Dot(n, line_dir);
 
   if (b == 0.0) {
-    // Line paralell to surface.
-    // We treat this as no intersection, even if line goes trough triangle.
+    // Line parallel to surface.
+    // We treat this as no intersection, even if line goes through triangle.
     return false;
   }
 

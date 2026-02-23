@@ -82,6 +82,9 @@ repos:
         name: codespell
         description: Checks for shared misspellings in text files.
         entry: codespell
+        args:
+          - '-L'
+          - 'StreamIn,fillIn,ist,nd,ans,ser'
         language: python
         types: [text]
         additional_dependencies:

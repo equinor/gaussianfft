@@ -57,7 +57,7 @@ class Beta : public Distribution<double> {
   double              max_val_;
   double              a_;
   double              b_;
-  int                 nx_;        // number of bins in intervall [minVal_, maxVal_]
+  int                 nx_;        // number of bins in interval [minVal_, maxVal_]
   double              dx_;        // width of one bin
   std::vector<double> pdf_;       // pdf at centerpoint of bin
   std::vector<double> cdf_;       // cdf at left side of bin
@@ -77,7 +77,7 @@ double Beta::Pdf(double x) const {
 }
 
 double Beta::Cdf(double x) const {
-  // linear interpolation between cell bounaries
+  // linear interpolation between cell boundaries
   int    ix    = int((x - min_val_) / dx_);
 
   double lowP  = 0.0;
@@ -105,7 +105,7 @@ double Beta::Cdf(double x) const {
 double Beta::Quantile(double p) const {
   // Inverse of CDF
 
-  // linear interpolation between cell bounaries
+  // linear interpolation between cell boundaries
   int    ip    = int(p * nx_);
 
   double lowX  = min_val_;

@@ -257,8 +257,8 @@ class SegY {
                      double&            dil,
                      double&            dxl,
                      bool               x);
-  void CheckTopBotError(const double* tE,
-                        const double* bE);  ///< Summarizes lack of data at top and bottom.
+  void CheckTopBotError(const double* top_err,
+                        const double* botton_err);  ///< Summarizes lack of data at top and bottom.
 
   TraceHeaderFormat       trace_header_format_;
 

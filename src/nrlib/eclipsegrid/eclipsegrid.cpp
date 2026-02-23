@@ -370,7 +370,7 @@ void EclipseGrid::WriteToFiles(const std::vector<std::string>&             file_
   std::set<std::string> parameters_written;
   for (size_t j = 0; j < keywords.size(); j++) {
     if (keywords[j].size() == 0) {
-      // Remainig keywords can only be written to last file.
+      // Remaining keywords can only be written to last file.
       assert(j == keywords.size() - 1);
       WriteRemainingParameters(file_names[j], parameters_written);
     } else {

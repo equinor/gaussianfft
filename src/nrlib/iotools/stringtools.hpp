@@ -51,7 +51,7 @@ bool IsType(const std::string& s);
 template <typename T>
 T ParseType(const std::string& s);
 
-/// If used in a template function, we may get string ot string parse.
+/// If used in a template function, we may get string to string parse.
 /// Will not work with the version above, so handle special case.
 template <>
 std::string ParseType<std::string>(const std::string& s);
@@ -78,7 +78,7 @@ std::string        RemovePath(const std::string& filename);
 
 /// Prepend prefix to str. Returns str if prefix is empty, if str is empty
 /// or if str is a complete path starting with /.
-/// Adds '/' as directory seperator if missing.
+/// Adds '/' as directory separator if missing.
 std::string        PrependDir(const std::string& prefix, const std::string& str);
 
 /// Replace file extension.
@@ -87,7 +87,7 @@ std::string        ReplaceExtension(const std::string& filename, const std::stri
 /// Add an extension to the filename.
 std::string        AddExtension(const std::string& filename, const std::string& extension);
 
-/// In string text replace all occurences odf string "out" with string "in".
+/// In string text replace all occurrences odf string "out" with string "in".
 void               Substitute(std::string& text, const std::string& out, const std::string& in);
 
 /// Return uppercase of input string.

@@ -65,7 +65,7 @@ class EclipseFault {
 
   const std::vector<Segment>& GetSegments() const { return segments_; }
 
-  // =============== Segment handeling methods ===================
+  // =============== Segment handling methods ===================
   static void                 GetSegmentLowerCoord(const Segment& segment, int& i, int& j);
   static void                 GetSegmentUpperCoord(const Segment& segment, int& i, int& j);
   static void                 IncreaseSegmentLength(Segment& segment, int increment);

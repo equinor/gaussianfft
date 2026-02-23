@@ -35,7 +35,7 @@ class StormFaciesGrid : public Grid<int>, public Volume {
  public:
   enum FileFormat { STORM_BINARY = 0, STORM_ASCII };
 
-  explicit StormFaciesGrid(const std::string& filename, Endianess file_format = END_BIG_ENDIAN);
+  explicit StormFaciesGrid(const std::string& filename, Endianness file_format = END_BIG_ENDIAN);
   explicit StormFaciesGrid(size_t nx = 0, size_t ny = 0, size_t nz = 0);
   explicit StormFaciesGrid(const Volume& vol, size_t nx, size_t ny, size_t nz);
 
@@ -62,8 +62,8 @@ class StormFaciesGrid : public Grid<int>, public Volume {
   void               SetBodyFacies(const std::vector<int>& body_facies);
   void               SetFaciesNames(const std::vector<std::string>& facies_names);
 
-  void               WriteToFile(const std::string& filename, Endianess file_format = END_BIG_ENDIAN) const;
-  void   ReadFromFile(const std::string& filename, bool commonPath = true, Endianess file_format = END_BIG_ENDIAN);
+  void               WriteToFile(const std::string& filename, Endianness file_format = END_BIG_ENDIAN) const;
+  void   ReadFromFile(const std::string& filename, bool commonPath = true, Endianness file_format = END_BIG_ENDIAN);
 
   /// \brief Check that all the facies value for each body, and the
   ///        body values inside the grid are inside the given range.

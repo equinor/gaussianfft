@@ -370,7 +370,7 @@ Trend* Trend1DStorage::GenerateTrend(const std::string&                       pa
       double s_max = s_min + dz * static_cast<int>(trend_values.size());
 
       if (trend_cube_sampling[reference - 1][0] < s_min) {
-        errTxt += "The mimimum value of the 1D trend in " + file_name_ +
+        errTxt += "The minimum value of the 1D trend in " + file_name_ +
                   " \n"
                   " is lower than the minimum value of " +
                   trend_cube_parameters[reference - 1] + "\n";

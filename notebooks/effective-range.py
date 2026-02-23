@@ -808,7 +808,7 @@ def _(mo):
     The current working hypothesis is that the correlation function becomes problematic when the range increases.
     One thing that has not been tested, though, is the analytical solution to the Gaussian variogram case for long ranges.
     If the working hypothesis is correct, then using the analytically found filter should also be problematic,
-    even if regular convultion is performed.
+    even if regular convolution is performed.
 
     First, verify the procedure for a short range
     """)

@@ -41,7 +41,7 @@
 
 namespace flens {
 
-// forward decalarations
+// forward declarations
 template <typename T, StorageOrder Order, StorageUpLo UpLo>
 class PackedStorage;
 

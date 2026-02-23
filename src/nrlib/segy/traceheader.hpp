@@ -90,22 +90,22 @@ class TraceHeaderFormat {
   /// Get format type
   std::string GetFormatName() const { return format_name_; }
 
-  /// Get location of the UTM-X field. (-1 if non-existant)
+  /// Get location of the UTM-X field. (-1 if non-existent)
   int         GetUtmxLoc() const { return utmx_loc_; }
 
-  /// Get location of the UTM-Y field. (-1 if non-existant)
+  /// Get location of the UTM-Y field. (-1 if non-existent)
   int         GetUtmyLoc() const { return utmy_loc_; }
 
-  /// Get location of the inline field. (-1 if non-existant)
+  /// Get location of the inline field. (-1 if non-existent)
   int         GetInlineLoc() const { return inline_loc_; }
 
-  /// Get location of the crossline field. (-1 if non-existant)
+  /// Get location of the crossline field. (-1 if non-existent)
   int         GetCrosslineLoc() const { return crossline_loc_; }
 
-  /// Get location of the start time. (-1 if non-existant)
+  /// Get location of the start time. (-1 if non-existent)
   int         GetStartTimeLoc() const { return start_time_loc_; }
 
-  /// Get location of the scaling cooefficient field. (-1 if non-existant)
+  /// Get location of the scaling coefficient field. (-1 if non-existent)
   int         GetScalCoLoc() const { return scal_co_loc_; }
 
   /// Get bypassCoodScaling status
@@ -165,17 +165,17 @@ class TraceHeaderFormat {
   void        Init(int headerformat);
   /// Format name
   std::string format_name_;
-  /// Location of scaling coefficient. (-1 if non-existant)
+  /// Location of scaling coefficient. (-1 if non-existent)
   int         scal_co_loc_;
-  /// Location of the UTM-X field. (-1 if non-existant)
+  /// Location of the UTM-X field. (-1 if non-existent)
   int         utmx_loc_;
-  /// Location of the UTM-Y field. (-1 if non-existant)
+  /// Location of the UTM-Y field. (-1 if non-existent)
   int         utmy_loc_;
-  /// Location of inline coordinate field. (-1 if non-existant)
+  /// Location of inline coordinate field. (-1 if non-existent)
   int         inline_loc_;
-  /// Location of crossline coordinate field. (-1 if non-existant)
+  /// Location of crossline coordinate field. (-1 if non-existent)
   int         crossline_loc_;
-  /// Location of start time. (-1 if non-existant)
+  /// Location of start time. (-1 if non-existent)
   int         start_time_loc_;
   /// Coordinate system to use.
   coordSys_t  coord_sys_;
@@ -259,7 +259,7 @@ class TraceHeader {
   /// Set number of samples.
   void   SetNSamples(size_t ns);
 
-  /// Set sample interval in mikroseconds.
+  /// Set sample interval in microseconds.
   void   SetDt(int dt);
   short  GetDt() { return (dt_); }
 

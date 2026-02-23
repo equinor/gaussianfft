@@ -42,7 +42,7 @@ class RandomGenerator {
 
   void          Initialize(unsigned long seed);
 
-  /// \return unsigned 32-bit integer betwen 0 and 0xFFFFFFFF
+  /// \return unsigned 32-bit integer between 0 and 0xFFFFFFFF
   unsigned long DrawUint32() { return dsfmt_genrand_uint32(&dsfmt); }
 
   /// \return uniform number in [0,1)

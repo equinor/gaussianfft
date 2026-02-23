@@ -359,8 +359,8 @@ Trend2D::Trend2D(const Trend2D& trend)
 Trend2D::Trend2D(const std::string& filename, int reference1, int reference2) {
   NRLib::SurfaceFileFormat file_format = FindSurfaceFileType(filename);
   if (file_format != NRLib::SURF_UNKNOWN) {
-    RegularSurface<double> flate(filename);
-    trend_ = flate;
+    RegularSurface<double> surface(filename);
+    trend_ = surface;
   } else {
     std::string err_txt;
     ReadTrend2DPlainAscii(filename, err_txt, trend_);
@@ -573,7 +573,7 @@ Trend3D::Trend3D(NRLib::Grid<double>& values) : Trend() {
 
 Trend3D::Trend3D(const Trend3D& trend) : Trend(), trend_(trend.trend_) {}
 
-Trend3D::Trend3D(const std::string& file_name, bool binary, Endianess file_format) : Trend() {
+Trend3D::Trend3D(const std::string& file_name, bool binary, Endianness file_format) : Trend() {
   std::string err_txt;
   if (binary == false)
     ReadTrend3DPlainAscii(file_name, err_txt, trend_);

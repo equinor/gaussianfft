@@ -2,7 +2,7 @@ if (NOT DEFINED BOOST_VERSION)
     message(FATAL_ERROR "Boost was requested, but no version was set. Use -DBOOST_VERSION")
 endif ()
 if (NOT ${BOOST_VERSION} MATCHES "^[0-9]\.[0-9]+\.[0-9]$")
-    message(FATAL_ERROR "BOOST_VERSION does not match a sematic version;\n got '${BOOST_VERSION}', expect \\d.\\d.\\d")
+    message(FATAL_ERROR "BOOST_VERSION does not match a semantic version;\n got '${BOOST_VERSION}', expect \\d.\\d.\\d")
 endif ()
 
 message(STATUS "Using version ${BOOST_VERSION} of Boost")

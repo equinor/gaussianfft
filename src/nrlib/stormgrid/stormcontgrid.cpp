@@ -68,11 +68,11 @@ StormContGrid::StormContGrid(const Volume& vol, const Grid<float>& grid) : Grid<
   variable_name_   = "UNKNOWN";
 }
 
-StormContGrid::StormContGrid(const std::string& filename, Endianess file_format) {
+StormContGrid::StormContGrid(const std::string& filename, Endianness file_format) {
   ReadFromFile(filename, true, file_format);
 }
 
-void StormContGrid::ReadFromFile(const std::string& filename, bool commonPath, Endianess number_representation) {
+void StormContGrid::ReadFromFile(const std::string& filename, bool commonPath, Endianness number_representation) {
   std::ifstream file;
   OpenRead(file, filename, std::ios::in | std::ios::binary);
 
@@ -154,7 +154,7 @@ void StormContGrid::ReadFromFile(const std::string& filename, bool commonPath, E
     }
   } catch (EndOfFile&) {
     throw FileFormatError(
-        "Unexcpected end of file found while parsing "
+        "Unexpected end of file found while parsing "
         " \"" +
         filename + "\"");
   } catch (Exception& e) {
@@ -168,7 +168,7 @@ void StormContGrid::ReadFromFile(const std::string& filename, bool commonPath, E
 void StormContGrid::WriteToFile(const std::string& filename,
                                 const std::string& predefinedHeader,
                                 bool               plainAscii,
-                                Endianess          file_format,
+                                Endianness         file_format,
                                 bool               remove_path) const {
   std::ofstream file;
   OpenWrite(file, filename, std::ios::out | std::ios::binary);
@@ -215,7 +215,7 @@ void StormContGrid::WriteToSgriFile(const std::string& file_name,
                                     const std::string& file_name_header,
                                     const std::string& label,
                                     double             simbox_dz,
-                                    Endianess          file_format) const {
+                                    Endianness         file_format) const {
   // Header
   double        vert_scale = 0.001;
   double        hor_scale  = 0.001;

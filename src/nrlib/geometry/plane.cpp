@@ -121,7 +121,7 @@ Line Plane::FindIntersection(const Plane& plane_in) const {
   Point n2    = plane_in.GetNormalVector();  // vector have been scaled to 1
   Point cross = Cross(n1, n2);               // cross-vector n1 and n2
 
-  if (cross.Norm() == 0)  // Parallell planes.
+  if (cross.Norm() == 0)  // Parallel planes.
     return Line();        // Line with no length.
 
   double d1               = -n1.Dot(pt_);

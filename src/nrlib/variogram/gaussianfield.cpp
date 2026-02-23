@@ -133,7 +133,7 @@ void NRLib::Simulate3DGaussianField(const Variogram&            variogram,
     filter.ComplexData()[i] = std::sqrt(filter.ComplexData()[i]);
   }
 
-  // Grid with white noice.
+  // Grid with white noise.
   Grid<double> noise(nx_tot, ny_tot, nz_tot);
 
   ////if (seed == -999)
@@ -175,7 +175,7 @@ void NRLib::Simulate2DGaussianField(const Variogram& variogram,
     unsigned long seed = Random::GetStartSeed();
     rg                 = new RandomGenerator(seed);
   } catch (std::exception) {
-    // This will occur if NRLib::Random is not initilized. In this case,
+    // This will occur if NRLib::Random is not initialized. In this case,
     // use rg = NULL, which will be resolved by the other
     // Simulate2DGaussianField function
   }
@@ -225,7 +225,7 @@ void NRLib::Simulate2DGaussianField(const Variogram&              variogram,
     filter.ComplexData()[i] = std::sqrt(filter.ComplexData()[i]);
   }
 
-  // Grid with white noice.
+  // Grid with white noise.
   Grid2D<double> noise(nx_tot, ny_tot);
 
   // if (seed == -999)

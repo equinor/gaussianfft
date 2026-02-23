@@ -45,7 +45,7 @@ class Plane {
   double GetMin() const;           // returns min_
 
   /// Calc intersection point between line_in and def.plane
-  /// \note Caller should make sure that line_in is not parallell to plane.
+  /// \note Caller should make sure that line_in is not parallel to plane.
   Point  FindIntersection(const Line& line_in) const;
 
   /// Find intersection between plane and line.

@@ -161,7 +161,7 @@ class Well {
   /// Name of well
   std::string                                 well_name_;
 
-  /// Missing value for continous logs.
+  /// Missing value for continuous logs.
   double                                      well_rmissing_;
   /// Missing value for discrete logs.
   int                                         well_imissing_;

@@ -250,7 +250,7 @@ class TbMatrix : public TriangularMatrix<TbMatrix<BS> > {
 
   T*                 data();
 
-  // for element accesss
+  // for element accesses
   int                firstIndex() const;
 
   int                lastIndex() const;

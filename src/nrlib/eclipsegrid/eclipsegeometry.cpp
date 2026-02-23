@@ -432,7 +432,7 @@ bool EclipseGeometry::FindIndex(double x_in, double y_in, double z_in, size_t& i
   bool  is_inside_ij = false;
   Point p_in(x_in, y_in, z_in);
 
-  k_out        = nk_ + 1;  // setting default unvalid value
+  k_out        = nk_ + 1;  // setting default invalid value
   is_inside_ij = GetCellIndex_ij(x_in, y_in, z_in, i_out, j_out);
 
   if (is_inside_ij) {
@@ -1121,7 +1121,7 @@ void EclipseGeometry::BilinearFillInZValuesInArea(NRLib::Grid2D<double>&        
     }
   }
   // For loop over all points in z_surface inside the rectangle given by the
-  // mins and max' calulated above
+  // mins and max' calculated above
   n1 = static_cast<size_t>(max((min_x - x0) / dx - 0.5,
                                0.0));  // min_x=(x0+dx/2)+n1*dx, if n1 not integer, let it be the
                                        // smallest integer greater than solution. Zero if negative number
@@ -1221,7 +1221,7 @@ void EclipseGeometry::TriangularFillInZValuesInArea(NRLib::Grid2D<double>&      
       max_y = corners[four].y;
   }
   // For loop over all points in z_surface inside the rectangle given by the
-  // mins and max' calulated above
+  // mins and max' calculated above
   n1 = static_cast<size_t>(max(((min_x - x0) / dx - 0.5),
                                0.0));  // min_x=(x0+dx/2)+n1*dx, if n1 not integer, let it be the
                                        // smallest integer greater than solution. Zero if negative number

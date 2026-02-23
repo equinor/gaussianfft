@@ -42,7 +42,7 @@ namespace flens {
 
 //== auxiliary traits for ScalarClosures =======================================
 
-//-- trait for the compuation of scalar operations -----------------------------
+//-- trait for the computation of scalar operations -----------------------------
 template <typename Op>
 struct Operation {};
 

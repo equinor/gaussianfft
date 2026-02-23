@@ -77,7 +77,7 @@ RMSWell::RMSWell(const std::string& filename) {
     lognames_[i + 3] = NRLib::Uppercase(ReadNext<std::string>(ist, line));
 
     // token = ReadNext<std::string>(ist, line); //H Error if line only
-    // containts log-name (test_case 19).
+    // contains log-name (test_case 19).
     ReadNextToken(ist, token, line);
 
     if (token != "") {
@@ -112,7 +112,7 @@ RMSWell::RMSWell(const std::string& filename) {
 
   while (NRLib::CheckEndOfFile(file) == false && getline(file, dummy)) {
     count++;
-    std::istringstream ist(dummy);
+    std::istringstream ist(dummy);                       // codespell:ignore ist
     contlogs[0].push_back(ReadNext<double>(ist, line));  // x
     contlogs[1].push_back(ReadNext<double>(ist, line));  // y
     contlogs[2].push_back(ReadNext<double>(ist, line));  // z

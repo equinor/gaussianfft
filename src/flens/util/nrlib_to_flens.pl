@@ -12,7 +12,7 @@
 # * Changes filenames .hpp => .h
 # * Changes filenames .cpp => .cc
 # * Extracts template implementations from .h-files and put them
-#   into seperate .tcc-files.
+#   into separate .tcc-files.
 #
 # Usage: ./flens_to_nrlib.pl [nrlib-dir] [flens-dir]
 #

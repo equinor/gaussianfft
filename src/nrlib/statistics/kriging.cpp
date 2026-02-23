@@ -988,8 +988,8 @@ void Kriging::Krig2DBlock(const RegularSurface<double>&  trend_orig,
     Vector          k(md);
     Vector          x(md);
 
-    // NB dette kunne v�rt gjort bare en gang for alle blockene. Dette er
-    // blockuavhening subtract trend from original trend grid
+    // NOTE: This could have been done once for all the blocks. These are block independent
+    // subtract trend from original trend grid
     for (int i = 0; i < md; i++)
       residual(i) = data[i] - static_cast<float>(trend_orig.GetZ(xvector[i], yvector[i]));
 

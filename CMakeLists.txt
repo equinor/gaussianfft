@@ -21,7 +21,7 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
 endif ()
 set(FFTW_DEBUG OFF)
 if (FFTW_DEBUG)
-    set(BOOST_VERSION "1.81.0" CACHE STRING "Configure the specific version of Boost gaussianfft wil be statically linked against")
+    set(BOOST_VERSION "1.81.0" CACHE STRING "Configure the specific version of Boost gaussianfft will be statically linked against")
 endif ()
 
 option(USE_ARM_PERFORMANCE_LIBRARY "Use ARM Performance Library's FFT functionality on ARM-based builds" ON)

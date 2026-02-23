@@ -38,7 +38,7 @@ using namespace NRLib;
 const int         STD_MISSING_CODE = -999;
 const std::string format_desc[2]   = {"storm_facies_binary", "storm_facies_ascii"};
 
-StormFaciesGrid::StormFaciesGrid(const std::string& filename, Endianess file_format) {
+StormFaciesGrid::StormFaciesGrid(const std::string& filename, Endianness file_format) {
   ReadFromFile(filename, true, file_format);
 }
 
@@ -88,7 +88,7 @@ void StormFaciesGrid::SetFaciesNames(const std::vector<std::string>& facies_name
   facies_names_ = facies_names;
 }
 
-void StormFaciesGrid::WriteToFile(const std::string& filename, Endianess file_format) const {
+void StormFaciesGrid::WriteToFile(const std::string& filename, Endianness file_format) const {
   CheckConsistency();
 
   std::ofstream file;
@@ -137,7 +137,7 @@ void StormFaciesGrid::WriteToFile(const std::string& filename, Endianess file_fo
   file << 0;
 }
 
-void StormFaciesGrid::ReadFromFile(const std::string& filename, bool commonPath, Endianess file_format) {
+void StormFaciesGrid::ReadFromFile(const std::string& filename, bool commonPath, Endianness file_format) {
   std::ifstream file;
   OpenRead(file, filename, std::ios::in | std::ios::binary);
 
@@ -206,7 +206,7 @@ void StormFaciesGrid::ReadFromFile(const std::string& filename, bool commonPath,
     }
   } catch (EndOfFile&) {
     throw FileFormatError(
-        "Unexcpected end of file found while parsing "
+        "Unexpected end of file found while parsing "
         " \"" +
         filename + "\"");
   } catch (Exception& e) {
