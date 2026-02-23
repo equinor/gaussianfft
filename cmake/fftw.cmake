@@ -7,7 +7,7 @@ if (${IS_AARCH64})
     endif ()
     message(STATUS "Using version ${ARMPL_VERSION} of ARM Performance Libraries")
 
-    set(BUILD_ENVIRONMENT ${pybind11_INCLUDE_DIR}/../../../../..)
+    execute_process(COMMAND ${Python3_EXECUTABLE} -m arm_performance_libraries OUTPUT_VARIABLE BUILD_ENVIRONMENT)
     find_library(
         ARMPL_STATIC_LIB
         NAMES libarmpl_lp64.a armpl_lp64.a

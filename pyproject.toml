@@ -53,7 +53,6 @@ requires = [
 
     "mkl-static ; platform_machine == 'x86_64' or platform_machine == 'AMD64'",
     "mkl-devel ; platform_machine == 'x86_64' or platform_machine == 'AMD64'",
-    "arm-performance-libraries ; platform_machine == 'arm64' or platform_machine == 'aarch64'",
 
     "pybind11[global]",
 ]
@@ -71,14 +70,6 @@ test = [
     # pure Python implementation of the functions we use from SciPy
     "scipy ; platform_python_implementation != 'PyPy'",
 ]
-
-[tool.uv.sources]
-arm-performance-libraries = { index = "arm-performance-libraries" }
-
-[[tool.uv.index]]
-name = "arm-performance-libraries"
-url = "./build-packages/arm-performance-libraries/dist"
-format = "flat"
 
 [tool.cibuildwheel]
 build-frontend = "build[uv]"
@@ -124,6 +115,19 @@ sdist.exclude = [
     "examples",
     "compose.yaml",
 ]
+
+[[tool.scikit-build.overrides]]
+if.platform-machine = "arm64"  # macOS, Apple Silicon
+build.requires = [
+    "arm-performance-libraries @ {root:uri}/build-packages/arm-performance-libraries/dist/arm_performance_libraries-26.1-py3-none-macosx_11_0_arm64.whl",
+]
+
+[[tool.scikit-build.overrides]]
+if.platform-machine = "aarch64"  # Linux on ARM
+build.requires = [
+    "arm-performance-libraries @ {root:uri}/build-packages/arm-performance-libraries/dist/arm_performance_libraries-26.1-py3-none-linux_aarch64.whl",
+]
+
 
 [tool.setuptools_scm]
 # `write_to` is deprecated in favor of `version_file`
