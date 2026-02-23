@@ -14,8 +14,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "dSFMT-common.h"
+// clang-format off
 #include "dSFMT-params.h"
+#include "dSFMT-common.h"
+// clang-format on
 
 #if defined(__cplusplus)
 extern "C" {
