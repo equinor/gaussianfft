@@ -23,7 +23,7 @@ jobs:
         if: ${{ steps.cache.outputs.cache-hit != 'true' }}
         run: |
           uv venv
-          uv sync
+          uv sync --all-groups
 
   pre-commit:
     runs-on: ubuntu-latest
