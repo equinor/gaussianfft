@@ -25,9 +25,6 @@ if (FFTW_DEBUG)
 endif ()
 
 option(USE_ARM_PERFORMANCE_LIBRARY "Use ARM Performance Library's FFT functionality on ARM-based builds" ON)
-if (${USE_ARM_PERFORMANCE_LIBRARY})
-    set(ARMPL_VERSION "23.10" CACHE STRING "Which version of ARM Performance Libraries to Use")
-endif ()
 
 if (NOT DEFINED SKBUILD)
     message(STATUS "Not building with scikit-build; using a local virtual environment instead")

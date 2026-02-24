@@ -1,6 +1,6 @@
 [project]
 name = "arm-performance-libraries"
-version = "26.01"
+dynamic = ["version"]
 description = "ARM Performance Libraries"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -15,8 +15,15 @@ classifiers = [
 armpl = "arm_performance_libraries.lib.pkgconfig"
 
 [build-system]
-requires = ["hatchling"]
+requires = [
+    "hatchling",
+#    "py7zr",  # Does not work as the 7z cli
+    "pydmg",
+]
 build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "arm_performance_libraries/__init__.py"
 
 [tool.hatch.build.targets.wheel]
 

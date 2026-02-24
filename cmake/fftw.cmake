@@ -5,6 +5,7 @@ if (${IS_AARCH64})
     else ()
         message(FATAL_ERROR "Currently, ARM is only supported macOS")
     endif ()
+    execute_process(COMMAND ${Python3_EXECUTABLE} -m arm_performance_libraries --version OUTPUT_VARIABLE ARMPL_VERSION)
     message(STATUS "Using version ${ARMPL_VERSION} of ARM Performance Libraries")
 
     execute_process(COMMAND ${Python3_EXECUTABLE} -m arm_performance_libraries OUTPUT_VARIABLE BUILD_ENVIRONMENT)
