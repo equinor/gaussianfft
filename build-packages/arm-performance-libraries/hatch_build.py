@@ -1,16 +1,17 @@
 from __future__ import annotations
-import platform
+import re
 import tarfile
 from collections.abc import Callable
 from functools import wraps, cached_property
 
 import pydmg
 from pathlib import Path
-from typing import Literal, TYPE_CHECKING, Any, TypedDict
+from typing import Literal, TYPE_CHECKING, TypedDict
 from urllib.request import urlopen
 import subprocess
 
 from hatchling.builders.hooks.plugin.interface import BuildHookInterface
+from debx.ar import unpack_ar_archive
 
 if TYPE_CHECKING:
 
@@ -26,27 +27,14 @@ def get_platform():
 
 class CustomBuildHook(BuildHookInterface):
     def __init__(self, *args, **kwargs):
-    # def __init__(
-    #     self,
-    #     root: str,
-    #     config: dict[str, Any],
-    #     build_config: BuilderConfigBound,
-    #     metadata: ProjectMetadata,
-    #     directory: str,
-    #     target_name: str,
-    #     app: Application | None = None,
-    # ) -> None:
-    #     super().__init__(root, config, build_config, metadata, directory, target_name, app)
         super().__init__(*args, **kwargs)
         print(*args, **kwargs)
 
 
-        # TODO: Ensure thsi isonly done in the first call / once
-        # print(platform.mac_ver(), platform.machine())
         armpl = GatherArmPerformanceLibraries(
             app=self.app,
             armpl_version=self.metadata.hatch.version.cached,
-            target_platform='macos', # TODO: Dynamic
+            target_platform='linux_gcc', # TODO: Dynamic
             root=Path(self.root),
             cache_dir=Path(self.root) / '.cache',
             flang_version='21',  # TODO: Make independent
@@ -66,7 +54,7 @@ class CustomBuildHook(BuildHookInterface):
         # Files will only go to shared-data destinations, not package dir
         build_data['force_include_editable'] = {}
 
-STATE = Literal["fetching", "fetched", "preparing", "prepared", "done"]
+STATE = Literal["fetching", "fetched", "preparing", "prepared", "done", "failed"]
 
 
 class StateMachineType(TypedDict):
@@ -81,6 +69,8 @@ STATE_MACHINE: StateMachineType = {
         'fetched': {'preparing'},
         'preparing': {'prepared'},
         'prepared': {'done'},
+        'done': set(),
+        'failed': {'fetching', 'preparing'}
     }
 }
 
@@ -97,16 +87,23 @@ def state_change(start: STATE, finished: STATE):
         @wraps(func)
         def wrapper(self: GatherArmPerformanceLibraries, *args, **kwargs):
             state = self.state
-            if start in STATE_MACHINE['transitions'][state]:
+            print(f'{state=}')
+            if start in STATE_MACHINE['transitions'][state] or state == start:
                 self.state = start
-                func(self, *args, **kwargs)
+                try:
+                    func(self, *args, **kwargs)
+                except Exception as e:
+                    self.state = 'failed'
+                    raise e
                 self.state = finished
-                # return result
             else:
                 self.app.display_info(f'Skipping {func.__name__}; already done')
 
         return wrapper
     return decorator
+
+
+TargetPlatform = Literal["macos", "linux_gcc"]
 
 class GatherArmPerformanceLibraries:
 
@@ -123,7 +120,10 @@ class GatherArmPerformanceLibraries:
             return f.read().strip() or None
 
     @state.setter
-    def state(self, value: STATE):
+    def state(self, value: STATE | None):
+        if value is None:
+            self._state_file.unlink(missing_ok=True)
+            return
         with open(self._state_file, 'w') as f:
             f.write(value)
 
@@ -132,16 +132,35 @@ class GatherArmPerformanceLibraries:
             app: Application,
             armpl_version: str,
             flang_version: str,
-            target_platform: Literal["macos", "linux_gcc"],
+            target_platform: TargetPlatform,
             root: Path,
             cache_dir: Path,
     ):
         self.app = app
         self.armpl_version = armpl_version
         self.flang_version = flang_version
-        self.target_platform = target_platform
         self.root = root
         self.cache_dir = cache_dir
+        self.target_platform = target_platform
+
+    @property
+    def target_platform(self):
+        return self._target_platform
+
+    @target_platform.setter
+    def target_platform(self, value: Literal["macos", "linux_gcc"]):
+        self._target_platform = value
+        last_target_platform = self.cache_dir / 'target-platform.txt'
+        if last_target_platform.exists():
+            with open(last_target_platform) as f:
+                last_value = f.read().strip()
+            if last_value != value:
+                self.state = None
+        else:
+            self.state = None
+
+        with open(self.cache_dir / 'target-platform.txt', 'w') as f:
+            f.write(value)
 
     @state_change('prepared', 'done')
     def write_platform_file(self):
@@ -243,40 +262,65 @@ class GatherArmPerformanceLibraries:
         return target_path
 
     def _get_expected_installation_script(self):
-        # TODO: Make them more predicable
         if self.target_platform == "macos":
             return self.target_dir / "install.sh"
-            return self.cache_dir / self.target_platform / f"armpl_{self.armpl_version}_flang-{self.flang_version}_installer/armpl_{self.armpl_version}_flang-{self.flang_version}_install.sh"
         elif self.target_platform == "linux_gcc":
             return  self.target_dir / f"arm-performance-libraries_{self.armpl_version}_deb/arm-performance-libraries_{self.armpl_version}_deb.sh"
-            return  self.cache_dir / self.target_platform / f"arm-performance-libraries_{self.armpl_version}_deb/arm-performance-libraries_{self.armpl_version}_deb.sh"
         else:
             raise NotImplementedError(f"Unsupported platform: {self.target_platform}")
 
-    def _extract_archive(self, archive_path: Path, ignore_unsupported: bool = False):
-        self.target_dir.mkdir(exist_ok=True)
+    def _extract_archive(self, archive_path: Path, ignore_unsupported: bool = False, target_dir: Path | None = None):
+        if target_dir is None:
+            target_dir = self.target_dir
+        target_dir.mkdir(exist_ok=True)
         if archive_path.suffix in ['.tar', '.tgz']:
             with tarfile.open(archive_path) as archive:
-                archive.extractall(self.target_dir)
+                archive.extractall(target_dir)
                 for member in archive.getmembers():
                     if member.name.startswith('.'):
                         continue
-                    self._extract_archive(self.target_dir / member.name, ignore_unsupported=True)
+                    self._extract_archive(target_dir / member.name, ignore_unsupported=True)
         elif archive_path.suffix in ['.dmg']:
             for member in pydmg.list_apple_entries(archive_path):
                 if not member['is_dir'] and member['path'].endswith('.sh'):
                     volume_path: str = member['path']
-                    target_path = self.target_dir / 'install.sh'
+                    target_path = target_dir / 'install.sh'
                     self.app.display_waiting(f'Extracting {volume_path} to {target_path}')
                     with open(target_path, 'wb') as f:
                         f.write(pydmg.read_apple_file(archive_path, volume_path))
+        elif archive_path.suffix in ['.deb']:
+            with open(archive_path, 'rb') as f:
+                for file in unpack_ar_archive(f):
+                    if file.name == 'data.tar.gz/':
+                        with tarfile.open(fileobj=file.fp) as archive:
+                            archive.extractall(target_dir)
         elif not ignore_unsupported:
             raise NotImplementedError(f"Unsupported archive format: {archive_path.suffix}")
 
     def _extract_library_files(self, installation_script: Path):
         if not self.installation_target.exists() or len(list(self.installation_target.glob("*"))) == 0:
-            self.installation_target.mkdir(parents=True)
+            self.installation_target.mkdir(parents=True, exist_ok=True)
             if self.target_platform == "macos":
-                subprocess.run(["zsh", installation_script, '-y', f'--install_dir={self.installation_target}'], check=True, capture_output=True)
+                command = subprocess.run(["zsh", str(installation_script), '-y', f'--install_dir={self.installation_target}'], capture_output=True)
+            elif self.target_platform == "linux_gcc":
+                if (_bash_version := bash_version()) < (5, 0, 0):
+                    raise RuntimeError(f"Bash version 5.0 or higher is required to install ARM Performance Libraries on Linux (got {_bash_version})")
+                command = subprocess.run(["bash", str(installation_script), '--accept', '--save-packages-to', str(self.installation_target)], capture_output=True)
             else:
                 raise NotImplementedError(f"Unsupported platform: {self.target_platform}")
+            self.app.display_info(command.stdout.decode())
+            if command.stderr:
+                self.app.display_waiting(command.stderr.decode())
+            if command.returncode != 0:
+                raise RuntimeError(f"Installation script failed with exit code {command.returncode}")
+
+            # Post-install setup
+            if self.target_platform == "linux_gcc":
+                self._extract_archive(self.installation_target / f'armpl_{self.armpl_version}_gcc.deb', target_dir=self.installation_target)
+
+def bash_version():
+    command = subprocess.run(["bash", '--version'], capture_output=True, check=True)
+    match = re.search(r'GNU bash, version (?P<version>[0-9]+\.[0-9]+\.[0-9]+)', command.stdout.decode())
+    if match:
+        return tuple(int(part) for part in match.group('version').split('.'))
+    raise RuntimeError("Could not determine bash version")

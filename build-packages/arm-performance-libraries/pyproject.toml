@@ -19,6 +19,7 @@ requires = [
     "hatchling",
 #    "py7zr",  # Does not work as the 7z cli
     "pydmg",
+    "debx == 0.2.12",
 ]
 build-backend = "hatchling.build"
 
