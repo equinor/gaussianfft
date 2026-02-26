@@ -310,7 +310,7 @@ class GatherArmPerformanceLibraries:
     ):
         if target_dir is None:
             target_dir = self.target_dir
-        target_dir.mkdir(exist_ok=True)
+        target_dir.mkdir(exist_ok=True, parents=True)
         if archive_path.suffix in [".tar", ".tgz"]:
             with tarfile.open(archive_path) as archive:
                 archive.extractall(target_dir)
