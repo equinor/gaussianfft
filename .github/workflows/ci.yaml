@@ -51,6 +51,7 @@ jobs:
         if: steps.cache-armpl.outputs.cache-hit != 'true'
         env:
           ARMPL_TARGET_PLATFORM: ${{ matrix.target_platform }}
+        working-directory: 'build-packages/arm-performance-libraries/'
         run: |
           pip install build
           python -m build --wheel
