@@ -26,10 +26,9 @@ jobs:
     name: Download and prepare ARM Performance Libraries
     strategy:
       matrix:
-        armpl:
-          - "23.10"
-        os:
-          - macos-15
+        target_platform:
+          - linux_gcc
+          - macos
     steps:
       - uses: actions/checkout@v6
         name: Checkout repository
@@ -40,12 +39,14 @@ jobs:
         with:
           lookup-only: true
           path: build-packages/arm-performance-libraries/dist
-          key: armpl-${{ hashFiles('build-packages/arm-performance-libraries/scripts/*.sh') }}
+          key: armpl-${{ matrix.target_platform }}-${{ hashFiles('build-packages/arm-performance-libraries/hatch_build.py', 'build-packages/arm-performance-libraries/pyproject.toml') }}
 
       - name: Download ARM Performance Libraries and extract relevant headers and libraries
         if: steps.cache-armpl.outputs.cache-hit != 'true'
+        env:
+          ARMPL_TARGET_PLATFORM: ${{ matrix.target_platform }}
         run: |
-          ./build-packages/arm-performance-libraries/scripts/build.sh
+          uv build --wheel
 
       - name: Store headers and libraries
         if: steps.cache-armpl.outputs.cache-hit != 'true'
