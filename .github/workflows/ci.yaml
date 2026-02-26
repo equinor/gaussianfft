@@ -41,12 +41,19 @@ jobs:
           path: build-packages/arm-performance-libraries/dist
           key: armpl-${{ matrix.target_platform }}-${{ hashFiles('build-packages/arm-performance-libraries/hatch_build.py', 'build-packages/arm-performance-libraries/pyproject.toml') }}
 
+      - name: Set up Python
+        if: steps.cache-armpl.outputs.cache-hit != 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
       - name: Download ARM Performance Libraries and extract relevant headers and libraries
         if: steps.cache-armpl.outputs.cache-hit != 'true'
         env:
           ARMPL_TARGET_PLATFORM: ${{ matrix.target_platform }}
         run: |
-          uv build --wheel
+          pip install build
+          python -m build --wheel
 
       - name: Store headers and libraries
         if: steps.cache-armpl.outputs.cache-hit != 'true'
