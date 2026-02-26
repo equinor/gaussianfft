@@ -72,7 +72,6 @@ test = [
 ]
 
 [tool.cibuildwheel]
-build-frontend = "build[uv]"
 test-groups = ["test"]
 test-command = "pytest {project}/tests"
 [tool.cibuildwheel.windows]
