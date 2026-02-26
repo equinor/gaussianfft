@@ -65,8 +65,8 @@ jobs:
         if: steps.cache-armpl.outputs.cache-hit != 'true'
         uses: actions/upload-artifact@v6
         with:
-          name: arm-performance-libraries
-          path: build-packages/arm-performance-libraries/dist/*
+          name: arm-performance-libraries-${{ matrix.target_platform }}
+          path: build-packages/arm-performance-libraries/dist/*.whl
           if-no-files-found: error
 
   build:
@@ -95,7 +95,7 @@ jobs:
         uses: actions/download-artifact@v7
         if: ${{ startsWith(matrix.os, 'macos-') && ! endsWith(matrix.os, '-intel') }}
         with:
-          pattern:  arm-performance-libraries
+          pattern:  arm-performance-libraries-*
           path: build-packages/arm-performance-libraries/dist
           merge-multiple: true
 
