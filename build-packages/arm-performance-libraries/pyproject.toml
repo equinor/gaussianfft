@@ -17,7 +17,6 @@ armpl = "arm_performance_libraries.lib.pkgconfig"
 [build-system]
 requires = [
     "hatchling",
-#    "py7zr",  # Does not work as the 7z cli
     "pydmg",
     "debx == 0.2.12",
 ]
@@ -29,18 +28,8 @@ path = "arm_performance_libraries/__init__.py"
 [tool.hatch.build.targets.wheel]
 
 pure_python = false
-artifacts = [
-#    "lib/*.pc",
-#    "lib/*.a",
-#    "lib/*.dylib",
-#    "*.dylib.*",
-]
 include = [
     "arm_performance_libraries",
-#    "bin",
-#    "include",
-#    "lib",
-#    "!lib/*.dylib.*",
 ]
 exclude = [
     "lib/*.dylib.*",
