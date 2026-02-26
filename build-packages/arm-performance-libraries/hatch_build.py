@@ -1,12 +1,15 @@
 from __future__ import annotations
+
+import os
 import re
+import sys
 import tarfile
 from collections.abc import Callable
 from functools import wraps, cached_property
 
 import pydmg
 from pathlib import Path
-from typing import Literal, TYPE_CHECKING, TypedDict
+from typing import Literal, TYPE_CHECKING, TypedDict, cast
 from urllib.request import urlopen
 import subprocess
 
@@ -14,30 +17,40 @@ from hatchling.builders.hooks.plugin.interface import BuildHookInterface
 from debx.ar import unpack_ar_archive
 
 if TYPE_CHECKING:
+    from hatchling.bridge.app import Application
 
-    from hatchling.bridge.app import Application
-    from hatchling.builders.config import BuilderConfigBound
-    from hatchling.bridge.app import Application
-    from hatchling.metadata.core import ProjectMetadata
+
+TargetPlatform = Literal["macos", "linux_gcc"]
 
 
 def get_platform():
     with open(Path(__file__).parent / '.platform.txt', 'r') as f:
         return f.read().strip()
 
+
+def get_target_platform() -> TargetPlatform:
+    target_platform = os.environ.get("ARMPL_TARGET_PLATFORM")
+    if target_platform is None or  target_platform == 'auto':
+        mapping: dict[str, TargetPlatform] = {
+            'darwin': 'macos',
+            'linux': 'linux_gcc',
+        }
+        return mapping[sys.platform]
+    if target_platform not in TargetPlatform.__args__:
+        raise ValueError(f"Invalid target platform: {target_platform}. Must be one of {TargetPlatform.__args__}")
+    return cast(TargetPlatform, target_platform)
+
+
 class CustomBuildHook(BuildHookInterface):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        print(*args, **kwargs)
-
 
         armpl = GatherArmPerformanceLibraries(
             app=self.app,
             armpl_version=self.metadata.hatch.version.cached,
-            target_platform='linux_gcc', # TODO: Dynamic
+            target_platform=get_target_platform(),
             root=Path(self.root),
             cache_dir=Path(self.root) / '.cache',
-            flang_version='21',  # TODO: Make independent
         )
         armpl.fetch()
         armpl.prepare()
@@ -45,7 +58,6 @@ class CustomBuildHook(BuildHookInterface):
 
 
     def initialize(self, version, build_data):
-        print(version, build_data)
         build_data['tag'] = '-'.join([
             'py3',
             'none',
@@ -87,7 +99,6 @@ def state_change(start: STATE, finished: STATE):
         @wraps(func)
         def wrapper(self: GatherArmPerformanceLibraries, *args, **kwargs):
             state = self.state
-            print(f'{state=}')
             if start in STATE_MACHINE['transitions'][state] or state == start:
                 self.state = start
                 try:
@@ -102,8 +113,6 @@ def state_change(start: STATE, finished: STATE):
         return wrapper
     return decorator
 
-
-TargetPlatform = Literal["macos", "linux_gcc"]
 
 class GatherArmPerformanceLibraries:
 
@@ -131,14 +140,12 @@ class GatherArmPerformanceLibraries:
             self,
             app: Application,
             armpl_version: str,
-            flang_version: str,
             target_platform: TargetPlatform,
             root: Path,
             cache_dir: Path,
     ):
         self.app = app
         self.armpl_version = armpl_version
-        self.flang_version = flang_version
         self.root = root
         self.cache_dir = cache_dir
         self.target_platform = target_platform
