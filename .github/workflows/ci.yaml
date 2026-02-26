@@ -41,6 +41,11 @@ jobs:
           path: build-packages/arm-performance-libraries/dist
           key: armpl-${{ matrix.target_platform }}-${{ hashFiles('build-packages/arm-performance-libraries/hatch_build.py', 'build-packages/arm-performance-libraries/pyproject.toml') }}
 
+      - name: Install zsh
+        # The installation script for ARM Performance Libraries on macOS uses zsh
+        if: steps.cache-armpl.outputs.cache-hit != 'true' && matrix.target_platform == 'macos'
+        run: sudo apt-get install -y zsh
+
       - name: Set up Python
         if: steps.cache-armpl.outputs.cache-hit != 'true'
         uses: actions/setup-python@v5
