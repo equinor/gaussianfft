@@ -6,6 +6,7 @@ import sys
 import tarfile
 from collections.abc import Callable
 from functools import wraps, cached_property
+from http.client import HTTPResponse
 
 import pydmg
 from pathlib import Path
@@ -287,7 +288,7 @@ class GatherArmPerformanceLibraries:
         if not target_path.exists():
             self.app.display_waiting(f"Fetching ARM Performance Libraries from {url}")
             with urlopen(url) as response, open(target_path, "wb") as f:
-                f.write(response.content)
+                f.write(cast(HTTPResponse, response).read())
         return target_path
 
     def _get_expected_installation_script(self):
