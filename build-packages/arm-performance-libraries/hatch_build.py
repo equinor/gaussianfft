@@ -151,6 +151,15 @@ class GatherArmPerformanceLibraries:
         self.target_platform = target_platform
 
     @property
+    def cache_dir(self):
+        return self._cache_dir
+
+    @cache_dir.setter
+    def cache_dir(self, value: Path):
+        value.mkdir(exist_ok=True)
+        self._cache_dir = value
+
+    @property
     def target_platform(self):
         return self._target_platform
 
