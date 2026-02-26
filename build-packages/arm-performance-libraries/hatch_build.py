@@ -24,11 +24,6 @@ if TYPE_CHECKING:
 TargetPlatform = Literal["macos", "linux_gcc"]
 
 
-def get_platform():
-    with open(Path(__file__).parent / ".platform.txt", "r") as f:
-        return f.read().strip()
-
-
 def get_target_platform() -> TargetPlatform:
     target_platform = os.environ.get("ARMPL_TARGET_PLATFORM")
     if target_platform is None or target_platform == "auto":
@@ -48,23 +43,17 @@ class CustomBuildHook(BuildHookInterface):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        armpl = GatherArmPerformanceLibraries(
-            app=self.app,
-            armpl_version=self.metadata.hatch.version.cached,
-            target_platform=get_target_platform(),
-            root=Path(self.root),
-            cache_dir=Path(self.root) / ".cache",
-        )
-        armpl.fetch()
-        armpl.prepare()
-        armpl.write_platform_file()
-
     def initialize(self, version, build_data):
+        armpl = GatherArmPerformanceLibraries.ensure_arm_performance_libraries(
+            app=self.app,
+            version=self.metadata.hatch.version.cached,
+            root=Path(self.root),
+        )
         build_data["tag"] = "-".join(
             [
                 "py3",
                 "none",
-                get_platform().replace("-", "_").replace(".", "_"),
+                armpl.target_platform.replace("-", "_").replace(".", "_"),
             ]
         )
         # Files will only go to shared-data destinations, not package dir
@@ -390,6 +379,28 @@ class GatherArmPerformanceLibraries:
                     self.installation_target / f"armpl_{self.armpl_version}_gcc.deb",
                     target_dir=self.installation_target,
                 )
+
+    @classmethod
+    def ensure_arm_performance_libraries(
+        cls,
+        app: Application,
+        version: str,
+        root: Path,
+        target_platform: TargetPlatform | None = None,
+    ):
+        if target_platform is None:
+            target_platform = get_target_platform()
+        instance = GatherArmPerformanceLibraries(
+            app=app,
+            armpl_version=version,
+            target_platform=target_platform,
+            root=root,
+            cache_dir=root / ".cache",
+        )
+        instance.fetch()
+        instance.prepare()
+        instance.write_platform_file()
+        return instance
 
 
 def bash_version():
