@@ -188,22 +188,7 @@ class GatherArmPerformanceLibraries:
 
     @StateMachine.state_change("preparing", "prepared")
     def prepare(self):
-        for directory_glob in self.packaged_directories:
-            directory = directory_glob.split("/")[0]
-            if (target := self.root / directory).exists():
-                for root, dirs, names in target.walk(top_down=False):
-                    for name in names:
-                        (root / name).unlink()
-                    for name in dirs:
-                        (root / name).rmdir()
-                target.rmdir()
-
-        for file in self._source_files:
-            target = self.root / file
-            target.parent.mkdir(parents=True, exist_ok=True)
-            source = self.source_directory / file
-            if source.is_file():
-                source.copy(target)
+        prepare.prepare(self)
 
     @cached_property
     def target_dir(self):
@@ -213,45 +198,9 @@ class GatherArmPerformanceLibraries:
     def installation_target(self):
         return self.target_dir / "data"
 
-    @cached_property
-    def source_directory(self):
-        if self.target_platform == "macos":
-            options = list(
-                self.installation_target.glob(f"armpl_{self.armpl_version}_flang-*")
-            )
-            if len(options) == 1:
-                return options[0]
-            else:
-                raise FileNotFoundError(
-                    f"Expected exactly one installation directory for ARM Performance libraries for {self.target_platform}, found {len(options)}"
-                )
-
-        elif self.target_platform == "linux_gcc":
-            return (
-                self.installation_target
-                / "opt"
-                / "arm"
-                / f"armpl_{self.armpl_version}_gcc"
-            )
-        else:
-            raise NotImplementedError(f"Unsupported platform: {self.target_platform}")
-
     @property
     def packaged_directories(self):
         return ["bin/*", "lib/**", "include/*", "license_terms/*"]
-
-    @property
-    def _source_files(self):
-        if not self.source_directory.exists():
-            self.fetch()
-        source_files = []
-
-        for glob in self.packaged_directories:
-            for file in self.source_directory.glob(glob):
-                if not file.is_symlink() and file.is_file():
-                    source_files.append(file.relative_to(self.source_directory))
-
-        return source_files
 
     @StateMachine.state_change("fetching", "fetched")
     def fetch(self):
@@ -427,6 +376,62 @@ class fetch:
                     target_dir=installation_target,
                     app=app,
                 )
+
+
+class prepare:
+    @classmethod
+    def prepare(cls, config: GatherArmPerformanceLibraries):
+        source_directory = cls.source_directory(
+            config.target_platform, config.installation_target, config.armpl_version
+        )
+
+        for directory_glob in config.packaged_directories:
+            directory = directory_glob.split("/")[0]
+            if (target := config.root / directory).exists():
+                for root, dirs, names in target.walk(top_down=False):
+                    for name in names:
+                        (root / name).unlink()
+                    for name in dirs:
+                        (root / name).rmdir()
+                target.rmdir()
+
+        for file in cls._source_files(source_directory, config.packaged_directories):
+            target = config.root / file
+            target.parent.mkdir(parents=True, exist_ok=True)
+            source = source_directory / file
+            if source.is_file():
+                source.copy(target)
+
+    @staticmethod
+    def _source_files(source_directory: Path, packaged_directories: list[str]):
+        if not source_directory.exists():
+            raise RuntimeError("Source files have not been fetched")
+        source_files = []
+
+        for glob in packaged_directories:
+            for file in source_directory.glob(glob):
+                if not file.is_symlink() and file.is_file():
+                    source_files.append(file.relative_to(source_directory))
+
+        return source_files
+
+    @staticmethod
+    def source_directory(
+        target_platform: TargetPlatform, installation_target: Path, version: str
+    ):
+        if target_platform == "macos":
+            options = list(installation_target.glob(f"armpl_{version}_flang-*"))
+            if len(options) == 1:
+                return options[0]
+            else:
+                raise FileNotFoundError(
+                    f"Expected exactly one installation directory for ARM Performance libraries for {target_platform}, found {len(options)}"
+                )
+
+        elif target_platform == "linux_gcc":
+            return installation_target / "opt" / "arm" / f"armpl_{version}_gcc"
+        else:
+            raise NotImplementedError(f"Unsupported platform: {target_platform}")
 
 
 def bash_version():
