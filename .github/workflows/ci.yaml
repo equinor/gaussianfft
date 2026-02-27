@@ -92,7 +92,7 @@ jobs:
 
       - name: Download ARM Performance Libraries
         uses: actions/download-artifact@v7
-        if: ${{ startsWith(matrix.os, 'macos-') && ! endsWith(matrix.os, '-intel') }}
+        if: ${{ (startsWith(matrix.os, 'macos-') && ! endsWith(matrix.os, '-intel')) || endsWith(matrix.os, '-arm') }}
         with:
           pattern:  arm-performance-libraries-*
           path: build-packages/arm-performance-libraries/dist
