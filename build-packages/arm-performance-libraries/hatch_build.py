@@ -53,7 +53,7 @@ class CustomBuildHook(BuildHookInterface):
             [
                 "py3",
                 "none",
-                armpl.target_platform.replace("-", "_").replace(".", "_"),
+                armpl.platform.replace("-", "_").replace(".", "_"),
             ]
         )
         # Files will only go to shared-data destinations, not package dir
