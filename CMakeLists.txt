@@ -108,13 +108,22 @@ target_link_libraries(
 )
 if (${IS_AARCH64})
     if (USE_ARM_PERFORMANCE_LIBRARY)
-        target_link_libraries(gaussianfft_gaussianfft PRIVATE
-                # TODO: Make work with OpenMP / parallel
-                ${ARMPL_STATIC_LIB}
-                flang_rt.runtime
-                m
-                c++
-        )
+        if (APPLE)
+            target_link_libraries(gaussianfft_gaussianfft PRIVATE
+                    # TODO: Make work with OpenMP / parallel
+                    ${ARMPL_STATIC_LIB}
+                    flang_rt.runtime
+                    m
+            )
+        elseif (LINUX)
+            target_link_libraries(gaussianfft_gaussianfft PRIVATE
+                    ${ARMPL_STATIC_LIB}
+                    amath.a
+                    m
+            )
+        else ()
+            message(FATAL_ERROR "Currenlty, only MacOS and linux are supported on ARM")
+        endif()
     else ()
         message(FATAL_ERROR "ARM based architectures are not yet supported")
     endif ()
