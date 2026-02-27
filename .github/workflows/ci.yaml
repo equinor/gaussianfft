@@ -62,7 +62,6 @@ jobs:
           python -m build --wheel
 
       - name: Store headers and libraries
-        if: steps.cache-armpl.outputs.cache-hit != 'true'
         uses: actions/upload-artifact@v6
         with:
           name: arm-performance-libraries-${{ matrix.target_platform }}
