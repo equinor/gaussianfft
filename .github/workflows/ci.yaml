@@ -102,7 +102,7 @@ jobs:
         uses: pypa/cibuildwheel@v3.3.1
         env:
           CIBW_ARCHS_WINDOWS: AMD64
-          CIBW_SKIP: "*-musllinux_x86_64"
+          CIBW_SKIP: "*-musllinux_*"  # Currently, OpenBLAS (via scipy) does not support musl
           CIBW_ENABLE: "pypy"
         with:
           output-dir: 'dist'
