@@ -22,14 +22,13 @@ jobs:
         run: ./bin/run-cpp-tests.sh
 
   prepare-arm-performance-libraries:
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-22.04
     name: Download and prepare ARM Performance Libraries
     strategy:
       matrix:
-        armpl:
-          - "23.10"
-        os:
-          - macos-15
+        target_platform:
+          - linux_gcc
+          - macos
     steps:
       - uses: actions/checkout@v6
         name: Checkout repository
@@ -38,21 +37,34 @@ jobs:
         id: cache-armpl
         uses: actions/cache@v5
         with:
-          lookup-only: true
-          path: sources/arm-performance-libraries/${{ matrix.armpl }}/${{ runner.os }}
-          key: armpl-${{ matrix.armpl }}-${{ matrix.os }}-${{ hashFiles('bin/fetch-ArmPL.sh') }}
+          path: build-packages/arm-performance-libraries/dist
+          key: armpl-${{ matrix.target_platform }}-${{ hashFiles('build-packages/arm-performance-libraries/hatch_build.py', 'build-packages/arm-performance-libraries/pyproject.toml') }}
+
+      - name: Install zsh
+        # The installation script for ARM Performance Libraries on macOS uses zsh
+        if: steps.cache-armpl.outputs.cache-hit != 'true' && matrix.target_platform == 'macos'
+        run: sudo apt-get install -y zsh
+
+      - name: Set up Python
+        if: steps.cache-armpl.outputs.cache-hit != 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
 
       - name: Download ARM Performance Libraries and extract relevant headers and libraries
         if: steps.cache-armpl.outputs.cache-hit != 'true'
+        env:
+          ARMPL_TARGET_PLATFORM: ${{ matrix.target_platform }}
+        working-directory: 'build-packages/arm-performance-libraries/'
         run: |
-          ./bin/fetch-ArmPL.sh ${{ matrix.armpl }}
+          pip install build
+          python -m build --wheel
 
       - name: Store headers and libraries
-        if: steps.cache-armpl.outputs.cache-hit != 'true'
         uses: actions/upload-artifact@v6
         with:
-          name: armpl-${{ matrix.armpl }}-${{ matrix.os }}
-          path: sources/arm-performance-libraries/*
+          name: arm-performance-libraries-${{ matrix.target_platform }}
+          path: build-packages/arm-performance-libraries/dist/*.whl
           if-no-files-found: error
 
   build:
@@ -65,6 +77,7 @@ jobs:
       matrix:
         os:
         - ubuntu-22.04
+        - ubuntu-22.04-arm
         # Intel based
         - macos-15-intel
         # ARM based
@@ -79,21 +92,17 @@ jobs:
 
       - name: Download ARM Performance Libraries
         uses: actions/download-artifact@v7
-        if: ${{ matrix.os == 'macos-15' }}
+        if: ${{ (startsWith(matrix.os, 'macos-') && ! endsWith(matrix.os, '-intel')) || endsWith(matrix.os, '-arm') }}
         with:
-          pattern: armpl-*
-          path: sources/arm-performance-libraries
+          pattern:  arm-performance-libraries-*
+          path: build-packages/arm-performance-libraries/dist
           merge-multiple: true
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v3.3.1
         env:
           CIBW_ARCHS_WINDOWS: AMD64
-          # Intel MKL only support glibc x86 64bit Intel CPUs
-          # If you need to compile gaussianfft for other architectures,
-          # a different fftw3 implementation must be used
-          CIBW_ARCHS_LINUX: "x86_64"
-          CIBW_SKIP: "*-musllinux_x86_64"
+          CIBW_SKIP: "*-musllinux_*"  # Currently, OpenBLAS (via scipy) does not support musl
           CIBW_ENABLE: "pypy"
         with:
           output-dir: 'dist'

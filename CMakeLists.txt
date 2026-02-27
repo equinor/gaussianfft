@@ -25,9 +25,6 @@ if (FFTW_DEBUG)
 endif ()
 
 option(USE_ARM_PERFORMANCE_LIBRARY "Use ARM Performance Library's FFT functionality on ARM-based builds" ON)
-if (${USE_ARM_PERFORMANCE_LIBRARY})
-    set(ARMPL_VERSION "23.10" CACHE STRING "Which version of ARM Performance Libraries to Use")
-endif ()
 
 if (NOT DEFINED SKBUILD)
     message(STATUS "Not building with scikit-build; using a local virtual environment instead")
@@ -111,16 +108,24 @@ target_link_libraries(
 )
 if (${IS_AARCH64})
     if (USE_ARM_PERFORMANCE_LIBRARY)
-        target_link_libraries(gaussianfft_gaussianfft PRIVATE
-                # TODO: Make work with OpenMP / parallel
-                armpl_lp64.a
-                FortranDecimal
-                FortranRuntime
-                m
-                c++
-        )
+        if (APPLE)
+            target_link_libraries(gaussianfft_gaussianfft PRIVATE
+                    # TODO: Make work with OpenMP / parallel
+                    ${ARMPL_STATIC_LIB}
+                    flang_rt.runtime
+                    m
+            )
+        elseif (LINUX)
+            target_link_libraries(gaussianfft_gaussianfft PRIVATE
+                    ${ARMPL_STATIC_LIB}
+                    amath.a
+                    m
+            )
+        else ()
+            message(FATAL_ERROR "Currenlty, only MacOS and linux are supported on ARM")
+        endif()
     else ()
-        message(WARNING "ARM based architectures are not yet supported")
+        message(FATAL_ERROR "ARM based architectures are not yet supported")
     endif ()
 else ()
     if (APPLE)
