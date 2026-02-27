@@ -1,10 +1,5 @@
 # Configure Intel MKL & FFTW (for Apple M-series)
 if (${IS_AARCH64})
-    if (${APPLE})
-        set(RUNNER_OS "macOS")
-    else ()
-        message(FATAL_ERROR "Currently, ARM is only supported macOS")
-    endif ()
     execute_process(COMMAND ${Python3_EXECUTABLE} -m arm_performance_libraries --version OUTPUT_VARIABLE ARMPL_VERSION)
     message(STATUS "Using version ${ARMPL_VERSION} of ARM Performance Libraries")
 
