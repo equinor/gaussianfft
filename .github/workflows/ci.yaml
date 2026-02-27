@@ -79,6 +79,7 @@ jobs:
       matrix:
         os:
         - ubuntu-22.04
+        - ubuntu-22.04-arm
         # Intel based
         - macos-15-intel
         # ARM based
