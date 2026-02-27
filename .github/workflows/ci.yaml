@@ -37,7 +37,6 @@ jobs:
         id: cache-armpl
         uses: actions/cache@v5
         with:
-          lookup-only: true
           path: build-packages/arm-performance-libraries/dist
           key: armpl-${{ matrix.target_platform }}-${{ hashFiles('build-packages/arm-performance-libraries/hatch_build.py', 'build-packages/arm-performance-libraries/pyproject.toml') }}
 
