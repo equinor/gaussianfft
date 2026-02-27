@@ -60,54 +60,53 @@ class CustomBuildHook(BuildHookInterface):
         build_data["force_include_editable"] = {}
 
 
-STATE = Literal["fetching", "fetched", "preparing", "prepared", "done", "failed"]
+class StateMachine:
+    STATE = Literal["fetching", "fetched", "preparing", "prepared", "done", "failed"]
 
+    class StateMachineType(TypedDict):
+        states: set[StateMachine.STATE | None]
+        transitions: dict[StateMachine.STATE | None, set[StateMachine.STATE]]
 
-class StateMachineType(TypedDict):
-    states: set[STATE | None]
-    transitions: dict[STATE | None, set[STATE]]
+    STATE_MACHINE: StateMachineType = {
+        "states": {"fetching", "fetched", "preparing", "prepared", "done", None},
+        "transitions": {
+            None: {"fetching"},
+            "fetching": {"fetched"},
+            "fetched": {"preparing"},
+            "preparing": {"prepared"},
+            "prepared": {"done"},
+            "done": set(),
+            "failed": {"fetching", "preparing"},
+        },
+    }
 
+    @classmethod
+    def state_change(cls, start: STATE, finished: STATE):
+        if start not in cls.STATE_MACHINE["states"]:
+            raise ValueError(f"{start=} is not a valid state")
+        if finished not in cls.STATE_MACHINE["states"]:
+            raise ValueError(f"{finished=} is not a valid state")
+        if finished not in cls.STATE_MACHINE["transitions"][start]:
+            raise ValueError(f"{finished=} is not a valid transition for {start=}")
 
-STATE_MACHINE: StateMachineType = {
-    "states": {"fetching", "fetched", "preparing", "prepared", "done", None},
-    "transitions": {
-        None: {"fetching"},
-        "fetching": {"fetched"},
-        "fetched": {"preparing"},
-        "preparing": {"prepared"},
-        "prepared": {"done"},
-        "done": set(),
-        "failed": {"fetching", "preparing"},
-    },
-}
+        def decorator(func: Callable):
+            @wraps(func)
+            def wrapper(self: GatherArmPerformanceLibraries, *args, **kwargs):
+                state = self.state
+                if start in cls.STATE_MACHINE["transitions"][state] or state == start:
+                    self.state = start
+                    try:
+                        func(self, *args, **kwargs)
+                    except Exception as e:
+                        self.state = "failed"
+                        raise e
+                    self.state = finished
+                else:
+                    self.app.display_info(f"Skipping {func.__name__}; already done")
 
+            return wrapper
 
-def state_change(start: STATE, finished: STATE):
-    if start not in STATE_MACHINE["states"]:
-        raise ValueError(f"{start=} is not a valid state")
-    if finished not in STATE_MACHINE["states"]:
-        raise ValueError(f"{finished=} is not a valid state")
-    if finished not in STATE_MACHINE["transitions"][start]:
-        raise ValueError(f"{finished=} is not a valid transition for {start=}")
-
-    def decorator(func: Callable):
-        @wraps(func)
-        def wrapper(self: GatherArmPerformanceLibraries, *args, **kwargs):
-            state = self.state
-            if start in STATE_MACHINE["transitions"][state] or state == start:
-                self.state = start
-                try:
-                    func(self, *args, **kwargs)
-                except Exception as e:
-                    self.state = "failed"
-                    raise e
-                self.state = finished
-            else:
-                self.app.display_info(f"Skipping {func.__name__}; already done")
-
-        return wrapper
-
-    return decorator
+        return decorator
 
 
 class GatherArmPerformanceLibraries:
@@ -116,7 +115,7 @@ class GatherArmPerformanceLibraries:
         return Path(self.cache_dir) / "build-state.txt"
 
     @property
-    def state(self) -> STATE | None:
+    def state(self) -> StateMachine.STATE | None:
         if not self._state_file.exists():
             return None
         with open(self._state_file, "r") as f:
@@ -124,7 +123,7 @@ class GatherArmPerformanceLibraries:
             return f.read().strip() or None
 
     @state.setter
-    def state(self, value: STATE | None):
+    def state(self, value: StateMachine.STATE | None):
         if value is None:
             self._state_file.unlink(missing_ok=True)
             return
@@ -173,7 +172,7 @@ class GatherArmPerformanceLibraries:
         with open(self.cache_dir / "target-platform.txt", "w") as f:
             f.write(value)
 
-    @state_change("prepared", "done")
+    @StateMachine.state_change("prepared", "done")
     def write_platform_file(self):
         with open(self.root / ".platform.txt", "w") as f:
             f.write(self.platform)
@@ -187,7 +186,7 @@ class GatherArmPerformanceLibraries:
         else:
             raise NotImplementedError(f"Unsupported platform: {self.target_platform}")
 
-    @state_change("preparing", "prepared")
+    @StateMachine.state_change("preparing", "prepared")
     def prepare(self):
         for directory_glob in self.packaged_directories:
             directory = directory_glob.split("/")[0]
@@ -254,7 +253,7 @@ class GatherArmPerformanceLibraries:
 
         return source_files
 
-    @state_change("fetching", "fetched")
+    @StateMachine.state_change("fetching", "fetched")
     def fetch(self):
         url = self._get_download_url()
         archive_path = self._download(url)
