@@ -102,10 +102,6 @@ jobs:
         uses: pypa/cibuildwheel@v3.3.1
         env:
           CIBW_ARCHS_WINDOWS: AMD64
-          # Intel MKL only support glibc x86 64bit Intel CPUs
-          # If you need to compile gaussianfft for other architectures,
-          # a different fftw3 implementation must be used
-          CIBW_ARCHS_LINUX: "x86_64"
           CIBW_SKIP: "*-musllinux_x86_64"
           CIBW_ENABLE: "pypy"
         with:
