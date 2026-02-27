@@ -255,129 +255,7 @@ class GatherArmPerformanceLibraries:
 
     @StateMachine.state_change("fetching", "fetched")
     def fetch(self):
-        url = self._get_download_url()
-        archive_path = self._download(url)
-        installation_script = self._get_expected_installation_script()
-        if not installation_script.exists():
-            self._extract_archive(archive_path)
-        self._extract_library_files(installation_script)
-
-    def _get_download_url(self):
-        if self.target_platform == "macos":
-            return f"https://developer.arm.com/-/cdn-downloads/permalink/Arm-Performance-Libraries/Version_{self.armpl_version}/arm-performance-libraries_{self.armpl_version}_macOS.tgz"
-        elif self.target_platform == "linux_gcc":
-            return f"https://developer.arm.com/-/cdn-downloads/permalink/Arm-Performance-Libraries/Version_{self.armpl_version}/arm-performance-libraries_{self.armpl_version}_deb_gcc.tar"
-        else:
-            raise NotImplementedError(f"Unsupported platform: {self.target_platform}")
-
-    def _download(self, url: str) -> Path:
-        file_name = url.split("/")[-1]
-        target_path = self.cache_dir / file_name
-        if not target_path.exists():
-            self.app.display_waiting(f"Fetching ARM Performance Libraries from {url}")
-            with urlopen(url) as response, open(target_path, "wb") as f:
-                f.write(cast(HTTPResponse, response).read())
-        return target_path
-
-    def _get_expected_installation_script(self):
-        if self.target_platform == "macos":
-            return self.target_dir / "install.sh"
-        elif self.target_platform == "linux_gcc":
-            return (
-                self.target_dir
-                / f"arm-performance-libraries_{self.armpl_version}_deb/arm-performance-libraries_{self.armpl_version}_deb.sh"
-            )
-        else:
-            raise NotImplementedError(f"Unsupported platform: {self.target_platform}")
-
-    def _extract_archive(
-        self,
-        archive_path: Path,
-        ignore_unsupported: bool = False,
-        target_dir: Path | None = None,
-    ):
-        if target_dir is None:
-            target_dir = self.target_dir
-        target_dir.mkdir(exist_ok=True, parents=True)
-        if archive_path.suffix in [".tar", ".tgz"]:
-            with tarfile.open(archive_path) as archive:
-                archive.extractall(target_dir)
-                for member in archive.getmembers():
-                    if member.name.startswith("."):
-                        continue
-                    self._extract_archive(
-                        target_dir / member.name, ignore_unsupported=True
-                    )
-        elif archive_path.suffix in [".dmg"]:
-            for member in pydmg.list_apple_entries(archive_path):
-                if not member["is_dir"] and member["path"].endswith(".sh"):
-                    volume_path: str = member["path"]
-                    target_path = target_dir / "install.sh"
-                    self.app.display_waiting(
-                        f"Extracting {volume_path} to {target_path}"
-                    )
-                    with open(target_path, "wb") as f:
-                        f.write(pydmg.read_apple_file(archive_path, volume_path))
-        elif archive_path.suffix in [".deb"]:
-            with open(archive_path, "rb") as f:
-                for file in unpack_ar_archive(f):
-                    if file.name == "data.tar.gz/":
-                        with tarfile.open(fileobj=file.fp) as archive:
-                            archive.extractall(target_dir)
-        elif not ignore_unsupported:
-            raise NotImplementedError(
-                f"Unsupported archive format: {archive_path.suffix}"
-            )
-
-    def _extract_library_files(self, installation_script: Path):
-        if (
-            not self.installation_target.exists()
-            or len(list(self.installation_target.glob("*"))) == 0
-        ):
-            self.installation_target.mkdir(parents=True, exist_ok=True)
-            if self.target_platform == "macos":
-                command = subprocess.run(
-                    [
-                        "zsh",
-                        str(installation_script),
-                        "-y",
-                        f"--install_dir={self.installation_target}",
-                    ],
-                    capture_output=True,
-                )
-            elif self.target_platform == "linux_gcc":
-                if (_bash_version := bash_version()) < (5, 0, 0):
-                    raise RuntimeError(
-                        f"Bash version 5.0 or higher is required to install ARM Performance Libraries on Linux (got {_bash_version})"
-                    )
-                command = subprocess.run(
-                    [
-                        "bash",
-                        str(installation_script),
-                        "--accept",
-                        "--save-packages-to",
-                        str(self.installation_target),
-                    ],
-                    capture_output=True,
-                )
-            else:
-                raise NotImplementedError(
-                    f"Unsupported platform: {self.target_platform}"
-                )
-            self.app.display_info(command.stdout.decode())
-            if command.stderr:
-                self.app.display_waiting(command.stderr.decode())
-            if command.returncode != 0:
-                raise RuntimeError(
-                    f"Installation script failed with exit code {command.returncode}"
-                )
-
-            # Post-install setup
-            if self.target_platform == "linux_gcc":
-                self._extract_archive(
-                    self.installation_target / f"armpl_{self.armpl_version}_gcc.deb",
-                    target_dir=self.installation_target,
-                )
+        fetch.fetch(self)
 
     @classmethod
     def ensure_arm_performance_libraries(
@@ -400,6 +278,155 @@ class GatherArmPerformanceLibraries:
         instance.prepare()
         instance.write_platform_file()
         return instance
+
+
+class fetch:
+    @classmethod
+    def fetch(cls, config: GatherArmPerformanceLibraries):
+        url = cls._get_download_url(config.target_platform, config.armpl_version)
+        archive_path = cls._download(url, config.cache_dir, config.app)
+        installation_script = cls._get_expected_installation_script(
+            config.target_platform, config.target_dir, config.armpl_version
+        )
+        if not installation_script.exists():
+            cls._extract_archive(archive_path, config.target_dir, config.app)
+        cls._extract_library_files(
+            installation_script,
+            config.installation_target,
+            config.target_platform,
+            config.app,
+            config.armpl_version,
+        )
+
+    @staticmethod
+    def _get_download_url(target_platform: TargetPlatform, version: str):
+        if target_platform == "macos":
+            return f"https://developer.arm.com/-/cdn-downloads/permalink/Arm-Performance-Libraries/Version_{version}/arm-performance-libraries_{version}_macOS.tgz"
+        elif target_platform == "linux_gcc":
+            return f"https://developer.arm.com/-/cdn-downloads/permalink/Arm-Performance-Libraries/Version_{version}/arm-performance-libraries_{version}_deb_gcc.tar"
+        else:
+            raise NotImplementedError(f"Unsupported platform: {target_platform}")
+
+    @staticmethod
+    def _download(url: str, cache_dir: Path, app: Application) -> Path:
+        file_name = url.split("/")[-1]
+        target_path = cache_dir / file_name
+        if not target_path.exists():
+            app.display_waiting(f"Fetching ARM Performance Libraries from {url}")
+            with urlopen(url) as response, open(target_path, "wb") as f:
+                f.write(cast(HTTPResponse, response).read())
+        return target_path
+
+    @staticmethod
+    def _get_expected_installation_script(
+        target_platform: TargetPlatform, target_dir: Path, version: str
+    ):
+        if target_platform == "macos":
+            return target_dir / "install.sh"
+        elif target_platform == "linux_gcc":
+            return (
+                target_dir
+                / f"arm-performance-libraries_{version}_deb/arm-performance-libraries_{version}_deb.sh"
+            )
+        else:
+            raise NotImplementedError(f"Unsupported platform: {target_platform}")
+
+    @classmethod
+    def _extract_archive(
+        cls,
+        archive_path: Path,
+        target_dir: Path,
+        app: Application,
+        ignore_unsupported: bool = False,
+    ):
+        target_dir.mkdir(exist_ok=True, parents=True)
+        if archive_path.suffix in [".tar", ".tgz"]:
+            with tarfile.open(archive_path) as archive:
+                archive.extractall(target_dir)
+                for member in archive.getmembers():
+                    if member.name.startswith("."):
+                        continue
+                    cls._extract_archive(
+                        target_dir / member.name,
+                        target_dir,
+                        app,
+                        ignore_unsupported=True,
+                    )
+        elif archive_path.suffix in [".dmg"]:
+            for member in pydmg.list_apple_entries(archive_path):
+                if not member["is_dir"] and member["path"].endswith(".sh"):
+                    volume_path: str = member["path"]
+                    target_path = target_dir / "install.sh"
+                    app.display_waiting(f"Extracting {volume_path} to {target_path}")
+                    with open(target_path, "wb") as f:
+                        f.write(pydmg.read_apple_file(archive_path, volume_path))
+        elif archive_path.suffix in [".deb"]:
+            with open(archive_path, "rb") as f:
+                for file in unpack_ar_archive(f):
+                    if file.name == "data.tar.gz/":
+                        with tarfile.open(fileobj=file.fp) as archive:
+                            archive.extractall(target_dir)
+        elif not ignore_unsupported:
+            raise NotImplementedError(
+                f"Unsupported archive format: {archive_path.suffix}"
+            )
+
+    @classmethod
+    def _extract_library_files(
+        cls,
+        installation_script: Path,
+        installation_target: Path,
+        target_platform: TargetPlatform,
+        app: Application,
+        version: str,
+    ):
+        if (
+            not installation_target.exists()
+            or len(list(installation_target.glob("*"))) == 0
+        ):
+            installation_target.mkdir(parents=True, exist_ok=True)
+            if target_platform == "macos":
+                command = subprocess.run(
+                    [
+                        "zsh",
+                        str(installation_script),
+                        "-y",
+                        f"--install_dir={installation_target}",
+                    ],
+                    capture_output=True,
+                )
+            elif target_platform == "linux_gcc":
+                if (_bash_version := bash_version()) < (5, 0, 0):
+                    raise RuntimeError(
+                        f"Bash version 5.0 or higher is required to install ARM Performance Libraries on Linux (got {_bash_version})"
+                    )
+                command = subprocess.run(
+                    [
+                        "bash",
+                        str(installation_script),
+                        "--accept",
+                        "--save-packages-to",
+                        str(installation_target),
+                    ],
+                    capture_output=True,
+                )
+            else:
+                raise NotImplementedError(f"Unsupported platform: {target_platform}")
+            app.display_info(command.stdout.decode())
+            if command.stderr:
+                app.display_waiting(command.stderr.decode())
+            if command.returncode != 0:
+                raise RuntimeError(
+                    f"Installation script failed with exit code {command.returncode}"
+                )
+
+            # Post-install setup
+            if target_platform == "linux_gcc":
+                cls._extract_archive(
+                    installation_target / f"armpl_{version}_gcc.deb",
+                    target_dir=installation_target,
+                    app=app,
+                )
 
 
 def bash_version():
