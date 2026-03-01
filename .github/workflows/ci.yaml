@@ -49,7 +49,7 @@ jobs:
 
       - name: Store headers and libraries
         if: steps.cache-armpl.outputs.cache-hit != 'true'
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: armpl-${{ matrix.armpl }}-${{ matrix.os }}
           path: sources/arm-performance-libraries/*
@@ -99,7 +99,7 @@ jobs:
           output-dir: 'dist'
 
       - name: Store wheels
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: wheels-${{ matrix.os }}
           path: dist/*.whl
@@ -126,7 +126,7 @@ jobs:
           python -m build --sdist
 
       - name: Store source distribution
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: sdist
           path: dist/*.tar.gz
@@ -167,7 +167,7 @@ jobs:
         run: ./bin/ensure-consistent-version.sh
 
       - name: Package all artifacts
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: distribution
           path: dist/
