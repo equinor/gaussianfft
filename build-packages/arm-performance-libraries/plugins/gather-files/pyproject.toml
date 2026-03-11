@@ -2,6 +2,7 @@
 name = "gather_files"
 version = "0.1.0"
 description = "A plugin for Hatch for gathering ARM Performance Libraries files"
+requires-python = ">= 3.9"
 
 dependencies = [
     "pydmg",
