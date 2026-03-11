@@ -267,3 +267,7 @@ build-cpp-tests/
 !build-packages/arm-performance-libraries/hatch_build.py
 !build-packages/arm-performance-libraries/pyproject.toml
 !build-packages/arm-performance-libraries/README.md
+# Hatch plugin for downloading and moving Arm Performance library files
+!build-packages/arm-performance-libraries/plugins/**/pyproject.toml
+!build-packages/arm-performance-libraries/plugins/*.py
+!build-packages/arm-performance-libraries/plugins/**/*.py

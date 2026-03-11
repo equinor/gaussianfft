@@ -17,8 +17,7 @@ armpl = "arm_performance_libraries.lib.pkgconfig"
 [build-system]
 requires = [
     "hatchling",
-    "pydmg",
-    "debx == 0.2.12",
+    "gather-files @ file://${PROJECT_ROOT}/plugins/gather-files",
 ]
 build-backend = "hatchling.build"
 
