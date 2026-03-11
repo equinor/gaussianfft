@@ -17,7 +17,7 @@ armpl = "arm_performance_libraries.lib.pkgconfig"
 [build-system]
 requires = [
     "hatchling",
-    "gather-files @ file://${PROJECT_ROOT}/plugins/gather-files",
+    "gather-files @ file:./plugins/gather-files",
 ]
 build-backend = "hatchling.build"
 
