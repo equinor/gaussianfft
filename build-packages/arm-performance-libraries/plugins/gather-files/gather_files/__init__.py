@@ -4,16 +4,16 @@ import os
 import re
 import sys
 import tarfile
-from collections.abc import Callable
-from functools import wraps, cached_property
+from functools import cached_property
 from http.client import HTTPResponse
 
 import pydmg
 from pathlib import Path
-from typing import Literal, TYPE_CHECKING, TypedDict, cast
+from typing import Literal, TYPE_CHECKING, cast
 from urllib.request import urlopen
 import subprocess
 
+from gather_files.state import STATE, STATE_MACHINE, state_change
 from gather_files.vendor.debx.ar import unpack_ar_archive
 
 if TYPE_CHECKING:
@@ -36,56 +36,6 @@ def get_target_platform() -> TargetPlatform:
             f"Invalid target platform: {target_platform}. Must be one of {TargetPlatform.__args__}"
         )
     return cast(TargetPlatform, target_platform)
-
-
-STATE = Literal["fetching", "fetched", "preparing", "prepared", "done", "failed"]
-
-
-class StateMachineType(TypedDict):
-    states: set[STATE | None]
-    transitions: dict[STATE | None, set[STATE]]
-
-
-STATE_MACHINE: StateMachineType = {
-    "states": {"fetching", "fetched", "preparing", "prepared", "done", None},
-    "transitions": {
-        None: {"fetching"},
-        "fetching": {"fetched"},
-        "fetched": {"preparing"},
-        "preparing": {"prepared"},
-        "prepared": {"done"},
-        "done": set(),
-        "failed": {"fetching", "preparing"},
-    },
-}
-
-
-def state_change(start: STATE, finished: STATE):
-    if start not in STATE_MACHINE["states"]:
-        raise ValueError(f"{start=} is not a valid state")
-    if finished not in STATE_MACHINE["states"]:
-        raise ValueError(f"{finished=} is not a valid state")
-    if finished not in STATE_MACHINE["transitions"][start]:
-        raise ValueError(f"{finished=} is not a valid transition for {start=}")
-
-    def decorator(func: Callable):
-        @wraps(func)
-        def wrapper(self: GatherArmPerformanceLibraries, *args, **kwargs):
-            state = self.state
-            if start in STATE_MACHINE["transitions"][state] or state == start:
-                self.state = start
-                try:
-                    func(self, *args, **kwargs)
-                except Exception as e:
-                    self.state = "failed"
-                    raise e
-                self.state = finished
-            else:
-                self.app.display_info(f"Skipping {func.__name__}; already done")
-
-        return wrapper
-
-    return decorator
 
 
 class GatherArmPerformanceLibraries:
