@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import pydmg
 from pathlib import Path
 
 from hatchling.builders.hooks.plugin.interface import BuildHookInterface
