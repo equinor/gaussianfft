@@ -1,0 +1,44 @@
+[project]
+name = "arm-performance-libraries"
+dynamic = ["version"]
+description = "ARM Performance Libraries"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = []
+license-files = ["license_terms/*.txt"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "License :: Other/Proprietary License",
+]
+
+[project.entry-points.pkg_config]
+armpl = "arm_performance_libraries.lib.pkgconfig"
+
+[build-system]
+requires = [
+    "hatchling",
+    "pydmg",
+    "debx == 0.2.12",
+]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "arm_performance_libraries/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+
+pure_python = false
+include = [
+    "arm_performance_libraries",
+]
+exclude = [
+    "lib/*.dylib.*",
+]
+
+
+[tool.hatch.build.targets.wheel.shared-data]
+"lib" = "lib"
+"include" = "include"
+"bin" = "bin"
+
+[tool.hatch.build.targets.wheel.hooks.custom]
