@@ -24,17 +24,20 @@ def preprocess(file: Path, include_directories: Optional[List[str]] = None) -> O
         else:
             preprocessor_args = ("-E", "-dI")
             include_arg = "-I"
+        include_arguments = []
+        for directory in additional_include_directories:
+            include_arguments.extend([include_arg, directory])
         cxx_flags = os.environ.get("CXXFLAGS") or ""
-        res = subprocess.run(" ".join([
-            f'"{cxx}"',
+
+        res = subprocess.run([
+            cxx,
             *cxx_flags.split(" "),
             *preprocessor_args,
-            *[f'{include_arg}"{include}"' for include in additional_include_directories],
+            *include_arguments,
             str(file),
-        ]),
+        ],
             check=False,
             capture_output=True,
-            shell=True,
         )
         return [
             line[0].decode("utf-8").strip()
