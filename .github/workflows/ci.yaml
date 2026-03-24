@@ -61,7 +61,7 @@ jobs:
           python -m build --wheel
 
       - name: Store headers and libraries
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: arm-performance-libraries-${{ matrix.target_platform }}
           path: build-packages/arm-performance-libraries/dist/*.whl
@@ -108,7 +108,7 @@ jobs:
           output-dir: 'dist'
 
       - name: Store wheels
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: wheels-${{ matrix.os }}
           path: dist/*.whl
@@ -135,7 +135,7 @@ jobs:
           python -m build --sdist
 
       - name: Store source distribution
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: sdist
           path: dist/*.tar.gz
@@ -176,7 +176,7 @@ jobs:
         run: ./bin/ensure-consistent-version.sh
 
       - name: Package all artifacts
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: distribution
           path: dist/
