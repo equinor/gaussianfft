@@ -5,6 +5,7 @@ if find_spec("numpy") is None:
     raise ImportError("gaussianfft requires NumPy to be installed")
 
 
+import gaussianfft._platform  # noqa: F401  (sets up DLL paths before loading C extension)
 import _gaussianfft
 
 from _gaussianfft import *

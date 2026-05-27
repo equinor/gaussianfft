@@ -20,6 +20,27 @@ function(dependants output_variables)
     get_property(include_directories DIRECTORY ${CMAKE_SOURCE_DIR} PROPERTY INCLUDE_DIRECTORIES)
     list(APPEND include_directories ${CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES} ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
     list(APPEND include_directories ${Python3_INCLUDE_DIRS} ${pybind11_INCLUDE_DIR})
+    if (MSVC)
+        # MSVC's cl.exe requires system include directories when invoked directly
+        # (outside of MSBuild). Derive them from the compiler path and SDK version.
+        get_filename_component(_msvc_bin_hostarch "${CMAKE_CXX_COMPILER}" DIRECTORY)   # .../Hostx64/x64
+        get_filename_component(_msvc_bin_host "${_msvc_bin_hostarch}" DIRECTORY)        # .../Hostx64
+        get_filename_component(_msvc_bin "${_msvc_bin_host}" DIRECTORY)                 # .../bin
+        get_filename_component(_msvc_version_dir "${_msvc_bin}" DIRECTORY)              # .../MSVC/<version>
+        if (EXISTS "${_msvc_version_dir}/include")
+            list(APPEND include_directories "${_msvc_version_dir}/include")
+        endif ()
+        # Add Windows SDK ucrt include directory
+        set(_winsdk_base "C:/Program Files (x86)/Windows Kits/10")
+        if (DEFINED CMAKE_VS_WINDOWS_TARGET_PLATFORM_VERSION AND EXISTS "${_winsdk_base}/Include/${CMAKE_VS_WINDOWS_TARGET_PLATFORM_VERSION}")
+            set(_winsdk_inc "${_winsdk_base}/Include/${CMAKE_VS_WINDOWS_TARGET_PLATFORM_VERSION}")
+            foreach(_subdir ucrt shared um)
+                if (EXISTS "${_winsdk_inc}/${_subdir}")
+                    list(APPEND include_directories "${_winsdk_inc}/${_subdir}")
+                endif ()
+            endforeach()
+        endif ()
+    endif ()
     execute_process(
             COMMAND_ERROR_IS_FATAL ANY
             COMMAND ${Python3_EXECUTABLE} ${CMAKE_BINARY_DIR}/bin/find_dependants.py --include-directories "${include_directories}" ${ARGN}

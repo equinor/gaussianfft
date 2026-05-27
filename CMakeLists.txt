@@ -141,12 +141,22 @@ else ()
                 #iomp5
         )
     elseif (WIN32)
-        target_link_libraries(gaussianfft_gaussianfft PRIVATE
-                mkl_intel_ilp64
-                mkl_intel_thread
-                mkl_core
-                libiomp5md
-        )
+        find_library(_IOMP5_LIB NAMES libiomp5md PATHS "${MKL_ROOT}/../../compiler/latest/lib" NO_DEFAULT_PATH)
+        if (_IOMP5_LIB)
+            target_link_libraries(gaussianfft_gaussianfft PRIVATE
+                    mkl_intel_ilp64
+                    mkl_intel_thread
+                    mkl_core
+                    libiomp5md
+            )
+        else ()
+            message(STATUS "libiomp5md not found; falling back to mkl_sequential (single-threaded)")
+            target_link_libraries(gaussianfft_gaussianfft PRIVATE
+                    mkl_intel_ilp64
+                    mkl_sequential
+                    mkl_core
+            )
+        endif ()
     else ()
         # Presumably Linux x86
         target_link_libraries(gaussianfft_gaussianfft PRIVATE
@@ -174,6 +184,12 @@ if (DEFINED SKBUILD)
             TARGETS gaussianfft_gaussianfft
             DESTINATION ${SKBUILD_PLATLIB_DIR}
     )
+    if (WIN32 AND _IOMP5_LIB)
+        set(_IOMP5_DLL "${MKL_ROOT}/../../compiler/latest/bin/libiomp5md.dll")
+        if (EXISTS "${_IOMP5_DLL}")
+            install(FILES "${_IOMP5_DLL}" DESTINATION ${SKBUILD_PLATLIB_DIR})
+        endif ()
+    endif ()
 endif ()
 
 # ---- Developer mode ----
