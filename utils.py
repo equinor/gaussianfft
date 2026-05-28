@@ -3,6 +3,7 @@ import os
 import re
 import subprocess
 import sysconfig
+import tempfile
 from pathlib import Path
 from typing import Iterable, Optional, List, Union
 
@@ -18,7 +19,8 @@ def preprocess(file: Path, include_directories: Optional[List[str]] = None) -> O
         else:
             additional_include_directories = [Path(directory) for directory in include_directories]
         # MSVC uses different arguments and notation than gcc / llvm
-        if re.search(r"^[a-z]:[\\/].*[\\/]Microsoft Visual Studio[\\/].*[\\/]cl.exe", cxx, re.IGNORECASE):
+        is_msvc = bool(re.search(r"^[a-z]:[\\/].*[\\/]Microsoft Visual Studio[\\/].*[\\/]cl.exe", cxx, re.IGNORECASE))
+        if is_msvc:
             preprocessor_args = ("/P", "/showIncludes")
             include_arg = "/I"
         else:
@@ -29,16 +31,45 @@ def preprocess(file: Path, include_directories: Optional[List[str]] = None) -> O
             include_arguments.extend([include_arg, directory])
         cxx_flags = os.environ.get("CXXFLAGS") or ""
 
-        res = subprocess.run([
-            cxx,
-            *cxx_flags.split(" "),
-            *preprocessor_args,
-            *include_arguments,
-            str(file),
-        ],
-            check=False,
-            capture_output=True,
-        )
+        # MSVC cannot preprocess header files directly; wrap them in a temp .cpp
+        tmp_file = None
+        preprocess_file = file
+        if is_msvc and file.suffix in ('.h', '.hpp', '.tcc'):
+            tmp_fd, tmp_path = tempfile.mkstemp(suffix='.cpp', dir=str(file.parent))
+            try:
+                os.write(tmp_fd, f'#include "{file.name}"\n'.encode())
+            finally:
+                os.close(tmp_fd)
+            tmp_file = Path(tmp_path)
+            preprocess_file = tmp_file
+
+        try:
+            res = subprocess.run([
+                cxx,
+                *[flag for flag in cxx_flags.split(" ") if flag],
+                *preprocessor_args,
+                *include_arguments,
+                str(preprocess_file),
+            ],
+                check=False,
+                capture_output=True,
+                cwd=tempfile.gettempdir() if is_msvc else None,
+            )
+        finally:
+            if tmp_file is not None:
+                tmp_file.unlink(missing_ok=True)
+                # MSVC /P creates a .i file next to the source
+                i_file = tmp_file.with_suffix('.i')
+                if i_file.exists():
+                    i_file.unlink()
+            if is_msvc:
+                # Clean up .i file MSVC /P may create in cwd
+                i_file = Path(tempfile.gettempdir()) / preprocess_file.with_suffix('.i').name
+                if i_file.exists():
+                    i_file.unlink()
+
+        if res.returncode != 0:
+            return None
         return [
             line[0].decode("utf-8").strip()
             for line in re.findall(b'^((# *[0-9]+ +|Note: including file: +|.*-E -dI).*$)', res.stdout + res.stderr, re.MULTILINE)
