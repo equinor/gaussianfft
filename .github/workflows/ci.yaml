@@ -115,7 +115,6 @@ jobs:
         env:
           CIBW_ARCHS_WINDOWS: AMD64
           CIBW_SKIP: "*-musllinux_*"  # Currently, OpenBLAS (via scipy) does not support musl
-          CIBW_ENABLE: "pypy"
         with:
           output-dir: 'dist'
 
