@@ -55,6 +55,10 @@ class Variogram(object):
     @overload
     def corr(self, dx: float) -> float:...
 
+    def corr_array(self, displacements: ndarray, /) -> ndarray:
+        """Return (N,) float64 correlations for (N, 1), (N, 2), or (N, 3) displacements."""
+        ...
+
 
 """
 gaussianfft.variogram

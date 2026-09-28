@@ -29,6 +29,9 @@ CreateVariogram(const std::string & type,
                 double      dip_angle,
                 double      power);
 
+py::array_t<double> CorrArray(const NRLib::Variogram    & variogram,
+                              const py::array_t<double> & displacements);
+
 py::array_t<double>Simulate(NRLib::Variogram * variogram,
                                        size_t             nx,
                                        double             dx,

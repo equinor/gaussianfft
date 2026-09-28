@@ -92,6 +92,33 @@ NRLib::Variogram * GaussFFT::CreateVariogram(const std::string & type,
   return NRLib::Variogram::Create(t, power, range_x, range_y, range_z, azimuth_angle, dip_angle, 1.0);
 }
 
+
+/******************************************************************/
+py::array_t<double> GaussFFT::CorrArray(const NRLib::Variogram    & variogram,
+                                        const py::array_t<double> & displacements)
+{
+  if (displacements.ndim() != 2 || displacements.shape(1) < 1 || displacements.shape(1) > 3)
+    throw py::value_error("displacements must have shape (N, 1), (N, 2), or (N, 3)");
+
+  auto distances = displacements.unchecked<2>();
+  py::array_t<double> result(distances.shape(0));
+  auto correlations = result.mutable_unchecked<1>();
+
+  if (distances.shape(1) == 1) {
+    for (py::ssize_t index = 0; index < distances.shape(0); ++index)
+      correlations(index) = variogram.GetCorr(distances(index, 0));
+  }
+  else if (distances.shape(1) == 2) {
+    for (py::ssize_t index = 0; index < distances.shape(0); ++index)
+      correlations(index) = variogram.GetCorr(distances(index, 0), distances(index, 1));
+  }
+  else {
+    for (py::ssize_t index = 0; index < distances.shape(0); ++index)
+      correlations(index) = variogram.GetCorr(distances(index, 0), distances(index, 1), distances(index, 2));
+  }
+  return result;
+}
+
 /******************************************************************/
 py::array_t<double> GaussFFT::Simulate(NRLib::Variogram * variogram,
                                        size_t             nx,

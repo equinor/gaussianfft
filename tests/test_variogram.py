@@ -1,4 +1,5 @@
 import unittest
+import numpy as np
 import gaussianfft as grf
 
 
@@ -49,6 +50,36 @@ class TestVariogram(unittest.TestCase):
         c = v.corr(0, 0, 250)
         self.assertAlmostEqual(a, b)
         self.assertAlmostEqual(b, c)
+
+    def test_corr_array_matches_scalar(self):
+        rng = np.random.default_rng(42)
+        for kind in grf.VariogramType:
+            variogram = grf.variogram(kind, 1000.0, 500.0, 250.0, 30.0, 20.0)
+            for ndims in (1, 2, 3):
+                displacements = rng.uniform(-1000.0, 1000.0, (20, ndims))
+                displacements[0] = 0.0
+                for values in (displacements, np.asfortranarray(displacements),
+                               displacements[-2::-2, ::-1], displacements.astype(np.float32),
+                               displacements.astype(np.int64)):
+                    with self.subTest(kind=kind, ndims=ndims, strides=values.strides,
+                                      dtype=values.dtype):
+                        expected = [variogram.corr(*row) for row in values]
+                        actual = variogram.corr_array(values)
+                        self.assertEqual(actual.shape, (len(values),))
+                        self.assertEqual(actual.dtype, np.dtype('float64'))
+                        np.testing.assert_allclose(actual, expected, rtol=1e-14, atol=1e-14)
+
+    def test_corr_array_empty(self):
+        variogram = grf.variogram('exponential', 1000.0)
+        for ndims in (1, 2, 3):
+            self.assertEqual(variogram.corr_array(np.empty((0, ndims))).shape, (0,))
+
+    def test_corr_array_invalid_shape(self):
+        variogram = grf.variogram('exponential', 1000.0)
+        for shape in ((), (3,), (2, 0), (2, 4), (2, 2, 2)):
+            with self.subTest(shape=shape):
+                with self.assertRaisesRegex(ValueError, 'displacements must have shape'):
+                    variogram.corr_array(np.zeros(shape))
 
 
 if __name__ == '__main__':
