@@ -54,15 +54,6 @@ def _validate_inputs(obs_locations, obs_values, obs_uncertainties,
         raise ValueError("obs_locations has values outside grid bounds")
 
 
-def _corr(variogram, dist, ndims):
-    if ndims == 1:
-        return variogram.corr(dist[0])
-    elif ndims == 2:
-        return variogram.corr(dist[0], dist[1])
-    else:
-        return variogram.corr(dist[0], dist[1], dist[2])
-
-
 def _grid_coordinates(nx, dx, ny, dy, nz, dz, ndims):
     x = np.arange(nx) * dx
     if ndims == 1:
@@ -76,14 +67,13 @@ def _grid_coordinates(nx, dx, ny, dy, nz, dz, ndims):
     return np.column_stack([xx.ravel(), yy.ravel(), zz.ravel()])
 
 
-def _build_obs_cov_matrix(variogram, obs_locations, obs_uncertainties, ndims):
+def _build_obs_cov_matrix(variogram, obs_locations, obs_uncertainties):
     n = len(obs_locations)
     cov = np.empty((n, n))
     for i in range(n):
-        for j in range(i, n):
-            c = _corr(variogram, obs_locations[i] - obs_locations[j], ndims)
-            cov[i, j] = c
-            cov[j, i] = c
+        correlations = variogram.corr_array(obs_locations[i] - obs_locations[i:])
+        cov[i, i:] = correlations
+        cov[i:, i] = correlations
     cov[np.diag_indices(n)] += obs_uncertainties ** 2 + 1e-10
     return cov
 
@@ -100,15 +90,14 @@ def _chunk_size(n_grid, n_obs):
     return min(n_grid, max(1, _MEMORY_BUDGET_BYTES // (arrays_per_chunk * n_obs * 8)))
 
 
-def _build_cov_chunk(variogram, grid_coords, start, end, obs_locations, ndims):
+def _build_cov_chunk(variogram, grid_coords, start, end, obs_locations):
     """Cross-covariance K[start:end, :] between a chunk of grid points and all obs."""
     chunk = grid_coords[start:end]   # (chunk_size, ndims)
     n_obs = len(obs_locations)
     cov = np.empty((end - start, n_obs))
     for j in range(n_obs):
         dists = chunk - obs_locations[j]
-        for i in range(end - start):
-            cov[i, j] = _corr(variogram, dists[i], ndims)
+        cov[:, j] = variogram.corr_array(dists)
     return cov
 
 
@@ -158,7 +147,7 @@ class SimpleKriging:
         _validate_inputs(self.obs_locations, self.obs_values, self.obs_uncertainties,
                          nx, dx, ny, dy, nz, dz, self.ndims)
 
-        cov = _build_obs_cov_matrix(variogram, self.obs_locations, self.obs_uncertainties, self.ndims)
+        cov = _build_obs_cov_matrix(variogram, self.obs_locations, self.obs_uncertainties)
         try:
             self._cho_factor = scipy.linalg.cho_factor(cov)
         except scipy.linalg.LinAlgError as exc:
@@ -190,7 +179,7 @@ class SimpleKriging:
         for start in range(0, n_grid, chunk):
             end = min(start + chunk, n_grid)
             K = _build_cov_chunk(self.variogram, self._grid_coords, start, end,
-                                 self.obs_locations, self.ndims)           # (cs, n_obs)
+                                 self.obs_locations)  # (cs, n_obs)
             alpha = scipy.linalg.cho_solve(self._cho_factor, K.T)         # (n_obs, cs)
             m = mean_field if mean_flat is None else mean_flat[start:end]
             kriging_mean_flat[start:end] = m + K @ sk_weights
@@ -224,7 +213,7 @@ class SimpleKriging:
             for start in range(0, n_grid, chunk):
                 end = min(start + chunk, n_grid)
                 K = _build_cov_chunk(self.variogram, self._grid_coords, start, end,
-                                     self.obs_locations, self.ndims)
+                                     self.obs_locations)
                 correction_flat[start:end] = K @ sim_weights
 
             results.append(mean_field + uncond + correction_flat.reshape(self._grid_shape))
@@ -268,7 +257,7 @@ class OrdinaryKriging:
         _validate_inputs(self.obs_locations, self.obs_values, self.obs_uncertainties,
                          nx, dx, ny, dy, nz, dz, self.ndims)
 
-        cov = _build_obs_cov_matrix(variogram, self.obs_locations, self.obs_uncertainties, self.ndims)
+        cov = _build_obs_cov_matrix(variogram, self.obs_locations, self.obs_uncertainties)
         try:
             self._cho_factor = scipy.linalg.cho_factor(cov)
         except scipy.linalg.LinAlgError as exc:
@@ -304,7 +293,7 @@ class OrdinaryKriging:
         for start in range(0, n_grid, chunk):
             end = min(start + chunk, n_grid)
             K = _build_cov_chunk(self.variogram, self._grid_coords, start, end,
-                                 self.obs_locations, self.ndims)           # (cs, n_obs)
+                                 self.obs_locations)  # (cs, n_obs)
             w, drift = self._ok_weights_chunk(K)                          # (n_obs, cs), (cs,)
             kriging_mean_flat[start:end] = w.T @ self.obs_values
             if calculate_stddev:
@@ -334,7 +323,7 @@ class OrdinaryKriging:
             for start in range(0, n_grid, chunk):
                 end = min(start + chunk, n_grid)
                 K = _build_cov_chunk(self.variogram, self._grid_coords, start, end,
-                                     self.obs_locations, self.ndims)
+                                     self.obs_locations)
                 w, _ = self._ok_weights_chunk(K)
                 correction_flat[start:end] = w.T @ obs_residuals
 

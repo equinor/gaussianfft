@@ -94,6 +94,12 @@ const std::string variogram_docstring =
   ">>> gaussianfft.variogram('general_exponential', 1000.0, 500.0, 250.0, power=1.8)\n"
 ;
 
+const std::string corr_array_docstring =
+  "\n"
+  "Return float64 correlations with shape (N,) for displacements with shape\n"
+  "(N, 1), (N, 2), or (N, 3). Columns are dx, dy, dz, as in corr.\n"
+;
+
 const std::string simulate_docstring =
   "\n"
   "Simulates a Gaussian random field with the corresponding variogram in one, two or\n"
@@ -179,6 +185,7 @@ PYBIND11_MODULE(_gaussianfft, m, py::mod_gil_not_used(), py::multiple_interprete
       .def("corr", ptr1)
       .def("corr", ptr2)
       .def("corr", ptr3)
+      .def("corr_array", &GaussFFT::CorrArray, corr_array_docstring.c_str())
     ;
   }
 
