@@ -111,7 +111,7 @@ jobs:
           merge-multiple: true
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@4726cd35bb13f7bde50cf2761f2499ac7b3aa32c  # v4.1.1
+        uses: pypa/cibuildwheel@f9b966cfadf4109556cadc5bb39ddb72d0ce664e  # v4.3.5
         env:
           CIBW_ARCHS_WINDOWS: AMD64
           CIBW_SKIP: "*-musllinux_*"  # Currently, OpenBLAS (via scipy) does not support musl
