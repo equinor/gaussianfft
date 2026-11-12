@@ -21,6 +21,7 @@ variogram = grf.variogram(grf.VariogramType.GAUSSIAN, 1000)
 simulation = grf.simulate(variogram, nx=100, dx=1, ny=100, dy=1)  # 2D 100 x 100 grid
 ```
 
+
 ### Examples
 
 See [examples](examples/) and [notebooks](notebooks/) for examples, getting started, and other documentation.

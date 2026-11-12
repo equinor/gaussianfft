@@ -40,13 +40,14 @@ def benchmark_case(total: int, ndims: int, obs_fraction: float):
     obs_values = rng.standard_normal(n_obs)
     obs_uncertainties = np.full(n_obs, OBS_UNCERTAINTY)
     variogram = gaussianfft.variogram(VARIOGRAM_TYPE, **VARIOGRAM_PARAMETERS)
-    grid_args = (size, spacing) * ndims
+    grid_shape = (size,) * ndims
+    grid_spacing = (spacing,) * ndims
 
     elapsed = []
     for _ in range(REPEATS):
         start = perf_counter()
         result = gaussianfft.predict(
-            variogram, *grid_args, obs_locations, obs_values, obs_uncertainties,
+            variogram, grid_shape, grid_spacing, obs_locations, obs_values, obs_uncertainties,
         )
         elapsed.append(perf_counter() - start)
         del result

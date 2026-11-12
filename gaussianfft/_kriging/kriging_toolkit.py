@@ -1,3 +1,7 @@
+from __future__ import annotations
+
+import abc
+
 import numpy as np
 try:
     import scipy.linalg
@@ -5,7 +9,10 @@ try:
 except ImportError:
     raise ImportError("Scipy is not installed, and is required to use these utilities")
 
-import gaussianfft
+from gaussianfft._kriging.covariance import Covariance
+from gaussianfft._kriging.grid_spec import GridSpec
+from gaussianfft._kriging.observation_data import ObservationData
+
 
 class FactorizationError(ValueError):
     def __init__(self):
@@ -26,56 +33,18 @@ _MEMORY_BUDGET_BYTES = 10 * 1024 * 1024 * 1024  # 10 GB
 # Module-level utilities
 # ---------------------------------------------------------------------------
 
-def _ndims(ny, nz):
-    return 3 if nz > 1 else (2 if ny > 1 else 1)
-
-
-def _validate_inputs(obs_locations, obs_values, obs_uncertainties,
-                     nx, dx, ny, dy, nz, dz, ndims):
-    if obs_locations.ndim != 2:
-        raise ValueError(
-            f"obs_locations must be a 2D array with shape (N, {ndims}), got {obs_locations.shape}"
-        )
-    if obs_locations.shape[1] != ndims:
-        raise ValueError(
-            f"obs_locations must have {ndims} columns, got {obs_locations.shape[1]}"
-        )
-    n = obs_locations.shape[0]
-    if obs_values.shape != (n,):
-        raise ValueError(f"obs_values must have shape ({n},), got {obs_values.shape}")
-    if obs_uncertainties.shape != (n,):
-        raise ValueError(f"obs_uncertainties must have shape ({n},), got {obs_uncertainties.shape}")
-    if np.any(obs_uncertainties < 0):
-        raise ValueError("obs_uncertainties must be non-negative")
-    sizes = np.array((nx, ny, nz)[:ndims])
-    steps = np.array((dx, dy, dz)[:ndims])
-    grid_max = (sizes - 1) * steps
-    if np.any(obs_locations < 0) or np.any(obs_locations > grid_max):
-        raise ValueError("obs_locations has values outside grid bounds")
-
-
-def _grid_coordinates(nx, dx, ny, dy, nz, dz, ndims):
-    x = np.arange(nx) * dx
-    if ndims == 1:
-        return x.reshape(-1, 1)
-    y = np.arange(ny) * dy
-    if ndims == 2:
-        xx, yy = np.meshgrid(x, y, indexing='ij')
-        return np.column_stack([xx.ravel(), yy.ravel()])
-    z = np.arange(nz) * dz
-    xx, yy, zz = np.meshgrid(x, y, z, indexing='ij')
-    return np.column_stack([xx.ravel(), yy.ravel(), zz.ravel()])
-
-
-def _build_obs_cov_matrix(variogram, obs_locations, obs_uncertainties):
-    n = len(obs_locations)
-    cov = np.empty((n, n))
-    for i in range(n):
-        correlations = variogram.corr_array(obs_locations[i] - obs_locations[i:])
-        cov[i, i:] = correlations
-        cov[i:, i] = correlations
-    cov[np.diag_indices(n)] += obs_uncertainties ** 2 + 1e-10
+def _build_obs_cov_matrix(variogram: Covariance, obs_locations, obs_uncertainties):
+    cov = variogram.corr_matrix(obs_locations, obs_locations)
+    cov[np.diag_indices(len(obs_locations))] += obs_uncertainties ** 2 + 1e-10
     return cov
+
+
+def _cholesky_factor(cov):
+    """Factorize an observation covariance matrix, reporting non-positive definiteness."""
+    try:
+        return scipy.linalg.cho_factor(cov)
+    except scipy.linalg.LinAlgError as exc:
+        raise FactorizationError() from exc
 
 
 def _chunk_size(n_grid, n_obs):
@@ -90,143 +59,121 @@ def _chunk_size(n_grid, n_obs):
     return min(n_grid, max(1, _MEMORY_BUDGET_BYTES // (arrays_per_chunk * n_obs * 8)))
 
 
-def _build_cov_chunk(variogram, grid_coords, start, end, obs_locations):
-    """Cross-covariance K[start:end, :] between a chunk of grid points and all obs."""
-    chunk = grid_coords[start:end]   # (chunk_size, ndims)
-    n_obs = len(obs_locations)
-    cov = np.empty((end - start, n_obs))
-    for j in range(n_obs):
-        dists = chunk - obs_locations[j]
-        cov[:, j] = variogram.corr_array(dists)
-    return cov
-
-
-def _obs_interp_coords(obs_locations, dx, dy, dz, ndims):
-    steps = np.array((dx, dy, dz)[:ndims])
-    return (obs_locations / steps).T
+def _obs_interp_coords(obs_locations, grid: GridSpec):
+    relative_locations = obs_locations - grid.origin
+    grid_max = (np.asarray(grid.shape) - 1) * grid.spacing
+    if np.any(relative_locations < 0) or np.any(relative_locations > grid_max):
+        raise ValueError("obs_locations has values outside grid bounds for simulation")
+    return (relative_locations / grid.spacing).T
 
 
 def _interpolate_at_obs(field, obs_coords):
     return scipy.ndimage.map_coordinates(field, obs_coords, order=1)
 
 
-def _simulate_uncond(variogram, nx, dx, ny, dy, nz, dz, grid_shape, ndims):
-    if ndims == 1:
-        raw = gaussianfft.simulate(variogram, nx, dx)
-    elif ndims == 2:
-        raw = gaussianfft.simulate(variogram, nx, dx, ny, dy)
-    else:
-        raw = gaussianfft.simulate(variogram, nx, dx, ny, dy, nz, dz)
-    return np.array(raw).reshape(grid_shape, order='F')
-
-
 # ---------------------------------------------------------------------------
 # Kriging classes
 # ---------------------------------------------------------------------------
 
-class SimpleKriging:
-    def __init__(self, variogram, nx, dx, ny, dy, nz, dz,
-                 obs_locations, obs_values, obs_uncertainties, *, mean=0.0):
-        self.variogram = variogram
-        self.nx, self.dx = nx, dx
-        self.ny, self.dy = ny, dy
-        self.nz, self.dz = nz, dz
-        self.mean = mean
 
-        self.obs_locations = np.asarray(obs_locations, dtype=float)
-        self.obs_values = np.asarray(obs_values, dtype=float)
-        self.obs_uncertainties = np.asarray(obs_uncertainties, dtype=float)
+class Kriging(abc.ABC):
+    """Kriging interface accepting observations and a variogram per operation."""
 
-        self.ndims = _ndims(ny, nz)
-        self._grid_shape = (nx, ny, nz)[:self.ndims]
-        if isinstance(self.mean, np.ndarray) and self.mean.shape != self._grid_shape:
-            raise ValueError(
-                f"mean must be a scalar or have shape {self._grid_shape}, got {self.mean.shape}"
-            )
+    @abc.abstractmethod
+    def predict(
+        self, grid: GridSpec, obs: ObservationData, variogram: Covariance,
+        calculate_stddev=False,
+    ) -> tuple[np.ndarray, np.ndarray | None]:
+        """Return a grid-shaped prediction and optional standard deviation."""
 
-        _validate_inputs(self.obs_locations, self.obs_values, self.obs_uncertainties,
-                         nx, dx, ny, dy, nz, dz, self.ndims)
+    @abc.abstractmethod
+    def simulate(
+        self, grid: GridSpec, obs: ObservationData, variogram: Covariance,
+        n_sim=1,
+    ) -> list[np.ndarray]:
+        """Generate conditional fields on a grid covering all observation locations."""
 
-        cov = _build_obs_cov_matrix(variogram, self.obs_locations, self.obs_uncertainties)
-        try:
-            self._cho_factor = scipy.linalg.cho_factor(cov)
-        except scipy.linalg.LinAlgError as exc:
-            raise FactorizationError() from exc
 
-        self._grid_coords = _grid_coordinates(nx, dx, ny, dy, nz, dz, self.ndims)
-        self._obs_coords = _obs_interp_coords(self.obs_locations, dx, dy, dz, self.ndims)
+class SimpleKriging(Kriging):
+    """Simple kriging with a known constant scalar mean."""
 
-    def _mean_components(self):
-        if isinstance(self.mean, np.ndarray):
-            return _interpolate_at_obs(self.mean, self._obs_coords), self.mean
-        return self.mean, self.mean
+    def __init__(self, mean: float = 0.0):
+        self.mean = float(mean)
+        self._obs = None
+        self._variogram = None
+        self._cho_factor = None
 
-    def predict(self, calculate_stddev=False):
-        mean_at_obs, mean_field = self._mean_components()
-        residuals = self.obs_values - mean_at_obs
-        sk_weights = scipy.linalg.cho_solve(self._cho_factor, residuals)   # (n_obs,)
+    def _initialize(self, obs: ObservationData, variogram: Covariance) -> None:
+        covariance = _build_obs_cov_matrix(variogram, obs.locations, obs.uncertainties)
+        cho_factor = _cholesky_factor(covariance)
+        self._obs = obs
+        self._variogram = variogram
+        self._cho_factor = cho_factor
 
-        n_grid = self._grid_coords.shape[0]
-        n_obs = len(self.obs_locations)
-        chunk = _chunk_size(n_grid, n_obs)
-        mean_flat = None if np.isscalar(mean_field) else mean_field.ravel()
-        kriging_mean_flat = np.empty(n_grid)
+    def predict(
+        self, grid: GridSpec, obs: ObservationData, variogram: Covariance,
+        calculate_stddev=False,
+    ) -> tuple[np.ndarray, np.ndarray | None]:
+        if obs.locations.shape[1] != len(grid.shape):
+            raise ValueError(f"obs_locations must have {len(grid.shape)} columns for this grid")
+        self._initialize(obs, variogram)
+        grid_coords = grid.coordinates()
+        residuals = obs.values - self.mean
+        correction, stddev = self._krige(grid.shape, grid_coords, residuals, calculate_stddev)
+        correction += self.mean
+        return correction, stddev
 
-        kriging_var_flat = None
-        if calculate_stddev:
-            kriging_var_flat = np.empty(n_grid)
-
-        for start in range(0, n_grid, chunk):
-            end = min(start + chunk, n_grid)
-            K = _build_cov_chunk(self.variogram, self._grid_coords, start, end,
-                                 self.obs_locations)  # (cs, n_obs)
-            alpha = scipy.linalg.cho_solve(self._cho_factor, K.T)         # (n_obs, cs)
-            m = mean_field if mean_flat is None else mean_flat[start:end]
-            kriging_mean_flat[start:end] = m + K @ sk_weights
-            if calculate_stddev:
-                kriging_var_flat[start:end] = 1.0 - np.sum(K * alpha.T, axis=1)
-
-        kriging_mean = kriging_mean_flat.reshape(self._grid_shape)
-        kriging_stdev = None
-        if calculate_stddev:
-            kriging_stdev = np.sqrt(np.maximum(kriging_var_flat, 0.0)).reshape(self._grid_shape)
-       
-        return kriging_mean, kriging_stdev
-
-    def simulate(self, n_sim=1):
-        n_grid = self._grid_coords.shape[0]
-        n_obs = len(self.obs_locations)
-        chunk = _chunk_size(n_grid, n_obs)
+    def simulate(
+        self, grid: GridSpec, obs: ObservationData, variogram: Covariance,
+        n_sim=1,
+    ) -> list[np.ndarray]:
+        if obs.locations.shape[1] != len(grid.shape):
+            raise ValueError(f"obs_locations must have {len(grid.shape)} columns for this grid")
+        self._initialize(obs, variogram)
+        grid_coords = grid.coordinates()
+        obs_coords = _obs_interp_coords(obs.locations, grid)
         results = []
 
         for _ in range(n_sim):
-            mean_at_obs, mean_field = self._mean_components()
-            uncond = _simulate_uncond(
-                self.variogram, self.nx, self.dx, self.ny, self.dy,
-                self.nz, self.dz, self._grid_shape, self.ndims
-            )
-            uncond_at_obs = _interpolate_at_obs(uncond, self._obs_coords)
-            obs_residuals = (self.obs_values - mean_at_obs) - uncond_at_obs
-            sim_weights = scipy.linalg.cho_solve(self._cho_factor, obs_residuals)  # (n_obs,)
+            uncond = self._variogram.simulate(grid)
+            uncond_at_obs = _interpolate_at_obs(uncond, obs_coords)
+            obs_residuals = (obs.values - self.mean) - uncond_at_obs
 
-            correction_flat = np.empty(n_grid)
-            for start in range(0, n_grid, chunk):
-                end = min(start + chunk, n_grid)
-                K = _build_cov_chunk(self.variogram, self._grid_coords, start, end,
-                                     self.obs_locations)
-                correction_flat[start:end] = K @ sim_weights
-
-            results.append(mean_field + uncond + correction_flat.reshape(self._grid_shape))
+            correction, _ = self._krige(grid.shape, grid_coords, obs_residuals)
+            results.append(self.mean + uncond + correction)
         return results
 
+    def _krige(self, grid_shape: tuple[int, ...], grid_coords, residuals, calculate_stddev=False):
+        """Apply simple kriging to mean-adjusted observation or simulation residuals."""
+        obs = self._obs
+        weights = scipy.linalg.cho_solve(self._cho_factor, residuals)
+        n_grid = len(grid_coords)
+        n_obs = len(obs.locations)
+        chunk = _chunk_size(n_grid, n_obs)
+        correction_flat = np.empty(n_grid)
+        variance_flat = np.empty(n_grid) if calculate_stddev else None
+        for start in range(0, n_grid, chunk):
+            end = min(start + chunk, n_grid)
+            cross_cov = self._variogram.corr_matrix(grid_coords[start:end], obs.locations)
+            correction_flat[start:end] = cross_cov @ weights
+            if calculate_stddev:
+                alpha = scipy.linalg.cho_solve(self._cho_factor, cross_cov.T)
+                variance_flat[start:end] = 1.0 - np.sum(cross_cov * alpha.T, axis=1)
 
-class OrdinaryKriging:
-    """Ordinary Kriging: estimates an unknown constant mean from the data.
+        correction = correction_flat.reshape(grid_shape)
+        stddev = None
+        if calculate_stddev:
+            stddev = np.sqrt(np.maximum(variance_flat, 0.0)).reshape(grid_shape)
+        return correction, stddev
+
+
+class OrdinaryKriging(Kriging):
+    """Ordinary kriging with an unknown constant mean estimated per operation.
 
     The unbiasedness constraint (weights sum to 1) is enforced via a Lagrange
     multiplier.  Weights and drift coefficient are computed on-the-fly in
     chunks via the Schur complement of C, using only the Cholesky factor of C.
-    Only O(n_obs) scalars are stored after construction::
+    Beyond the covariance factor, only O(n_obs) scalars are stored after initialization::
 
         alpha  = C^{-1} 1                          (n_obs,)  stored
         s      = 1^T alpha                          scalar    stored
@@ -239,93 +186,84 @@ class OrdinaryKriging:
     Kriging variance: sigma^2(x) = C(0) - k(x)^T w(x) - mu(x)
     """
 
-    def __init__(self, variogram, nx, dx, ny, dy, nz, dz,
-                 obs_locations, obs_values, obs_uncertainties):
-        self.variogram = variogram
-        self.nx, self.dx = nx, dx
-        self.ny, self.dy = ny, dy
-        self.nz, self.dz = nz, dz
+    def __init__(self):
+        self._obs = None
+        self._variogram = None
+        self._cho_factor = None
+        self._alpha = np.empty(0)
+        self._s = 0.0
+        self.estimated_mean = None
 
-        self.obs_locations = np.asarray(obs_locations, dtype=float)
-        self.obs_values = np.asarray(obs_values, dtype=float)
-        self.obs_uncertainties = np.asarray(obs_uncertainties, dtype=float)
-
-        self.ndims = _ndims(ny, nz)
-        self._grid_shape = (nx, ny, nz)[:self.ndims]
-        n_obs = len(self.obs_locations)
-
-        _validate_inputs(self.obs_locations, self.obs_values, self.obs_uncertainties,
-                         nx, dx, ny, dy, nz, dz, self.ndims)
-
-        cov = _build_obs_cov_matrix(variogram, self.obs_locations, self.obs_uncertainties)
-        try:
-            self._cho_factor = scipy.linalg.cho_factor(cov)
-        except scipy.linalg.LinAlgError as exc:
-            raise FactorizationError() from exc
-
-        self._grid_coords = _grid_coordinates(nx, dx, ny, dy, nz, dz, self.ndims)
-        self._obs_coords = _obs_interp_coords(self.obs_locations, dx, dy, dz, self.ndims)
-
-        # Schur complement scalars — O(n_obs) only, no grid-sized arrays stored.
+    def _initialize(self, obs: ObservationData, variogram: Covariance) -> None:
+        covariance = _build_obs_cov_matrix(variogram, obs.locations, obs.uncertainties)
+        cho_factor = _cholesky_factor(covariance)
+        n_obs = len(obs.locations)
         ones = np.ones(n_obs)
-        self._alpha = scipy.linalg.cho_solve(self._cho_factor, ones)  # (n_obs,)  C^{-1} 1
-        self._s = float(ones @ self._alpha)                           # scalar    1^T C^{-1} 1
+        alpha = scipy.linalg.cho_solve(cho_factor, ones)
+        normalization = float(alpha.sum())
+        gamma = scipy.linalg.cho_solve(cho_factor, obs.values)
+        estimated_mean = float(gamma.sum() / normalization)
+        self._obs = obs
+        self._variogram = variogram
+        self._cho_factor = cho_factor
+        self._alpha = alpha
+        self._s = normalization
+        self.estimated_mean = estimated_mean
 
-        # BLUE estimate of the unknown constant mean: mu_hat = (1^T C^{-1} z) / s
-        gamma = scipy.linalg.cho_solve(self._cho_factor, self.obs_values)
-        self.estimated_mean: float = float(ones @ gamma / self._s)
-
-    def _ok_weights_chunk(self, K):
-        """Return OK weights for a chunk K (chunk_size, n_obs) -> w (n_obs, chunk_size)."""
-        beta = scipy.linalg.cho_solve(self._cho_factor, K.T)              # (n_obs, cs)
-        drift = (self._alpha @ K.T - 1.0) / self._s                      # (cs,)
+    def _ok_weights_chunk(self, cross_cov):
+        """Return ordinary-kriging weights and drift for a cross-covariance chunk."""
+        beta = scipy.linalg.cho_solve(self._cho_factor, cross_cov.T)
+        drift = (self._alpha @ cross_cov.T - 1.0) / self._s
         return beta - np.outer(self._alpha, drift), drift
 
-    def predict(self, calculate_stddev=False):
-        n_grid = self._grid_coords.shape[0]
-        n_obs = len(self.obs_locations)
-        chunk = _chunk_size(n_grid, n_obs)
-        kriging_mean_flat = np.empty(n_grid)
-        kriging_var_flat = None
-        if calculate_stddev:
-            kriging_var_flat = np.empty(n_grid)
+    def predict(
+        self, grid: GridSpec, obs: ObservationData, variogram: Covariance,
+        calculate_stddev=False,
+    ) -> tuple[np.ndarray, np.ndarray | None]:
+        if obs.locations.shape[1] != len(grid.shape):
+            raise ValueError(f"obs_locations must have {len(grid.shape)} columns for this grid")
+        self._initialize(obs, variogram)
+        grid_coords = grid.coordinates()
+        return self._krige(grid.shape, grid_coords, obs.values, calculate_stddev)
 
-        for start in range(0, n_grid, chunk):
-            end = min(start + chunk, n_grid)
-            K = _build_cov_chunk(self.variogram, self._grid_coords, start, end,
-                                 self.obs_locations)  # (cs, n_obs)
-            w, drift = self._ok_weights_chunk(K)                          # (n_obs, cs), (cs,)
-            kriging_mean_flat[start:end] = w.T @ self.obs_values
-            if calculate_stddev:
-                kriging_var_flat[start:end] = 1.0 - np.sum(K * w.T, axis=1) - drift
-
-        kriging_mean = kriging_mean_flat.reshape(self._grid_shape)
-        kriging_stdev = None
-        if calculate_stddev:
-            kriging_stdev = np.sqrt(np.maximum(kriging_var_flat, 0.0)).reshape(self._grid_shape)
-        return kriging_mean, kriging_stdev
-
-    def simulate(self, n_sim=1):
-        n_grid = self._grid_coords.shape[0]
-        n_obs = len(self.obs_locations)
-        chunk = _chunk_size(n_grid, n_obs)
+    def simulate(
+        self, grid: GridSpec, obs: ObservationData, variogram: Covariance,
+        n_sim=1,
+    ) -> list[np.ndarray]:
+        if obs.locations.shape[1] != len(grid.shape):
+            raise ValueError(f"obs_locations must have {len(grid.shape)} columns for this grid")
+        self._initialize(obs, variogram)
+        grid_coords = grid.coordinates()
+        obs_coords = _obs_interp_coords(obs.locations, grid)
         results = []
 
         for _ in range(n_sim):
-            uncond = _simulate_uncond(
-                self.variogram, self.nx, self.dx, self.ny, self.dy,
-                self.nz, self.dz, self._grid_shape, self.ndims
-            )
-            uncond_at_obs = _interpolate_at_obs(uncond, self._obs_coords)
-            obs_residuals = self.obs_values - uncond_at_obs
+            uncond = self._variogram.simulate(grid)
+            uncond_at_obs = _interpolate_at_obs(uncond, obs_coords)
+            obs_residuals = obs.values - uncond_at_obs
 
-            correction_flat = np.empty(n_grid)
-            for start in range(0, n_grid, chunk):
-                end = min(start + chunk, n_grid)
-                K = _build_cov_chunk(self.variogram, self._grid_coords, start, end,
-                                     self.obs_locations)
-                w, _ = self._ok_weights_chunk(K)
-                correction_flat[start:end] = w.T @ obs_residuals
-
-            results.append(uncond + correction_flat.reshape(self._grid_shape))
+            correction, _ = self._krige(grid.shape, grid_coords, obs_residuals)
+            results.append(uncond + correction)
         return results
+
+    def _krige(self, grid_shape: tuple[int, ...], grid_coords, residuals, calculate_stddev=False):
+        """Apply ordinary kriging to observation values or simulation residuals."""
+        obs = self._obs
+        n_grid = len(grid_coords)
+        n_obs = len(obs.locations)
+        chunk = _chunk_size(n_grid, n_obs)
+        correction_flat = np.empty(n_grid)
+        variance_flat = np.empty(n_grid) if calculate_stddev else None
+        for start in range(0, n_grid, chunk):
+            end = min(start + chunk, n_grid)
+            cross_cov = self._variogram.corr_matrix(grid_coords[start:end], obs.locations)
+            weights, drift = self._ok_weights_chunk(cross_cov)
+            correction_flat[start:end] = weights.T @ residuals
+            if calculate_stddev:
+                variance_flat[start:end] = 1.0 - np.sum(cross_cov * weights.T, axis=1) - drift
+
+        correction = correction_flat.reshape(grid_shape)
+        stddev = None
+        if calculate_stddev:
+            stddev = np.sqrt(np.maximum(variance_flat, 0.0)).reshape(grid_shape)
+        return correction, stddev

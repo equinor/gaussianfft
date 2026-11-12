@@ -7,7 +7,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.ndimage import map_coordinates
 import gaussianfft as grf
-from gaussianfft._kriging.kriging_toolkit import OrdinaryKriging
+from gaussianfft._kriging import GridSpec, ObservationData, OrdinaryKriging, Variogram
 
 
 def _interp(field, xs, ys, dx, dy):
@@ -18,7 +18,7 @@ def main():
     # Grid setup
     nx, ny = 100, 100
     dx, dy = 10.0, 10.0
-    variogram = grf.variogram('matern52', main_range=300, perp_range=100, azimuth=30)
+    variogram = Variogram.from_parameters('matern52', main_range=300, perp_range=100, azimuth=30)
 
     # Observation points
     obs_pt = np.array([[250.0, 750.0], [755.0, 255.0], [500.0, 500.0]])
@@ -26,19 +26,17 @@ def main():
     obs_unc = np.array([0.0, 0.0, 0.0])
 
     # Ordinary kriging prediction
-    ok = OrdinaryKriging(variogram, nx, dx, ny, dy, 1, 1.0, obs_pt, obs_val, obs_unc)
-    pred_mean, pred_std = ok.predict(calculate_stddev=True)
+    grid = GridSpec((nx, ny), (dx, dy))
+    obs = ObservationData(obs_pt, obs_val, obs_unc)
+    ok = OrdinaryKriging()
+    pred_mean, pred_std = ok.predict(grid, obs, variogram, calculate_stddev=True)
     estimated_mean = ok.estimated_mean
 
     # Two conditional simulations
-    sim_a = grf.conditional_simulate(
-        variogram, nx, dx, ny, dy, obs_pt, obs_val, obs_unc,
-        n=1, seed=42, method='OrdinaryKriging',
-    )[0]
-    sim_b = grf.conditional_simulate(
-        variogram, nx, dx, ny, dy, obs_pt, obs_val, obs_unc,
-        n=1, seed=123, method='OrdinaryKriging',
-    )[0]
+    grf.seed(42)
+    sim_a = ok.simulate(grid, obs, variogram)[0]
+    grf.seed(123)
+    sim_b = ok.simulate(grid, obs, variogram)[0]
 
     # Cross-section: diagonal line through first two observations
     p0 = obs_pt[0]
