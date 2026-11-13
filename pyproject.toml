@@ -68,6 +68,7 @@ build-backend = "scikit_build_core.build"
 notebooks = [
     "marimo>=0.17.6",
     "matplotlib",
+    "plotly",
     "scipy",
 ]
 test = [
@@ -139,3 +140,7 @@ build.requires = [
 write_to = "gaussianfft/_version.py"
 # This should only be present on CI
 local_scheme = "no-local-version"
+
+[tool.ruff.lint.per-file-ignores]
+# Marimo cells share imports/definitions through the reactive graph and render bare expressions.
+"notebooks/**/*.py" = ["B018", "F401", "F841", "RUF059"]

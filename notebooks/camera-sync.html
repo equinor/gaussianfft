@@ -1,0 +1,75 @@
+<!--
+Synchronize camera changes between the Plotly 3D views in marimo run mode.
+Traverse marimo's shadow roots and guard mirrored events against feedback loops.
+-->
+<script>
+(() => {
+  const boundPlots = new WeakSet();
+  const observedRoots = new WeakSet();
+  let syncing = false;
+
+  function queryDeep(selector, root = document) {
+    const matches = [...root.querySelectorAll(selector)];
+    for (const element of root.querySelectorAll("*")) {
+      if (element.shadowRoot) matches.push(...queryDeep(selector, element.shadowRoot));
+    }
+    return matches;
+  }
+
+  function observeShadowRoots(root = document) {
+    for (const element of root.querySelectorAll("*")) {
+      if (!element.shadowRoot) continue;
+      if (!observedRoots.has(element.shadowRoot)) {
+        observedRoots.add(element.shadowRoot);
+        observer.observe(element.shadowRoot, {childList: true, subtree: true});
+      }
+      observeShadowRoots(element.shadowRoot);
+    }
+  }
+
+  function getPlots() {
+    return queryDeep(".js-plotly-plot");
+  }
+
+  function syncCamera(source) {
+    if (syncing) return;
+    const plotly = window.Plotly;
+    const camera = source._fullLayout?.scene?.camera;
+    if (typeof plotly?.relayout !== "function" || !camera) return;
+
+    const cameraState = JSON.parse(JSON.stringify(camera));
+    const peers = getPlots().filter(
+      (target) => target !== source && target._fullLayout?.scene
+    );
+    syncing = true;
+    Promise.all(
+      peers.map((target) =>
+        plotly.relayout(target, {"scene.camera": cameraState})
+      )
+    ).catch((error) => {
+      console.warn("Could not synchronize Plotly cameras", error);
+    }).finally(() => {
+      syncing = false;
+    });
+  }
+
+  function bindCameraSync() {
+    observeShadowRoots();
+    const plots = getPlots();
+    for (const source of plots) {
+      if (boundPlots.has(source) || typeof source.on !== "function" ||
+          !source._fullLayout?.scene) continue;
+      boundPlots.add(source);
+      source.on("plotly_relayout", (changes) => {
+        if (Object.keys(changes).some((key) => key.startsWith("scene.camera"))) {
+          syncCamera(source);
+        }
+      });
+    }
+  }
+
+  const observer = new MutationObserver(bindCameraSync);
+  observer.observe(document.documentElement, {childList: true, subtree: true});
+  bindCameraSync();
+})();
+</script>
