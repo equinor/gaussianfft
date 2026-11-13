@@ -122,14 +122,15 @@ class NonstationaryVariogram(Covariance):
         for m in components:
             node_weights = np.sum(np.where(indices == m, weights, 0.0), axis=1).reshape(grid.shape)
             if shared:
-                gaussianfft.seed(seed)
+                # Only reset the field stream; observation noise must keep advancing.
+                gaussianfft._seed(seed)
                 raw = gaussianfft.advanced.simulate(self.component(m), *grid_args, **pad_args)
             else:
                 raw = gaussianfft.simulate(self.component(m), *grid_args)
             raw = np.asarray(raw).reshape(sim_shape, order='F')
             field += node_weights * raw[tuple(slice(0, n) for n in grid.shape)]
         if shared:
-            gaussianfft.seed(seed + 1)
+            gaussianfft._seed(seed + 1)
         return field
 
     def _point_components(self, points):

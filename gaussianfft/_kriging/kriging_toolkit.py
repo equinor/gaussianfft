@@ -136,7 +136,8 @@ class SimpleKriging(Kriging):
         for _ in range(n_sim):
             uncond = self._variogram.simulate(grid)
             uncond_at_obs = _interpolate_at_obs(uncond, obs_coords)
-            obs_residuals = (obs.values - self.mean) - uncond_at_obs
+            simulated_noise = np.random.normal(0.0, obs.uncertainties)
+            obs_residuals = (obs.values - self.mean) - (uncond_at_obs + simulated_noise)
 
             correction, _ = self._krige(grid.shape, grid_coords, obs_residuals)
             results.append(self.mean + uncond + correction)
@@ -239,7 +240,8 @@ class OrdinaryKriging(Kriging):
         for _ in range(n_sim):
             uncond = self._variogram.simulate(grid)
             uncond_at_obs = _interpolate_at_obs(uncond, obs_coords)
-            obs_residuals = obs.values - uncond_at_obs
+            simulated_noise = np.random.normal(0.0, obs.uncertainties)
+            obs_residuals = obs.values - (uncond_at_obs + simulated_noise)
 
             correction, _ = self._krige(grid.shape, grid_coords, obs_residuals)
             results.append(uncond + correction)
