@@ -1,7 +1,10 @@
 from ._version import __version__
 from enum import Enum
 from importlib.util import find_spec
+from operator import index
 from typing import TYPE_CHECKING
+
+import numpy as np
 
 if TYPE_CHECKING:
     from gaussianfft._kriging.api import KrigingType
@@ -14,6 +17,25 @@ import gaussianfft._platform  # noqa: F401  (sets up DLL paths before loading C 
 import _gaussianfft
 
 from _gaussianfft import *
+
+_seed = _gaussianfft.seed
+
+
+def seed(value=None):
+    """Seed both the field generator and NumPy's global RNG.
+
+    Integer seeds must be between 0 and 2**32 - 1. This also resets randomness
+    used by other callers of numpy.random, but not separate Generator instances.
+    With no argument, return the C++ start seed without changing either RNG.
+    The two global streams are not isolated between threads or callers.
+    """
+    if value is None:
+        return _seed()
+    value = index(value)
+    if not 0 <= value < 2**32:
+        raise ValueError("Seed must be between 0 and 2**32 - 1")
+    _seed(value)
+    np.random.seed(value)
 
 
 class VariogramType(Enum):
@@ -46,9 +68,11 @@ def conditional_simulate(
         obs_locations, obs_values, obs_uncertainties, *,
         mean=0.0, n=1, seed=None, method: 'KrigingType' = 'simple',
 ):
-    """Generate conditional fields using shape and spacing tuples in x, y, z order."""
+    """Generate conditional fields using shape and spacing tuples in x, y, z order.
+    An explicit seed resets both global RNGs, just like gaussianfft.seed()."""
     if seed is not None:
-        _gaussianfft.seed(seed)
+        from gaussianfft import seed as set_seed
+        set_seed(seed)
     from gaussianfft._kriging import simulate as _kriging_simulate
     return _kriging_simulate(
         variogram, grid_shape, grid_spacing, obs_locations, obs_values, obs_uncertainties,
