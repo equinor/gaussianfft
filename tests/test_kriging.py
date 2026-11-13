@@ -9,12 +9,145 @@ if platform.python_implementation() == 'PyPy':
     pytest.skip('Kriging requires SciPy, which is unavailable on PyPy', allow_module_level=True)
 
 import gaussianfft as grf
-from gaussianfft._kriging import ObservationData, OrdinaryKriging, Variogram, predict
+from gaussianfft._kriging import (
+    ObservationData,
+    OrdinaryKriging,
+    Variogram,
+    kriging_toolkit,
+    predict,
+)
+
+
+@pytest.mark.parametrize("kwargs", [
+    # Shape is a 1-3D tuple of positive integers
+    {"shape": ()},
+    {"shape": (2, 2, 2, 2)},
+    {"shape": (None,)},
+    {"shape": (np.bool_(True),)},
+
+    # Spacing must be positive and finite
+    {"spacing": [0.0]},
+    {"spacing": [-1.0]},
+    {"spacing": [np.nan]},
+    {"spacing": [np.inf]},
+
+    # Inconsistent spacing/shape/origin dimensions
+    {"shape": (2,), "spacing": [1.0, 1.0], "origin": [0.0]},
+    {"shape": (2,), "spacing": [1.0], "origin": [0.0, 0.0]},
+    {"shape": (2, 3), "spacing": [1.0], "origin": [0.0]},
+])
+def test_grid_spec_rejects_invalid_inputs(kwargs):
+    inputs = {"shape": (2,), "spacing": [1.0], "origin": [0.0]}
+    inputs.update(kwargs)
+
+    with pytest.raises(ValueError):
+        GridSpec(**inputs)
+
+
+@pytest.mark.parametrize("kwargs", [
+    # Locations must be a 2D array with 1-3 coordinates per observation
+    {"locations": [0.0]},
+    {"locations": [[]]},
+    {"locations": [[0.0, 0.0, 0.0, 0.0]]},
+
+    # All observations must have the same number of coordinates
+    {"locations": [[0.0, 1.0], [2.0]], "values": [1.0, 2.0], "uncertainties": [0.0, 0.0]},
+
+    # At least one observation is required
+    {"locations": np.empty((0, 1)), "values": [], "uncertainties": []},
+
+    # Inconsistent locations/values/uncertainties counts
+    {"locations": [[0.0], [1.0]], "values": [1.0], "uncertainties": [0.0]},
+    {"locations": [[0.0]], "values": [1.0, 2.0], "uncertainties": [0.0]},
+    {"locations": [[0.0]], "values": [1.0], "uncertainties": [0.0, 0.0]},
+
+    # Uncertainties must be non-negative
+    {"uncertainties": [-0.1]},
+])
+def test_observation_data_rejects_invalid_inputs(kwargs):
+    inputs = {"locations": [[0.0]], "values": [1.0], "uncertainties": [0.0]}
+    inputs.update(kwargs)
+
+    with pytest.raises(ValueError):
+        ObservationData(**inputs)
+
+
+@pytest.mark.parametrize("field", ["locations", "values", "uncertainties"])
+@pytest.mark.parametrize("value", [np.nan, np.inf, -np.inf])
+def test_observation_data_rejects_nonfinite_inputs(field, value):
+    inputs = {"locations": [[0.0]], "values": [1.0], "uncertainties": [0.0]}
+    inputs[field] = [[value]] if field == "locations" else [value]
+
+    with pytest.raises(ValueError):
+        ObservationData(**inputs)
 
 
 # ---------------------------------------------------------------------------
 # Simple Kriging
 # ---------------------------------------------------------------------------
+
+def _explicit_sample(rng: np.random.Generator, locations: np.ndarray, variogram: grf.Variogram,n_samples: int) -> np.ndarray:
+    """Build C_ij = rho(x_i - x_j), then sample F = mean + Z L^T for C = L L^T."""
+
+    displacements = locations[:, None, :] - locations[None, :, :]
+    covariance = np.array([
+        [variogram.corr(dx, dy) for dx, dy in displacement_row]
+        for displacement_row in displacements
+    ])
+    factor = np.linalg.cholesky(covariance)
+    return rng.standard_normal((n_samples, len(covariance))) @ factor.T
+
+
+@pytest.mark.parametrize(
+    "variogram_type",
+    [kind for kind in grf.VariogramType if kind is not grf.VariogramType.CONSTANT],
+    ids=lambda kind: kind.value,
+)
+@pytest.mark.parametrize("range_y", [12.0, 6.0], ids=["isotropic", "anisotropic"])
+def test_simple_kriging_calibrated_on_independent_gaussian_fields(variogram_type, range_y):
+    """Independent Gaussian draws should give unbiased, calibrated prediction errors."""
+    rng = np.random.default_rng(20261102)
+    grid_shape = (6, 5)
+    grid_spacing = (2.0, 3.0)
+    grid_locations = np.array([
+        [ix * grid_spacing[0], iy * grid_spacing[1]]
+        for ix in range(grid_shape[0]) for iy in range(grid_shape[1])
+    ])
+    obs_locations = np.array([[0.5, 1.0], [3.0, 7.0], [8.5, 10.0]])
+    obs_uncertainties = np.array([0.1, 0.3, 0.5])
+    locations = np.concatenate((grid_locations, obs_locations))
+
+    range_x = 12.0
+    mean = 2.5
+    n_samples = 2048
+    variogram = grf.variogram(variogram_type, range_x, range_y)
+    fields = mean + _explicit_sample(rng, locations, variogram, n_samples)
+
+    n_grid = len(grid_locations)
+    true_fields = fields[:, :n_grid].reshape((n_samples, *grid_shape))
+    observations = fields[:, n_grid:] + rng.standard_normal(
+        (n_samples, len(obs_locations)),
+    ) * obs_uncertainties
+    standardized_errors = np.empty_like(true_fields)
+
+    for sample_idx in range(n_samples):
+        prediction, stddev = predict(
+            variogram, grid_shape, grid_spacing,
+            obs_locations, observations[sample_idx], obs_uncertainties,
+            mean=mean, calculate_stddev=True,
+        )
+        assert stddev is not None
+        assert prediction.shape == stddev.shape == grid_shape
+        assert np.all(stddev > 0)
+        standardized_errors[sample_idx] = (prediction - true_fields[sample_idx]) / stddev
+
+    mean_error = standardized_errors.mean(axis=0)
+    error_variance = standardized_errors.var(axis=0, ddof=1)
+
+    # Bounds should be within 5 SE of expected in each of the 840 cases at ~5.7e-7/check (~0.05% for 14*30 checks had they been independent)
+    np.testing.assert_allclose(mean_error, 0.0, rtol=0, atol=5 / np.sqrt(n_samples))
+    np.testing.assert_allclose(error_variance, 1.0, rtol=0, atol=5 * np.sqrt(2 / (n_samples - 1)))
+
 
 class TestSimpleKriging1D:
     def setup_method(self):
@@ -276,7 +409,8 @@ class TestInputValidation:
         obs_uncertainties = np.array([0.0])
 
         with pytest.raises(TypeError, match="unexpected keyword argument"):
-            predict(self.variogram, (50,), (5.0,), obs_locations, obs_values, obs_uncertainties, typo=True)
+            # Intentional invalid-keyword call to verify runtime validation.
+            predict(self.variogram, (50,), (5.0,), obs_locations, obs_values, obs_uncertainties, typo=True)  # type: ignore[reportCallIssue]
 
     def test_mismatched_grid_spacing_rejected(self):
         obs_locations = np.array([[10.0]])
@@ -420,6 +554,63 @@ class TestOrdinaryKriging2D:
             ix = int(round(loc[0] / self.dx))
             iy = int(round(loc[1] / self.dy))
             assert abs(mean_field[ix, iy] - val) < 1e-6
+
+
+@pytest.mark.parametrize("method", ["simple", "ordinary"])
+@pytest.mark.parametrize("calculate_stddev", [False, True])
+@pytest.mark.parametrize("variogram_type", ["exponential", "gaussian", "spherical"])
+def test_chunked_prediction_matches_single_batch(
+    monkeypatch, method, calculate_stddev, variogram_type,
+):
+    variogram = grf.variogram(variogram_type, 20.0, 30.0)
+    args = (
+        variogram, (3, 5), (2.0, 3.0),
+        [[0.5, 1.0], [3.0, 7.0], [1.0, 10.0]],
+        [1.0, -0.5, 2.0], [0.1, 0.2, 0.1],
+    )
+    batch_sizes = []
+    corr_matrix = Variogram.corr_matrix
+    skip_observation_covariance = True
+
+    # Observing internals is not great test practice, but it allows us to verify that chunking happens
+    def record_batch(covariance, points, locations):
+        nonlocal skip_observation_covariance
+        if skip_observation_covariance:
+            skip_observation_covariance = False
+        else:
+            batch_sizes.append(len(points))
+        return corr_matrix(covariance, points, locations)
+
+    monkeypatch.setattr(Variogram, "corr_matrix", record_batch)
+    monkeypatch.setattr(kriging_toolkit, "_MEMORY_BUDGET_BYTES", 1024 * 1024)
+    expected_mean, expected_stddev = predict(
+        *args, method=method, calculate_stddev=calculate_stddev,
+    )
+    assert len(batch_sizes) == 1
+    assert sum(batch_sizes) == 15
+    batch_sizes.clear()
+    skip_observation_covariance = True
+
+    # Budget for four grid points, three observations, and four float64 arrays.
+    monkeypatch.setattr(kriging_toolkit, "_MEMORY_BUDGET_BYTES", 4 * 3 * 4 * 8)
+    actual_mean, actual_stddev = predict(
+        *args, method=method, calculate_stddev=calculate_stddev,
+    )
+
+    assert len(batch_sizes) > 1
+    assert all(0 < size <= 4 for size in batch_sizes)
+    assert sum(batch_sizes) == 15
+    assert actual_mean.shape == (3, 5)
+
+    # Verify that the predicted mean and standard deviation match the expected values up to numerical error
+    np.testing.assert_allclose(actual_mean, expected_mean, rtol=1e-12, atol=1e-12)
+    if calculate_stddev:
+        assert actual_stddev is not None
+        assert expected_stddev is not None
+        assert actual_stddev.shape == (3, 5)
+        np.testing.assert_allclose(actual_stddev, expected_stddev, rtol=1e-12, atol=1e-12)
+    else:
+        assert actual_stddev is expected_stddev is None
 
 
 # ---------------------------------------------------------------------------
