@@ -2,11 +2,14 @@ from enum import Enum
 from typing import Collection, Iterable, Optional, Union, overload
 
 from numpy import ndarray
+from numpy.random import RandomState
+
 from gaussianfft._kriging.api import KrigingType
 
 import advanced
 
 Number = Union[int, float]
+_numpy_rng: RandomState
 
 try:
     from typing import Literal
@@ -191,7 +194,7 @@ gaussianfft.seed
 @overload
 def seed(seed: int) -> None:
     """
-Sets the current simulation seed. If this has not been set when calling
+Sets the field random generators' seed. If the field seed has not been set when calling
 gaussianfft.simulate, it is set to the current time with second precision. Be wary of
 the latter, in particular if gaussianfft is used in a parallel-processing context.
 
@@ -206,8 +209,8 @@ Examples
 @overload
 def seed() -> int:
     """
-Gets the current simulation seed. Throws RunTimeError if the seed has not been set
-yet.
+Gets the starting simulation seed, unless NonstationaryVariogram.simulate() has been called with shared noise.
+Throws RunTimeError if the seed has not been set yet.
 
 Examples
 --------
@@ -273,7 +276,6 @@ def conditional_simulate(
         *,
         mean: float = 0.0,
         n: int = 1,
-        seed: Optional[int] = None,
         method: KrigingType = 'simple',
 ) -> list[ndarray]:
     """
@@ -299,8 +301,6 @@ mean: float, optional
     Constant prior mean of the field (simple kriging only). Default is 0.0.
 n: int, optional
     Number of realizations to generate. Default is 1.
-seed: int, optional
-    Random seed. Sets the global seed before simulation. Default is None (no change).
 method: {'simple', 'ordinary'}, optional
     Kriging method. Default is 'simple'.
 

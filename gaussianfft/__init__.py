@@ -18,24 +18,23 @@ import _gaussianfft
 
 from _gaussianfft import *
 
-_seed = _gaussianfft.seed
+_set_c_seed = _gaussianfft.seed
+_numpy_rng = np.random.RandomState()
 
 
 def seed(value=None):
-    """Seed both the field generator and NumPy's global RNG.
-
-    Integer seeds must be between 0 and 2**32 - 1. This also resets randomness
-    used by other callers of numpy.random, but not separate Generator instances.
-    With no argument, return the C++ start seed without changing either RNG.
-    The two global streams are not isolated between threads or callers.
+    """Seed GaussianFFT's private RNG. Integer seeds must be between 0 and 2**32 - 1.
+    With no argument, return the C++ start seed without changing either RNG,
+    unless NonstationaryVariogram.simulate() has been called with shared noise.
+    The GaussianFFT streams are not isolated between threads or callers.
     """
     if value is None:
-        return _seed()
+        return _set_c_seed()
     value = index(value)
     if not 0 <= value < 2**32:
         raise ValueError("Seed must be between 0 and 2**32 - 1")
-    _seed(value)
-    np.random.seed(value)
+    _set_c_seed(value)
+    _numpy_rng.seed(value)
 
 
 class VariogramType(Enum):
@@ -66,15 +65,11 @@ __all__ = [
 def conditional_simulate(
         variogram, grid_shape: tuple[int, ...], grid_spacing: tuple[float, ...],
         obs_locations, obs_values, obs_uncertainties, *,
-        mean=0.0, n=1, seed=None, method: 'KrigingType' = 'simple',
+        mean=0.0, n=1, method: 'KrigingType' = 'simple',
 ):
-    """Generate conditional fields using shape and spacing tuples in x, y, z order.
-    An explicit seed resets both global RNGs, just like gaussianfft.seed()."""
+    """Generate conditional fields using shape and spacing tuples in x, y, z order."""
     if len(grid_shape) != len(grid_spacing):
         raise ValueError("grid_spacing must have the same length as grid_shape")
-    if seed is not None:
-        from gaussianfft import seed as set_seed
-        set_seed(seed)
     from gaussianfft._kriging import simulate as _kriging_simulate
     return _kriging_simulate(
         variogram, grid_shape, grid_spacing, obs_locations, obs_values, obs_uncertainties,
