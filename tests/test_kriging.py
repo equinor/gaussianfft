@@ -29,12 +29,13 @@ def test_conditional_simulation_variance_with_noisy_observation(variogram_type, 
     obs_loc = 0
     prior_variance = 1.0           # Prior variance of the field
     observation_variance = 3.14
+    grf.seed(20261111)
     simulations = grf.conditional_simulate(
         grf.variogram(variogram_type, main_range=1.0),
         (41,), (1.0,),
         obs_locations=[[obs_loc]], obs_values=[0.0],
         obs_uncertainties=[np.sqrt(observation_variance)],
-        n=1000, seed=20261111, method=method,
+        n=1000, method=method,
     )
     # (below P=prior_variance, R=observation_variance)
     # For simple kriging, at a point X ~ N(0, P), with observation Y = X + noise ~ N(X, R), so by conjugate priors
@@ -204,10 +205,11 @@ def test_kriging_calibrated_on_independent_gaussian_fields(variogram_type, range
         obs_locations, observations[0], obs_uncertainties,
         method=method, calculate_stddev=True,
     )
+    grf.seed(20261103)
     simulations = grf.conditional_simulate(
         variogram, grid_shape, grid_spacing,
         obs_locations, observations[0], obs_uncertainties,
-        method=method, n=n_samples, seed=20261103,
+        method=method, n=n_samples,
     )
 
     for point in [(0, 0), (2, 3)]:  # A point with and one without observations
@@ -718,15 +720,19 @@ class TestMethodDispatch:
             kriging_fn(*self._args(), method=method)
 
     def test_conditional_simulate_default_is_simple_kriging(self):
-        sims_default = grf.conditional_simulate(*self._args(), n=5, seed=0)
-        sims_sk = grf.conditional_simulate(*self._args(), n=5, seed=0, method='simple')
+        grf.seed(0)
+        sims_default = grf.conditional_simulate(*self._args(), n=5)
+        grf.seed(0)
+        sims_sk = grf.conditional_simulate(*self._args(), n=5, method='simple')
         np.testing.assert_array_equal(sims_default, sims_sk)
 
     @pytest.mark.parametrize("method", ["simple", "ordinary"])
     def test_noisy_conditional_simulation_seeding(self, method):
         args = (*self._args()[:-1], np.array([0.3, 0.5]))
-        explicit = grf.conditional_simulate(*args, n=2, seed=42, method=method)
-        repeated = grf.conditional_simulate(*args, n=2, seed=42, method=method)
+        grf.seed(42)
+        explicit = grf.conditional_simulate(*args, n=2, method=method)
+        grf.seed(42)
+        repeated = grf.conditional_simulate(*args, n=2, method=method)
         grf.seed(42)
         first = grf.conditional_simulate(*args, method=method)
         second = grf.conditional_simulate(*args, method=method)

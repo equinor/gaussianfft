@@ -105,6 +105,9 @@ class NonstationaryVariogram(Covariance):
         gaussianfft uses a 2D FFT for a single layer.  With shared noise, a
         single-layer 3D grid is simulated as two layers and the first is
         returned, so that the field is a section of a 3D field.
+
+        Note: if shared_noise is set, gaussianfft.seed() will no longer
+        return the starting seed after calling NonstationaryVariogram.simulate()
         """
         indices, weights = self.weights(grid.coordinates())
         components = np.unique(indices[weights > 0.0])
@@ -123,14 +126,17 @@ class NonstationaryVariogram(Covariance):
             node_weights = np.sum(np.where(indices == m, weights, 0.0), axis=1).reshape(grid.shape)
             if shared:
                 # Only reset the field stream; observation noise must keep advancing.
-                gaussianfft._seed(seed)
+                gaussianfft._set_c_seed(seed)
                 raw = gaussianfft.advanced.simulate(self.component(m), *grid_args, **pad_args)
             else:
                 raw = gaussianfft.simulate(self.component(m), *grid_args)
             raw = np.asarray(raw).reshape(sim_shape, order='F')
             field += node_weights * raw[tuple(slice(0, n) for n in grid.shape)]
         if shared:
-            gaussianfft._seed(seed + 1)
+            # Because .seed() returns the starting seed, calling NonstationaryVariogram.simulate() again would produce
+            # related results (only observation noise would differ) without this re-seeding. Note that this changes the nominal
+            # starting seed, so that calling .seed() after a call to simulate() will return a different seed from before.
+            gaussianfft._set_c_seed(seed + 1)
         return field
 
     def _point_components(self, points):
