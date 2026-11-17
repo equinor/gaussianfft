@@ -2,10 +2,14 @@ from enum import Enum
 from typing import Collection, Iterable, Optional, Union, overload
 
 from numpy import ndarray
+from numpy.random import RandomState
+
+from gaussianfft._kriging.api import KrigingType
 
 import advanced
 
 Number = Union[int, float]
+_numpy_rng: RandomState
 
 try:
     from typing import Literal
@@ -190,7 +194,7 @@ gaussianfft.seed
 @overload
 def seed(seed: int) -> None:
     """
-Sets the current simulation seed. If this has not been set when calling
+Sets the field random generators' seed. If the field seed has not been set when calling
 gaussianfft.simulate, it is set to the current time with second precision. Be wary of
 the latter, in particular if gaussianfft is used in a parallel-processing context.
 
@@ -205,8 +209,8 @@ Examples
 @overload
 def seed() -> int:
     """
-Gets the current simulation seed. Throws RunTimeError if the seed has not been set
-yet.
+Gets the starting simulation seed, unless NonstationaryVariogram.simulate() has been called with shared noise. 
+Throws RunTimeError if the seed has not been set yet.
 
 Examples
 --------
@@ -262,84 +266,41 @@ gaussianfft.conditional_simulate
 """
 
 
-@overload
 def conditional_simulate(
         variogram: Variogram,
-        nx: int,
-        dx: float,
+        grid_shape: tuple[int, ...],
+        grid_spacing: tuple[float, ...],
         obs_locations: ndarray,
         obs_values: ndarray,
         obs_uncertainties: ndarray,
         *,
-        mean: Union[float, ndarray] = 0.0,
+        mean: float = 0.0,
         n: int = 1,
-        seed: Optional[int] = None,
-        method: str = 'SimpleKriging',
-) -> list[ndarray]:...
-
-
-@overload
-def conditional_simulate(
-        variogram: Variogram,
-        nx: int,
-        dx: float,
-        ny: int,
-        dy: float,
-        obs_locations: ndarray,
-        obs_values: ndarray,
-        obs_uncertainties: ndarray,
-        *,
-        mean: Union[float, ndarray] = 0.0,
-        n: int = 1,
-        seed: Optional[int] = None,
-        method: str = 'SimpleKriging',
-) -> list[ndarray]:...
-
-
-@overload
-def conditional_simulate(
-        variogram: Variogram,
-        nx: int,
-        dx: float,
-        ny: int,
-        dy: float,
-        nz: int,
-        dz: float,
-        obs_locations: ndarray,
-        obs_values: ndarray,
-        obs_uncertainties: ndarray,
-        *,
-        mean: Union[float, ndarray] = 0.0,
-        n: int = 1,
-        seed: Optional[int] = None,
-        method: str = 'SimpleKriging',
+        method: KrigingType = 'simple',
 ) -> list[ndarray]:
     """
-Generates conditional Gaussian random field realizations using simple kriging.
+Generates conditional Gaussian random field realizations using the selected kriging method.
 
 Parameters
 ----------
 variogram: Variogram
     An instance of gaussianfft.Variogram.
-nx, ny, nz: int
-    Grid size in x, y, z directions. Only nx is required. Setting ny and/or nz
-    to a value less than or equal to 1 reduces the dimension.
-dx, dy, dz: float
-    Grid resolution in x, y, z directions. dx is always required. dy and dz are
-    required if respectively ny and nz are greater than 1.
+grid_shape: tuple of int
+    Grid sizes in x, y, z order, with 1 to 3 entries. Singleton axes are retained.
+grid_spacing: tuple of float
+    Grid resolution along each axis, with the same length as grid_shape.
 obs_locations: ndarray
-    Array of shape (N, ndims) with observation coordinates.
+    Array of shape (N, ndims) with observation coordinates inside the grid bounds.
 obs_values: ndarray
     Array of shape (N,) with observed values.
 obs_uncertainties: ndarray
     Array of shape (N,) with observation uncertainties (standard deviations).
-mean: float or ndarray, optional
-    Prior mean of the field. If an array is provided, it must match the grid shape.
-    Default is 0.0.
+mean: float, optional
+    Constant prior mean of the field (simple kriging only). Default is 0.0.
 n: int, optional
     Number of realizations to generate. Default is 1.
-seed: int, optional
-    Random seed. Sets the global seed before simulation. Default is None (no change).
+method: {'simple', 'ordinary'}, optional
+    Kriging method. Default is 'simple'.
 
 Returns
 -------
@@ -355,52 +316,18 @@ gaussianfft.predict
 """
 
 
-@overload
 def predict(
         variogram: Variogram,
-        nx: int,
-        dx: float,
+        grid_shape: tuple[int, ...],
+        grid_spacing: tuple[float, ...],
         obs_locations: ndarray,
         obs_values: ndarray,
         obs_uncertainties: ndarray,
         *,
-        mean: Union[float, ndarray] = 0.0,
-        method: str = 'SimpleKriging',
-) -> tuple[ndarray, ndarray]:...
-
-
-@overload
-def predict(
-        variogram: Variogram,
-        nx: int,
-        dx: float,
-        ny: int,
-        dy: float,
-        obs_locations: ndarray,
-        obs_values: ndarray,
-        obs_uncertainties: ndarray,
-        *,
-        mean: Union[float, ndarray] = 0.0,
-        method: str = 'SimpleKriging',
-) -> tuple[ndarray, ndarray]:...
-
-
-@overload
-def predict(
-        variogram: Variogram,
-        nx: int,
-        dx: float,
-        ny: int,
-        dy: float,
-        nz: int,
-        dz: float,
-        obs_locations: ndarray,
-        obs_values: ndarray,
-        obs_uncertainties: ndarray,
-        *,
-        mean: Union[float, ndarray] = 0.0,
-        method: str = 'SimpleKriging',
-) -> tuple[ndarray, ndarray]:
+        mean: float = 0.0,
+        method: KrigingType = 'simple',
+        calculate_stddev: bool = False,
+) -> tuple[ndarray, Optional[ndarray]]:
     """
 Returns the kriging mean and standard deviation over the grid.
 
@@ -408,25 +335,27 @@ Parameters
 ----------
 variogram: Variogram
     An instance of gaussianfft.Variogram.
-nx, ny, nz: int
-    Grid size in x, y, z directions. Only nx is required.
-dx, dy, dz: float
-    Grid resolution in x, y, z directions.
+grid_shape: tuple of int
+    Grid sizes in x, y, z order, with 1 to 3 entries. Singleton axes are retained.
+grid_spacing: tuple of float
+    Grid resolution along each axis, with the same length as grid_shape.
 obs_locations: ndarray
-    Array of shape (N, ndims) with observation coordinates.
+    Array of shape (N, ndims) with observation coordinates, which may lie outside the grid.
 obs_values: ndarray
     Array of shape (N,) with observed values.
 obs_uncertainties: ndarray
     Array of shape (N,) with observation uncertainties (standard deviations).
-mean: float or ndarray, optional
-    Prior mean of the field (SimpleKriging only). If an array is provided, it must
-    match the grid shape. Default is 0.0.
-method: str, optional
-    Kriging method. One of 'SimpleKriging' (default) or 'OrdinaryKriging'.
+mean: float, optional
+    Constant prior mean of the field (simple kriging only). Default is 0.0.
+method: {'simple', 'ordinary'}, optional
+    Kriging method. Default is 'simple'.
+calculate_stddev: bool, optional
+    Whether to calculate the standard deviation. Default is False.
 
 Returns
 -------
 out: tuple of (mean_field, stdev_field)
-    Both arrays shaped (nx,), (nx, ny), or (nx, ny, nz).
+    Arrays shaped (nx,), (nx, ny), or (nx, ny, nz). stdev_field is None
+    when calculate_stddev is False.
 """
     ...
