@@ -284,11 +284,13 @@ Parameters
 variogram: Variogram
     An instance of gaussianfft.Variogram.
 grid_shape: tuple of int
-    Grid sizes in x, y, z order, with 1 to 3 entries. Singleton axes are retained.
+    Cell counts in x, y, z order, with 1 to 3 entries. Singleton axes are retained.
 grid_spacing: tuple of float
-    Grid resolution along each axis, with the same length as grid_shape.
+    Cell widths along each axis. Cell i is centered at (i + 0.5) times its axis spacing.
 obs_locations: ndarray
-    Array of shape (N, ndims) with observation coordinates inside the grid bounds.
+    Array of shape (N, ndims) with physical coordinates from zero to cell count
+    times spacing, inclusive. When sampling the unconditional field, the nearest
+    center value extends to the outer face along each axis.
 obs_values: ndarray
     Array of shape (N,) with observed values.
 obs_uncertainties: ndarray
@@ -336,9 +338,9 @@ Parameters
 variogram: Variogram
     An instance of gaussianfft.Variogram.
 grid_shape: tuple of int
-    Grid sizes in x, y, z order, with 1 to 3 entries. Singleton axes are retained.
+    Cell counts in x, y, z order, with 1 to 3 entries. Singleton axes are retained.
 grid_spacing: tuple of float
-    Grid resolution along each axis, with the same length as grid_shape.
+    Cell widths along each axis. Cell i is centered at (i + 0.5) times its axis spacing.
 obs_locations: ndarray
     Array of shape (N, ndims) with observation coordinates, which may lie outside the grid.
 obs_values: ndarray

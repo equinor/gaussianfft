@@ -25,7 +25,7 @@ def predict(
         obs_locations, obs_values, obs_uncertainties, *,
         method: KrigingType = 'simple', mean: float = 0.0, calculate_stddev=False,
 ):
-    """Predict on a grid defined by shape and spacing tuples in x, y, z order."""
+    """Predict at cell centers of a grid with lower faces at zero, in x, y, z order."""
     grid = GridSpec(grid_shape, grid_spacing)
     obs = ObservationData(obs_locations, obs_values, obs_uncertainties)
     estimator = _build_kriging(method, mean)
@@ -37,7 +37,7 @@ def simulate(
         obs_locations, obs_values, obs_uncertainties, *,
         method: KrigingType = 'simple', mean: float = 0.0, n_sim=1,
 ):
-    """Simulate on a grid defined by shape and spacing tuples in x, y, z order."""
+    """Simulate at cell centers of a grid with lower faces at zero, in x, y, z order."""
     grid = GridSpec(grid_shape, grid_spacing)
     obs = ObservationData(obs_locations, obs_values, obs_uncertainties)
     estimator = _build_kriging(method, mean)
