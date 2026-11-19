@@ -120,7 +120,7 @@ class SimpleKriging(Kriging):
         self._variogram = None
         self._cho_factor = None
 
-    def _initialize(self, obs: ObservationData, variogram: gaussianfft.Variogram) -> None:
+    def _prepare_kriging(self, obs: ObservationData, variogram: gaussianfft.Variogram) -> None:
         covariance = _build_obs_cov_matrix(variogram, obs.locations, obs.uncertainties)
         cho_factor = _cholesky_factor(covariance)
         self._obs = obs
@@ -133,7 +133,7 @@ class SimpleKriging(Kriging):
     ) -> tuple[np.ndarray, np.ndarray | None]:
         if obs.locations.shape[1] != len(grid.shape):
             raise ValueError(f"obs_locations must have {len(grid.shape)} columns for this grid")
-        self._initialize(obs, variogram)
+        self._prepare_kriging(obs, variogram)
         grid_coords = grid.coordinates()
         residuals = obs.values - self.mean
         correction, stddev = self._krige(grid.shape, grid_coords, residuals, calculate_stddev)
@@ -146,7 +146,7 @@ class SimpleKriging(Kriging):
     ) -> list[np.ndarray]:
         if obs.locations.shape[1] != len(grid.shape):
             raise ValueError(f"obs_locations must have {len(grid.shape)} columns for this grid")
-        self._initialize(obs, variogram)
+        self._prepare_kriging(obs, variogram)
         grid_coords = grid.coordinates()
         obs_coords = _obs_interp_coords(obs.locations, grid)
         results = []
@@ -213,7 +213,7 @@ class OrdinaryKriging(Kriging):
         self._s = 0.0
         self.estimated_mean = None
 
-    def _initialize(self, obs: ObservationData, variogram: gaussianfft.Variogram) -> None:
+    def _prepare_kriging(self, obs: ObservationData, variogram: gaussianfft.Variogram) -> None:
         covariance = _build_obs_cov_matrix(variogram, obs.locations, obs.uncertainties)
         cho_factor = _cholesky_factor(covariance)
         n_obs = len(obs.locations)
@@ -241,7 +241,7 @@ class OrdinaryKriging(Kriging):
     ) -> tuple[np.ndarray, np.ndarray | None]:
         if obs.locations.shape[1] != len(grid.shape):
             raise ValueError(f"obs_locations must have {len(grid.shape)} columns for this grid")
-        self._initialize(obs, variogram)
+        self._prepare_kriging(obs, variogram)
         grid_coords = grid.coordinates()
         return self._krige(grid.shape, grid_coords, obs.values, calculate_stddev)
 
@@ -251,7 +251,7 @@ class OrdinaryKriging(Kriging):
     ) -> list[np.ndarray]:
         if obs.locations.shape[1] != len(grid.shape):
             raise ValueError(f"obs_locations must have {len(grid.shape)} columns for this grid")
-        self._initialize(obs, variogram)
+        self._prepare_kriging(obs, variogram)
         grid_coords = grid.coordinates()
         obs_coords = _obs_interp_coords(obs.locations, grid)
         results = []

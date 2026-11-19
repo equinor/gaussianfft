@@ -19,12 +19,14 @@ class GridSpec:
             raise ValueError("grid_shape must contain 1, 2, or 3 dimensions")
         if len(self.spacing) != len(self.shape):
             raise ValueError("grid_spacing must have the same length as grid_shape")
-        if any(
-            not isinstance(size, (int, np.integer))
-            or isinstance(size, (bool, np.bool_)) or size <= 0
+        if not all(
+            isinstance(size, (int, np.integer))
+            and size > 0
             for size in self.shape
         ):
             raise ValueError("grid_shape must contain positive integers")
+        if len(self.shape) == 3 and self.shape[1] == 1 and self.shape[2] > 1:
+            raise NotImplementedError("Kriging does not currently support x-z slices (ny == 1 and nz > 1)")
         if not np.all(np.isfinite(self.spacing)) or np.any(np.asarray(self.spacing) <= 0):
             raise ValueError("grid_spacing must contain positive finite values")
 

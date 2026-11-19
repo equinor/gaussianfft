@@ -47,6 +47,8 @@ def conditional_simulate(
         mean=0.0, n=1, seed=None, method: 'KrigingType' = 'simple',
 ):
     """Generate conditional fields using shape and spacing tuples in x, y, z order."""
+    if len(grid_shape) != len(grid_spacing):
+        raise ValueError("grid_spacing must have the same length as grid_shape")
     if seed is not None:
         _gaussianfft.seed(seed)
     from gaussianfft._kriging import simulate as _kriging_simulate
@@ -62,6 +64,8 @@ def predict(
         mean=0.0, method: 'KrigingType' = 'simple', calculate_stddev=False,
 ):
     """Predict a field using shape and spacing tuples in x, y, z order."""
+    if len(grid_shape) != len(grid_spacing):
+        raise ValueError("grid_spacing must have the same length as grid_shape")
     from gaussianfft._kriging import predict as _kriging_predict
     return _kriging_predict(
         variogram, grid_shape, grid_spacing, obs_locations, obs_values, obs_uncertainties,

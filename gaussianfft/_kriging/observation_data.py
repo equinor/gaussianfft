@@ -3,15 +3,16 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 import numpy as np
+import numpy.typing as npt
 
 
 @dataclass
 class ObservationData:
     """Observation coordinates, values, and error standard deviations in field units."""
 
-    locations: np.ndarray
-    values: np.ndarray
-    uncertainties: np.ndarray
+    locations: npt.NDArray[np.float64]
+    values: npt.NDArray[np.float64]
+    uncertainties: npt.NDArray[np.float64]
 
     def __post_init__(self):
         self.locations = np.array(self.locations, dtype=float, copy=True)
