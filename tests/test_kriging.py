@@ -3,13 +3,11 @@ import platform
 import numpy as np
 import pytest
 
-from gaussianfft._kriging.grid_spec import GridSpec
-
 if platform.python_implementation() == 'PyPy':
     pytest.skip('Kriging requires SciPy, which is unavailable on PyPy', allow_module_level=True)
 
 import gaussianfft as grf
-from gaussianfft._kriging import ObservationData, OrdinaryKriging, predict
+from gaussianfft import predict
 
 
 # ---------------------------------------------------------------------------
@@ -359,17 +357,14 @@ class TestOrdinaryKriging1D:
         for sim in sims:
             np.testing.assert_allclose(sim[[10, 30]], obs_values, atol=1e-4)
 
-    def test_estimated_mean_constant_observations(self):
-        # When all obs values are the same constant, estimated_mean should equal it
+    def test_constant_observations_predict_constant_across_grid(self):
         obs_locations = np.array([[50.0], [100.0], [150.0]])
         obs_values = np.full(3, 4.0)
         obs_uncertainties = np.zeros(3)
 
-        obs = ObservationData(obs_locations, obs_values, obs_uncertainties)
-        ok = OrdinaryKriging()
-        ok.predict(GridSpec((self.nx,), (self.dx,)), obs, self.variogram)
+        mean_field, _ = self._predict(obs_locations, obs_values, obs_uncertainties)
 
-        assert abs(ok.estimated_mean - 4.0) < 1e-6
+        np.testing.assert_allclose(mean_field, 4.0, rtol=0, atol=1e-6)
 
 class TestOrdinaryKriging2D:
     def setup_method(self):
