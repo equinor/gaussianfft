@@ -25,6 +25,8 @@ class GridSpec:
             for size in self.shape
         ):
             raise ValueError("grid_shape must contain positive integers")
+        if len(self.shape) == 3 and self.shape[1] == 1 and self.shape[2] > 1:
+            raise ValueError("Kriging does not currently support x-z slices (ny == 1 and nz > 1)")
         if not np.all(np.isfinite(self.spacing)) or np.any(np.asarray(self.spacing) <= 0):
             raise ValueError("grid_spacing must contain positive finite values")
 

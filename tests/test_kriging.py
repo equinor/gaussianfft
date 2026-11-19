@@ -248,6 +248,11 @@ class TestInputValidation:
                 self.variogram, (50,), (5.0,), obs_locations, obs_values, obs_uncertainties,
             )
 
+    @pytest.mark.parametrize("operation", [predict, grf.conditional_simulate])
+    def test_xz_slice_is_unsupported(self, operation):
+        with pytest.raises(ValueError, match="does not currently support x-z slices"):
+            operation(self.variogram, (8, 1, 3), (1.0, 1.0, 1.0), [[0.5, 0.5, 0.5]], [1.0], [0.0])
+
     def test_unexpected_keyword_argument(self):
         obs_locations = np.array([[10.0]])
         obs_values = np.array([1.0])
