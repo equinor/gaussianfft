@@ -31,7 +31,7 @@ def benchmark_case(total: int, ndims: int, obs_fraction: float):
     size = round(np.power(total, 1 / ndims))
     if size <= 1:
         raise ValueError("Grid size must be greater than 1.")
-    spacing = GRID_EXTENT / (size - 1)
+    spacing = GRID_EXTENT / size
     n_obs = round(total * obs_fraction)
     if n_obs <= 0:
         raise ValueError("Number of observations must be positive.")

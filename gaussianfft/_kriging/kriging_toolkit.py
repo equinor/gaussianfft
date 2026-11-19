@@ -72,15 +72,14 @@ def _build_cross_cov_matrix(variogram, grid_coords, obs_locations):
 
 
 def _obs_interp_coords(obs_locations, grid: GridSpec):
-    relative_locations = obs_locations - grid.origin
-    grid_max = (np.asarray(grid.shape) - 1) * grid.spacing
-    if np.any(relative_locations < 0) or np.any(relative_locations > grid_max):
+    grid_max = np.asarray(grid.shape) * grid.spacing
+    if np.any(obs_locations < 0) or np.any(obs_locations > grid_max):
         raise ValueError("obs_locations has values outside grid bounds for simulation")
-    return (relative_locations / grid.spacing).T
+    return (obs_locations / grid.spacing - 0.5).T
 
 
 def _interpolate_at_obs(field, obs_coords):
-    return scipy.ndimage.map_coordinates(field, obs_coords, order=1)
+    return scipy.ndimage.map_coordinates(field, obs_coords, order=1, mode='nearest')
 
 
 def _simulate_uncond(variogram, grid: GridSpec):

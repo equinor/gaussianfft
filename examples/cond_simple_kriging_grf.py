@@ -10,7 +10,7 @@ import gaussianfft as grf
 
 
 def bilinear_interpolate(field, xs, ys, dx, dy):
-    return map_coordinates(field, [xs / dx, ys / dy], order=1, mode='nearest')
+    return map_coordinates(field, [xs / dx - 0.5, ys / dy - 0.5], order=1, mode='nearest')
 
 
 def main():
