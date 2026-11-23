@@ -284,3 +284,31 @@ class GriddedAzimuth:
         locations = np.asarray(locations, dtype=float)[:, :len(self._lower)]
         unit = self._interpolator(np.clip(locations, self._lower, self._upper))
         return np.mod(np.degrees(np.arctan2(unit[:, 1], unit[:, 0])), 360.0)
+
+
+def create_nonstationary_variogram(
+    type_: str,
+    main_range: float,
+    perp_range: float = -1.0,
+    depth_range: float = -1.0,
+    *,
+    azimuth_callable: Callable[[np.ndarray], np.ndarray] | None = None,
+    gridded_azimuth_values: np.ndarray | None = None,
+    gridded_azimuth_spacing: tuple[float, ...] | None = None,
+    dip: float = 0.0,
+    power: float = 1.5,
+):
+    if azimuth_callable is not None:
+        azimuth = azimuth_callable
+    elif gridded_azimuth_values is not None and gridded_azimuth_spacing is not None:
+        grid_spec = GridSpec(
+            shape=gridded_azimuth_values.shape,
+            spacing=gridded_azimuth_spacing,
+        )
+        azimuth = GriddedAzimuth(gridded_azimuth_values, grid_spec)
+    else:
+        raise ValueError("Either azimuth_callable or gridded azimuth parameters must be provided")
+    return NonstationaryVariogram(
+        type_, main_range, perp_range, depth_range,
+        azimuth=azimuth, dip=dip, power=power
+    )

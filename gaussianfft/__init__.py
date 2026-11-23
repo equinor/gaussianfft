@@ -1,3 +1,6 @@
+from __future__ import annotations
+from collections.abc import Callable
+
 from ._version import __version__
 from enum import Enum
 from importlib.util import find_spec
@@ -52,6 +55,31 @@ def variogram(type, *args, **kwargs):
     if isinstance(type, Enum):
         type = type.value
     return _gaussianfft.variogram(type, *args, **kwargs)
+
+
+def nonstationary_variogram(
+    type_: str,
+    main_range: float,
+    perp_range: float = -1.0,
+    depth_range: float = -1.0,
+    *,
+    azimuth_callable: Callable[[np.ndarray], np.ndarray] | None = None,
+    gridded_azimuth_values: np.ndarray | None = None,
+    gridded_azimuth_spacing: tuple[float, ...] | None = None,
+    dip: float = 0.0,
+    power: float = 1.5,
+):
+    from gaussianfft._kriging.nonstationary_variogram import (
+        create_nonstationary_variogram,
+    )
+    return create_nonstationary_variogram(
+        type_, main_range, perp_range, depth_range,
+        azimuth_callable=azimuth_callable,
+        gridded_azimuth_values=gridded_azimuth_values,
+        gridded_azimuth_spacing=gridded_azimuth_spacing,
+        dip=dip,
+        power=power,
+    )
 
 
 __all__ = [
