@@ -52,8 +52,8 @@ class TestNonstationaryCorrelation:
         self.points = self.grid.coordinates()
 
     def test_constant_azimuth_on_bin_matches_stationary(self):
-        nonstationary = NonstationaryVariogram(
-            'matern52', 200.0, 50.0, azimuth=lambda p: np.full(len(p), 36.0), n_bins=100,
+        nonstationary = grf.nonstationary_variogram(
+            'matern52', 200.0, 50.0, azimuth_callable=lambda p: np.full(len(p), 36.0),
         )
         stationary = Variogram.from_parameters('matern52', 200.0, 50.0, azimuth=36.0)
         locations = self.points[[0, 517, 1199]]
@@ -70,13 +70,13 @@ class TestNonstationaryCorrelation:
         azimuth = np.random.default_rng(1).uniform(0.0, 360.0, 50)
         azimuth[:2] = [359.9, -10.0]
         points = self.points[:50]
-        variogram = NonstationaryVariogram(
-            'exponential', 100.0, 30.0, azimuth=lambda p: azimuth[:len(p)],
+        variogram = grf.nonstationary_variogram(
+            'exponential', 100.0, 30.0, azimuth_callable=lambda p: azimuth[:len(p)],
         )
         np.testing.assert_allclose(np.diag(variogram.corr_matrix(points, points)), 1.0)
 
     def test_corr_matrix_is_symmetric_positive_definite(self):
-        variogram = NonstationaryVariogram('matern52', 200.0, 50.0, azimuth=swirl_azimuth)
+        variogram = grf.nonstationary_variogram('matern52', 200.0, 50.0, azimuth_callable=swirl_azimuth)
         idx = np.random.default_rng(3).choice(len(self.points), size=50, replace=False)
         locations = self.points[idx]
         corr = variogram.corr_matrix(locations, locations)
@@ -84,14 +84,16 @@ class TestNonstationaryCorrelation:
         scipy.linalg.cholesky(corr + 1e-10 * np.eye(len(corr)))
 
     def test_unrelated_azimuths_are_uncorrelated(self):
-        variogram = NonstationaryVariogram(
-            'exponential', 1000.0, azimuth=lambda p: np.where(p[:, 0] < 200.0, 0.0, 90.0),
+        variogram = grf.nonstationary_variogram(
+            'exponential', 1000.0, azimuth_callable=lambda p: np.where(p[:, 0] < 200.0, 0.0, 90.0),
         )
         corr = variogram.corr_matrix(np.array([[0.0, 0.0]]), np.array([[390.0, 0.0]]))
         assert corr[0, 0] == 0.0
 
     def test_invalid_azimuth_raises(self):
-        variogram = NonstationaryVariogram('exponential', 100.0, azimuth=lambda p: np.full(len(p), np.nan))
+        variogram = grf.nonstationary_variogram(
+            'exponential', 100.0, azimuth_callable=lambda p: np.full(len(p), np.nan),
+        )
         with pytest.raises(ValueError, match="finite"):
             variogram.weights(self.points[:3])
 

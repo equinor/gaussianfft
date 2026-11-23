@@ -1,10 +1,12 @@
 from enum import Enum
-from typing import Collection, Iterable, Optional, Union, overload
+from typing import Callable, Optional, Union, overload
+from collections.abc import Collection, Iterable
 
 from numpy import ndarray
 from numpy.random import RandomState
 
 from gaussianfft._kriging.api import KrigingType
+from gaussianfft._kriging.nonstationary_variogram import NonstationaryVariogram
 
 import advanced
 
@@ -121,6 +123,20 @@ Multiple directions
 >>> grf.variogram('general_exponential', 1000.0, 500.0, 250.0, power=1.8)
 """
     pass
+
+
+def nonstationary_variogram(
+    type_: str,
+    main_range: float,
+    perp_range: float = -1.0,
+    depth_range: float = -1.0,
+    *,
+    azimuth_callable: Optional[Callable[[ndarray], ndarray]] = None,
+    gridded_azimuth_values: Optional[ndarray] = None,
+    gridded_azimuth_spacing: Optional[tuple[float, ...]] = None,
+    dip: float = 0.0,
+    power: float = 1.5,
+) -> NonstationaryVariogram: ...
 
 
 """
