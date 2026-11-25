@@ -4,7 +4,6 @@ from collections.abc import Callable
 from ._version import __version__
 from enum import Enum
 from importlib.util import find_spec
-from operator import index
 from typing import TYPE_CHECKING
 
 import numpy as np
@@ -17,27 +16,10 @@ if find_spec("numpy") is None:
 
 import gaussianfft._platform  # noqa: F401  (sets up DLL paths before loading C extension)
 
-import _gaussianfft
+from _gaussianfft import Variogram, advanced, quote, simulate, simulation_size
+from _gaussianfft import variogram as _c_variogram
 
-from _gaussianfft import *
-
-_set_c_seed = _gaussianfft.seed
-_numpy_rng = np.random.RandomState()
-
-
-def seed(value=None):
-    """Seed GaussianFFT's private RNG. Integer seeds must be between 0 and 2**32 - 1.
-    With no argument, return the C++ start seed without changing either RNG,
-    unless NonstationaryVariogram.simulate() has been called with shared noise.
-    The GaussianFFT streams are not isolated between threads or callers.
-    """
-    if value is None:
-        return _set_c_seed()
-    value = index(value)
-    if not 0 <= value < 2**32:
-        raise ValueError("Seed must be between 0 and 2**32 - 1")
-    _set_c_seed(value)
-    _numpy_rng.seed(value)
+from ._rng import seed
 
 
 class VariogramType(Enum):
@@ -54,7 +36,7 @@ class VariogramType(Enum):
 def variogram(type, *args, **kwargs):
     if isinstance(type, Enum):
         type = type.value
-    return _gaussianfft.variogram(type, *args, **kwargs)
+    return _c_variogram(type, *args, **kwargs)
 
 
 def nonstationary_variogram(

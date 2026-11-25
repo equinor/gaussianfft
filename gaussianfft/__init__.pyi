@@ -3,7 +3,6 @@ from typing import Callable, Optional, Union, overload
 from collections.abc import Collection, Iterable
 
 from numpy import ndarray
-from numpy.random import RandomState
 
 from gaussianfft._kriging.api import KrigingType
 from gaussianfft._kriging.nonstationary_variogram import NonstationaryVariogram
@@ -11,7 +10,6 @@ from gaussianfft._kriging.nonstationary_variogram import NonstationaryVariogram
 import advanced
 
 Number = Union[int, float]
-_numpy_rng: RandomState
 
 try:
     from typing import Literal

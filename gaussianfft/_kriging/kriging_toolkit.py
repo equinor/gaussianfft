@@ -9,7 +9,7 @@ try:
 except ImportError:
     raise ImportError("Scipy is not installed, and is required to use these utilities")
 
-from gaussianfft import _numpy_rng
+from gaussianfft._rng import numpy_rng
 from gaussianfft._kriging.covariance import Covariance
 from gaussianfft._kriging.grid_spec import GridSpec
 from gaussianfft._kriging.observation_data import ObservationData
@@ -137,7 +137,7 @@ class SimpleKriging(Kriging):
         for _ in range(n_sim):
             uncond = self._variogram.simulate(grid)
             uncond_at_obs = _interpolate_at_obs(uncond, obs_coords)
-            simulated_noise = _numpy_rng.normal(0.0, obs.uncertainties)
+            simulated_noise = numpy_rng.normal(0.0, obs.uncertainties)
             obs_residuals = (obs.values - self.mean) - (uncond_at_obs + simulated_noise)
 
             correction, _ = self._krige(grid.shape, grid_coords, obs_residuals)
@@ -241,7 +241,7 @@ class OrdinaryKriging(Kriging):
         for _ in range(n_sim):
             uncond = self._variogram.simulate(grid)
             uncond_at_obs = _interpolate_at_obs(uncond, obs_coords)
-            simulated_noise = _numpy_rng.normal(0.0, obs.uncertainties)
+            simulated_noise = numpy_rng.normal(0.0, obs.uncertainties)
             obs_residuals = obs.values - (uncond_at_obs + simulated_noise)
 
             correction, _ = self._krige(grid.shape, grid_coords, obs_residuals)
