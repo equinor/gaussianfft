@@ -134,6 +134,8 @@ def nonstationary_variogram(
     gridded_azimuth_spacing: Optional[tuple[float, ...]] = None,
     dip: float = 0.0,
     power: float = 1.5,
+    n_bins: int = 100,
+    shared_noise: bool = False,
 ) -> NonstationaryVariogram: ...
 
 

@@ -135,7 +135,7 @@ class SimpleKriging(Kriging):
         results = []
 
         for _ in range(n_sim):
-            uncond = self._variogram.simulate(grid)
+            uncond = self._variogram.simulate(grid.shape, grid.spacing)
             uncond_at_obs = _interpolate_at_obs(uncond, obs_coords)
             simulated_noise = numpy_rng.normal(0.0, obs.uncertainties)
             obs_residuals = (obs.values - self.mean) - (uncond_at_obs + simulated_noise)
@@ -239,7 +239,7 @@ class OrdinaryKriging(Kriging):
         results = []
 
         for _ in range(n_sim):
-            uncond = self._variogram.simulate(grid)
+            uncond = self._variogram.simulate(grid.shape, grid.spacing)
             uncond_at_obs = _interpolate_at_obs(uncond, obs_coords)
             simulated_noise = numpy_rng.normal(0.0, obs.uncertainties)
             obs_residuals = obs.values - (uncond_at_obs + simulated_noise)

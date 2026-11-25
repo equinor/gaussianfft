@@ -36,7 +36,8 @@ class Variogram(Covariance):
             corr[:, j] = self._variogram.corr_array(points - location)
         return corr
 
-    def simulate(self, grid: GridSpec) -> np.ndarray:
+    def simulate(self, grid_shape: tuple[int, ...], grid_spacing: tuple[float, ...]) -> np.ndarray:
+        grid = GridSpec(grid_shape, grid_spacing)
         grid_args = tuple(value for axis in zip(grid.shape, grid.spacing) for value in axis)
         raw = gaussianfft.simulate(self._variogram, *grid_args)
         return np.asarray(raw).reshape(grid.shape, order='F')

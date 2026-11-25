@@ -7,15 +7,13 @@ if platform.system() == 'Linux':
 import numpy as np
 import matplotlib.pyplot as plt
 import gaussianfft as grf
-from gaussianfft._kriging import GridSpec, NonstationaryVariogram, ObservationData, SimpleKriging
 
 
 def rotating_azimuth(locations, centre=(495.0, 495.0)):
     """Azimuth (degrees, counter-clockwise from x) tangential to circles around ``centre``.
 
-    Locations whose azimuths are more than one bin apart are uncorrelated, so the
-    azimuth should vary slowly relative to the range and the bin width.  Near the
-    centre the azimuth turns quickly and the correlation becomes short.
+    Without shared noise, locations whose azimuths are more than one bin apart
+    are uncorrelated. Near the centre the azimuth turns quickly.
     """
     angle = np.degrees(np.arctan2(locations[:, 1] - centre[1], locations[:, 0] - centre[0]))
     return (angle + 90.0) % 360.0
@@ -25,23 +23,25 @@ def main():
     # 100 x 100 x 5 grid
     nx, ny, nz = 100, 100, 5
     dx, dy, dz = 10.0, 10.0, 5.0
-    grid = GridSpec((nx, ny, nz), (dx, dy, dz))
+    shape = (nx, ny, nz)
+    spacing = (dx, dy, dz)
 
     # Shared noise: all azimuth components are driven by the same white noise, so
     # correlation extends across azimuth bins, in both kriging and simulation.
     # A 3D grid is then simulated with a 3D FFT, also for a single layer, and the
     # FFT is padded in z by about the vertical correlation length (depth_range / dz).
     shared_noise = True
-    variogram = NonstationaryVariogram(
-        'matern52', main_range=300, perp_range=60, depth_range=20, azimuth=rotating_azimuth, dip=10, n_bins=36,
-        shared_noise=shared_noise,
+    variogram = grf.nonstationary_variogram(
+        'matern52', main_range=300, perp_range=60, depth_range=20,
+        azimuth_callable=rotating_azimuth, dip=10, n_bins=36, shared_noise=shared_noise,
     )
-    azimuth = rotating_azimuth(grid.coordinates()).reshape(grid.shape)[:, :, 0]
+    x, y = np.meshgrid((np.arange(nx) + 0.5) * dx, (np.arange(ny) + 0.5) * dy, indexing='ij')
+    azimuth = rotating_azimuth(np.column_stack((x.ravel(), y.ravel()))).reshape(nx, ny)
 
     # Unconditional simulation
     grf.seed(42)
     start = time.perf_counter()
-    uncond = variogram.simulate(grid)
+    uncond = variogram.simulate(shape, spacing)
     print(f'Unconditional simulation: {time.perf_counter() - start:.2f} s')
 
     # Observation points at cell centers in layer 1
@@ -49,13 +49,12 @@ def main():
     obs_idx = rng.integers(5, 95, size=(8, 2))
     obs_pt = np.column_stack([(obs_idx + 0.5) * [dx, dy], np.full(len(obs_idx), dz / 2)])
     obs_val = np.ones(len(obs_idx))
-    obs = ObservationData(obs_pt, obs_val, np.zeros(len(obs_idx)))
+    obs_unc = np.zeros(len(obs_idx))
 
     # Simple kriging prediction (mean 0) and a conditional simulation
-    sk = SimpleKriging(mean=0.0)
-    pred_mean, _ = sk.predict(grid, obs, variogram)
+    pred_mean, _ = grf.predict(variogram, shape, spacing, obs_pt, obs_val, obs_unc)
     grf.seed(42)
-    sim = sk.simulate(grid, obs, variogram)[0]
+    sim, = grf.conditional_simulate(variogram, shape, spacing, obs_pt, obs_val, obs_unc)
 
     # Plot
     extent = [0, nx * dx, 0, ny * dy]

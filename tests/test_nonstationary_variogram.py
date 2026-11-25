@@ -20,6 +20,15 @@ def swirl_azimuth(locations):
     return (angle + 90.0) % 360.0
 
 
+def test_public_nonstationary_unconditional_simulation():
+    model = grf.nonstationary_variogram('exponential', 10.0, azimuth_callable=swirl_azimuth)
+
+    grf.seed(42)
+    field = model.simulate(grid_shape=(40, 30), grid_spacing=(2.0, 5.0))
+
+    assert field.shape == (40, 30)
+
+
 class TestVariogram:
     def test_corr_matrix_matches_corr_array(self):
         variogram = Variogram.from_parameters('matern52', 200.0, 50.0, azimuth=30.0)
@@ -43,7 +52,7 @@ class TestVariogram:
         grf.seed(5)
         expected = np.asarray(grf.simulate(raw, 30, 5.0, 20, 5.0)).reshape(grid.shape, order='F')
         grf.seed(5)
-        np.testing.assert_array_equal(Variogram(raw).simulate(grid), expected)
+        np.testing.assert_array_equal(Variogram(raw).simulate(grid.shape, grid.spacing), expected)
 
 
 class TestNonstationaryCorrelation:
@@ -111,7 +120,7 @@ class TestNonstationarySimulation:
 
     def test_unconditional_field(self):
         grf.seed(7)
-        field = self.variogram.simulate(self.grid)
+        field = self.variogram.simulate(self.grid.shape, self.grid.spacing)
         assert field.shape == self.grid.shape
         assert np.all(np.isfinite(field))
         assert 0.3 < np.var(field) < 3.0
@@ -152,8 +161,8 @@ class TestSharedNoise:
     def setup_method(self):
         self.grid = GridSpec((40, 40), (10.0, 10.0))
         self.points = self.grid.coordinates()
-        self.variogram = NonstationaryVariogram(
-            'matern52', 150.0, 40.0, azimuth=swirl_azimuth, n_bins=36, shared_noise=True,
+        self.variogram = grf.nonstationary_variogram(
+            'matern52', 150.0, 40.0, azimuth_callable=swirl_azimuth, n_bins=36, shared_noise=True,
         )
         self.obs = ObservationData(
             np.array([[105.0, 105.0], [305.0, 305.0]]), np.array([1.0, -1.0]), np.zeros(2),
@@ -164,7 +173,9 @@ class TestSharedNoise:
         model = self.variogram.corr_matrix(self.points, self.points[idx])
         grf.seed(1)
         n = 300
-        fields = np.array([self.variogram.simulate(self.grid).ravel() for _ in range(n)])
+        fields = np.array([
+            self.variogram.simulate(self.grid.shape, self.grid.spacing).ravel() for _ in range(n)
+        ])
         empirical = fields.T @ fields[:, idx] / n
         assert np.mean(np.abs(empirical - model)) < 0.06
         assert abs(np.mean(fields.var(axis=0)) - 1.0) < 0.1
@@ -215,7 +226,7 @@ class TestSharedNoise:
         grf.seed(9)
         expected = np.random.normal(size=8)
         np.random.seed(123)
-        self.variogram.simulate(self.grid)
+        self.variogram.simulate(self.grid.shape, self.grid.spacing)
         np.testing.assert_array_equal(np.random.normal(size=8), expected)
 
     @pytest.mark.parametrize('kriging', [SimpleKriging(), OrdinaryKriging()])
@@ -270,7 +281,9 @@ class TestSharedNoise3D:
         model = self.variogram.corr_matrix(self.points, self.points[idx])
         grf.seed(1)
         n = 300
-        fields = np.array([self.variogram.simulate(self.grid).ravel() for _ in range(n)])
+        fields = np.array([
+            self.variogram.simulate(self.grid.shape, self.grid.spacing).ravel() for _ in range(n)
+        ])
         empirical = fields.T @ fields[:, idx] / n
         assert np.mean(np.abs(empirical - model)) < 0.06
         assert abs(np.mean(fields.var(axis=0)) - 1.0) < 0.1
@@ -282,7 +295,7 @@ class TestSharedNoise3D:
         model = self.variogram.corr_matrix(points, points[idx])
         grf.seed(2)
         n = 300
-        fields = np.array([self.variogram.simulate(grid).ravel() for _ in range(n)])
+        fields = np.array([self.variogram.simulate(grid.shape, grid.spacing).ravel() for _ in range(n)])
         assert fields.shape[1] == len(points)
         assert np.mean(np.abs(fields.T @ fields[:, idx] / n - model)) < 0.06
 

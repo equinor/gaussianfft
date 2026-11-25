@@ -1,6 +1,6 @@
 from operator import index
 from numpy.random import RandomState
-from _gaussianfft import seed as _c_seed
+from _gaussianfft import seed as c_seed
 
 
 numpy_rng = RandomState()
@@ -13,9 +13,9 @@ def seed(value=None):
     The GaussianFFT streams are not isolated between threads or callers.
     """
     if value is None:
-        return _c_seed()
+        return c_seed()
     value = index(value)
     if not 0 <= value < 2**32:
         raise ValueError("Seed must be between 0 and 2**32 - 1")
-    _c_seed(value)
+    c_seed(value)
     numpy_rng.seed(value)

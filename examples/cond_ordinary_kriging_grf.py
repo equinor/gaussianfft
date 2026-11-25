@@ -26,6 +26,9 @@ def main():
     obs_unc = np.array([0.0, 0.0, 0.0])
 
     # Ordinary kriging prediction
+    # TODO: Ideally, we could do this via gaussianfft.predict, but currently,
+    #       it does not have a way of returning the estimated mean (which is
+    #       specific to ordinary kriging).
     grid = GridSpec((nx, ny), (dx, dy))
     obs = ObservationData(obs_pt, obs_val, obs_unc)
     ok = OrdinaryKriging()

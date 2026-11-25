@@ -9,6 +9,7 @@ import scipy.ndimage
 import gaussianfft
 from gaussianfft._kriging.covariance import Covariance
 from gaussianfft._kriging.grid_spec import GridSpec
+from gaussianfft._rng import c_seed
 
 
 class NonstationaryVariogram(Covariance):
@@ -93,7 +94,7 @@ class NonstationaryVariogram(Covariance):
                     corr[mask, j] += correlations
         return corr
 
-    def simulate(self, grid: GridSpec) -> np.ndarray:
+    def simulate(self, grid_shape: tuple[int, ...], grid_spacing: tuple[float, ...]) -> np.ndarray:
         """Sum of stationary FFT fields, one per component, weighted per node.
 
         The component fields are independent, unless ``shared_noise`` is set.
@@ -109,6 +110,7 @@ class NonstationaryVariogram(Covariance):
         Note: if shared_noise is set, gaussianfft.seed() will no longer
         return the starting seed after calling NonstationaryVariogram.simulate()
         """
+        grid = GridSpec(grid_shape, grid_spacing)
         indices, weights = self.weights(grid.coordinates())
         components = np.unique(indices[weights > 0.0])
         shared = self._shared_noise and len(components) > 1
@@ -117,7 +119,7 @@ class NonstationaryVariogram(Covariance):
             sim_shape = sim_shape[:2] + (2,)
         grid_args = tuple(value for axis in zip(sim_shape, grid.spacing) for value in axis)
         if shared:
-            seed = gaussianfft.seed()
+            seed = c_seed()
             sizes = [gaussianfft.simulation_size(self.component(m), *grid_args) for m in components]
             padding = np.max(sizes, axis=0) - np.asarray(sim_shape[:len(sizes[0])])
             pad_args = dict(zip(('padx', 'pady', 'padz'), (int(p) for p in padding)))
@@ -126,17 +128,17 @@ class NonstationaryVariogram(Covariance):
             node_weights = np.sum(np.where(indices == m, weights, 0.0), axis=1).reshape(grid.shape)
             if shared:
                 # Only reset the field stream; observation noise must keep advancing.
-                gaussianfft._set_c_seed(seed)
+                c_seed(seed)
                 raw = gaussianfft.advanced.simulate(self.component(m), *grid_args, **pad_args)
             else:
                 raw = gaussianfft.simulate(self.component(m), *grid_args)
             raw = np.asarray(raw).reshape(sim_shape, order='F')
             field += node_weights * raw[tuple(slice(0, n) for n in grid.shape)]
         if shared:
-            # Because .seed() returns the starting seed, calling NonstationaryVariogram.simulate() again would produce
+            # Because c_seed() returns the starting seed, calling NonstationaryVariogram.simulate() again would produce
             # related results (only observation noise would differ) without this re-seeding. Note that this changes the nominal
-            # starting seed, so that calling .seed() after a call to simulate() will return a different seed from before.
-            gaussianfft._set_c_seed(seed + 1)
+            # starting seed, so that calling c_seed() after a call to simulate() will return a different seed from before.
+            c_seed(seed + 1)
         return field
 
     def _point_components(self, points):
@@ -297,6 +299,8 @@ def create_nonstationary_variogram(
     gridded_azimuth_spacing: tuple[float, ...] | None = None,
     dip: float = 0.0,
     power: float = 1.5,
+    n_bins: int = 100,
+    shared_noise: bool = False,
 ):
     if azimuth_callable is not None:
         azimuth = azimuth_callable
@@ -310,5 +314,5 @@ def create_nonstationary_variogram(
         raise ValueError("Either azimuth_callable or gridded azimuth parameters must be provided")
     return NonstationaryVariogram(
         type_, main_range, perp_range, depth_range,
-        azimuth=azimuth, dip=dip, power=power
+        azimuth=azimuth, dip=dip, power=power, n_bins=n_bins, shared_noise=shared_noise,
     )

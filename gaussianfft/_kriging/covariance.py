@@ -4,8 +4,6 @@ import abc
 
 import numpy as np
 
-from gaussianfft._kriging.grid_spec import GridSpec
-
 
 class Covariance(abc.ABC):
     """Gridless unit-variance covariance model, with correlation given by ``corr_matrix``."""
@@ -15,5 +13,5 @@ class Covariance(abc.ABC):
         """Correlation between points (n_points, ndim) and locations (n_locations, ndim)."""
 
     @abc.abstractmethod
-    def simulate(self, grid: GridSpec) -> np.ndarray:
+    def simulate(self, grid_shape: tuple[int, ...], grid_spacing: tuple[float, ...]) -> np.ndarray:
         """Unconditional unit-variance field with the grid shape."""

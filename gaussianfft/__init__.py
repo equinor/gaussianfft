@@ -50,6 +50,9 @@ def nonstationary_variogram(
     gridded_azimuth_spacing: tuple[float, ...] | None = None,
     dip: float = 0.0,
     power: float = 1.5,
+    # Advanced settings. Should perhaps hide if good defaults are found
+    n_bins: int = 100,
+    shared_noise: bool = False,
 ):
     from gaussianfft._kriging.nonstationary_variogram import (
         create_nonstationary_variogram,
@@ -61,11 +64,13 @@ def nonstationary_variogram(
         gridded_azimuth_spacing=gridded_azimuth_spacing,
         dip=dip,
         power=power,
+        n_bins=n_bins,
+        shared_noise=shared_noise,
     )
 
 
 __all__ = [
-    'variogram', 'simulate', 'seed', 'advanced', 'simulation_size',
+    'variogram', 'nonstationary_variogram', 'simulate', 'seed', 'advanced', 'simulation_size',
     'quote', 'Variogram', 'VariogramType', 'util', 'SizeTVector', 'DoubleVector',
     'conditional_simulate', 'predict',
     '__version__',
