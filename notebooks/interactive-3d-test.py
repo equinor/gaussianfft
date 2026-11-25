@@ -62,14 +62,13 @@ def bins_for_depth_twist(twist_degrees):
 @app.function
 def make_variogram(kind, major, minor, vertical, azimuth, twist):
     import gaussianfft as grf
-    from gaussianfft._kriging.nonstationary_variogram import NonstationaryVariogram
 
     ranges = tuple(max(float(value), 1.0) for value in (major, minor, vertical))
     if twist > 0.0:
-        return NonstationaryVariogram(
+        return grf.nonstationary_variogram(
             kind,
             *ranges,
-            azimuth=lambda locations: depth_twist_azimuth(
+            azimuth_callable=lambda locations: depth_twist_azimuth(
                 locations, float(azimuth), float(twist)
             ),
             n_bins=bins_for_depth_twist(twist),
@@ -82,13 +81,11 @@ def simulate_field(model, shape, spacing):
     import numpy as np
 
     import gaussianfft as grf
-    from gaussianfft._kriging.grid_spec import GridSpec
-    from gaussianfft._kriging.nonstationary_variogram import NonstationaryVariogram
 
-    if isinstance(model, NonstationaryVariogram):
-        return model.simulate(GridSpec(shape, spacing))
-    grid_args = tuple(value for size, step in zip(shape, spacing) for value in (size, step))
-    return np.asarray(grf.simulate(model, *grid_args)).reshape(shape, order="F")
+    if isinstance(model, grf.Variogram):
+        grid_args = tuple(value for size, step in zip(shape, spacing) for value in (size, step))
+        return np.asarray(grf.simulate(model, *grid_args)).reshape(shape, order="F")
+    return model.simulate(shape, spacing)
 
 
 @app.function
