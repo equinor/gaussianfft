@@ -9,9 +9,11 @@ try:
 except ImportError:
     raise ImportError("Scipy is not installed, and is required to use these utilities")
 
-import gaussianfft
+from gaussianfft._rng import numpy_rng
+from gaussianfft._kriging.covariance import Covariance
 from gaussianfft._kriging.grid_spec import GridSpec
 from gaussianfft._kriging.observation_data import ObservationData
+
 
 class FactorizationError(ValueError):
     def __init__(self):
@@ -32,14 +34,9 @@ _MEMORY_BUDGET_BYTES = 10 * 1024 * 1024 * 1024  # 10 GB
 # Module-level utilities
 # ---------------------------------------------------------------------------
 
-def _build_obs_cov_matrix(variogram, obs_locations, obs_uncertainties):
-    n = len(obs_locations)
-    cov = np.empty((n, n))
-    for i in range(n):
-        correlations = variogram.corr_array(obs_locations[i] - obs_locations[i:])
-        cov[i, i:] = correlations
-        cov[i:, i] = correlations
-    cov[np.diag_indices(n)] += obs_uncertainties ** 2 + 1e-10
+def _build_obs_cov_matrix(variogram: Covariance, obs_locations, obs_uncertainties):
+    cov = variogram.corr_matrix(obs_locations, obs_locations)
+    cov[np.diag_indices(len(obs_locations))] += obs_uncertainties ** 2 + 1e-10
     return cov
 
 
@@ -63,14 +60,6 @@ def _chunk_size(n_grid, n_obs):
     return min(n_grid, max(1, _MEMORY_BUDGET_BYTES // (arrays_per_chunk * n_obs * 8)))
 
 
-def _build_cross_cov_matrix(variogram, grid_coords, obs_locations):
-    """Cross-covariance between supplied grid points and observations."""
-    cov = np.empty((len(grid_coords), len(obs_locations)))
-    for j, obs_location in enumerate(obs_locations):
-        cov[:, j] = variogram.corr_array(grid_coords - obs_location)
-    return cov
-
-
 def _obs_interp_coords(obs_locations, grid: GridSpec):
     grid_max = np.asarray(grid.shape) * grid.spacing
     if np.any(obs_locations < 0) or np.any(obs_locations > grid_max):
@@ -80,12 +69,6 @@ def _obs_interp_coords(obs_locations, grid: GridSpec):
 
 def _interpolate_at_obs(field, obs_coords):
     return scipy.ndimage.map_coordinates(field, obs_coords, order=1, mode='nearest')
-
-
-def _simulate_uncond(variogram, grid: GridSpec):
-    grid_args = tuple(value for axis in zip(grid.shape, grid.spacing) for value in axis)
-    raw = gaussianfft.simulate(variogram, *grid_args)
-    return np.asarray(raw).reshape(grid.shape, order='F')
 
 
 # ---------------------------------------------------------------------------
@@ -98,14 +81,14 @@ class Kriging(abc.ABC):
 
     @abc.abstractmethod
     def predict(
-        self, grid: GridSpec, obs: ObservationData, variogram: gaussianfft.Variogram,
+        self, grid: GridSpec, obs: ObservationData, variogram: Covariance,
         calculate_stddev=False,
     ) -> tuple[np.ndarray, np.ndarray | None]:
         """Return a grid-shaped prediction and optional standard deviation."""
 
     @abc.abstractmethod
     def simulate(
-        self, grid: GridSpec, obs: ObservationData, variogram: gaussianfft.Variogram,
+        self, grid: GridSpec, obs: ObservationData, variogram: Covariance,
         n_sim=1,
     ) -> list[np.ndarray]:
         """Generate conditional fields on a grid covering all observation locations."""
@@ -120,7 +103,7 @@ class SimpleKriging(Kriging):
         self._variogram = None
         self._cho_factor = None
 
-    def _prepare_kriging(self, obs: ObservationData, variogram: gaussianfft.Variogram) -> None:
+    def _prepare_kriging(self, obs: ObservationData, variogram: Covariance) -> None:
         covariance = _build_obs_cov_matrix(variogram, obs.locations, obs.uncertainties)
         cho_factor = _cholesky_factor(covariance)
         self._obs = obs
@@ -128,7 +111,7 @@ class SimpleKriging(Kriging):
         self._cho_factor = cho_factor
 
     def predict(
-        self, grid: GridSpec, obs: ObservationData, variogram: gaussianfft.Variogram,
+        self, grid: GridSpec, obs: ObservationData, variogram: Covariance,
         calculate_stddev=False,
     ) -> tuple[np.ndarray, np.ndarray | None]:
         if obs.locations.shape[1] != len(grid.shape):
@@ -141,7 +124,7 @@ class SimpleKriging(Kriging):
         return correction, stddev
 
     def simulate(
-        self, grid: GridSpec, obs: ObservationData, variogram: gaussianfft.Variogram,
+        self, grid: GridSpec, obs: ObservationData, variogram: Covariance,
         n_sim=1,
     ) -> list[np.ndarray]:
         if obs.locations.shape[1] != len(grid.shape):
@@ -152,9 +135,10 @@ class SimpleKriging(Kriging):
         results = []
 
         for _ in range(n_sim):
-            uncond = _simulate_uncond(self._variogram, grid)
+            uncond = self._variogram.simulate(grid.shape, grid.spacing)
             uncond_at_obs = _interpolate_at_obs(uncond, obs_coords)
-            obs_residuals = (obs.values - self.mean) - uncond_at_obs
+            simulated_noise = numpy_rng.normal(0.0, obs.uncertainties)
+            obs_residuals = (obs.values - self.mean) - (uncond_at_obs + simulated_noise)
 
             correction, _ = self._krige(grid.shape, grid_coords, obs_residuals)
             results.append(self.mean + uncond + correction)
@@ -171,9 +155,7 @@ class SimpleKriging(Kriging):
         variance_flat = np.empty(n_grid) if calculate_stddev else None
         for start in range(0, n_grid, chunk):
             end = min(start + chunk, n_grid)
-            cross_cov = _build_cross_cov_matrix(
-                self._variogram, grid_coords[start:end], obs.locations,
-            )
+            cross_cov = self._variogram.corr_matrix(grid_coords[start:end], obs.locations)
             correction_flat[start:end] = cross_cov @ weights
             if calculate_stddev:
                 alpha = scipy.linalg.cho_solve(self._cho_factor, cross_cov.T)
@@ -213,7 +195,7 @@ class OrdinaryKriging(Kriging):
         self._s = 0.0
         self.estimated_mean = None
 
-    def _prepare_kriging(self, obs: ObservationData, variogram: gaussianfft.Variogram) -> None:
+    def _prepare_kriging(self, obs: ObservationData, variogram: Covariance) -> None:
         covariance = _build_obs_cov_matrix(variogram, obs.locations, obs.uncertainties)
         cho_factor = _cholesky_factor(covariance)
         n_obs = len(obs.locations)
@@ -236,7 +218,7 @@ class OrdinaryKriging(Kriging):
         return beta - np.outer(self._alpha, drift), drift
 
     def predict(
-        self, grid: GridSpec, obs: ObservationData, variogram: gaussianfft.Variogram,
+        self, grid: GridSpec, obs: ObservationData, variogram: Covariance,
         calculate_stddev=False,
     ) -> tuple[np.ndarray, np.ndarray | None]:
         if obs.locations.shape[1] != len(grid.shape):
@@ -246,7 +228,7 @@ class OrdinaryKriging(Kriging):
         return self._krige(grid.shape, grid_coords, obs.values, calculate_stddev)
 
     def simulate(
-        self, grid: GridSpec, obs: ObservationData, variogram: gaussianfft.Variogram,
+        self, grid: GridSpec, obs: ObservationData, variogram: Covariance,
         n_sim=1,
     ) -> list[np.ndarray]:
         if obs.locations.shape[1] != len(grid.shape):
@@ -257,9 +239,10 @@ class OrdinaryKriging(Kriging):
         results = []
 
         for _ in range(n_sim):
-            uncond = _simulate_uncond(self._variogram, grid)
+            uncond = self._variogram.simulate(grid.shape, grid.spacing)
             uncond_at_obs = _interpolate_at_obs(uncond, obs_coords)
-            obs_residuals = obs.values - uncond_at_obs
+            simulated_noise = numpy_rng.normal(0.0, obs.uncertainties)
+            obs_residuals = obs.values - (uncond_at_obs + simulated_noise)
 
             correction, _ = self._krige(grid.shape, grid_coords, obs_residuals)
             results.append(uncond + correction)
@@ -275,9 +258,7 @@ class OrdinaryKriging(Kriging):
         variance_flat = np.empty(n_grid) if calculate_stddev else None
         for start in range(0, n_grid, chunk):
             end = min(start + chunk, n_grid)
-            cross_cov = _build_cross_cov_matrix(
-                self._variogram, grid_coords[start:end], obs.locations,
-            )
+            cross_cov = self._variogram.corr_matrix(grid_coords[start:end], obs.locations)
             weights, drift = self._ok_weights_chunk(cross_cov)
             correction_flat[start:end] = weights.T @ residuals
             if calculate_stddev:

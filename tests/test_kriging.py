@@ -10,9 +10,202 @@ import gaussianfft as grf
 from gaussianfft import predict
 
 
+@pytest.mark.parametrize(
+    "variogram_type",
+    [kind for kind in grf.VariogramType if kind is not grf.VariogramType.CONSTANT],
+    ids=lambda kind: kind.value,
+)
+@pytest.mark.parametrize("method", ["simple", "ordinary"])
+def test_conditional_simulation_variance_with_noisy_observation(variogram_type, method):
+    """A simulation conditioned on a single noisy observation should have the expected variance."""
+    obs_index = 0
+    prior_variance = 1.0           # Prior variance of the field
+    observation_variance = 3.14
+    grf.seed(20261111)
+    simulations = grf.conditional_simulate(
+        grf.variogram(variogram_type, main_range=1.0),
+        (41,), (1.0,),
+        obs_locations=[[obs_index + 0.5]], obs_values=[0.0],
+        obs_uncertainties=[np.sqrt(observation_variance)],
+        n=1000, method=method,
+    )
+    # (below P=prior_variance, R=observation_variance)
+    # For simple kriging, at a point X ~ N(0, P), with observation Y = X + noise ~ N(X, R), so by conjugate priors
+    # N(X | Y=y) ~ N(post_mean, P*R/(P+R)), so the posterior variance at the observation is P*R/(P+R), and at a faraway point the observation tells us nothing, so it's still P.
+
+    # For ordinary kriging, Y = mu + X' + noise with a flat prior on mu and X' ~ N(0, P), noise ~ N(0, R). Then at the observation location, Var(mu + X' | Y=y) = Var(y-noise) = Var(noise) = R.
+    # Far away, we have no dependence between the observation noise and field variation, so instead Var(mu+X') = Var(mu) + Var(X') = 2*P + R.
+    # (Here we use that p(mu|y) \propto p(y|mu) for a flat prior on mu, so that Var(mu|y) = Var(Y|mu) = Var(X' + noise|) = Var(X') + Var(noise) = P + R.)
+
+    if method == "simple":
+        far_variance = prior_variance
+        observation_posterior_variance = (
+            prior_variance * observation_variance
+            / (prior_variance + observation_variance)
+        )
+    else:
+        far_variance = 2 * prior_variance + observation_variance
+        observation_posterior_variance = observation_variance
+
+    for loc, var in [
+        (obs_index + 20, far_variance),
+        (obs_index, observation_posterior_variance),
+    ]:
+        obs = [field[loc] for field in simulations]
+        variance = np.var(obs, ddof=1)
+        assert variance == pytest.approx(var, rel=0.2, abs=0.06)
+
+
+@pytest.mark.parametrize(("grid_shape", "grid_spacing"), [
+    # Shape is a 1-3D tuple of positive integers
+    ((), ()),
+    ((2, 2, 2, 2), (1.0, 1.0, 1.0, 1.0)),
+    ((None,), (1.0,)),
+    ((np.bool_(True),), (1.0,)),
+
+    # Spacing must be positive and finite
+    ((2,), (0.0,)),
+    ((2,), (-1.0,)),
+    ((2,), (np.nan,)),
+    ((2,), (np.inf,)),
+])
+def test_predict_rejects_invalid_grid(grid_shape, grid_spacing):
+    with pytest.raises(ValueError):
+        predict(
+            grf.variogram("exponential", 1.0), grid_shape, grid_spacing,
+            obs_locations=[[0.5]], obs_values=[1.0], obs_uncertainties=[0.0],
+        )
+
+
+@pytest.mark.parametrize(("obs_locations", "obs_values", "obs_uncertainties"), [
+    # Locations must be a 2D array with 1-3 coordinates per observation
+    ([[]], [1.0], [0.0]),
+    ([[0.0, 0.0, 0.0, 0.0]], [1.0], [0.0]),
+
+    # All observations must have the same number of coordinates
+    ([[0.0], [1.0, 2.0]], [1.0, 2.0], [0.0, 0.0]),
+
+    # At least one observation is required
+    (np.empty((0, 1)), [], []),
+])
+def test_predict_rejects_invalid_observation_locations(obs_locations, obs_values, obs_uncertainties):
+    with pytest.raises(ValueError):
+        predict(
+            grf.variogram("exponential", 1.0), (2,), (1.0,),
+            obs_locations, obs_values, obs_uncertainties,
+        )
+
+
+@pytest.mark.parametrize(("obs_locations", "obs_values", "obs_uncertainties"), [
+    ([[np.nan]], [1.0], [0.0]),
+    ([[np.inf]], [1.0], [0.0]),
+    ([[-np.inf]], [1.0], [0.0]),
+    ([[0.5]], [np.nan], [0.0]),
+    ([[0.5]], [np.inf], [0.0]),
+    ([[0.5]], [-np.inf], [0.0]),
+    ([[0.5]], [1.0], [np.nan]),
+    ([[0.5]], [1.0], [np.inf]),
+    ([[0.5]], [1.0], [-np.inf]),
+])
+def test_predict_rejects_nonfinite_observations(obs_locations, obs_values, obs_uncertainties):
+    with pytest.raises(ValueError, match="finite"):
+        predict(
+            grf.variogram("exponential", 1.0), (2,), (1.0,),
+            obs_locations, obs_values, obs_uncertainties,
+        )
+
+
 # ---------------------------------------------------------------------------
 # Simple Kriging
 # ---------------------------------------------------------------------------
+
+def _explicit_sample(rng: np.random.Generator, locations: np.ndarray, variogram: grf.Variogram,n_samples: int) -> np.ndarray:
+    """Build C_ij = rho(x_i - x_j), then sample F = mean + Z L^T for C = L L^T. Implementation is inefficient on purpose - the entire
+    point of gaussianfft is that you should use the FFT-based methods instead - but this gives us a ground truth to compare against."""
+
+    displacements = locations[:, None, :] - locations[None, :, :]
+    covariance = np.array([
+        [variogram.corr(dx, dy) for dx, dy in displacement_row]
+        for displacement_row in displacements
+    ])
+    factor = np.linalg.cholesky(covariance)
+    return rng.standard_normal((n_samples, len(covariance))) @ factor.T
+
+
+@pytest.mark.parametrize(
+    "variogram_type",
+    [grf.VariogramType.EXPONENTIAL, grf.VariogramType.GAUSSIAN],
+    ids=lambda kind: kind.value,
+)
+@pytest.mark.parametrize("range_y", [12.0, 6.0], ids=["isotropic", "anisotropic"])
+@pytest.mark.parametrize("method", ["simple", "ordinary"], ids=["simple", "ordinary"])
+def test_kriging_calibrated_on_independent_gaussian_fields(variogram_type, range_y, method):
+    """Simulate observations of a Gaussian field on a grid. For each of the samples, try predicting the field at all grid points using ordinary kriging.
+    The prediction and its uncertainty should also be correct in expectation (i.e. the standardized errors should have mean 0 and variance 1).
+    Further, at an unobserved grid point, sampling from the posterior predictive distribution should yield values consistent with the predicted uncertainty."""
+    rng = np.random.default_rng(20261102)
+    grid_shape = (6, 5)
+    grid_spacing = (2.0, 3.0)
+    grid_locations = np.array([
+        [(ix + 0.5) * grid_spacing[0], (iy + 0.5) * grid_spacing[1]]
+        for ix in range(grid_shape[0]) for iy in range(grid_shape[1])
+    ])
+    obs_indices = [0, 12, 24]
+    obs_locations = grid_locations[obs_indices]
+    obs_uncertainties = np.array([0.1, 0.3, 0.5])
+
+    range_x = 12.0
+    mean = 2.5
+    n_samples = 2048
+    variogram = grf.variogram(variogram_type, range_x, range_y)
+    fields = mean + _explicit_sample(rng, grid_locations, variogram, n_samples)
+
+    true_fields = fields.reshape((n_samples, *grid_shape))
+    observations = fields[:, obs_indices] + rng.standard_normal(
+        (n_samples, len(obs_locations)),
+    ) * obs_uncertainties
+    standardized_errors = np.empty_like(true_fields)
+
+    for sample_idx in range(n_samples):
+        prediction, stddev = predict(
+            variogram, grid_shape, grid_spacing,
+            obs_locations, observations[sample_idx], obs_uncertainties,
+            mean=mean, calculate_stddev=True, method=method
+        )
+        assert prediction.shape == stddev.shape == grid_shape
+        assert np.all(stddev > 0)
+        standardized_errors[sample_idx] = (prediction - true_fields[sample_idx]) / stddev
+
+    mean_error = standardized_errors.mean(axis=0)
+    error_variance = standardized_errors.var(axis=0, ddof=1)
+
+    # At each point, correct predictions give independent N(0, 1) standardized
+    # errors across fields. Their sample mean has SE 1/sqrt(n), and (n-1) times
+    # their sample variance is chi-squared with n-1 degrees of freedom, giving
+    # variance SE sqrt(2/(n-1)). Four SE should happen only 0.01% of the time.
+    np.testing.assert_allclose(mean_error, 0.0, rtol=0, atol=5 / np.sqrt(n_samples))
+    np.testing.assert_allclose(error_variance, 1.0, rtol=0, atol=4 * np.sqrt(2 / (n_samples - 1)))
+
+
+    _, ordinary_stddev = predict(
+        variogram, grid_shape, grid_spacing,
+        obs_locations, observations[0], obs_uncertainties,
+        method=method, calculate_stddev=True,
+    )
+    grf.seed(20261103)
+    simulations = grf.conditional_simulate(
+        variogram, grid_shape, grid_spacing,
+        obs_locations, observations[0], obs_uncertainties,
+        method=method, n=n_samples,
+    )
+
+    for point in [(0, 0), (2, 3)]:  # A point with and one without observations
+        simulation_variance = np.var([field[point] for field in simulations], ddof=1)
+        # Like above, four SE should happen only 0.01% of the time.
+        assert simulation_variance == pytest.approx(
+            ordinary_stddev[point] ** 2, rel=4 * np.sqrt(2 / (n_samples - 1)),
+        )
+
 
 class TestSimpleKriging1D:
     def setup_method(self):
@@ -25,7 +218,7 @@ class TestSimpleKriging1D:
         obs_values = np.array([1.0, -0.5, 0.8])
         obs_uncertainties = np.array([0.0, 0.0, 0.0])
 
-        mean_field, variance_field = predict(
+        mean_field, _variance_field = predict(
             self.variogram, (self.nx,), (self.dx,),
             obs_locations, obs_values, obs_uncertainties,
         )
@@ -254,7 +447,8 @@ class TestInputValidation:
         obs_uncertainties = np.array([0.0])
 
         with pytest.raises(TypeError, match="unexpected keyword argument"):
-            predict(self.variogram, (50,), (5.0,), obs_locations, obs_values, obs_uncertainties, typo=True)
+            # Intentional invalid-keyword call to verify runtime validation.
+            predict(self.variogram, (50,), (5.0,), obs_locations, obs_values, obs_uncertainties, typo=True)  # type: ignore[reportCallIssue]
 
     def test_mismatched_grid_spacing_rejected(self):
         obs_locations = np.array([[10.0]])
@@ -423,9 +617,25 @@ class TestMethodDispatch:
             kriging_fn(*self._args(), method=method)
 
     def test_conditional_simulate_default_is_simple_kriging(self):
-        sims_default = grf.conditional_simulate(*self._args(), n=5, seed=0)
-        sims_sk = grf.conditional_simulate(*self._args(), n=5, seed=0, method='simple')
+        grf.seed(0)
+        sims_default = grf.conditional_simulate(*self._args(), n=5)
+        grf.seed(0)
+        sims_sk = grf.conditional_simulate(*self._args(), n=5, method='simple')
         np.testing.assert_array_equal(sims_default, sims_sk)
+
+    @pytest.mark.parametrize("method", ["simple", "ordinary"])
+    def test_noisy_conditional_simulation_seeding(self, method):
+        args = (*self._args()[:-1], np.array([0.3, 0.5]))
+        grf.seed(42)
+        explicit = grf.conditional_simulate(*args, n=2, method=method)
+        grf.seed(42)
+        repeated = grf.conditional_simulate(*args, n=2, method=method)
+        grf.seed(42)
+        first = grf.conditional_simulate(*args, method=method)
+        second = grf.conditional_simulate(*args, method=method)
+        np.testing.assert_array_equal(explicit, repeated)
+        np.testing.assert_array_equal(explicit, first + second)
+        assert not np.array_equal(first, second)
 
     def test_conditional_simulate_method_dispatch(self):
         grf.seed(0)

@@ -68,6 +68,7 @@ build-backend = "scikit_build_core.build"
 notebooks = [
     "marimo>=0.17.6",
     "matplotlib",
+    "plotly",
     "scipy",
 ]
 test = [

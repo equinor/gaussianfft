@@ -7,7 +7,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.ndimage import map_coordinates
 import gaussianfft as grf
-from gaussianfft._kriging import GridSpec, ObservationData, OrdinaryKriging
+from gaussianfft._kriging import GridSpec, ObservationData, OrdinaryKriging, Variogram
 
 
 def _interp(field, xs, ys, dx, dy):
@@ -18,7 +18,7 @@ def main():
     # Grid setup
     nx, ny = 100, 100
     dx, dy = 10.0, 10.0
-    variogram = grf.variogram('matern52', main_range=300, perp_range=100, azimuth=30)
+    variogram = Variogram.from_parameters('matern52', main_range=300, perp_range=100, azimuth=30)
 
     # Observation points
     obs_pt = np.array([[250.0, 750.0], [755.0, 255.0], [500.0, 500.0]])
@@ -26,6 +26,9 @@ def main():
     obs_unc = np.array([0.0, 0.0, 0.0])
 
     # Ordinary kriging prediction
+    # TODO: Ideally, we could do this via gaussianfft.predict, but currently,
+    #       it does not have a way of returning the estimated mean (which is
+    #       specific to ordinary kriging).
     grid = GridSpec((nx, ny), (dx, dy))
     obs = ObservationData(obs_pt, obs_val, obs_unc)
     ok = OrdinaryKriging()

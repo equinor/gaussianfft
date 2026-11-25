@@ -28,11 +28,13 @@ def main():
     grf.seed(42)
     uncond = grf.simulate(variogram, nx, dx, ny, dy)
     uncond_2d = np.array(uncond).reshape((nx, ny), order='F')
+    grf.seed(42)
     cond_seed_42 = grf.conditional_simulate(
-        variogram, (nx, ny), (dx, dy), obs_pt, obs_val, obs_unc, n=1, seed=42
+        variogram, (nx, ny), (dx, dy), obs_pt, obs_val, obs_unc, n=1
     )[0]
+    grf.seed(123)
     cond_seed_123 = grf.conditional_simulate(
-        variogram, (nx, ny), (dx, dy), obs_pt, obs_val, obs_unc, n=1, seed=123
+        variogram, (nx, ny), (dx, dy), obs_pt, obs_val, obs_unc, n=1
     )[0]
 
     # Preserve the "average of many conditional realizations" point.

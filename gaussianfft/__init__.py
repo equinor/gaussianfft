@@ -1,7 +1,12 @@
+from __future__ import annotations
+from collections.abc import Callable
+
 from ._version import __version__
 from enum import Enum
 from importlib.util import find_spec
 from typing import TYPE_CHECKING
+
+import numpy as np
 
 if TYPE_CHECKING:
     from gaussianfft._kriging.api import KrigingType
@@ -11,9 +16,10 @@ if find_spec("numpy") is None:
 
 import gaussianfft._platform  # noqa: F401  (sets up DLL paths before loading C extension)
 
-import _gaussianfft
+from _gaussianfft import Variogram, advanced, quote, simulate, simulation_size
+from _gaussianfft import variogram as _c_variogram
 
-from _gaussianfft import *
+from ._rng import seed
 
 
 class VariogramType(Enum):
@@ -30,11 +36,41 @@ class VariogramType(Enum):
 def variogram(type, *args, **kwargs):
     if isinstance(type, Enum):
         type = type.value
-    return _gaussianfft.variogram(type, *args, **kwargs)
+    return _c_variogram(type, *args, **kwargs)
+
+
+def nonstationary_variogram(
+    type_: str,
+    main_range: float,
+    perp_range: float = -1.0,
+    depth_range: float = -1.0,
+    *,
+    azimuth_callable: Callable[[np.ndarray], np.ndarray] | None = None,
+    gridded_azimuth_values: np.ndarray | None = None,
+    gridded_azimuth_spacing: tuple[float, ...] | None = None,
+    dip: float = 0.0,
+    power: float = 1.5,
+    # Advanced settings. Should perhaps hide if good defaults are found
+    n_bins: int = 100,
+    shared_noise: bool = False,
+):
+    from gaussianfft._kriging.nonstationary_variogram import (
+        create_nonstationary_variogram,
+    )
+    return create_nonstationary_variogram(
+        type_, main_range, perp_range, depth_range,
+        azimuth_callable=azimuth_callable,
+        gridded_azimuth_values=gridded_azimuth_values,
+        gridded_azimuth_spacing=gridded_azimuth_spacing,
+        dip=dip,
+        power=power,
+        n_bins=n_bins,
+        shared_noise=shared_noise,
+    )
 
 
 __all__ = [
-    'variogram', 'simulate', 'seed', 'advanced', 'simulation_size',
+    'variogram', 'nonstationary_variogram', 'simulate', 'seed', 'advanced', 'simulation_size',
     'quote', 'Variogram', 'VariogramType', 'util', 'SizeTVector', 'DoubleVector',
     'conditional_simulate', 'predict',
     '__version__',
@@ -44,13 +80,11 @@ __all__ = [
 def conditional_simulate(
         variogram, grid_shape: tuple[int, ...], grid_spacing: tuple[float, ...],
         obs_locations, obs_values, obs_uncertainties, *,
-        mean=0.0, n=1, seed=None, method: 'KrigingType' = 'simple',
+        mean=0.0, n=1, method: 'KrigingType' = 'simple',
 ):
     """Generate conditional fields using shape and spacing tuples in x, y, z order."""
     if len(grid_shape) != len(grid_spacing):
         raise ValueError("grid_spacing must have the same length as grid_shape")
-    if seed is not None:
-        _gaussianfft.seed(seed)
     from gaussianfft._kriging import simulate as _kriging_simulate
     return _kriging_simulate(
         variogram, grid_shape, grid_spacing, obs_locations, obs_values, obs_uncertainties,
