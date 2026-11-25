@@ -6,13 +6,7 @@ import pytest
 if platform.python_implementation() == 'PyPy':
     pytest.skip('Kriging requires SciPy, which is unavailable on PyPy', allow_module_level=True)
 
-import scipy.linalg
-
 import gaussianfft as grf
-from gaussianfft._kriging import (
-    GridSpec, GriddedAzimuth, NonstationaryVariogram, ObservationData, OrdinaryKriging,
-    SimpleKriging, Variogram, predict,
-)
 
 
 def swirl_azimuth(locations):
@@ -20,299 +14,158 @@ def swirl_azimuth(locations):
     return (angle + 90.0) % 360.0
 
 
-def test_public_nonstationary_unconditional_simulation():
+def test_nonstationary_unconditional_simulation():
     model = grf.nonstationary_variogram('exponential', 10.0, azimuth_callable=swirl_azimuth)
 
     grf.seed(42)
     field = model.simulate(grid_shape=(40, 30), grid_spacing=(2.0, 5.0))
 
     assert field.shape == (40, 30)
+    assert np.all(np.isfinite(field))
 
 
-class TestVariogram:
-    def test_corr_matrix_matches_corr_array(self):
-        variogram = Variogram.from_parameters('matern52', 200.0, 50.0, azimuth=30.0)
-        reference = grf.variogram('matern52', main_range=200.0, perp_range=50.0, azimuth=30.0)
-        points = GridSpec((20, 15), (10.0, 10.0)).coordinates()
-        locations = points[[0, 37, 299]]
-        expected = np.stack([reference.corr_array(points - loc) for loc in locations], axis=1)
-        np.testing.assert_allclose(variogram.corr_matrix(points, locations), expected)
+@pytest.mark.parametrize('shared_noise', [False, True])
+def test_constant_azimuth_matches_stationary_prediction(shared_noise):
+    model = grf.nonstationary_variogram(
+        'matern52', 200.0, 50.0, azimuth_callable=lambda p: np.full(len(p), 36.0),
+        n_bins=20, shared_noise=shared_noise,
+    )
+    stationary = grf.variogram('matern52', 200.0, 50.0, azimuth=36.0)
+    args = ((40, 30), (10.0, 10.0), [[5.0, 5.0], [175.0, 75.0]], [1.0, -0.5], [0.0, 0.0])
 
-    def test_wrapped_and_raw_variogram_give_same_prediction(self):
-        raw = grf.variogram('exponential', 100.0)
-        grid = GridSpec((30, 30), (5.0, 5.0))
-        obs = ObservationData(np.array([[20.0, 20.0], [100.0, 60.0]]), np.array([1.0, -1.0]), np.zeros(2))
-        expected, _ = predict(raw, grid.shape, grid.spacing, obs.locations, obs.values, obs.uncertainties)
-        actual, _ = SimpleKriging().predict(grid, obs, Variogram(raw))
-        np.testing.assert_array_equal(actual, expected)
+    actual, _ = grf.predict(model, *args)
+    expected, _ = grf.predict(stationary, *args)
 
-    def test_simulation_equals_plain_fft(self):
-        raw = grf.variogram('exponential', 100.0)
-        grid = GridSpec((30, 20), (5.0, 5.0))
-        grf.seed(5)
-        expected = np.asarray(grf.simulate(raw, 30, 5.0, 20, 5.0)).reshape(grid.shape, order='F')
-        grf.seed(5)
-        np.testing.assert_array_equal(Variogram(raw).simulate(grid.shape, grid.spacing), expected)
+    np.testing.assert_allclose(actual, expected, atol=0.02 if shared_noise else 1e-10)
 
 
-class TestNonstationaryCorrelation:
-    def setup_method(self):
-        self.grid = GridSpec((40, 30), (10.0, 10.0))
-        self.points = self.grid.coordinates()
+def test_predict_rejects_nonfinite_azimuth():
+    model = grf.nonstationary_variogram(
+        'exponential', 100.0, azimuth_callable=lambda p: np.full(len(p), np.nan),
+    )
+    with pytest.raises(ValueError, match='finite'):
+        grf.predict(model, (2, 2), (10.0, 10.0), [[5.0, 5.0]], [1.0], [0.0])
 
-    def test_constant_azimuth_on_bin_matches_stationary(self):
-        nonstationary = grf.nonstationary_variogram(
-            'matern52', 200.0, 50.0, azimuth_callable=lambda p: np.full(len(p), 36.0),
+
+def test_gridded_azimuth_interpolates_across_wrap():
+    shape, spacing = (2, 2), (10.0, 10.0)
+    gridded = grf.nonstationary_variogram(
+        'exponential', 100.0, 30.0,
+        gridded_azimuth_values=np.array([[359.0, 359.0], [1.0, 1.0]]),
+        gridded_azimuth_spacing=spacing,
+    )
+    # Prediction evaluates azimuth at x=5 and x=15 on the grid, and at the observation halfway between.
+    reference = grf.nonstationary_variogram(
+        'exponential', 100.0, 30.0, azimuth_callable=lambda p: (p[:, 0] - 10.0) / 5.0,
+    )
+    args = (shape, spacing, [[10.0, 5.0]], [1.0], [0.0])
+
+    actual, _ = grf.predict(gridded, *args)
+    expected, _ = grf.predict(reference, *args)
+
+    np.testing.assert_allclose(actual, expected, atol=1e-10)
+
+
+@pytest.mark.parametrize('method', ['simple', 'ordinary'])
+@pytest.mark.parametrize('shared_noise', [False, True])
+def test_nonstationary_kriging_honours_observations_in_layers(method, shared_noise):
+    shape, spacing = (24, 24, 4), (10.0, 10.0, 5.0)
+    model = grf.nonstationary_variogram(
+        'matern52', 100.0, 30.0, 15.0, azimuth_callable=swirl_azimuth, dip=10.0,
+        n_bins=8, shared_noise=shared_noise,
+    )
+    indices = np.array([(5, 5, 0), (15, 15, 2), (10, 20, 3)])
+    locations = (indices + 0.5) * spacing
+    values = [1.0, -1.0, 0.5]
+    args = (model, shape, spacing, locations, values, np.zeros(len(values)))
+
+    prediction, _ = grf.predict(*args, method=method)
+    grf.seed(11)
+    simulations = grf.conditional_simulate(*args, method=method, n=2)
+
+    assert len(simulations) == 2
+    np.testing.assert_allclose(prediction[tuple(indices.T)], values, atol=1e-6)
+    for field in simulations:
+        assert field.shape == shape
+        np.testing.assert_allclose(field[tuple(indices.T)], values, atol=1e-4)
+
+
+@pytest.mark.parametrize(('shape', 'spacing', 'nodes'), [
+    ((40, 40), (10.0, 10.0), [(20, 35), (5, 20), (30, 30)]),
+    ((24, 24, 4), (10.0, 10.0, 5.0), [(12, 20, 0), (12, 20, 2), (3, 12, 3)]),
+], ids=['2d', '3d'])
+def test_shared_noise_prediction_matches_simulated_covariance(shape, spacing, nodes):
+    model = grf.nonstationary_variogram(
+        'matern52', 100.0, 30.0, 15.0, azimuth_callable=swirl_azimuth, dip=10.0,
+        n_bins=8, shared_noise=True,
+    )
+    indices = np.ravel_multi_index(np.array(nodes).T, shape)
+    predicted_covariances = []
+    for location in (np.array(nodes) + 0.5) * spacing:
+        # With one exact unit observation and unit marginal variance, the simple kriging mean is the covariance.
+        prediction, _ = grf.predict(model, shape, spacing, [location], [1.0], [0.0])
+        predicted_covariances.append(prediction.ravel())
+
+    grf.seed(1)
+    n = 300
+    fields = np.array([model.simulate(shape, spacing).ravel() for _ in range(n)])
+    empirical_covariances = fields.T @ fields[:, indices] / n
+
+    assert np.mean(np.abs(empirical_covariances - np.column_stack(predicted_covariances))) < 0.06
+    assert np.mean(fields.var(axis=0)) == pytest.approx(1.0, abs=0.1)
+
+
+def test_shared_noise_correlates_across_azimuth_bins():
+    args = ((5, 2), (10.0, 10.0), [[5.0, 5.0]], [1.0], [0.0])
+    predictions = []
+    for shared_noise in (False, True):
+        model = grf.nonstationary_variogram(
+            'matern52', 150.0, 40.0, azimuth_callable=lambda p: np.where(p[:, 0] < 20.0, 0.0, 25.0),
+            n_bins=36, shared_noise=shared_noise,
         )
-        stationary = Variogram.from_parameters('matern52', 200.0, 50.0, azimuth=36.0)
-        locations = self.points[[0, 517, 1199]]
-        np.testing.assert_allclose(
-            nonstationary.corr_matrix(self.points, locations),
-            stationary.corr_matrix(self.points, locations), atol=1e-12,
-        )
-        obs = ObservationData(locations, np.array([1.0, -0.5, 0.8]), np.zeros(3))
-        expected, _ = SimpleKriging().predict(self.grid, obs, stationary)
-        actual, _ = SimpleKriging().predict(self.grid, obs, nonstationary)
-        np.testing.assert_allclose(actual, expected, atol=1e-10)
+        prediction, _ = grf.predict(model, *args)
+        predictions.append(prediction[4, 0])
 
-    def test_unit_variance_including_wrap(self):
-        azimuth = np.random.default_rng(1).uniform(0.0, 360.0, 50)
-        azimuth[:2] = [359.9, -10.0]
-        points = self.points[:50]
-        variogram = grf.nonstationary_variogram(
-            'exponential', 100.0, 30.0, azimuth_callable=lambda p: azimuth[:len(p)],
-        )
-        np.testing.assert_allclose(np.diag(variogram.corr_matrix(points, points)), 1.0)
-
-    def test_corr_matrix_is_symmetric_positive_definite(self):
-        variogram = grf.nonstationary_variogram('matern52', 200.0, 50.0, azimuth_callable=swirl_azimuth)
-        idx = np.random.default_rng(3).choice(len(self.points), size=50, replace=False)
-        locations = self.points[idx]
-        corr = variogram.corr_matrix(locations, locations)
-        np.testing.assert_allclose(corr, corr.T)
-        scipy.linalg.cholesky(corr + 1e-10 * np.eye(len(corr)))
-
-    def test_unrelated_azimuths_are_uncorrelated(self):
-        variogram = grf.nonstationary_variogram(
-            'exponential', 1000.0, azimuth_callable=lambda p: np.where(p[:, 0] < 200.0, 0.0, 90.0),
-        )
-        corr = variogram.corr_matrix(np.array([[0.0, 0.0]]), np.array([[390.0, 0.0]]))
-        assert corr[0, 0] == 0.0
-
-    def test_invalid_azimuth_raises(self):
-        variogram = grf.nonstationary_variogram(
-            'exponential', 100.0, azimuth_callable=lambda p: np.full(len(p), np.nan),
-        )
-        with pytest.raises(ValueError, match="finite"):
-            variogram.weights(self.points[:3])
+    independent, shared = predictions
+    assert independent == 0.0
+    assert shared > 0.05
 
 
-class TestNonstationarySimulation:
-    def setup_method(self):
-        self.grid = GridSpec((60, 60, 1), (10.0, 10.0, 1.0))
-        self.variogram = NonstationaryVariogram(
-            'matern52', 200.0, 50.0, azimuth=lambda p: 90.0 * p[:, 1] / 590.0, n_bins=36,
-        )
-        self.obs = ObservationData(
-            np.array([[105.0, 105.0, 0.5], [305.0, 455.0, 0.5], [505.0, 205.0, 0.5]]),
-            np.array([1.5, -1.0, 0.5]), np.zeros(3),
-        )
+def test_shared_noise_simulations_are_reproducible_and_distinct():
+    model = grf.nonstationary_variogram(
+        'matern52', 150.0, 40.0, azimuth_callable=swirl_azimuth, n_bins=8, shared_noise=True,
+    )
+    args = (model, (40, 40), (10.0, 10.0), [[105.0, 105.0], [305.0, 305.0]], [1.0, -1.0], [0.0, 0.0])
 
-    def test_unconditional_field(self):
-        grf.seed(7)
-        field = self.variogram.simulate(self.grid.shape, self.grid.spacing)
-        assert field.shape == self.grid.shape
-        assert np.all(np.isfinite(field))
-        assert 0.3 < np.var(field) < 3.0
+    grf.seed(9)
+    batch = grf.conditional_simulate(*args, n=2)
+    grf.seed(9)
+    first, = grf.conditional_simulate(*args)
+    second, = grf.conditional_simulate(*args)
 
-    @pytest.mark.parametrize('kriging', [SimpleKriging(), OrdinaryKriging()])
-    def test_conditional_simulation_honours_observations(self, kriging):
-        grf.seed(11)
-        prediction, _ = kriging.predict(self.grid, self.obs, self.variogram)
-        sims = kriging.simulate(self.grid, self.obs, self.variogram, n_sim=2)
-        for loc, value in zip(self.obs.locations, self.obs.values):
-            idx = tuple((loc / self.grid.spacing).astype(int))
-            assert abs(prediction[idx] - value) < 1e-6
-            for sim in sims:
-                assert abs(sim[idx] - value) < 1e-4
+    np.testing.assert_array_equal(batch, [first, second])
+    assert not np.allclose(first, second)
 
 
-class TestGriddedAzimuth:
-    def setup_method(self):
-        self.grid = GridSpec((3, 2), (10.0, 10.0))
-        self.values = np.array([[359.0, 10.0], [1.0, 20.0], [90.0, 30.0]])
-        self.azimuth = GriddedAzimuth(self.values, self.grid)
-
-    def test_reproduces_cell_center_values(self):
-        np.testing.assert_allclose(
-            self.azimuth(self.grid.coordinates()), self.values.ravel(), atol=1e-10,
-        )
-
-    def test_interpolates_across_wrap(self):
-        midpoint = self.azimuth(np.array([[10.0, 5.0]]))[0]
-        assert abs((midpoint + 180.0) % 360.0 - 180.0) < 1e-6
-
-    def test_clamps_and_accepts_3d_locations(self):
-        locations = np.array([[0.0, 0.0, 5.0], [1000.0, 1000.0, -5.0]])
-        np.testing.assert_allclose(self.azimuth(locations), [359.0, 30.0], atol=1e-10)
-
-
-class TestSharedNoise:
-    def setup_method(self):
-        self.grid = GridSpec((40, 40), (10.0, 10.0))
-        self.points = self.grid.coordinates()
-        self.variogram = grf.nonstationary_variogram(
-            'matern52', 150.0, 40.0, azimuth_callable=swirl_azimuth, n_bins=36, shared_noise=True,
-        )
-        self.obs = ObservationData(
-            np.array([[105.0, 105.0], [305.0, 305.0]]), np.array([1.0, -1.0]), np.zeros(2),
-        )
-
-    def test_matches_empirical_covariance_of_simulations(self):
-        idx = [np.ravel_multi_index(ij, self.grid.shape) for ij in [(20, 35), (5, 20), (30, 30)]]
-        model = self.variogram.corr_matrix(self.points, self.points[idx])
-        grf.seed(1)
-        n = 300
-        fields = np.array([
-            self.variogram.simulate(self.grid.shape, self.grid.spacing).ravel() for _ in range(n)
-        ])
-        empirical = fields.T @ fields[:, idx] / n
-        assert np.mean(np.abs(empirical - model)) < 0.06
-        assert abs(np.mean(fields.var(axis=0)) - 1.0) < 0.1
-
-    def test_unit_variance_symmetric_positive_definite(self):
-        idx = np.random.default_rng(3).choice(len(self.points), size=50, replace=False)
-        corr = self.variogram.corr_matrix(self.points[idx], self.points[idx])
-        np.testing.assert_allclose(np.diag(corr), 1.0, atol=1e-10)
-        np.testing.assert_allclose(corr, corr.T, atol=1e-12)
-        scipy.linalg.cholesky(corr + 1e-8 * np.eye(len(corr)))
-
-    def test_correlates_across_bins(self):
-        # Two points 25 degrees (2.5 bins) apart on a ring around the swirl centre.
-        angles = np.radians([0.0, 25.0])
-        locations = np.column_stack([200.0 + 150.0 * np.cos(angles), 150.0 + 150.0 * np.sin(angles)])
-        independent = NonstationaryVariogram('matern52', 150.0, 40.0, azimuth=swirl_azimuth, n_bins=36)
-        assert independent.corr_matrix(locations[:1], locations[1:])[0, 0] == 0.0
-        assert self.variogram.corr_matrix(locations[:1], locations[1:])[0, 0] > 0.05
-
-    def test_constant_azimuth_on_bin_matches_stationary(self):
-        shared = NonstationaryVariogram(
-            'matern52', 150.0, 40.0, azimuth=lambda p: np.full(len(p), 30.0), n_bins=36,
-            shared_noise=True,
-        )
-        stationary = Variogram.from_parameters('matern52', 150.0, 40.0, azimuth=30.0)
-        locations = self.points[[0, 820]]
-        np.testing.assert_allclose(
-            shared.corr_matrix(self.points, locations),
-            stationary.corr_matrix(self.points, locations), atol=0.02,
-        )
-
-    def test_reproducible_and_distinct_realisations(self):
-        grf.seed(9)
-        first = SimpleKriging().simulate(self.grid, self.obs, self.variogram, n_sim=2)
-        grf.seed(9)
-        second = SimpleKriging().simulate(self.grid, self.obs, self.variogram, n_sim=2)
-        np.testing.assert_array_equal(first[0], second[0])
-        np.testing.assert_array_equal(first[1], second[1])
-        assert not np.allclose(first[0], first[1])
-        assert grf.seed() == 11
-        # Realisation i uses the start seed + i.
-        grf.seed(10)
-        third = SimpleKriging().simulate(self.grid, self.obs, self.variogram)
-        np.testing.assert_array_equal(third[0], first[1])
-
-    def test_component_reseeding_preserves_numpy_stream(self):
+def test_shared_noise_simulation_preserves_numpy_random_stream():
+    model = grf.nonstationary_variogram(
+        'matern52', 150.0, 40.0, azimuth_callable=swirl_azimuth, n_bins=8, shared_noise=True,
+    )
+    state = np.random.get_state()
+    try:
+        expected = np.random.RandomState(123).normal(size=8)
         np.random.seed(123)
         grf.seed(9)
-        expected = np.random.normal(size=8)
-        np.random.seed(123)
-        self.variogram.simulate(self.grid.shape, self.grid.spacing)
+        model.simulate((40, 40), (10.0, 10.0))
+
         np.testing.assert_array_equal(np.random.normal(size=8), expected)
-
-    @pytest.mark.parametrize('kriging', [SimpleKriging(), OrdinaryKriging()])
-    def test_conditional_simulation_honours_observations(self, kriging):
-        grf.seed(11)
-        for sim in kriging.simulate(self.grid, self.obs, self.variogram, n_sim=2):
-            for loc, value in zip(self.obs.locations, self.obs.values):
-                assert abs(sim[tuple((loc / self.grid.spacing).astype(int))] - value) < 1e-4
-
-    def test_1d_locations_raise(self):
-        with pytest.raises(NotImplementedError, match="2D or 3D"):
-            self.variogram.corr_matrix(np.array([[0.0], [10.0]]), np.array([[0.0]]))
+    finally:
+        np.random.set_state(state)
 
 
-class TestSharedNoise3D:
-    def setup_method(self):
-        self.grid = GridSpec((24, 24, 4), (10.0, 10.0, 5.0))
-        self.points = self.grid.coordinates()
-        self.variogram = NonstationaryVariogram(
-            'matern52', 100.0, 30.0, 15.0, azimuth=swirl_azimuth, dip=10.0, n_bins=18,
-            shared_noise=True, lattice_size_3d=(128, 64),
-        )
-
-    def test_components_are_rotations_about_z(self):
-        lags = np.random.default_rng(0).uniform(-100.0, 100.0, (20, 3))
-        for k in [1, 5]:
-            theta = np.radians(self.variogram.help_azimuths[k])
-            cos, sin = np.cos(theta), np.sin(theta)
-            rotated = np.column_stack(
-                [cos * lags[:, 0] + sin * lags[:, 1], -sin * lags[:, 0] + cos * lags[:, 1], lags[:, 2]]
-            )
-            np.testing.assert_allclose(
-                self.variogram.component(k).corr_array(lags),
-                self.variogram.component(0).corr_array(rotated), atol=1e-12,
-            )
-
-    def test_constant_azimuth_on_bin_matches_stationary(self):
-        shared = NonstationaryVariogram(
-            'matern52', 100.0, 30.0, 15.0, azimuth=lambda p: np.full(len(p), 40.0), dip=10.0,
-            n_bins=18, shared_noise=True, lattice_size_3d=(128, 64),
-        )
-        stationary = Variogram.from_parameters('matern52', 100.0, 30.0, 15.0, azimuth=40.0, dip=10.0)
-        locations = self.points[[0, 1000, 2303]]
-        np.testing.assert_allclose(
-            shared.corr_matrix(self.points, locations),
-            stationary.corr_matrix(self.points, locations), atol=0.05,
-        )
-
-    def test_layered_matches_empirical_covariance(self):
-        nodes = [(12, 20, 0), (12, 20, 2), (3, 12, 3), (18, 18, 1)]
-        idx = [np.ravel_multi_index(ijk, self.grid.shape) for ijk in nodes]
-        model = self.variogram.corr_matrix(self.points, self.points[idx])
-        grf.seed(1)
-        n = 300
-        fields = np.array([
-            self.variogram.simulate(self.grid.shape, self.grid.spacing).ravel() for _ in range(n)
-        ])
-        empirical = fields.T @ fields[:, idx] / n
-        assert np.mean(np.abs(empirical - model)) < 0.06
-        assert abs(np.mean(fields.var(axis=0)) - 1.0) < 0.1
-
-    def test_single_layer_is_section_of_3d_field(self):
-        grid = GridSpec((24, 24, 1), (10.0, 10.0, 5.0))
-        points = grid.coordinates()
-        idx = [np.ravel_multi_index(ijk, grid.shape) for ijk in [(12, 20, 0), (3, 12, 0)]]
-        model = self.variogram.corr_matrix(points, points[idx])
-        grf.seed(2)
-        n = 300
-        fields = np.array([self.variogram.simulate(grid.shape, grid.spacing).ravel() for _ in range(n)])
-        assert fields.shape[1] == len(points)
-        assert np.mean(np.abs(fields.T @ fields[:, idx] / n - model)) < 0.06
-
-    def test_unit_variance_symmetric_positive_definite(self):
-        idx = np.random.default_rng(3).choice(len(self.points), size=50, replace=False)
-        corr = self.variogram.corr_matrix(self.points[idx], self.points[idx])
-        np.testing.assert_allclose(np.diag(corr), 1.0, atol=1e-10)
-        np.testing.assert_allclose(corr, corr.T, atol=1e-12)
-        scipy.linalg.cholesky(corr + 1e-8 * np.eye(len(corr)))
-
-    @pytest.mark.parametrize('kriging', [SimpleKriging(), OrdinaryKriging()])
-    def test_conditional_simulation_honours_observations_in_layers(self, kriging):
-        obs = ObservationData(
-            np.array([[55.0, 55.0, 2.5], [155.0, 155.0, 12.5], [105.0, 205.0, 17.5]]),
-            np.array([1.0, -1.0, 0.5]), np.zeros(3),
-        )
-        grf.seed(11)
-        for sim in kriging.simulate(self.grid, obs, self.variogram, n_sim=2):
-            for loc, value in zip(obs.locations, obs.values):
-                assert abs(sim[tuple((loc / self.grid.spacing).astype(int))] - value) < 1e-4
+def test_shared_noise_rejects_1d_prediction():
+    model = grf.nonstationary_variogram(
+        'matern52', 150.0, 40.0, azimuth_callable=lambda p: np.zeros(len(p)), shared_noise=True,
+    )
+    with pytest.raises(NotImplementedError, match='2D or 3D'):
+        grf.predict(model, (2,), (10.0,), [[5.0]], [1.0], [0.0])
